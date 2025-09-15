@@ -24,7 +24,9 @@ private:
 
 #pragma region Engine
 public:
-    HRESULT Initialize_Engine();
+    HRESULT Initialize_Engine(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY,
+        _Inout_ ID3D11Device * *ppDevice, _Inout_ ID3D11DeviceContext * *ppContext);
+    
     void    Update_Engine(_float fTimedelta);
     HRESULT Draw();
 #pragma endregion
@@ -38,8 +40,18 @@ public:
 #pragma endregion
 
 
+#pragma region GraphicDevice
+public:
+    _float			Clear_BackBuffer_View(const _float4 * pClearColor);
+    HRESULT			Clear_DepthStencil_View();
+    HRESULT         Present();
+
+#pragma endregion
+
+
 private:
     class CTimer_Manager* m_pTimerManager = { nullptr };
+    class CGraphic_Device* m_pGraphicDev = { nullptr };
 
 public:
     virtual void        Free() override;

@@ -55,12 +55,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 
     MSG msg;
-    
-    //다른 변수가 참조하고있으므로 AddRef올려주기
-    CGameInstance* pGameInstance = CGameInstance::GetInstance();
-    CheckNullResult(pGameInstance, FALSE);
+    Engine::CGameInstance* pGameInstance = Engine::CGameInstance::GetInstance();
+    if (pGameInstance == nullptr)
+        return E_FAIL;
+
     Safe_AddRef(pGameInstance);
-    pGameInstance->Initialize_Engine();
 
     /*60프레임제한을 위한 타이머 만들기*/
     //게임 전체 타이머

@@ -3,6 +3,11 @@
 #include "Client_Defines.h"
 #include "CBase.h"
 
+namespace Engine
+{
+	class CGameInstance;
+}
+
 NS_BEGIN(Client)
 class CMainApp final : public CBase
 {
@@ -16,10 +21,17 @@ public:
 	void	Update(_float fTimeDelta);
 	void	Render();
 
+private:
+	ID3D11Device* m_pDevice = { nullptr };
+	ID3D11DeviceContext* m_pContext = { nullptr };
 
 public:
 	static CMainApp* Create();
 	virtual void Free() override;
+
+private:
+	 CGameInstance* pGameInstance = { nullptr };
+	_float4		ClearColor = _float4(0.f, 0.f, 1.f, 1.f);
 
 };
 

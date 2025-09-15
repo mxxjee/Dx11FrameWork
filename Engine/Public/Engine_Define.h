@@ -2,7 +2,8 @@
 #define Engine_Define_h__
 
 #include <d3d11.h>
-
+#include <DirectXMath.h>
+using namespace DirectX;
 #include <vector>
 #include <list>
 #include <map>

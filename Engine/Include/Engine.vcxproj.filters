@@ -22,6 +22,12 @@
     <Filter Include="01.Utility\00.GameInstance\99.SuperClass">
       <UniqueIdentifier>{8479bd61-2ef4-4415-a644-f3f2a32635a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\01.Device">
+      <UniqueIdentifier>{212a4042-1842-4088-ab3f-3dee5b61d38a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\01.Device\Graphic">
+      <UniqueIdentifier>{aae10dba-7de5-457b-a31a-dd47f562dd5f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -54,6 +60,9 @@
     <ClInclude Include="..\Public\CGameInstance.h">
       <Filter>01.Utility\00.GameInstance</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CGraphic_Device.h">
+      <Filter>00.System\01.Device\Graphic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -67,6 +76,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CGameInstance.cpp">
       <Filter>01.Utility\00.GameInstance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGraphic_Device.cpp">
+      <Filter>00.System\01.Device\Graphic</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
