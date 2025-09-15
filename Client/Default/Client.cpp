@@ -4,7 +4,7 @@
 #include "framework.h"
 #include "Client.h"
 
-#include "Client_Defines.h"
+#include "CMainApp.h"
 
 #define MAX_LOADSTRING 100
 
