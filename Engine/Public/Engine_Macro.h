@@ -11,14 +11,6 @@
 #define			USING(NAMESPACE)			using namespace NAMESPACE;
 
 
-#define CheckTrue(x) { if(x == true) return; }
-#define CheckFalse(x) { if(x == false) return; }
-#define CheckNull(x) { if(x == nullptr) return; }
-#define CheckTrueResult(x, y) { if(x == true) return y; }
-#define CheckFalseResult(x, y) { if(x == false) return y;}
-#define CheckNullResult(x, y) { if(x == nullptr) return y;}
-
-
 
 #ifdef	ENGINE_EXPORTS
 #define ENGINE_DLL		_declspec(dllexport)//Engine 프로젝트에선 export

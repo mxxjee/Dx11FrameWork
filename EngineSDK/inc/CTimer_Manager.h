@@ -5,7 +5,7 @@
 
 NS_BEGIN(Engine)
 
-class CTimer_Manager : public CBase
+class ENGINE_DLL CTimer_Manager : public CBase
 {
 
 private:
@@ -19,8 +19,6 @@ public:
 	void			Compute_TimeDelta(const _tchar* pTimerTag);
 	HRESULT			Add_Timer(const _tchar* pTimerTag);
 
-public:
-	static CTimer_Manager* Create();
 private:
 	CTimer* Find_Timer(const _tchar* pTimerTag);
 
