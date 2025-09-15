@@ -5,7 +5,7 @@ IMPLEMENT_SINGLETON(CGameInstance)
 
 CGameInstance::CGameInstance()
 {
-
+	 
 }
 HRESULT CGameInstance::Initialize_Engine()
 {
