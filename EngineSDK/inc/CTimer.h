@@ -4,7 +4,7 @@
 
 NS_BEGIN(Engine)
 
-class ENGINE_DLL CTimer :    public CBase
+class CTimer final :    public CBase
 {
 private:
 	explicit CTimer();
