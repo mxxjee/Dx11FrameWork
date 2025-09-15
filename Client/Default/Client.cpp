@@ -5,6 +5,8 @@
 #include "Client.h"
 
 #include "CMainApp.h"
+#include "CGameInstance.h"
+
 
 #define MAX_LOADSTRING 100
 
@@ -53,20 +55,59 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 
     MSG msg;
+    
+    //다른 변수가 참조하고있으므로 AddRef올려주기
+    CGameInstance* pGameInstance = CGameInstance::GetInstance();
+    CheckNullResult(pGameInstance, FALSE);
+    Safe_AddRef(pGameInstance);
+    pGameInstance->Initialize_Engine();
+
+    /*60프레임제한을 위한 타이머 만들기*/
+    //게임 전체 타이머
+    if (FAILED(pGameInstance->Add_Timer(L"Timer_Default")))
+        return FALSE;
+
+    //60프레임 전용 타이머 (TimeDelta)
+    if (FAILED(pGameInstance->Add_Timer(L"Timer_60")))
+        return FALSE;
+
+
+    //누적값
+    _float  fTimeAcc = {};
 
     // 기본 메시지 루프입니다:
-    while (GetMessage(&msg, nullptr, 0, 0))
+    while (true)
     {
-        if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            if (WM_QUIT == msg.message)
+                break;
+
+            if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
+            {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
+
+        }
+        
+        pGameInstance->Compute_TimeDelta(L"Timer_Default");
+        fTimeAcc += pGameInstance->Get_TimeDelta(L"Timer_Default");
+
+        if (fTimeAcc >= 1.f / 60.f)
+        {
+            /*60프레임마다 증가하는 타이머*/
+            pGameInstance->Compute_TimeDelta(L"Timer_60");
+
+            pMainApp->Update(pGameInstance->Get_TimeDelta(L"Timer_60"));
+            pMainApp->Render();
+            
+            fTimeAcc = 0.f;
         }
 
-        pMainApp->Update(0.0f);
-        pMainApp->Render();
-
     }
+
+    Safe_Release(pGameInstance);
 
 
     //삭제시도 시 레퍼런스 카운트가 남아있다면 제대로 지워지지않은것.
