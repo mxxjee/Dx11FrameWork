@@ -2,6 +2,10 @@
 #include "CTimer.h"
 
 
+CTimer_Manager::CTimer_Manager()
+{
+}
+
 _float CTimer_Manager::Get_TimeDelta(const _tchar* pTimerTag)
 {
 	CTimer* pTimer = Find_Timer(pTimerTag);
@@ -34,6 +38,11 @@ HRESULT CTimer_Manager::Add_Timer(const _tchar* pTimerTag)
 	m_mapTimer.emplace( pTimerTag, pTimer );
 
 	return S_OK;
+}
+
+CTimer_Manager* CTimer_Manager::Create()
+{
+	return new CTimer_Manager;
 }
 
 CTimer* CTimer_Manager::Find_Timer(const _tchar* pTimerTag)

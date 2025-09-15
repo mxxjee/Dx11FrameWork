@@ -10,19 +10,22 @@
     <Filter Include="99.Defines">
       <UniqueIdentifier>{7e209bea-4619-405b-bfd4-4096abd70278}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\99.SuperClass">
-      <UniqueIdentifier>{8479bd61-2ef4-4415-a644-f3f2a32635a7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00.System\00.Timers">
       <UniqueIdentifier>{4ed145b6-cf08-4769-af45-4f0d702019c5}</UniqueIdentifier>
     </Filter>
     <Filter Include="00.System\00.Timers\Manager">
       <UniqueIdentifier>{36b5dce9-8106-4bcd-b8aa-457c6c11fdf3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\00.GameInstance">
+      <UniqueIdentifier>{268c2b71-54f1-4480-9e1c-60677eff0638}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\00.GameInstance\99.SuperClass">
+      <UniqueIdentifier>{8479bd61-2ef4-4415-a644-f3f2a32635a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
-      <Filter>01.Utility\99.SuperClass</Filter>
+      <Filter>01.Utility\00.GameInstance\99.SuperClass</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Engine_Define.h">
       <Filter>99.Defines</Filter>
@@ -48,16 +51,22 @@
     <ClInclude Include="..\Public\CTimer_Manager.h">
       <Filter>00.System\00.Timers\Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CGameInstance.h">
+      <Filter>01.Utility\00.GameInstance</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
-      <Filter>01.Utility\99.SuperClass</Filter>
+      <Filter>01.Utility\00.GameInstance\99.SuperClass</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CTimer.cpp">
       <Filter>00.System\00.Timers</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CTimer_Manager.cpp">
       <Filter>00.System\00.Timers\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGameInstance.cpp">
+      <Filter>01.Utility\00.GameInstance</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
