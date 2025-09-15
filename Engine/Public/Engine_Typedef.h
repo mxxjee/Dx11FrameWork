@@ -25,6 +25,9 @@ namespace Engine
 	typedef		float						_float;
 	typedef		double						_double;
 
+	typedef		wstring						_wstring;
+
+
 }
 
 #endif // Engine_Typedef_h__

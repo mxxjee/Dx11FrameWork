@@ -148,6 +148,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h" />
+    <ClInclude Include="..\Public\CTimer.h" />
+    <ClInclude Include="..\Public\CTimer_Manager.h" />
     <ClInclude Include="..\Public\Engine_Define.h" />
     <ClInclude Include="..\Public\Engine_Enum.h" />
     <ClInclude Include="..\Public\Engine_Function.h" />
@@ -157,6 +159,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp" />
+    <ClCompile Include="..\Private\CTimer.cpp" />
+    <ClCompile Include="..\Private\CTimer_Manager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

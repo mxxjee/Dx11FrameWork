@@ -29,6 +29,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: 여기에 코드를 입력합니다.
+    CMainApp* pMainApp = { nullptr };
+
+
 
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -40,6 +43,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     {
         return FALSE;
     }
+    
+    //윈도우 창이 완전히 만들어진 이후에 MainApp할당
+    pMainApp = CMainApp::Create();
+    if (pMainApp == nullptr)
+        return FALSE;
+
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
 
@@ -53,7 +62,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+
+        pMainApp->Update(0.0f);
+        pMainApp->Render();
+
     }
+
+
+    //삭제시도 시 레퍼런스 카운트가 남아있다면 제대로 지워지지않은것.
+    //문제 발생!
+    if (Safe_Release(pMainApp) != 0)
+    {
+        MSG_BOX("Failed To ShutDown");
+        return FALSE;
+    }
+
 
     return (int) msg.wParam;
 }

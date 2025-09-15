@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <functional>
 #include <string>
+using namespace std;
 #include <unordered_map>
 #include <ctime>
 
@@ -38,7 +39,7 @@
 #endif
 #endif
 
-using namespace std;
+
 using namespace Engine;
 
 #endif // Engine_Define_h__
