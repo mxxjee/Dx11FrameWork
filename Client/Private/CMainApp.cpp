@@ -13,8 +13,6 @@ HRESULT CMainApp::Initialize()
 	/*내 게임의 초기화 작업을 수행*/
 	pGameInstance = CGameInstance::GetInstance();
 	CheckNullResult(pGameInstance, FALSE);
-	Safe_AddRef(pGameInstance);
-
 	pGameInstance->Initialize_Engine(g_hWnd,WINMODE::WIN,g_iWinSizeX,g_iWinSizeY,&m_pDevice,&m_pContext);
 
 

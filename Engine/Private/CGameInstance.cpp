@@ -83,5 +83,5 @@ void CGameInstance::Free()
 	__super::Free();
 
 	Safe_Release(m_pTimerManager);
-
+	Safe_Release(m_pGraphicDev);
 }
