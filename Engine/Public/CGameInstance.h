@@ -24,11 +24,12 @@ private:
 
 #pragma region Engine
 public:
-    HRESULT Initialize_Engine(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY,
-        _Inout_ ID3D11Device * *ppDevice, _Inout_ ID3D11DeviceContext * *ppContext);
+    HRESULT Initialize_Engine(const ENGINE_DESC & EngineDesc,_Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext * *ppContext);
     
     void    Update_Engine(_float fTimedelta);
-    HRESULT Draw();
+    HRESULT     Draw_Begin(const _float4 * pClearColor);
+    HRESULT     Draw();
+    HRESULT     Draw_End();
 #pragma endregion
 
 
@@ -37,15 +38,6 @@ public:
     _float			Get_TimeDelta(const _tchar * pTimerTag);
     HRESULT			Add_Timer(const _tchar * pTimerTag);
     void			Compute_TimeDelta(const _tchar * pTimerTag);
-#pragma endregion
-
-
-#pragma region GraphicDevice
-public:
-    _float			Clear_BackBuffer_View(const _float4 * pClearColor);
-    HRESULT			Clear_DepthStencil_View();
-    HRESULT         Present();
-
 #pragma endregion
 
 

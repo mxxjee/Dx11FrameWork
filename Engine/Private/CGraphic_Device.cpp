@@ -7,7 +7,9 @@ CGraphic_Device::CGraphic_Device()
 
 }
 
-HRESULT CGraphic_Device::Initialize(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
+
+
+HRESULT CGraphic_Device::Initialize(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext)
 {
 	_uint		iFlag = 0;
 
@@ -62,6 +64,7 @@ HRESULT CGraphic_Device::Initialize(HWND hWnd, WINMODE isWindowed, _uint iWinSiz
 	*ppDevice = m_pDevice;
 	*ppContext = m_pDeviceContext;
 
+	//외부변수에 참조시켰으므로 AddRef()
 	Safe_AddRef(m_pDevice);
 	Safe_AddRef(m_pDeviceContext);
 
@@ -127,6 +130,9 @@ HRESULT CGraphic_Device::Ready_SwapChain(HWND hWnd, WINMODE isWindowed, _uint iW
 	/* float4(1.f, 0.f, 0.f, 1.f) */
 
 	SwapChain.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; /* 만든 픽셀하나의 데이터 정보 : 32BIT픽셀생성하되 부호가 없는 정규화된 수를 저장할께 */
+	//DXGI_FORMAT_R8G8B8A8_UNORM : R8G8B8A8사용, Unsigned(양수) Norm(정규화) 사용,
+									//즉 0~1값으로만 표현
+	
 	SwapChain.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	SwapChain.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 
@@ -226,7 +232,7 @@ HRESULT CGraphic_Device::Ready_DepthStencilView(_uint iWinCX, _uint iWinCY)
 	return S_OK;
 }
 
-CGraphic_Device* CGraphic_Device::Create(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY, ID3D11Device** ppDevice, ID3D11DeviceContext** ppDeviceContextOut)
+CGraphic_Device* CGraphic_Device::Create(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY, _Out_ ID3D11Device** ppDevice, _Out_ ID3D11DeviceContext** ppDeviceContextOut)
 {
 	CGraphic_Device* pInstance = new CGraphic_Device();
 
