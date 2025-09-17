@@ -2,6 +2,10 @@
 #define Engine_Define_h__
 
 #include <d3d11.h>
+#include <d3dcompiler.h>
+#include <wrl.h>
+using namespace Microsoft::WRL;
+
 #include <DirectXMath.h>
 using namespace DirectX;
 #include <vector>

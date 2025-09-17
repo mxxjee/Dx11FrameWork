@@ -43,12 +43,12 @@ HRESULT CGraphic_Device::Initialize(HWND hWnd, WINMODE isWindowed, _uint iWinSiz
 	/* 장치에 바인드해놓을 렌더 타겟들과 뎁스스텐실뷰를 세팅한다. */
 	/* 장치는 동시에 최대 4->8개의 렌더타겟을 들고 있을 수 있다. */
 	ID3D11RenderTargetView* pRTVs[] = {
-		m_pBackBufferRTV,
+		m_pBackBufferRTV.Get(),
 	};
 
 	/* 렌더타겟의 픽셀 수와 깊이스텐실버퍼의 픽셀수가 서로 다르다면 절대 렌더링이 불가능해진다. */
 	m_pDeviceContext->OMSetRenderTargets(1, pRTVs,
-		m_pDepthStencilView);
+		m_pDepthStencilView.Get());
 
 	D3D11_VIEWPORT			ViewPortDesc;
 	ZeroMemory(&ViewPortDesc, sizeof(D3D11_VIEWPORT));
@@ -61,8 +61,8 @@ HRESULT CGraphic_Device::Initialize(HWND hWnd, WINMODE isWindowed, _uint iWinSiz
 
 	m_pDeviceContext->RSSetViewports(1, &ViewPortDesc);
 
-	*ppDevice = m_pDevice;
-	*ppContext = m_pDeviceContext;
+	*ppDevice = m_pDevice.Get();
+	*ppContext = m_pDeviceContext.Get();
 
 	//외부변수에 참조시켰으므로 AddRef()
 	Safe_AddRef(m_pDevice);
@@ -80,7 +80,7 @@ HRESULT CGraphic_Device::Clear_BackBuffer_View(const _float4* pClearColor)
 	// m_pGraphic_Device->Clear(어떤 영역만큼 지울까, 어떤 것들을 지울까? , 뭘로 지울가. );	
 
 	/* 백버퍼를 초기화한다.  */
-	m_pDeviceContext->ClearRenderTargetView(m_pBackBufferRTV, reinterpret_cast<const _float*>(pClearColor));
+	m_pDeviceContext->ClearRenderTargetView(m_pBackBufferRTV.Get(), reinterpret_cast<const _float*>(pClearColor));
 
 	return S_OK;
 }
@@ -90,7 +90,7 @@ HRESULT CGraphic_Device::Clear_DepthStencil_View()
 	if (nullptr == m_pDeviceContext)
 		return E_FAIL;
 
-	m_pDeviceContext->ClearDepthStencilView(m_pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+	m_pDeviceContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 
 	return S_OK;
 }
@@ -155,7 +155,7 @@ HRESULT CGraphic_Device::Ready_SwapChain(HWND hWnd, WINMODE isWindowed, _uint iW
 	SwapChain.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
 	/* 백버퍼라는 텍스처(ID3D11Texture2D)를 생성했다. */
-	if (FAILED(pFactory->CreateSwapChain(m_pDevice, &SwapChain, &m_pSwapChain)))
+	if (FAILED(pFactory->CreateSwapChain(m_pDevice.Get(), &SwapChain, &m_pSwapChain)))
 		return E_FAIL;
 
 	Safe_Release(pFactory);
