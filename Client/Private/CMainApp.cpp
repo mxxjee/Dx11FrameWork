@@ -5,17 +5,24 @@
 USING(Client)
 
 CMainApp::CMainApp()
+	:pGameInstance(CGameInstance::GetInstance())
 {
+	Safe_AddRef(pGameInstance);
 }
 
 HRESULT CMainApp::Initialize()
 {
 	/*내 게임의 초기화 작업을 수행*/
-	pGameInstance = CGameInstance::GetInstance();
-	CheckNullResult(pGameInstance, FALSE);
-	Safe_AddRef(pGameInstance);
 
-	pGameInstance->Initialize_Engine(g_hWnd,WINMODE::WIN,g_iWinSizeX,g_iWinSizeY,&m_pDevice,&m_pContext);
+
+	ENGINE_DESC		desc;
+	desc.hWnd = g_hWnd;
+	desc.iWinSizeX = g_iWinSizeX;
+	desc.iWinSizeY = g_iWinSizeY;
+	desc.winMode = WINMODE::WIN;
+
+
+	pGameInstance->Initialize_Engine(desc,&m_pDevice,&m_pContext);
 
 
 
@@ -30,12 +37,10 @@ void CMainApp::Update(_float fTimeDelta)
 void CMainApp::Render()
 {
 	/*내 게임의 반복적인 렌더.*/
-	pGameInstance->Clear_BackBuffer_View(&ClearColor);
-	pGameInstance->Clear_DepthStencil_View();
+	pGameInstance->Draw_Begin(&ClearColor);
+	pGameInstance->Draw();
+	pGameInstance->Draw_End();
 
-
-
-	pGameInstance->Present();
 }
 
 CMainApp* CMainApp::Create()

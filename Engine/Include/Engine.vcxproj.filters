@@ -23,10 +23,7 @@
       <UniqueIdentifier>{8479bd61-2ef4-4415-a644-f3f2a32635a7}</UniqueIdentifier>
     </Filter>
     <Filter Include="00.System\01.Device">
-      <UniqueIdentifier>{212a4042-1842-4088-ab3f-3dee5b61d38a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00.System\01.Device\Graphic">
-      <UniqueIdentifier>{aae10dba-7de5-457b-a31a-dd47f562dd5f}</UniqueIdentifier>
+      <UniqueIdentifier>{286f5af1-31d9-4e51-9399-1791726b81d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -61,7 +58,7 @@
       <Filter>01.Utility\00.GameInstance</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CGraphic_Device.h">
-      <Filter>00.System\01.Device\Graphic</Filter>
+      <Filter>00.System\01.Device</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -78,7 +75,7 @@
       <Filter>01.Utility\00.GameInstance</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CGraphic_Device.cpp">
-      <Filter>00.System\01.Device\Graphic</Filter>
+      <Filter>00.System\01.Device</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

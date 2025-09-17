@@ -30,7 +30,7 @@ public:
 	virtual void Free() override;
 
 private:
-	 CGameInstance* pGameInstance = { nullptr };
+	 CGameInstance* pGameInstance;
 	_float4		ClearColor = _float4(0.f, 0.f, 1.f, 1.f);
 
 };
