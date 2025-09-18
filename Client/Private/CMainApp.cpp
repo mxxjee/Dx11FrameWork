@@ -26,7 +26,8 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 
-	pGameInstance->Level_Changer()
+	pGameInstance->Level_Changer(ENUM_TO_UINT(LEVEL_ID::LOGO), nullptr);
+
 
 	return S_OK;
 }
@@ -70,4 +71,40 @@ void CMainApp::Free()
 	//상속계층을 따르기 위해 부모  Free호출 
 	__super::Free();
 
+}
+
+
+
+
+
+#include <iostream>
+#include <memory>
+using namespace std;
+
+struct Weapon {
+	string name;
+	Weapon(string n) : name(n) {
+		cout << "Weapon " << name << " created\n";
+	}
+	~Weapon() {
+		cout << "Weapon " << name << " destroyed\n";
+	}
+};
+
+int main() {
+	shared_ptr<Weapon> w1;
+	{
+		auto w2 = make_shared<Weapon>("Excalibur");
+		cout << "use_count after make_shared = " << w2.use_count() << "\n";
+					// use_count after make_shared = 1
+
+		w1 = w2;  // w1과 w2가 같은 무기를 공유
+		cout << "use_count after assigning w1 = " << w2.use_count() << "\n";
+					// use_count after make_shared = 2
+	}
+	cout << "use_count after w2 scope ends = " << w1.use_count() << "\n";
+						//use_count after w2 scope ends = 1
+
+	w1.reset();
+	cout << "use_count after reset = " << w1.use_count() << "\n";
 }
