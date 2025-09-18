@@ -30,8 +30,15 @@ public:
     HRESULT     Draw_Begin(const _float4 * pClearColor);
     HRESULT     Draw();
     HRESULT     Draw_End();
+    void        Clear(_uint iLevelID);        /*레벨의 자원 삭제.*/
 #pragma endregion
 
+
+#pragma region LevelManager
+public:
+    HRESULT			Level_Changer(_uint iSceneID, class CLevel* pNewLevel);
+   
+#pragma endregion
 
 #pragma region TimerManager
 public:
@@ -42,6 +49,7 @@ public:
 
 
 private:
+    class CLevel_Manager* m_pLevelManager = { nullptr };
     class CTimer_Manager* m_pTimerManager = { nullptr };
     class CGraphic_Device* m_pGraphicDev = { nullptr };
 

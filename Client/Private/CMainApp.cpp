@@ -22,9 +22,11 @@ HRESULT CMainApp::Initialize()
 	desc.winMode = WINMODE::WIN;
 
 
-	pGameInstance->Initialize_Engine(desc,&m_pDevice,&m_pContext);
+	if(FAILED(pGameInstance->Initialize_Engine(desc,&m_pDevice,&m_pContext)))
+		return E_FAIL;
 
 
+	pGameInstance->Level_Changer()
 
 	return S_OK;
 }
