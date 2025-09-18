@@ -25,6 +25,15 @@
     <Filter Include="00.System\01.Device">
       <UniqueIdentifier>{286f5af1-31d9-4e51-9399-1791726b81d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\99.Imgui">
+      <UniqueIdentifier>{f800fe24-bb5d-45d4-9c3a-661e32510a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\00.Timers\Manager\00.Time_Manager">
+      <UniqueIdentifier>{9052872d-cfb4-4983-85b0-3ee3ea62c6c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\00.Timers\Manager\01.ImGuI_Manager">
+      <UniqueIdentifier>{65d3ed44-465a-41f8-b4c6-20634e3b8074}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -51,14 +60,41 @@
     <ClInclude Include="..\Public\CTimer.h">
       <Filter>00.System\00.Timers</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CTimer_Manager.h">
-      <Filter>00.System\00.Timers\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CGameInstance.h">
       <Filter>01.Utility\00.GameInstance</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CGraphic_Device.h">
       <Filter>00.System\01.Device</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imconfig.h">
+      <Filter>01.Utility\99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui.h">
+      <Filter>01.Utility\99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui_impl_dx11.h">
+      <Filter>01.Utility\99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui_impl_win32.h">
+      <Filter>01.Utility\99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui_internal.h">
+      <Filter>01.Utility\99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imstb_rectpack.h">
+      <Filter>01.Utility\99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imstb_textedit.h">
+      <Filter>01.Utility\99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imstb_truetype.h">
+      <Filter>01.Utility\99.Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CTimer_Manager.h">
+      <Filter>00.System\00.Timers\Manager\00.Time_Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CImGui_Manager.h">
+      <Filter>00.System\00.Timers\Manager\01.ImGuI_Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +112,30 @@
     </ClCompile>
     <ClCompile Include="..\Private\CGraphic_Device.cpp">
       <Filter>00.System\01.Device</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_demo.cpp">
+      <Filter>01.Utility\99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_draw.cpp">
+      <Filter>01.Utility\99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_impl_dx11.cpp">
+      <Filter>01.Utility\99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_impl_win32.cpp">
+      <Filter>01.Utility\99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_tables.cpp">
+      <Filter>01.Utility\99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui_widgets.cpp">
+      <Filter>01.Utility\99.Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CImGui_Manager.cpp">
+      <Filter>00.System\00.Timers\Manager\01.ImGuI_Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\imgui.cpp">
+      <Filter>01.Utility\99.Imgui</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
