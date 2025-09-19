@@ -19,6 +19,16 @@
     <ClInclude Include="..\Public\CMainApp.h">
       <Filter>00.MainApp</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CLevel_Loading.h">
+      <Filter>01.Levels\Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLoader.h" />
+    <ClInclude Include="..\Public\CLevel_GamePlay.h">
+      <Filter>01.Levels\GamePlay</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLevel_Logo.h">
+      <Filter>01.Levels\Logo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -38,6 +48,21 @@
     <Filter Include="99.Defines">
       <UniqueIdentifier>{99c6fa45-527e-4360-8251-bb7622a41094}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels">
+      <UniqueIdentifier>{64c3e4ed-340e-491e-9f2f-592d6a76f174}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\GamePlay">
+      <UniqueIdentifier>{5c22a0cf-3e92-4977-9bf2-9333bd90cfec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\Loading">
+      <UniqueIdentifier>{6a9807c5-75e3-4431-a49e-11e4d49b5ba5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\Logo">
+      <UniqueIdentifier>{41d62cd9-7035-4d17-a5c4-70bb9eff99df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\Loading\Loader">
+      <UniqueIdentifier>{db198de7-dbcd-45bd-8a12-7a3ca30bec2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -45,6 +70,16 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMainApp.cpp">
       <Filter>00.MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_Loading.cpp">
+      <Filter>01.Levels\Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLoader.cpp" />
+    <ClCompile Include="..\Private\CLevel_GamePlay.cpp">
+      <Filter>01.Levels\GamePlay</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_Logo.cpp">
+      <Filter>01.Levels\Logo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

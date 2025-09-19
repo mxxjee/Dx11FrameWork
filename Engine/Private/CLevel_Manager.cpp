@@ -23,10 +23,6 @@ HRESULT CLevel_Manager::Level_Changer(_uint iSceneID, CLevel* pNewLevel)
 	m_iCurrentLevelID = iSceneID;
 	m_pCurrentLevel = pNewLevel;
 
-	if (m_pCurrentLevel)
-		m_pCurrentLevel->Initialize();
-
-
 	return S_OK;
 }
 

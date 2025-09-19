@@ -147,7 +147,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\CLevel_GamePlay.h" />
+    <ClInclude Include="..\Public\CLevel_Loading.h" />
+    <ClInclude Include="..\Public\CLevel_Logo.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
+    <ClInclude Include="..\Public\CLoader.h" />
     <ClInclude Include="..\Public\CMainApp.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
@@ -155,6 +159,10 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\CLevel_GamePlay.cpp" />
+    <ClCompile Include="..\Private\CLevel_Loading.cpp" />
+    <ClCompile Include="..\Private\CLevel_Logo.cpp" />
+    <ClCompile Include="..\Private\CLoader.cpp" />
     <ClCompile Include="..\Private\CMainApp.cpp" />
     <ClCompile Include="Client.cpp" />
   </ItemGroup>

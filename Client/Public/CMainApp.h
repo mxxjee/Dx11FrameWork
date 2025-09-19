@@ -22,6 +22,9 @@ public:
 	void	Render();
 
 private:
+	HRESULT			Start_Level(LEVEL_ID iLevelID);
+
+private:
 	ID3D11Device* m_pDevice = { nullptr };
 	ID3D11DeviceContext* m_pContext = { nullptr };
 

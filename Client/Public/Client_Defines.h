@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Windows.h>
+#include <process.h>
 
 
 
@@ -13,7 +14,7 @@ namespace Client
 	static const unsigned int g_iWinSizeY = 720;
 
 
-	enum class LEVEL_ID {STATIC,LOADING,LOGO,GAMEPLAY,END};
+	enum class LEVEL_ID {STATIC,LOGO,LOADING,GAMEPLAY,END};
 }
 
 

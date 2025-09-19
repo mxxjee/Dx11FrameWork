@@ -8,6 +8,7 @@ CLevel::CLevel(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDevi
     m_pDevice{_pDevice},
     m_pDeviceContext{_pDeviceContext}
 {
+    Safe_AddRef(m_pGameInstance);
 }
 
 
@@ -32,4 +33,6 @@ void CLevel::Clear()
 void CLevel::Free()
 {
     __super::Free();
+    Safe_Release(m_pGameInstance);
+
 }

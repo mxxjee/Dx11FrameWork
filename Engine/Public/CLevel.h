@@ -3,7 +3,7 @@
 
 NS_BEGIN(Engine)
 
-class CLevel :
+class ENGINE_DLL CLevel :
     public CBase
 {
 
@@ -18,10 +18,10 @@ public:
     virtual void        Render();         //씬의 렌더.
     virtual void        Clear();        //자원 정리 함수
 
-private:
+public:
     virtual     void        Free();
 
-private:
+protected:
     class CGameInstance*          m_pGameInstance = { nullptr };
     ComPtr<ID3D11Device>    m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext>    m_pDeviceContext = { nullptr };
