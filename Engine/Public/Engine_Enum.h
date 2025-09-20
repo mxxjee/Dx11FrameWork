@@ -4,5 +4,6 @@
 namespace Engine
 {
 	enum class WINMODE { FULL, WIN };
+
 }
 #endif // Engine_Enum_h__
