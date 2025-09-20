@@ -20,13 +20,19 @@ public:
 
 public:
     virtual     void        Free();
-
+    
+public:
+    void                    Set_State(LEVELSTATE eState) { m_eLevelState = eState; }
+    const LEVELSTATE&       Get_State() { return m_eLevelState; }
 protected:
     class CGameInstance*          m_pGameInstance = { nullptr };
     ComPtr<ID3D11Device>    m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext>    m_pDeviceContext = { nullptr };
 
 
+
+private:
+    LEVELSTATE              m_eLevelState = { LEVELSTATE::ACTIVE };
 
 
 };

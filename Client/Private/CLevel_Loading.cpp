@@ -14,7 +14,7 @@ CLevel_Loading::CLevel_Loading(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11Devic
 {
 }
 
-HRESULT CLevel_Loading::Initialize(LEVEL_ID iLevelID)
+HRESULT CLevel_Loading::Initialize(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)
 {
     /*로더 : 로딩을 위한 서브스레드를 생성하고 실제 로딩 수행.*/
     //로더 생성
@@ -22,6 +22,7 @@ HRESULT CLevel_Loading::Initialize(LEVEL_ID iLevelID)
     CheckNullResult(m_pLoader, E_FAIL);
 
     m_eNextLevelID = iLevelID;
+    m_eChangeType = eChangeType;
 
     //로딩할동안 보여줄 UI생성
     if (FAILED(Ready_UI_Layer()))
@@ -55,7 +56,7 @@ HRESULT CLevel_Loading::Update(const _float fTimeDelta)
 
 
         CheckNullResult(pNewLevel,E_FAIL);
-        if (SUCCEEDED(m_pGameInstance->Level_Changer(ENUM_TO_UINT(m_eNextLevelID), pNewLevel)))
+        if (SUCCEEDED(m_pGameInstance->Level_Changer(ENUM_TO_UINT(m_eNextLevelID), pNewLevel, m_eChangeType)))
             return E_FAIL;
 
         MSG_BOX("다음 씬 불러오기 실패");
@@ -85,10 +86,10 @@ HRESULT CLevel_Loading::Ready_UI_Layer()
 }
 
 
-CLevel_Loading* CLevel_Loading::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LEVEL_ID iLevelID)
+CLevel_Loading* CLevel_Loading::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)
 {
     CLevel_Loading* pInstance = new CLevel_Loading(_pDevice, _pDeviceContext);
-    if (FAILED(pInstance->Initialize(iLevelID)))
+    if (FAILED(pInstance->Initialize(iLevelID, eChangeType)))
     {
         MSG_BOX("Failed to Create : Level_Loading");
         Safe_Release(pInstance);

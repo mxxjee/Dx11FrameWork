@@ -28,7 +28,7 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 
-	if (FAILED(Start_Level(LEVEL_ID::LOGO)))
+	if (FAILED(Start_Level(LEVEL_ID::LOGO,LEVELCHANGETYPE::REPLACETOP)))
 		return E_FAIL;
 
 	
@@ -50,11 +50,15 @@ void CMainApp::Render()
 
 }
 
-HRESULT CMainApp::Start_Level(LEVEL_ID iLevelID)
+HRESULT CMainApp::Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)
 {
 	/*일단 로딩씬으로 이동하고, 로딩씬에게 아이디를 넘겨줘서 어떤걸 로딩할지 로더에게 요청.
 	그리고 로딩씬이 다음씬으로 이동하도록 한다.*/
-	if(FAILED(pGameInstance->Level_Changer(ENUM_TO_UINT(LEVEL_ID::LOADING), CLevel_Loading::Create(m_pDevice, m_pContext, iLevelID))))
+
+	if(FAILED(pGameInstance->Level_Changer(
+		ENUM_TO_UINT(LEVEL_ID::LOADING),
+		CLevel_Loading::Create(m_pDevice, m_pContext, iLevelID,eChangeType),
+		LEVELCHANGETYPE::LOADING)))
 		return E_FAIL;
 
 

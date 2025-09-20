@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Client_Defines.h"
+#include "Engine_Enum.h"
 #include "CBase.h"
 
 namespace Engine
@@ -22,7 +23,7 @@ public:
 	void	Render();
 
 private:
-	HRESULT			Start_Level(LEVEL_ID iLevelID);
+	HRESULT			Start_Level(LEVEL_ID iLevelID,LEVELCHANGETYPE eChangeType);
 
 private:
 	ID3D11Device* m_pDevice = { nullptr };

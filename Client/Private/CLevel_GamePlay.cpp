@@ -17,6 +17,9 @@ HRESULT CLevel_GamePlay::Initialize()
 
 HRESULT CLevel_GamePlay::Update(const _float fTimeDelta)
 {
+    if (GetKeyState(VK_SPACE) & 0x8000)
+        m_pGameInstance->Pop_Level();
+
     return S_OK;
 }
 

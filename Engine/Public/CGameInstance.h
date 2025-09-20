@@ -36,8 +36,8 @@ public:
 
 #pragma region LevelManager
 public:
-    HRESULT			Level_Changer(_uint iSceneID, class CLevel* pNewLevel);
-   
+    HRESULT			Level_Changer(_uint iSceneID, class CLevel* pNewLevel,LEVELCHANGETYPE eChangeType);
+    void            Pop_Level();
 #pragma endregion
 
 #pragma region TimerManager

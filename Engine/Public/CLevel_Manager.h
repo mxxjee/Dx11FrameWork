@@ -17,23 +17,37 @@ private:
 
 public:
     /*씬을 바꾸기 전 이전 씬을 정리하고, 저장하던 씬 정보 갱신.*/
-    HRESULT         Level_Changer(_uint iSceneID, class CLevel* pNewLevel);
-    
-    
-    
+    HRESULT         Level_Changer(_uint iSceneID, class CLevel* pNewLevel,LEVELCHANGETYPE eChangeType);
     HRESULT         Update(const _float fTimeDelta);
     void            Render();
 
 
+public:
+    CLevel*         Get_PrevLevel();
+
+    void            ReplaceTop_Level(_uint iSceneID, CLevel* pNewLevel);
+    void            Push_Level(_uint iSceneID, CLevel* pNewLevel);
+    void            Overlay_Level(_uint iSceneID, CLevel* pNewLevel);
+    void            Pop_Level();
+      
+
+private:
+    void            ActiveTop(CLevel* pNewLevel,LEVELCHANGETYPE eChangeType);   //Top교체 및 활성화
+    void            PopIfLoading();     //로딩씬이 있을 경우 바로 삭제 하고 이후처리.
 
 public:
     static CLevel_Manager* Create();
 
 
 private:
-    class  CGameInstance* m_pGameInstance = { nullptr };
-    _uint           m_iCurrentLevelID = {};
-    class   CLevel* m_pCurrentLevel = { nullptr };
+    class  CGameInstance*   m_pGameInstance = { nullptr };
+    _uint                   m_iCurrentLevelID = {};
+
+    //씬 스택 (활성화된 씬만 모아둠)
+    vector<CLevel*>         m_Stack;
+
+    //지연삭제를 위한 STL
+    vector<CLevel*>         m_tDestroy;        
 
 private:
     virtual void Free();

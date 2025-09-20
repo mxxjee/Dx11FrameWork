@@ -20,9 +20,13 @@ HRESULT CLevel_Logo::Initialize()
 HRESULT CLevel_Logo::Update(const _float fTimeDelta)
 {
    
-    if (GetKeyState(VK_SPACE) & 0x8000)
+    if (GetKeyState(VK_UP) & 0x8000)
     {
-        if (FAILED(m_pGameInstance->Level_Changer(ENUM_TO_UINT(LEVEL_ID::LOADING), CLevel_Loading::Create(m_pDevice, m_pDeviceContext, LEVEL_ID::GAMEPLAY))))
+        if (FAILED(m_pGameInstance->Level_Changer(
+            ENUM_TO_UINT(LEVEL_ID::LOADING),
+            CLevel_Loading::Create(m_pDevice, m_pDeviceContext, LEVEL_ID::GAMEPLAY,LEVELCHANGETYPE::OVERLAY),
+            LEVELCHANGETYPE::LOADING)))
+
             return E_FAIL;
     }
     return S_OK;

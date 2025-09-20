@@ -74,10 +74,17 @@ void CGameInstance::Clear(_uint iLevelID)
 
 }
 
-HRESULT CGameInstance::Level_Changer(_uint iSceneID, CLevel* pNewLevel)
+HRESULT CGameInstance::Level_Changer(_uint iSceneID, CLevel* pNewLevel, LEVELCHANGETYPE eChangeType)
 {
 	CheckNullResult(m_pLevelManager,E_FAIL);
-	return m_pLevelManager->Level_Changer(iSceneID,pNewLevel);
+	return m_pLevelManager->Level_Changer(iSceneID,pNewLevel, eChangeType);
+}
+
+void CGameInstance::Pop_Level()
+{
+	CheckNull(m_pLevelManager);
+	return m_pLevelManager->Pop_Level();
+
 }
 
 _float CGameInstance::Get_TimeDelta(const _tchar* pTimerTag)
