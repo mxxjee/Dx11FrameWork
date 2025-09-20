@@ -57,7 +57,10 @@ HRESULT CMainApp::Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)
 
 	if(FAILED(pGameInstance->Level_Changer(
 		ENUM_TO_UINT(LEVEL_ID::LOADING),
+												//로딩이후 넘어갈씬 , 로딩이후 어떻게 쌓을지.
 		CLevel_Loading::Create(m_pDevice, m_pContext, iLevelID,eChangeType),
+		
+		//로딩신을 어떻게 쌓을건지에대함(항상 LOAINDG Type)
 		LEVELCHANGETYPE::LOADING)))
 		return E_FAIL;
 

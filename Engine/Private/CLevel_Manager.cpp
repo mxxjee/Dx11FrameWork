@@ -77,6 +77,16 @@ CLevel* CLevel_Manager::Get_PrevLevel()
 	return pPrev;
 }
 
+CLevel* CLevel_Manager::Get_CurrentLevel()
+{
+	CLevel* pCurrent = nullptr;
+
+	if(!m_Stack.empty())
+		pCurrent = m_Stack.back();
+
+	return pCurrent;
+}
+
 void CLevel_Manager::ReplaceTop_Level(_uint iSceneID, CLevel* pNewLevel)
 {
 	Pop_Level();

@@ -38,6 +38,7 @@ public:
 public:
     HRESULT			Level_Changer(_uint iSceneID, class CLevel* pNewLevel,LEVELCHANGETYPE eChangeType);
     void            Pop_Level();
+    class CLevel* Get_CurrentLevel();
 #pragma endregion
 
 #pragma region TimerManager

@@ -87,6 +87,12 @@ void CGameInstance::Pop_Level()
 
 }
 
+CLevel* CGameInstance::Get_CurrentLevel()
+{
+	CheckNullResult(m_pLevelManager,nullptr);
+	return m_pLevelManager->Get_CurrentLevel();
+}
+
 _float CGameInstance::Get_TimeDelta(const _tchar* pTimerTag)
 {
 	CheckNullResult(m_pTimerManager, 0.f);

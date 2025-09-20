@@ -24,16 +24,19 @@ public:
 
 public:
     CLevel*         Get_PrevLevel();
-
-    void            ReplaceTop_Level(_uint iSceneID, CLevel* pNewLevel);
-    void            Push_Level(_uint iSceneID, CLevel* pNewLevel);
-    void            Overlay_Level(_uint iSceneID, CLevel* pNewLevel);
+    CLevel*         Get_CurrentLevel();
     void            Pop_Level();
+
       
 
 private:
     void            ActiveTop(CLevel* pNewLevel,LEVELCHANGETYPE eChangeType);   //Top교체 및 활성화
-   
+    void            PopIfLoading();     //로딩씬이 있을 경우 바로 삭제 하고 이후처리.
+
+    void            ReplaceTop_Level(_uint iSceneID, CLevel* pNewLevel);
+    void            Push_Level(_uint iSceneID, CLevel* pNewLevel);
+    void            Overlay_Level(_uint iSceneID, CLevel* pNewLevel);
+
 
 public:
     static CLevel_Manager* Create();
