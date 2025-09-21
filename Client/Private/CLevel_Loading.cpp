@@ -24,6 +24,8 @@ HRESULT CLevel_Loading::Initialize(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeTyp
     m_eNextLevelID = iLevelID;
     m_eChangeType = eChangeType;
 
+    Set_Flag(LEVELFLAG::TRANSIENT);
+
     //로딩할동안 보여줄 UI생성
     if (FAILED(Ready_UI_Layer()))
         return E_FAIL;

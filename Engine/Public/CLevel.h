@@ -24,6 +24,10 @@ public:
 public:
     void                    Set_State(LEVELSTATE eState) { m_eLevelState = eState; }
     const LEVELSTATE&       Get_State() { return m_eLevelState; }
+
+    void                    Set_Flag(LEVELFLAG eFlag) { m_eLevelFlag = eFlag; }
+    const   LEVELFLAG&      Get_Flag() { return m_eLevelFlag; }
+
 protected:
     class CGameInstance*          m_pGameInstance = { nullptr };
     ComPtr<ID3D11Device>    m_pDevice = { nullptr };
@@ -33,7 +37,7 @@ protected:
 
 private:
     LEVELSTATE              m_eLevelState = { LEVELSTATE::ACTIVE };
-
+    LEVELFLAG               m_eLevelFlag = { LEVELFLAG::NORMAL };
 
 };
 NS_END

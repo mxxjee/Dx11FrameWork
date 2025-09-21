@@ -15,7 +15,7 @@ HRESULT CLevel_Manager::Level_Changer(_uint iSceneID, CLevel* pNewLevel, LEVELCH
 
 	if (!m_Stack.empty())
 	{
-		PopIfLoading();
+		PopIfTransient();
 
 		switch (eChangeType)
 		{
@@ -32,10 +32,6 @@ HRESULT CLevel_Manager::Level_Changer(_uint iSceneID, CLevel* pNewLevel, LEVELCH
 
 		case LEVELCHANGETYPE::PUSH:
 			Push_Level(iSceneID, pNewLevel);
-			break;
-
-		case LEVELCHANGETYPE::LOADING:
-			m_Stack.back()->Set_State(LEVELSTATE::HIDDEN);
 			break;
 		}
 
@@ -131,17 +127,15 @@ void CLevel_Manager::ActiveTop(CLevel* pNewLevel, LEVELCHANGETYPE eChangeType)
 
 	CLevel* top = m_Stack.back();
 
-	if (eChangeType == LEVELCHANGETYPE::LOADING)
-		top->Set_State(LEVELSTATE::LOADING);
-	else
-		top->Set_State(LEVELSTATE::ACTIVE);
+
+	top->Set_State(LEVELSTATE::ACTIVE);
 
 	
 }
 
-void CLevel_Manager::PopIfLoading()
+void CLevel_Manager::PopIfTransient()
 {
-	if (m_Stack.back()->Get_State() == LEVELSTATE::LOADING)
+	if (m_Stack.back()->Get_Flag() == LEVELFLAG::TRANSIENT)
 		Pop_Level();
 }
 

@@ -6,6 +6,10 @@
 2. 씬을 바꾸라는 명령을 내린다.
 3. 씬 체인지는 바꾸기 전 현재 씬을 정리한 뒤, 바꿀 씬을 현재씬 정보로 저장한다.
 
+4. 씬은 스택으로 관리한다.
+5. 씬은 changetype에 맞게 push/overlay/replacetop 을 판단
+6. 지우려는 씬은 바로삭제되지 않고 destory stack에 쌓이며, late update에서 비워진다.
+
 */
 NS_BEGIN(Engine)
 class CLevel_Manager :
@@ -31,7 +35,7 @@ public:
 
 private:
     void            ActiveTop(CLevel* pNewLevel,LEVELCHANGETYPE eChangeType);   //Top교체 및 활성화
-    void            PopIfLoading();     //로딩씬이 있을 경우 바로 삭제 하고 이후처리.
+    void            PopIfTransient();     //임시씬이 있을 경우 바로 삭제 하고 이후처리.
 
     void            ReplaceTop_Level(_uint iSceneID, CLevel* pNewLevel);
     void            Push_Level(_uint iSceneID, CLevel* pNewLevel);

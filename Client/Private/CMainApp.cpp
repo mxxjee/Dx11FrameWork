@@ -60,8 +60,8 @@ HRESULT CMainApp::Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)
 												//로딩이후 넘어갈씬 , 로딩이후 어떻게 쌓을지.
 		CLevel_Loading::Create(m_pDevice, m_pContext, iLevelID,eChangeType),
 		
-		//로딩신을 어떻게 쌓을건지에대함(항상 LOAINDG Type)
-		LEVELCHANGETYPE::LOADING)))
+		//로딩신을 어떻게 쌓을건지에대함(항상 PUSH)
+		LEVELCHANGETYPE::PUSH)))
 		return E_FAIL;
 
 

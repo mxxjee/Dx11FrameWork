@@ -25,7 +25,7 @@ HRESULT CLevel_Logo::Update(const _float fTimeDelta)
         if (FAILED(m_pGameInstance->Level_Changer(
             ENUM_TO_UINT(LEVEL_ID::LOADING),
             CLevel_Loading::Create(m_pDevice, m_pDeviceContext, LEVEL_ID::GAMEPLAY,LEVELCHANGETYPE::OVERLAY),
-            LEVELCHANGETYPE::LOADING)))
+            LEVELCHANGETYPE::PUSH)))
 
             return E_FAIL;
     }
