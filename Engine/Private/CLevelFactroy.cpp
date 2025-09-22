@@ -7,32 +7,33 @@ CLevelFactroy::CLevelFactroy()
 {
 }
 
-void CLevelFactroy::Register(const _wstring& tag, LevelCreator Creator)
+void CLevelFactroy::Register(_uint iSceneID, LevelCreator Creator)
 {
 	CheckNull(Creator);
-	CheckTrue(tag.empty());
 
-	auto iter = m_creators.find(tag);
+	auto iter = m_creators.find(iSceneID);
 
 	/*중복 key값 허용X*/
 	if (iter != m_creators.end())
 		return;
 
-	m_creators.emplace(tag,Creator);
+	m_creators.emplace(iSceneID,Creator);
 
 }
 
-CLevel* CLevelFactroy::Create(const _wstring& tag, ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext, LevelArgs& _Arg)
+CLevel* CLevelFactroy::Create(_uint iSceneID, LevelArgs& _Arg)
 {
-	auto it = m_creators.find(tag);
+	auto it = m_creators.find(iSceneID);
 	if (it == m_creators.end())
 		return nullptr; 
 
 	else
 	{
-		return it->second(_pDevice, _pContext, _Arg);
+		return it->second(_Arg);
 	}
 }
+
+
 
 
 CLevelFactroy* CLevelFactroy::Create()

@@ -42,23 +42,12 @@ HRESULT CLevel_Loading::Update(const _float fTimeDelta)
         GetKeyState(VK_RETURN) & 0x8000)
     {
         CLevel* pNewLevel = nullptr;
-        switch (m_eNextLevelID)
-        {
-        case LEVEL_ID::LOGO:
-            pNewLevel = CLevel_Logo::Create(m_pDevice, m_pDeviceContext);
+        LevelArgs args;
+        args.changeType = m_eChangeType;
 
-            break;
-
-        case LEVEL_ID::GAMEPLAY:
-            pNewLevel = CLevel_GamePlay::Create(m_pDevice, m_pDeviceContext);
-
-            //pNewLevel=
-            break;
-        }
-
-
+ 
         CheckNullResult(pNewLevel,E_FAIL);
-        if (SUCCEEDED(m_pGameInstance->Level_Changer(ENUM_TO_UINT(m_eNextLevelID), pNewLevel, m_eChangeType)))
+        if (SUCCEEDED(m_pGameInstance->Level_Changer(ENUM_TO_UINT(m_eNextLevelID), args)))
             return E_FAIL;
 
         MSG_BOX("다음 씬 불러오기 실패");

@@ -36,7 +36,7 @@ public:
 
 #pragma region LevelManager
 public:
-    HRESULT			Level_Changer(_uint iSceneID, class CLevel* pNewLevel,LEVELCHANGETYPE eChangeType);
+    HRESULT			Level_Changer(_uint iSceneID, LevelArgs & args);
     void            Pop_Level();
     class CLevel*   Get_CurrentLevel();
 #pragma endregion
@@ -44,8 +44,8 @@ public:
 
 
 #pragma region LevelFactory
-    void            Register_Level(const _wstring& tag, LevelCreator Creator);
-    CLevel* Create_Level(const _wstring& tag, ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext, LevelArgs _Arg);
+    void            Register_Level(_uint iSceneID, LevelCreator Creator);
+    CLevel* Create_Level(_uint iSceneID, LevelArgs _Arg);
 #pragma endregion
 
 

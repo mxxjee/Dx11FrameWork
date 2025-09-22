@@ -58,14 +58,22 @@ void CMainApp::Render()
 void CMainApp::Reigster_Levels()
 {
 	CheckNull(pGameInstance);
-	pGameInstance->Register_Level(L"Logo", [this](
-		ComPtr<ID3D11Device>,
-		ComPtr<ID3D11DeviceContext>, 
-		LevelArgs& args)->CLevel*
+	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOGO), [this](LevelArgs& args)->CLevel*
 		{
-			args.m_eFlag = LEVELFLAG::NORMAL;
-			return CLevel_Logo::Create(m_pDevice, m_pContext);
+			return CLevel_Logo::Create(m_pDevice, m_pContext,args);
 		});
+
+	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::GAMEPLAY), [this](LevelArgs& args)->CLevel*
+		{
+			return CLevel_GamePlay::Create(m_pDevice, m_pContext, args);
+		});
+
+
+	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOADING), [this](LevelArgs& args)->CLevel*
+		{
+			return CLevel_Loading::Create(m_pDevice, m_pContext, args);
+		});
+
 
 
 }
@@ -75,13 +83,19 @@ HRESULT CMainApp::Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)
 	/*일단 로딩씬으로 이동하고, 로딩씬에게 아이디를 넘겨줘서 어떤걸 로딩할지 로더에게 요청.
 	그리고 로딩씬이 다음씬으로 이동하도록 한다.*/
 
+	LevelArgs args;
+	args.iNextLevelID = ENUM_TO_UINT(iLevelID);
+	args.changeType = LEVELCHANGETYPE::PUSH;
+	args.m_eFlag = LEVELFLAG::TRANSIENT;
+
 	if(FAILED(pGameInstance->Level_Changer(
 		ENUM_TO_UINT(LEVEL_ID::LOADING),
-												//로딩이후 넘어갈씬 , 로딩이후 어떻게 쌓을지.
-		CLevel_Loading::Create(m_pDevice, m_pContext, iLevelID,eChangeType),
-		
+		args)))
+		//										//로딩이후 넘어갈씬 , 로딩이후 어떻게 쌓을지.
+		//CLevel_Loading::Create(m_pDevice, m_pContext, iLevelID,eChangeType),
+		//
 		//로딩신을 어떻게 쌓을건지에대함(항상 PUSH)
-		LEVELCHANGETYPE::PUSH)))
+	//	LEVELCHANGETYPE::PUSH)))
 		return E_FAIL;
 
 

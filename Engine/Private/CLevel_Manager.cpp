@@ -8,16 +8,19 @@ CLevel_Manager::CLevel_Manager()
 	Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CLevel_Manager::Level_Changer(_uint iSceneID, CLevel* pNewLevel, LEVELCHANGETYPE eChangeType)
+HRESULT CLevel_Manager::Level_Changer(_uint iSceneID, LevelArgs& args)
 {
 	
 	CLevel* top = nullptr;
+
+	CLevel* pNewLevel = m_pGameInstance->Create_Level(iSceneID, args);
+	CheckNullResult(pNewLevel, E_FAIL);
 
 	if (!m_Stack.empty())
 	{
 		PopIfTransient();
 
-		switch (eChangeType)
+		switch (args.changeType)
 		{
 
 			//이전씬 삭제.
@@ -37,7 +40,7 @@ HRESULT CLevel_Manager::Level_Changer(_uint iSceneID, CLevel* pNewLevel, LEVELCH
 
 	}
 	
-	ActiveTop(pNewLevel,eChangeType);
+	ActiveTop(pNewLevel, args.changeType);
 	m_iCurrentLevelID = iSceneID;
 
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "CBase.h"
+#include "Engine_LevelTypes.h"
 
 /*
 1. 현재 활동중인 씬을 저장한다.
@@ -22,7 +23,7 @@ private:
 
 public:
     /*씬을 바꾸기 전 이전 씬을 정리하고, 저장하던 씬 정보 갱신.*/
-    HRESULT         Level_Changer(_uint iSceneID, class CLevel* pNewLevel,LEVELCHANGETYPE eChangeType);
+    HRESULT         Level_Changer(_uint iSceneID, LevelArgs& args);
     HRESULT         Update(const _float fTimeDelta);
     void            Render();
 

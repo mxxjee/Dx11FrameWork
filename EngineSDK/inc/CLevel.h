@@ -15,7 +15,7 @@ protected:
 
 
 public:
-    virtual HRESULT     Initialize();                       //æ¿ ºº∆√.
+    virtual HRESULT     Initialize(LevelArgs& args);                       //æ¿ ºº∆√.
     virtual HRESULT     Update(const _float fTimeDelta);        //æ¿¿« æ˜µ•¿Ã∆Æ
     virtual void        Render();         //æ¿¿« ∑ª¥ı.
    

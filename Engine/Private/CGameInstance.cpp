@@ -79,10 +79,10 @@ void CGameInstance::Clear(_uint iLevelID)
 
 }
 
-HRESULT CGameInstance::Level_Changer(_uint iSceneID, CLevel* pNewLevel, LEVELCHANGETYPE eChangeType)
+HRESULT CGameInstance::Level_Changer(_uint iSceneID, LevelArgs& args)
 {
 	CheckNullResult(m_pLevelManager,E_FAIL);
-	return m_pLevelManager->Level_Changer(iSceneID,pNewLevel, eChangeType);
+	return m_pLevelManager->Level_Changer(iSceneID, args);
 }
 
 void CGameInstance::Pop_Level()
@@ -98,16 +98,16 @@ CLevel* CGameInstance::Get_CurrentLevel()
 	return m_pLevelManager->Get_CurrentLevel();
 }
 
-void CGameInstance::Register_Level(const _wstring& tag, LevelCreator Creator)
+void CGameInstance::Register_Level(_uint iSceneID, LevelCreator Creator)
 {
 	CheckNull(m_pLevelFactory);
-	m_pLevelFactory->Register(tag, Creator);
+	m_pLevelFactory->Register(iSceneID, Creator);
 }
 
-CLevel* CGameInstance::Create_Level(const _wstring& tag, ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext, LevelArgs _Arg)
+CLevel* CGameInstance::Create_Level(_uint iSceneID, LevelArgs _Arg)
 {
 	CheckNullResult(m_pLevelFactory,nullptr);
-	return m_pLevelFactory->Create(tag, _pDevice,_pContext, _Arg);
+	return m_pLevelFactory->Create(iSceneID, _Arg);
 }
 
 _float CGameInstance::Get_TimeDelta(const _tchar* pTimerTag)

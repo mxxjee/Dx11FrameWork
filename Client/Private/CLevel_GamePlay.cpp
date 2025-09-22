@@ -10,8 +10,9 @@ CLevel_GamePlay::CLevel_GamePlay(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11Dev
 {
 }
 
-HRESULT CLevel_GamePlay::Initialize()
+HRESULT CLevel_GamePlay::Initialize(LevelArgs& args)
 {
+    __super::Initialize(args);
     return S_OK;
 }
 
@@ -32,10 +33,10 @@ void CLevel_GamePlay::Render()
 
 
 
-CLevel_GamePlay* CLevel_GamePlay::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
+CLevel_GamePlay* CLevel_GamePlay::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)
 {
     CLevel_GamePlay* pInstance = new CLevel_GamePlay(_pDevice, _pDeviceContext);
-    if (FAILED(pInstance->Initialize()))
+    if (FAILED(pInstance->Initialize(args)))
     {
         MSG_BOX("Failed to Create : Level_Logo");
         Safe_Release(pInstance);

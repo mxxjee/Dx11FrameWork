@@ -16,7 +16,7 @@ namespace Engine
 	};
 
 	class CLevel;
-	using LevelCreator = std::function<CLevel* (ComPtr<ID3D11Device>, ComPtr<ID3D11DeviceContext>, LevelArgs&)>;
+	using LevelCreator = std::function<CLevel* (LevelArgs&)>;
 
 
 }

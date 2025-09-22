@@ -18,8 +18,8 @@ private:
     ~CLevelFactroy() = default;
 
 public:
-    void        Register(const _wstring& tag, LevelCreator Creator);
-    CLevel* Create(const _wstring& tag, ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext, LevelArgs& _Arg);
+    void        Register(_uint iSceneID, LevelCreator Creator);
+    CLevel* Create(_uint iSceneID,LevelArgs& _Arg);
 
 public:
     static      CLevelFactroy* Create();
@@ -27,7 +27,7 @@ public:
 
 
 private:
-    unordered_map<_wstring, LevelCreator> m_creators;
+    unordered_map<_uint, LevelCreator> m_creators;
 
 };
 NS_END
