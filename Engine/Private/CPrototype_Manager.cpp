@@ -1,5 +1,7 @@
 #include "CPrototype_Manager.h"
 #include "CGameObject.h"
+#include "CLayer.h"
+
 
 CPrototype_Manager::CPrototype_Manager()
 {
@@ -9,7 +11,7 @@ CPrototype_Manager::CPrototype_Manager()
 HRESULT CPrototype_Manager::Initialize(_uint iNumLevels)
 {
     m_iNumLevels = iNumLevels;
-    m_Prototypes.resize(iNumLevels);
+    m_Prototypes.reserve(iNumLevels);
 
     return S_OK;
 }

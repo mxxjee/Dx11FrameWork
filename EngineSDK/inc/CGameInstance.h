@@ -47,11 +47,17 @@ public:
     void			Compute_TimeDelta(const _tchar * pTimerTag);
 #pragma endregion
 
+#pragma region PrototypeManager
+public:
+    HRESULT         Add_Prototype(_uint m_iNumLevel, const _wstring & strPrototypeTag, CBase * _base);
+    CBase* Clone_Prototype(PROTOTYPE eType, _uint iNumLevel, const _wstring & strPrototypeTag, void* pArg = nullptr);
 
+#pragma endregion
 private:
     class CLevel_Manager* m_pLevelManager = { nullptr };
     class CTimer_Manager* m_pTimerManager = { nullptr };
     class CGraphic_Device* m_pGraphicDev = { nullptr };
+    class CPrototype_Manager* m_pProtoManager = { nullptr };
 
 public:
     virtual void        Free() override;

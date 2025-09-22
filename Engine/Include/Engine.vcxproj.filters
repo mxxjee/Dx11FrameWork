@@ -40,6 +40,24 @@
     <Filter Include="01.Utility\01.Level\Manager">
       <UniqueIdentifier>{d425f67c-b040-4063-8aaf-a61142ca5581}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\02.Prototypes">
+      <UniqueIdentifier>{d8fe51dd-4c81-44bb-9c5b-c0d99fe1bbe9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject">
+      <UniqueIdentifier>{c11a2e5f-ba0a-4116-92db-528c7a4890f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\02.Prototypes\Manager">
+      <UniqueIdentifier>{bbadc084-7d2d-45b1-831e-c7635fb4bfa1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\02.Prototypes\Manager\Manager">
+      <UniqueIdentifier>{fde24385-46ba-4749-a21a-3e0b05f8d85a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject\Manager">
+      <UniqueIdentifier>{8824fed1-66a8-4747-a6ab-45a2f64e52b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\03.GameObject\Manager\Layer">
+      <UniqueIdentifier>{2e6a8289-ba9d-4e7e-8194-f9dd73df8470}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -106,6 +124,16 @@
       <Filter>01.Utility\01.Level\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLevel.h" />
+    <ClInclude Include="..\Public\CPrototype_Manager.h">
+      <Filter>01.Utility\02.Prototypes\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGameObject.h">
+      <Filter>01.Utility\03.GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CObject_Manager.h">
+      <Filter>01.Utility\03.GameObject\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -151,5 +179,15 @@
       <Filter>01.Utility\01.Level\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevel.cpp" />
+    <ClCompile Include="..\Private\CPrototype_Manager.cpp">
+      <Filter>01.Utility\02.Prototypes\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGameObject.cpp">
+      <Filter>01.Utility\03.GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CObject_Manager.cpp">
+      <Filter>01.Utility\03.GameObject\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLayer.cpp" />
   </ItemGroup>
 </Project>

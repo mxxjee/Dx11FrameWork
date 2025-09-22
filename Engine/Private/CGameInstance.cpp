@@ -3,6 +3,8 @@
 #include "CTimer_Manager.h"
 #include "CGraphic_Device.h"
 #include "CLevel_Manager.h"
+#include "CObject_Manager.h"
+#include "CPrototype_Manager.h"
 
 
 IMPLEMENT_SINGLETON(CGameInstance)
@@ -27,6 +29,11 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Inout_ 
 	/* 타이머 매니져 초기화 */
 	m_pTimerManager = CTimer_Manager::Create();
 	CheckNullResult(m_pTimerManager, E_FAIL);
+
+	/*프로토타입 매니져 초기화*/
+	m_pProtoManager = CPrototype_Manager::Create(EngineDesc.iLevels);
+	CheckNullResult(m_pProtoManager,E_FAIL);
+
 
 
 
@@ -91,6 +98,18 @@ void CGameInstance::Compute_TimeDelta(const _tchar* pTimerTag)
 	CheckNull(m_pTimerManager);
 	return m_pTimerManager->Compute_TimeDelta(pTimerTag);
 
+}
+
+HRESULT CGameInstance::Add_Prototype(_uint m_iNumLevel, const _wstring& strPrototypeTag, CBase* _base)
+{
+	CheckNullResult(m_pProtoManager,E_FAIL);
+	return m_pProtoManager->Add_Prototype(m_iNumLevel,strPrototypeTag,_base);
+}
+
+CBase* CGameInstance::Clone_Prototype(PROTOTYPE eType, _uint iNumLevel, const _wstring& strPrototypeTag, void* pArg)
+{
+	CheckNullResult(m_pProtoManager, nullptr);
+	return m_pProtoManager->Clone_Prototype(eType, iNumLevel, strPrototypeTag);
 }
 
 

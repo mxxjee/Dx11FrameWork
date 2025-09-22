@@ -151,10 +151,14 @@
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h" />
     <ClInclude Include="..\Public\CGameInstance.h" />
+    <ClInclude Include="..\Public\CGameObject.h" />
     <ClInclude Include="..\Public\CGraphic_Device.h" />
+    <ClInclude Include="..\Public\CLayer.h" />
     <ClInclude Include="..\Public\CLevel.h" />
     <ClInclude Include="..\Public\CLevel_Manager.h" />
     <ClInclude Include="..\Public\CImGui_Manager.h" />
+    <ClInclude Include="..\Public\CObject_Manager.h" />
+    <ClInclude Include="..\Public\CPrototype_Manager.h" />
     <ClInclude Include="..\Public\CTimer.h" />
     <ClInclude Include="..\Public\CTimer_Manager.h" />
     <ClInclude Include="..\Public\Engine_Define.h" />
@@ -175,10 +179,14 @@
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp" />
     <ClCompile Include="..\Private\CGameInstance.cpp" />
+    <ClCompile Include="..\Private\CGameObject.cpp" />
     <ClCompile Include="..\Private\CGraphic_Device.cpp" />
+    <ClCompile Include="..\Private\CLayer.cpp" />
     <ClCompile Include="..\Private\CLevel.cpp" />
     <ClCompile Include="..\Private\CLevel_Manager.cpp" />
     <ClCompile Include="..\Private\CImGui_Manager.cpp" />
+    <ClCompile Include="..\Private\CObject_Manager.cpp" />
+    <ClCompile Include="..\Private\CPrototype_Manager.cpp" />
     <ClCompile Include="..\Private\CTimer.cpp" />
     <ClCompile Include="..\Private\CTimer_Manager.cpp" />
     <ClCompile Include="..\Private\imgui.cpp" />
