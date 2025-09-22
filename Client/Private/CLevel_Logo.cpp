@@ -39,12 +39,6 @@ void CLevel_Logo::Render()
 
 }
 
-void CLevel_Logo::Clear()
-{
-    /*뭔가 클리어할게있남*/
-}
-
-
 
 CLevel_Logo* CLevel_Logo::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {

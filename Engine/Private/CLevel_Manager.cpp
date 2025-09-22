@@ -114,7 +114,7 @@ void CLevel_Manager::Pop_Level()
 {
 	CheckTrue(m_Stack.empty());
 
-	m_Stack.back()->Clear();
+	m_Stack.back()->OnExit();
 	m_pGameInstance->Clear(m_iCurrentLevelID);
 
 	m_tDestroy.push_back(m_Stack.back());

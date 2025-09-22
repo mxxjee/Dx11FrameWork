@@ -16,7 +16,6 @@ public:
     virtual HRESULT     Initialize() override;                       //씬 세팅.
     virtual HRESULT     Update(const _float fTimeDelta) override;        //씬의 업데이트
     virtual void        Render() override;         //씬의 렌더.
-    virtual void        Clear() override;        //자원 정리 함수
 
 
 public:

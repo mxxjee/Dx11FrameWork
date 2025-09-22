@@ -1,5 +1,8 @@
 #include "CMainApp.h"
 #include "CGameInstance.h"
+
+#include "CLevel_Logo.h"
+#include "CLevel_GamePlay.h"
 #include "CLevel_Loading.h"
 
 
@@ -27,6 +30,8 @@ HRESULT CMainApp::Initialize()
 	if(FAILED(pGameInstance->Initialize_Engine(desc,&m_pDevice,&m_pContext)))
 		return E_FAIL;
 
+	Reigster_Levels();
+
 
 	if (FAILED(Start_Level(LEVEL_ID::LOGO,LEVELCHANGETYPE::REPLACETOP)))
 		return E_FAIL;
@@ -47,6 +52,21 @@ void CMainApp::Render()
 	pGameInstance->Draw_Begin(&ClearColor);
 	pGameInstance->Draw();
 	pGameInstance->Draw_End();
+
+}
+
+void CMainApp::Reigster_Levels()
+{
+	CheckNull(pGameInstance);
+	pGameInstance->Register_Level(L"Logo", [this](
+		ComPtr<ID3D11Device>,
+		ComPtr<ID3D11DeviceContext>, 
+		LevelArgs& args)->CLevel*
+		{
+			args.m_eFlag = LEVELFLAG::NORMAL;
+			return CLevel_Logo::Create(m_pDevice, m_pContext);
+		});
+
 
 }
 

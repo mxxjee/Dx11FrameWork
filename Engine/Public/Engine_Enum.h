@@ -21,5 +21,7 @@ namespace Engine
 	enum class LEVELFLAG {NORMAL, TRANSIENT};
 	/*Nomral : 그냥 일반씬
 	TRANSIENT : 1회 후 바로 삭제되는 씬 (일회용 씬)*/
+
+
 }
 #endif // Engine_Enum_h__

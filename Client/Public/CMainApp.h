@@ -23,6 +23,7 @@ public:
 	void	Render();
 
 private:
+	void			Reigster_Levels();
 	HRESULT			Start_Level(LEVEL_ID iLevelID,LEVELCHANGETYPE eChangeType);
 
 private:

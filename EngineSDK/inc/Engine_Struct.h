@@ -12,7 +12,9 @@ namespace Engine
 		WINMODE		winMode;
 
 	}ENGINE_DESC;
+
+
+	
+
 }
-
-
 #endif // Engine_Struct_h__

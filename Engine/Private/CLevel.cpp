@@ -26,9 +26,6 @@ void CLevel::Render()
 {
 }
 
-void CLevel::Clear()
-{
-}
 
 void CLevel::Free()
 {

@@ -30,10 +30,6 @@ void CLevel_GamePlay::Render()
 
 }
 
-void CLevel_GamePlay::Clear()
-{
-    /*뭔가 클리어할게있남*/
-}
 
 
 CLevel_GamePlay* CLevel_GamePlay::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)

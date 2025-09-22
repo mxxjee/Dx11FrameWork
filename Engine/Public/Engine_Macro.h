@@ -20,6 +20,17 @@
 #define CheckFalseResult(x, y) { if(x == false) return y;}
 #define CheckNullResult(x, y) { if(x == nullptr) return y;}
 
+#define ENABLE_BITMASK_OPERATORS(x)                     \
+inline x operator|(x a, x b) {                          \
+    return static_cast<x>(static_cast<int>(a) | static_cast<int>(b)); } \
+inline x& operator|=(x& a, x b) {                       \
+    a = a | b; return a; }                              \
+inline x operator&(x a, x b) {                          \
+    return static_cast<x>(static_cast<int>(a) & static_cast<int>(b)); } \
+inline x& operator&=(x& a, x b) {                       \
+    a = a & b; return a; }                              \
+inline x operator~(x a) {                               \
+    return static_cast<x>(~static_cast<int>(a)); }
 
 
 #ifdef	ENGINE_EXPORTS

@@ -1,7 +1,9 @@
 #pragma once
 #include "CBase.h"
+#include "Engine_LevelTypes.h"
 
 NS_BEGIN(Engine)
+
 
 class ENGINE_DLL CLevel :
     public CBase
@@ -16,17 +18,22 @@ public:
     virtual HRESULT     Initialize();                       //씬 세팅.
     virtual HRESULT     Update(const _float fTimeDelta);        //씬의 업데이트
     virtual void        Render();         //씬의 렌더.
-    virtual void        Clear();        //자원 정리 함수
+   
+public:
+    virtual void        OnEnter() {};
+    virtual void        OnResume() {};
+    virtual void        OnPause() {};
+    virtual void        OnExit() {};        //자원 정리 함수
 
 public:
     virtual     void        Free();
     
 public:
-    void                    Set_State(LEVELSTATE eState) { m_eLevelState = eState; }
-    const LEVELSTATE&       Get_State() { return m_eLevelState; }
+    void                    Set_State(LEVELSTATE eState) { m_eLevelArgs.m_eState = eState; }
+    const LEVELSTATE& Get_State()   const {return m_eLevelArgs.m_eState;}
 
-    void                    Set_Flag(LEVELFLAG eFlag) { m_eLevelFlag = eFlag; }
-    const   LEVELFLAG&      Get_Flag() { return m_eLevelFlag; }
+    void                    Set_Flag(LEVELFLAG eFlag) { m_eLevelArgs.m_eFlag = eFlag; }
+    const   LEVELFLAG&      Get_Flag() const { return m_eLevelArgs.m_eFlag; }
 
 protected:
     class CGameInstance*          m_pGameInstance = { nullptr };
@@ -36,8 +43,7 @@ protected:
 
 
 private:
-    LEVELSTATE              m_eLevelState = { LEVELSTATE::ACTIVE };
-    LEVELFLAG               m_eLevelFlag = { LEVELFLAG::NORMAL };
+    LevelArgs           m_eLevelArgs;
 
 };
 NS_END

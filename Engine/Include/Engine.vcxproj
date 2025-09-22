@@ -153,6 +153,7 @@
     <ClInclude Include="..\Public\CGameInstance.h" />
     <ClInclude Include="..\Public\CGraphic_Device.h" />
     <ClInclude Include="..\Public\CLevel.h" />
+    <ClInclude Include="..\Public\CLevelFactroy.h" />
     <ClInclude Include="..\Public\CLevel_Manager.h" />
     <ClInclude Include="..\Public\CImGui_Manager.h" />
     <ClInclude Include="..\Public\CTimer.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="..\Public\Engine_Define.h" />
     <ClInclude Include="..\Public\Engine_Enum.h" />
     <ClInclude Include="..\Public\Engine_Function.h" />
+    <ClInclude Include="..\Public\Engine_LevelTypes.h" />
     <ClInclude Include="..\Public\Engine_Macro.h" />
     <ClInclude Include="..\Public\Engine_Struct.h" />
     <ClInclude Include="..\Public\Engine_Typedef.h" />
@@ -177,6 +179,7 @@
     <ClCompile Include="..\Private\CGameInstance.cpp" />
     <ClCompile Include="..\Private\CGraphic_Device.cpp" />
     <ClCompile Include="..\Private\CLevel.cpp" />
+    <ClCompile Include="..\Private\CLevelFactroy.cpp" />
     <ClCompile Include="..\Private\CLevel_Manager.cpp" />
     <ClCompile Include="..\Private\CImGui_Manager.cpp" />
     <ClCompile Include="..\Private\CTimer.cpp" />

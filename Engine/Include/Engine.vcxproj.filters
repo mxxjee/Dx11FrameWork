@@ -40,6 +40,12 @@
     <Filter Include="01.Utility\01.Level\Manager">
       <UniqueIdentifier>{d425f67c-b040-4063-8aaf-a61142ca5581}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\98.Factory">
+      <UniqueIdentifier>{aeb56964-473b-45c2-a870-49694d8f4e58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\98.Factory\LevelFactory">
+      <UniqueIdentifier>{e1ae56d7-5fa5-4943-a2fb-5974c5cffcf3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -106,6 +112,12 @@
       <Filter>01.Utility\01.Level\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLevel.h" />
+    <ClInclude Include="..\Public\CLevelFactroy.h">
+      <Filter>01.Utility\98.Factory\LevelFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Engine_LevelTypes.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -151,5 +163,8 @@
       <Filter>01.Utility\01.Level\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevel.cpp" />
+    <ClCompile Include="..\Private\CLevelFactroy.cpp">
+      <Filter>01.Utility\98.Factory\LevelFactory</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

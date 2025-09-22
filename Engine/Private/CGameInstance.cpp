@@ -3,6 +3,7 @@
 #include "CTimer_Manager.h"
 #include "CGraphic_Device.h"
 #include "CLevel_Manager.h"
+#include "CLevelFactroy.h"
 
 
 IMPLEMENT_SINGLETON(CGameInstance)
@@ -20,6 +21,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Inout_ 
 	/*레벨 매니저 초기화*/
 	m_pLevelManager = CLevel_Manager::Create();
 	CheckNullResult(m_pLevelManager, E_FAIL);
+
+	/*레벨 팩토리 초기화*/
+	m_pLevelFactory = CLevelFactroy::Create();
+	CheckNullResult(m_pLevelFactory, E_FAIL);
 
 
 	/* 인풋 디바이스 초기화 */
@@ -91,6 +96,18 @@ CLevel* CGameInstance::Get_CurrentLevel()
 {
 	CheckNullResult(m_pLevelManager,nullptr);
 	return m_pLevelManager->Get_CurrentLevel();
+}
+
+void CGameInstance::Register_Level(const _wstring& tag, LevelCreator Creator)
+{
+	CheckNull(m_pLevelFactory);
+	m_pLevelFactory->Register(tag, Creator);
+}
+
+CLevel* CGameInstance::Create_Level(const _wstring& tag, ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext, LevelArgs _Arg)
+{
+	CheckNullResult(m_pLevelFactory,nullptr);
+	return m_pLevelFactory->Create(tag, _pDevice,_pContext, _Arg);
 }
 
 _float CGameInstance::Get_TimeDelta(const _tchar* pTimerTag)

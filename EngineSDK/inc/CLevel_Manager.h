@@ -11,6 +11,7 @@
 6. 지우려는 씬은 바로삭제되지 않고 destory stack에 쌓이며, late update에서 비워진다.
 
 */
+
 NS_BEGIN(Engine)
 class CLevel_Manager :
     public CBase

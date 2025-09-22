@@ -1,6 +1,6 @@
 #pragma once
 #include "CBase.h"
-
+#include "Engine_LevelTypes.h"
 
 
 /*엔진의 모든 매니저들을 관리한다.
@@ -40,6 +40,14 @@ public:
     void            Pop_Level();
     class CLevel*   Get_CurrentLevel();
 #pragma endregion
+  
+
+
+#pragma region LevelFactory
+    void            Register_Level(const _wstring& tag, LevelCreator Creator);
+    CLevel* Create_Level(const _wstring& tag, ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext, LevelArgs _Arg);
+#pragma endregion
+
 
 #pragma region TimerManager
 public:
@@ -49,10 +57,13 @@ public:
 #pragma endregion
 
 
+
 private:
     class CLevel_Manager* m_pLevelManager = { nullptr };
     class CTimer_Manager* m_pTimerManager = { nullptr };
     class CGraphic_Device* m_pGraphicDev = { nullptr };
+    class CLevelFactroy* m_pLevelFactory = { nullptr };
+
 
 public:
     virtual void        Free() override;

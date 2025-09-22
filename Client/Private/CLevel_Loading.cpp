@@ -75,10 +75,7 @@ void CLevel_Loading::Render()
 
 }
 
-void CLevel_Loading::Clear()
-{
-    /*뭔가 클리어할게있남*/
-}
+
 
 HRESULT CLevel_Loading::Ready_UI_Layer()
 {
