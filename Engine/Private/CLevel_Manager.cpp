@@ -12,15 +12,21 @@ HRESULT CLevel_Manager::Level_Changer(_uint iSceneID, LevelArgs& args)
 {
 	
 	CLevel* top = nullptr;
+	
 
 	CLevel* pNewLevel = m_pGameInstance->Create_Level(iSceneID, args);
 	CheckNullResult(pNewLevel, E_FAIL);
 
+	
+	LEVELCHANGETYPE eTargetType;
+	eTargetType = (args.loadingChangeType == LEVELCHANGETYPE::NONE) ? args.changeType : args.loadingChangeType;
+
 	if (!m_Stack.empty())
 	{
+		
 		PopIfTransient();
 
-		switch (args.changeType)
+		switch (eTargetType)
 		{
 
 			//이전씬 삭제.
@@ -40,7 +46,7 @@ HRESULT CLevel_Manager::Level_Changer(_uint iSceneID, LevelArgs& args)
 
 	}
 	
-	ActiveTop(pNewLevel, args.changeType);
+	ActiveTop(pNewLevel, eTargetType);
 	m_iCurrentLevelID = iSceneID;
 
 
@@ -95,7 +101,9 @@ void CLevel_Manager::ReplaceTop_Level(_uint iSceneID, CLevel* pNewLevel)
 void CLevel_Manager::Push_Level(_uint iSceneID, CLevel* pNewLevel)
 {
 	/*가장 위에거만 update돌아감,render도 X,지우기 X*/
-	m_Stack.back()->Set_State(LEVELSTATE::HIDDEN);
+	if(!m_Stack.empty())
+		m_Stack.back()->Set_State(LEVELSTATE::HIDDEN);
+
 	m_pGameInstance->Clear(iSceneID);
 
 
@@ -106,40 +114,51 @@ void CLevel_Manager::Overlay_Level(_uint iSceneID, CLevel* pNewLevel)
 
 
 	/*가장 위에거만 update돌아감,render는 수행m,지우기 X*/
-
-	m_Stack.back()->Set_State(LEVELSTATE::PAUSE);
+	if (!m_Stack.empty())
+		m_Stack.back()->Set_State(LEVELSTATE::PAUSE);
 	//m_pCurrentLevel->Clear();  //ADD : Level->Clear()
+
 	m_pGameInstance->Clear(iSceneID);
 
 }
 
 void CLevel_Manager::Pop_Level()
 {
-	CheckTrue(m_Stack.empty());
+	CheckTrue(m_Stack.empty()||m_Stack.size()==1);
 
 	m_Stack.back()->OnExit();
 	m_pGameInstance->Clear(m_iCurrentLevelID);
 
 	m_tDestroy.push_back(m_Stack.back());
 	m_Stack.pop_back();
+
+
+	m_Stack.back()->Set_State(LEVELSTATE::ACTIVE);
+
 }
 
 void CLevel_Manager::ActiveTop(CLevel* pNewLevel, LEVELCHANGETYPE eChangeType)
 {
 	m_Stack.push_back(pNewLevel);
 
-	CLevel* top = m_Stack.back();
+	if (!m_Stack.empty())
+	{
+		CLevel* top = m_Stack.back();
+		top->Set_State(LEVELSTATE::ACTIVE);
 
-
-	top->Set_State(LEVELSTATE::ACTIVE);
-
+	}
+	
 	
 }
 
 void CLevel_Manager::PopIfTransient()
 {
 	if (m_Stack.back()->Get_Flag() == LEVELFLAG::TRANSIENT)
-		Pop_Level();
+	{
+		m_pGameInstance->Clear(m_iCurrentLevelID);
+		m_tDestroy.push_back(m_Stack.back());
+		m_Stack.pop_back();
+	}
 }
 
 

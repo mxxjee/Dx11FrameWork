@@ -13,7 +13,8 @@ private:
 
 
 public:
-    HRESULT     Initialize(LEVEL_ID iLevelID,LEVELCHANGETYPE eChangeType);                       //æ¿ ºº∆√.
+    HRESULT     Initialize(LEVEL_ID iLevelID,LEVELCHANGETYPE eChangeType,LevelArgs& args);                       //æ¿ ºº∆√.
+
     virtual HRESULT     Update(const _float fTimeDelta) override;        //æ¿¿« æ˜µ•¿Ã∆Æ
     virtual void        Render() override;         //æ¿¿« ∑ª¥ı.
 
@@ -21,7 +22,7 @@ private:
     HRESULT     Ready_UI_Layer();
 
 public:
-    static  CLevel_Loading* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext,LEVEL_ID iLevelID,LEVELCHANGETYPE eChangeType);
+    static  CLevel_Loading* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext,LevelArgs& args);
     virtual     void        Free();
 
 

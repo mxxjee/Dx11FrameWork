@@ -14,10 +14,13 @@ CLevel_Loading::CLevel_Loading(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11Devic
 {
 }
 
-HRESULT CLevel_Loading::Initialize(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)
+HRESULT CLevel_Loading::Initialize(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType, LevelArgs& args)
 {
     /*로더 : 로딩을 위한 서브스레드를 생성하고 실제 로딩 수행.*/
     //로더 생성
+    
+    __super::Initialize(args);
+
     m_pLoader = CLoader::Create(m_pDevice, m_pDeviceContext, iLevelID);
     CheckNullResult(m_pLoader, E_FAIL);
 
@@ -41,12 +44,9 @@ HRESULT CLevel_Loading::Update(const _float fTimeDelta)
     if (m_pLoader->IsFinished() &&
         GetKeyState(VK_RETURN) & 0x8000)
     {
-        CLevel* pNewLevel = nullptr;
         LevelArgs args;
         args.changeType = m_eChangeType;
 
- 
-        CheckNullResult(pNewLevel,E_FAIL);
         if (SUCCEEDED(m_pGameInstance->Level_Changer(ENUM_TO_UINT(m_eNextLevelID), args)))
             return E_FAIL;
 
@@ -74,10 +74,14 @@ HRESULT CLevel_Loading::Ready_UI_Layer()
 }
 
 
-CLevel_Loading* CLevel_Loading::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)
+CLevel_Loading* CLevel_Loading::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)
 {
     CLevel_Loading* pInstance = new CLevel_Loading(_pDevice, _pDeviceContext);
-    if (FAILED(pInstance->Initialize(iLevelID, eChangeType)))
+
+    if (FAILED(pInstance->Initialize(
+        static_cast<LEVEL_ID>(args.iNextLevelID), 
+        static_cast<LEVELCHANGETYPE>(args.changeType), args
+    )))
     {
         MSG_BOX("Failed to Create : Level_Loading");
         Safe_Release(pInstance);

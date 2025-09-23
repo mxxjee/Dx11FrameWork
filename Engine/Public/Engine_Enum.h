@@ -5,7 +5,7 @@ namespace Engine
 {
 	enum class WINMODE { FULL, WIN }; 
 
-	enum class LEVELCHANGETYPE { REPLACETOP, OVERLAY, PUSH,END};
+	enum class LEVELCHANGETYPE { NONE,REPLACETOP, OVERLAY, PUSH,END};
 	/*REPLACETOP : 이전씬 지우고 TOP교체
 	PUSH - 이전씬 냅두고 그냥 얹기(UPDATE/RENDER 모두 비활성화)
 	OVERLAY - 이전씬 냅두고 얹기(UPDATE비활성화, RENDER 활성화)
