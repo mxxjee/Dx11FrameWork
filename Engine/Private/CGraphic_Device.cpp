@@ -61,12 +61,8 @@ HRESULT CGraphic_Device::Initialize(HWND hWnd, WINMODE isWindowed, _uint iWinSiz
 
 	m_pDeviceContext->RSSetViewports(1, &ViewPortDesc);
 
-	*ppDevice = m_pDevice.Get();
-	*ppContext = m_pDeviceContext.Get();
-
-	//¿ÜºÎº¯¼ö¿¡ ÂüÁ¶½ÃÄ×À¸¹Ç·Î AddRef()
-	Safe_AddRef(m_pDevice);
-	Safe_AddRef(m_pDeviceContext);
+	m_pDevice.CopyTo(ppDevice);           // AddRef() ÇØÁÜ
+	m_pDeviceContext.CopyTo(ppContext);   // AddRef() ÇØÁÜ
 
 	return S_OK;
 }
@@ -247,10 +243,10 @@ CGraphic_Device* CGraphic_Device::Create(HWND hWnd, WINMODE isWindowed, _uint iW
 
 void CGraphic_Device::Free()
 {
-	/*Safe_Release(m_pSwapChain);
-	Safe_Release(m_pDepthStencilView);
-	Safe_Release(m_pBackBufferRTV);
-	Safe_Release(m_pDeviceContext);*/
+	m_pBackBufferRTV.Reset();
+	m_pDepthStencilView.Reset();
+	m_pSwapChain.Reset();
+	m_pDeviceContext.Reset();
 
 
 #if defined(DEBUG) || defined(_DEBUG)
@@ -271,6 +267,5 @@ void CGraphic_Device::Free()
 	if (d3dDebug != nullptr)            d3dDebug->Release();
 #endif
 
-
-	Safe_Release(m_pDevice);
+	m_pDevice.Reset();
 }

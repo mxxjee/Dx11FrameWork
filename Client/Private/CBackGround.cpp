@@ -2,7 +2,7 @@
 
 USING(Client)
 
-CBackGround::CBackGround(ComPtr<ID3D11Device>& pDevice, ComPtr<ID3D11DeviceContext>& pContext)
+CBackGround::CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :CUI(pDevice,pContext)
 {
 }
@@ -50,7 +50,7 @@ HRESULT CBackGround::Render()
     return S_OK;
 }
 
-CBackGround* CBackGround::Create(ComPtr<ID3D11Device>& pDevice, ComPtr<ID3D11DeviceContext>& pContext)
+CBackGround* CBackGround::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 {
     CBackGround* pInstance = new CBackGround(pDevice, pContext);
     if (FAILED(pInstance->Initialize_Prototype()))

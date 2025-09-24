@@ -3,7 +3,7 @@
 #include "CLayer.h"
 
 
-CLevel::CLevel(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
+CLevel::CLevel(ID3D11Device* _pDevice, ID3D11DeviceContext*_pDeviceContext)
     :m_pGameInstance{ CGameInstance::GetInstance() }, 
     m_pDevice{_pDevice},
     m_pDeviceContext{_pDeviceContext}

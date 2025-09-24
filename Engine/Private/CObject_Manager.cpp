@@ -3,7 +3,7 @@
 #include "CGameInstance.h"
 #include "CGameObject.h"
 
-CObject_Manager::CObject_Manager(ComPtr<ID3D11Device>& pDevice, ComPtr<ID3D11DeviceContext>& pContext)
+CObject_Manager::CObject_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
 	:m_pDevice{pDevice},
 	m_pContext{pContext},
 	m_pGameInstance{CGameInstance::GetInstance()}
@@ -88,7 +88,7 @@ CLayer* CObject_Manager::Find_Layer(_uint iLevelIndex, const _wstring& LayerTag)
 	return iter->second;
 }
 
-CObject_Manager* CObject_Manager::Create(ComPtr<ID3D11Device>& pDevice, ComPtr<ID3D11DeviceContext>& pContext, _uint iNumLevels)
+CObject_Manager* CObject_Manager::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iNumLevels)
 {
 	CObject_Manager* pInstance = new CObject_Manager(pDevice, pContext);
 	if (FAILED(pInstance->Initialize(iNumLevels)))
@@ -103,5 +103,16 @@ CObject_Manager* CObject_Manager::Create(ComPtr<ID3D11Device>& pDevice, ComPtr<I
 void CObject_Manager::Free()
 {
 	__super::Free();
+
+	for (size_t i = 0; i < m_iNumLevels; ++i)
+	{
+		for (auto& pair : m_Layers[i])
+		{
+			Safe_Release(pair.second);
+		}
+
+		m_Layers[i].clear();
+
+	}
 	Safe_Release(m_pGameInstance);
 }

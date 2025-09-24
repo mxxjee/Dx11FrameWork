@@ -24,7 +24,7 @@ public:
 	/* 그래픽 디바이스의 초기화. */
 	/* 장치객체를 생성한다. */
 	HRESULT Initialize(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY,
-		_Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext);
+		ID3D11Device** ppDevice,ID3D11DeviceContext** ppContext);
 
 	/* 백버퍼를 지운다. */
 	HRESULT Clear_BackBuffer_View(const _float4* pClearColor);

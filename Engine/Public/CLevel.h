@@ -10,7 +10,7 @@ class ENGINE_DLL CLevel :
 {
 
 protected:
-    explicit CLevel(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
+    explicit CLevel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext);
     virtual ~CLevel()=default;
 
 

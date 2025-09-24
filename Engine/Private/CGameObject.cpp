@@ -1,6 +1,6 @@
 #include "CGameObject.h"
 
-CGameObject::CGameObject(ComPtr<ID3D11Device>& pDevice, ComPtr<ID3D11DeviceContext>& pContext)
+CGameObject::CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
     :m_pDevice(pDevice),m_pContext(pContext)
 {
 }

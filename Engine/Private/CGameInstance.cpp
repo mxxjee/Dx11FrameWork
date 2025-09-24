@@ -42,7 +42,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	CheckNullResult(m_pProtoManager, E_FAIL);
 
 	/*오브젝트매니져 초기화*/
-	m_pObjectManager = CObject_Manager::Create(pDevice, pContext, EngineDesc.iNumLevels);
+	m_pObjectManager = CObject_Manager::Create(pDevice.Get(), pContext.Get(), EngineDesc.iNumLevels);
 	CheckNullResult(m_pObjectManager, E_FAIL);
 
 	return S_OK;
@@ -176,16 +176,22 @@ HRESULT CGameInstance::Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _ws
 
 
 
-void CGameInstance::Free()
+void CGameInstance::Release_Engine()
 {
-	__super::Free();
-
 	Safe_Release(m_pLevelManager);
 	Safe_Release(m_pTimerManager);
 	Safe_Release(m_pLevelFactory);
 	Safe_Release(m_pProtoManager);
 	Safe_Release(m_pObjectManager);
 	Safe_Release(m_pGraphicDev);
-	
+
+	DestroyInstance();
+}
+
+void CGameInstance::Free()
+{
+	__super::Free();
+
+
 
 }

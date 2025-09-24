@@ -61,18 +61,18 @@ void CMainApp::Reigster_Levels()
 	CheckNull(pGameInstance);
 	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOGO), [this](LevelArgs& args)->CLevel*
 		{
-			return CLevel_Logo::Create(m_pDevice, m_pContext,args);
+			return CLevel_Logo::Create(m_pDevice.Get(), m_pContext.Get(),args);
 		});
 
 	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::GAMEPLAY), [this](LevelArgs& args)->CLevel*
 		{
-			return CLevel_GamePlay::Create(m_pDevice, m_pContext, args);
+			return CLevel_GamePlay::Create(m_pDevice.Get(), m_pContext.Get(), args);
 		});
 
 
 	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOADING), [this](LevelArgs& args)->CLevel*
 		{
-			return CLevel_Loading::Create(m_pDevice, m_pContext, args);
+			return CLevel_Loading::Create(m_pDevice.Get(), m_pContext.Get(), args);
 		});
 
 
@@ -117,47 +117,20 @@ CMainApp* CMainApp::Create()
 
 void CMainApp::Free()
 {
-	//자신의 리소스정리
-
-	Safe_Release(pGameInstance);
 
 	//상속계층을 따르기 위해 부모  Free호출 
 	__super::Free();
 
+	pGameInstance->Release_Engine();
+
+
+
+
+	//자신의 리소스정리
+	Safe_Release(pGameInstance);
+
 }
 
 
 
 
-
-#include <iostream>
-#include <memory>
-using namespace std;
-
-struct Weapon {
-	string name;
-	Weapon(string n) : name(n) {
-		cout << "Weapon " << name << " created\n";
-	}
-	~Weapon() {
-		cout << "Weapon " << name << " destroyed\n";
-	}
-};
-
-int main() {
-	shared_ptr<Weapon> w1;
-	{
-		auto w2 = make_shared<Weapon>("Excalibur");
-		cout << "use_count after make_shared = " << w2.use_count() << "\n";
-					// use_count after make_shared = 1
-
-		w1 = w2;  // w1과 w2가 같은 무기를 공유
-		cout << "use_count after assigning w1 = " << w2.use_count() << "\n";
-					// use_count after make_shared = 2
-	}
-	cout << "use_count after w2 scope ends = " << w1.use_count() << "\n";
-						//use_count after w2 scope ends = 1
-
-	w1.reset();
-	cout << "use_count after reset = " << w1.use_count() << "\n";
-}

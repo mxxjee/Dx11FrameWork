@@ -27,7 +27,7 @@ public:
     }GAMEOBJECT_DESC;
 
 protected:
-    CGameObject(ComPtr<ID3D11Device>& pDevice, ComPtr<ID3D11DeviceContext>& pContext);
+    CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
     CGameObject(const CGameObject* rhs);
     virtual ~CGameObject() = default;
 

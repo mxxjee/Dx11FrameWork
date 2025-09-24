@@ -9,7 +9,7 @@
 
 USING(Client)
 
-CLevel_Loading::CLevel_Loading(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
+CLevel_Loading::CLevel_Loading(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext)
     :CLevel(_pDevice,_pDeviceContext)
 {
 }
@@ -77,7 +77,7 @@ HRESULT CLevel_Loading::Ready_UI_Layer()
 }
 
 
-CLevel_Loading* CLevel_Loading::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)
+CLevel_Loading* CLevel_Loading::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext, LevelArgs& args)
 {
     CLevel_Loading* pInstance = new CLevel_Loading(_pDevice, _pDeviceContext);
 

@@ -5,7 +5,7 @@
 
 USING(Client)
 
-CLevel_GamePlay::CLevel_GamePlay(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
+CLevel_GamePlay::CLevel_GamePlay(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext)
     :CLevel(_pDevice,_pDeviceContext)
 {
 }
@@ -47,7 +47,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Background(const _wstring& strLayerTag)
 
 
 
-CLevel_GamePlay* CLevel_GamePlay::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)
+CLevel_GamePlay* CLevel_GamePlay::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext, LevelArgs& args)
 {
     CLevel_GamePlay* pInstance = new CLevel_GamePlay(_pDevice, _pDeviceContext);
     if (FAILED(pInstance->Initialize(args)))

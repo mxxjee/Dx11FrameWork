@@ -126,7 +126,7 @@ HRESULT CLoader::Loading_Logo()
   
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
 
-    m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"BackGround"), CBackGround::Create(m_pDevice, m_pDeviceContext));
+    m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"BackGround"), CBackGround::Create(m_pDevice.Get(), m_pDeviceContext.Get()));
 
 
 
