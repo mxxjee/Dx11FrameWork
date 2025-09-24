@@ -57,6 +57,12 @@ void CGameInstance::Update_Engine(_float fTimedelta)
 	m_pLevelManager->Update(fTimedelta);
 }
 
+void CGameInstance::LateUpdate_Engine(float fTimedelta)
+{
+	/*지연삭제용*/
+	m_pLevelManager->Update_Late(fTimedelta);
+}
+
 HRESULT CGameInstance::Draw_Begin(const _float4* pClearColor)
 {
 	CheckNullResult(m_pGraphicDev,E_FAIL);

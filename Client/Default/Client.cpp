@@ -103,6 +103,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             pGameInstance->Compute_TimeDelta(L"Timer_60");
 
             pMainApp->Update(pGameInstance->Get_TimeDelta(L"Timer_60"));
+            pMainApp->Late_Update(pGameInstance->Get_TimeDelta(L"Timer_60"));
             pMainApp->Render();
             
             fTimeAcc = 0.f;

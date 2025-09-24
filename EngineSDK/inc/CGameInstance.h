@@ -27,6 +27,8 @@ public:
     HRESULT Initialize_Engine(const ENGINE_DESC & EngineDesc,ComPtr<ID3D11Device>& pDevice, ComPtr<ID3D11DeviceContext>& pContext);
     
     void    Update_Engine(_float fTimedelta);
+    void    LateUpdate_Engine(float fTimedelta);
+
     HRESULT     Draw_Begin(const _float4 * pClearColor);
     HRESULT     Draw();
     HRESULT     Draw_End();

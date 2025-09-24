@@ -61,11 +61,20 @@ void CLevel_Manager::Update(const _float fTimeDelta)
 
 void CLevel_Manager::Update_Late(const _float fTimeDelta)
 {
-	for (auto& level : m_tDestroy)
+	if (!m_tDestroy.empty())
 	{
-		m_pGameInstance->Clear(level->Get_LevelID());
-		Safe_Release(level);
+		for (auto& level : m_tDestroy)
+		{
+			m_pGameInstance->Clear(level->Get_LevelID());
+			Safe_Release(level);
+
+		}
+
+
+		m_tDestroy.clear();
 	}
+	
+
 
 }
 

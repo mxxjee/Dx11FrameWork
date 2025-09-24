@@ -20,6 +20,7 @@ private:
 public:
 	HRESULT Initialize();
 	void	Update(_float fTimeDelta);
+	void	Late_Update(float fTimeDelta);
 	void	Render();
 
 private:

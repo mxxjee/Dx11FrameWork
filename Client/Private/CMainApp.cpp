@@ -47,6 +47,11 @@ void CMainApp::Update(_float fTimeDelta)
 	pGameInstance->Update_Engine(fTimeDelta);
 }
 
+void CMainApp::Late_Update(float fTimeDelta)
+{
+	pGameInstance->LateUpdate_Engine(fTimeDelta);
+}
+
 void CMainApp::Render()
 {
 	/*내 게임의 반복적인 렌더.*/

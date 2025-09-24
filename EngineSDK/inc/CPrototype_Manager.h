@@ -14,8 +14,7 @@ private:
 public:
     HRESULT        Initialize(_uint iNumLevels);
     HRESULT        Add_Prototype(_uint iLevelIndex, const _wstring& strProtoTag, CBase* pPrototype);
-    CBase*          Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelIndex, const _wstring& strPrototag, void* pArg);
-
+    CBase*          Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelIndex, const _wstring& strPrototag, void* pArg);      
 
 private:
     vector<unordered_map<_wstring, CBase*>> m_Prototypes;
