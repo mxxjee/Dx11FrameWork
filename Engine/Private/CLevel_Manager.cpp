@@ -53,12 +53,10 @@ HRESULT CLevel_Manager::Level_Changer(_uint iSceneID, LevelArgs& args)
 	return S_OK;
 }
 
-HRESULT CLevel_Manager::Update(const _float fTimeDelta)
+void CLevel_Manager::Update(const _float fTimeDelta)
 {
-	CheckTrueResult(m_Stack.empty(),E_FAIL);
+	CheckTrue(m_Stack.empty());
 	m_Stack.back()->Update(fTimeDelta);
-
-	return S_OK;
 }
 
 void CLevel_Manager::Render()

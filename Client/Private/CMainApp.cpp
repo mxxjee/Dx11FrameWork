@@ -25,9 +25,10 @@ HRESULT CMainApp::Initialize()
 	desc.iWinSizeX = g_iWinSizeX;
 	desc.iWinSizeY = g_iWinSizeY;
 	desc.winMode = WINMODE::WIN;
+	desc.iNumLevels = ENUM_TO_UINT(LEVEL_ID::END);
 
 
-	if(FAILED(pGameInstance->Initialize_Engine(desc,&m_pDevice,&m_pContext)))
+	if(FAILED(pGameInstance->Initialize_Engine(desc,m_pDevice,m_pContext)))
 		return E_FAIL;
 
 	Reigster_Levels();
@@ -88,6 +89,8 @@ HRESULT CMainApp::Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)
 	args.changeType = LEVELCHANGETYPE::PUSH;
 	args.m_eFlag = LEVELFLAG::TRANSIENT;
 	args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+	args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
 
 	if(FAILED(pGameInstance->Level_Changer(ENUM_TO_UINT(LEVEL_ID::LOADING),args)))
 		return E_FAIL;

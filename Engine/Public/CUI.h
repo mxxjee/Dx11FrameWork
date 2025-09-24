@@ -7,7 +7,7 @@ public:
     typedef struct tagUIDesc : public CGameObject::GAMEOBJECT_DESC
     {
         _float fX, fY;
-        _float fSizeX, _floatfSizeY;
+        _float fSizeX, fSizeY;
     }UI_DESC;
 
 protected:

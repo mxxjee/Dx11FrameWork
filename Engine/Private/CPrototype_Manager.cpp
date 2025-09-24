@@ -8,6 +8,8 @@ CPrototype_Manager::CPrototype_Manager()
 HRESULT CPrototype_Manager::Initialize(_uint iNumLevels)
 {
     m_iNumLevels = iNumLevels;
+    m_Prototypes.resize(iNumLevels);
+
     return S_OK;
 }
 

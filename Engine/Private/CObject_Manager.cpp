@@ -14,6 +14,7 @@ CObject_Manager::CObject_Manager(ComPtr<ID3D11Device>& pDevice, ComPtr<ID3D11Dev
 HRESULT CObject_Manager::Initialize(_uint iNumLevels)
 {
 	m_iNumLevels = iNumLevels;
+	m_Layers.resize(iNumLevels);
 
 	return S_OK;
 }
@@ -69,6 +70,12 @@ HRESULT CObject_Manager::Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _
 		pLayer->Add_GameObject(pCloneObj);
 
 	return S_OK;
+}
+
+const unordered_map<_wstring, CLayer*>& CObject_Manager::Get_Layers(_uint iLevel)
+{
+	// TODO: 여기에 return 문을 삽입합니다.
+	return m_Layers[iLevel];
 }
 
 CLayer* CObject_Manager::Find_Layer(_uint iLevelIndex, const _wstring& LayerTag)

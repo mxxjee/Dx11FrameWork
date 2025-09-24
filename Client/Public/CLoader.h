@@ -9,6 +9,11 @@
 iNextLevel에 맞는 로딩을 수행
 */
 
+namespace Engine
+{
+    class CGameInstance;
+}
+
 NS_BEGIN(Client)
 class CLoader final:
     public CBase
@@ -35,6 +40,8 @@ public:
 private:
     ComPtr<ID3D11Device>    m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext>    m_pDeviceContext = { nullptr };
+    CGameInstance* m_pGameInstance = { nullptr };
+
     LEVEL_ID                        m_iNextLevelID = { LEVEL_ID::END };
 
 

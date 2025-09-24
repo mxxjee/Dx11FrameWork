@@ -14,8 +14,11 @@ private:
 
 public:
     virtual HRESULT     Initialize(LevelArgs& args) override;                       //æ¿ ºº∆√.
-    virtual HRESULT     Update(const _float fTimeDelta) override;        //æ¿¿« æ˜µ•¿Ã∆Æ
+    virtual void     Update(const _float fTimeDelta) override;        //æ¿¿« æ˜µ•¿Ã∆Æ
     virtual void        Render() override;         //æ¿¿« ∑ª¥ı.
+
+public:
+    HRESULT                 Ready_Layer_Background(const _wstring& strLayerTag);
 
 
 public:

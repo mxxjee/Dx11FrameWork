@@ -27,8 +27,8 @@ private:
 	HRESULT			Start_Level(LEVEL_ID iLevelID,LEVELCHANGETYPE eChangeType);
 
 private:
-	ID3D11Device* m_pDevice = { nullptr };
-	ID3D11DeviceContext* m_pContext = { nullptr };
+	ComPtr<ID3D11Device> m_pDevice;
+	ComPtr <ID3D11DeviceContext> m_pContext;
 
 public:
 	static CMainApp* Create();

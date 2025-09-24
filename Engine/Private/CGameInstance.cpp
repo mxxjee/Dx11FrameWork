@@ -50,9 +50,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 
 void CGameInstance::Update_Engine(_float fTimedelta)
 {
-	m_pObjectManager->Update_Priority(fTimedelta);
+	/*m_pObjectManager->Update_Priority(fTimedelta);
 	m_pObjectManager->Update(fTimedelta);
-	m_pObjectManager->Update_Late(fTimedelta);
+	m_pObjectManager->Update_Late(fTimedelta);*/
 
 	m_pLevelManager->Update(fTimedelta);
 }
@@ -91,6 +91,7 @@ void CGameInstance::Clear(_uint iLevelID)
 
 }
 
+#pragma region LevelManager
 HRESULT CGameInstance::Level_Changer(_uint iSceneID, LevelArgs& args)
 {
 	CheckNullResult(m_pLevelManager,E_FAIL);
@@ -109,7 +110,9 @@ CLevel* CGameInstance::Get_CurrentLevel()
 	CheckNullResult(m_pLevelManager,nullptr);
 	return m_pLevelManager->Get_CurrentLevel();
 }
+#pragma endregion
 
+#pragma region LevelFactory
 void CGameInstance::Register_Level(_uint iSceneID, LevelCreator Creator)
 {
 	CheckNull(m_pLevelFactory);
@@ -121,7 +124,9 @@ CLevel* CGameInstance::Create_Level(_uint iSceneID, LevelArgs _Arg)
 	CheckNullResult(m_pLevelFactory,nullptr);
 	return m_pLevelFactory->Create(iSceneID, _Arg);
 }
+#pragma endregion
 
+#pragma region TimerManager
 _float CGameInstance::Get_TimeDelta(const _tchar* pTimerTag)
 {
 	CheckNullResult(m_pTimerManager, 0.f);
@@ -134,7 +139,15 @@ void CGameInstance::Compute_TimeDelta(const _tchar* pTimerTag)
 	return m_pTimerManager->Compute_TimeDelta(pTimerTag);
 
 }
+HRESULT CGameInstance::Add_Timer(const _tchar* pTimerTag)
+{
+	CheckNullResult(m_pTimerManager, E_FAIL);
+	return m_pTimerManager->Add_Timer(pTimerTag);
+}
 
+#pragma endregion
+
+#pragma region ProtoManager
 HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const _wstring& strProtoTag, CBase* pPrototype)
 {
 	CheckNullResult(m_pProtoManager, E_FAIL);
@@ -146,13 +159,22 @@ CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelIndex,
 	CheckNullResult(m_pProtoManager, nullptr);
 	return m_pProtoManager->Clone_Prototype(ePrototypeID, iLevelIndex, strPrototag,pArg);
 }
+#pragma endregion
 
-
-HRESULT CGameInstance::Add_Timer(const _tchar* pTimerTag)
+#pragma region ObjectManager
+const unordered_map<_wstring, CLayer*>& CGameInstance::Get_Layers(_uint iLevel)
 {
-	CheckNullResult(m_pTimerManager,E_FAIL);
-	return m_pTimerManager->Add_Timer(pTimerTag);
+	return m_pObjectManager->Get_Layers(iLevel);
 }
+
+HRESULT CGameInstance::Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
+{
+	CheckNullResult(m_pObjectManager, E_FAIL);
+	return m_pObjectManager->Add_GameObject_To_Layer(iProtoLevelIndex,strPrototypeTag,iLayerLevelIndex,strLayerTag,pArg);
+}
+#pragma endregion
+
+
 
 void CGameInstance::Free()
 {

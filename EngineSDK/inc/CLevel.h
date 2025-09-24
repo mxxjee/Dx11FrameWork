@@ -16,7 +16,10 @@ protected:
 
 public:
     virtual HRESULT     Initialize(LevelArgs& args);                       //æ¿ ºº∆√.
-    virtual HRESULT     Update(const _float fTimeDelta);        //æ¿¿« æ˜µ•¿Ã∆Æ
+   
+    virtual void            Update(const _float fTimeDelta);
+ 
+    
     virtual void        Render();         //æ¿¿« ∑ª¥ı.
    
 public:
@@ -36,15 +39,17 @@ public:
     const   LEVELFLAG&      Get_Flag() const { return m_eLevelArgs.m_eFlag; }
 
 protected:
-    class CGameInstance*          m_pGameInstance = { nullptr };
-    ComPtr<ID3D11Device>    m_pDevice = { nullptr };
-    ComPtr<ID3D11DeviceContext>    m_pDeviceContext = { nullptr };
+    class CGameInstance*            m_pGameInstance = { nullptr };
+    ComPtr<ID3D11Device>            m_pDevice = { nullptr };
+    ComPtr<ID3D11DeviceContext>     m_pDeviceContext = { nullptr };
 
 
 
 private:
     LevelArgs           m_eLevelArgs;
 
+protected:
+    _uint               m_iLevelID = 0;
 };
 NS_END
 

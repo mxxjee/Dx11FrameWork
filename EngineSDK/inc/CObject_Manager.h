@@ -29,8 +29,10 @@ public:
     HRESULT     Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag,
         _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 
+    const unordered_map<_wstring, CLayer*>& Get_Layers(_uint iLevel);
 private:
     CLayer* Find_Layer(_uint iLevelIndex, const _wstring& LayerTag);
+    
 
 private:
     ComPtr<ID3D11Device>                m_pDevice;

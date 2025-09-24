@@ -24,7 +24,10 @@ private:
 public:
     /*씬을 바꾸기 전 이전 씬을 정리하고, 저장하던 씬 정보 갱신.*/
     HRESULT         Level_Changer(_uint iSceneID, LevelArgs& args);
-    HRESULT         Update(const _float fTimeDelta);
+   
+    void            Update(const _float fTimeDelta);
+    
+
     void            Render();
 
 

@@ -1,6 +1,6 @@
 #include "CLevel.h"
 #include "CGameInstance.h"
-
+#include "CLayer.h"
 
 
 CLevel::CLevel(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -15,12 +15,20 @@ CLevel::CLevel(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDevi
 HRESULT CLevel::Initialize(LevelArgs& args)
 {
     m_eLevelArgs = args;
+
     return S_OK;
 }
 
-HRESULT CLevel::Update(const _float fTimeDelta)
+void CLevel::Update(const _float fTimeDelta)
 {
-    return S_OK;
+    auto& layers=m_pGameInstance->Get_Layers(m_eLevelArgs.m_iLevelID);
+    for (auto& layer : layers)
+    {
+        layer.second->Update_Priority(fTimeDelta);
+        layer.second->Update(fTimeDelta);
+        layer.second->Update_Late(fTimeDelta);
+    }
+
 }
 
 void CLevel::Render()

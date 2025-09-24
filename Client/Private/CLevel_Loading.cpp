@@ -36,24 +36,27 @@ HRESULT CLevel_Loading::Initialize(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeTyp
     return S_OK;
 }
 
-HRESULT CLevel_Loading::Update(const _float fTimeDelta)
+void CLevel_Loading::Update(const _float fTimeDelta)
 {
+    __super::Update(fTimeDelta);
+
     /*로더야 로딩 다 되었니?*/
-    CheckNullResult(m_pLoader,E_FAIL);
+    CheckNull(m_pLoader);
 
     if (m_pLoader->IsFinished() &&
         GetKeyState(VK_RETURN) & 0x8000)
     {
         LevelArgs args;
         args.changeType = m_eChangeType;
+        args.m_iLevelID = ENUM_TO_UINT(m_eNextLevelID);
+
 
         if (SUCCEEDED(m_pGameInstance->Level_Changer(ENUM_TO_UINT(m_eNextLevelID), args)))
-            return E_FAIL;
+            return;
 
         MSG_BOX("다음 씬 불러오기 실패");
     }
 
-    return S_OK;
 }
 
 void CLevel_Loading::Render()

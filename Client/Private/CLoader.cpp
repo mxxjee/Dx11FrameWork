@@ -1,10 +1,14 @@
 #include "CLoader.h"
+#include "CGameInstance.h"
+#include "CBackGround.h"
 
 USING(Client)
 CLoader::CLoader(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
     :m_pDevice{_pDevice},
-    m_pDeviceContext{_pDeviceContext}
+    m_pDeviceContext{_pDeviceContext},
+    m_pGameInstance{CGameInstance::GetInstance()}
 {
+    Safe_AddRef(m_pGameInstance);
 }
 
 _uint APIENTRY ThreadMain(void* pArg)
@@ -115,25 +119,16 @@ HRESULT CLoader::Loading_GamePlay()
 HRESULT CLoader::Loading_Logo()
 {
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
-    for (size_t i = 0; i < 88899999; i++)
-    {
-        int a = 10;
-    }
+  
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
-    for (size_t i = 0; i < 88889999; i++)
-    {
-        int a = 10;
-    }
+  
     lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
-    for (size_t i = 0; i < 88889999; i++)
-    {
-        int a = 10;
-    }
+  
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
-    for (size_t i = 0; i < 88899999; i++)
-    {
-        int a = 10;
-    }
+
+    m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"BackGround"), CBackGround::Create(m_pDevice, m_pDeviceContext));
+
+
 
 
     m_isFinished = true;
@@ -164,5 +159,5 @@ void CLoader::Free()
 
     CloseHandle(m_hThred);
 
-
+    Safe_Release(m_pGameInstance);
 }

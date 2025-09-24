@@ -22,12 +22,17 @@
     <ClInclude Include="..\Public\CLevel_Loading.h">
       <Filter>01.Levels\Loading</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CLoader.h" />
     <ClInclude Include="..\Public\CLevel_GamePlay.h">
       <Filter>01.Levels\GamePlay</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLevel_Logo.h">
       <Filter>01.Levels\Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBackGround.h">
+      <Filter>02.GameObjects\UI\00.BackGround</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLoader.h">
+      <Filter>01.Levels\Loading\Loader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +68,15 @@
     <Filter Include="01.Levels\Loading\Loader">
       <UniqueIdentifier>{db198de7-dbcd-45bd-8a12-7a3ca30bec2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects">
+      <UniqueIdentifier>{88ed5311-71b9-4e23-9422-872d7ee15fdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI">
+      <UniqueIdentifier>{230ec975-9e33-4301-b2e7-969ef3a3af24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00.BackGround">
+      <UniqueIdentifier>{a8a9cb85-f5d9-42bf-9359-4cdd0223099e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -74,12 +88,17 @@
     <ClCompile Include="..\Private\CLevel_Loading.cpp">
       <Filter>01.Levels\Loading</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CLoader.cpp" />
     <ClCompile Include="..\Private\CLevel_GamePlay.cpp">
       <Filter>01.Levels\GamePlay</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_Logo.cpp">
       <Filter>01.Levels\Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBackGround.cpp">
+      <Filter>02.GameObjects\UI\00.BackGround</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLoader.cpp">
+      <Filter>01.Levels\Loading\Loader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

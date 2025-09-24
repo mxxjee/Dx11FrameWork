@@ -2,6 +2,7 @@
 #include "CLoader.h"
 #include "CGameInstance.h"
 #include "CLevel_Loading.h"
+#include "CUI.h"
 
 
 USING(Client)
@@ -16,25 +17,33 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
 {
     __super::Initialize(args);
 
+    if(FAILED(Ready_Layer_Background(L"BackGround_Layer")))
+        return E_FAIL;
+
+
     return S_OK;
 }
 
-HRESULT CLevel_Logo::Update(const _float fTimeDelta)
+void CLevel_Logo::Update(const _float fTimeDelta)
 {
-   
+    __super::Update(fTimeDelta);
+
     if (GetKeyState(VK_UP) & 0x8000)
     {
         LevelArgs args;
         args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::GAMEPLAY);
         args.changeType = LEVELCHANGETYPE::OVERLAY;
         args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
 
         if (FAILED(m_pGameInstance->Level_Changer(
             ENUM_TO_UINT(LEVEL_ID::LOADING),
             args)))
-            return E_FAIL;
+            return;
     }
-    return S_OK;
+
+    return;
 }
 
 void CLevel_Logo::Render()
@@ -42,6 +51,26 @@ void CLevel_Logo::Render()
     //UI렌더. (로딩바)
     SetWindowText(g_hWnd, L"로고 씬입니다.");
 
+}
+
+HRESULT CLevel_Logo::Ready_Layer_Background(const _wstring& strLayerTag)
+{
+    CUI::UI_DESC        Desc{};
+
+    Desc.fX = {};
+    Desc.fY = {};
+    Desc.fSizeX = {};
+    Desc.fSizeY = {};
+    Desc.ObjTag = L"BackGround";
+
+
+    if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"BackGround"),
+        ENUM_TO_UINT(LEVEL_ID::LOGO),
+        strLayerTag, &Desc)))
+        return E_FAIL;
+
+    return S_OK;
 }
 
 

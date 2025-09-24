@@ -15,7 +15,7 @@ private:
 public:
     HRESULT     Initialize(LEVEL_ID iLevelID,LEVELCHANGETYPE eChangeType,LevelArgs& args);                       //æ¿ ºº∆√.
 
-    virtual HRESULT     Update(const _float fTimeDelta) override;        //æ¿¿« æ˜µ•¿Ã∆Æ
+    virtual void        Update(const _float fTimeDelta) override;        //æ¿¿« æ˜µ•¿Ã∆Æ
     virtual void        Render() override;         //æ¿¿« ∑ª¥ı.
 
 private:

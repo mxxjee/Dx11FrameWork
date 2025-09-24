@@ -65,6 +65,8 @@ public:
 
 #pragma region ObjectManager
 public:
+    const unordered_map<_wstring, class CLayer*>& Get_Layers(_uint iLevel);
+
     HRESULT Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _wstring & strPrototypeTag,
         _uint iLayerLevelIndex, const _wstring & strLayerTag, void* pArg = nullptr);
 #pragma endregion
