@@ -26,7 +26,8 @@ public:
     HRESULT         Level_Changer(_uint iSceneID, LevelArgs& args);
    
     void            Update(const _float fTimeDelta);
-    
+    void            Update_Late(const _float fTimeDelta);
+
 
     void            Render();
 

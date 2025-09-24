@@ -76,6 +76,28 @@ HRESULT CLevel_Loading::Ready_UI_Layer()
     return S_OK;
 }
 
+void CLevel_Loading::OnEnter()
+{
+    int A = 0;
+}
+
+void CLevel_Loading::OnResume()
+{
+    int A = 0;
+}
+
+void CLevel_Loading::OnPause()
+{
+    int A = 0;
+
+}
+
+void CLevel_Loading::OnExit()
+{
+    int A = 0;
+
+}
+
 
 CLevel_Loading* CLevel_Loading::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext, LevelArgs& args)
 {

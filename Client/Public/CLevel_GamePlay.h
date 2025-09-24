@@ -20,7 +20,11 @@ public:
 public:
     HRESULT                 Ready_Layer_Background(const _wstring& strLayerTag);
 
-
+public:
+    virtual void        OnEnter() override;           //씬 진입시 매번호출
+    virtual void        OnResume() override;              //pause되었다가 active되었을때 호출
+    virtual void        OnPause() override;               //pause되었을때 호출
+    virtual void        OnExit() override;
 public:
     static  CLevel_GamePlay* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext, LevelArgs& args);
     virtual     void        Free();

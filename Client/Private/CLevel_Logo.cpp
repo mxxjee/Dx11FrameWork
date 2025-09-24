@@ -73,6 +73,31 @@ HRESULT CLevel_Logo::Ready_Layer_Background(const _wstring& strLayerTag)
     return S_OK;
 }
 
+void CLevel_Logo::OnEnter()
+{
+    int A = 0;
+}
+
+void CLevel_Logo::OnResume()
+{
+    int A = 0;
+}
+
+void CLevel_Logo::OnPause()
+{
+    /*2회 호출막기..*/
+    if (Get_State() == LEVELSTATE::HIDDEN || Get_State() == LEVELSTATE::PAUSE)
+        return;
+
+
+    int A = 0;
+}
+
+void CLevel_Logo::OnExit()
+{
+    int A = 0;
+}
+
 
 CLevel_Logo* CLevel_Logo::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext, LevelArgs& args)
 {

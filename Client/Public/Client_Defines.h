@@ -18,6 +18,7 @@ namespace Client
 
 
 	enum class LEVEL_ID {STATIC,LOGO,LOADING,GAMEPLAY,END};
+	//enum class LEV
 }
 
 

@@ -23,9 +23,9 @@ public:
     virtual void        Render();         //씬의 렌더.
    
 public:
-    virtual void        OnEnter() {};
-    virtual void        OnResume() {};
-    virtual void        OnPause() {};
+    virtual void        OnEnter() {};           //씬 처음 진입시 호출
+    virtual void        OnResume() {};              //pause되었다가 active되었을때 호출
+    virtual void        OnPause() {};               //pause되었을때 호출
     virtual void        OnExit() {};        //자원 정리 함수
 
 public:
@@ -38,6 +38,7 @@ public:
     void                    Set_Flag(LEVELFLAG eFlag) { m_eLevelArgs.m_eFlag = eFlag; }
     const   LEVELFLAG&      Get_Flag() const { return m_eLevelArgs.m_eFlag; }
 
+    _uint                   Get_LevelID() const { return m_eLevelArgs.m_iLevelID; }
 protected:
     class CGameInstance*            m_pGameInstance = { nullptr };
     ComPtr<ID3D11Device>            m_pDevice = { nullptr };
