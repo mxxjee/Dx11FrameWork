@@ -44,7 +44,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Background(const _wstring& strLayerTag)
     CUI::UI_DESC desc;
     desc.ObjTag = L"BackGround_Gameplay";
 
-    if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+    if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::GAMEPLAY),
         PROTO_OBJ_NAME(L"BackGround"), ENUM_TO_UINT(LEVEL_ID::GAMEPLAY), strLayerTag,&desc)))
         return E_FAIL;
 

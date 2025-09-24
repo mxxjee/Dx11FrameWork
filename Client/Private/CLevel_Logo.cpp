@@ -64,7 +64,7 @@ HRESULT CLevel_Logo::Ready_Layer_Background(const _wstring& strLayerTag)
     Desc.ObjTag = L"BackGround";
 
 
-    if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+    if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO),
         PROTO_OBJ_NAME(L"BackGround"),
         ENUM_TO_UINT(LEVEL_ID::LOGO),
         strLayerTag, &Desc)))

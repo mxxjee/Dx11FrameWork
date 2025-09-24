@@ -106,10 +106,8 @@ HRESULT CLoader::Loading_GamePlay()
         int a = 10;
     }
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
-    for (size_t i = 0; i < 88899999; i++)
-    {
-        int a = 10;
-    }
+    m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::GAMEPLAY), PROTO_OBJ_NAME(L"BackGround"), CBackGround::Create(m_pDevice.Get(), m_pDeviceContext.Get()));
+
 
 
     m_isFinished = true;
@@ -126,7 +124,7 @@ HRESULT CLoader::Loading_Logo()
   
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
 
-    m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"BackGround"), CBackGround::Create(m_pDevice.Get(), m_pDeviceContext.Get()));
+    m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::LOGO), PROTO_OBJ_NAME(L"BackGround"), CBackGround::Create(m_pDevice.Get(), m_pDeviceContext.Get()));
 
 
 
