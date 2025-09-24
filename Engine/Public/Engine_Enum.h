@@ -23,5 +23,9 @@ namespace Engine
 	TRANSIENT : 1회 후 바로 삭제되는 씬 (일회용 씬)*/
 
 
+	enum class PROTOTYPE
+	{
+		GAMEOBJECT, COMPONENT
+	};
 }
 #endif // Engine_Enum_h__

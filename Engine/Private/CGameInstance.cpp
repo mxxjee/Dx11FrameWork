@@ -4,6 +4,8 @@
 #include "CGraphic_Device.h"
 #include "CLevel_Manager.h"
 #include "CLevelFactroy.h"
+#include "CPrototype_Manager.h"
+#include "CObject_Manager.h"
 
 
 IMPLEMENT_SINGLETON(CGameInstance)
@@ -12,10 +14,10 @@ CGameInstance::CGameInstance()
 {
 	 
 }
-HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
+HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID3D11Device>& pDevice, ComPtr<ID3D11DeviceContext>& pContext)
 {
 	/* 그래픽 디바이스 초기화 */
-	m_pGraphicDev = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.winMode, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, ppDevice, ppContext);
+	m_pGraphicDev = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.winMode, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, pDevice.GetAddressOf(), pContext.GetAddressOf());
 	CheckNullResult(m_pGraphicDev, E_FAIL);
 
 	/*레벨 매니저 초기화*/
@@ -29,19 +31,29 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Inout_ 
 
 	/* 인풋 디바이스 초기화 */
 	/* 사운드  디바이스 초기화 */
+
 	/* 타이머 매니져 초기화 */
 	m_pTimerManager = CTimer_Manager::Create();
 	CheckNullResult(m_pTimerManager, E_FAIL);
 
 
+	/*프로토타입매니져 초기화*/
+	m_pProtoManager = CPrototype_Manager::Create(EngineDesc.iNumLevels);
+	CheckNullResult(m_pProtoManager, E_FAIL);
 
-	
+	/*오브젝트매니져 초기화*/
+	m_pObjectManager = CObject_Manager::Create(pDevice, pContext, EngineDesc.iNumLevels);
+	CheckNullResult(m_pObjectManager, E_FAIL);
 
 	return S_OK;
 }
 
 void CGameInstance::Update_Engine(_float fTimedelta)
 {
+	m_pObjectManager->Update_Priority(fTimedelta);
+	m_pObjectManager->Update(fTimedelta);
+	m_pObjectManager->Update_Late(fTimedelta);
+
 	m_pLevelManager->Update(fTimedelta);
 }
 
@@ -123,6 +135,18 @@ void CGameInstance::Compute_TimeDelta(const _tchar* pTimerTag)
 
 }
 
+HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const _wstring& strProtoTag, CBase* pPrototype)
+{
+	CheckNullResult(m_pProtoManager, E_FAIL);
+	return m_pProtoManager->Add_Prototype(iLevelIndex,strProtoTag,pPrototype);
+}
+
+CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelIndex, const _wstring& strPrototag, void* pArg)
+{
+	CheckNullResult(m_pProtoManager, nullptr);
+	return m_pProtoManager->Clone_Prototype(ePrototypeID, iLevelIndex, strPrototag,pArg);
+}
+
 
 HRESULT CGameInstance::Add_Timer(const _tchar* pTimerTag)
 {
@@ -136,6 +160,9 @@ void CGameInstance::Free()
 
 	Safe_Release(m_pLevelManager);
 	Safe_Release(m_pTimerManager);
+	Safe_Release(m_pLevelFactory);
+	Safe_Release(m_pProtoManager);
+	Safe_Release(m_pObjectManager);
 	Safe_Release(m_pGraphicDev);
 	
 

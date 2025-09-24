@@ -1,0 +1,100 @@
+#include "CObject_Manager.h"
+#include "CLayer.h"
+#include "CGameInstance.h"
+#include "CGameObject.h"
+
+CObject_Manager::CObject_Manager(ComPtr<ID3D11Device>& pDevice, ComPtr<ID3D11DeviceContext>& pContext)
+	:m_pDevice{pDevice},
+	m_pContext{pContext},
+	m_pGameInstance{CGameInstance::GetInstance()}
+{
+	Safe_AddRef(m_pGameInstance);
+}
+
+HRESULT CObject_Manager::Initialize(_uint iNumLevels)
+{
+	m_iNumLevels = iNumLevels;
+
+	return S_OK;
+}
+
+void CObject_Manager::Update_Priority(_float fTimeDelta)
+{
+	for (size_t i = 0; i < m_iNumLevels; ++i)
+	{
+		for (auto& pair : m_Layers[i])
+		{
+			pair.second->Update_Priority(fTimeDelta);
+		}
+	}
+}
+
+void CObject_Manager::Update(_float fTimeDelta)
+{
+	for (size_t i = 0; i < m_iNumLevels; ++i)
+	{
+		for (auto& pair : m_Layers[i])
+		{
+			pair.second->Update(fTimeDelta);
+		}
+	}
+}
+
+void CObject_Manager::Update_Late(_float fTimeDelta)
+{
+	for (size_t i = 0; i < m_iNumLevels; ++i)
+	{
+		for (auto& pair : m_Layers[i])
+		{
+			pair.second->Update_Late(fTimeDelta);
+		}
+	}
+}
+
+HRESULT CObject_Manager::Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
+{
+	CGameObject* pCloneObj = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, iProtoLevelIndex, strPrototypeTag, pArg));
+	CheckNullResult(pCloneObj, E_FAIL);
+
+	CLayer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
+	if (!pLayer)
+	{
+		pLayer = CLayer::Create();
+		pLayer->Add_GameObject(pCloneObj);
+		m_Layers[iLayerLevelIndex].emplace(strLayerTag, pLayer);
+
+	}
+
+	else
+		pLayer->Add_GameObject(pCloneObj);
+
+	return S_OK;
+}
+
+CLayer* CObject_Manager::Find_Layer(_uint iLevelIndex, const _wstring& LayerTag)
+{
+	auto iter = m_Layers[iLevelIndex].find(LayerTag);
+	if (iter == m_Layers[iLevelIndex].end())
+		return nullptr;
+
+
+	return iter->second;
+}
+
+CObject_Manager* CObject_Manager::Create(ComPtr<ID3D11Device>& pDevice, ComPtr<ID3D11DeviceContext>& pContext, _uint iNumLevels)
+{
+	CObject_Manager* pInstance = new CObject_Manager(pDevice, pContext);
+	if (FAILED(pInstance->Initialize(iNumLevels)))
+	{
+		MSG_BOX("Failed to Create : CObject_Manager");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+void CObject_Manager::Free()
+{
+	__super::Free();
+	Safe_Release(m_pGameInstance);
+}

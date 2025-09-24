@@ -9,6 +9,7 @@ namespace Engine
 		HWND hWnd;
 		unsigned int iWinSizeX;
 		unsigned int iWinSizeY;
+		unsigned int iNumLevels;
 		WINMODE		winMode;
 
 	}ENGINE_DESC;

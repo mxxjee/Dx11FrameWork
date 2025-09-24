@@ -24,7 +24,7 @@ private:
 
 #pragma region Engine
 public:
-    HRESULT Initialize_Engine(const ENGINE_DESC & EngineDesc,_Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext * *ppContext);
+    HRESULT Initialize_Engine(const ENGINE_DESC & EngineDesc,ComPtr<ID3D11Device>& pDevice, ComPtr<ID3D11DeviceContext>& pContext);
     
     void    Update_Engine(_float fTimedelta);
     HRESULT     Draw_Begin(const _float4 * pClearColor);
@@ -57,12 +57,25 @@ public:
 #pragma endregion
 
 
+#pragma region ProtoManager
+public:
+    HRESULT        Add_Prototype(_uint iLevelIndex, const _wstring & strProtoTag, CBase * pPrototype);
+    CBase* Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelIndex, const _wstring & strPrototag, void* pArg);
+#pragma endregion
+
+#pragma region ObjectManager
+public:
+    HRESULT Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _wstring & strPrototypeTag,
+        _uint iLayerLevelIndex, const _wstring & strLayerTag, void* pArg = nullptr);
+#pragma endregion
 
 private:
     class CLevel_Manager* m_pLevelManager = { nullptr };
     class CTimer_Manager* m_pTimerManager = { nullptr };
     class CGraphic_Device* m_pGraphicDev = { nullptr };
     class CLevelFactroy* m_pLevelFactory = { nullptr };
+    class CPrototype_Manager* m_pProtoManager = { nullptr };
+    class CObject_Manager* m_pObjectManager = { nullptr };
 
 
 public:
