@@ -67,7 +67,7 @@ void CLevel_Manager::Update_Late(const _float fTimeDelta)
 		{
 			m_pGameInstance->Clear(level->Get_LevelID());
 			Safe_Release(level);
-
+			
 		}
 
 
@@ -142,15 +142,18 @@ void CLevel_Manager::Overlay_Level(_uint iSceneID, CLevel* pNewLevel)
 
 void CLevel_Manager::Pop_Level()
 {
-	CheckTrue(m_Stack.empty()||m_Stack.size()==1);
+	CheckTrue(m_Stack.empty());
 
 	m_Stack.back()->OnExit();
 	m_tDestroy.push_back(m_Stack.back());
 	m_Stack.pop_back();
 
+	if (!m_Stack.empty())
+	{
+		m_Stack.back()->Set_State(LEVELSTATE::ACTIVE);
+		m_Stack.back()->OnResume();
 
-	m_Stack.back()->Set_State(LEVELSTATE::ACTIVE);
-	m_Stack.back()->OnResume();
+	}
 
 }
 

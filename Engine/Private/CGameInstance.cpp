@@ -95,6 +95,9 @@ HRESULT CGameInstance::Draw_End()
 void CGameInstance::Clear(_uint iLevelID)
 {
 
+	m_pObjectManager->Clear(iLevelID);
+
+
 }
 
 #pragma region LevelManager

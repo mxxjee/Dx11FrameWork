@@ -30,6 +30,8 @@ public:
         _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 
     const unordered_map<_wstring, CLayer*>& Get_Layers(_uint iLevel);
+    void    Clear(_uint iLevelIndex);
+
 private:
     CLayer* Find_Layer(_uint iLevelIndex, const _wstring& LayerTag);
     

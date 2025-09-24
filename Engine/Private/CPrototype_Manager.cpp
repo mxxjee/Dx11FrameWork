@@ -30,9 +30,8 @@ CBase* CPrototype_Manager::Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelI
     CheckNullResult(pPrototype, nullptr);
 
 
-    return ePrototypeID == PROTOTYPE::GAMEOBJECT ? dynamic_cast<CGameObject*>(pPrototype) : /*나중에는 컴포넌트로 캐스팅*/nullptr;
+    return ePrototypeID == PROTOTYPE::GAMEOBJECT ? dynamic_cast<CGameObject*>(pPrototype)->Clone(pArg) : /*나중에는 컴포넌트로 캐스팅*/nullptr;
 
-    return nullptr;
 }
 
 CBase* CPrototype_Manager::Find_Prototype(_uint iLevelIndex, const _wstring& strProtoTag)

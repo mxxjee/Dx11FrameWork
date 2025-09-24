@@ -80,7 +80,7 @@ const unordered_map<_wstring, CLayer*>& CObject_Manager::Get_Layers(_uint iLevel
 
 void CObject_Manager::Clear(_uint iLevelIndex)
 {
-	CheckTrue(iLevelIndex >= m_iNumLevels);
+	CheckTrue(iLevelIndex >= m_iNumLevels || m_Layers[iLevelIndex].empty());
 	for (auto& pair : m_Layers[iLevelIndex])
 	{
 		Safe_Release(pair.second);
@@ -88,7 +88,6 @@ void CObject_Manager::Clear(_uint iLevelIndex)
 	}
 	
 	m_Layers[iLevelIndex].clear();
-	m_Layers.erase(m_Layers.begin() + iLevelIndex);
 
 }
 

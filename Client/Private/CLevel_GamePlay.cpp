@@ -1,6 +1,9 @@
 #include "CLevel_GamePlay.h"
 #include "CLoader.h"
 #include "CGameInstance.h"
+#include "CBackGround.h"
+
+
 
 
 USING(Client)
@@ -38,8 +41,11 @@ void CLevel_GamePlay::Render()
 
 HRESULT CLevel_GamePlay::Ready_Layer_Background(const _wstring& strLayerTag)
 {
+    CUI::UI_DESC desc;
+    desc.ObjTag = L"BackGround_Gameplay";
+
     if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-        PROTO_OBJ_NAME(L"BackGround"), ENUM_TO_UINT(LEVEL_ID::GAMEPLAY), strLayerTag)))
+        PROTO_OBJ_NAME(L"BackGround"), ENUM_TO_UINT(LEVEL_ID::GAMEPLAY), strLayerTag,&desc)))
         return E_FAIL;
 
     return S_OK;

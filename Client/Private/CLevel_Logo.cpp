@@ -32,7 +32,7 @@ void CLevel_Logo::Update(const _float fTimeDelta)
     {
         LevelArgs args;
         args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::GAMEPLAY);
-        args.changeType = LEVELCHANGETYPE::OVERLAY;
+        args.changeType = LEVELCHANGETYPE::REPLACETOP;
         args.loadingChangeType = LEVELCHANGETYPE::PUSH;
         args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
