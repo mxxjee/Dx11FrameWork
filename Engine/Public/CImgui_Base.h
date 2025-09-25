@@ -2,24 +2,24 @@
 #include "CBase.h"
 
 NS_BEGIN(Engine)
-class ENGINE_DLL CImguiBase abstract : public CBase
+class ENGINE_DLL CImgui_Base abstract : public CBase
 {
 
 public:
-	CImguiBase();
-	virtual ~CImguiBase() = default;
+	CImgui_Base();
+	CImgui_Base(const string& Tag);
+	virtual ~CImgui_Base() = default;
 
 
 public:
-	virtual		HRESULT Initialize();
-	virtual		void	Update();
-	virtual		void	Late_Updte();
-	virtual		void	Render();
+	virtual		HRESULT Initialize()=0;
+	virtual		void	Update()=0;
+	virtual		void	Render()=0;
 
-	const _wstring& Get_Tag() { return m_Tag; }
+	const string& Get_Tag() { return m_Tag; }
 
 protected:
-	_wstring	m_Tag = L"";
+	string	m_Tag = "";
 	ComPtr<ID3D11Device>		m_pDevice;
 	ComPtr<ID3D11DeviceContext>		m_pContext;
 

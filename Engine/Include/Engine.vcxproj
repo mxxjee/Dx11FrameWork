@@ -153,7 +153,8 @@
     <ClInclude Include="..\Public\CGameInstance.h" />
     <ClInclude Include="..\Public\CGameObject.h" />
     <ClInclude Include="..\Public\CGraphic_Device.h" />
-    <ClInclude Include="..\Public\CImguiBase.h" />
+    <ClInclude Include="..\Public\CImgui_Base.h" />
+    <ClInclude Include="..\Public\CImgui_Window.h" />
     <ClInclude Include="..\Public\CLayer.h" />
     <ClInclude Include="..\Public\CLevel.h" />
     <ClInclude Include="..\Public\CLevelFactroy.h" />
@@ -185,7 +186,8 @@
     <ClCompile Include="..\Private\CGameInstance.cpp" />
     <ClCompile Include="..\Private\CGameObject.cpp" />
     <ClCompile Include="..\Private\CGraphic_Device.cpp" />
-    <ClCompile Include="..\Private\CImguiBase.cpp" />
+    <ClCompile Include="..\Private\CImgui_Base.cpp" />
+    <ClCompile Include="..\Private\CImgui_Window.cpp" />
     <ClCompile Include="..\Private\CLayer.cpp" />
     <ClCompile Include="..\Private\CLevel.cpp" />
     <ClCompile Include="..\Private\CLevelFactroy.cpp" />

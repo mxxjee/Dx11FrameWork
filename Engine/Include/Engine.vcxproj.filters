@@ -70,6 +70,12 @@
     <Filter Include="999.Imgui\Objects">
       <UniqueIdentifier>{f73f17df-9b93-4b19-ab4d-181718e3c257}</UniqueIdentifier>
     </Filter>
+    <Filter Include="999.Imgui\Objects\CImgui_Window">
+      <UniqueIdentifier>{e64e43da-35d5-4e4d-ab37-7fdfdd4b82ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="999.Imgui\Objects\CImgui_Base">
+      <UniqueIdentifier>{f9e1b2a0-8e24-462c-b2cf-b0e1cdbb31d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -159,8 +165,11 @@
     <ClInclude Include="..\Public\CLayer.h">
       <Filter>03.GameObject\Manager\Layer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CImguiBase.h">
-      <Filter>999.Imgui\Objects</Filter>
+    <ClInclude Include="..\Public\CImgui_Base.h">
+      <Filter>999.Imgui\Objects\CImgui_Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CImgui_Window.h">
+      <Filter>999.Imgui\Objects\CImgui_Window</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -227,8 +236,11 @@
     <ClCompile Include="..\Private\CTimer_Manager.cpp">
       <Filter>00.System\00.Timers\Manager\00.Time_Manager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CImguiBase.cpp">
-      <Filter>999.Imgui\Objects</Filter>
+    <ClCompile Include="..\Private\CImgui_Base.cpp">
+      <Filter>999.Imgui\Objects\CImgui_Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CImgui_Window.cpp">
+      <Filter>999.Imgui\Objects\CImgui_Window</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

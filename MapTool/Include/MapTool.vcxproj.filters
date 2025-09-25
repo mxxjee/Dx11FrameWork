@@ -10,6 +10,9 @@
     <Filter Include="00.MainTool">
       <UniqueIdentifier>{e83a2253-7255-4573-a1e5-835a6cdd9c98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.ImguiObjects">
+      <UniqueIdentifier>{f26dd169-3120-4a47-8cab-a31018a4fb46}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CMainTool.h">

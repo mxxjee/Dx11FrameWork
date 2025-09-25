@@ -1,26 +1,15 @@
-#include "CImguiBase.h"
+#include "CImgui_Base.h"
 
-CImguiBase::CImguiBase()
+CImgui_Base::CImgui_Base()
 {
 }
 
-HRESULT CImguiBase::Initialize()
-{
-    return E_NOTIMPL;
-}
-
-void CImguiBase::Update()
+CImgui_Base::CImgui_Base(const string& Tag)
+	:m_Tag(Tag)
 {
 }
 
-void CImguiBase::Late_Updte()
-{
-}
 
-void CImguiBase::Render()
-{
-}
-
-void CImguiBase::Free()
+void CImgui_Base::Free()
 {
 }
