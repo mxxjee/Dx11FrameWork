@@ -22,14 +22,26 @@ HRESULT CLevel_GamePlay::Initialize(LevelArgs& args)
     return S_OK;
 }
 
+void CLevel_GamePlay::Update_Priority(_float fTimeDelta)
+{
+    __super::Update_Priority(fTimeDelta);
+    if (GetKeyState(VK_SPACE) & 0x8000)
+        m_pGameInstance->Pop_Level();
+}
+
 void CLevel_GamePlay::Update(const _float fTimeDelta)
 {
     __super::Update(fTimeDelta);
 
-    if (GetKeyState(VK_SPACE) & 0x8000)
-        m_pGameInstance->Pop_Level();
+ 
 
     return;
+}
+
+void CLevel_GamePlay::Update_Late(_float fTimeDelta)
+{
+    __super::Update_Late(fTimeDelta);
+
 }
 
 void CLevel_GamePlay::Render()

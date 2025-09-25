@@ -23,6 +23,7 @@ public:
     void Update_Priority(_float fTimeDelta);
     void Update(_float fTimeDelta);
     void Update_Late(_float fTimeDelta);
+    void Update_Render(_float fTimeDelta);
 
 
 public:

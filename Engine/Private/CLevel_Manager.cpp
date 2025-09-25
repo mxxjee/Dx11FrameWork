@@ -53,6 +53,13 @@ HRESULT CLevel_Manager::Level_Changer(_uint iSceneID, LevelArgs& args)
 	return S_OK;
 }
 
+void CLevel_Manager::Update_Priority(const _float fTimeDelta)
+{ 
+	Clear_DestroyStack();
+	CheckTrue(m_Stack.empty());
+	m_Stack.back()->Update_Priority(fTimeDelta);
+}
+
 void CLevel_Manager::Update(const _float fTimeDelta)
 {
 	CheckTrue(m_Stack.empty());
@@ -61,21 +68,21 @@ void CLevel_Manager::Update(const _float fTimeDelta)
 
 void CLevel_Manager::Update_Late(const _float fTimeDelta)
 {
-	if (!m_tDestroy.empty())
-	{
-		for (auto& level : m_tDestroy)
-		{
-			m_pGameInstance->Clear(level->Get_LevelID());
-			Safe_Release(level);
-			
-		}
-
-
-		m_tDestroy.clear();
-	}
 	
+	CheckTrue(m_Stack.empty());
+	m_Stack.back()->Update_Late(fTimeDelta);
 
 
+}
+
+void CLevel_Manager::Update_Render(const _float fTimeDelta)
+{
+	CheckTrue(m_Stack.empty());
+	for (auto& level : m_Stack)
+	{
+		if (level->Get_State() != LEVELSTATE::HIDDEN)
+			level->Update_Render(fTimeDelta);
+	}
 }
 
 void CLevel_Manager::Render()
@@ -155,6 +162,22 @@ void CLevel_Manager::Pop_Level()
 
 	}
 
+}
+
+void CLevel_Manager::Clear_DestroyStack()
+{
+	if (!m_tDestroy.empty())
+	{
+		for (auto& level : m_tDestroy)
+		{
+			m_pGameInstance->Clear(level->Get_LevelID());
+			Safe_Release(level);
+
+		}
+
+
+		m_tDestroy.clear();
+	}
 }
 
 void CLevel_Manager::ActiveTop(CLevel* pNewLevel, LEVELCHANGETYPE eChangeType)

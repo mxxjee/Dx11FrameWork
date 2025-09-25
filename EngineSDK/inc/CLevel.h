@@ -17,8 +17,10 @@ protected:
 public:
     virtual HRESULT     Initialize(LevelArgs& args);                       //æ¿ ºº∆√.
    
+    virtual void            Update_Priority(_float fTimeDelta);
     virtual void            Update(const _float fTimeDelta);
- 
+    virtual void            Update_Late(_float fTimeDelta);
+    virtual void            Update_Render(_float fTimeDelta);
     
     virtual void        Render();         //æ¿¿« ∑ª¥ı.
    

@@ -24,8 +24,8 @@ namespace Engine
 
 
 	enum class PROTOTYPE
-	{
-		GAMEOBJECT, COMPONENT
-	};
+	{GAMEOBJECT, COMPONENT};
+
+	enum class RENDERGROUP {PRIORITY,NONALPHA, ALPHA,UI,END};
 }
 #endif // Engine_Enum_h__

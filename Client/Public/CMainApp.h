@@ -19,9 +19,12 @@ private:
 
 public:
 	HRESULT Initialize();
+	void	Update_Priority(_float fTimeDelta);
 	void	Update(_float fTimeDelta);
-	void	Late_Update(float fTimeDelta);
+	void	Update_Late(float fTimeDelta);
+	void	Update_Render(float fTimeDelta);
 	void	Render();
+
 
 private:
 	void			Reigster_Levels();

@@ -36,13 +36,9 @@ HRESULT CLevel_Loading::Initialize(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeTyp
     return S_OK;
 }
 
-void CLevel_Loading::Update(const _float fTimeDelta)
+void CLevel_Loading::Update_Priority(_float fTimeDelta)
 {
-    __super::Update(fTimeDelta);
-
-    /*로더야 로딩 다 되었니?*/
-    CheckNull(m_pLoader);
-
+    __super::Update_Priority(fTimeDelta);
     if (m_pLoader->IsFinished() &&
         GetKeyState(VK_RETURN) & 0x8000)
     {
@@ -56,6 +52,22 @@ void CLevel_Loading::Update(const _float fTimeDelta)
 
         MSG_BOX("다음 씬 불러오기 실패");
     }
+}
+
+void CLevel_Loading::Update(const _float fTimeDelta)
+{
+    __super::Update(fTimeDelta);
+
+    /*로더야 로딩 다 되었니?*/
+    CheckNull(m_pLoader);
+
+   
+
+}
+
+void CLevel_Loading::Update_Late(_float fTimeDelta)
+{
+    __super::Update_Late(fTimeDelta);
 
 }
 

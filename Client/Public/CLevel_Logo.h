@@ -14,7 +14,12 @@ private:
 
 public:
     virtual HRESULT     Initialize(LevelArgs& args) override;                             //æ¿ ºº∆√.
-    virtual void        Update(const _float fTimeDelta) override;        //æ¿¿« æ˜µ•¿Ã∆Æ
+    virtual void        Update_Priority(_float fTimeDelta);
+    virtual void        Update(const _float fTimeDelta) override;
+    virtual void            Update_Late(_float fTimeDelta);
+
+    
+    //æ¿¿« æ˜µ•¿Ã∆Æ
     virtual void        Render() override;         //æ¿¿« ∑ª¥ı.
 
 public:

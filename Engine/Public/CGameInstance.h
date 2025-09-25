@@ -26,9 +26,11 @@ private:
 public:
     HRESULT Initialize_Engine(const ENGINE_DESC & EngineDesc,ComPtr<ID3D11Device>& pDevice, ComPtr<ID3D11DeviceContext>& pContext);
     
+    void    Update_Priority_Engine(_float fTimedelta);
     void    Update_Engine(_float fTimedelta);
     void    LateUpdate_Engine(float fTimedelta);
-
+    void    Update_Render(float fTimedelta);
+    
     HRESULT     Draw_Begin(const _float4 * pClearColor);
     HRESULT     Draw();
     HRESULT     Draw_End();
@@ -73,6 +75,13 @@ public:
         _uint iLayerLevelIndex, const _wstring & strLayerTag, void* pArg = nullptr);
 #pragma endregion
 
+
+#pragma region Renderer
+public:
+    HRESULT         Add_RenderObject(RENDERGROUP eID, class CGameObject * pRenderObject);
+
+#pragma endregion
+
 private:
     class CLevel_Manager* m_pLevelManager = { nullptr };
     class CTimer_Manager* m_pTimerManager = { nullptr };
@@ -80,7 +89,7 @@ private:
     class CLevelFactroy* m_pLevelFactory = { nullptr };
     class CPrototype_Manager* m_pProtoManager = { nullptr };
     class CObject_Manager* m_pObjectManager = { nullptr };
-
+    class CRenderer* m_pRenderer = nullptr;
 
 public:
     void                Release_Engine();

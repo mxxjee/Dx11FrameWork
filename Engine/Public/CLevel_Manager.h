@@ -25,9 +25,10 @@ public:
     /*씬을 바꾸기 전 이전 씬을 정리하고, 저장하던 씬 정보 갱신.*/
     HRESULT         Level_Changer(_uint iSceneID, LevelArgs& args);
    
+    void            Update_Priority(const _float fTimeDelta);
     void            Update(const _float fTimeDelta);
     void            Update_Late(const _float fTimeDelta);
-
+    void            Update_Render(const _float fTimeDelta);
 
     void            Render();
 
@@ -40,6 +41,7 @@ public:
       
 
 private:
+    void            Clear_DestroyStack();
     void            ActiveTop(CLevel* pNewLevel,LEVELCHANGETYPE eChangeType);   //Top교체 및 활성화
     void            PopIfTransient();     //임시씬이 있을 경우 바로 삭제 하고 이후처리.
 

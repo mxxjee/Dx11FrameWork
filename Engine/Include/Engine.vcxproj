@@ -162,6 +162,7 @@
     <ClInclude Include="..\Public\CImGui_Manager.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
     <ClInclude Include="..\Public\CPrototype_Manager.h" />
+    <ClInclude Include="..\Public\CRenderer.h" />
     <ClInclude Include="..\Public\CTimer.h" />
     <ClInclude Include="..\Public\CTimer_Manager.h" />
     <ClInclude Include="..\Public\CUI.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="..\Private\CImGui_Manager.cpp" />
     <ClCompile Include="..\Private\CObject_Manager.cpp" />
     <ClCompile Include="..\Private\CPrototype_Manager.cpp" />
+    <ClCompile Include="..\Private\CRenderer.cpp" />
     <ClCompile Include="..\Private\CTimer.cpp" />
     <ClCompile Include="..\Private\CTimer_Manager.cpp" />
     <ClCompile Include="..\Private\CUI.cpp" />

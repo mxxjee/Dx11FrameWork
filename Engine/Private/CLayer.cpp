@@ -39,6 +39,15 @@ void CLayer::Update_Late(_float fTimeDelta)
     }
 }
 
+void CLayer::Update_Render(_float fTimeDelta)
+{
+    for (auto& i : m_ObjList)
+    {
+        if (i != nullptr)
+            i->Update_Render(fTimeDelta);
+    }
+}
+
 CLayer* CLayer::Create()
 {
     return new CLayer();

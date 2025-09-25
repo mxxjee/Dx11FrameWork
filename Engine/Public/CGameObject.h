@@ -40,6 +40,7 @@ public:
     virtual void        Update_Priority(_float fTimeDelta);
     virtual void        Update(_float fTimeDelta);
     virtual void        Update_Late(_float fTimeDelta);
+    virtual void        Update_Render(_float fTimeDelta);
 
 
     virtual HRESULT Render();
@@ -48,6 +49,7 @@ public:
 protected:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };
+    class CGameInstance* m_pGameInstance = { nullptr };
 
 protected:
     _wstring                tag = L"";

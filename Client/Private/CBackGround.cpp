@@ -1,4 +1,5 @@
 #include "CBackGround.h"
+#include "CGameInstance.h"
 
 USING(Client)
 
@@ -42,6 +43,13 @@ void CBackGround::Update(_float fTimeDelta)
 void CBackGround::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
+}
+
+void CBackGround::Update_Render(_float fTimeDelta)
+{
+    __super::Update_Render(fTimeDelta);
+    m_pGameInstance->Add_RenderObject(RENDERGROUP::PRIORITY, this);
+
 }
 
 HRESULT CBackGround::Render()

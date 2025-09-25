@@ -24,15 +24,14 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
     return S_OK;
 }
 
-void CLevel_Logo::Update(const _float fTimeDelta)
+void CLevel_Logo::Update_Priority(_float fTimeDelta)
 {
-    __super::Update(fTimeDelta);
-
+    __super::Update_Priority(fTimeDelta);
     if (GetKeyState(VK_UP) & 0x8000)
     {
         LevelArgs args;
         args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::GAMEPLAY);
-        args.changeType = LEVELCHANGETYPE::REPLACETOP;
+        args.changeType = LEVELCHANGETYPE::OVERLAY;
         args.loadingChangeType = LEVELCHANGETYPE::PUSH;
         args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
@@ -42,8 +41,20 @@ void CLevel_Logo::Update(const _float fTimeDelta)
             args)))
             return;
     }
+}
+
+void CLevel_Logo::Update(const _float fTimeDelta)
+{
+    __super::Update(fTimeDelta);
+
+    
 
     return;
+}
+
+void CLevel_Logo::Update_Late(_float fTimeDelta)
+{
+    __super::Update_Late(fTimeDelta);
 }
 
 void CLevel_Logo::Render()

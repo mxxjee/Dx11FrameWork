@@ -6,6 +6,7 @@
 #include "CLevelFactroy.h"
 #include "CPrototype_Manager.h"
 #include "CObject_Manager.h"
+#include "CRenderer.h"
 
 
 IMPLEMENT_SINGLETON(CGameInstance)
@@ -45,7 +46,18 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	m_pObjectManager = CObject_Manager::Create(pDevice.Get(), pContext.Get(), EngineDesc.iNumLevels);
 	CheckNullResult(m_pObjectManager, E_FAIL);
 
+
+	/*렌더러 초기화*/
+	m_pRenderer = CRenderer::Create(pDevice.Get(), pContext.Get());
+	CheckNullResult(m_pRenderer, E_FAIL);
+
 	return S_OK;
+}
+
+void CGameInstance::Update_Priority_Engine(_float fTimedelta)
+{
+	/*지연삭제 / Scenechange 용*/
+	m_pLevelManager->Update_Priority(fTimedelta);
 }
 
 void CGameInstance::Update_Engine(_float fTimedelta)
@@ -54,14 +66,22 @@ void CGameInstance::Update_Engine(_float fTimedelta)
 	m_pObjectManager->Update(fTimedelta);
 	m_pObjectManager->Update_Late(fTimedelta);*/
 
+	
 	m_pLevelManager->Update(fTimedelta);
+
+
 }
 
 void CGameInstance::LateUpdate_Engine(float fTimedelta)
 {
-	/*지연삭제용*/
 	m_pLevelManager->Update_Late(fTimedelta);
 }
+
+void CGameInstance::Update_Render(float fTimedelta)
+{
+	m_pLevelManager->Update_Render(fTimedelta);
+}
+
 
 HRESULT CGameInstance::Draw_Begin(const _float4* pClearColor)
 {
@@ -78,7 +98,7 @@ HRESULT CGameInstance::Draw_Begin(const _float4* pClearColor)
 
 HRESULT CGameInstance::Draw()
 {
-	//Renderer->Draw();
+	m_pRenderer->Draw();
 	m_pLevelManager->Render();
 	return S_OK;
 }
@@ -180,6 +200,15 @@ HRESULT CGameInstance::Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _ws
 {
 	CheckNullResult(m_pObjectManager, E_FAIL);
 	return m_pObjectManager->Add_GameObject_To_Layer(iProtoLevelIndex,strPrototypeTag,iLayerLevelIndex,strLayerTag,pArg);
+}
+
+#pragma endregion
+
+#pragma region Renderer
+HRESULT CGameInstance::Add_RenderObject(RENDERGROUP eID, CGameObject* pRenderObject)
+{
+	CheckNullResult(m_pRenderer, E_FAIL);
+	return m_pRenderer->Add_RenderObject(eID, pRenderObject);
 }
 #pragma endregion
 

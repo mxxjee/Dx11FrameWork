@@ -1,14 +1,18 @@
 #include "CGameObject.h"
-
+#include "CGameInstance.h"
 CGameObject::CGameObject(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    :m_pDevice(pDevice),m_pContext(pContext)
+    :m_pDevice(pDevice),m_pContext(pContext),m_pGameInstance(CGameInstance::GetInstance())
 {
+    Safe_AddRef(m_pGameInstance);
 }
 
 CGameObject::CGameObject(const CGameObject* rhs)
     :m_pDevice(rhs->m_pDevice),
-    m_pContext(rhs->m_pContext)
+    m_pContext(rhs->m_pContext),
+    m_pGameInstance(CGameInstance::GetInstance())
 {
+
+    Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CGameObject::Initialize_Prototype()
@@ -38,6 +42,11 @@ void CGameObject::Update_Late(_float fTimeDelta)
 {
 }
 
+void CGameObject::Update_Render(_float fTimeDelta)
+{
+
+}
+
 HRESULT CGameObject::Render()
 {
     return S_OK;
@@ -47,4 +56,5 @@ HRESULT CGameObject::Render()
 void CGameObject::Free()
 {
     __super::Free();
+    Safe_Release(m_pGameInstance);
 }

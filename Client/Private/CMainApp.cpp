@@ -41,16 +41,27 @@ HRESULT CMainApp::Initialize()
 	return S_OK;
 }
 
+void CMainApp::Update_Priority(_float fTimeDelta)
+{
+	pGameInstance->Update_Priority_Engine(fTimeDelta);
+}
+
 void CMainApp::Update(_float fTimeDelta)
 {
 	/*내 게임의 반복적인 작업 수행*/
 	pGameInstance->Update_Engine(fTimeDelta);
 }
 
-void CMainApp::Late_Update(float fTimeDelta)
+void CMainApp::Update_Late(float fTimeDelta)
 {
 	pGameInstance->LateUpdate_Engine(fTimeDelta);
 }
+
+void CMainApp::Update_Render(float fTimeDelta)
+{
+	pGameInstance->Update_Render(fTimeDelta);
+}
+
 
 void CMainApp::Render()
 {
@@ -91,7 +102,7 @@ HRESULT CMainApp::Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)
 
 	LevelArgs args;
 	args.iNextLevelID = ENUM_TO_UINT(iLevelID);
-	args.changeType = LEVELCHANGETYPE::PUSH;
+	args.changeType = LEVELCHANGETYPE::OVERLAY;
 	args.m_eFlag = LEVELFLAG::TRANSIENT;
 	args.loadingChangeType = LEVELCHANGETYPE::PUSH;
 	args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);

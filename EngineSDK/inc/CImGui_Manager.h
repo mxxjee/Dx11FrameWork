@@ -27,7 +27,6 @@ class ENGINE_DLL CImGui_Manager final :
         bool        show_demo_window = { true };
         _float4     clearColor = { 0.f,0.f,0.f,0.f };
  
-
 };
 
 NS_END
