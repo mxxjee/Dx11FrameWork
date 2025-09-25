@@ -1,7 +1,7 @@
 #include "CMainTool.h"
 #include "CImGui_Manager.h"
 #include "CGameInstance.h"
-
+#include "Client_Defines.h"
 
 USING(MapTool)
 
@@ -19,11 +19,12 @@ HRESULT CMainTool::Initialize()
     desc.iWinSizeX = g_iWinSizeX;
     desc.iWinSizeY = g_iWinSizeY;
     desc.winMode = WINMODE::WIN;
+    desc.iNumLevels = ENUM_TO_UINT(LEVEL_ID::END);
 
-    if(FAILED(pGameInstance->Initialize_Engine(desc, &m_pDevice, &m_pContext)))
+    if(FAILED(pGameInstance->Initialize_Engine(desc, m_pDevice, m_pContext)))
         return E_FAIL;
 
-    pImGui_Manager->Init(g_hWnd, m_pDevice, m_pContext);
+    pImGui_Manager->Init(g_hWnd, m_pDevice.Get(), m_pContext.Get());
 
     return S_OK;
 }
@@ -36,7 +37,7 @@ void CMainTool::Update(_float fTimeDelta)
 void CMainTool::Render()
 {
     pGameInstance->Draw_Begin(&ClearColor);
-    pImGui_Manager->Render();
+    pImGui_Manager->Render(m_pContext.Get());
     pGameInstance->Draw_End();
 }
 

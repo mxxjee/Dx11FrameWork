@@ -21,9 +21,11 @@ void CImGui_Manager::Init(HWND hWnd, ID3D11Device* device, ID3D11DeviceContext* 
     //Imgui context세팅
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
@@ -33,7 +35,14 @@ void CImGui_Manager::Init(HWND hWnd, ID3D11Device* device, ID3D11DeviceContext* 
     ImGuiStyle& style = ImGui::GetStyle();
     style.ScaleAllSizes(main_scale);        // Bake a fixed style scale. (until we have a solution for dynamic style scaling, changing this requires resetting Style + calling this again)
     style.FontScaleDpi = main_scale;        // Set initial font scale. (using io.ConfigDpiScaleFonts=true makes this unnecessary. We leave both here for documentation purpose)
+    io.ConfigDpiScaleFonts = true;          // [Experimental] Automatically overwrite style.FontScaleDpi in Begin() when Monitor DPI changes. This will scale fonts but _NOT_ scale sizes/padding for now.
+    io.ConfigDpiScaleViewports = true;      // [Experimental] Scale Dear ImGui and Platform Windows when Monitor DPI changes.
 
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
     // Setup Platform/Renderer backends
     ImGui_ImplWin32_Init(hWnd);
     ImGui_ImplDX11_Init(device, device_context);
@@ -46,18 +55,35 @@ void CImGui_Manager::Update()
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
+    BeginDockSpace();//도킹기능
     //나중에 외부에서 설정할듯, 일단 테스트.
     Test();
 }
 
-void CImGui_Manager::Render()
+void CImGui_Manager::Render(ID3D11DeviceContext* device_context)
 {
     ImGui::Render();
   //  const float clear_color_with_alpha[4] = { clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w };
    // g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, nullptr);
    // g_pd3dDeviceContext->ClearRenderTargetView(g_mainRenderTargetView, clear_color_with_alpha);
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+    // 뷰포트 옵션 켠 경우 추가
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        // DX11 상태 백업
+        ID3D11RenderTargetView* backup_rt = nullptr;
+        ID3D11DepthStencilView* backup_ds = nullptr;
+        device_context->OMGetRenderTargets(1, &backup_rt, &backup_ds);
 
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+
+        //// DX11 상태 복원
+        device_context->OMSetRenderTargets(1, &backup_rt, backup_ds);
+        if (backup_rt) backup_rt->Release();
+        if (backup_ds) backup_ds->Release();
+    }
 }
 
 void CImGui_Manager::Test()
@@ -65,7 +91,11 @@ void CImGui_Manager::Test()
     // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
     if (show_demo_window)
         ImGui::ShowDemoWindow(&show_demo_window);
+    ImGuiIO& io = ImGui::GetIO();
 
+    ImGui::Text("DockingEnable: %s", (io.ConfigFlags & ImGuiConfigFlags_DockingEnable) ? "ON" : "OFF");
+    ImGui::Text("ViewportsEnable: %s", (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) ? "ON" : "OFF");
+    
     // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
     {
         static float f = 0.0f;
@@ -99,6 +129,39 @@ void CImGui_Manager::Test()
         ImGui::End();
     }
 
+}
+
+void CImGui_Manager::BeginDockSpace()
+{
+    const ImGuiViewport* viewport = ImGui::GetMainViewport();
+
+    ImGui::SetNextWindowPos(viewport->Pos);
+    ImGui::SetNextWindowSize(viewport->Size);
+    ImGui::SetNextWindowViewport(viewport->ID);
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0, 0, 0, 0));
+    ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0, 0, 0, 0));
+
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking |
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoBringToFrontOnFocus |
+        ImGuiWindowFlags_NoNavFocus |
+        ImGuiWindowFlags_NoBackground;
+
+    ImGui::Begin("DockSpace Demo", nullptr, window_flags);
+
+    ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+    ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_PassthruCentralNode);
+
+    ImGui::End();
+
+    ImGui::PopStyleVar(2);
+    ImGui::PopStyleColor(2);
 }
 
 void CImGui_Manager::Free()
