@@ -79,6 +79,9 @@
     <Filter Include="04.Renderer">
       <UniqueIdentifier>{18747b2e-56f4-4530-8a1d-91b7af78611e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component">
+      <UniqueIdentifier>{3df1ce7e-699e-493b-8569-a73acb5c7dd2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -177,6 +180,7 @@
     <ClInclude Include="..\Public\CRenderer.h">
       <Filter>04.Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -251,5 +255,6 @@
     <ClCompile Include="..\Private\CRenderer.cpp">
       <Filter>04.Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CComponent.cpp" />
   </ItemGroup>
 </Project>
