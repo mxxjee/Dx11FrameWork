@@ -109,6 +109,12 @@
     <Filter Include="06.PipeLine\01.InputAssembler\IndexBuffer">
       <UniqueIdentifier>{136cada7-0d1f-405f-992e-6a5ad69ddcb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.PipeLine\01.InputAssembler\VertexBuffer">
+      <UniqueIdentifier>{3a66e2d5-18bf-4834-a456-288dba257c80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.PipeLine\01.InputAssembler\InputLayout">
+      <UniqueIdentifier>{500e3021-be2b-4b62-92d9-e782a4469fd9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -219,6 +225,16 @@
     <ClInclude Include="..\Public\CIndexBuffer.h">
       <Filter>06.PipeLine\01.InputAssembler\IndexBuffer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CVertexBuffer.h">
+      <Filter>06.PipeLine\01.InputAssembler\VertexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\InputLayout.h">
+      <Filter>06.PipeLine\01.InputAssembler\InputLayout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CConstantBuffer.h">
+      <Filter>06.PipeLine\02.VertexShader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CShader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -305,5 +321,15 @@
     <ClCompile Include="..\Private\CIndexBuffer.cpp">
       <Filter>06.PipeLine\01.InputAssembler\IndexBuffer</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CVertexBuffer.cpp">
+      <Filter>06.PipeLine\01.InputAssembler\VertexBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\InputLayout.cpp">
+      <Filter>06.PipeLine\01.InputAssembler\InputLayout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CConstantBuffer.cpp">
+      <Filter>06.PipeLine\02.VertexShader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CShader.cpp" />
   </ItemGroup>
 </Project>

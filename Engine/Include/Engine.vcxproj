@@ -151,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h" />
     <ClInclude Include="..\Public\CComponent.h" />
+    <ClInclude Include="..\Public\CConstantBuffer.h" />
     <ClInclude Include="..\Public\CGameInstance.h" />
     <ClInclude Include="..\Public\CGameObject.h" />
     <ClInclude Include="..\Public\CGeometry.h" />
@@ -166,9 +167,11 @@
     <ClInclude Include="..\Public\CObject_Manager.h" />
     <ClInclude Include="..\Public\CPrototype_Manager.h" />
     <ClInclude Include="..\Public\CRenderer.h" />
+    <ClInclude Include="..\Public\CShader.h" />
     <ClInclude Include="..\Public\CTimer.h" />
     <ClInclude Include="..\Public\CTimer_Manager.h" />
     <ClInclude Include="..\Public\CUI.h" />
+    <ClInclude Include="..\Public\CVertexBuffer.h" />
     <ClInclude Include="..\Public\Engine_Define.h" />
     <ClInclude Include="..\Public\Engine_Enum.h" />
     <ClInclude Include="..\Public\Engine_Function.h" />
@@ -185,10 +188,12 @@
     <ClInclude Include="..\Public\imstb_rectpack.h" />
     <ClInclude Include="..\Public\imstb_textedit.h" />
     <ClInclude Include="..\Public\imstb_truetype.h" />
+    <ClInclude Include="..\Public\InputLayout.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp" />
     <ClCompile Include="..\Private\CComponent.cpp" />
+    <ClCompile Include="..\Private\CConstantBuffer.cpp" />
     <ClCompile Include="..\Private\CGameInstance.cpp" />
     <ClCompile Include="..\Private\CGameObject.cpp" />
     <ClCompile Include="..\Private\CGeometry.cpp" />
@@ -204,9 +209,11 @@
     <ClCompile Include="..\Private\CObject_Manager.cpp" />
     <ClCompile Include="..\Private\CPrototype_Manager.cpp" />
     <ClCompile Include="..\Private\CRenderer.cpp" />
+    <ClCompile Include="..\Private\CShader.cpp" />
     <ClCompile Include="..\Private\CTimer.cpp" />
     <ClCompile Include="..\Private\CTimer_Manager.cpp" />
     <ClCompile Include="..\Private\CUI.cpp" />
+    <ClCompile Include="..\Private\CVertexBuffer.cpp" />
     <ClCompile Include="..\Private\GeometryHelper.cpp" />
     <ClCompile Include="..\Private\imgui.cpp" />
     <ClCompile Include="..\Private\imgui_demo.cpp" />
@@ -215,6 +222,7 @@
     <ClCompile Include="..\Private\imgui_impl_win32.cpp" />
     <ClCompile Include="..\Private\imgui_tables.cpp" />
     <ClCompile Include="..\Private\imgui_widgets.cpp" />
+    <ClCompile Include="..\Private\InputLayout.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
