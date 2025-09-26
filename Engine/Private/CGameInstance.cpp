@@ -223,7 +223,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pObjectManager);
 	Safe_Release(m_pGraphicDev);
 
-	DestroyInstance();
+///	DestroyInstance();
 }
 
 void CGameInstance::Free()

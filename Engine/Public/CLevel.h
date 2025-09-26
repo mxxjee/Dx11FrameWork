@@ -43,9 +43,8 @@ public:
     _uint                   Get_LevelID() const { return m_eLevelArgs.m_iLevelID; }
 protected:
     class CGameInstance*            m_pGameInstance = { nullptr };
-    ComPtr<ID3D11Device>            m_pDevice = { nullptr };
-    ComPtr<ID3D11DeviceContext>     m_pDeviceContext = { nullptr };
-
+    ID3D11Device* m_pDevice = nullptr;
+    ID3D11DeviceContext* m_pDeviceContext = nullptr;
 
 
 private:

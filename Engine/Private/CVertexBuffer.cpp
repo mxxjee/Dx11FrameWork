@@ -13,6 +13,3 @@ CVertexBuffer::~CVertexBuffer()
 {
 }
 
-void CVertexBuffer::Create(const vector<T>& _indices)
-{
-}
