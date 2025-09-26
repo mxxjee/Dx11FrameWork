@@ -82,6 +82,33 @@
     <Filter Include="05.Component">
       <UniqueIdentifier>{3df1ce7e-699e-493b-8569-a73acb5c7dd2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.PipeLine">
+      <UniqueIdentifier>{32a26077-7181-477a-aa89-7eb2a02029ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.PipeLine\00.Geometry">
+      <UniqueIdentifier>{074fbb04-677b-463c-bd2c-26a7eed76435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.PipeLine\01.InputAssembler">
+      <UniqueIdentifier>{e337cd6d-69a3-441e-a019-c15ea4e1857e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.PipeLine\02.VertexShader">
+      <UniqueIdentifier>{c0989da0-ebe4-4ef6-b10d-e112d3f90df1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.PipeLine\03.Rasterizer">
+      <UniqueIdentifier>{5eb13aae-992a-4afd-a76a-7b982f6daf12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.PipeLine\04.PixelShader">
+      <UniqueIdentifier>{a54b06ff-ec4b-4cda-81ce-416aefdf5917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.PipeLine\05.OutputMerger">
+      <UniqueIdentifier>{d1f4edb1-c101-4006-a681-56421f04c3f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.PipeLine\00.Geometry\Helper">
+      <UniqueIdentifier>{c097abc4-20ad-4ca5-9fc7-aab0839f0013}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.PipeLine\01.InputAssembler\IndexBuffer">
+      <UniqueIdentifier>{136cada7-0d1f-405f-992e-6a5ad69ddcb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -180,7 +207,18 @@
     <ClInclude Include="..\Public\CRenderer.h">
       <Filter>04.Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CComponent.h" />
+    <ClInclude Include="..\Public\CComponent.h">
+      <Filter>05.Component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGeometry.h">
+      <Filter>06.PipeLine\00.Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GeometryHelper.h">
+      <Filter>06.PipeLine\00.Geometry\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CIndexBuffer.h">
+      <Filter>06.PipeLine\01.InputAssembler\IndexBuffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -255,6 +293,17 @@
     <ClCompile Include="..\Private\CRenderer.cpp">
       <Filter>04.Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CComponent.cpp" />
+    <ClCompile Include="..\Private\CComponent.cpp">
+      <Filter>05.Component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGeometry.cpp">
+      <Filter>06.PipeLine\00.Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\GeometryHelper.cpp">
+      <Filter>06.PipeLine\00.Geometry\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CIndexBuffer.cpp">
+      <Filter>06.PipeLine\01.InputAssembler\IndexBuffer</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
