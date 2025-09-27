@@ -124,6 +124,9 @@
     <Filter Include="06.PipeLine\02.VertexShader\PS">
       <UniqueIdentifier>{77625176-7dcc-4d28-8239-8fc02587790b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.PipeLine\02.VertexShader\Texture">
+      <UniqueIdentifier>{f2082105-9b65-4e8d-869f-2a561e123ccd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -237,7 +240,7 @@
     <ClInclude Include="..\Public\CVertexBuffer.h">
       <Filter>06.PipeLine\01.InputAssembler\VertexBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\InputLayout.h">
+    <ClInclude Include="..\Public\CInputLayout.h">
       <Filter>06.PipeLine\01.InputAssembler\InputLayout</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CConstantBuffer.h">
@@ -251,6 +254,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CPixelShader.h">
       <Filter>06.PipeLine\02.VertexShader\PS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CTexture.h">
+      <Filter>06.PipeLine\02.VertexShader\Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -341,7 +347,7 @@
     <ClCompile Include="..\Private\CVertexBuffer.cpp">
       <Filter>06.PipeLine\01.InputAssembler\VertexBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\InputLayout.cpp">
+    <ClCompile Include="..\Private\CInputLayout.cpp">
       <Filter>06.PipeLine\01.InputAssembler\InputLayout</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CShader.cpp">
@@ -355,6 +361,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CPixelShader.cpp">
       <Filter>06.PipeLine\02.VertexShader\PS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTexture.cpp">
+      <Filter>06.PipeLine\02.VertexShader\Texture</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

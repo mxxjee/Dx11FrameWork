@@ -11,8 +11,14 @@
 #include <memory>
 using namespace Microsoft::WRL;
 
+
 #include <DirectXMath.h>
 #include "SimpleMath.h"
+
+#include "DirectXTex.h"
+#include "DirectXTex.inl"
+
+
 using namespace DirectX;
 #include <vector>
 #include <list>
@@ -31,6 +37,13 @@ using namespace std;
 #include "Engine_Function.h"
 
 
+#ifdef _DEBUG
+#pragma comment(lib,"../../EngineSDK/lib/DirectXTex_Debug.lib")
+
+#else
+#pragma comment(lib,"../../EngineSDK/lib/DirectXTex.lib")
+
+#endif
 
 #define DIRECTINPUT_VERSION	0x0800
 #include <dinput.h>

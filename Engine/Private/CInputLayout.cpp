@@ -1,24 +1,24 @@
-#include "InputLayout.h"
+#include "CInputLayout.h"
 
-InputLayout::InputLayout(ComPtr<ID3D11Device> pDevice)
+CInputLayout::CInputLayout(ComPtr<ID3D11Device> pDevice)
 	:m_pDevice(pDevice)
 {
 }
 
 
 
-InputLayout::~InputLayout()
+CInputLayout::~CInputLayout()
 {
 }
 
-void InputLayout::Create(const vector<D3D11_INPUT_ELEMENT_DESC>& desc, ComPtr<ID3DBlob> blob)
+void CInputLayout::Create(const vector<D3D11_INPUT_ELEMENT_DESC>& desc, ComPtr<ID3DBlob> blob)
 {
 	const UINT32 count = desc.size();
 	m_pDevice.Get()->CreateInputLayout(desc.data(), count, blob->GetBufferPointer(), blob->GetBufferSize(), m_pInputLayout.GetAddressOf());
 
 }
 
-void InputLayout::Free()
+void CInputLayout::Free()
 {
 	__super::Free();
 }

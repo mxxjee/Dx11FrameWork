@@ -23,7 +23,19 @@ public:
 
 
 private:
-	HRESULT		Initialize_RenderResource();
+	HRESULT		Initialize_Piepline();
+	HRESULT		CreateRasterizerState();
+	HRESULT		CreateSamplerState();
+	HRESULT		CreateBlendState();
+
+private:
+	void	CreateGeometry();
+	void	CreateInputLayout();
+	void	VertexShader();
+	void	PixelShader();
+
+	
+
 public:
 	static CBackGround* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
 	virtual CGameObject* Clone(void* pArg) override;

@@ -3,12 +3,12 @@
 
 NS_BEGIN(Engine)
 
-class ENGINE_DLL InputLayout :
+class ENGINE_DLL CInputLayout :
   public CBase
 {
 public:
-	InputLayout(ComPtr<ID3D11Device>	pDevice);
-	~InputLayout();
+	CInputLayout(ComPtr<ID3D11Device>	pDevice);
+	~CInputLayout();
 
 
 	ComPtr<ID3D11InputLayout>	Get_ComPtr() { return m_pInputLayout; }

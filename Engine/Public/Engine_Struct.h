@@ -47,17 +47,25 @@ namespace Engine
 	struct RenderPipelineResource
 	{
 		// 버텍스/인덱스 데이터
-		shared_ptr<class VertexBuffer>   vertexBuffer;
-		shared_ptr<class IndexBuffer>    indexBuffer;
-		shared_ptr<class InputLayout > inputLayout;
+		shared_ptr<class CVertexBuffer>   vertexBuffer;
+		shared_ptr<class CIndexBuffer>    indexBuffer;
+		shared_ptr<class CInputLayout > inputLayout;
 		shared_ptr<class CGeometry<TVertex>> geometry;
 
 		// 셰이더
-		shared_ptr<class VertexShader>   vertexShader;
-		shared_ptr<class PixelShader>    pixelShader;
+		shared_ptr<class CVertexShader>   vertexShader;
+		shared_ptr<class CPixelShader>    pixelShader;
 
+		shared_ptr<class CTexture> texture1 = { nullptr };
+		
 		// 상수 버퍼
 		shared_ptr<class CConstantBuffer<TBuffer>> constantBuffer;
+
+
+
+		ComPtr<ID3D11RasterizerState> _rasterizerState = nullptr;
+		ComPtr<ID3D11SamplerState>		_samplerState = nullptr;
+		ComPtr<ID3D11BlendState> _BlendState = nullptr;
 	};
 
 	struct TransformData
