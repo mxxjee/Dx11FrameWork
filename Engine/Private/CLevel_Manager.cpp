@@ -10,7 +10,8 @@ CLevel_Manager::CLevel_Manager()
 
 HRESULT CLevel_Manager::Level_Changer(_uint iSceneID, LevelArgs& args)
 {
-	
+	//Clear_DestroyStack();
+
 	CLevel* top = nullptr;
 	
 
@@ -154,7 +155,7 @@ void CLevel_Manager::Pop_Level()
 	m_Stack.back()->OnExit();
 	m_tDestroy.push_back(m_Stack.back());
 	m_Stack.pop_back();
-
+	
 	if (!m_Stack.empty())
 	{
 		m_Stack.back()->Set_State(LEVELSTATE::ACTIVE);
@@ -170,6 +171,7 @@ void CLevel_Manager::Clear_DestroyStack()
 	{
 		for (auto& level : m_tDestroy)
 		{
+
 			m_pGameInstance->Clear(level->Get_LevelID());
 			Safe_Release(level);
 

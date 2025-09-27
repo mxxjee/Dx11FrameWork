@@ -247,10 +247,12 @@ CGraphic_Device* CGraphic_Device::Create(HWND hWnd, WINMODE isWindowed,
 
 void CGraphic_Device::Free()
 {
-	//m_pBackBufferRTV.Reset();
-	//m_pDepthStencilView.Reset();
-	//m_pSwapChain.Reset();
-	//m_pDeviceContext.Reset();
+	m_pBackBufferRTV.Reset();
+	m_pDepthStencilView.Reset();
+	m_pSwapChain.Reset();
+
+
+	m_pDeviceContext.Reset();
 
 
 #if defined(DEBUG) || defined(_DEBUG)
@@ -271,5 +273,5 @@ void CGraphic_Device::Free()
 	if (d3dDebug != nullptr)            d3dDebug->Release();
 #endif
 
-//	m_pDevice.Reset();
+	m_pDevice.Reset();
 }

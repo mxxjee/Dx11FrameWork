@@ -60,6 +60,7 @@ HRESULT CBackGround::Render()
 
 CBackGround* CBackGround::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
+
     CBackGround* pInstance = new CBackGround(_pDevice, _pDeviceContext);
     if (FAILED(pInstance->Initialize_Prototype()))
     {
