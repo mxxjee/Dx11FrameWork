@@ -1,7 +1,7 @@
 #include "CRenderer.h"
 #include "CGameObject.h"
 
-CRenderer::CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CRenderer::CRenderer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:m_pDevice(pDevice),m_pContext(pContext)
 {
 	for (size_t i = 0; i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
@@ -90,7 +90,7 @@ void CRenderer::Render_UI()
 	m_RenderObjects[ENUM_TO_UINT(RENDERGROUP::UI)].clear();
 }
 
-CRenderer* CRenderer::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CRenderer* CRenderer::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 {
 	CRenderer* pInstance = new CRenderer(pDevice, pContext);
 	if (FAILED(pInstance->Initialize()))

@@ -8,7 +8,7 @@ class CRenderer :
     public CBase
 {
 private:
-    CRenderer(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+    CRenderer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual ~CRenderer() = default;
 
 
@@ -25,12 +25,12 @@ private:
     void        Render_UI();
 
 private:
-    ID3D11Device* m_pDevice = nullptr;
-    ID3D11DeviceContext* m_pContext = nullptr;
+    ComPtr<ID3D11Device> m_pDevice = nullptr;
+    ComPtr<ID3D11DeviceContext> m_pContext = nullptr;
     
 
 public:
-    static  CRenderer* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+    static  CRenderer* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     list<class CGameObject*>        m_RenderObjects[ENUM_TO_UINT(RENDERGROUP::END)];
     virtual void    Free() override;
 

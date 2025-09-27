@@ -10,7 +10,7 @@ class ENGINE_DLL CLevel :
 {
 
 protected:
-    explicit CLevel(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext);
+    explicit CLevel(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual ~CLevel()=default;
 
 
@@ -43,8 +43,9 @@ public:
     _uint                   Get_LevelID() const { return m_eLevelArgs.m_iLevelID; }
 protected:
     class CGameInstance*            m_pGameInstance = { nullptr };
-    ID3D11Device* m_pDevice = nullptr;
-    ID3D11DeviceContext* m_pDeviceContext = nullptr;
+    ComPtr<ID3D11Device>            m_pDevice;
+    ComPtr<ID3D11DeviceContext>     m_pContext;
+
 
 
 private:

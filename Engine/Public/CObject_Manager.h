@@ -15,7 +15,7 @@ class CObject_Manager final :
     public CBase
 {
 private:
-    CObject_Manager(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+    CObject_Manager(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual ~CObject_Manager() = default;
 
 public:
@@ -38,8 +38,8 @@ private:
     
 
 private:
-    ID3D11Device* m_pDevice = nullptr; 
-    ID3D11DeviceContext* m_pContext = nullptr;
+    ComPtr<ID3D11Device> m_pDevice;
+    ComPtr<ID3D11DeviceContext> m_pContext;
     CGameInstance* m_pGameInstance      = { nullptr };
 
 
@@ -48,7 +48,7 @@ private:
     _uint                    m_iNumLevels = {};/*최대 레벨 개수저장*/
 
 public:
-    static CObject_Manager* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext, _uint iNumLevels);
+    static CObject_Manager* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, _uint iNumLevels);
     virtual void Free();
 };
 NS_END

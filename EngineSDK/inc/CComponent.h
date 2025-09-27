@@ -4,7 +4,7 @@ class CComponent :
     public CBase
 {
 protected:
-    CComponent(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+    CComponent(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CComponent(const CComponent& Prototype);
     virtual ~CComponent() = default;
 
@@ -17,8 +17,8 @@ public:
 
 
 protected:
-    ID3D11Device* m_pDevice = nullptr;
-    ID3D11DeviceContext* m_pContext = nullptr;
+    ComPtr<ID3D11Device> m_pDevice = nullptr;
+    ComPtr<ID3D11DeviceContext> m_pContext = nullptr;
 
 public:
     virtual CComponent* Clone(void* pArg) = 0;

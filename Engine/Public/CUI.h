@@ -11,8 +11,8 @@ public:
     }UI_DESC;
 
 protected:
-    CUI(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
-    CUI(const CUI* rhs);
+    CUI(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+    CUI(const CUI& rhs);
     virtual ~CUI() = default;
 
 public:

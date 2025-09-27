@@ -9,7 +9,8 @@ CGraphic_Device::CGraphic_Device()
 
 
 
-HRESULT CGraphic_Device::Initialize(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext)
+HRESULT CGraphic_Device::Initialize(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY,
+	ComPtr<ID3D11Device>* pDevice, ComPtr<ID3D11DeviceContext>* pContext)
 {
 	_uint		iFlag = 0;
 
@@ -61,8 +62,8 @@ HRESULT CGraphic_Device::Initialize(HWND hWnd, WINMODE isWindowed, _uint iWinSiz
 
 	m_pDeviceContext->RSSetViewports(1, &ViewPortDesc);
 
-	m_pDevice.CopyTo(ppDevice);           // AddRef() «ÿ¡‹
-	m_pDeviceContext.CopyTo(ppContext);   // AddRef() «ÿ¡‹
+	*pDevice = m_pDevice;
+	*pContext = m_pDeviceContext;
 
 	return S_OK;
 }
@@ -228,11 +229,14 @@ HRESULT CGraphic_Device::Ready_DepthStencilView(_uint iWinCX, _uint iWinCY)
 	return S_OK;
 }
 
-CGraphic_Device* CGraphic_Device::Create(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY, _Out_ ID3D11Device** ppDevice, _Out_ ID3D11DeviceContext** ppDeviceContextOut)
+CGraphic_Device* CGraphic_Device::Create(HWND hWnd, WINMODE isWindowed, 
+	_uint iWinSizeX, _uint iWinSizeY, 
+	_Out_ ComPtr<ID3D11Device>* pDevice,
+	_Out_ ComPtr<ID3D11DeviceContext>* pDeviceContextOut)
 {
 	CGraphic_Device* pInstance = new CGraphic_Device();
 
-	if (FAILED(pInstance->Initialize(hWnd, isWindowed, iWinSizeX, iWinSizeY, ppDevice, ppDeviceContextOut)))
+	if (FAILED(pInstance->Initialize(hWnd, isWindowed, iWinSizeX, iWinSizeY, pDevice, pDeviceContextOut)))
 	{
 		MSG_BOX("Failed to Created : CGraphic_Device");
 		Safe_Release(pInstance);
@@ -243,10 +247,10 @@ CGraphic_Device* CGraphic_Device::Create(HWND hWnd, WINMODE isWindowed, _uint iW
 
 void CGraphic_Device::Free()
 {
-	m_pBackBufferRTV.Reset();
-	m_pDepthStencilView.Reset();
-	m_pSwapChain.Reset();
-	m_pDeviceContext.Reset();
+	//m_pBackBufferRTV.Reset();
+	//m_pDepthStencilView.Reset();
+	//m_pSwapChain.Reset();
+	//m_pDeviceContext.Reset();
 
 
 #if defined(DEBUG) || defined(_DEBUG)
@@ -267,5 +271,5 @@ void CGraphic_Device::Free()
 	if (d3dDebug != nullptr)            d3dDebug->Release();
 #endif
 
-	m_pDevice.Reset();
+//	m_pDevice.Reset();
 }

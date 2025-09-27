@@ -7,7 +7,7 @@
 
 USING(Client)
 
-CLevel_Logo::CLevel_Logo(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext)
+CLevel_Logo::CLevel_Logo(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
     :CLevel(_pDevice,_pDeviceContext)
 {
 }
@@ -110,7 +110,7 @@ void CLevel_Logo::OnExit()
 }
 
 
-CLevel_Logo* CLevel_Logo::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext, LevelArgs& args)
+CLevel_Logo* CLevel_Logo::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)
 {
     CLevel_Logo* pInstance = new CLevel_Logo(_pDevice, _pDeviceContext);
     if (FAILED(pInstance->Initialize(args)))

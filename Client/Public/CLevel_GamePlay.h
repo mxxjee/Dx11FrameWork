@@ -8,7 +8,7 @@ class CLevel_GamePlay final :
     public CLevel
 {
 private:
-    explicit CLevel_GamePlay(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext);
+    explicit CLevel_GamePlay(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual ~CLevel_GamePlay() = default;
 
 
@@ -31,7 +31,7 @@ public:
     virtual void        OnPause() override;               //pause되었을때 호출
     virtual void        OnExit() override;
 public:
-    static  CLevel_GamePlay* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext, LevelArgs& args);
+    static  CLevel_GamePlay* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args);
     virtual     void        Free();
 
 

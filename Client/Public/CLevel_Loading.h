@@ -8,7 +8,7 @@ class CLevel_Loading final :
     public CLevel
 {
 private:
-    explicit CLevel_Loading(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext);
+    explicit CLevel_Loading(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual ~CLevel_Loading() = default;
 
 
@@ -32,7 +32,7 @@ public:
     virtual void        OnPause() override;               //pause되었을때 호출
     virtual void        OnExit() override;
 public:
-    static  CLevel_Loading* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext,LevelArgs& args);
+    static  CLevel_Loading* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext,LevelArgs& args);
     virtual     void        Free();
 
 

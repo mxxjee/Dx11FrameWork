@@ -3,10 +3,10 @@
 #include "CLayer.h"
 
 
-CLevel::CLevel(ID3D11Device* _pDevice, ID3D11DeviceContext*_pDeviceContext)
+CLevel::CLevel(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :m_pGameInstance{ CGameInstance::GetInstance() }, 
-    m_pDevice{_pDevice},
-    m_pDeviceContext{_pDeviceContext}
+    m_pDevice{ pDevice },
+    m_pContext{ pContext }
 {
     Safe_AddRef(m_pGameInstance);
 }

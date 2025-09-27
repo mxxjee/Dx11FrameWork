@@ -1,11 +1,11 @@
 #include "CUI.h"
 
-CUI::CUI(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CUI::CUI(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CGameObject(pDevice,pContext)
 {
 }
 
-CUI::CUI(const CUI* rhs)
+CUI::CUI(const CUI& rhs)
     :CGameObject(rhs)
 {
 }

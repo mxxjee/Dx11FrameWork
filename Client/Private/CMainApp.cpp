@@ -28,7 +28,7 @@ HRESULT CMainApp::Initialize()
 	desc.iNumLevels = ENUM_TO_UINT(LEVEL_ID::END);
 
 
-	if(FAILED(pGameInstance->Initialize_Engine(desc,m_pDevice,m_pContext)))
+	if(FAILED(pGameInstance->Initialize_Engine(desc,&m_pDevice,&m_pContext)))
 		return E_FAIL;
 
 	Reigster_Levels();
@@ -77,18 +77,18 @@ void CMainApp::Reigster_Levels()
 	CheckNull(pGameInstance);
 	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOGO), [this](LevelArgs& args)->CLevel*
 		{
-			return CLevel_Logo::Create(m_pDevice.Get(), m_pContext.Get(),args);
+			return CLevel_Logo::Create(m_pDevice, m_pContext,args);
 		});
 
 	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::GAMEPLAY), [this](LevelArgs& args)->CLevel*
 		{
-			return CLevel_GamePlay::Create(m_pDevice.Get(), m_pContext.Get(), args);
+			return CLevel_GamePlay::Create(m_pDevice, m_pContext, args);
 		});
 
 
 	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOADING), [this](LevelArgs& args)->CLevel*
 		{
-			return CLevel_Loading::Create(m_pDevice.Get(), m_pContext.Get(), args);
+			return CLevel_Loading::Create(m_pDevice, m_pContext, args);
 		});
 
 

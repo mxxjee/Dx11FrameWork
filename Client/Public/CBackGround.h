@@ -6,7 +6,7 @@ class CBackGround :
     public CUI
 {
 private:
-    CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+    CBackGround(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     CBackGround(const CBackGround& rhs);
     virtual ~CBackGround() = default;
 
@@ -23,7 +23,7 @@ public:
 
 
 public:
-	static CBackGround* Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext);
+	static CBackGround* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 };

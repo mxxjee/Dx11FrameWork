@@ -4,7 +4,7 @@ class InputLayout :
   public CBase
 {
 public:
-	InputLayout(ID3D11Device* pDevice);
+	InputLayout(ComPtr<ID3D11Device>	pDevice);
 	~InputLayout();
 
 

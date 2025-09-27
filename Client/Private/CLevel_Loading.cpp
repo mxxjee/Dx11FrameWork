@@ -9,7 +9,7 @@
 
 USING(Client)
 
-CLevel_Loading::CLevel_Loading(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext)
+CLevel_Loading::CLevel_Loading(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
     :CLevel(_pDevice,_pDeviceContext)
 {
 }
@@ -21,7 +21,7 @@ HRESULT CLevel_Loading::Initialize(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeTyp
     
     __super::Initialize(args);
 
-    m_pLoader = CLoader::Create(m_pDevice, m_pDeviceContext, iLevelID);
+    m_pLoader = CLoader::Create(m_pDevice, m_pContext, iLevelID);
     CheckNullResult(m_pLoader, E_FAIL);
 
     m_eNextLevelID = iLevelID;
@@ -111,7 +111,7 @@ void CLevel_Loading::OnExit()
 }
 
 
-CLevel_Loading* CLevel_Loading::Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext, LevelArgs& args)
+CLevel_Loading* CLevel_Loading::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)
 {
     CLevel_Loading* pInstance = new CLevel_Loading(_pDevice, _pDeviceContext);
 

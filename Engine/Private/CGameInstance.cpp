@@ -15,10 +15,10 @@ CGameInstance::CGameInstance()
 {
 	 
 }
-HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID3D11Device>& pDevice, ComPtr<ID3D11DeviceContext>& pContext)
+HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID3D11Device>* pDevice, ComPtr<ID3D11DeviceContext>*pContext)
 {
 	/* 그래픽 디바이스 초기화 */
-	m_pGraphicDev = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.winMode, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, pDevice.GetAddressOf(), pContext.GetAddressOf());
+	m_pGraphicDev = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.winMode, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, pDevice, pContext);
 	CheckNullResult(m_pGraphicDev, E_FAIL);
 
 	/*레벨 매니저 초기화*/
@@ -43,12 +43,12 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	CheckNullResult(m_pProtoManager, E_FAIL);
 
 	/*오브젝트매니져 초기화*/
-	m_pObjectManager = CObject_Manager::Create(pDevice.Get(), pContext.Get(), EngineDesc.iNumLevels);
+	m_pObjectManager = CObject_Manager::Create(*pDevice, *pContext, EngineDesc.iNumLevels);
 	CheckNullResult(m_pObjectManager, E_FAIL);
 
 
 	/*렌더러 초기화*/
-	m_pRenderer = CRenderer::Create(pDevice.Get(), pContext.Get());
+	m_pRenderer = CRenderer::Create(*pDevice, *pContext);
 	CheckNullResult(m_pRenderer, E_FAIL);
 
 	return S_OK;
@@ -219,11 +219,13 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pLevelManager);
 	Safe_Release(m_pTimerManager);
 	Safe_Release(m_pLevelFactory);
+	Safe_Release(m_pRenderer);
 	Safe_Release(m_pProtoManager);
 	Safe_Release(m_pObjectManager);
+	
 	Safe_Release(m_pGraphicDev);
 
-///	DestroyInstance();
+	DestroyInstance();
 }
 
 void CGameInstance::Free()

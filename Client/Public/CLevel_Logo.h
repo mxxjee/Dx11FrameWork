@@ -8,7 +8,7 @@ class CLevel_Logo final :
     public CLevel
 {
 private:
-    explicit CLevel_Logo(ID3D11Device* _pDevice,ID3D11DeviceContext* _pDeviceContext);
+    explicit CLevel_Logo(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual ~CLevel_Logo() = default;
 
 
@@ -30,7 +30,7 @@ public:
     virtual void        OnPause() override;               //pause되었을때 호출
     virtual void        OnExit() override;
 public:
-    static  CLevel_Logo* Create(ID3D11Device* _pDevice, ID3D11DeviceContext* _pDeviceContext,LevelArgs& args);
+    static  CLevel_Logo* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext,LevelArgs& args);
     virtual     void        Free();
 
 };

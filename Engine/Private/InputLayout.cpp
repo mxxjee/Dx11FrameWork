@@ -1,6 +1,6 @@
 #include "InputLayout.h"
 
-InputLayout::InputLayout(ID3D11Device* pDevice)
+InputLayout::InputLayout(ComPtr<ID3D11Device> pDevice)
 	:m_pDevice(pDevice)
 {
 }

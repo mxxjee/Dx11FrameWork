@@ -3,8 +3,8 @@
 
 USING(Client)
 
-CBackGround::CBackGround(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
-    :CUI(pDevice,pContext)
+CBackGround::CBackGround(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
+    :CUI(_pDevice, _pDeviceContext)
 {
 }
 
@@ -58,9 +58,9 @@ HRESULT CBackGround::Render()
     return S_OK;
 }
 
-CBackGround* CBackGround::Create(ID3D11Device* pDevice, ID3D11DeviceContext* pContext)
+CBackGround* CBackGround::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
-    CBackGround* pInstance = new CBackGround(pDevice, pContext);
+    CBackGround* pInstance = new CBackGround(_pDevice, _pDeviceContext);
     if (FAILED(pInstance->Initialize_Prototype()))
     {
         MSG_BOX("Failed to Create :CBackGround ");

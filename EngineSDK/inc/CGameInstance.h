@@ -24,7 +24,7 @@ private:
 
 #pragma region Engine
 public:
-    HRESULT Initialize_Engine(const ENGINE_DESC & EngineDesc,ComPtr<ID3D11Device>& pDevice, ComPtr<ID3D11DeviceContext>& pContext);
+    HRESULT Initialize_Engine(const ENGINE_DESC & EngineDesc,ComPtr<ID3D11Device>* pDevice, ComPtr<ID3D11DeviceContext>* pContext);
     
     void    Update_Priority_Engine(_float fTimedelta);
     void    Update_Engine(_float fTimedelta);
