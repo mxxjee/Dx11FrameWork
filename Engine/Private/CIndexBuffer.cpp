@@ -20,13 +20,14 @@ void CIndexBuffer::Create(const vector<UINT32>& _indices)
 	_count = static_cast<UINT32>(_indices.size());
 
 	D3D11_BUFFER_DESC desc;
-	ZeroMemory(&desc, sizeof(desc));
+	
+	memset(&desc, 0,sizeof(desc));
 	desc.Usage = D3D11_USAGE_IMMUTABLE;
-	desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	desc.ByteWidth = (UINT32)sizeof(UINT32) * _indices.size();
 
 	D3D11_SUBRESOURCE_DATA data;
-	ZeroMemory(&data, sizeof(data));
+	memset(&data,0, sizeof(data));
 	data.pSysMem = _indices.data();
 	HRESULT hr = m_pDevice->CreateBuffer(&desc, &data, m_pIndexBuffer.GetAddressOf());
 

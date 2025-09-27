@@ -2,6 +2,9 @@
 
 #include <Windows.h>
 #include <process.h>
+#include <cstring>
+
+#include "SimpleMath/SimpleMath.h"
 
 
 #define PROTO_OBJ_NAME(name) L"Proto_GameObject_" + _wstring(name)

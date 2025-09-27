@@ -8,8 +8,8 @@
 // http://go.microsoft.com/fwlink/?LinkID=615561
 //-------------------------------------------------------------------------------------
 
-#include "pch.h"
-#include "SimpleMath.h"
+#include "Engine_Define.h"
+#include "SimpleMath/SimpleMath.h"
 
 /****************************************************************************
  *

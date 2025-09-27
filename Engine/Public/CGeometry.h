@@ -43,8 +43,6 @@ private:
     vector<UINT32>  _Indices;
 };
 
-NS_END
-
 template<typename T>
 inline CGeometry<T>::CGeometry()
 {
@@ -60,3 +58,7 @@ inline void CGeometry<T>::Free()
 {
     __super::Free();
 }
+
+
+NS_END
+

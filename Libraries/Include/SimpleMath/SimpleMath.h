@@ -14,6 +14,7 @@
 #include <dxgi1_2.h>
 #endif
 
+
 #include <cassert>
 #include <cstddef>
 #include <cstring>

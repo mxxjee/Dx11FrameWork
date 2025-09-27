@@ -13,10 +13,10 @@ using namespace Microsoft::WRL;
 
 
 #include <DirectXMath.h>
-#include "SimpleMath.h"
+#include "SimpleMath/SimpleMath.h"
 
-#include "DirectXTex.h"
-#include "DirectXTex.inl"
+#include "DirectXTex/DirectXTex.h"
+#include "DirectXTex/DirectXTex.inl"
 
 
 using namespace DirectX;
@@ -38,10 +38,10 @@ using namespace std;
 
 
 #ifdef _DEBUG
-#pragma comment(lib,"../../EngineSDK/lib/DirectXTex_Debug.lib")
+#pragma comment(lib,"../../Libraries/Lib/DirectXTex_Debug.lib")
 
 #else
-#pragma comment(lib,"../../EngineSDK/lib/DirectXTex.lib")
+#pragma comment(lib,"../../Libraries/Lib/DirectXTex.lib")
 
 #endif
 

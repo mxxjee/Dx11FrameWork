@@ -11,6 +11,8 @@
 #include "CShader.h"
 #include "CConstantBuffer.h"
 #include "CTexture.h"
+#include "Client_Defines.h"
+
 
 USING(Client)
 
@@ -46,7 +48,11 @@ HRESULT CBackGround::Initialize_Copytype(void* pArg)
     CreateInputLayout();
     PixelShader();
 
-    m_Pipeline.texture1->Create(L"../../Resource/Character.png");
+    CreateRasterizerState();
+    CreateSamplerState();
+    CreateBlendState();
+
+    m_Pipeline.texture1->Create(L"../../Resource/Skeleton.png");
 
     m_Pipeline.constantBuffer->Create();
     return S_OK;
@@ -60,6 +66,23 @@ void CBackGround::Update_Priority(_float fTimeDelta)
 void CBackGround::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
+    
+    m_vLocalPosition.x += 0.001f;
+    Matrix Position = Matrix::CreateTranslation(m_vLocalPosition);
+    Matrix Scaling = Matrix::CreateScale(m_vLocalScale);
+
+    Matrix Rotate = Matrix::CreateRotationX(m_vLocalRotate.x);
+    Rotate *= Matrix::CreateRotationY(m_vLocalRotate.y);
+    Rotate *= Matrix::CreateRotationZ(m_vLocalRotate.z);
+
+
+    Matrix matworld = Scaling * Rotate * Position;
+    m_transformData.matworld = matworld;
+
+    m_transformData.matworld = matworld;
+
+    m_Pipeline.constantBuffer->CopyData(m_transformData);
+
 }
 
 void CBackGround::Update_Late(_float fTimeDelta)
@@ -76,7 +99,12 @@ void CBackGround::Update_Render(_float fTimeDelta)
 
 HRESULT CBackGround::Render()
 {
-    
+    Set_IA();
+    Set_VS();
+    Set_RS();
+    Set_PS();
+    Set_OM();
+
     return S_OK;
 }
 
@@ -90,14 +118,12 @@ HRESULT CBackGround::Initialize_Piepline()
 
     m_Pipeline.vertexShader = make_shared<CVertexShader>(m_pDevice);
     m_Pipeline.pixelShader = make_shared<CPixelShader>(m_pDevice);
-    m_Pipeline.constantBuffer = make_shared<CConstantBuffer<TransformData>>(m_pDevice);
+    m_Pipeline.constantBuffer = make_shared<CConstantBuffer<TransformData>>(m_pDevice, m_pContext);
 
     m_Pipeline.texture1 = make_shared<CTexture>(m_pDevice);
     
 
-    CreateRasterizerState();
-    CreateSamplerState();
-    CreateBlendState();
+  
 
     return S_OK;
 }
@@ -105,8 +131,7 @@ HRESULT CBackGround::Initialize_Piepline()
 HRESULT CBackGround::CreateRasterizerState()
 {
     D3D11_RASTERIZER_DESC desc;
-    ZeroMemory(&desc, sizeof(desc));
-
+    memset(&desc, 0, sizeof(desc));
 
     desc.FillMode = D3D11_FILL_SOLID;//WIREFRAME of SOLID
     desc.CullMode = D3D11_CULL_BACK;//CULLMODE: 반시계 컬링
@@ -121,8 +146,7 @@ HRESULT CBackGround::CreateRasterizerState()
 HRESULT CBackGround::CreateSamplerState()
 {
     D3D11_SAMPLER_DESC desc;
-    ZeroMemory(&desc, sizeof(desc));
-
+    memset(&desc, 0, sizeof(desc));
     desc.AddressU = D3D11_TEXTURE_ADDRESS_BORDER;
     desc.AddressV = D3D11_TEXTURE_ADDRESS_BORDER;
     desc.AddressW = D3D11_TEXTURE_ADDRESS_BORDER;
@@ -150,7 +174,7 @@ HRESULT CBackGround::CreateBlendState()
 {
 
     D3D11_BLEND_DESC desc;
-    ZeroMemory(&desc, sizeof(D3D11_BLEND_DESC));
+    memset(&desc, 0, sizeof(desc));
     desc.AlphaToCoverageEnable = false;
     desc.IndependentBlendEnable = false;
 
@@ -178,7 +202,7 @@ void CBackGround::CreateGeometry()
 
 void CBackGround::VertexShader()
 {
-    m_Pipeline.vertexShader->Create(L"Default.hlsl","VS","vs_5_0");
+    m_Pipeline.vertexShader->Create(L"../../EngineSDK/inc/Default.hlsl","VS_Main","vs_5_0");
 
 }
 
@@ -189,8 +213,51 @@ void CBackGround::CreateInputLayout()
 
 void CBackGround::PixelShader()
 {
-    m_Pipeline.pixelShader->Create(L"Default.hlsl", "PS", "ps_5_0");
+    m_Pipeline.pixelShader->Create(L"../../EngineSDK/inc/Default.hlsl", "PS", "ps_5_0");
 
+}
+
+void CBackGround::Set_IA()
+{
+    UINT32 stride = sizeof(VertexTextureData);
+    UINT32 offset = 0;
+
+    m_pContext.Get()->IASetVertexBuffers(0, 1, m_Pipeline.vertexBuffer->GetComPtr().GetAddressOf(),&stride,&offset);
+    m_pContext.Get()->IASetIndexBuffer(m_Pipeline.indexBuffer->GetComPtr().Get(), DXGI_FORMAT_R32_UINT, 0);
+    m_pContext.Get()->IASetInputLayout(m_Pipeline.inputLayout->Get_ComPtr().Get());
+    m_pContext.Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+
+
+}
+
+void CBackGround::Set_VS()
+{
+    m_pContext.Get()->VSSetShader(m_Pipeline.vertexShader->GetComPtr().Get(), nullptr, 0);
+    
+    ID3D11Buffer* buffer = m_Pipeline.constantBuffer->GetComPtr().Get();
+    m_pContext.Get()->VSSetConstantBuffers(0, 1, &buffer);
+
+}
+
+void CBackGround::Set_RS()
+{
+    m_pContext.Get()->RSSetState(m_Pipeline._rasterizerState.Get());
+
+}
+
+void CBackGround::Set_PS()
+{
+    m_pContext.Get()->PSSetShader(m_Pipeline.pixelShader->GetComPtr().Get(), nullptr, 0);
+    m_pContext.Get()->PSSetShaderResources(0, 1, m_Pipeline.texture1->GetComPtr().GetAddressOf());
+    m_pContext.Get()->PSSetSamplers(0, 1, m_Pipeline._samplerState.GetAddressOf());
+
+}
+
+void CBackGround::Set_OM()
+{
+    m_pContext.Get()->OMSetBlendState(m_Pipeline._BlendState.Get(), nullptr, 0xFFFFFFFF);
+    m_pContext.Get()->DrawIndexed(m_Pipeline.geometry ->GetIndexCount(), 0, 0);
 }
 
 CBackGround* CBackGround::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)

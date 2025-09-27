@@ -127,6 +127,12 @@
     <Filter Include="06.PipeLine\02.VertexShader\Texture">
       <UniqueIdentifier>{f2082105-9b65-4e8d-869f-2a561e123ccd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\02.DefaultShader">
+      <UniqueIdentifier>{4a87f6c4-7e45-40d0-b9a2-c0d0699f56ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06.PipeLine\00.Geometry\VertexData">
+      <UniqueIdentifier>{faa96231-47ad-4672-9059-d32ba0a05551}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -258,6 +264,9 @@
     <ClInclude Include="..\Public\CTexture.h">
       <Filter>06.PipeLine\02.VertexShader\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VertexData.h">
+      <Filter>06.PipeLine\00.Geometry\VertexData</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -365,5 +374,16 @@
     <ClCompile Include="..\Private\CTexture.cpp">
       <Filter>06.PipeLine\02.VertexShader\Texture</Filter>
     </ClCompile>
+    <ClCompile Include="..\Public\VertexData.cpp">
+      <Filter>06.PipeLine\00.Geometry\VertexData</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\Include\SimpleMath\SimpleMath.cpp">
+      <Filter>01.Utility</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Public\Default.hlsl">
+      <Filter>01.Utility\02.DefaultShader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

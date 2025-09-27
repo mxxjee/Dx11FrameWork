@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Engine_Define.h"
+#include "VertexData.h"
 
 NS_BEGIN(Engine)
 

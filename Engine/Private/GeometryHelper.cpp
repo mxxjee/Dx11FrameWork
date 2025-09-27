@@ -1,6 +1,7 @@
 #include "GeometryHelper.h"
 #include "CGeometry.h"
 
+
 void GeometryHelper::CreateRectangle(shared_ptr<CGeometry<VertexColorData>> geometry, _float4 color)
 {
 	vector<VertexColorData>		_vertices;

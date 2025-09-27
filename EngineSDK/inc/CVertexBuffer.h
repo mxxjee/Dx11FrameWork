@@ -24,7 +24,7 @@ public:
         _count = static_cast<UINT32>(_vertices.size());
 
         D3D11_BUFFER_DESC desc;
-        ZeroMemory(&desc, sizeof(desc));
+        memset(&desc, 0, sizeof(D3D11_BUFFER_DESC));
         desc.Usage = D3D11_USAGE_IMMUTABLE;
         desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
         desc.ByteWidth = (UINT32)sizeof(T) * _vertices.size();

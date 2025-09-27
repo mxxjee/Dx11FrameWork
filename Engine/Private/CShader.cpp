@@ -1,6 +1,7 @@
 #include "CShader.h"
 
 CShader::CShader(ComPtr<ID3D11Device> device)
+	:_device(device)
 {
 }
 
