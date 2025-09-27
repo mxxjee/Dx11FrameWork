@@ -22,9 +22,17 @@ public:
 	  virtual HRESULT Render() override;
 
 
+private:
+	HRESULT		Initialize_RenderResource();
 public:
 	static CBackGround* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
+
+
+private:
+	RenderPipelineResource<VertexTextureData,	TransformData> m_Pipeline;
+
+
 };
 NS_END

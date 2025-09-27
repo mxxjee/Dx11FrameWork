@@ -36,5 +36,39 @@ namespace Engine
 
 	};
 
+	template<typename T>
+	class CGeometry;
+
+
+	template<typename T>
+	class CConstantBuffer;
+
+	template <typename TVertex,typename TBuffer>
+	struct RenderPipelineResource
+	{
+		// 버텍스/인덱스 데이터
+		shared_ptr<class VertexBuffer>   vertexBuffer;
+		shared_ptr<class IndexBuffer>    indexBuffer;
+		shared_ptr<class InputLayout > inputLayout;
+		shared_ptr<class CGeometry<TVertex>> geometry;
+
+		// 셰이더
+		shared_ptr<class VertexShader>   vertexShader;
+		shared_ptr<class PixelShader>    pixelShader;
+
+		// 상수 버퍼
+		shared_ptr<class CConstantBuffer<TBuffer>> constantBuffer;
+	};
+
+	struct TransformData
+	{
+		Matrix	matworld = DirectX::SimpleMath::Matrix::Identity;
+		Matrix	view = DirectX::SimpleMath::Matrix::Identity;
+		Matrix  proj = DirectX::SimpleMath::Matrix::Identity;
+
+
+
+	};
+
 }
 #endif // Engine_Struct_h__

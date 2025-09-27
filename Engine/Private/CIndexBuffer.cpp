@@ -5,7 +5,7 @@ CIndexBuffer::CIndexBuffer()
 {
 }
 
-CIndexBuffer::CIndexBuffer(ID3D11Device* pDevice)
+CIndexBuffer::CIndexBuffer(ComPtr<ID3D11Device> pDevice)
 	:m_pDevice{pDevice}
 {
 }
@@ -30,4 +30,9 @@ void CIndexBuffer::Create(const vector<UINT32>& _indices)
 	data.pSysMem = _indices.data();
 	HRESULT hr = m_pDevice->CreateBuffer(&desc, &data, m_pIndexBuffer.GetAddressOf());
 
+}
+
+void CIndexBuffer::Free()
+{
+	__super::Free();
 }

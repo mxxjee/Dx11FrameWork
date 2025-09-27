@@ -165,6 +165,7 @@
     <ClInclude Include="..\Public\CLevel_Manager.h" />
     <ClInclude Include="..\Public\CImGui_Manager.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
+    <ClInclude Include="..\Public\CPixelShader.h" />
     <ClInclude Include="..\Public\CPrototype_Manager.h" />
     <ClInclude Include="..\Public\CRenderer.h" />
     <ClInclude Include="..\Public\CShader.h" />
@@ -172,6 +173,7 @@
     <ClInclude Include="..\Public\CTimer_Manager.h" />
     <ClInclude Include="..\Public\CUI.h" />
     <ClInclude Include="..\Public\CVertexBuffer.h" />
+    <ClInclude Include="..\Public\CVertexShader.h" />
     <ClInclude Include="..\Public\Engine_Define.h" />
     <ClInclude Include="..\Public\Engine_Enum.h" />
     <ClInclude Include="..\Public\Engine_Function.h" />
@@ -207,6 +209,7 @@
     <ClCompile Include="..\Private\CLevel_Manager.cpp" />
     <ClCompile Include="..\Private\CImGui_Manager.cpp" />
     <ClCompile Include="..\Private\CObject_Manager.cpp" />
+    <ClCompile Include="..\Private\CPixelShader.cpp" />
     <ClCompile Include="..\Private\CPrototype_Manager.cpp" />
     <ClCompile Include="..\Private\CRenderer.cpp" />
     <ClCompile Include="..\Private\CShader.cpp" />
@@ -214,6 +217,7 @@
     <ClCompile Include="..\Private\CTimer_Manager.cpp" />
     <ClCompile Include="..\Private\CUI.cpp" />
     <ClCompile Include="..\Private\CVertexBuffer.cpp" />
+    <ClCompile Include="..\Private\CVertexShader.cpp" />
     <ClCompile Include="..\Private\GeometryHelper.cpp" />
     <ClCompile Include="..\Private\imgui.cpp" />
     <ClCompile Include="..\Private\imgui_demo.cpp" />

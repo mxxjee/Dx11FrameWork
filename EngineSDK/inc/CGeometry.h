@@ -35,7 +35,8 @@ public:
     void        AddIndices(const vector<UINT32>& _vTmp) { _Indices.insert(_Indices.end(), _vTmp.begin(), _vTmp.end()); }
     void        SetIndices(const vector<UINT32>& _vTmp) { _Indices = _vTmp; }
     
-
+public:
+    virtual void Free() override;
 
 private:
     vector<T>       _vertices;  //정점배열
@@ -52,4 +53,10 @@ inline CGeometry<T>::CGeometry()
 template<typename T>
 inline CGeometry<T>::~CGeometry()
 {
+}
+
+template<typename T>
+inline void CGeometry<T>::Free()
+{
+    __super::Free();
 }

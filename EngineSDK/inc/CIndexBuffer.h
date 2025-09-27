@@ -1,11 +1,14 @@
 
 #include "CBase.h"
-class CIndexBuffer :
+
+NS_BEGIN(Engine)
+
+class ENGINE_DLL CIndexBuffer :
     public CBase
 {
 public:
     CIndexBuffer();
-    CIndexBuffer(ID3D11Device* pDevice);
+    CIndexBuffer(ComPtr<ID3D11Device> pDevice);
     ~CIndexBuffer();
 
 
@@ -16,6 +19,8 @@ public:
 
 
     void    Create(const vector<UINT32>& _indices);
+public:
+    virtual void Free() override;
 
 private:
     ComPtr<ID3D11Device>    m_pDevice;
@@ -25,3 +30,5 @@ private:
     UINT32      _offset = 0;
     UINT32      _count = 0;
 };
+
+NS_END

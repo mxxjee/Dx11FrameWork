@@ -12,6 +12,7 @@
 using namespace Microsoft::WRL;
 
 #include <DirectXMath.h>
+#include "SimpleMath.h"
 using namespace DirectX;
 #include <vector>
 #include <list>

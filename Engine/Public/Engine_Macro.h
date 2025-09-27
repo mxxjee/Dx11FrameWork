@@ -10,6 +10,8 @@
 #define			NS_BEGIN(NAMESPACE)			namespace NAMESPACE {
 #define			NS_END						}
 
+
+#define CHECK(p) assert(SUCCEEDED(p))
 #define			USING(NAMESPACE)			using namespace NAMESPACE;
 
 

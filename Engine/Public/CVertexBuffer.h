@@ -1,11 +1,13 @@
 #pragma once
 #include "CBase.h"
-class CVertexBuffer :
+
+NS_BEGIN(Engine)
+class ENGINE_DLL CVertexBuffer:
     public CBase
 {
 public:
     CVertexBuffer();
-    CVertexBuffer(ID3D11Device* pDevice);
+    CVertexBuffer(ComPtr<ID3D11Device> pDevice);
     ~CVertexBuffer();
 
 
@@ -34,6 +36,9 @@ public:
 
     }
 
+public:
+    virtual void Free() override;
+
 private:
     ComPtr<ID3D11Device>    m_pDevice;
     ComPtr<ID3D11Buffer>    m_pVertexBuffer = nullptr;
@@ -44,3 +49,4 @@ private:
     UINT32      _count = 0;
 };
 
+NS_END

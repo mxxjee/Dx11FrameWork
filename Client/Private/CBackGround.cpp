@@ -27,6 +27,9 @@ HRESULT CBackGround::Initialize_Copytype(void* pArg)
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
+    if(FAILED(Initialize_Piepline()))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -55,6 +58,11 @@ void CBackGround::Update_Render(_float fTimeDelta)
 HRESULT CBackGround::Render()
 {
     
+    return S_OK;
+}
+
+HRESULT CBackGround::Initialize_Piepline()
+{
     return S_OK;
 }
 

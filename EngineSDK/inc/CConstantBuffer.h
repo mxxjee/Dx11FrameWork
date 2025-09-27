@@ -1,12 +1,13 @@
 #pragma once
 #include "CBase.h"
 
+NS_BEGIN(Engine)
 template <typename T>
-class CConstantBuffer :
+class ENGINE_DLL CConstantBuffer :
     public CBase
 {
 public:
-    CConstantBuffer(ComPtr<ID3D11Device>& device, ComPtr<ID3D11DeviceContext>& context)
+    CConstantBuffer(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> context)
         :m_pDevice{ device }, m_pContext{context}
     {
 
@@ -41,12 +42,20 @@ public:
 
 
         //MAP : GPU에게 데이터를 넘겨줄 준비
+        //직접 ConstantBuffer을 채우는것이 아닌, Subresource(Map을 통해 CPU가 임시 접근할 수 있는공간)에 복사
         m_pContext->Map(m_pConstantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
+        
         memcpy(SubResource.pData, &data, sizeof(T));
+
+
         m_pContext->Unmap(m_pConstantBuffer.Get(), 0);
 
 
     }
+
+public:
+    virtual void Free() override;
+
 
 private:
     ComPtr<ID3D11Device> m_pDevice;
@@ -55,3 +64,9 @@ private:
 
 };
 
+NS_END
+
+template<typename T>
+inline void CConstantBuffer<T>::Free()
+{
+}
