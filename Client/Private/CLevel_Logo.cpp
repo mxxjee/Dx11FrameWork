@@ -67,9 +67,10 @@ void CLevel_Logo::Render()
 
 HRESULT CLevel_Logo::Ready_Layer_Background(const _wstring& strLayerTag)
 {
-    CUI::UI_DESC        Desc = {};
-    //ZeroMemory(&Desc, sizeof(Desc));
+    CPanel::PANEL_DESC        Desc = {};
+
     Desc.ObjTag = L"BackGround";
+    Desc.ImgPath = L"../../Resource/Character.png";
 
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;

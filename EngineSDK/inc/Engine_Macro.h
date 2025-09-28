@@ -22,6 +22,11 @@
 #define CheckFalseResult(x, y) { if(x == false) return y;}
 #define CheckNullResult(x, y) { if(x == nullptr) return y;}
 
+
+#define PROTO_OBJ_NAME(name) L"Proto_GameObject_" + _wstring(name)
+#define PROTO_COMPONENT_NAME(name) L"Proto_Component_" + _wstring(name)
+
+
 #define ENABLE_BITMASK_OPERATORS(x)                     \
 inline x operator|(x a, x b) {                          \
     return static_cast<x>(static_cast<int>(a) | static_cast<int>(b)); } \

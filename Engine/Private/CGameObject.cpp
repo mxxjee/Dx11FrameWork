@@ -1,5 +1,7 @@
 #include "CGameObject.h"
 #include "CGameInstance.h"
+#include "CComponent.h"
+
 CGameObject::CGameObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :m_pDevice(pDevice),
     m_pContext(pContext),
@@ -27,7 +29,16 @@ HRESULT CGameObject::Initialize_Copytype(void* pArg)
 {
     GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
     tag = pDesc->ObjTag;
+    pDesc->pOwner = this;
 
+
+    m_pTransformCom = dynamic_cast<CTransform*>(m_pGameInstance->Clone_Prototype
+    (PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"Transform"), pArg));
+
+    CheckNullResult(m_pTransformCom, E_FAIL);
+
+    Safe_AddRef(m_pTransformCom);
+    m_Components.emplace(L"Transform", m_pTransformCom);
 
     return S_OK;
 }
@@ -46,6 +57,7 @@ void CGameObject::Update_Late(_float fTimeDelta)
 
 void CGameObject::Update_Render(_float fTimeDelta)
 {
+    m_pGameInstance->Add_RenderObject(RENDERGROUP::PRIORITY, this);
 
 }
 
@@ -58,5 +70,10 @@ HRESULT CGameObject::Render()
 void CGameObject::Free()
 {
     __super::Free();
+    Safe_Release(m_pTransformCom);
+
+    for (auto& pair : m_Components)
+        Safe_Release(pair.second);
+
     Safe_Release(m_pGameInstance);
 }

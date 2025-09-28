@@ -7,9 +7,6 @@
 #include "SimpleMath/SimpleMath.h"
 
 
-#define PROTO_OBJ_NAME(name) L"Proto_GameObject_" + _wstring(name)
-#define PROTO_COMPONENT_NAME(name) L"Proto_Component_" + _wstring(name)
-
 
 extern HWND g_hWnd;
 extern HINSTANCE g_hInst;

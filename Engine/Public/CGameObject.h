@@ -48,6 +48,11 @@ public:
     virtual CGameObject* Clone(void* pArg)=0;
     virtual void    Free() override;
 
+
+
+
+protected:
+    TransformData m_transformData;
 };
 NS_END
 

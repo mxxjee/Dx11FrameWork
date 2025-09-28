@@ -28,7 +28,7 @@ cbuffer TransformData : register(b0)
     row_major Matrix proj;
 }
 
-VS_OUTPUT VS_Main(VS_INPUT input)
+VS_OUTPUT main(VS_INPUT input)
 {
     VS_OUTPUT output;
     float4 position = mul(input.position, matworld);

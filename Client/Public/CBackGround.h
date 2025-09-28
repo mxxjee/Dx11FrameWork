@@ -1,11 +1,11 @@
 #pragma once
-#include "CUI.h"
+#include "CPanel.h"
 #include "VertexData.h"
 
 NS_BEGIN(Client)
 
 class CBackGround :
-    public CUI
+    public CPanel
 {
 private:
     CBackGround(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
@@ -25,41 +25,13 @@ public:
 
 
 private:
-	HRESULT		Initialize_Piepline();
 	HRESULT		Add_Component(void *pArg);
-
-private:
-	void	CreateGeometry();
-	void	CreateInputLayout();
-	void	VertexShader();
-	void	PixelShader();
-
-	HRESULT		CreateRasterizerState();
-	HRESULT		CreateSamplerState();
-	HRESULT		CreateBlendState();
-
-private:
-	void		Set_IA();
-	void		Set_VS();
-	void		Set_RS();
-	void		Set_PS();
-	void		Set_OM();
-
 
 public:
 	static CBackGround* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 
-
-private:
-	RenderPipelineResource<VertexTextureData,	TransformData> m_Pipeline;
-	TransformData m_transformData;
-
-private:
-	_float3	m_vLocalScale = { 1.f,1.f,0.f };
-	_float3	m_vLocalRotate = { 0.f,0.f,0.f };
-	_float3	m_vLocalPosition = { 0.f,0.f,0.f };
 
 
 };
