@@ -27,10 +27,10 @@ public:
         memset(&desc, 0, sizeof(D3D11_BUFFER_DESC));
         desc.Usage = D3D11_USAGE_IMMUTABLE;
         desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-        desc.ByteWidth = (UINT32)sizeof(T) * _vertices.size();
+        desc.ByteWidth = (UINT32)sizeof(T) * _count;
 
         D3D11_SUBRESOURCE_DATA data;
-        ZeroMemory(&data, sizeof(data));
+        memset(&data, 0,sizeof(data));
         data.pSysMem = _vertices.data();
         HRESULT hr = m_pDevice->CreateBuffer(&desc, &data, m_pVertexBuffer.GetAddressOf());
 

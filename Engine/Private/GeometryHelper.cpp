@@ -41,10 +41,11 @@ void GeometryHelper::CreateRectangle(shared_ptr<CGeometry<VertexTextureData>> ge
 	_vertices[1].uv = _float2(1.f, 0.f);
 
 	_vertices[2].position = _float3(0.5f, -0.5f, 0);
-	_vertices[2].uv = _float2(0.f, 1.f);
+	_vertices[2].uv = _float2(1.f, 1.f);
 
 	_vertices[3].position = _float3(-0.5f, -0.5f, 0);
-	_vertices[3].uv = _float2(1.f,1.f);
+	_vertices[3].uv = _float2(0.f,1.f);
+
 	geometry->SetVertices(_vertices);
 
 

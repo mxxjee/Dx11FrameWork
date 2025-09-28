@@ -56,7 +56,7 @@ private:
 	TransformData m_transformData;
 
 private:
-	_float3	m_vLocalScale = { 1.f,1.f,1.f };
+	_float3	m_vLocalScale = { 1.f,1.f,0.f };
 	_float3	m_vLocalRotate = { 0.f,0.f,0.f };
 	_float3	m_vLocalPosition = { 0.f,0.f,0.f };
 

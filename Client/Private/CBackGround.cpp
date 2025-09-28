@@ -52,7 +52,7 @@ HRESULT CBackGround::Initialize_Copytype(void* pArg)
     CreateSamplerState();
     CreateBlendState();
 
-    m_Pipeline.texture1->Create(L"../../Resource/Skeleton.png");
+    m_Pipeline.texture1->Create(L"../../Resource/Character.png");
 
     m_Pipeline.constantBuffer->Create();
     return S_OK;
