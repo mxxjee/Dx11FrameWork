@@ -2,7 +2,8 @@
 #include "CLoader.h"
 #include "CGameInstance.h"
 #include "CLevel_Loading.h"
-#include "CUI.h"
+#include "CBackGround.h"
+
 
 
 USING(Client)
@@ -66,14 +67,15 @@ void CLevel_Logo::Render()
 
 HRESULT CLevel_Logo::Ready_Layer_Background(const _wstring& strLayerTag)
 {
-    CUI::UI_DESC        Desc{};
-
-    Desc.fX = {};
-    Desc.fY = {};
-    Desc.fSizeX = {};
-    Desc.fSizeY = {};
+    CUI::UI_DESC        Desc = {};
+    //ZeroMemory(&Desc, sizeof(Desc));
     Desc.ObjTag = L"BackGround";
 
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    
+    Desc.TransformDesc = &TransDesc;
 
     if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO),
         PROTO_OBJ_NAME(L"BackGround"),

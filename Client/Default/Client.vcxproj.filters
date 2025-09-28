@@ -34,9 +34,6 @@
     <ClInclude Include="..\Public\CLoader.h">
       <Filter>01.Levels\Loading\Loader</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Engine\Public\CPanel.h">
-      <Filter>02.GameObjects\UI\01.Panel</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -105,9 +102,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CLoader.cpp">
       <Filter>01.Levels\Loading\Loader</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Engine\Private\CPanel.cpp">
-      <Filter>02.GameObjects\UI\01.Panel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

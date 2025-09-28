@@ -4,6 +4,8 @@
 namespace Engine
 {
 	enum class WINMODE { FULL, WIN }; 
+	enum class STATE{RIGHT,UP,LOOK,POSITION,END};
+	enum class DIRECTION {FORWARD,RIGHT,UP,BACKWARD,LEFT,DOWN,END};
 
 	enum class LEVELCHANGETYPE { NONE,REPLACETOP, OVERLAY, PUSH,END};
 	/*REPLACETOP : 이전씬 지우고 TOP교체

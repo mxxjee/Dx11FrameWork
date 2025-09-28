@@ -37,11 +37,17 @@ HRESULT CBackGround::Initialize_Prototype()
 HRESULT CBackGround::Initialize_Copytype(void* pArg)
 {
     /*값세팅 */
+
+    
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
     if(FAILED(Initialize_Piepline()))
         return E_FAIL;
+
+    if (FAILED(Add_Component(pArg)))
+        return E_FAIL;
+
 
     CreateGeometry();
     VertexShader();
@@ -55,6 +61,9 @@ HRESULT CBackGround::Initialize_Copytype(void* pArg)
     m_Pipeline.texture1->Create(L"../../Resource/Character.png");
 
     m_Pipeline.constantBuffer->Create();
+
+
+
     return S_OK;
 }
 
@@ -66,21 +75,23 @@ void CBackGround::Update_Priority(_float fTimeDelta)
 void CBackGround::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
+    CheckNull(m_pTransformCom);
     
-    m_vLocalPosition.x += 0.001f;
-    Matrix Position = Matrix::CreateTranslation(m_vLocalPosition);
-    Matrix Scaling = Matrix::CreateScale(m_vLocalScale);
-
-    Matrix Rotate = Matrix::CreateRotationX(m_vLocalRotate.x);
-    Rotate *= Matrix::CreateRotationY(m_vLocalRotate.y);
-    Rotate *= Matrix::CreateRotationZ(m_vLocalRotate.z);
+    if (GetKeyState(VK_RIGHT)&0x8000)
+        m_pTransformCom->Move(DIRECTION::RIGHT, fTimeDelta);
 
 
-    Matrix matworld = Scaling * Rotate * Position;
-    m_transformData.matworld = matworld;
+    else if(GetKeyState(VK_LEFT)&0x8000)
+        m_pTransformCom->Move(DIRECTION::LEFT, fTimeDelta);
 
-    m_transformData.matworld = matworld;
+    else if (GetKeyState(VK_UP)&0x8000)
+        m_pTransformCom->Move(DIRECTION::UP, fTimeDelta);
 
+    else if (GetKeyState(VK_DOWN)&0x800)
+        m_pTransformCom->Move(DIRECTION::DOWN, fTimeDelta);
+
+
+    m_transformData.matworld = m_pTransformCom->Get_World();
     m_Pipeline.constantBuffer->CopyData(m_transformData);
 
 }
@@ -124,6 +135,25 @@ HRESULT CBackGround::Initialize_Piepline()
     
 
   
+
+    return S_OK;
+}
+
+HRESULT CBackGround::Add_Component(void* pArg)
+{
+    //컴포넌트생성
+    UI_DESC* pDesc = static_cast<UI_DESC*>(pArg);
+    pDesc->pOwner = this;
+
+    
+    m_pTransformCom = dynamic_cast<CTransform*>(m_pGameInstance->Clone_Prototype
+    (PROTOTYPE::COMPONENT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Transform"), pArg));
+
+    CheckNullResult(m_pTransformCom, E_FAIL);
+
+    Safe_AddRef(m_pTransformCom);
+    m_Components.emplace(L"Transform", m_pTransformCom);
+
 
     return S_OK;
 }
@@ -291,5 +321,5 @@ CGameObject* CBackGround::Clone(void* pArg)
 void CBackGround::Free()
 {
     __super::Free();
-
+    Safe_Release(m_pTransformCom);
 }

@@ -1,6 +1,8 @@
 #include "CLoader.h"
 #include "CGameInstance.h"
+
 #include "CBackGround.h"
+#include "CTransform.h"
 
 USING(Client)
 CLoader::CLoader(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -126,9 +128,12 @@ HRESULT CLoader::Loading_Logo()
   
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
 
-    m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::LOGO), PROTO_OBJ_NAME(L"BackGround"), CBackGround::Create(m_pDevice.Get(), m_pDeviceContext.Get()));
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::LOGO), PROTO_OBJ_NAME(L"BackGround"), CBackGround::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
 
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Transform"), CTransform::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
 
     m_isFinished = true;

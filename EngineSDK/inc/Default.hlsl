@@ -31,16 +31,15 @@ cbuffer TransformData : register(b0)
 VS_OUTPUT VS_Main(VS_INPUT input)
 {
     VS_OUTPUT output;
-    //float4 position = mul(input.position, matworld);
-    //position = mul(position, view);
-    //position = mul(position, proj);
+    float4 position = mul(input.position, matworld);
+    position = mul(position, view);
+    position = mul(position, proj);
     
-    ////버퍼멤버들은 전역처럼 공유되므로, . 연산자 없이 바로사용가능
-    //output.position = position;
-    //output.uv = input.uv;
-
-    output.position = input.position;
+    //버퍼멤버들은 전역처럼 공유되므로, . 연산자 없이 바로사용가능
+    output.position = position;
     output.uv = input.uv;
+
+ 
     
     return output;
 

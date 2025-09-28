@@ -6,6 +6,3 @@ xcopy			/y			.\Engine\Bin\Engine.dll		.\MapTool\Bin\
 
 xcopy			/y			.\Engine\Bin\Engine.lib		.\EngineSDK\Lib\
 xcopy			/y			.\Engine\Public\*.*			.\EngineSDK\Inc\
-
-
-xcopy /Y /I .\Engine\Public\*.hlsl .\EngineSDK\Inc\

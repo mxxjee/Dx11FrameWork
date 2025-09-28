@@ -26,9 +26,7 @@ public:
 
 private:
 	HRESULT		Initialize_Piepline();
-	HRESULT		CreateRasterizerState();
-	HRESULT		CreateSamplerState();
-	HRESULT		CreateBlendState();
+	HRESULT		Add_Component(void *pArg);
 
 private:
 	void	CreateGeometry();
@@ -36,7 +34,10 @@ private:
 	void	VertexShader();
 	void	PixelShader();
 
-	
+	HRESULT		CreateRasterizerState();
+	HRESULT		CreateSamplerState();
+	HRESULT		CreateBlendState();
+
 private:
 	void		Set_IA();
 	void		Set_VS();

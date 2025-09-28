@@ -147,7 +147,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Engine\Public\CPanel.h" />
     <ClInclude Include="..\Public\CBackGround.h" />
     <ClInclude Include="..\Public\CLevel_GamePlay.h" />
     <ClInclude Include="..\Public\CLevel_Loading.h" />
@@ -161,7 +160,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Engine\Private\CPanel.cpp" />
     <ClCompile Include="..\Private\CBackGround.cpp" />
     <ClCompile Include="..\Private\CLevel_GamePlay.cpp" />
     <ClCompile Include="..\Private\CLevel_Loading.cpp" />

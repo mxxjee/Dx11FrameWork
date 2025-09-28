@@ -19,6 +19,9 @@ HRESULT CComponent::Initialize_Prototype()
 
 HRESULT CComponent::Initialize_Copytype(void* pArg)
 {
+	COMPONENT_DESC* pDesc = static_cast<COMPONENT_DESC*>(pArg);
+	m_pOwner = pDesc->pOwner;
+
 	return S_OK;
 }
 

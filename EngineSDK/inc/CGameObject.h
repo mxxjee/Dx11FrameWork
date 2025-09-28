@@ -1,28 +1,16 @@
 #pragma once
 #include "CBase.h"
+#include "CTransform.h"
 
-/*임시, 이렇게 구조체를 사용할거싱ㅁ*/
-class CTransform
-{
-public:
-    typedef struct tagTransformDesc
-    {
-        _float3 m_vLocalPosition = {};
-        _float3 m_vLocalScale = {};
-        _float3 m_vLocalRotation = {};
-        
-        _float  m_fSpeed = {};
-
-    }TRANSFORM_DESC;
-};
 NS_BEGIN(Engine)
+
 class ENGINE_DLL CGameObject :
     public CBase
 {
 public:
-    typedef struct tagGameObjectDesc : public CTransform::TRANSFORM_DESC
+    typedef struct tagGameObjectDesc : CComponent::tagComponentDesc
     {
-        _wstring ObjTag = L"";
+        _wstring ObjTag;
 
     }GAMEOBJECT_DESC;
 
@@ -50,10 +38,11 @@ protected:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };
     class CGameInstance* m_pGameInstance = { nullptr };
+    CTransform* m_pTransformCom = { nullptr };
 
 protected:
     _wstring                tag = L"";
-    
+    map<const _wstring, class CComponent*>      m_Components;
 
 public:
     virtual CGameObject* Clone(void* pArg)=0;

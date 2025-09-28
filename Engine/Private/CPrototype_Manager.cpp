@@ -1,5 +1,6 @@
 #include "CPrototype_Manager.h"
 #include "CGameObject.h"
+#include "CComponent.h"
 
 CPrototype_Manager::CPrototype_Manager()
 {
@@ -29,9 +30,11 @@ CBase* CPrototype_Manager::Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelI
     CBase* pPrototype = Find_Prototype(iLevelIndex, strPrototag);
     CheckNullResult(pPrototype, nullptr);
 
+    if (ePrototypeID==PROTOTYPE::GAMEOBJECT)
+        return dynamic_cast<CGameObject*>(pPrototype)->Clone(pArg);
 
-    return ePrototypeID == PROTOTYPE::GAMEOBJECT ? dynamic_cast<CGameObject*>(pPrototype)->Clone(pArg) : /*나중에는 컴포넌트로 캐스팅*/nullptr;
-
+    else
+        return dynamic_cast<CComponent*>(pPrototype)->Clone(pArg);
 }
 
 void CPrototype_Manager::Clear(_uint iLevel)

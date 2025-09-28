@@ -3,6 +3,7 @@
 CTransform::CTransform(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CComponent(pDevice,pContext)
 {
+	
 }
 
 CTransform::CTransform(const CTransform& Prototype)
@@ -17,6 +18,17 @@ HRESULT CTransform::Initialize_Prototype()
 
 HRESULT CTransform::Initialize_Copytype(void* pArg)
 {
+	if(FAILED(__super::Initialize_Copytype(pArg)))
+		return E_FAIL;
+
+	COMPONENT_DESC* pComponentDest = static_cast<COMPONENT_DESC*>(pArg);
+	TRANSFORM_DESC* pDesc = static_cast<TRANSFORM_DESC*>(pComponentDest->TransformDesc);
+	
+	m_fSpeedPerSec = pDesc->fSpeedPerSec;
+	m_fRotationPerSec = pDesc->fRotationPerSec;
+
+	XMStoreFloat4x4(&m_WorldMatrix, DirectX::XMMatrixIdentity());
+
 	return S_OK;
 }
 
