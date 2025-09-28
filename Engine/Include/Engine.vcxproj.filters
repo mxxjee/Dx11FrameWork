@@ -133,6 +133,9 @@
     <Filter Include="06.PipeLine\00.Geometry\VertexData">
       <UniqueIdentifier>{faa96231-47ad-4672-9059-d32ba0a05551}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\Transform">
+      <UniqueIdentifier>{21e66bba-704e-4fa5-9634-25f2cd9c3879}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -267,6 +270,9 @@
     <ClInclude Include="..\Public\VertexData.h">
       <Filter>06.PipeLine\00.Geometry\VertexData</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CTransform.h">
+      <Filter>05.Component\Transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -379,6 +385,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Libraries\Include\SimpleMath\SimpleMath.cpp">
       <Filter>01.Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTransform.cpp">
+      <Filter>05.Component\Transform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

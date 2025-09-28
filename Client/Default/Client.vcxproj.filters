@@ -34,6 +34,9 @@
     <ClInclude Include="..\Public\CLoader.h">
       <Filter>01.Levels\Loading\Loader</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Engine\Public\CPanel.h">
+      <Filter>02.GameObjects\UI\01.Panel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -77,6 +80,9 @@
     <Filter Include="02.GameObjects\UI\00.BackGround">
       <UniqueIdentifier>{a8a9cb85-f5d9-42bf-9359-4cdd0223099e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\UI\01.Panel">
+      <UniqueIdentifier>{6a16a4a4-ce59-4cc9-b5b0-61bac0027779}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -99,6 +105,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CLoader.cpp">
       <Filter>01.Levels\Loading\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Engine\Private\CPanel.cpp">
+      <Filter>02.GameObjects\UI\01.Panel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

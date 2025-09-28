@@ -2,29 +2,29 @@
 #include "CBase.h"
 
 /*임시, 이렇게 구조체를 사용할거싱ㅁ*/
-class CTransform
-{
-public:
-    typedef struct tagTransformDesc
-    {
-        _float3 m_vLocalPosition = {};
-        _float3 m_vLocalScale = {};
-        _float3 m_vLocalRotation = {};
-        
-        _float  m_fSpeed = {};
-
-    }TRANSFORM_DESC;
-};
+//class CTransform
+//{
+//public:
+//    typedef struct tagTransformDesc
+//    {
+//        _float3 m_vLocalPosition = {};
+//        _float3 m_vLocalScale = {};
+//        _float3 m_vLocalRotation = {};
+//        
+//        _float  m_fSpeed = {};
+//
+//    }TRANSFORM_DESC;
+//};
 NS_BEGIN(Engine)
 class ENGINE_DLL CGameObject :
     public CBase
 {
 public:
-    typedef struct tagGameObjectDesc : public CTransform::TRANSFORM_DESC
-    {
-        _wstring ObjTag = L"";
+    //typedef struct tagGameObjectDesc : public CTransform::TRANSFORM_DESC
+    //{
+    //    _wstring ObjTag = L"";
 
-    }GAMEOBJECT_DESC;
+    //}GAMEOBJECT_DESC;
 
 protected:
     CGameObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);

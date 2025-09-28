@@ -1,6 +1,9 @@
 #pragma once
 #include "CBase.h"
-class CComponent :
+
+NS_BEGIN(Engine)
+
+class ENGINE_DLL CComponent :
     public CBase
 {
 protected:
@@ -12,13 +15,14 @@ protected:
 
 public:
     virtual         HRESULT     Initialize_Prototype();
-    virtual         HRESULT     Initialize(void* pArg);
+    virtual         HRESULT     Initialize_Copytype(void* pArg);
 
 
 
 protected:
     ComPtr<ID3D11Device> m_pDevice = nullptr;
     ComPtr<ID3D11DeviceContext> m_pContext = nullptr;
+    class CGameInstance* m_pGameInstance = nullptr;
 
 public:
     virtual CComponent* Clone(void* pArg) = 0;
@@ -26,4 +30,4 @@ public:
 
 
 };
-
+NS_END
