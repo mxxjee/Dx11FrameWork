@@ -32,39 +32,69 @@ HRESULT CTransform::Initialize_Copytype(void* pArg)
 	return S_OK;
 }
 
-void CTransform::Move(DIRECTION eDir, float fTimeDelta)
+void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space)
 {
 	_vector vPosition = Get_State(STATE::POSITION);
 
 	STATE TargetState=STATE::END;
 	_float fTargetSpeed = (eDir > DIRECTION::UP) ? m_fSpeedPerSec * (-1) : m_fSpeedPerSec;
+	_vector vTargetAxis;
 
-
-	switch (eDir)
+	if (space == Space::Local)
 	{
-	case Engine::DIRECTION::FORWARD:
-	case Engine::DIRECTION::BACKWARD:
-		TargetState = STATE::LOOK;
+		switch (eDir)
+		{
+		case Engine::DIRECTION::FORWARD:
+		case Engine::DIRECTION::BACKWARD:
+			TargetState = STATE::LOOK;
 
-		break;
+			break;
 
-	case Engine::DIRECTION::RIGHT:
-	case Engine::DIRECTION::LEFT:
-		TargetState = STATE::RIGHT;
+		case Engine::DIRECTION::RIGHT:
+		case Engine::DIRECTION::LEFT:
+			TargetState = STATE::RIGHT;
 
-		break;
+			break;
 
-	case Engine::DIRECTION::UP:
-	case Engine::DIRECTION::DOWN:
-		TargetState = STATE::UP;
+		case Engine::DIRECTION::UP:
+		case Engine::DIRECTION::DOWN:
+			TargetState = STATE::UP;
 
-		break;
+			break;
 
-	default:                 
-		break;
+		default:
+			break;
+		}
+
+		vTargetAxis = Get_State(TargetState);
 	}
 
-	_vector vTargetAxis = Get_State(TargetState);
+	else
+	{
+		switch (eDir)
+		{
+		case Engine::DIRECTION::FORWARD:
+		case Engine::DIRECTION::BACKWARD:
+			vTargetAxis = WORLD_UP;
+			break;
+
+		case Engine::DIRECTION::RIGHT:
+		case Engine::DIRECTION::LEFT:
+			vTargetAxis = WORLD_RIGHT;
+			break;
+
+		case Engine::DIRECTION::UP:
+		case Engine::DIRECTION::DOWN:
+			vTargetAxis = WORLD_UP;
+			break;
+
+		default:
+			break;
+		}
+	}
+	
+
+	
 	vPosition += XMVector3Normalize(vTargetAxis) * fTargetSpeed * fTimeDelta;
 	Set_State(STATE::POSITION, vPosition);
 
@@ -139,14 +169,14 @@ void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 }
 
 
-void CTransform::LookAt(_fvector vPoint)
+void CTransform::LookAt(_fvector vWorldPoint)
 {
 	_float3 vScale = Get_Scale();
 
 	//new look ±¸ÇÏ±â
 	_vector vPosition = Get_State(STATE::POSITION);
 	
-	_vector vNewLook = vPoint - vPosition;
+	_vector vNewLook = vWorldPoint - vPosition;
 	_vector vNewRight = XMVector3Cross(WORLD_UP, vNewLook);
 	_vector vNewUp = XMVector3Cross(vNewLook, vNewRight);
 
@@ -208,8 +238,16 @@ CComponent* CTransform::Clone(void* pArg)
 	return pInstance;
 }
 
+void CTransform::LookAt(CTransform* target)
+{
+	CheckNull(target);
+	LookAt(target->Get_State(STATE::POSITION));
+
+}
 
 void CTransform::Free()
 {
 	__super::Free();
 }
+
+

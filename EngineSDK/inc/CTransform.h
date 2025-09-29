@@ -46,9 +46,23 @@ public:
     }
 
     const _float4x4& Get_World() { return m_WorldMatrix; }
-public:
-    void    Move(DIRECTION eDir, float fTimeDelta);
+    _float3  Get_Scale();        //right.up.forward벡터 길이만 리턴하자.
 
+#pragma region Translation
+public:
+    void    Move(DIRECTION eDir, float fTimeDelta,Space space=Space::Local);
+    
+    void    Rotation(_fvector vAxis, _float fRadian);       //즉각회전,vAxis축을 기준으로 fRAdian만큼 회전시킨다. 
+    void    Rotation(_float3 fRadian);
+    
+    void    Turn(_fvector vAxis, _float fTimeDelta);  //누적회전,매프레임마다 vAxis축을 기준으로 회전
+
+    void    LookAt(_fvector vWorldPoint);            //즉각회전,한 점을 바로 바라보도록회전
+    void    LookAt(CTransform* target);     
+
+    void    Chase(_fvector vPoint, _float fTimeDelta, _float MinDistance = 0.f);    //최소 거리 까지만 쫓아간다.
+
+#pragma endregion
 private:
     /*저장용 데이터( 직렬 계산)*/
     _float  m_fSpeedPerSec = {};

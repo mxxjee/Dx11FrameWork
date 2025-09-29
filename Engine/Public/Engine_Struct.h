@@ -24,6 +24,8 @@ namespace Engine
 
 	};
 
+
+
 	template<typename T>
 	class CGeometry;
 
