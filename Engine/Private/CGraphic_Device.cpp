@@ -152,7 +152,7 @@ HRESULT CGraphic_Device::Ready_SwapChain(HWND hWnd, WINMODE isWindowed, _uint iW
 	SwapChain.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
 	/* 백버퍼라는 텍스처(ID3D11Texture2D)를 생성했다. */
-	if (FAILED(pFactory->CreateSwapChain(m_pDevice.Get(), &SwapChain, &m_pSwapChain)))
+	if (FAILED(pFactory->CreateSwapChain(m_pDevice.Get(), &SwapChain, m_pSwapChain.GetAddressOf())))
 		return E_FAIL;
 
 	Safe_Release(pFactory);
