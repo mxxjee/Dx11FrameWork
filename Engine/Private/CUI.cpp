@@ -24,6 +24,7 @@ HRESULT CUI::Initialize_Copytype(void* pArg)
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
+
     return S_OK;
 }
 

@@ -60,6 +60,8 @@ HRESULT CLevel_GamePlay::Ready_Layer_Background(const _wstring& strLayerTag)
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 0.f;
     TransDesc.fSpeedPerSec = 1.f;
+    TransDesc.vLocalScale = { 0.5f,0.5f,0.5f,1.f };
+
 
     desc.TransformDesc = &TransDesc;
 

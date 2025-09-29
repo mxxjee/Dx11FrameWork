@@ -24,11 +24,17 @@ HRESULT CTransform::Initialize_Copytype(void* pArg)
 	COMPONENT_DESC* pComponentDest = static_cast<COMPONENT_DESC*>(pArg);
 	TRANSFORM_DESC* pDesc = static_cast<TRANSFORM_DESC*>(pComponentDest->TransformDesc);
 	
+	vLocalPosition = pDesc->vLocalPosition;
+	vLocalScale = pDesc->vLocalScale;
+	vLocalRotation = pDesc->vLocalRotation;
+
 	m_fSpeedPerSec = pDesc->fSpeedPerSec;
 	m_fRotationPerSec = pDesc->fRotationPerSec;
 
 	XMStoreFloat4x4(&m_WorldMatrix, DirectX::XMMatrixIdentity());
 
+	Set_State(STATE::POSITION, vLocalPosition);
+	Set_Scale(vLocalScale);
 	return S_OK;
 }
 
@@ -128,6 +134,20 @@ void CTransform::Rotation(_fvector vAxis, _float fRadian)
 
 
 	
+}
+
+void CTransform::Set_Scale(_float4 vScale)
+{
+	_vector vRight = Get_State(STATE::RIGHT);
+	_vector vUp = Get_State(STATE::UP);
+	_vector vLook = Get_State(STATE::LOOK);
+
+
+	Set_State(STATE::RIGHT, XMVector3Normalize(vRight) * vScale.x);
+	Set_State(STATE::UP, XMVector3Normalize(vUp) * vScale.y);
+	Set_State(STATE::LOOK, XMVector3Normalize(vLook) * vScale.z);
+
+
 }
 
 void CTransform::Rotation(_float3 fRadian)

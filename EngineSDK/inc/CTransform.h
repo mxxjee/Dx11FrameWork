@@ -8,8 +8,12 @@ class ENGINE_DLL CTransform :
 public:
     typedef struct tagTransformDesc
     {
-        _float fSpeedPerSec;
-        _float fRotationPerSec;
+        _float4 vLocalPosition = {0.f,0.f,0.f,1.f};
+        _float4 vLocalScale = { 1.f,1.f,1.f,1.f };
+        _float4 vLocalRotation = { 0.f,0.f,0.f,1.f };
+
+        _float fSpeedPerSec = {};
+        _float fRotationPerSec = {};
 
         _float4x4  m_WorldMatrix;
 
@@ -45,6 +49,8 @@ public:
         XMStoreFloat4((_float4*)&m_WorldMatrix.m[ENUM_TO_UINT(eState)], vState);
     }
 
+    void  Set_Scale(_float4 vScale);
+
     const _float4x4& Get_World() { return m_WorldMatrix; }
     _float3  Get_Scale();        //right.up.forward벡터 길이만 리턴하자.
 
@@ -65,6 +71,10 @@ public:
 #pragma endregion
 private:
     /*저장용 데이터( 직렬 계산)*/
+    _float4 vLocalPosition = {};
+    _float4 vLocalScale = {};
+    _float4 vLocalRotation = {};
+
     _float  m_fSpeedPerSec = {};
     _float  m_fRotationPerSec = {};
     _float4x4  m_WorldMatrix = {};
