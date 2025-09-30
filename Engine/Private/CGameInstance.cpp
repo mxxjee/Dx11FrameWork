@@ -17,6 +17,8 @@ CGameInstance::CGameInstance()
 }
 HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID3D11Device>* pDevice, ComPtr<ID3D11DeviceContext>*pContext)
 {
+	m_EngineDesc = EngineDesc;
+
 	/* 그래픽 디바이스 초기화 */
 	m_pGraphicDev = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.winMode, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, pDevice, pContext);
 	CheckNullResult(m_pGraphicDev, E_FAIL);

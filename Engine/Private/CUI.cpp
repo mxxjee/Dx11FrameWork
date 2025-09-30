@@ -1,4 +1,8 @@
 #include "CUI.h"
+#include "CTransform.h"
+#include "MathUtils.h"
+#include "CGameInstance.h"
+
 
 CUI::CUI(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CGameObject(pDevice,pContext)
@@ -6,7 +10,9 @@ CUI::CUI(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 }
 
 CUI::CUI(const CUI& rhs)
-    :CGameObject(rhs)
+    :CGameObject(rhs),
+    m_ViewMatrix{rhs.m_ViewMatrix},
+    m_ProjMatrix{rhs.m_ProjMatrix}
 {
 }
 
@@ -15,12 +21,30 @@ HRESULT CUI::Initialize_Prototype()
     if (FAILED(__super::Initialize_Prototype()))
         return E_FAIL;
 
+    XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
+    XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(
+        m_pGameInstance->Get_EngineDesc().iWinSizeX,
+        m_pGameInstance->Get_EngineDesc().iWinSizeY,
+        0.1f,1.f));
 
     return S_OK;
 }
 
 HRESULT CUI::Initialize_Copytype(void* pArg)
 {
+    UI_DESC* pDesc = static_cast<UI_DESC*>(pArg);
+
+       
+	CTransform::TRANSFORM_DESC* pTransDesc = static_cast<CTransform::TRANSFORM_DESC*>(pDesc->TransformDesc);
+
+	_vector vNewVector = XMVectorSet(pDesc->fX, pDesc->fY, 0.1f, 1.f);
+
+	XMStoreFloat4(&pTransDesc->vLocalPosition, MathUtils::ScreenToWorld(vNewVector,
+		m_ViewMatrix, m_ProjMatrix, m_pGameInstance->Get_EngineDesc().iWinSizeX,
+		m_pGameInstance->Get_EngineDesc().iWinSizeY));
+
+
+
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 

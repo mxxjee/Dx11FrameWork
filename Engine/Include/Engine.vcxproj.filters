@@ -136,6 +136,9 @@
     <Filter Include="05.Component\Transform">
       <UniqueIdentifier>{21e66bba-704e-4fa5-9634-25f2cd9c3879}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\99.MathUtils">
+      <UniqueIdentifier>{4c109192-e737-480d-bed2-dbc5776ae09b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -272,6 +275,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CTransform.h">
       <Filter>05.Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MathUtils.h">
+      <Filter>01.Utility\99.MathUtils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

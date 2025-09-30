@@ -72,10 +72,16 @@ HRESULT CLevel_Logo::Ready_Layer_Background(const _wstring& strLayerTag)
     Desc.ObjTag = L"BackGround";
     Desc.ImgPath = L"../../Resource/Character.png";
 
+    Desc.fSizeX = 50.f;
+    Desc.fSizeY = 50.f;
+    Desc.fX = g_iWinSizeX>>1;
+    Desc.fY = g_iWinSizeY>>1;
+
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
-    
+ 
+
     Desc.TransformDesc = &TransDesc;
 
     if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO),

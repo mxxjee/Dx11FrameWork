@@ -35,6 +35,8 @@ public:
     HRESULT     Draw();
     HRESULT     Draw_End();
     void        Clear(_uint iLevelID);        /*레벨의 자원 삭제.*/
+
+    const ENGINE_DESC& Get_EngineDesc() { return m_EngineDesc; }
 #pragma endregion
 
 
@@ -91,6 +93,7 @@ private:
     class CObject_Manager* m_pObjectManager = { nullptr };
     class CRenderer* m_pRenderer = nullptr;
 
+    ENGINE_DESC     m_EngineDesc;
 public:
     void                Release_Engine();
     virtual void        Free() override;

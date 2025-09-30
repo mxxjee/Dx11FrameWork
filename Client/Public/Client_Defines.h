@@ -5,7 +5,7 @@
 #include <cstring>
 
 #include "SimpleMath/SimpleMath.h"
-
+#include "MathUtils.h"
 
 
 extern HWND g_hWnd;

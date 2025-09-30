@@ -195,6 +195,7 @@
     <ClInclude Include="..\Public\imstb_textedit.h" />
     <ClInclude Include="..\Public\imstb_truetype.h" />
     <ClInclude Include="..\Public\CInputLayout.h" />
+    <ClInclude Include="..\Public\MathUtils.h" />
     <ClInclude Include="..\Public\VertexData.h" />
   </ItemGroup>
   <ItemGroup>
