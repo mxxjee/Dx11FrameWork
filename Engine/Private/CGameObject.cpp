@@ -66,6 +66,15 @@ HRESULT CGameObject::Render()
     return S_OK;
 }
 
+CComponent* CGameObject::Get_Component(const _wstring Tag)
+{
+    auto iter = m_Components.find(Tag);
+    if (iter == m_Components.end())
+        return nullptr;
+
+    return iter->second;
+}
+
 
 void CGameObject::Free()
 {

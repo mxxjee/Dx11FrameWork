@@ -155,6 +155,7 @@
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\CLoader.h" />
     <ClInclude Include="..\Public\CMainApp.h" />
+    <ClInclude Include="..\Public\CObjectDebugWindow.h" />
     <ClInclude Include="..\Public\CPanel.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="..\Private\CLevel_Logo.cpp" />
     <ClCompile Include="..\Private\CLoader.cpp" />
     <ClCompile Include="..\Private\CMainApp.cpp" />
+    <ClCompile Include="..\Private\CObjectDebugWindow.cpp" />
     <ClCompile Include="..\Private\CPanel.cpp" />
     <ClCompile Include="Client.cpp" />
   </ItemGroup>

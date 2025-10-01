@@ -5,6 +5,9 @@
 #include "Client_Defines.h"
 #include "CLayer.h"
 #include "CGameObject.h"
+#include "Engine_Function.h"
+#include "CImGui_Manager.h"
+#include "CObjectDebugWindow.h"
 
 
 USING(Client)
@@ -68,17 +71,40 @@ void CLevelDebugWindow::Update()
                     auto& Layers = pGameInstance->Get_Layers(pLevel->Get_LevelID());
                     for (auto& pair : Layers)
                     {
+                        const _wstring LayerTag = pair.first;
                         CLayer* pLayer = pair.second;
+                      
+                        //현재 씬의 레이어/오브젝트 이름 표시
                         if (pLayer)
                         {
-                            for (auto& i : pLayer->Get_ObjList())
-                                ImGui::Text("%S", i->Get_Tag().c_str());
+                            if (ImGui::TreeNode(WStringToUTF8(LayerTag).c_str()))
+                            {
+                                for (auto& i : pLayer->Get_ObjList())
+                                {
+                                    //각 오브젝트 표시 UI 선택가능
+                                    if (ImGui::Selectable(WStringToUTF8(i->Get_Tag()).c_str(), pSelectObject ==i))
+                                    {
+                                        CImgui_Base* pBase = CImGui_Manager::GetInstance()->Find_Window(L"ObjectDebugWindow");
+                                        if (pBase)
+                                        {
+                                            CObjectDebugWindow* pWindow = dynamic_cast<CObjectDebugWindow*>(pBase);
+                                            if (pWindow)
+                                                pWindow->Set_SelectObject(i);
+                                        }
+                                    }
+                                }
+                                  
+                                ImGui::TreePop();
+                            }
+                            
                         }
 
                     }
                 }
             }
         }
+
+       
     }
     ImGui::End();
 }
@@ -105,6 +131,7 @@ CLevelDebugWindow* CLevelDebugWindow::Create(ComPtr<ID3D11Device> pDevice, ComPt
 
 void CLevelDebugWindow::Free()
 {
+    __super::Free();
     Safe_Release(pGameInstance);
 }
  

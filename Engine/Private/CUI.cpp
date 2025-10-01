@@ -39,7 +39,8 @@ HRESULT CUI::Initialize_Copytype(void* pArg)
 
 	_vector vNewVector = XMVectorSet(pDesc->fX, pDesc->fY, 0.1f, 1.f);
 
-	XMStoreFloat4(&pTransDesc->vLocalPosition, MathUtils::ScreenToWorld(vNewVector,
+	XMStoreFloat4(&pTransDesc->vLocalPosition, 
+        MathUtils::ScreenToWorld(vNewVector,
 		m_ViewMatrix, m_ProjMatrix, m_pGameInstance->Get_EngineDesc().iWinSizeX,
 		m_pGameInstance->Get_EngineDesc().iWinSizeY));
 

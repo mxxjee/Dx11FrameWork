@@ -9,7 +9,7 @@
 #include "CImGui_Manager.h"
 #include "CImgui_Button.h"
 #include "CLevelDebugWindow.h"
-
+#include "CObjectDebugWindow.h"
 
 
 USING(Client)
@@ -41,6 +41,7 @@ HRESULT CMainApp::Initialize()
 #ifdef _DEBUG
 	pImGui_Manager->Init(g_hWnd, m_pDevice.Get(), m_pContext.Get());
 	CreateLevelDebugWindow();
+	CreateObjectDebugWindow();
 #endif
 
 	if (FAILED(Start_Level(LEVEL_ID::LOGO,LEVELCHANGETYPE::REPLACETOP)))
@@ -181,6 +182,19 @@ void CMainApp::CreateLevelDebugWindow()
 
 
 	pImGui_Manager->RegisterWindow(CLevelDebugWindow::Create(m_pDevice, m_pContext, &Desc));
+}
+
+void CMainApp::CreateObjectDebugWindow()
+{
+	CImgui_Window::IMGUIWINDOW_DESC Desc;
+	Desc.m_WindowTitle = "ObjectDebugWindow";
+	Desc.m_WindowPos = ImVec2(g_iWinSizeX, 100);
+	//Desc.m_WindowSize = ImVec2(300, 500);
+	Desc.Tag = L"ObjectDebugWindow";
+
+
+	pImGui_Manager->RegisterWindow(CObjectDebugWindow::Create(m_pDevice, m_pContext, &Desc));
+
 }
 
 

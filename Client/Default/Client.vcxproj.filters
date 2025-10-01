@@ -40,6 +40,9 @@
     <ClInclude Include="..\Public\CLevelDebugWindow.h">
       <Filter>999.ImguiObject\LevelDebugWindow</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CObjectDebugWindow.h">
+      <Filter>999.ImguiObject\ObjectInspectorWindow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -92,6 +95,9 @@
     <Filter Include="999.ImguiObject\LevelDebugWindow">
       <UniqueIdentifier>{da369f4f-14c9-4780-b944-1c2034310401}</UniqueIdentifier>
     </Filter>
+    <Filter Include="999.ImguiObject\ObjectInspectorWindow">
+      <UniqueIdentifier>{0521ac79-efb1-4686-9806-ccd6c4530c8e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -120,6 +126,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CLevelDebugWindow.cpp">
       <Filter>999.ImguiObject\LevelDebugWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CObjectDebugWindow.cpp">
+      <Filter>999.ImguiObject\ObjectInspectorWindow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

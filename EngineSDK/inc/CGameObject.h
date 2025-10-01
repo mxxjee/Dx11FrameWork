@@ -35,7 +35,7 @@ public:
     
 public:
     const _wstring& Get_Tag() { return tag; }
-
+    CComponent* Get_Component(const _wstring Tag);
 protected:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };
