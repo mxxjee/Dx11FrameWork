@@ -178,6 +178,8 @@
     <ClInclude Include="..\Public\CUI.h" />
     <ClInclude Include="..\Public\CVertexBuffer.h" />
     <ClInclude Include="..\Public\CVertexShader.h" />
+    <ClInclude Include="..\Public\CVIBuffer.h" />
+    <ClInclude Include="..\Public\CVIBuffer_Rect.h" />
     <ClInclude Include="..\Public\Engine_Define.h" />
     <ClInclude Include="..\Public\Engine_Enum.h" />
     <ClInclude Include="..\Public\Engine_Function.h" />
@@ -227,6 +229,8 @@
     <ClCompile Include="..\Private\CUI.cpp" />
     <ClCompile Include="..\Private\CVertexBuffer.cpp" />
     <ClCompile Include="..\Private\CVertexShader.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer_Rect.cpp" />
     <ClCompile Include="..\Private\GeometryHelper.cpp" />
     <ClCompile Include="..\Private\imgui.cpp" />
     <ClCompile Include="..\Private\imgui_demo.cpp" />

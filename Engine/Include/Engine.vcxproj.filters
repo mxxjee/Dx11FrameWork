@@ -139,6 +139,12 @@
     <Filter Include="01.Utility\99.MathUtils">
       <UniqueIdentifier>{4c109192-e737-480d-bed2-dbc5776ae09b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\VIBuffer">
+      <UniqueIdentifier>{f995508f-dda4-4798-bf18-a6fe4b5891b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\VIBuffer\VIBuffer_Rect">
+      <UniqueIdentifier>{820899aa-b41e-4e5c-afd3-d35a4db9403b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -279,6 +285,12 @@
     <ClInclude Include="..\Public\MathUtils.h">
       <Filter>01.Utility\99.MathUtils</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CVIBuffer.h">
+      <Filter>05.Component\VIBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CVIBuffer_Rect.h">
+      <Filter>05.Component\VIBuffer\VIBuffer_Rect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -394,6 +406,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CTransform.cpp">
       <Filter>05.Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CVIBuffer.cpp">
+      <Filter>05.Component\VIBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CVIBuffer_Rect.cpp">
+      <Filter>05.Component\VIBuffer\VIBuffer_Rect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
