@@ -45,6 +45,7 @@ public:
     HRESULT			Level_Changer(_uint iSceneID, LevelArgs & args);
     void            Pop_Level();
     class CLevel*   Get_CurrentLevel();
+    const vector<CLevel*>* Get_LevelStack();
 #pragma endregion
   
 
@@ -66,7 +67,7 @@ public:
 #pragma region ProtoManager
 public:
     HRESULT        Add_Prototype(_uint iLevelIndex, const _wstring & strProtoTag, CBase * pPrototype);
-    CBase* Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelIndex, const _wstring & strPrototag, void* pArg);
+    CBase*          Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelIndex, const _wstring & strPrototag, void* pArg);
 #pragma endregion
 
 #pragma region ObjectManager

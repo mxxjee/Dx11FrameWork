@@ -33,6 +33,8 @@ public:
 
     virtual HRESULT Render();
     
+public:
+    const _wstring& Get_Tag() { return tag; }
 
 protected:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };

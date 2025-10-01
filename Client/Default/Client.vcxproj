@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBackGround.h" />
+    <ClInclude Include="..\Public\CLevelDebugWindow.h" />
     <ClInclude Include="..\Public\CLevel_GamePlay.h" />
     <ClInclude Include="..\Public\CLevel_Loading.h" />
     <ClInclude Include="..\Public\CLevel_Logo.h" />
@@ -162,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBackGround.cpp" />
+    <ClCompile Include="..\Private\CLevelDebugWindow.cpp" />
     <ClCompile Include="..\Private\CLevel_GamePlay.cpp" />
     <ClCompile Include="..\Private\CLevel_Loading.cpp" />
     <ClCompile Include="..\Private\CLevel_Logo.cpp" />

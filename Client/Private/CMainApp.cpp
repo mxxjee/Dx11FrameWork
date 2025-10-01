@@ -8,7 +8,7 @@
 
 #include "CImGui_Manager.h"
 #include "CImgui_Button.h"
-#include "CImgui_Window.h"
+#include "CLevelDebugWindow.h"
 
 
 
@@ -40,7 +40,7 @@ HRESULT CMainApp::Initialize()
 	Reigster_Levels();
 #ifdef _DEBUG
 	pImGui_Manager->Init(g_hWnd, m_pDevice.Get(), m_pContext.Get());
-	CreateMyWindow();
+	CreateLevelDebugWindow();
 #endif
 
 	if (FAILED(Start_Level(LEVEL_ID::LOGO,LEVELCHANGETYPE::REPLACETOP)))
@@ -171,33 +171,16 @@ void CMainApp::Free()
 
 }
 
-void CMainApp::CreateMyWindow()
+void CMainApp::CreateLevelDebugWindow()
 {
 	CImgui_Window::IMGUIWINDOW_DESC Desc;
-	Desc.m_WindowTitle = "Level_Stack_Debug";
+	Desc.m_WindowTitle = "LevelDebugWindow";
 	Desc.m_WindowPos = ImVec2(100, 100);
-	Desc.m_WindowSize = ImVec2(300, 300);
-	Desc.Tag = L"Level_Stack_Debug";
+	//Desc.m_WindowSize = ImVec2(300, 500);
+	Desc.Tag = L"LevelDebugWindow";
 
 
-	//Create MyButton
-	{
-		CImgui_Button::IMGUIBUTTON_DESC ButtonDesc;
-		ButtonDesc.callback = []()
-		{
-
-		};
-
-		ButtonDesc.Label = "MyButton";
-		ButtonDesc.m_RelativePos = ImVec2(10, 80);
-		ButtonDesc.Tag = L"MyButton";
-
-
-		CImgui_Button* pButton = CImgui_Button::Create(m_pDevice, m_pContext, &ButtonDesc);
-		Desc.m_Widgets.push_back(pButton);
-	}
-
-	pImGui_Manager->RegisterWindow(CImgui_Window::Create(m_pDevice, m_pContext, &Desc));
+	pImGui_Manager->RegisterWindow(CLevelDebugWindow::Create(m_pDevice, m_pContext, &Desc));
 }
 
 

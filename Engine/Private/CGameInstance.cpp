@@ -142,6 +142,10 @@ CLevel* CGameInstance::Get_CurrentLevel()
 	CheckNullResult(m_pLevelManager,nullptr);
 	return m_pLevelManager->Get_CurrentLevel();
 }
+const vector<CLevel*>* CGameInstance::Get_LevelStack()
+{
+	return m_pLevelManager->Get_LevelStack();
+}
 #pragma endregion
 
 #pragma region LevelFactory

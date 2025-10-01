@@ -19,7 +19,7 @@ public:
     void Update_Late(_float fTimeDelta);
     void Update_Render(_float fTimeDelta);
 
-
+    const list<CGameObject*>& Get_ObjList() {return m_ObjList; }
 private:
     list<CGameObject*>      m_ObjList;
 
