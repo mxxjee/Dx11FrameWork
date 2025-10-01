@@ -1,0 +1,39 @@
+#pragma once
+#include "CImgui_Widget.h"
+
+NS_BEGIN(Engine)
+class ENGINE_DLL CImgui_Button :
+    public CImgui_Widget
+{
+public:
+    typedef struct ImguiButton_Desc : public CImgui_Widget::IMGUIWIDGET_DESC
+    {
+
+        string Label;
+        function<void()> callback;
+       
+
+    }IMGUIBUTTON_DESC;
+protected:
+    CImgui_Button(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+    virtual ~CImgui_Button() = default;
+
+public:
+    // CImgui_Base을(를) 통해 상속됨
+    virtual HRESULT Initialize(void* pArg) override;
+    virtual void Update() override;
+    virtual void Render() override;
+
+
+public:
+    static CImgui_Button* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
+
+protected:
+    string m_Label;
+    function<void()> m_Callback=nullptr;
+
+
+};
+
+NS_END
+

@@ -7,6 +7,7 @@
 namespace Engine
 {
 	class CGameInstance;
+	class CImGui_Manager;
 }
 
 NS_BEGIN(Client)
@@ -30,6 +31,10 @@ private:
 	void			Reigster_Levels();
 	HRESULT			Start_Level(LEVEL_ID iLevelID,LEVELCHANGETYPE eChangeType);
 
+
+private:
+	/////////////////Create ImguiWindow/////////////////
+	void		CreateMyWindow();
 private:
 	ComPtr<ID3D11Device> m_pDevice;
 	ComPtr <ID3D11DeviceContext> m_pContext;
@@ -41,6 +46,7 @@ public:
 private:
 	 CGameInstance* pGameInstance;
 	_float4		ClearColor = _float4(0.f, 0.f, 1.f, 1.f);
+	CImGui_Manager* pImGui_Manager = { nullptr };
 
 };
 

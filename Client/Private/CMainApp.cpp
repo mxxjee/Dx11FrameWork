@@ -1,16 +1,22 @@
 #include "CMainApp.h"
 #include "CGameInstance.h"
 
+
 #include "CLevel_Logo.h"
 #include "CLevel_GamePlay.h"
 #include "CLevel_Loading.h"
+
+#include "CImGui_Manager.h"
+#include "CImgui_Button.h"
+#include "CImgui_Window.h"
 
 
 
 USING(Client)
 
 CMainApp::CMainApp()
-	:pGameInstance(CGameInstance::GetInstance())
+	:pImGui_Manager(CImGui_Manager::GetInstance()),
+	pGameInstance(CGameInstance::GetInstance())
 {
 	Safe_AddRef(pGameInstance);
 }
@@ -32,7 +38,10 @@ HRESULT CMainApp::Initialize()
 		return E_FAIL;
 
 	Reigster_Levels();
-
+#ifdef _DEBUG
+	pImGui_Manager->Init(g_hWnd, m_pDevice.Get(), m_pContext.Get());
+	CreateMyWindow();
+#endif
 
 	if (FAILED(Start_Level(LEVEL_ID::LOGO,LEVELCHANGETYPE::REPLACETOP)))
 		return E_FAIL;
@@ -50,6 +59,11 @@ void CMainApp::Update(_float fTimeDelta)
 {
 	/*내 게임의 반복적인 작업 수행*/
 	pGameInstance->Update_Engine(fTimeDelta);
+
+#ifdef _DEBUG
+	pImGui_Manager->Update();
+#endif
+
 }
 
 void CMainApp::Update_Late(float fTimeDelta)
@@ -68,6 +82,11 @@ void CMainApp::Render()
 	/*내 게임의 반복적인 렌더.*/
 	pGameInstance->Draw_Begin(&ClearColor);
 	pGameInstance->Draw();
+
+#ifdef _DEBUG
+	pImGui_Manager->Render(m_pContext.Get());
+#endif
+
 	pGameInstance->Draw_End();
 
 }
@@ -137,14 +156,48 @@ void CMainApp::Free()
 	//상속계층을 따르기 위해 부모  Free호출 
 	__super::Free();
 
+#ifdef _DEBUG
+	Safe_Release(pImGui_Manager);
+#endif
+
 	pGameInstance->Release_Engine();
 
 
 
 
 	//자신의 리소스정리
+	
 	Safe_Release(pGameInstance);
 
+}
+
+void CMainApp::CreateMyWindow()
+{
+	CImgui_Window::IMGUIWINDOW_DESC Desc;
+	Desc.m_WindowTitle = "Level_Stack_Debug";
+	Desc.m_WindowPos = ImVec2(100, 100);
+	Desc.m_WindowSize = ImVec2(300, 300);
+	Desc.Tag = L"Level_Stack_Debug";
+
+
+	//Create MyButton
+	{
+		CImgui_Button::IMGUIBUTTON_DESC ButtonDesc;
+		ButtonDesc.callback = []()
+		{
+
+		};
+
+		ButtonDesc.Label = "MyButton";
+		ButtonDesc.m_RelativePos = ImVec2(10, 80);
+		ButtonDesc.Tag = L"MyButton";
+
+
+		CImgui_Button* pButton = CImgui_Button::Create(m_pDevice, m_pContext, &ButtonDesc);
+		Desc.m_Widgets.push_back(pButton);
+	}
+
+	pImGui_Manager->RegisterWindow(CImgui_Window::Create(m_pDevice, m_pContext, &Desc));
 }
 
 

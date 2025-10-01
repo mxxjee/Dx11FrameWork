@@ -23,6 +23,8 @@ public:
 	void	Render();
 
 private:
+	void		CreateMyWindow();
+private:
 	ComPtr<ID3D11Device> m_pDevice = { nullptr };
 	ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };
 

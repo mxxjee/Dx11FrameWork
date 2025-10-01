@@ -28,7 +28,7 @@ void CImGui_Manager::Init(HWND hWnd, ID3D11Device* device, ID3D11DeviceContext* 
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 
     // Setup Dear ImGui style
-    ImGui::StyleColorsDark();
+    ImGui::StyleColorsMint();
     //ImGui::StyleColorsLight();
 
     // Setup scaling
@@ -57,7 +57,10 @@ void CImGui_Manager::Update()
 
     BeginDockSpace();//도킹기능
     //나중에 외부에서 설정할듯, 일단 테스트.
-    Test();
+   // Test();
+
+    for (auto& pair : m_Windows)
+        pair.second->Update();
 }
 
 void CImGui_Manager::Render(ID3D11DeviceContext* device_context)
@@ -84,6 +87,10 @@ void CImGui_Manager::Render(ID3D11DeviceContext* device_context)
         if (backup_rt) backup_rt->Release();
         if (backup_ds) backup_ds->Release();
     }
+
+
+    for (auto& pair : m_Windows)
+        pair.second->Render();
 }
 
 void CImGui_Manager::Test()
@@ -166,7 +173,29 @@ void CImGui_Manager::BeginDockSpace()
 
 void CImGui_Manager::Free()
 {
+    for (auto& pair : m_Windows)
+    {
+        Safe_Release(pair.second);
+    }
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
+}
+
+void CImGui_Manager::RegisterWindow(CImgui_Base* pInstance)
+{
+    CheckNull(pInstance);
+    if (m_Windows.find(pInstance->Get_Tag()) == m_Windows.end())
+        m_Windows[pInstance->Get_Tag()] = pInstance;
+}
+
+CImgui_Base* CImGui_Manager::Find_Window(wstring _tag)
+{
+    auto pTargetIter = m_Windows.find(_tag);
+    CImgui_Base* pTarget = nullptr;
+
+    if (pTargetIter != m_Windows.end())
+        pTarget = pTargetIter->second;
+
+    return pTarget;
 }

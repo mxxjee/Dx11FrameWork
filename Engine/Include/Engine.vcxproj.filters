@@ -70,9 +70,6 @@
     <Filter Include="999.Imgui\Objects">
       <UniqueIdentifier>{f73f17df-9b93-4b19-ab4d-181718e3c257}</UniqueIdentifier>
     </Filter>
-    <Filter Include="999.Imgui\Objects\CImgui_Window">
-      <UniqueIdentifier>{e64e43da-35d5-4e4d-ab37-7fdfdd4b82ed}</UniqueIdentifier>
-    </Filter>
     <Filter Include="999.Imgui\Objects\CImgui_Base">
       <UniqueIdentifier>{f9e1b2a0-8e24-462c-b2cf-b0e1cdbb31d8}</UniqueIdentifier>
     </Filter>
@@ -144,6 +141,18 @@
     </Filter>
     <Filter Include="05.Component\VIBuffer\VIBuffer_Rect">
       <UniqueIdentifier>{820899aa-b41e-4e5c-afd3-d35a4db9403b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Window">
+      <UniqueIdentifier>{e64e43da-35d5-4e4d-ab37-7fdfdd4b82ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget">
+      <UniqueIdentifier>{a380643d-f01c-4fd3-8918-5db20caaba12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\Button">
+      <UniqueIdentifier>{407d0eb3-1213-4666-b6cd-b6db31318def}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\Text">
+      <UniqueIdentifier>{d5fed461-117a-431a-86dc-2872aa201244}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -238,7 +247,7 @@
       <Filter>999.Imgui\Objects\CImgui_Base</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CImgui_Window.h">
-      <Filter>999.Imgui\Objects\CImgui_Window</Filter>
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Window</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CRenderer.h">
       <Filter>04.Renderer</Filter>
@@ -290,6 +299,18 @@
     </ClInclude>
     <ClInclude Include="..\Public\CVIBuffer_Rect.h">
       <Filter>05.Component\VIBuffer\VIBuffer_Rect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\imgui_spectrum.h">
+      <Filter>999.Imgui\ImguiDefault</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CImgui_Widget.h">
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CImgui_Button.h">
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CImgui_Text.h">
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Text</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -360,7 +381,7 @@
       <Filter>999.Imgui\Objects\CImgui_Base</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CImgui_Window.cpp">
-      <Filter>999.Imgui\Objects\CImgui_Window</Filter>
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Window</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CRenderer.cpp">
       <Filter>04.Renderer</Filter>
@@ -412,6 +433,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\CVIBuffer_Rect.cpp">
       <Filter>05.Component\VIBuffer\VIBuffer_Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CImgui_Widget.cpp">
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CImgui_Button.cpp">
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CImgui_Text.cpp">
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Text</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

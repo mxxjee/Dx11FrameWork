@@ -1,5 +1,6 @@
 #pragma once
 #include "CBase.h"
+#include "CImgui_Base.h"
 
 NS_BEGIN(Engine)
 class ENGINE_DLL CImGui_Manager final :
@@ -22,11 +23,16 @@ class ENGINE_DLL CImGui_Manager final :
         void            Free() override;
 
 
+    public:
+        void        RegisterWindow(CImgui_Base* pInstance);
+        CImgui_Base* Find_Window(wstring _tag);
     private:
         bool        show_another_window ={ false };
         bool        show_demo_window = { true };
         _float4     clearColor = { 0.f,0.f,0.f,0.f };
- 
+
+    private:
+        unordered_map<wstring, CImgui_Base*>        m_Windows;
 };
 
 NS_END
