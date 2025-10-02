@@ -438,7 +438,7 @@ void ImGui::StyleColorsMint()
 {
     ImGuiStyle& style = ImGui::GetStyle();
     style.Alpha = 1.0;
-    style.Colors[ImGuiCol_WindowBg].w = 0.83f;
+    style.Colors[ImGuiCol_WindowBg].w = 0.5f;
     style.ChildRounding = 3.0f;
     style.WindowRounding = 3;
     style.GrabRounding = 1;

@@ -21,10 +21,13 @@ HRESULT CUI::Initialize_Prototype()
     if (FAILED(__super::Initialize_Prototype()))
         return E_FAIL;
 
+    auto& vector = m_pGameInstance->Get_Viewports();
+
+
     XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
     XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(
-        m_pGameInstance->Get_EngineDesc().iWinSizeX,
-        m_pGameInstance->Get_EngineDesc().iWinSizeY,
+        vector[0].Width,
+        vector[0].Height,
         0.1f,1.f));
 
     return S_OK;
@@ -36,14 +39,10 @@ HRESULT CUI::Initialize_Copytype(void* pArg)
 
        
 	CTransform::TRANSFORM_DESC* pTransDesc = static_cast<CTransform::TRANSFORM_DESC*>(pDesc->TransformDesc);
-
-	_vector vNewVector = XMVectorSet(pDesc->fX, pDesc->fY, 0.1f, 1.f);
-
-	XMStoreFloat4(&pTransDesc->vLocalPosition, 
-        MathUtils::ScreenToWorld(vNewVector,
-		m_ViewMatrix, m_ProjMatrix, m_pGameInstance->Get_EngineDesc().iWinSizeX,
-		m_pGameInstance->Get_EngineDesc().iWinSizeY));
-
+	_vector vScreenPos = XMVectorSet(pDesc->fX, pDesc->fY, 0.1f, 1.f);
+    
+    auto& vector = m_pGameInstance->Get_Viewports();
+    pTransDesc->vLocalPosition=MathUtils::ScreenToWorld_UI(vScreenPos, vector[0].Width,vector[0].Height);
 
 
     if (FAILED(__super::Initialize_Copytype(pArg)))

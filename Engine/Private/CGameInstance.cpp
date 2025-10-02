@@ -17,7 +17,7 @@ CGameInstance::CGameInstance()
 }
 HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID3D11Device>* pDevice, ComPtr<ID3D11DeviceContext>*pContext)
 {
-	m_EngineDesc = EngineDesc;
+	//m_EngineDesc = EngineDesc;
 
 	/* 그래픽 디바이스 초기화 */
 	m_pGraphicDev = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.winMode, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, pDevice, pContext);
@@ -52,6 +52,14 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	/*렌더러 초기화*/
 	m_pRenderer = CRenderer::Create(*pDevice, *pContext);
 	CheckNullResult(m_pRenderer, E_FAIL);
+
+	D3D11_VIEWPORT          ViewportDesc{};
+	_uint           iNumViewports = { 1 };
+
+
+	(*pContext)->RSGetViewports(&iNumViewports, &ViewportDesc);
+
+	m_ViewPorts.push_back(ViewportDesc);
 
 	return S_OK;
 }

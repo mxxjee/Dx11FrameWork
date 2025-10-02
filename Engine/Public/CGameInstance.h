@@ -36,7 +36,7 @@ public:
     HRESULT     Draw_End();
     void        Clear(_uint iLevelID);        /*레벨의 자원 삭제.*/
 
-    const ENGINE_DESC& Get_EngineDesc() { return m_EngineDesc; }
+    //const ENGINE_DESC& Get_EngineDesc() { return m_EngineDesc; }
 #pragma endregion
 
 
@@ -85,6 +85,9 @@ public:
 
 #pragma endregion
 
+#pragma region Default
+    const vector<D3D11_VIEWPORT>& Get_Viewports() { return m_ViewPorts; }
+#pragma endregion
 private:
     class CLevel_Manager* m_pLevelManager = { nullptr };
     class CTimer_Manager* m_pTimerManager = { nullptr };
@@ -94,7 +97,9 @@ private:
     class CObject_Manager* m_pObjectManager = { nullptr };
     class CRenderer* m_pRenderer = nullptr;
 
-    ENGINE_DESC     m_EngineDesc;
+private:
+    vector<D3D11_VIEWPORT>          m_ViewPorts;
+
 public:
     void                Release_Engine();
     virtual void        Free() override;

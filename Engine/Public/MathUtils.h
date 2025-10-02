@@ -3,6 +3,21 @@
 
 namespace MathUtils
 {
+	//UI오브젝트를 화면에 띄우기 위해 transform에게 worldpos를 전달할때, 변환용(UI)
+	static _float4 ScreenToWorld_UI(_vector& vScreenPos, FLOAT fViewPortWidth, FLOAT fViewPortHeight)
+	{
+		_float4 Result;
+		Result.x = XMVectorGetX(vScreenPos) - fViewPortWidth * 0.5f;
+		Result.y = ((-1)*XMVectorGetY(vScreenPos)) + fViewPortHeight * 0.5f;
+		Result.z = XMVectorGetZ(vScreenPos);
+		Result.w = XMVectorGetW(vScreenPos);
+
+
+		return Result;
+
+
+	}
+
 	static _vector WorldToScreen(_vector& vWorldPos,
 		_float4x4& view, _float4x4& proj, int screenWidth, int screenHeight)
 	{
@@ -49,5 +64,13 @@ namespace MathUtils
 
 		return worldPos;
 
+	}
+
+	template <typename T>
+	inline T Clamp(T value, T min, T max)
+	{
+		if (value < min) return min;
+		if (value > max) return max;
+		return value;
 	}
 }

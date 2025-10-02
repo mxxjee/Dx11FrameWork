@@ -63,7 +63,10 @@ public:
     
     void    Turn(_fvector vAxis, _float fTimeDelta);  //누적회전,매프레임마다 vAxis축을 기준으로 회전
 
-    void    LookAt(_fvector vWorldPoint);            //즉각회전,한 점을 바로 바라보도록회전
+    void    LookAt(_fvector vWorldPoint);    //즉각회전,한 점을 바로 바라보도록회전
+
+    void    LookAt(_fvector vAxis, _fvector vWorldPoint, _float fTimeDelta, _float fSpeed = 5); //누적 회전, 특정 축을 기준으로 vWorldpoint를 바라보도록 회전한다.
+    
     void    LookAt(CTransform* target);     
 
     void    Chase(_fvector vPoint, _float fTimeDelta, _float MinDistance = 0.f);    //최소 거리 까지만 쫓아간다.

@@ -63,8 +63,11 @@ HRESULT CVIBuffer::Bind_Resource()
         { "TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0}
     };
 
-    //ComPtr<
-   // m_pDevice->CreateInputLayout(layoutDesc,sizeof(layoutDesc)/sizeof(layoutDesc[0]),
+    ComPtr<ID3D11VertexShader>  VertexShader;
+    ComPtr<ID3DBlob>  vsBlob;
+
+   // m_pDevice->CreateVertexShader()
+    //m_pDevice->CreateInputL ayout(layoutDesc,sizeof(layoutDesc)/sizeof(layoutDesc[0]),
    
     // m_pContext->IASetInputLayout(pInputLayout.Get());
 

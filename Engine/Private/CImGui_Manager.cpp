@@ -30,7 +30,7 @@ void CImGui_Manager::Init(HWND hWnd, ID3D11Device* device, ID3D11DeviceContext* 
     // Setup Dear ImGui style
     ImGui::StyleColorsMint();
     //ImGui::StyleColorsLight();
-
+   // ImGui::StyleColorsSpectrum();
     // Setup scaling
     ImGuiStyle& style = ImGui::GetStyle();
     style.ScaleAllSizes(main_scale);        // Bake a fixed style scale. (until we have a solution for dynamic style scaling, changing this requires resetting Style + calling this again)

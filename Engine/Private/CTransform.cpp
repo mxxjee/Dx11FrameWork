@@ -1,4 +1,5 @@
 #include "CTransform.h"
+#include "MathUtils.h"
 
 CTransform::CTransform(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CComponent(pDevice,pContext)
@@ -212,6 +213,61 @@ void CTransform::LookAt(_fvector vWorldPoint)
 
 
 }
+
+void CTransform::LookAt(_fvector vAxis, _fvector vWorldPoint, _float fTimeDelta, _float fSpeed)
+{
+	// 1. 회전축 정규화 (ex: (0,1,0) → Y축 회전)
+	_vector NormalAxis = XMVector3Normalize(vAxis);
+
+	// 2. 내 위치와 타겟 방향
+	_vector vPos = Get_State(STATE::POSITION);
+	_vector vToTarget = vWorldPoint - vPos;
+
+	// 3. "회전축 평면"에 투영
+	_vector vProjTarget = vToTarget - XMVector3Dot(vToTarget, NormalAxis) * NormalAxis;
+	_vector vCurLook = Get_State(STATE::LOOK);
+	_vector vProjLook = vCurLook - XMVector3Dot(vCurLook, NormalAxis) * NormalAxis;
+
+	vProjTarget = XMVector3Normalize(vProjTarget);
+	vProjLook = XMVector3Normalize(vProjLook);
+
+	// 4. 각도 계산
+	float fDot = XMVectorGetX(XMVector3Dot(vProjLook, vProjTarget));
+	fDot = MathUtils::Clamp(fDot, -1.0f, 1.0f);
+	float fAngle = acosf(fDot);
+
+	// 거의 일치하면 회전 중지 (빙글빙글 방지)
+	if (fAngle < 0.1f)
+		return;
+
+	// 5. 회전 방향 판별 (cross vs 축)
+	_vector vCross = XMVector3Cross(vProjLook, vProjTarget);
+	float fDir = XMVectorGetX(XMVector3Dot(vCross, NormalAxis));
+	if (fDir < 0)
+		fAngle = -fAngle;
+
+	// 6. 실제 회전 각도 (보간)
+	float fDeltaAngle = MathUtils::Clamp<float>(fAngle, -fSpeed * fTimeDelta, fSpeed * fTimeDelta);
+
+	// 7. 회전행렬 생성
+	_matrix RotationMat = XMMatrixRotationAxis(NormalAxis, fDeltaAngle);
+
+	// 8. 내 로컬 축들 변환
+	_vector vRight = XMVector3TransformNormal(Get_State(STATE::RIGHT), RotationMat);
+	_vector vUp = XMVector3TransformNormal(Get_State(STATE::UP), RotationMat);
+	_vector vLook = XMVector3TransformNormal(Get_State(STATE::LOOK), RotationMat);
+
+	// 9. 직교화
+	vRight = XMVector3Normalize(vRight);
+	vUp = XMVector3Normalize(XMVector3Cross(vLook, vRight));
+	vLook = XMVector3Normalize(XMVector3Cross(vRight, vUp));
+
+	// 10. 최종 세팅 (스케일 유지)
+	Set_State(STATE::RIGHT, vRight * Get_Scale().x);
+	Set_State(STATE::UP, vUp * Get_Scale().y);
+	Set_State(STATE::LOOK, vLook * Get_Scale().z);
+}
+
 
 void CTransform::Chase(_fvector vPoint, _float fTimeDelta, _float MinDistance)
 {

@@ -79,6 +79,13 @@ void CBackGround::Update_Late(_float fTimeDelta)
     else if (GetKeyState(VK_DOWN) & 0x800)
         m_pTransformCom->Move(DIRECTION::DOWN, fTimeDelta);
 
+ 
+    //m_pTransformCom->LookAt(
+    //    m_pTransformCom->Get_State(STATE::UP),
+    //    XMVectorSet(100.f, 0.f, 0.f, 1.f), 
+    //    fTimeDelta);
+
+
 }
 
 void CBackGround::Update_Render(_float fTimeDelta)
