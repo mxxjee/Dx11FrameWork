@@ -1,7 +1,7 @@
 #include "CVertexShader.h"
 
 CVertexShader::CVertexShader(ComPtr<ID3D11Device> device)
-	:CShader(device)
+	:CDefaultShader(device)
 {
 }
 

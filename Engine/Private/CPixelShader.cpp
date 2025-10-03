@@ -1,7 +1,7 @@
 #include "CPixelShader.h"
 
 CPixelShader::CPixelShader(ComPtr<ID3D11Device> device)
-	:CShader(device)
+	:CDefaultShader(device)
 {
 }
 

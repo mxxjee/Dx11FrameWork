@@ -9,7 +9,7 @@
 #include "CGeometry.h"
 #include "CVertexShader.h"
 #include "CPixelShader.h"
-#include "CShader.h"
+#include "CDefaultShader.h"
 #include "CInputLayout.h"
 
 #include "Client_Defines.h"

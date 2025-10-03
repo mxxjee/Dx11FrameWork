@@ -1,9 +1,9 @@
 #pragma once
-#include "CShader.h"
+#include "CDefaultShader.h"
 
 NS_BEGIN(Engine)
 class ENGINE_DLL CPixelShader :
-    public CShader
+    public CDefaultShader
 {
 public:
     CPixelShader(ComPtr<ID3D11Device> device);

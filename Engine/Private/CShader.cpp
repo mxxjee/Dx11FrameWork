@@ -1,39 +1,51 @@
 #include "CShader.h"
 
-CShader::CShader(ComPtr<ID3D11Device> device)
-	:_device(device)
+CShader::CShader(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
+    :CComponent{pDevice,pContext}
 {
 }
 
-CShader::~CShader()
+CShader::CShader(const CShader& Prototype)
+    :CComponent{Prototype}
 {
 }
 
-void CShader::Create(const wstring& path, const string& name, const string& version)
+HRESULT CShader::Initialize_Prototype(const _tchar* pShaderFilePath)
 {
+    return S_OK;
 }
 
-void CShader::LoadShaderFromFile(const wstring& path, const string& name, const string& version)
+HRESULT CShader::Initialize_Copytype(void* pArg)
 {
-
-	const UINT32 compileFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
-
-	_path = path;
-	_name = name;
-
-	D3DCompileFromFile(path.c_str(),
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE,
-		name.c_str(),
-		version.c_str(),
-		compileFlag,
-		0,
-		_Blob.GetAddressOf(),
-		nullptr);
+    return S_OK;
 }
 
+CShader* CShader::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const _tchar* pShaderFilePath)
+{
+    CShader* pInstance = new CShader(pDevice, pContext);
+
+    if (FAILED(pInstance->Initialize_Prototype(pShaderFilePath)))
+    {
+        MSG_BOX("Failed to Created : CShader");
+        Safe_Release(pInstance);
+    }
+    return pInstance;
+}
+
+CComponent* CShader::Clone(void* pArg)
+{
+    CShader* pInstance = new CShader(*this);
+
+    if (FAILED(pInstance->Initialize_Copytype(pArg)))
+    {
+        MSG_BOX("Failed to Cloned : CShader");
+        Safe_Release(pInstance);
+    }
+    return pInstance;
+    return nullptr;
+}
 
 void CShader::Free()
 {
-	__super::Free();
+    __super::Free();
 }

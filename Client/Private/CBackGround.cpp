@@ -8,7 +8,7 @@
 #include "CVertexShader.h"
 #include "CPixelShader.h"
 #include "GeometryHelper.h"
-#include "CShader.h"
+#include "CDefaultShader.h"
 #include "CConstantBuffer.h"
 #include "CTexture.h"
 #include "Client_Defines.h"

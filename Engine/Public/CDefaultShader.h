@@ -8,12 +8,12 @@ enum ShaderScope
     SS_VertexShader=(1<<0),     //1
     SS_PixelShader=(1<<1),      //2
 };
-class ENGINE_DLL CShader :
+class ENGINE_DLL CDefaultShader :
     public CBase
 {
 public:
-    CShader(ComPtr<ID3D11Device> device);
-    virtual ~CShader();
+    CDefaultShader(ComPtr<ID3D11Device> device);
+    virtual ~CDefaultShader();
 
 
 public:
