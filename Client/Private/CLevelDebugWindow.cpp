@@ -107,6 +107,8 @@ void CLevelDebugWindow::Update()
        
     }
     ImGui::End();
+
+ 
 }
 
 void CLevelDebugWindow::Render()
