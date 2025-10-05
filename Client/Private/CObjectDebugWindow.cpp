@@ -30,13 +30,20 @@ void CObjectDebugWindow::Update()
         {
             ImGui::Separator();
 
-            _float3 pos,scale;
-            XMStoreFloat3(&pos, pTransform->Get_State(STATE::POSITION));
-            scale=pTransform->Get_Scale();
+            _vector Scale, Trans, Rotation;
+            _float3 s, t, r;
+
             
-            ImGui::BulletText("Position X:%f, Y:%f, Z:%f", pos.x, pos.y, pos.z);
+            XMMatrixDecompose(&Scale,  &Rotation, &Trans, XMLoadFloat4x4(&pTransform->Get_World()));
+            XMStoreFloat3(&s, Scale);
+            XMStoreFloat3(&t, Trans);
+            XMStoreFloat3(&r, Rotation);
+
+            ImGui::BulletText("Position X:%f, Y:%f, Z:%f", t.x, t.y, t.z);
             ImGui::Separator();
-            ImGui::BulletText("Scale X:%f, Y:%f, Z:%f", scale.x, scale.y, scale.z);
+            ImGui::BulletText("Scale X:%f, Y:%f, Z:%f", s.x, s.y, s.z);
+            ImGui::Separator();
+            ImGui::BulletText("Rotation X:%f, Y:%f, Z:%f", r.x, r.y, r.z);
         }
     }
         

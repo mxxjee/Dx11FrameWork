@@ -40,6 +40,7 @@ void CLevelDebugWindow::Update()
 
     else
     {
+        
         //스택 순회(아래->위)
         for (int i = stack->size()-1; i >=0; --i)
         {
@@ -104,6 +105,42 @@ void CLevelDebugWindow::Update()
             }
         }
 
+        /*Static 씬 꺼 표시*/
+        if (ImGui::CollapsingHeader("STATIC"))
+        {
+            auto& Layers = pGameInstance->Get_Layers(ENUM_TO_UINT(LEVEL_ID::STATIC));
+            for (auto& pair : Layers)
+            {
+                const _wstring LayerTag = pair.first;
+                CLayer* pLayer = pair.second;
+
+                //현재 씬의 레이어/오브젝트 이름 표시
+                if (pLayer)
+                {
+                    if (ImGui::TreeNode(WStringToUTF8(LayerTag).c_str()))
+                    {
+                        for (auto& i : pLayer->Get_ObjList())
+                        {
+                            //각 오브젝트 표시 UI 선택가능
+                            if (ImGui::Selectable(WStringToUTF8(i->Get_Tag()).c_str(), pSelectObject == i))
+                            {
+                                CImgui_Base* pBase = CImGui_Manager::GetInstance()->Find_Window(L"ObjectDebugWindow");
+                                if (pBase)
+                                {
+                                    CObjectDebugWindow* pWindow = dynamic_cast<CObjectDebugWindow*>(pBase);
+                                    if (pWindow)
+                                        pWindow->Set_SelectObject(i);
+                                }
+                            }
+                        }
+
+                        ImGui::TreePop();
+                    }
+
+                }
+
+            }
+        }
        
     }
     ImGui::End();

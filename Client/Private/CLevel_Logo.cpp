@@ -110,8 +110,11 @@ HRESULT CLevel_Logo::Ready_MainCamera_Background(const _wstring& strLayerTag)
     CPerspectiveCameraComponent::PERSPECTIVE_DESC CameraDesc = {};
     CameraDesc.Aspect = (float)g_iWinSizeX / g_iWinSizeY;
     CameraDesc.fNear = 0.1f;
-    //CameraDesc.pTarget=
     CameraDesc.fFar = 1000.f;
+
+    CameraDesc.pTarget= m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"BackGround_Layer", L"BackGround");
+    CameraDesc.vOffset = _float3(0.f,2.f, -0.5f);
+
 
     Desc.CameraDesc = &CameraDesc;
     Desc.TransformDesc = &TransDesc;

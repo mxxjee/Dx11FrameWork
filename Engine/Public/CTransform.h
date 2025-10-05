@@ -50,6 +50,7 @@ public:
     }
 
     void  Set_Scale(_float4 vScale);
+   
 
     const _float4x4& Get_World() { return m_WorldMatrix; }
     _float3  Get_Scale();        //right.up.forward벡터 길이만 리턴하자.
