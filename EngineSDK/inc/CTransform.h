@@ -50,16 +50,18 @@ public:
     }
 
     void  Set_Scale(_float4 vScale);
+   
 
     const _float4x4& Get_World() { return m_WorldMatrix; }
     _float3  Get_Scale();        //right.up.forward벡터 길이만 리턴하자.
+    _vector  Get_SRT(SRTType eType);
 
 #pragma region Translation
 public:
     void    Move(DIRECTION eDir, float fTimeDelta,Space space=Space::Local);
     
     void    Rotation(_fvector vAxis, _float fRadian);       //즉각회전,vAxis축을 기준으로 fRAdian만큼 회전시킨다. 
-    void    Rotation(_float3 fRadian);
+    void    Rotation(_float3 fEularDegree);
     
     void    Turn(_fvector vAxis, _float fTimeDelta);  //누적회전,매프레임마다 vAxis축을 기준으로 회전
 
@@ -74,10 +76,6 @@ public:
 #pragma endregion
 private:
     /*저장용 데이터( 직렬 계산)*/
-    _float4 vLocalPosition = {};
-    _float4 vLocalScale = {};
-    _float4 vLocalRotation = {};
-
     _float  m_fSpeedPerSec = {};
     _float  m_fRotationPerSec = {};
     _float4x4  m_WorldMatrix = {};

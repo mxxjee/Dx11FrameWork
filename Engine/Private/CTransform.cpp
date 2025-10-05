@@ -25,16 +25,17 @@ HRESULT CTransform::Initialize_Copytype(void* pArg)
 	COMPONENT_DESC* pComponentDest = static_cast<COMPONENT_DESC*>(pArg);
 	TRANSFORM_DESC* pDesc = static_cast<TRANSFORM_DESC*>(pComponentDest->TransformDesc);
 	
-	vLocalPosition = pDesc->vLocalPosition;
-	vLocalScale = pDesc->vLocalScale;
-	vLocalRotation = pDesc->vLocalRotation;
+	//vLocalScale = pDesc->vLocalScale;
+	//vLocalRotation = pDesc->vLocalRotation;
 	m_fSpeedPerSec = pDesc->fSpeedPerSec;
 	m_fRotationPerSec = pDesc->fRotationPerSec;
 
 	XMStoreFloat4x4(&m_WorldMatrix, DirectX::XMMatrixIdentity());
 
-	Set_State(STATE::POSITION, vLocalPosition);
-	Set_Scale(vLocalScale);
+	Set_State(STATE::POSITION, pDesc->vLocalPosition);
+	Set_Scale(pDesc->vLocalScale);
+	Rotation(_float3(pDesc->vLocalRotation.x, pDesc->vLocalRotation.y, pDesc->vLocalRotation.z));
+
 	return S_OK;
 }
 
@@ -116,6 +117,32 @@ _float3 CTransform::Get_Scale()
 
 }
 
+_vector CTransform::Get_SRT(SRTType eType)
+{
+	_vector vScale, vTrans, vQuat;
+
+
+	XMMatrixDecompose(&vScale, &vQuat, &vTrans, XMLoadFloat4x4(&m_WorldMatrix));
+	switch (eType)
+	{
+	case Engine::SRTType::SCALE:
+		return vScale;
+		break;
+	case Engine::SRTType::ROTATION:
+		return vQuat;
+		break;
+	case Engine::SRTType::TRANSFORM:
+		return vTrans;
+		break;
+	case Engine::SRTType::END:
+		break;
+	default:
+		break;
+	}
+}
+
+
+
 void CTransform::Rotation(_fvector vAxis, _float fRadian)
 {
 	
@@ -140,7 +167,6 @@ void CTransform::Set_Scale(_float4 vScale)
 	_vector vUp = Get_State(STATE::UP);
 	_vector vLook = Get_State(STATE::LOOK);
 
-
 	Set_State(STATE::RIGHT, XMVector3Normalize(vRight) * vScale.x);
 	Set_State(STATE::UP, XMVector3Normalize(vUp) * vScale.y);
 	Set_State(STATE::LOOK, XMVector3Normalize(vLook) * vScale.z);
@@ -148,10 +174,14 @@ void CTransform::Set_Scale(_float4 vScale)
 
 }
 
-void CTransform::Rotation(_float3 fRadian)
+void CTransform::Rotation(_float3 fEularDegree)
 {
 	//x,y,z 쿼터니온 4원수회전
-	Matrix QuaternionMat = XMMatrixRotationRollPitchYaw(fRadian.x, fRadian.y, fRadian.z);
+
+	Matrix QuaternionMat = XMMatrixRotationRollPitchYaw(
+		XMConvertToRadians(fEularDegree.x), 
+		XMConvertToRadians(fEularDegree.y),
+		XMConvertToRadians(fEularDegree.z));
 	_float3 vScale= Get_Scale();			//크기유지
 	
 	//크기 유지

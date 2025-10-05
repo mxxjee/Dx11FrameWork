@@ -66,6 +66,34 @@ namespace MathUtils
 
 	}
 
+	static _float3 QuaternionToEuler(_vector vQuaternion)
+	{
+		XMFLOAT4 q;
+		XMStoreFloat4(&q, vQuaternion);
+
+		// build 쿼터니언 -> 오일러 변환
+		float sinr_cosp = 2 * (q.w * q.x + q.y * q.z);
+		float cosr_cosp = 1 - 2 * (q.x * q.x + q.y * q.y);
+		float roll = atan2f(sinr_cosp, cosr_cosp); // X
+
+		float sinp = 2 * (q.w * q.y - q.z * q.x);
+		float pitch;
+		if (fabs(sinp) >= 1)
+			pitch = copysignf(XM_PIDIV2, sinp);
+		else
+			pitch = asinf(sinp); // Y
+
+		float siny_cosp = 2 * (q.w * q.z + q.x * q.y);
+		float cosy_cosp = 1 - 2 * (q.y * q.y + q.z * q.z);
+		float yaw = atan2f(siny_cosp, cosy_cosp); // Z
+
+		// 라디안 -> 도 변환
+		float degX = XMConvertToDegrees(roll);
+		float degY = XMConvertToDegrees(pitch);
+		float degZ = XMConvertToDegrees(yaw);
+
+		return _float3(degX, degY, degZ);
+	}
 	template <typename T>
 	inline T Clamp(T value, T min, T max)
 	{

@@ -106,6 +106,7 @@ HRESULT CLevel_Logo::Ready_MainCamera_Background(const _wstring& strLayerTag)
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
+    TransDesc.vLocalRotation = { 45.f,0.f,0.f,1.f };
 
     CPerspectiveCameraComponent::PERSPECTIVE_DESC CameraDesc = {};
     CameraDesc.Aspect = (float)g_iWinSizeX / g_iWinSizeY;

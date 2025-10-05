@@ -1,6 +1,7 @@
 #include "CObjectDebugWindow.h"
 #include "CGameObject.h"
 #include "CTransform.h"
+#include "MathUtils.h"
 
 USING(Client)
 CObjectDebugWindow::CObjectDebugWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -30,20 +31,24 @@ void CObjectDebugWindow::Update()
         {
             ImGui::Separator();
 
-            _vector Scale, Trans, Rotation;
-            _float3 s, t, r;
+            _float4 s, t, r;
 
+            XMStoreFloat4(&s, pTransform->Get_SRT(SRTType::SCALE));
+            XMStoreFloat4(&t, pTransform->Get_SRT(SRTType::TRANSFORM));
+            XMStoreFloat4(&r, pTransform->Get_SRT(SRTType::ROTATION));
+
+
+          
+            _float3 rResult = MathUtils::QuaternionToEuler(XMLoadFloat4(&r));
             
-            XMMatrixDecompose(&Scale,  &Rotation, &Trans, XMLoadFloat4x4(&pTransform->Get_World()));
-            XMStoreFloat3(&s, Scale);
-            XMStoreFloat3(&t, Trans);
-            XMStoreFloat3(&r, Rotation);
-
             ImGui::BulletText("Position X:%f, Y:%f, Z:%f", t.x, t.y, t.z);
             ImGui::Separator();
             ImGui::BulletText("Scale X:%f, Y:%f, Z:%f", s.x, s.y, s.z);
             ImGui::Separator();
-            ImGui::BulletText("Rotation X:%f, Y:%f, Z:%f", r.x, r.y, r.z);
+            ImGui::BulletText("Rotation X:%f, Y:%f, Z:%f", 
+                rResult.x,
+                rResult.y,
+                rResult.z);
         }
     }
         

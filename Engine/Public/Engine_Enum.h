@@ -11,6 +11,7 @@ namespace Engine
 	Space=1<<1,
 	END};
 
+	enum class SRTType {SCALE,ROTATION,TRANSFORM,END};
 	enum class LEVELCHANGETYPE { NONE,REPLACETOP, OVERLAY, PUSH,END};
 	/*REPLACETOP : 이전씬 지우고 TOP교체
 	PUSH - 이전씬 냅두고 그냥 얹기(UPDATE/RENDER 모두 비활성화)

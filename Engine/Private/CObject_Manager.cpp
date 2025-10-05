@@ -98,6 +98,7 @@ CGameObject* CObject_Manager::Find_GameObject(_uint iLevelIndex, const _wstring&
 		return pLayer->Find_GameObject(Tag);
 	}
 	
+	return nullptr;
 }
 
 void CObject_Manager::Clear(_uint iLevelIndex)
