@@ -3,9 +3,6 @@
 #include "CGameInstance.h"
 #include "CBackGround.h"
 
-
-
-
 USING(Client)
 
 CLevel_GamePlay::CLevel_GamePlay(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)

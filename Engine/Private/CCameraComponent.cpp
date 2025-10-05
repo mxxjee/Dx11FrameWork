@@ -55,7 +55,15 @@ void CCameraComponent::Update_ViewMatrix(_float fTimeDelta)
     {
         CTransform* pTargetTransform = dynamic_cast<CTransform*>(m_pTarget->Get_Component(L"Transform"));
         vAt = pTargetTransform->Get_State(STATE::POSITION);
-        vEye = vAt + XMLoadFloat3(&m_vOffSet);
+        
+        _vector vQuat = pTransform->Get_SRT(SRTType::ROTATION);
+        _matrix matRot = XMMatrixRotationQuaternion(vQuat);
+
+        _vector vRotatedoffset = XMVector3TransformCoord(XMLoadFloat3(&m_vOffSet), matRot);
+
+
+  
+        vEye = vAt + vRotatedoffset;
 
     }
 
