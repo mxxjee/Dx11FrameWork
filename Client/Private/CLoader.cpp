@@ -2,7 +2,12 @@
 #include "CGameInstance.h"
 
 #include "CBackGround.h"
+#include "CMainCamera.h"
+
+
 #include "CTransform.h"
+#include "CPerspectiveCameraComponent.h"
+
 
 USING(Client)
 CLoader::CLoader(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -125,16 +130,30 @@ HRESULT CLoader::Loading_Logo()
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
   
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
-  
+    
+
     lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
   
+
+
+  
+
+  
+    lstrcpy(m_szFPS, TEXT("컴포넌트 원형(를) 로딩 중 입니다."));
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Transform"), CTransform::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"PerspectiveCamera"), CPerspectiveCameraComponent::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+
+
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::LOGO), PROTO_OBJ_NAME(L"BackGround"), CBackGround::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Transform"), CTransform::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MainCamera"), CMainCamera::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
 

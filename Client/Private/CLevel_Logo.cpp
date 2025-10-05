@@ -2,7 +2,10 @@
 #include "CLoader.h"
 #include "CGameInstance.h"
 #include "CLevel_Loading.h"
+
 #include "CBackGround.h"
+#include "CMainCamera.h"
+#include "CPerspectiveCameraComponent.h"
 
 
 
@@ -21,6 +24,8 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
     if(FAILED(Ready_Layer_Background(L"BackGround_Layer")))
         return E_FAIL;
 
+    if (FAILED(Ready_MainCamera_Background(L"BackGround_Layer")))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -87,6 +92,33 @@ HRESULT CLevel_Logo::Ready_Layer_Background(const _wstring& strLayerTag)
     if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO),
         PROTO_OBJ_NAME(L"BackGround"),
         ENUM_TO_UINT(LEVEL_ID::LOGO),
+        strLayerTag, &Desc)))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CLevel_Logo::Ready_MainCamera_Background(const _wstring& strLayerTag)
+{
+    CMainCamera::GAMEOBJECT_DESC Desc = {};
+    Desc.ObjTag = L"MainCamera";
+
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+
+    CPerspectiveCameraComponent::PERSPECTIVE_DESC CameraDesc = {};
+    CameraDesc.Aspect = (float)g_iWinSizeX / g_iWinSizeY;
+    CameraDesc.fNear = 0.1f;
+    //CameraDesc.pTarget=
+    CameraDesc.fFar = 1000.f;
+
+    Desc.CameraDesc = &CameraDesc;
+    Desc.TransformDesc = &TransDesc;
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"MainCamera"),
+        ENUM_TO_UINT(LEVEL_ID::STATIC),
         strLayerTag, &Desc)))
         return E_FAIL;
 

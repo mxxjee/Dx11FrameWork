@@ -33,7 +33,7 @@ HRESULT CGameObject::Initialize_Copytype(void* pArg)
 
 
     m_pTransformCom = dynamic_cast<CTransform*>(m_pGameInstance->Clone_Prototype
-    (PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"Transform"), pArg));
+    (PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"Transform"), pDesc->TransformDesc));
 
     CheckNullResult(m_pTransformCom, E_FAIL);
 

@@ -23,7 +23,6 @@ HRESULT CUI::Initialize_Prototype()
 
     auto& vector = m_pGameInstance->Get_Viewports();
 
-
     XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
     XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(
         vector[0].Width,

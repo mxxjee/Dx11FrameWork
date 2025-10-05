@@ -152,6 +152,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h" />
+    <ClInclude Include="..\Public\CCameraComponent.h" />
+    <ClInclude Include="..\Public\CCamera_Manager.h" />
     <ClInclude Include="..\Public\CComponent.h" />
     <ClInclude Include="..\Public\CConstantBuffer.h" />
     <ClInclude Include="..\Public\CGameInstance.h" />
@@ -170,6 +172,8 @@
     <ClInclude Include="..\Public\CLevel_Manager.h" />
     <ClInclude Include="..\Public\CImGui_Manager.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
+    <ClInclude Include="..\Public\CMainCamera.h" />
+    <ClInclude Include="..\Public\CPerspectiveCameraComponent.h" />
     <ClInclude Include="..\Public\CPixelShader.h" />
     <ClInclude Include="..\Public\CPrototype_Manager.h" />
     <ClInclude Include="..\Public\CRenderer.h" />
@@ -208,6 +212,8 @@
   <ItemGroup>
     <ClCompile Include="..\..\Libraries\Include\SimpleMath\SimpleMath.cpp" />
     <ClCompile Include="..\Private\CBase.cpp" />
+    <ClCompile Include="..\Private\CCameraComponent.cpp" />
+    <ClCompile Include="..\Private\CCamera_Manager.cpp" />
     <ClCompile Include="..\Private\CComponent.cpp" />
     <ClCompile Include="..\Private\CConstantBuffer.cpp" />
     <ClCompile Include="..\Private\CGameInstance.cpp" />
@@ -226,6 +232,8 @@
     <ClCompile Include="..\Private\CLevel_Manager.cpp" />
     <ClCompile Include="..\Private\CImGui_Manager.cpp" />
     <ClCompile Include="..\Private\CObject_Manager.cpp" />
+    <ClCompile Include="..\Private\CMainCamera.cpp" />
+    <ClCompile Include="..\Private\CPerspectiveCameraComponent.cpp" />
     <ClCompile Include="..\Private\CPixelShader.cpp" />
     <ClCompile Include="..\Private\CPrototype_Manager.cpp" />
     <ClCompile Include="..\Private\CRenderer.cpp" />
@@ -250,9 +258,6 @@
     <ClCompile Include="..\Private\imgui_widgets.cpp" />
     <ClCompile Include="..\Private\CInputLayout.cpp" />
     <ClCompile Include="..\Public\VertexData.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="..\Public\Default.hlsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

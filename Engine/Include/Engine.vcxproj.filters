@@ -157,6 +157,24 @@
     <Filter Include="05.Component\Shader">
       <UniqueIdentifier>{81f12b77-764a-4b41-a9fc-0044c8e060c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\02.Camera">
+      <UniqueIdentifier>{277a74f4-8253-4611-9ce3-89df7fbf8a8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\Camera">
+      <UniqueIdentifier>{8aac56f4-c3e9-4893-b9fc-51efd3f71699}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\Camera\PerpectiveCamera">
+      <UniqueIdentifier>{d4bf2bc7-1f71-45d5-8654-5897fadd1dc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\Camera\OrthographicCamera">
+      <UniqueIdentifier>{520af9a0-b6aa-4190-894c-142a556da639}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\CameraObject">
+      <UniqueIdentifier>{9326d26b-39ca-43a8-b21f-5cc4e6965e1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\CameraObject\Perspective">
+      <UniqueIdentifier>{c368118f-9a78-44b0-811f-34f3a3751801}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -318,6 +336,18 @@
     <ClInclude Include="..\Public\CShader.h">
       <Filter>05.Component\Shader</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CCameraComponent.h">
+      <Filter>05.Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CCamera_Manager.h">
+      <Filter>00.System\02.Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMainCamera.h">
+      <Filter>03.GameObject\CameraObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPerspectiveCameraComponent.h">
+      <Filter>05.Component\Camera\PerpectiveCamera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -452,10 +482,17 @@
     <ClCompile Include="..\Private\CShader.cpp">
       <Filter>05.Component\Shader</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="..\Public\Default.hlsl">
-      <Filter>01.Utility\02.DefaultShader</Filter>
-    </FxCompile>
+    <ClCompile Include="..\Private\CCameraComponent.cpp">
+      <Filter>05.Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CCamera_Manager.cpp">
+      <Filter>00.System\02.Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMainCamera.cpp">
+      <Filter>03.GameObject\CameraObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPerspectiveCameraComponent.cpp">
+      <Filter>05.Component\Camera\PerpectiveCamera</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

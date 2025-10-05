@@ -24,6 +24,9 @@ public:
 
 public:
     HRESULT                 Ready_Layer_Background(const _wstring& strLayerTag);
+    HRESULT                 Ready_MainCamera_Background(const _wstring& strLayerTag);
+
+
 public:
     virtual void        OnEnter() override;           //씬 진입시 매번호출
     virtual void        OnResume() override;              //pause되었다가 active되었을때 호출

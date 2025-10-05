@@ -38,6 +38,9 @@ namespace Engine
 	typedef	  DirectX::SimpleMath::Matrix		Matrix;
 
 
+	/*unordered_map*/
+	template<typename K, typename V> using UMap = std::unordered_map<K, V>;
+
 	/*연산용 데이터 (Vector4)*/
 	typedef XMVECTOR		_vector;
 	typedef FXMVECTOR		_fvector;
@@ -48,6 +51,9 @@ namespace Engine
 	typedef XMMATRIX		_matrix;
 	typedef FXMMATRIX		_fmatrix;
 	typedef CXMMATRIX		_cmatrix;
+
+
+
 
 }
 

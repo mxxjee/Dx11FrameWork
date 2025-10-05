@@ -65,7 +65,7 @@ void CBackGround::Update(_float fTimeDelta)
 
 void CBackGround::Update_Late(_float fTimeDelta)
 {
-    __super::Update_Late(fTimeDelta);
+    /*__super::Update_Late(fTimeDelta);
     if (GetKeyState(VK_RIGHT) & 0x8000)
         m_pTransformCom->Move(DIRECTION::RIGHT, fTimeDelta);
 
@@ -77,7 +77,7 @@ void CBackGround::Update_Late(_float fTimeDelta)
         m_pTransformCom->Move(DIRECTION::UP, fTimeDelta);
 
     else if (GetKeyState(VK_DOWN) & 0x800)
-        m_pTransformCom->Move(DIRECTION::DOWN, fTimeDelta);
+        m_pTransformCom->Move(DIRECTION::DOWN, fTimeDelta);*/
 
  
     //m_pTransformCom->LookAt(

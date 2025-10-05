@@ -18,6 +18,8 @@ using namespace Microsoft::WRL;
 #include "DirectXTex/DirectXTex.h"
 #include "DirectXTex/DirectXTex.inl"
 
+#include "Fx11/d3dx11effect.h"
+
 
 using namespace DirectX;
 #include <vector>

@@ -76,6 +76,7 @@ void CPanel::Update(_float fTimeDelta)
 
 
 	m_transformData.matworld = m_pTransformCom->Get_World();
+	//m_transformData.proj=
 	m_Pipeline.constantBuffer->CopyData(m_transformData);
 
 }

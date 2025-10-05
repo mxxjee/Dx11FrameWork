@@ -22,13 +22,12 @@ HRESULT CTransform::Initialize_Copytype(void* pArg)
 	if(FAILED(__super::Initialize_Copytype(pArg)))
 		return E_FAIL;
 
-	COMPONENT_DESC* pComponentDest = static_cast<COMPONENT_DESC*>(pArg);
-	TRANSFORM_DESC* pDesc = static_cast<TRANSFORM_DESC*>(pComponentDest->TransformDesc);
+	//COMPONENT_DESC* pComponentDest = static_cast<COMPONENT_DESC*>(pArg);
+	TRANSFORM_DESC* pDesc = static_cast<TRANSFORM_DESC*>(pArg);
 	
 	vLocalPosition = pDesc->vLocalPosition;
 	vLocalScale = pDesc->vLocalScale;
 	vLocalRotation = pDesc->vLocalRotation;
-
 	m_fSpeedPerSec = pDesc->fSpeedPerSec;
 	m_fRotationPerSec = pDesc->fRotationPerSec;
 

@@ -11,6 +11,7 @@ public:
     typedef struct tagGameObjectDesc : CComponent::tagComponentDesc
     {
         _wstring ObjTag;
+        void* TransformDesc = nullptr;
 
     }GAMEOBJECT_DESC;
 

@@ -11,8 +11,7 @@ public:
     {
         class CGameObject* pOwner = nullptr;
         void* TransformDesc = nullptr;
-    
-    
+        void* CameraDesc = nullptr;
     }COMPONENT_DESC;
 
 protected:
@@ -26,7 +25,8 @@ public:
     virtual         HRESULT     Initialize_Prototype();
     virtual         HRESULT     Initialize_Copytype(void* pArg);
 
-
+public:
+    class CGameObject* Get_Owner() { return m_pOwner; }
 
 protected:
     ComPtr<ID3D11Device> m_pDevice = nullptr;
