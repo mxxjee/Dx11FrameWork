@@ -26,7 +26,7 @@ HRESULT CMainCamera::Initialize_Copytype(void* pArg)
 	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
 	m_pPerspectiveCameraCom= dynamic_cast<CPerspectiveCameraComponent*>(m_pGameInstance->Clone_Prototype
-	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"PerspectiveCamera"), pDesc->CameraDesc));
+	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"PerspectiveCamera"), pDesc));
 
 	CheckNullResult(m_pPerspectiveCameraCom, E_FAIL);
 
@@ -65,6 +65,12 @@ void CMainCamera::Update_Late(_float fTimeDelta)
 
 	else if (GetKeyState(VK_DOWN) & 0x800)
 		m_pTransformCom->Move(DIRECTION::DOWN, fTimeDelta);
+
+	else if (GetKeyState('W') & 0x800)
+		m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta);
+
+	else if (GetKeyState('S') & 0x800)
+		m_pTransformCom->Move(DIRECTION::BACKWARD, fTimeDelta);
 
 }
 

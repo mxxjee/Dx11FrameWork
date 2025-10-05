@@ -89,6 +89,17 @@ const unordered_map<_wstring, CLayer*>& CObject_Manager::Get_Layers(_uint iLevel
 	return m_Layers[iLevel];
 }
 
+CGameObject* CObject_Manager::Find_GameObject(_uint iLevelIndex, const _wstring& LayerTag, const _wstring& Tag)
+{
+	CheckTrueResult(iLevelIndex >= m_iNumLevels || m_Layers[iLevelIndex].empty(),nullptr);
+	CLayer* pLayer = Find_Layer(iLevelIndex, LayerTag);
+	if (pLayer)
+	{
+		return pLayer->Find_GameObject(Tag);
+	}
+	
+}
+
 void CObject_Manager::Clear(_uint iLevelIndex)
 {
 	CheckTrue(iLevelIndex >= m_iNumLevels || m_Layers[iLevelIndex].empty());
@@ -100,6 +111,38 @@ void CObject_Manager::Clear(_uint iLevelIndex)
 	
 	m_Layers[iLevelIndex].clear();
 
+}
+
+void CObject_Manager::Update_Priority_Static(_float fTimeDelta)
+{
+	for (auto& pair : m_Layers[0])
+	{
+		pair.second->Update_Priority(fTimeDelta);
+	}
+}
+
+void CObject_Manager::Update_Static(_float fTimeDelta)
+{
+	for (auto& pair : m_Layers[0])
+	{
+		pair.second->Update(fTimeDelta);
+	}
+}
+
+void CObject_Manager::Update_Late_Static(_float fTimeDelta)
+{
+	for (auto& pair : m_Layers[0])
+	{
+		pair.second->Update_Late(fTimeDelta);
+	}
+}
+
+void CObject_Manager::Update_Render_Static(_float fTimeDelta)
+{
+	for (auto& pair : m_Layers[0])
+	{
+		pair.second->Update_Render(fTimeDelta);
+	}
 }
 
 CLayer* CObject_Manager::Find_Layer(_uint iLevelIndex, const _wstring& LayerTag)

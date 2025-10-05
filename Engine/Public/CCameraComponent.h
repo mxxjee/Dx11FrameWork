@@ -34,6 +34,7 @@ public:
 public:
     void        Set_Target(class CGameObject* pTarget) { m_pTarget = pTarget; }
     const _float4x4& Get_ViewMatrix() { return m_matView; }
+    const _float4x4& Get_ProjMatrix() { return m_matProj; }
 
 
 public:

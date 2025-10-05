@@ -24,7 +24,8 @@ HRESULT CCameraComponent::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
     //수정필요!!
-    CAMERA_DESC* pDesc = static_cast<CAMERA_DESC*>(pArg);
+    COMPONENT_DESC* pCompDesc = static_cast<COMPONENT_DESC*>(pArg);
+    CAMERA_DESC* pDesc = static_cast<CAMERA_DESC*>(pCompDesc->CameraDesc);
 
     m_vUp = pDesc->vUp;
 

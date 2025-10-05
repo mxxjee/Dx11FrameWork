@@ -76,6 +76,12 @@ public:
 
     HRESULT Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _wstring & strPrototypeTag,
         _uint iLayerLevelIndex, const _wstring & strLayerTag, void* pArg = nullptr);
+
+    void        Update_Priority_Static(_float fTimeDelta);
+    void        Update_Static(_float fTimeDelta);
+    void        Update_Late_Static(_float fTimeDelta);
+    void        Update_Render_Static(_float fTimeDelta);
+    class CGameObject* Find_GameObject(_uint iLevelIndex, const _wstring & LayerTag, const _wstring & Tag);
 #pragma endregion
 
 
@@ -83,6 +89,24 @@ public:
 public:
     HRESULT         Add_RenderObject(RENDERGROUP eID, class CGameObject * pRenderObject);
 
+#pragma endregion
+
+#pragma region CameraManager
+    //카메라 등록 및 제거..
+    void        RegisterCamera(const _wstring & Tag, class CCameraComponent * pComp, bool isOrtho);
+    void        UnRegisterCamera(const _wstring & Tag, bool isOrtho);
+    
+    //메인카메라 설정
+    bool        SetMainPerspectiveCamera(const _wstring & tag);
+    bool        SetMainOrthoCamara(const _wstring & tag);
+
+    //뷰,투영행렬가져오기
+    const Matrix& GetViewMatrix(bool isOrtho = false) const;
+    const Matrix& GetProjMatrix(bool isOrtho = false) const;
+
+    //메인 카메라 가져오기
+    class CCameraComponent* GetMainPerspectiveCamera();
+    class CCameraComponent* GetMainOrthoCamera();
 #pragma endregion
 
 #pragma region Default
@@ -96,6 +120,7 @@ private:
     class CPrototype_Manager* m_pProtoManager = { nullptr };
     class CObject_Manager* m_pObjectManager = { nullptr };
     class CRenderer* m_pRenderer = nullptr;
+    class CCamera_Manager* m_pCameraManager = { nullptr };
 
 private:
     vector<D3D11_VIEWPORT>          m_ViewPorts;

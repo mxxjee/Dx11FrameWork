@@ -24,7 +24,7 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
     if(FAILED(Ready_Layer_Background(L"BackGround_Layer")))
         return E_FAIL;
 
-    if (FAILED(Ready_MainCamera_Background(L"BackGround_Layer")))
+    if (FAILED(Ready_MainCamera_Background(L"Camera_Layer")))
         return E_FAIL;
 
     return S_OK;
@@ -89,9 +89,9 @@ HRESULT CLevel_Logo::Ready_Layer_Background(const _wstring& strLayerTag)
 
     Desc.TransformDesc = &TransDesc;
 
-    if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO),
+    if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
         PROTO_OBJ_NAME(L"BackGround"),
-        ENUM_TO_UINT(LEVEL_ID::LOGO),
+        ENUM_TO_UINT(LEVEL_ID::STATIC),
         strLayerTag, &Desc)))
         return E_FAIL;
 
@@ -116,6 +116,7 @@ HRESULT CLevel_Logo::Ready_MainCamera_Background(const _wstring& strLayerTag)
     Desc.CameraDesc = &CameraDesc;
     Desc.TransformDesc = &TransDesc;
 
+   
     if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
         PROTO_OBJ_NAME(L"MainCamera"),
         ENUM_TO_UINT(LEVEL_ID::STATIC),
@@ -127,7 +128,12 @@ HRESULT CLevel_Logo::Ready_MainCamera_Background(const _wstring& strLayerTag)
 
 void CLevel_Logo::OnEnter()
 {
-    int A = 0;
+    CGameObject* pMainCamera = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Camera_Layer", L"MainCamera");
+    if (pMainCamera)
+    {
+        m_pGameInstance->RegisterCamera(L"MainCamera", dynamic_cast<CPerspectiveCameraComponent*>(pMainCamera->Get_Component(L"PerspectiveCamera")), false);
+        m_pGameInstance->SetMainPerspectiveCamera(L"MainCamera");
+    }
 }
 
 void CLevel_Logo::OnResume()

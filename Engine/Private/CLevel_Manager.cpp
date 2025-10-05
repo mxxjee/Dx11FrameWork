@@ -58,12 +58,14 @@ void CLevel_Manager::Update_Priority(const _float fTimeDelta)
 { 
 	Clear_DestroyStack();
 	CheckTrue(m_Stack.empty());
+	m_pGameInstance->Update_Priority_Static(fTimeDelta);
 	m_Stack.back()->Update_Priority(fTimeDelta);
 }
 
 void CLevel_Manager::Update(const _float fTimeDelta)
 {
 	CheckTrue(m_Stack.empty());
+	m_pGameInstance->Update_Static(fTimeDelta);
 	m_Stack.back()->Update(fTimeDelta);
 }
 
@@ -71,6 +73,7 @@ void CLevel_Manager::Update_Late(const _float fTimeDelta)
 {
 	
 	CheckTrue(m_Stack.empty());
+	m_pGameInstance->Update_Late_Static(fTimeDelta);
 	m_Stack.back()->Update_Late(fTimeDelta);
 
 
@@ -79,6 +82,7 @@ void CLevel_Manager::Update_Late(const _float fTimeDelta)
 void CLevel_Manager::Update_Render(const _float fTimeDelta)
 {
 	CheckTrue(m_Stack.empty());
+	m_pGameInstance->Update_Render_Static(fTimeDelta);
 	for (auto& level : m_Stack)
 	{
 		if (level->Get_State() != LEVELSTATE::HIDDEN)

@@ -48,6 +48,17 @@ void CLayer::Update_Render(_float fTimeDelta)
     }
 }
 
+CGameObject* CLayer::Find_GameObject(const _wstring& Tag)
+{
+    for (auto& i : m_ObjList)
+    {
+        if (i->Get_Tag() == Tag)
+            return i;
+
+    }
+    return nullptr;
+}
+
 CLayer* CLayer::Create()
 {
     return new CLayer();

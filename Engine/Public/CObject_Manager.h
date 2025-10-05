@@ -31,8 +31,14 @@ public:
         _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
 
     const unordered_map<_wstring, CLayer*>& Get_Layers(_uint iLevel);
+    class CGameObject* Find_GameObject(_uint iLevelIndex, const _wstring& LayerTag, const _wstring& Tag);
     void    Clear(_uint iLevelIndex);
 
+public:
+    void        Update_Priority_Static(_float fTimeDelta);
+    void        Update_Static(_float fTimeDelta);
+    void        Update_Late_Static(_float fTimeDelta);
+    void        Update_Render_Static(_float fTimeDelta);
 private:
     CLayer* Find_Layer(_uint iLevelIndex, const _wstring& LayerTag);
     

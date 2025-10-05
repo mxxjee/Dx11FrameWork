@@ -7,6 +7,7 @@
 #include "CPrototype_Manager.h"
 #include "CObject_Manager.h"
 #include "CRenderer.h"
+#include "CCamera_Manager.h"
 
 
 IMPLEMENT_SINGLETON(CGameInstance)
@@ -52,6 +53,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	/*렌더러 초기화*/
 	m_pRenderer = CRenderer::Create(*pDevice, *pContext);
 	CheckNullResult(m_pRenderer, E_FAIL);
+
+	/*카메라 매니져 초기화*/
+	m_pCameraManager = CCamera_Manager::Create();
+	CheckNullResult(m_pCameraManager, E_FAIL);
 
 	D3D11_VIEWPORT          ViewportDesc{};
 	_uint           iNumViewports = { 1 };
@@ -217,6 +222,37 @@ HRESULT CGameInstance::Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _ws
 	return m_pObjectManager->Add_GameObject_To_Layer(iProtoLevelIndex,strPrototypeTag,iLayerLevelIndex,strLayerTag,pArg);
 }
 
+void CGameInstance::Update_Priority_Static(_float fTimeDelta)
+{
+	CheckNull(m_pObjectManager);
+	return m_pObjectManager->Update_Priority_Static(fTimeDelta);
+
+}
+
+void CGameInstance::Update_Static(_float fTimeDelta)
+{
+
+	CheckNull(m_pObjectManager);
+	return m_pObjectManager->Update_Static(fTimeDelta);
+}
+
+void CGameInstance::Update_Late_Static(_float fTimeDelta)
+{
+	CheckNull(m_pObjectManager);
+	return m_pObjectManager->Update_Late_Static(fTimeDelta);
+}
+
+void CGameInstance::Update_Render_Static(_float fTimeDelta)
+{
+	CheckNull(m_pObjectManager);
+	return m_pObjectManager->Update_Render_Static(fTimeDelta);
+}
+
+CGameObject* CGameInstance::Find_GameObject(_uint iLevelIndex, const _wstring& LayerTag, const _wstring& Tag)
+{
+	return m_pObjectManager->Find_GameObject(iLevelIndex,LayerTag,Tag);
+}
+
 #pragma endregion
 
 #pragma region Renderer
@@ -228,6 +264,47 @@ HRESULT CGameInstance::Add_RenderObject(RENDERGROUP eID, CGameObject* pRenderObj
 #pragma endregion
 
 
+#pragma region CameraManager
+void CGameInstance::RegisterCamera(const _wstring& Tag, CCameraComponent* pComp, bool isOrtho)
+{
+	CheckNull(m_pCameraManager);
+	m_pCameraManager->RegisterCamera(Tag, pComp, isOrtho);
+}
+void CGameInstance::UnRegisterCamera(const _wstring& Tag, bool isOrtho)
+{
+	CheckNull(m_pCameraManager);
+	m_pCameraManager->UnRegisterCamera(Tag, isOrtho);
+}
+bool CGameInstance::SetMainPerspectiveCamera(const _wstring& tag)
+{
+	CheckNullResult(m_pCameraManager,false);
+	return m_pCameraManager->SetMainPerspectiveCamera(tag);
+}
+bool CGameInstance::SetMainOrthoCamara(const _wstring& tag)
+{
+	CheckNullResult(m_pCameraManager, false);
+	return m_pCameraManager->SetMainOrthoCamera(tag);
+}
+const Matrix& CGameInstance::GetViewMatrix(bool isOrtho) const
+{
+	return m_pCameraManager->GetViewMatrix(isOrtho);
+}
+const Matrix& CGameInstance::GetProjMatrix(bool isOrtho) const
+{
+	return m_pCameraManager->GetProjMatrix(isOrtho);
+}
+CCameraComponent* CGameInstance::GetMainPerspectiveCamera()
+{
+	CheckNullResult(m_pCameraManager, nullptr);
+	return m_pCameraManager->GetMainPerspectiveCamera();
+}
+CCameraComponent* CGameInstance::GetMainOrthoCamera()
+{
+	CheckNullResult(m_pCameraManager, nullptr);
+	return m_pCameraManager->GetMainOrthoCamera();
+}
+
+#pragma endregion
 
 void CGameInstance::Release_Engine()
 {
@@ -237,7 +314,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pProtoManager);
 	Safe_Release(m_pObjectManager);
-	
+	Safe_Release(m_pCameraManager);
+
 	Safe_Release(m_pGraphicDev);
 
 	DestroyInstance();

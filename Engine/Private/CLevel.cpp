@@ -21,6 +21,7 @@ HRESULT CLevel::Initialize(LevelArgs& args)
 
 void CLevel::Update_Priority(_float fTimeDelta)
 {
+   
     auto& layers = m_pGameInstance->Get_Layers(m_eLevelArgs.m_iLevelID);
     for (auto& layer : layers)
     {
@@ -30,6 +31,8 @@ void CLevel::Update_Priority(_float fTimeDelta)
 
 void CLevel::Update(const _float fTimeDelta)
 {
+    
+
     auto& layers=m_pGameInstance->Get_Layers(m_eLevelArgs.m_iLevelID);
     for (auto& layer : layers)
     {
@@ -42,6 +45,7 @@ void CLevel::Update(const _float fTimeDelta)
 
 void CLevel::Update_Late(_float fTimeDelta)
 {
+  
     auto& layers = m_pGameInstance->Get_Layers(m_eLevelArgs.m_iLevelID);
     for (auto& layer : layers)
     {
@@ -51,6 +55,9 @@ void CLevel::Update_Late(_float fTimeDelta)
 
 void CLevel::Update_Render(_float fTimeDelta)
 {
+    
+
+
     auto& layers = m_pGameInstance->Get_Layers(m_eLevelArgs.m_iLevelID);
     for (auto& layer : layers)
     {
