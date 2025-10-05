@@ -106,14 +106,14 @@ HRESULT CLevel_Logo::Ready_MainCamera_Background(const _wstring& strLayerTag)
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
-    TransDesc.vLocalRotation = { -30.f,0.f,0.f,1.f };
+    //TransDesc.vLocalRotation = { -30.f,0.f,0.f,1.f };
 
     CPerspectiveCameraComponent::PERSPECTIVE_DESC CameraDesc = {};
     CameraDesc.Aspect = (float)g_iWinSizeX / g_iWinSizeY;
     CameraDesc.fNear = 0.1f;
     CameraDesc.fFar = 1000.f;
 
-    CameraDesc.pTarget= m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"BackGround_Layer", L"BackGround");
+    //CameraDesc.pTarget= m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"BackGround_Layer", L"BackGround");
     CameraDesc.vOffset = _float3(0.f,2.f, -0.5f);
 
 

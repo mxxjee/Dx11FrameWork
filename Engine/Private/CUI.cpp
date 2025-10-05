@@ -10,9 +10,7 @@ CUI::CUI(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 }
 
 CUI::CUI(const CUI& rhs)
-    :CGameObject(rhs),
-    m_ViewMatrix{rhs.m_ViewMatrix},
-    m_ProjMatrix{rhs.m_ProjMatrix}
+    :CGameObject(rhs)
 {
 }
 
@@ -23,12 +21,7 @@ HRESULT CUI::Initialize_Prototype()
 
     auto& vector = m_pGameInstance->Get_Viewports();
 
-    XMStoreFloat4x4(&m_ViewMatrix, XMMatrixIdentity());
-    XMStoreFloat4x4(&m_ProjMatrix, XMMatrixOrthographicLH(
-        vector[0].Width,
-        vector[0].Height,
-        0.1f,1.f));
-
+ 
     return S_OK;
 }
 
@@ -38,7 +31,7 @@ HRESULT CUI::Initialize_Copytype(void* pArg)
 
        
 	CTransform::TRANSFORM_DESC* pTransDesc = static_cast<CTransform::TRANSFORM_DESC*>(pDesc->TransformDesc);
-	_vector vScreenPos = XMVectorSet(pDesc->fX, pDesc->fY, 0.1f, 1.f);
+	_vector vScreenPos = XMVectorSet(pDesc->fX, pDesc->fY, pDesc->Depth, 1.f);
     
     auto& vector = m_pGameInstance->Get_Viewports();
     pTransDesc->vLocalPosition=MathUtils::ScreenToWorld_UI(vScreenPos, vector[0].Width,vector[0].Height);

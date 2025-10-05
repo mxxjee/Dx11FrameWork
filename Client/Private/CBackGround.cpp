@@ -58,15 +58,7 @@ void CBackGround::Update_Priority(_float fTimeDelta)
 void CBackGround::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
-  
- 
-
-}
-
-void CBackGround::Update_Late(_float fTimeDelta)
-{
-    /*__super::Update_Late(fTimeDelta);
-    if (GetKeyState(VK_RIGHT) & 0x8000)
+   /* if (GetKeyState(VK_RIGHT) & 0x8000)
         m_pTransformCom->Move(DIRECTION::RIGHT, fTimeDelta);
 
 
@@ -79,6 +71,14 @@ void CBackGround::Update_Late(_float fTimeDelta)
     else if (GetKeyState(VK_DOWN) & 0x800)
         m_pTransformCom->Move(DIRECTION::DOWN, fTimeDelta);*/
 
+ 
+
+}
+
+void CBackGround::Update_Late(_float fTimeDelta)
+{
+    __super::Update_Late(fTimeDelta);
+   
  
     //m_pTransformCom->LookAt(
     //    m_pTransformCom->Get_State(STATE::UP),

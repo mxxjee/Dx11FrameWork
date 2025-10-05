@@ -45,14 +45,6 @@ void CMainCamera::Update_Priority(_float fTimeDelta)
 void CMainCamera::Update(_float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
-	m_pPerspectiveCameraCom->Update_ViewMatrix(fTimeDelta);
-
-}
-
-void CMainCamera::Update_Late(_float fTimeDelta)
-{
-	__super::Update_Late(fTimeDelta);
-
 	if (GetKeyState(VK_RIGHT) & 0x8000)
 		m_pTransformCom->Move(DIRECTION::RIGHT, fTimeDelta);
 
@@ -72,6 +64,14 @@ void CMainCamera::Update_Late(_float fTimeDelta)
 	else if (GetKeyState('S') & 0x800)
 		m_pTransformCom->Move(DIRECTION::BACKWARD, fTimeDelta);
 
+}
+
+void CMainCamera::Update_Late(_float fTimeDelta)
+{
+	__super::Update_Late(fTimeDelta);
+	m_pPerspectiveCameraCom->Update_ViewMatrix(fTimeDelta);
+
+	
 }
 
 void CMainCamera::Update_Render(_float fTimeDelta)

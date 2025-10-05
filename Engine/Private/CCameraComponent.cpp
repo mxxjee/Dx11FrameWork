@@ -65,6 +65,7 @@ void CCameraComponent::Update_ViewMatrix(_float fTimeDelta)
   
         vEye = vAt + vRotatedoffset;
 
+        pTransform->Set_State(STATE::POSITION, vEye);
     }
 
 

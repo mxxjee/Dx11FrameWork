@@ -54,16 +54,16 @@ HRESULT CLevel_GamePlay::Ready_Layer_Background(const _wstring& strLayerTag)
     desc.ObjTag = L"BackGround_Gameplay";
     desc.ImgPath = L"../../Resource/Skeleton.png";
 
-    desc.fSizeX = 50.f;
-    desc.fSizeY = 50.f;
-    desc.fX = g_iWinSizeX >> 1;
+    desc.fX = (g_iWinSizeX >> 1) +1.f;
     desc.fY = g_iWinSizeY >> 1;
+    desc.Depth = 0.3f;
 
     CTransform::TRANSFORM_DESC TransDesc = {};
 
     TransDesc.fRotationPerSec = 0.f;
     TransDesc.fSpeedPerSec = 1.f;
-    TransDesc.vLocalScale = { 0.5f,0.5f,0.5f,1.f };
+    TransDesc.vLocalScale = { 1.f,1.f,1.f,1.f };
+
 
 
     desc.TransformDesc = &TransDesc;

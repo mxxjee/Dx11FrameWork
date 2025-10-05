@@ -34,18 +34,24 @@ public:
     virtual HRESULT Render();
     
 public:
+    void    Set_Active(bool _b) { m_bActive = _b; }
+
+public:
     const _wstring& Get_Tag() { return tag; }
     CComponent* Get_Component(const _wstring Tag);
+
+    bool            Is_Active() { return m_bActive; }
 protected:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };
     class CGameInstance* m_pGameInstance = { nullptr };
     CTransform* m_pTransformCom = { nullptr };
 
+
 protected:
     _wstring                tag = L"";
     map<const _wstring, class CComponent*>      m_Components;
-
+    bool                                        m_bActive=true;
 public:
     virtual CGameObject* Clone(void* pArg)=0;
     virtual void    Free() override;

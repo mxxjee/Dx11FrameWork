@@ -6,7 +6,7 @@ class ENGINE_DLL CUI :
 public:
     typedef struct tagUIDesc : public CGameObject::GAMEOBJECT_DESC
     {
-        _float fX = {}, fY = {};
+        _float fX = {}, fY = {},Depth = { 0.5f };
         _float fSizeX = {}, fSizeY = {};
     }UI_DESC;
 
@@ -26,8 +26,6 @@ public:
 
     virtual HRESULT Render();
 
-protected:
-    _float4x4		m_ViewMatrix{}, m_ProjMatrix{};
 
 public:
     virtual CGameObject* Clone(void* pArg)=0;

@@ -17,7 +17,11 @@ void CLayer::Update_Priority(_float fTimeDelta)
     for (auto& i : m_ObjList)
     {
         if (i != nullptr)
-            i->Update_Priority(fTimeDelta);
+        {
+            if(i->Is_Active())
+                i->Update_Priority(fTimeDelta);
+        }
+            
     }
 }
 
@@ -26,7 +30,11 @@ void CLayer::Update(_float fTimeDelta)
     for (auto& i : m_ObjList)
     {
         if (i != nullptr)
-            i->Update(fTimeDelta);
+        {
+            if (i->Is_Active())
+                i->Update(fTimeDelta);
+        }
+            
     }
 }
 
@@ -35,7 +43,11 @@ void CLayer::Update_Late(_float fTimeDelta)
     for (auto& i : m_ObjList)
     {
         if (i != nullptr)
-            i->Update_Late(fTimeDelta);
+        {
+            if (i->Is_Active())
+                i->Update_Late(fTimeDelta);
+        }
+            
     }
 }
 
@@ -44,7 +56,11 @@ void CLayer::Update_Render(_float fTimeDelta)
     for (auto& i : m_ObjList)
     {
         if (i != nullptr)
-            i->Update_Render(fTimeDelta);
+        {
+            if (i->Is_Active())
+                i->Update_Render(fTimeDelta);
+        }
+            
     }
 }
 
