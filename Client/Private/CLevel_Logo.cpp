@@ -78,7 +78,7 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
     __super::Update_Late(fTimeDelta);
     
     /*타겟 바꾸기 테스트*/
-    if (GetAsyncKeyState(VK_TAB) & 0x8000)
+    if (m_pGameInstance->IsKeyPressed(KeyCode::Tab))
     {
         if (iTargetIdx == 1)
             iTargetIdx = 0;

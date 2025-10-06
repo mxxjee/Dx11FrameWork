@@ -181,6 +181,15 @@
     <Filter Include="03.GameObject\Quad">
       <UniqueIdentifier>{9b0b874c-fd96-4ff1-92f2-b8af780aff00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObject\CameraObject\Perspective\MainCamera">
+      <UniqueIdentifier>{c964d60a-8b97-4d08-8362-84bd079ab79c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\CameraObject\Perspective\FreeCamera">
+      <UniqueIdentifier>{11cd7b22-b664-4e22-bf9c-427615f5a286}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\03.Input">
+      <UniqueIdentifier>{931be7c8-fb84-4035-a606-e145c17a4517}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -354,13 +363,19 @@
     <ClInclude Include="..\Public\COrthographicCameraComponent.h">
       <Filter>05.Component\Camera\OrthographicCamera</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CMainCamera.h">
-      <Filter>03.GameObject\CameraObject\Perspective</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CUICamera.h" />
     <ClInclude Include="..\Public\CQuad.h">
       <Filter>03.GameObject\Quad</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CMainCamera.h">
+      <Filter>03.GameObject\CameraObject\Perspective\MainCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CFreeCamera.h">
+      <Filter>03.GameObject\CameraObject\Perspective\FreeCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUICamera.h">
+      <Filter>03.GameObject\CameraObject\Orthgraphic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CInput_Manager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -507,12 +522,18 @@
     <ClCompile Include="..\Private\COrthographicCameraComponent.cpp">
       <Filter>05.Component\Camera\OrthographicCamera</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CMainCamera.cpp">
-      <Filter>03.GameObject\CameraObject\Perspective</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CUICamera.cpp" />
     <ClCompile Include="..\Private\CQuad.cpp">
       <Filter>03.GameObject\Quad</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CMainCamera.cpp">
+      <Filter>03.GameObject\CameraObject\Perspective\MainCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CFreeCamera.cpp">
+      <Filter>03.GameObject\CameraObject\Perspective\FreeCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUICamera.cpp">
+      <Filter>03.GameObject\CameraObject\Orthgraphic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CInput_Manager.cpp" />
   </ItemGroup>
 </Project>

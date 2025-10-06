@@ -14,6 +14,7 @@
 #include "Client_Defines.h"
 
 
+
 USING(Client)
 CPlayer::CPlayer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CQuad(pDevice,pContext)
@@ -81,17 +82,17 @@ HRESULT CPlayer::Render()
 
 void CPlayer::Move_Input(_float fTimeDelta)
 {
-    if (GetKeyState(VK_RIGHT) & 0x8000)
+    if (m_pGameInstance->IsKeyHeld(KeyCode::RightArrow))
         m_pTransformCom->Move(DIRECTION::RIGHT, fTimeDelta);
 
 
-    if (GetKeyState(VK_LEFT) & 0x8000)
+    if (m_pGameInstance->IsKeyHeld(KeyCode::LeftArrow))
         m_pTransformCom->Move(DIRECTION::LEFT, fTimeDelta);
 
-    if (GetKeyState(VK_UP) & 0x8000)
+    if (m_pGameInstance->IsKeyHeld(KeyCode::UpArrow))
         m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta);
 
-    if (GetKeyState(VK_DOWN) & 0x8000)
+    if (m_pGameInstance->IsKeyHeld(KeyCode::DownArrow))
         m_pTransformCom->Move(DIRECTION::BACKWARD, fTimeDelta);
 
 }

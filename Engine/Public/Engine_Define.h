@@ -32,11 +32,7 @@ using namespace std;
 #include <unordered_map>
 #include <ctime>
 
-#include "Engine_Macro.h"
-#include "Engine_Enum.h"
-#include "Engine_Typedef.h"
-#include "Engine_Struct.h"
-#include "Engine_Function.h"
+
 
 
 #ifdef _DEBUG
@@ -49,7 +45,8 @@ using namespace std;
 
 #define DIRECTINPUT_VERSION	0x0800
 #include <dinput.h>
-
+#pragma comment(lib, "dinput8.lib")
+#pragma comment(lib, "dxguid.lib")
 #pragma warning(disable : 4251)
 
 #ifdef _DEBUG
@@ -66,6 +63,11 @@ using namespace std;
 #endif
 #endif
 
+#include "Engine_Macro.h"
+#include "Engine_Enum.h"
+#include "Engine_Typedef.h"
+#include "Engine_Struct.h"
+#include "Engine_Function.h"
 
 using namespace Engine;
 

@@ -3,10 +3,19 @@
 
 namespace Engine
 {
+	struct MouseState
+	{
+		POINT position = { 0, 0 };
+		bool leftButton = false;
+		bool rightButton = false;
+		bool middleButton = false;
+		short wheelDelta = 0;
+	};
 
 	typedef struct tagEngine_Desc
 	{
 		HWND hWnd;
+		HINSTANCE hInst;
 		unsigned int iWinSizeX;
 		unsigned int iWinSizeY;
 		unsigned int iNumLevels;

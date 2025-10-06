@@ -28,6 +28,7 @@ HRESULT CMainApp::Initialize()
 
 	ENGINE_DESC		desc;
 	desc.hWnd = g_hWnd;
+	desc.hInst = g_hInst;
 	desc.iWinSizeX = g_iWinSizeX;
 	desc.iWinSizeY = g_iWinSizeY;
 	desc.winMode = WINMODE::WIN;

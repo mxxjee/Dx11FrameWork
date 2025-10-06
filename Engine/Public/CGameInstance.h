@@ -114,6 +114,14 @@ public:
 
 #pragma endregion
 
+#pragma region Input_Manager
+
+public:
+    bool    IsKeyPressed(KeyCode key) const;
+    bool    IsKeyHeld(KeyCode key) const;
+    bool     IsKeyReleased(KeyCode key) const;
+
+#pragma endregion
 public:
 #pragma region Default
     const vector<D3D11_VIEWPORT>& Get_Viewports() { return m_ViewPorts; }
@@ -127,6 +135,7 @@ private:
     class CObject_Manager* m_pObjectManager = { nullptr };
     class CRenderer* m_pRenderer = nullptr;
     class CCamera_Manager* m_pCameraManager = { nullptr };
+    class CInput_Manager* m_pInputManager = { nullptr };
 
 private:
     vector<D3D11_VIEWPORT>          m_ViewPorts;

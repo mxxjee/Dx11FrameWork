@@ -8,6 +8,7 @@
 #include "CObject_Manager.h"
 #include "CRenderer.h"
 #include "CCamera_Manager.h"
+#include "CInput_Manager.h"
 
 
 IMPLEMENT_SINGLETON(CGameInstance)
@@ -34,6 +35,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 
 
 	/* 인풋 디바이스 초기화 */
+	m_pInputManager = CInput_Manager::Create(EngineDesc.hInst, EngineDesc.hWnd);
+	CheckNullResult(m_pInputManager, E_FAIL);
+
 	/* 사운드  디바이스 초기화 */
 
 	/* 타이머 매니져 초기화 */
@@ -81,9 +85,10 @@ void CGameInstance::Update_Engine(_float fTimedelta)
 	m_pObjectManager->Update(fTimedelta);
 	m_pObjectManager->Update_Late(fTimedelta);*/
 
+	m_pInputManager->Update_Input();
 	m_pLevelManager->Update(fTimedelta);
 	Update_MainCamera(fTimedelta);
-
+	
 
 
 }
@@ -319,6 +324,22 @@ void CGameInstance::LateUpdate_MainCamera(_float fTimeDelta)
 	m_pCameraManager->LateUpdate_MainCamera(fTimeDelta);
 }
 
+
+bool CGameInstance::IsKeyPressed(KeyCode key) const
+{
+	return m_pInputManager->IsKeyPressed(key);
+}
+
+bool CGameInstance::IsKeyHeld(KeyCode key) const
+{
+	return m_pInputManager->IsKeyHeld(key);
+}
+
+bool CGameInstance::IsKeyReleased(KeyCode key) const
+{
+	return m_pInputManager->IsKeyReleased(key);
+}
+
 #pragma endregion
 
 void CGameInstance::Release_Engine()
@@ -330,6 +351,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pProtoManager);
 	Safe_Release(m_pObjectManager);
 	Safe_Release(m_pCameraManager);
+	Safe_Release(m_pInputManager);
 
 	Safe_Release(m_pGraphicDev);
 
