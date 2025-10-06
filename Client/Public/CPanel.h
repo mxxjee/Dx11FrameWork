@@ -7,12 +7,6 @@ NS_BEGIN(Client)
 class CPanel :
     public CUI
 {
-public:
-    typedef struct tagPANEL_DESC : UI_DESC
-    {
-        _wstring ImgPath;
-
-    }PANEL_DESC;
 protected:
     CPanel(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     CPanel(const CPanel& rhs);
@@ -29,36 +23,12 @@ public:
 
     virtual HRESULT Render() override;
 
-private:
-    HRESULT		Initialize_Piepline();
-
-
-private:
-    void	CreateGeometry();
-    void	CreateInputLayout();
-    void	VertexShader();
-    void	PixelShader();
-
-    HRESULT		CreateRasterizerState();
-    HRESULT		CreateSamplerState();
-    HRESULT		CreateBlendState();
-
-private:
-    void		Set_IA();
-    void		Set_VS();
-    void		Set_RS();
-    void		Set_PS();
-    void		Set_OM();
-
 
 public:
     static CPanel* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
-
-protected:
-    RenderPipelineResource<VertexTextureData, TransformData> m_Pipeline;
 
 
 };

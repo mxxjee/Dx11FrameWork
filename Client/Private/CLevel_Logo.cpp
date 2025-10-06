@@ -31,7 +31,7 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
         return E_FAIL;
 
 
-    if(FAILED(Ready_Layer_Background(L"BackGround_Layer")))
+    if(FAILED(Ready_Layer_UI(L"UI_Layer")))
         return E_FAIL;
 
     if (FAILED(Ready_Layer_Player(L"Player_Layer")))
@@ -78,7 +78,7 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
     __super::Update_Late(fTimeDelta);
     
     /*타겟 바꾸기 테스트*/
-   /* if (GetKeyState(VK_TAB) & 0x800)
+    if (GetAsyncKeyState(VK_TAB) & 0x8000)
     {
         if (iTargetIdx == 1)
             iTargetIdx = 0;
@@ -96,21 +96,22 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
         {
         case 0:
             ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC),
-                L"BackGround_Layer",
-                L"BackGround"));
+                L"Player_Layer",
+                L"Player"));
             break;
 
         case 1:
             ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC),
                 L"Enviroment_Layer",
-                L"Enviroment_Logo"));
+                L"Floor"));
+
             break;
 
         case 2:
             break;
         }
 
-    }*/
+    }
 
 }
 
@@ -123,19 +124,18 @@ void CLevel_Logo::Render()
 
 HRESULT CLevel_Logo::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 {
-    CPanel::PANEL_DESC desc;
-    desc.ObjTag = L"Enviroment_Logo";
-    desc.ImgPath = L"../../Resource/Skeleton.png";
+    CQuad::QUAD_DESC desc;
+    desc.ObjTag = L"Floor";
+    desc.ImgPath = L"../../Resource/Terrain0.png";
 
-    desc.fX = (g_iWinSizeX >> 1);
-    desc.fY = (g_iWinSizeY >> 1) + 3.f;
-    desc.Depth = 0.3f;
 
     CTransform::TRANSFORM_DESC TransDesc = {};
 
     TransDesc.fRotationPerSec = 0.f;
     TransDesc.fSpeedPerSec = 1.f;
-    TransDesc.vLocalScale = { 10.f,10.f,1.f,1.f };
+    TransDesc.vLocalPosition = { 0.f,-2.f,0.f,1.f };
+
+    TransDesc.vLocalScale = { 30.f,30.f,1.f,1.f };
     TransDesc.vLocalRotation = { -90.f,0.f,0.f,1.f };
 
 
@@ -143,25 +143,25 @@ HRESULT CLevel_Logo::Ready_Layer_Enviroment(const _wstring& strLayerTag)
     desc.TransformDesc = &TransDesc;
 
     if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-        PROTO_OBJ_NAME(L"Panel"),
+        PROTO_OBJ_NAME(L"Floor"),
         ENUM_TO_UINT(LEVEL_ID::STATIC),
         strLayerTag, &desc)))
         return E_FAIL;
-
+        
     return S_OK;
 }
 
-HRESULT CLevel_Logo::Ready_Layer_Background(const _wstring& strLayerTag)
+HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
 {
-    CPanel::PANEL_DESC        Desc = {};
+    CUI::tagUIDesc        Desc = {};
 
-    Desc.ObjTag = L"BackGround";
-    Desc.ImgPath = L"../../Resource/Character.png";
+    Desc.ObjTag = L"Hp_UI";
+    Desc.ImgPath = L"../../Resource/Hp.png";
 
-    Desc.fSizeX = 500.f * 0.5f;
-    Desc.fSizeY = 500.f*0.5f;
-    Desc.fX =300;
-    Desc.fY = 300;
+    Desc.fSizeX = 38.f;
+    Desc.fSizeY = 38.f;
+    Desc.fX =  50;
+    Desc.fY = 50;
 
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
@@ -170,7 +170,7 @@ HRESULT CLevel_Logo::Ready_Layer_Background(const _wstring& strLayerTag)
     Desc.TransformDesc = &TransDesc;
 
     if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-        PROTO_OBJ_NAME(L"BackGround"),
+        PROTO_OBJ_NAME(L"Panel"),
         ENUM_TO_UINT(LEVEL_ID::STATIC),
         strLayerTag, &Desc)))
         return E_FAIL;
@@ -218,7 +218,7 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
     UICameraDesc.fNear = 0.1f;
     UICameraDesc.fFar = 1000.f;
 
-    UICameraDesc.ViewWdith = (float)g_iWinSizeY;
+    UICameraDesc.ViewWdith = (float)g_iWinSizeX;
     UICameraDesc.ViewHeight = (float)g_iWinSizeY;
 
     UIDesc.CameraDesc = &UICameraDesc;
@@ -232,7 +232,7 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
 
 HRESULT CLevel_Logo::Ready_Layer_Player(const _wstring& strLayerTag)
 {
-    CPlayer::PLAYER_DESC        Desc = {};
+    CQuad::QUAD_DESC        Desc = {};
 
     Desc.ObjTag = L"Player";
     Desc.ImgPath = L"../../Resource/Character.png";

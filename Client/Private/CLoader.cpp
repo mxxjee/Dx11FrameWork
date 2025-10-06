@@ -3,6 +3,7 @@
 
 #include "CBackGround.h"
 #include "CPlayer.h"
+#include "CFloor.h"
 #include "CMainCamera.h"
 #include "CUICamera.h"
 
@@ -164,6 +165,8 @@ HRESULT CLoader::Loading_Logo()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), CPanel::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Floor"), CFloor::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Player"), CPlayer::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;

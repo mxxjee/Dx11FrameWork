@@ -51,7 +51,7 @@ void CLevel_GamePlay::Render()
 
 HRESULT CLevel_GamePlay::Ready_Layer_Background(const _wstring& strLayerTag)
 {
-    CPanel::PANEL_DESC desc;
+    CUI::UI_DESC desc;
     desc.ObjTag = L"BackGround_Gameplay";
     desc.ImgPath = L"../../Resource/Skeleton.png";
 

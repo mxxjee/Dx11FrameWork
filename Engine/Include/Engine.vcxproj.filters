@@ -178,6 +178,9 @@
     <Filter Include="03.GameObject\CameraObject\Orthgraphic">
       <UniqueIdentifier>{89bd43b9-9345-48de-9f36-c54b31d29444}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObject\Quad">
+      <UniqueIdentifier>{9b0b874c-fd96-4ff1-92f2-b8af780aff00}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -355,6 +358,9 @@
       <Filter>03.GameObject\CameraObject\Perspective</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUICamera.h" />
+    <ClInclude Include="..\Public\CQuad.h">
+      <Filter>03.GameObject\Quad</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -505,5 +511,8 @@
       <Filter>03.GameObject\CameraObject\Perspective</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUICamera.cpp" />
+    <ClCompile Include="..\Private\CQuad.cpp">
+      <Filter>03.GameObject\Quad</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

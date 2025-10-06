@@ -46,6 +46,9 @@
     <ClInclude Include="..\Public\CPlayer.h">
       <Filter>02.GameObjects\Player</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CFloor.h">
+      <Filter>02.GameObjects\Floor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -107,6 +110,9 @@
     <Filter Include="02.GameObjects\Player">
       <UniqueIdentifier>{0bc6481b-f5a7-4dd4-92ed-61f25bc7866a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\Floor">
+      <UniqueIdentifier>{467ec163-af8f-413a-ade4-db51d15a2b96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -141,6 +147,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CPlayer.cpp">
       <Filter>02.GameObjects\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CFloor.cpp">
+      <Filter>02.GameObjects\Floor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

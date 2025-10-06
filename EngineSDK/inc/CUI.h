@@ -1,10 +1,12 @@
 #pragma once
-#include "CGameObject.h"
+#include "CQuad.h"
+
+NS_BEGIN(Engine)
 class ENGINE_DLL CUI :
-    public CGameObject
+    public CQuad
 {
 public:
-    typedef struct tagUIDesc : public CGameObject::GAMEOBJECT_DESC
+    typedef struct tagUIDesc : public CQuad::QUAD_DESC
     {
         _float fX = {}, fY = {},Depth = { 0.5f };
         _float fSizeX = {}, fSizeY = {};
@@ -33,4 +35,5 @@ public:
 
 
 };
+NS_END
 

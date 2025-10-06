@@ -1,16 +1,16 @@
 #pragma once
 #include "CQuad.h"
-#include "VertexData.h"
 
 NS_BEGIN(Client)
 
-class CPlayer :
+
+class CFloor :
     public CQuad
 {
 protected:
-    CPlayer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
-    CPlayer(const CPlayer& rhs);
-    virtual ~CPlayer() = default;
+    CFloor(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+    CFloor(const CFloor& rhs);
+    virtual ~CFloor() = default;
 
 public:
     virtual HRESULT     Initialize_Prototype(); /*원형 객체가 생성될때 부르는 Initialize*/
@@ -24,13 +24,10 @@ public:
 
     virtual HRESULT Render();
 
-private:
-    void        Move_Input(_float fTimeDelta);
 public:
-    static CPlayer* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
+    static CFloor* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
-
 
 };
 

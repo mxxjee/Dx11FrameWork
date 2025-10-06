@@ -2,15 +2,15 @@
 #include "CTransform.h"
 #include "MathUtils.h"
 #include "CGameInstance.h"
-
+#include "CConstantBuffer.h"
 
 CUI::CUI(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CGameObject(pDevice,pContext)
+    :CQuad(pDevice,pContext)
 {
 }
 
 CUI::CUI(const CUI& rhs)
-    :CGameObject(rhs)
+    :CQuad(rhs)
 {
 }
 
@@ -52,7 +52,14 @@ void CUI::Update_Priority(_float fTimeDelta)
 
 void CUI::Update(_float fTimeDelta)
 {
-    __super::Update(fTimeDelta);
+    CGameObject::Update(fTimeDelta);
+    CheckNull(m_pTransformCom);
+
+    m_transformData.matworld = m_pTransformCom->Get_World();
+    m_transformData.view = m_pGameInstance->GetViewMatrix(true);
+    m_transformData.proj = m_pGameInstance->GetProjMatrix(true);
+
+    m_Pipeline.constantBuffer->CopyData(m_transformData);
 }
 
 void CUI::Update_Late(_float fTimeDelta)
@@ -70,6 +77,7 @@ void CUI::Update_Render(_float fTimeDelta)
 
 HRESULT CUI::Render()
 {
+    __super::Render();
     return S_OK;
 }
 
