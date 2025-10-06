@@ -2,7 +2,8 @@
 #include "CLoader.h"
 #include "CGameInstance.h"
 #include "CBackGround.h"
-
+#include "CMainCamera.h"
+#include "CPerspectiveCameraComponent.h"
 USING(Client)
 
 CLevel_GamePlay::CLevel_GamePlay(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -68,7 +69,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Background(const _wstring& strLayerTag)
 
     desc.TransformDesc = &TransDesc;
 
-    if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::GAMEPLAY),
+    if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
         PROTO_OBJ_NAME(L"Panel"), 
         ENUM_TO_UINT(LEVEL_ID::GAMEPLAY), 
         strLayerTag,&desc)))
@@ -79,7 +80,21 @@ HRESULT CLevel_GamePlay::Ready_Layer_Background(const _wstring& strLayerTag)
 
 void CLevel_GamePlay::OnEnter()
 {
-    int A = 0;
+    //메인카메라 등록
+    m_pGameInstance->SetMainPerspectiveCamera(L"MainCamera");
+
+    CGameObject* pMainCamera = m_pGameInstance->GetMainPerspectiveCamera();
+    if (pMainCamera)
+    {
+        CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
+        CheckNull(ppMainCamera);
+        ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(
+            ENUM_TO_UINT(LEVEL_ID::STATIC),
+            L"BackGround_Layer",
+            L"BackGround"));
+
+    
+    }
 }
 
 void CLevel_GamePlay::OnResume()

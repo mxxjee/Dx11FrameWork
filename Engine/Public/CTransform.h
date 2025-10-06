@@ -58,8 +58,9 @@ public:
 
 #pragma region Translation
 public:
-    void    Move(DIRECTION eDir, float fTimeDelta,Space space=Space::Local);
-    
+    void    Move(DIRECTION eDir, float fTimeDelta,Space space=Space::Local);                                                                  //look벡터 갱신여부
+    void    MoveLerp(_fvector vTargetPos, float fLerpSpeed, float fTimeDelta, bool bUpdateLook=true);
+   
     void    Rotation(_fvector vAxis, _float fRadian);       //즉각회전,vAxis축을 기준으로 fRAdian만큼 회전시킨다. 
     void    Rotation(_float3 fEularDegree);
     
@@ -68,7 +69,9 @@ public:
     void    LookAt(_fvector vWorldPoint);    //즉각회전,한 점을 바로 바라보도록회전
 
     void    LookAt(_fvector vAxis, _fvector vWorldPoint, _float fTimeDelta, _float fSpeed = 5); //누적 회전, 특정 축을 기준으로 vWorldpoint를 바라보도록 회전한다.
+    void    LookAtSmooth(_fvector vTargetPos, float fLerpSpped, float fTimeDelta);
     
+
     void    LookAt(CTransform* target);     
 
     void    Chase(_fvector vPoint, _float fTimeDelta, _float MinDistance = 0.f);    //최소 거리 까지만 쫓아간다.

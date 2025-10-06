@@ -158,7 +158,7 @@ HRESULT CPanel::CreateRasterizerState()
 	memset(&desc, 0, sizeof(desc));
 
 	desc.FillMode = D3D11_FILL_SOLID;//WIREFRAME of SOLID
-	desc.CullMode = D3D11_CULL_BACK;//CULLMODE: 반시계 컬링
+	desc.CullMode = D3D11_CULL_NONE;//CULLMODE: 반시계 컬링
 	desc.FrontCounterClockwise = false;
 
 	HRESULT hr = m_pDevice->CreateRasterizerState(&desc, m_Pipeline._rasterizerState.GetAddressOf());

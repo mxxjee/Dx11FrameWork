@@ -107,6 +107,14 @@ void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space)
 
 }
 
+void CTransform::MoveLerp(_fvector vTargetPos, float fLerpSpeed, float fTimeDelta,bool bUpdateLook)
+{
+	float t = 1.0f - expf(-fTimeDelta * fLerpSpeed);
+	_vector vCur = Get_State(STATE::POSITION);
+	_vector vNew = XMVectorLerp(vCur, vTargetPos, t);
+	Set_State(STATE::POSITION, vNew);
+}
+
 _float3 CTransform::Get_Scale()
 {
 	return _float3(
@@ -293,6 +301,29 @@ void CTransform::LookAt(_fvector vAxis, _fvector vWorldPoint, _float fTimeDelta,
 	Set_State(STATE::RIGHT, vRight * Get_Scale().x);
 	Set_State(STATE::UP, vUp * Get_Scale().y);
 	Set_State(STATE::LOOK, vLook * Get_Scale().z);
+}
+
+void CTransform::LookAtSmooth(_fvector vTargetPos, float fLerpSpped, float fTimeDelta)
+{
+	//new look
+	_vector vDir = vTargetPos - Get_State(STATE::POSITION);
+	vDir = XMVector3Normalize(vDir);
+
+	_vector vCurLook = XMVector3Normalize(Get_State(STATE::LOOK));
+	_vector vNewLook = XMVectorLerp(vCurLook, vDir, fTimeDelta * fLerpSpped);
+	vNewLook = XMVector3Normalize(vNewLook);
+
+	// Up, Right °»½Å
+	/*_vector vRight = XMVector3Normalize(XMVector3Cross(WORLD_UP, vNewLook));
+	_vector vUp = XMVector3Normalize(XMVector3Cross(vNewLook, vRight));*/
+
+
+	//Set_State(STATE::RIGHT, vNewLook * Get_Scale().x);
+	//Set_State(STATE::UP, vUp * Get_Scale().y);
+	Set_State(STATE::LOOK, vNewLook * Get_Scale().z);
+
+
+
 }
 
 

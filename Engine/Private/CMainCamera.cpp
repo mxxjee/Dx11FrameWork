@@ -40,35 +40,23 @@ HRESULT CMainCamera::Initialize_Copytype(void* pArg)
 void CMainCamera::Update_Priority(_float fTimeDelta)
 {
 	__super::Update_Priority(fTimeDelta);
+	
 }
 
 void CMainCamera::Update(_float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
-	if (GetKeyState(VK_RIGHT) & 0x8000)
-		m_pTransformCom->Move(DIRECTION::RIGHT, fTimeDelta);
+	
+	Follow_Target(fTimeDelta);
 
-
-	else if (GetKeyState(VK_LEFT) & 0x8000)
-		m_pTransformCom->Move(DIRECTION::LEFT, fTimeDelta);
-
-	else if (GetKeyState(VK_UP) & 0x8000)
-		m_pTransformCom->Move(DIRECTION::UP, fTimeDelta);
-
-	else if (GetKeyState(VK_DOWN) & 0x800)
-		m_pTransformCom->Move(DIRECTION::DOWN, fTimeDelta);
-
-	else if (GetKeyState('W') & 0x800)
-		m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta);
-
-	else if (GetKeyState('S') & 0x800)
-		m_pTransformCom->Move(DIRECTION::BACKWARD, fTimeDelta);
-
+	
+	
 }
 
 void CMainCamera::Update_Late(_float fTimeDelta)
 {
 	__super::Update_Late(fTimeDelta);
+	
 	m_pPerspectiveCameraCom->Update_ViewMatrix(fTimeDelta);
 
 	
@@ -83,6 +71,43 @@ HRESULT CMainCamera::Render()
 {
 	return S_OK;
 }
+
+void CMainCamera::Set_Target(CGameObject* pTarget)
+{
+	m_pTarget = pTarget;
+	CCameraComponent* pCamera = static_cast<CCameraComponent*>(Get_Component(L"PerspectiveCamera"));
+	CheckNull(pCamera);
+
+	pCamera->Set_Target(m_pTarget);
+
+}
+
+void CMainCamera::Follow_Target(_float fTimeDelta)
+{
+	if (!m_pTarget)
+		return;
+	OutputDebugString(L"[CAMERA] Update Tick\n");
+
+	CTransform* pTargetTransform = static_cast<CTransform*>(m_pTarget->Get_Component(L"Transform"));
+	if (!m_pTransformCom || !pTargetTransform)
+		return;
+
+	
+	
+	CCameraComponent* pCamera = static_cast<CCameraComponent*>(Get_Component(L"PerspectiveCamera"));
+	CheckNull(pCamera);
+
+	const _vector TargetPos = pTargetTransform->Get_State(STATE::POSITION);
+	const _float3 Offset = pCamera->Get_OffSet();
+	
+	m_pTransformCom->MoveLerp(TargetPos + XMLoadFloat3(&Offset), 5.f, fTimeDelta);
+
+	
+	
+	//m_pTransformCom->LookAtSmooth(TargetPos, 5, fTimeDelta);
+	
+}
+
 
 CMainCamera* CMainCamera::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {

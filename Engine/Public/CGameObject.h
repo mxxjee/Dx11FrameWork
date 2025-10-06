@@ -52,6 +52,7 @@ protected:
     _wstring                tag = L"";
     map<const _wstring, class CComponent*>      m_Components;
     bool                                        m_bActive=true;
+    CGameObject*                                m_pTarget = { nullptr };
 public:
     virtual CGameObject* Clone(void* pArg)=0;
     virtual void    Free() override;

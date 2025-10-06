@@ -93,7 +93,7 @@ public:
 
 #pragma region CameraManager
     //카메라 등록 및 제거..
-    void        RegisterCamera(const _wstring & Tag, class CCameraComponent * pComp, bool isOrtho);
+    void        RegisterCamera(const _wstring & Tag, class CGameObject * pObj, bool isOrtho);
     void        UnRegisterCamera(const _wstring & Tag, bool isOrtho);
     
     //메인카메라 설정
@@ -101,14 +101,19 @@ public:
     bool        SetMainOrthoCamara(const _wstring & tag);
 
     //뷰,투영행렬가져오기
-    const Matrix& GetViewMatrix(bool isOrtho = false) const;
-    const Matrix& GetProjMatrix(bool isOrtho = false) const;
+    const _float4x4& GetViewMatrix(bool isOrtho = false) const;
+    const _float4x4& GetProjMatrix(bool isOrtho = false) const;
 
     //메인 카메라 가져오기
-    class CCameraComponent* GetMainPerspectiveCamera();
-    class CCameraComponent* GetMainOrthoCamera();
+    class CGameObject* GetMainPerspectiveCamera();
+    class CGameObject* GetMainOrthoCamera();
+
+    void        Update_MainCamera(_float fTimeDelta);
+    void        LateUpdate_MainCamera(_float fTimeDelta);
+
 #pragma endregion
 
+public:
 #pragma region Default
     const vector<D3D11_VIEWPORT>& Get_Viewports() { return m_ViewPorts; }
 #pragma endregion

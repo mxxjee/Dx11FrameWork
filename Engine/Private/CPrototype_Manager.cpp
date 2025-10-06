@@ -39,7 +39,7 @@ CBase* CPrototype_Manager::Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelI
 
 void CPrototype_Manager::Clear(_uint iLevel)
 {
-    CheckTrue(iLevel >= m_iNumLevels || m_Prototypes[iLevel].empty());
+    CheckTrue(iLevel >= m_iNumLevels || iLevel==0 ||m_Prototypes[iLevel].empty());
     for (auto& pair : m_Prototypes[iLevel])
     {
         Safe_Release(pair.second);

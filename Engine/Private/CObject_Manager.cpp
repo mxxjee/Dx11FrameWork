@@ -103,7 +103,7 @@ CGameObject* CObject_Manager::Find_GameObject(_uint iLevelIndex, const _wstring&
 
 void CObject_Manager::Clear(_uint iLevelIndex)
 {
-	CheckTrue(iLevelIndex >= m_iNumLevels || m_Layers[iLevelIndex].empty());
+	CheckTrue(iLevelIndex >= m_iNumLevels || iLevelIndex == 0 || m_Layers[iLevelIndex].empty());
 	for (auto& pair : m_Layers[iLevelIndex])
 	{
 		Safe_Release(pair.second);

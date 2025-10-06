@@ -1,14 +1,14 @@
 #include "CCamera_Manager.h"
 #include "CPerspectiveCameraComponent.h"
+#include "CGameObject.h"
 
-
-void CCamera_Manager::RegisterCamera(const _wstring& Tag, CCameraComponent* pComp, bool isOrtho)
+void CCamera_Manager::RegisterCamera(const _wstring& Tag, CGameObject* pObj, bool isOrtho)
 {
 	if (!isOrtho)
-		m_mapPerspectiveCams.emplace(Tag, pComp);
+		m_mapPerspectiveCams.emplace(Tag, pObj);
 
 	else
-		m_mapOrthoCams.emplace(Tag, pComp);
+		m_mapOrthoCams.emplace(Tag, pObj);
 }
 
 void CCamera_Manager::UnRegisterCamera(const _wstring& Tag, bool isOrtho)
@@ -60,25 +60,50 @@ bool CCamera_Manager::SetMainOrthoCamera(const _wstring& tag)
 	return false;
 }
 
-const Matrix& CCamera_Manager::GetViewMatrix(bool isOrtho) const
+const _float4x4& CCamera_Manager::GetViewMatrix(bool isOrtho) const
 {
 	//나중에수정
-	return m_pMainPerspectiveCamera->Get_ViewMatrix();
+	if (!isOrtho)
+	{
+		CComponent* pComp = m_pMainPerspectiveCamera->Get_Component(L"PerspectiveCamera");
+		CPerspectiveCameraComponent* pPers = dynamic_cast<CPerspectiveCameraComponent*>(pComp);
+
+		return pPers->Get_ViewMatrix();
+	}
+	
 }
 
-const Matrix& CCamera_Manager::GetProjMatrix(bool isOrtho) const
+const _float4x4& CCamera_Manager::GetProjMatrix(bool isOrtho) const
 {
-	return m_pMainPerspectiveCamera->Get_ProjMatrix();
+	if (!isOrtho)
+	{
+		CComponent* pComp = m_pMainPerspectiveCamera->Get_Component(L"PerspectiveCamera");
+		CPerspectiveCameraComponent* pPers = dynamic_cast<CPerspectiveCameraComponent*>(pComp);
+
+		return pPers->Get_ProjMatrix();
+	}
 }
 
-CCameraComponent* CCamera_Manager::GetMainPerspectiveCamera()
+CGameObject* CCamera_Manager::GetMainPerspectiveCamera()
 {
 	return m_pMainPerspectiveCamera;
 }
 
-CCameraComponent* CCamera_Manager::GetMainOrthoCamera()
+CGameObject* CCamera_Manager::GetMainOrthoCamera()
 {
 	return m_pMainOrthoCamera;
+}
+
+void CCamera_Manager::Update_MainCamera(_float fTimeDelta)
+{
+	if (m_pMainPerspectiveCamera)
+		m_pMainPerspectiveCamera->Update(fTimeDelta);
+}
+
+void CCamera_Manager::LateUpdate_MainCamera(_float fTimeDelta)
+{
+	if (m_pMainPerspectiveCamera)
+		m_pMainPerspectiveCamera->Update_Late(fTimeDelta);
 }
 
 
@@ -86,4 +111,22 @@ CCameraComponent* CCamera_Manager::GetMainOrthoCamera()
 CCamera_Manager* CCamera_Manager::Create()
 {
 	return new CCamera_Manager;
+}
+
+void CCamera_Manager::Free()
+{
+	for (auto& pair : m_mapPerspectiveCams)
+	{
+		Safe_Release(pair.second);
+		
+	}
+
+	for (auto& pair : m_mapOrthoCams)
+	{
+		Safe_Release(pair.second);
+
+	}
+
+	m_mapPerspectiveCams.clear();
+	m_mapOrthoCams.clear();
 }

@@ -8,7 +8,7 @@ class ENGINE_DLL CPerspectiveCameraComponent final :
 public:
     typedef struct tagPerspective_CameraDesc : public CCameraComponent::CAMERA_DESC
     {
-        float fFov = XMConvertToRadians(60.f);
+        float fFov = XMConvertToRadians(90.f);
         float Aspect = {};
 
 

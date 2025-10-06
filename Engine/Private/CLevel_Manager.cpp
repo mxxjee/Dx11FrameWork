@@ -56,7 +56,7 @@ HRESULT CLevel_Manager::Level_Changer(_uint iSceneID, LevelArgs& args)
 
 void CLevel_Manager::Update_Priority(const _float fTimeDelta)
 { 
-	Clear_DestroyStack();
+	//Clear_DestroyStack();
 	CheckTrue(m_Stack.empty());
 	m_pGameInstance->Update_Priority_Static(fTimeDelta);
 	m_Stack.back()->Update_Priority(fTimeDelta);

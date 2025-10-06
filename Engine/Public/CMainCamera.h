@@ -27,6 +27,10 @@ public:
     virtual HRESULT Render();
 
 public:
+    void        Set_Target(CGameObject* pTarget);
+    void        Follow_Target(_float fTimeDelta);
+ 
+public:
     static CMainCamera* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg);
     virtual void    Free() override;

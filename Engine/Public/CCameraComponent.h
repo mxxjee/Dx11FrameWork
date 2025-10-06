@@ -33,9 +33,11 @@ public:
 
 public:
     void        Set_Target(class CGameObject* pTarget) { m_pTarget = pTarget; }
+    
+
     const _float4x4& Get_ViewMatrix() { return m_matView; }
     const _float4x4& Get_ProjMatrix() { return m_matProj; }
-
+    const _float3& Get_OffSet() { return m_vOffSet; }
 
 public:
     virtual void        Update_ViewMatrix(_float fTimeDelta);
@@ -43,6 +45,7 @@ public:
 
 protected:
     class       CGameObject* m_pTarget = { nullptr };
+   
 
     _float4x4   m_matProj;        //투영행렬
     _float4x4   m_matView;          //뷰행렬

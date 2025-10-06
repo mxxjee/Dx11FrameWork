@@ -3,15 +3,15 @@
 
 
 NS_BEGIN(Engine)
-class CCameraComponent;
 
+class CGameObject;
 
 class CCamera_Manager :
     public CBase
 {
 public:
     //카메라 등록 및 제거..
-    void        RegisterCamera(const _wstring& Tag, CCameraComponent* pComp, bool isOrtho);
+    void        RegisterCamera(const _wstring& Tag, CGameObject* pObj, bool isOrtho);
     void        UnRegisterCamera(const _wstring& Tag, bool isOrtho);
 
 
@@ -20,23 +20,26 @@ public:
     bool        SetMainOrthoCamera(const _wstring& tag);
 
     //뷰,투영행렬가져오기
-    const Matrix& GetViewMatrix(bool isOrtho = false) const;
-    const Matrix& GetProjMatrix(bool isOrtho = false) const;
+    const _float4x4& GetViewMatrix(bool isOrtho = false) const;
+    const _float4x4& GetProjMatrix(bool isOrtho = false) const;
 
     //메인 카메라 가져오기
-    CCameraComponent*           GetMainPerspectiveCamera();
-    CCameraComponent*           GetMainOrthoCamera();
+    CGameObject*           GetMainPerspectiveCamera();
+    CGameObject*           GetMainOrthoCamera();
 
 public:
+    void        Update_MainCamera(_float fTimeDelta);
+    void        LateUpdate_MainCamera(_float fTimeDelta);
+public:
     static CCamera_Manager* Create();
-
+    virtual void        Free() override;
 
 private:
-    UMap<_wstring, CCameraComponent*>    m_mapPerspectiveCams;
-    UMap<_wstring, CCameraComponent*>    m_mapOrthoCams;
+    UMap<_wstring, CGameObject*>    m_mapPerspectiveCams;
+    UMap<_wstring, CGameObject*>    m_mapOrthoCams;
 
-    CCameraComponent* m_pMainPerspectiveCamera = nullptr;
-    CCameraComponent* m_pMainOrthoCamera = nullptr;
+    CGameObject* m_pMainPerspectiveCamera = nullptr;
+    CGameObject* m_pMainOrthoCamera = nullptr;
 };
 NS_END
 
