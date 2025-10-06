@@ -8,8 +8,6 @@ extern HINSTANCE g_hInst;
 
 namespace MapTool
 {
-	static const unsigned int g_iWinSizeX = 1280;
-	static const unsigned int g_iWinSizeY = 720;
 
 }
 

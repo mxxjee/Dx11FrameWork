@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\CLevel_Editor.h" />
+    <ClInclude Include="..\Public\CLevel_Loading.h" />
+    <ClInclude Include="..\Public\CLoader.h" />
     <ClInclude Include="..\Public\CMainTool.h" />
     <ClInclude Include="..\Public\MapTool_Defines.h" />
     <ClInclude Include="framework.h" />
@@ -27,6 +30,9 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\CLevel_Editor.cpp" />
+    <ClCompile Include="..\Private\CLevel_Loading.cpp" />
+    <ClCompile Include="..\Private\CLoader.cpp" />
     <ClCompile Include="..\Private\CMainTool.cpp" />
     <ClCompile Include="MapTool.cpp" />
   </ItemGroup>

@@ -1,12 +1,14 @@
 #pragma once
 
 #include "MapTool_Defines.h"
+#include "Client_Defines.h"
 #include "CBase.h"
 
 NS_BEGIN(Engine)
 class CImGui_Manager;
 class CGameInstance;
 NS_END
+
 
 NS_BEGIN(MapTool)
 
@@ -19,11 +21,17 @@ private:
 
 public:
 	HRESULT Initialize();
+	void	Update_Priority(_float fTimeDelta);
 	void	Update(_float fTimeDelta);
+	void	Update_Late(float fTimeDelta);
+	void	Update_Render(float fTimeDelta);
 	void	Render();
 
 private:
 	void		CreateMyWindow();
+private:
+	void			Reigster_Levels();
+	HRESULT			Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType);
 private:
 	ComPtr<ID3D11Device> m_pDevice = { nullptr };
 	ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };

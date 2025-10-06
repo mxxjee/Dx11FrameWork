@@ -13,6 +13,18 @@
     <Filter Include="02.ImguiObjects">
       <UniqueIdentifier>{f26dd169-3120-4a47-8cab-a31018a4fb46}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Level">
+      <UniqueIdentifier>{fbd4b7e5-8172-4e92-bdc9-35cbf46fb2c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Level\EditLevel">
+      <UniqueIdentifier>{4be5bed8-2310-4251-a985-e301fbeabdf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Level\Loading">
+      <UniqueIdentifier>{95572090-35f3-4328-a519-b10199abc4b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Level\Loading\Loader">
+      <UniqueIdentifier>{10f6cc78-1b65-4c22-a2a3-2e1593888df5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CMainTool.h">
@@ -33,6 +45,15 @@
     <ClInclude Include="..\Public\MapTool_Defines.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CLevel_Editor.h">
+      <Filter>03.Level\EditLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLoader.h">
+      <Filter>03.Level\Loading\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLevel_Loading.h">
+      <Filter>03.Level\Loading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CMainTool.cpp">
@@ -40,6 +61,15 @@
     </ClCompile>
     <ClCompile Include="MapTool.cpp">
       <Filter>98.Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_Editor.cpp">
+      <Filter>03.Level\EditLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLoader.cpp">
+      <Filter>03.Level\Loading\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_Loading.cpp">
+      <Filter>03.Level\Loading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
