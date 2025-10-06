@@ -38,6 +38,9 @@ public:
     static  CLevel_Logo* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext,LevelArgs& args);
     virtual     void        Free();
 
+private:
+    int iTargetIdx = 0;
+
 };
 NS_END
 

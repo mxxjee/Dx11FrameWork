@@ -2,6 +2,7 @@
 #include "CLoader.h"
 #include "CGameInstance.h"
 #include "CLevel_Loading.h"
+#include "MathUtils.h"
 
 #include "CBackGround.h"
 #include "CMainCamera.h"
@@ -43,11 +44,12 @@ void CLevel_Logo::Update_Priority(_float fTimeDelta)
         LevelArgs args;
         args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::GAMEPLAY);
         args.changeType = LEVELCHANGETYPE::OVERLAY;
-        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::GAMEPLAY);
+        args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
 
         if (FAILED(m_pGameInstance->Level_Changer(
-            ENUM_TO_UINT(LEVEL_ID::GAMEPLAY),
+            ENUM_TO_UINT(LEVEL_ID::LOADING),
             args)))
             return;
     }
@@ -65,6 +67,42 @@ void CLevel_Logo::Update(const _float fTimeDelta)
 void CLevel_Logo::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
+    
+    /*타겟 바꾸기 테스트*/
+   /* if (GetKeyState(VK_TAB) & 0x800)
+    {
+        if (iTargetIdx == 1)
+            iTargetIdx = 0;
+        else
+            ++iTargetIdx;
+      
+        iTargetIdx = MathUtils::Clamp(iTargetIdx, 0, 1);
+
+
+        CGameObject* pMainCamera = m_pGameInstance->GetMainPerspectiveCamera();
+        CheckNull(pMainCamera);
+        CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
+        CheckNull(ppMainCamera);
+        switch (iTargetIdx)
+        {
+        case 0:
+            ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC),
+                L"BackGround_Layer",
+                L"BackGround"));
+            break;
+
+        case 1:
+            ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC),
+                L"Enviroment_Layer",
+                L"Enviroment_Logo"));
+            break;
+
+        case 2:
+            break;
+        }
+
+    }*/
+
 }
 
 void CLevel_Logo::Render()

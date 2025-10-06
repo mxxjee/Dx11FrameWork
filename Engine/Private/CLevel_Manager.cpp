@@ -10,7 +10,7 @@ CLevel_Manager::CLevel_Manager()
 
 HRESULT CLevel_Manager::Level_Changer(_uint iSceneID, LevelArgs& args)
 {
-	//Clear_DestroyStack();
+	Clear_DestroyStack();
 
 	CLevel* top = nullptr;
 	
