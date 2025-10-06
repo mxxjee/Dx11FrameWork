@@ -175,6 +175,9 @@
     <Filter Include="03.GameObject\CameraObject\Perspective">
       <UniqueIdentifier>{c368118f-9a78-44b0-811f-34f3a3751801}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObject\CameraObject\Orthgraphic">
+      <UniqueIdentifier>{89bd43b9-9345-48de-9f36-c54b31d29444}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -342,12 +345,16 @@
     <ClInclude Include="..\Public\CCamera_Manager.h">
       <Filter>00.System\02.Camera</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CMainCamera.h">
-      <Filter>03.GameObject\CameraObject</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CPerspectiveCameraComponent.h">
       <Filter>05.Component\Camera\PerpectiveCamera</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\COrthographicCameraComponent.h">
+      <Filter>05.Component\Camera\OrthographicCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMainCamera.h">
+      <Filter>03.GameObject\CameraObject\Perspective</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUICamera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -488,11 +495,15 @@
     <ClCompile Include="..\Private\CCamera_Manager.cpp">
       <Filter>00.System\02.Camera</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CMainCamera.cpp">
-      <Filter>03.GameObject\CameraObject</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CPerspectiveCameraComponent.cpp">
       <Filter>05.Component\Camera\PerpectiveCamera</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\COrthographicCameraComponent.cpp">
+      <Filter>05.Component\Camera\OrthographicCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMainCamera.cpp">
+      <Filter>03.GameObject\CameraObject\Perspective</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUICamera.cpp" />
   </ItemGroup>
 </Project>

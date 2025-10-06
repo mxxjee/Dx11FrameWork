@@ -72,7 +72,7 @@ HRESULT CMainCamera::Render()
 	return S_OK;
 }
 
-void CMainCamera::Set_Target(CGameObject* pTarget)
+void CMainCamera::Set_Target(CGameObject* pTarget, bool bInit)
 {
 	m_pTarget = pTarget;
 	CCameraComponent* pCamera = static_cast<CCameraComponent*>(Get_Component(L"PerspectiveCamera"));
@@ -80,6 +80,22 @@ void CMainCamera::Set_Target(CGameObject* pTarget)
 
 	pCamera->Set_Target(m_pTarget);
 
+	CheckFalse(bInit);
+	if (m_pTarget)
+	{
+		CTransform* pTargetTransform = static_cast<CTransform*>(m_pTarget->Get_Component(L"Transform"));
+		if (pTargetTransform && m_pTransformCom)
+		{
+			_vector vTargetPos = pTargetTransform->Get_State(STATE::POSITION);
+			_float3 vOffset = pCamera->Get_OffSet();
+
+			_vector vStartPos = vTargetPos + XMLoadFloat3(&vOffset);
+			m_pTransformCom->Set_State(STATE::POSITION, vStartPos);
+
+			// 필요하다면 view 행렬도 바로 계산
+			m_pPerspectiveCameraCom->Update_ViewMatrix(0.f);
+		}
+	}
 }
 
 void CMainCamera::Follow_Target(_float fTimeDelta)

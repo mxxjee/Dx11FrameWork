@@ -2,11 +2,14 @@
 #include "CGameInstance.h"
 
 #include "CBackGround.h"
+#include "CPlayer.h"
 #include "CMainCamera.h"
+#include "CUICamera.h"
 
 
 #include "CTransform.h"
 #include "CPerspectiveCameraComponent.h"
+#include "COrthographicCameraComponent.h"
 
 
 USING(Client)
@@ -144,7 +147,8 @@ HRESULT CLoader::Loading_Logo()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"PerspectiveCamera"), CPerspectiveCameraComponent::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"OrthographicCamera"), COrthographicCameraComponent::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
 
@@ -154,7 +158,14 @@ HRESULT CLoader::Loading_Logo()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MainCamera"), CMainCamera::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"UICamera"), CUICamera::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), CPanel::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Player"), CPlayer::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     m_isFinished = true;

@@ -157,6 +157,7 @@
     <ClInclude Include="..\Public\CMainApp.h" />
     <ClInclude Include="..\Public\CObjectDebugWindow.h" />
     <ClInclude Include="..\Public\CPanel.h" />
+    <ClInclude Include="..\Public\CPlayer.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="..\Private\CMainApp.cpp" />
     <ClCompile Include="..\Private\CObjectDebugWindow.cpp" />
     <ClCompile Include="..\Private\CPanel.cpp" />
+    <ClCompile Include="..\Private\CPlayer.cpp" />
     <ClCompile Include="Client.cpp" />
   </ItemGroup>
   <ItemGroup>

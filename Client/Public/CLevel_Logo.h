@@ -24,9 +24,9 @@ public:
 
 public:
     HRESULT                 Ready_Layer_Enviroment(const _wstring& strLayerTag);
-
     HRESULT                 Ready_Layer_Background(const _wstring& strLayerTag);
-    HRESULT                 Ready_MainCamera_Background(const _wstring& strLayerTag);
+    HRESULT                 Ready_Layer_MainCamera(const _wstring& strLayerTag);
+    HRESULT                 Ready_Layer_Player(const _wstring& strLayerTag);
 
 
 public:

@@ -5,8 +5,12 @@
 #include "MathUtils.h"
 
 #include "CBackGround.h"
+#include "CPlayer.h"
 #include "CMainCamera.h"
+#include "CUICamera.h"
 #include "CPerspectiveCameraComponent.h"
+#include "COrthographicCameraComponent.h"
+
 
 
 
@@ -30,8 +34,13 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
     if(FAILED(Ready_Layer_Background(L"BackGround_Layer")))
         return E_FAIL;
 
-    if (FAILED(Ready_MainCamera_Background(L"Camera_Layer")))
+    if (FAILED(Ready_Layer_Player(L"Player_Layer")))
         return E_FAIL;
+
+    if (FAILED(Ready_Layer_MainCamera(L"Camera_Layer")))
+        return E_FAIL;
+
+
 
     return S_OK;
 }
@@ -149,15 +158,14 @@ HRESULT CLevel_Logo::Ready_Layer_Background(const _wstring& strLayerTag)
     Desc.ObjTag = L"BackGround";
     Desc.ImgPath = L"../../Resource/Character.png";
 
-    Desc.fSizeX = 50.f;
-    Desc.fSizeY = 50.f;
-    Desc.fX = g_iWinSizeX>>1;
-    Desc.fY = g_iWinSizeY>>1;
+    Desc.fSizeX = 500.f * 0.5f;
+    Desc.fSizeY = 500.f*0.5f;
+    Desc.fX =300;
+    Desc.fY = 300;
 
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
- 
 
     Desc.TransformDesc = &TransDesc;
 
@@ -170,7 +178,7 @@ HRESULT CLevel_Logo::Ready_Layer_Background(const _wstring& strLayerTag)
     return S_OK;
 }
 
-HRESULT CLevel_Logo::Ready_MainCamera_Background(const _wstring& strLayerTag)
+HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
 {
     CMainCamera::GAMEOBJECT_DESC Desc = {};
     Desc.ObjTag = L"MainCamera";
@@ -195,6 +203,54 @@ HRESULT CLevel_Logo::Ready_MainCamera_Background(const _wstring& strLayerTag)
    
     CGameObject* pInstance=dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MainCamera"), &Desc));
     m_pGameInstance->RegisterCamera(L"MainCamera", pInstance,false);
+    
+
+    /////////////////UICamera
+    CUICamera::GAMEOBJECT_DESC UIDesc = {};
+    UIDesc.ObjTag = L"UICamera";
+
+    TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+   
+    COrthographicCameraComponent::ORTHOGRAPHIC_DESC UICameraDesc = {};
+   
+    UICameraDesc.fNear = 0.1f;
+    UICameraDesc.fFar = 1000.f;
+
+    UICameraDesc.ViewWdith = (float)g_iWinSizeY;
+    UICameraDesc.ViewHeight = (float)g_iWinSizeY;
+
+    UIDesc.CameraDesc = &UICameraDesc;
+    UIDesc.TransformDesc = &TransDesc;
+
+
+    pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"UICamera"), &UIDesc));
+    m_pGameInstance->RegisterCamera(L"UICamera", pInstance, true);
+    return S_OK;
+}
+
+HRESULT CLevel_Logo::Ready_Layer_Player(const _wstring& strLayerTag)
+{
+    CPlayer::PLAYER_DESC        Desc = {};
+
+    Desc.ObjTag = L"Player";
+    Desc.ImgPath = L"../../Resource/Character.png";
+
+
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    TransDesc.vLocalPosition = { 0.f,0.f,0.f,1.f };
+    TransDesc.vLocalScale = { 1.f,1.f,1.f,1.f };
+
+    Desc.TransformDesc = &TransDesc;
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"Player"),
+        ENUM_TO_UINT(LEVEL_ID::STATIC),
+        strLayerTag, &Desc)))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -202,7 +258,10 @@ HRESULT CLevel_Logo::Ready_MainCamera_Background(const _wstring& strLayerTag)
 void CLevel_Logo::OnEnter()
 {
     //메인카메라 등록
+    m_pGameInstance->SetMainOrthoCamara(L"UICamera");
+
 	m_pGameInstance->SetMainPerspectiveCamera(L"MainCamera");
+   
 
     CGameObject* pMainCamera = m_pGameInstance->GetMainPerspectiveCamera();
     if (pMainCamera)
@@ -210,8 +269,8 @@ void CLevel_Logo::OnEnter()
         CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
         CheckNull(ppMainCamera);
         ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC),
-            L"BackGround_Layer",
-            L"BackGround"));
+            L"Player_Layer",
+            L"Player"),true);
     }
 }
 

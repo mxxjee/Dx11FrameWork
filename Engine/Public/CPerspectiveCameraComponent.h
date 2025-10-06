@@ -14,7 +14,7 @@ public:
 
     }PERSPECTIVE_DESC;
 
-protected:
+private:
     CPerspectiveCameraComponent(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CPerspectiveCameraComponent(const CCameraComponent& Prototype);
     virtual ~CPerspectiveCameraComponent() = default;

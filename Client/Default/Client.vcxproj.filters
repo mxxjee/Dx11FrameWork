@@ -29,19 +29,22 @@
       <Filter>01.Levels\Logo</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CBackGround.h">
-      <Filter>02.GameObjects\UI\00.BackGround</Filter>
+      <Filter>02.GameObjects\UI\00.Panel\00.Background</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLoader.h">
       <Filter>01.Levels\Loading\Loader</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPanel.h">
-      <Filter>02.GameObjects\UI\01.Panel</Filter>
+      <Filter>02.GameObjects\UI\00.Panel</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLevelDebugWindow.h">
       <Filter>999.ImguiObject\LevelDebugWindow</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CObjectDebugWindow.h">
       <Filter>999.ImguiObject\ObjectInspectorWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPlayer.h">
+      <Filter>02.GameObjects\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -83,12 +86,6 @@
     <Filter Include="02.GameObjects\UI">
       <UniqueIdentifier>{230ec975-9e33-4301-b2e7-969ef3a3af24}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\UI\00.BackGround">
-      <UniqueIdentifier>{a8a9cb85-f5d9-42bf-9359-4cdd0223099e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\UI\01.Panel">
-      <UniqueIdentifier>{6a16a4a4-ce59-4cc9-b5b0-61bac0027779}</UniqueIdentifier>
-    </Filter>
     <Filter Include="999.ImguiObject">
       <UniqueIdentifier>{4b9abcc9-35a0-4efe-8359-5030c9ed7b30}</UniqueIdentifier>
     </Filter>
@@ -100,6 +97,15 @@
     </Filter>
     <Filter Include="97.ShaderFiles">
       <UniqueIdentifier>{afa75a15-ac7d-49bc-9158-5269fb4239f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00.Panel">
+      <UniqueIdentifier>{6a16a4a4-ce59-4cc9-b5b0-61bac0027779}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\UI\00.Panel\00.Background">
+      <UniqueIdentifier>{a8a9cb85-f5d9-42bf-9359-4cdd0223099e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\Player">
+      <UniqueIdentifier>{0bc6481b-f5a7-4dd4-92ed-61f25bc7866a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -119,19 +125,22 @@
       <Filter>01.Levels\Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CBackGround.cpp">
-      <Filter>02.GameObjects\UI\00.BackGround</Filter>
+      <Filter>02.GameObjects\UI\00.Panel\00.Background</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLoader.cpp">
       <Filter>01.Levels\Loading\Loader</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPanel.cpp">
-      <Filter>02.GameObjects\UI\01.Panel</Filter>
+      <Filter>02.GameObjects\UI\00.Panel</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevelDebugWindow.cpp">
       <Filter>999.ImguiObject\LevelDebugWindow</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CObjectDebugWindow.cpp">
       <Filter>999.ImguiObject\ObjectInspectorWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPlayer.cpp">
+      <Filter>02.GameObjects\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

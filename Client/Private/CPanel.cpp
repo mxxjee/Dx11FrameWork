@@ -74,8 +74,8 @@ void CPanel::Update(_float fTimeDelta)
 	__super::Update(fTimeDelta);
 	CheckNull(m_pTransformCom);
 	m_transformData.matworld = m_pTransformCom->Get_World();
-	m_transformData.view = m_pGameInstance->GetViewMatrix();
-	m_transformData.proj = m_pGameInstance->GetProjMatrix();
+	m_transformData.view = m_pGameInstance->GetViewMatrix(true);
+	m_transformData.proj = m_pGameInstance->GetProjMatrix(true);
 
 	m_Pipeline.constantBuffer->CopyData(m_transformData);
 

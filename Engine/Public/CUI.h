@@ -22,7 +22,7 @@ public:
     virtual void        Update_Priority(_float fTimeDelta);
     virtual void        Update(_float fTimeDelta);
     virtual void        Update_Late(_float fTimeDelta);
-
+    virtual void        Update_Render(_float fTimeDelta) override;
 
     virtual HRESULT Render();
 

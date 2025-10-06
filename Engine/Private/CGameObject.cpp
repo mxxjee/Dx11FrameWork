@@ -57,8 +57,7 @@ void CGameObject::Update_Late(_float fTimeDelta)
 
 void CGameObject::Update_Render(_float fTimeDelta)
 {
-    m_pGameInstance->Add_RenderObject(RENDERGROUP::PRIORITY, this);
-
+   
 }
 
 HRESULT CGameObject::Render()

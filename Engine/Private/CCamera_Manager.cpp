@@ -1,5 +1,6 @@
 #include "CCamera_Manager.h"
 #include "CPerspectiveCameraComponent.h"
+#include "COrthographicCameraComponent.h"
 #include "CGameObject.h"
 
 void CCamera_Manager::RegisterCamera(const _wstring& Tag, CGameObject* pObj, bool isOrtho)
@@ -62,15 +63,23 @@ bool CCamera_Manager::SetMainOrthoCamera(const _wstring& tag)
 
 const _float4x4& CCamera_Manager::GetViewMatrix(bool isOrtho) const
 {
-	//나중에수정
+	//뷰행렬
 	if (!isOrtho)
 	{
 		CComponent* pComp = m_pMainPerspectiveCamera->Get_Component(L"PerspectiveCamera");
 		CPerspectiveCameraComponent* pPers = dynamic_cast<CPerspectiveCameraComponent*>(pComp);
 
 		return pPers->Get_ViewMatrix();
+
 	}
-	
+
+	else
+	{
+		CComponent* pComp = m_pMainOrthoCamera->Get_Component(L"OrthographicCamera");
+		COrthographicCameraComponent* pOrtho = dynamic_cast<COrthographicCameraComponent*>(pComp);
+
+		return pOrtho->Get_ViewMatrix();
+	}
 }
 
 const _float4x4& CCamera_Manager::GetProjMatrix(bool isOrtho) const
@@ -81,6 +90,13 @@ const _float4x4& CCamera_Manager::GetProjMatrix(bool isOrtho) const
 		CPerspectiveCameraComponent* pPers = dynamic_cast<CPerspectiveCameraComponent*>(pComp);
 
 		return pPers->Get_ProjMatrix();
+	}
+	else
+	{
+		CComponent* pComp = m_pMainOrthoCamera->Get_Component(L"OrthographicCamera");
+		COrthographicCameraComponent* pOrtho = dynamic_cast<COrthographicCameraComponent*>(pComp);
+
+		return pOrtho->Get_ProjMatrix();
 	}
 }
 
@@ -98,12 +114,18 @@ void CCamera_Manager::Update_MainCamera(_float fTimeDelta)
 {
 	if (m_pMainPerspectiveCamera)
 		m_pMainPerspectiveCamera->Update(fTimeDelta);
+
+	if (m_pMainOrthoCamera)
+		m_pMainOrthoCamera->Update(fTimeDelta);
 }
 
 void CCamera_Manager::LateUpdate_MainCamera(_float fTimeDelta)
 {
 	if (m_pMainPerspectiveCamera)
 		m_pMainPerspectiveCamera->Update_Late(fTimeDelta);
+
+	if (m_pMainOrthoCamera)
+		m_pMainOrthoCamera->Update_Late(fTimeDelta);
 }
 
 

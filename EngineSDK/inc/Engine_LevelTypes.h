@@ -5,7 +5,8 @@ namespace Engine
 {
 	struct LevelArgs
 	{
-		_uint			iNextLevelID;
+		_uint			iNextLevelID;							//다음씬 이름 (다음에 로딩이라면 로딩씬 다음꺼)
+
 		LEVELCHANGETYPE changeType = LEVELCHANGETYPE::REPLACETOP;//이 씬이 어떻게 쌓일건지
 		LEVELCHANGETYPE loadingChangeType = LEVELCHANGETYPE::NONE;		//로딩씬일 경우에만 설정
 

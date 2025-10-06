@@ -173,6 +173,7 @@
     <ClInclude Include="..\Public\CImGui_Manager.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
     <ClInclude Include="..\Public\CMainCamera.h" />
+    <ClInclude Include="..\Public\COrthographicCameraComponent.h" />
     <ClInclude Include="..\Public\CPerspectiveCameraComponent.h" />
     <ClInclude Include="..\Public\CPixelShader.h" />
     <ClInclude Include="..\Public\CPrototype_Manager.h" />
@@ -184,6 +185,7 @@
     <ClInclude Include="..\Public\CTimer_Manager.h" />
     <ClInclude Include="..\Public\CTransform.h" />
     <ClInclude Include="..\Public\CUI.h" />
+    <ClInclude Include="..\Public\CUICamera.h" />
     <ClInclude Include="..\Public\CVertexBuffer.h" />
     <ClInclude Include="..\Public\CVertexShader.h" />
     <ClInclude Include="..\Public\CVIBuffer.h" />
@@ -233,6 +235,7 @@
     <ClCompile Include="..\Private\CImGui_Manager.cpp" />
     <ClCompile Include="..\Private\CObject_Manager.cpp" />
     <ClCompile Include="..\Private\CMainCamera.cpp" />
+    <ClCompile Include="..\Private\COrthographicCameraComponent.cpp" />
     <ClCompile Include="..\Private\CPerspectiveCameraComponent.cpp" />
     <ClCompile Include="..\Private\CPixelShader.cpp" />
     <ClCompile Include="..\Private\CPrototype_Manager.cpp" />
@@ -244,6 +247,7 @@
     <ClCompile Include="..\Private\CTimer_Manager.cpp" />
     <ClCompile Include="..\Private\CTransform.cpp" />
     <ClCompile Include="..\Private\CUI.cpp" />
+    <ClCompile Include="..\Private\CUICamera.cpp" />
     <ClCompile Include="..\Private\CVertexBuffer.cpp" />
     <ClCompile Include="..\Private\CVertexShader.cpp" />
     <ClCompile Include="..\Private\CVIBuffer.cpp" />

@@ -35,6 +35,7 @@ HRESULT CUI::Initialize_Copytype(void* pArg)
     
     auto& vector = m_pGameInstance->Get_Viewports();
     pTransDesc->vLocalPosition=MathUtils::ScreenToWorld_UI(vScreenPos, vector[0].Width,vector[0].Height);
+    pTransDesc->vLocalScale = _float4(pDesc->fSizeX, pDesc->fSizeY, 1.f, 1.f);
 
 
     if (FAILED(__super::Initialize_Copytype(pArg)))
@@ -57,6 +58,13 @@ void CUI::Update(_float fTimeDelta)
 void CUI::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
+
+}
+
+void CUI::Update_Render(_float fTimeDelta)
+{
+    __super::Update_Render(fTimeDelta);
+    m_pGameInstance->Add_RenderObject(RENDERGROUP::UI, this);
 
 }
 

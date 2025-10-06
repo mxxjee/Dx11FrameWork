@@ -90,8 +90,8 @@ void CLevel_GamePlay::OnEnter()
         CheckNull(ppMainCamera);
         ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(
             ENUM_TO_UINT(LEVEL_ID::STATIC),
-            L"BackGround_Layer",
-            L"BackGround"));
+            L"Player_Layer",
+            L"Player"));
 
     
     }

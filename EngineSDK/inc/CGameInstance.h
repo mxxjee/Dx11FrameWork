@@ -77,6 +77,7 @@ public:
     HRESULT Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _wstring & strPrototypeTag,
         _uint iLayerLevelIndex, const _wstring & strLayerTag, void* pArg = nullptr);
 
+
     void        Update_Priority_Static(_float fTimeDelta);
     void        Update_Static(_float fTimeDelta);
     void        Update_Late_Static(_float fTimeDelta);
