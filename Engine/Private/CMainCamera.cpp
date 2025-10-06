@@ -9,7 +9,7 @@ CMainCamera::CMainCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContex
 }
 
 CMainCamera::CMainCamera(const CMainCamera& rhs)
-	:CGameObject(rhs)
+	:CGameObject(rhs),m_pPerspectiveCameraCom(rhs.m_pPerspectiveCameraCom)
 {
 }
 

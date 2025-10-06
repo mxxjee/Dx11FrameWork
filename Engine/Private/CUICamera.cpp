@@ -8,7 +8,7 @@ CUICamera::CUICamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> p
 }
 
 CUICamera::CUICamera(const CUICamera& rhs)
-    :CGameObject(rhs)
+    :CGameObject(rhs),m_pOrthographicCameraCom(rhs.m_pOrthographicCameraCom)
 {
 }
 
