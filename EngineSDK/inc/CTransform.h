@@ -57,7 +57,7 @@ public:
     void  Set_Parent(CTransform* pParent);
 
 public:
-    const _float4x4& Get_World(TransformScope eScope = TransformScope::LOCAL);
+    const _float4x4&        Get_World(TransformScope eScope = TransformScope::LOCAL);
     _float3                 Get_Scale();           //right.up.forward벡터 길이만 리턴하자.
     _vector                 Get_SRT(SRTType eType);
     CTransform*             Get_Parent() { return m_pParent; }

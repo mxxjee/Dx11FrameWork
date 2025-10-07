@@ -163,6 +163,7 @@ HRESULT CQuad::CreateRasterizerState()
     desc.FillMode = D3D11_FILL_SOLID;//WIREFRAME of SOLID
     desc.CullMode = D3D11_CULL_NONE;//CULLMODE: 반시계 컬링
     desc.FrontCounterClockwise = false;
+    desc.DepthClipEnable = true;
 
     HRESULT hr = m_pDevice->CreateRasterizerState(&desc, m_Pipeline._rasterizerState.GetAddressOf());
     CHECK(hr);

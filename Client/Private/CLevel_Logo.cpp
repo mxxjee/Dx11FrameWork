@@ -395,7 +395,7 @@ void CLevel_Logo::Create_MainCamera()
 
     CPerspectiveCameraComponent::PERSPECTIVE_DESC CameraDesc = {};
     CameraDesc.Aspect = (float)g_iWinSizeX / g_iWinSizeY;
-    CameraDesc.fNear = 0.1f;
+    CameraDesc.fNear =0.1f;
     CameraDesc.fFar = 1000.f;
 
     //CameraDesc.pTarget= m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"BackGround_Layer", L"BackGround");
@@ -444,6 +444,7 @@ void CLevel_Logo::Create_FreeCamera()
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
+    //TransDesc.vLocalPosition = _float4(0.f, 2.f, -2.f,1.f);
   
     CPerspectiveCameraComponent::PERSPECTIVE_DESC CameraDesc = {};
     CameraDesc.Aspect = (float)g_iWinSizeX / g_iWinSizeY;

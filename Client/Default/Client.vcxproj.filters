@@ -136,9 +136,6 @@
     <ClCompile Include="..\Private\CLoader.cpp">
       <Filter>01.Levels\Loading\Loader</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CPanel.cpp">
-      <Filter>02.GameObjects\UI\00.Panel</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CLevelDebugWindow.cpp">
       <Filter>999.ImguiObject\LevelDebugWindow</Filter>
     </ClCompile>
@@ -150,6 +147,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CFloor.cpp">
       <Filter>02.GameObjects\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPanel.cpp">
+      <Filter>02.GameObjects\UI\00.Panel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
