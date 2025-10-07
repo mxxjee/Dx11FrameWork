@@ -120,11 +120,15 @@ public:
     bool    IsKeyPressed(KeyCode key) const;
     bool    IsKeyHeld(KeyCode key) const;
     bool     IsKeyReleased(KeyCode key) const;
+    
+    bool    IsMouseButtonHeld(int button) const;
+    POINT     GetMouseDelta() const;
 
 #pragma endregion
 public:
 #pragma region Default
     const vector<D3D11_VIEWPORT>& Get_Viewports() { return m_ViewPorts; }
+    const tagEngine_Desc& Get_EngineDesc() const { return m_EngineDesc; }
 #pragma endregion
 private:
     class CLevel_Manager* m_pLevelManager = { nullptr };
@@ -139,7 +143,7 @@ private:
 
 private:
     vector<D3D11_VIEWPORT>          m_ViewPorts;
-
+    tagEngine_Desc                  m_EngineDesc;
 public:
     void                Release_Engine();
     virtual void        Free() override;

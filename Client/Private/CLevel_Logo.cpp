@@ -113,6 +113,32 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
 
     }
 
+    /*카메라 변경 테스트*/
+    if (m_pGameInstance->IsKeyPressed(KeyCode::C))
+    {
+        if (iTargetIdx == 1)
+            iTargetIdx = 0;
+        else
+            ++iTargetIdx;
+
+        iTargetIdx = MathUtils::Clamp(iTargetIdx, 0, 1);
+
+        switch (iTargetIdx)
+        {
+        case 0:
+            m_pGameInstance->SetMainPerspectiveCamera(L"MainCamera");
+            break;
+
+        case 1:
+            m_pGameInstance->SetMainPerspectiveCamera(L"FreeCamera");
+
+            break;
+        }
+
+    }
+
+    /*UI Screen좌펴 변환 테스트*/
+   // Set_UIPos_ByWorld(_float3(0.f,-100.f,0.f));
 }
 
 void CLevel_Logo::Render()
@@ -180,53 +206,13 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
 
 HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
 {
-    CMainCamera::GAMEOBJECT_DESC Desc = {};
-    Desc.ObjTag = L"MainCamera";
-
-    CTransform::TRANSFORM_DESC TransDesc = {};
-    TransDesc.fRotationPerSec = 10.f;
-    TransDesc.fSpeedPerSec = 5.f;
-    TransDesc.vLocalRotation = { 30.f,0.f,0.f,1.f };
-
-    CPerspectiveCameraComponent::PERSPECTIVE_DESC CameraDesc = {};
-    CameraDesc.Aspect = (float)g_iWinSizeX / g_iWinSizeY;
-    CameraDesc.fNear = 0.1f;
-    CameraDesc.fFar = 1000.f;
-
-    //CameraDesc.pTarget= m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"BackGround_Layer", L"BackGround");
-    CameraDesc.vOffset = _float3(0.f,2.f, -2.f);
-
-
-    Desc.CameraDesc = &CameraDesc;
-    Desc.TransformDesc = &TransDesc;
-
-   
-    CGameObject* pInstance=dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MainCamera"), &Desc));
-    m_pGameInstance->RegisterCamera(L"MainCamera", pInstance,false);
-    
+    Create_MainCamera();
 
     /////////////////UICamera
-    CUICamera::GAMEOBJECT_DESC UIDesc = {};
-    UIDesc.ObjTag = L"UICamera";
+    Create_UICamera();
 
-    TransDesc = {};
-    TransDesc.fRotationPerSec = 10.f;
-    TransDesc.fSpeedPerSec = 5.f;
+    Create_FreeCamera();
    
-    COrthographicCameraComponent::ORTHOGRAPHIC_DESC UICameraDesc = {};
-   
-    UICameraDesc.fNear = 0.1f;
-    UICameraDesc.fFar = 1000.f;
-
-    UICameraDesc.ViewWdith = (float)g_iWinSizeX;
-    UICameraDesc.ViewHeight = (float)g_iWinSizeY;
-
-    UIDesc.CameraDesc = &UICameraDesc;
-    UIDesc.TransformDesc = &TransDesc;
-
-
-    pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"UICamera"), &UIDesc));
-    m_pGameInstance->RegisterCamera(L"UICamera", pInstance, true);
     return S_OK;
 }
 
@@ -235,14 +221,14 @@ HRESULT CLevel_Logo::Ready_Layer_Player(const _wstring& strLayerTag)
     CQuad::QUAD_DESC        Desc = {};
 
     Desc.ObjTag = L"Player";
-    Desc.ImgPath = L"../../Resource/Character.png";
+    Desc.ImgPath = L"../../Resource/Keroro.png";
 
 
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
     TransDesc.vLocalPosition = { 0.f,0.f,0.f,1.f };
-    TransDesc.vLocalScale = { 1.f,1.f,1.f,1.f };
+    TransDesc.vLocalScale = { 3.f,3.f,1.f,1.f };
 
     Desc.TransformDesc = &TransDesc;
 
@@ -312,4 +298,116 @@ void CLevel_Logo::Free()
     __super::Free();
 
 
+}
+
+void CLevel_Logo::Set_UIPos_ByWorld(_float3 OffSet)
+{
+    /*UI를 플레이어 위치 머리위에 띄워보자!!*/
+
+    _vector vOffset = XMLoadFloat3(&OffSet);
+
+    CGameObject* pHeartUI = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"UI_Layer", L"Hp_UI");
+    CGameObject* pPlayer = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");
+
+
+    if (pHeartUI && pPlayer)
+    {
+        CTransform* pTransform = pHeartUI->Get_Transform();
+        CTransform* pPlayerTransform = pPlayer->Get_Transform();
+
+        _vector vPlayerPos = pPlayerTransform->Get_State(STATE::POSITION);
+
+        if (pTransform && pPlayerTransform)
+        {
+            _vector vWorldPos = MathUtils::WorldToScreen(
+                vPlayerPos ,
+                m_pGameInstance->GetViewMatrix(),
+                m_pGameInstance->GetProjMatrix(),
+                g_iWinSizeX, g_iWinSizeY
+            );
+
+            vWorldPos += vOffset;
+
+            pTransform->Set_State(STATE::POSITION, 
+                MathUtils::ScreenToWorld_UI(
+                vWorldPos, g_iWinSizeX, g_iWinSizeY));
+
+        }
+    }
+}
+
+void CLevel_Logo::Create_MainCamera()
+{
+    CMainCamera::GAMEOBJECT_DESC Desc = {};
+    Desc.ObjTag = L"MainCamera";
+
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    TransDesc.vLocalRotation = { 30.f,0.f,0.f,1.f };
+
+    CPerspectiveCameraComponent::PERSPECTIVE_DESC CameraDesc = {};
+    CameraDesc.Aspect = (float)g_iWinSizeX / g_iWinSizeY;
+    CameraDesc.fNear = 0.1f;
+    CameraDesc.fFar = 1000.f;
+
+    //CameraDesc.pTarget= m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"BackGround_Layer", L"BackGround");
+    CameraDesc.vOffset = _float3(0.f, 2.f, -2.f);
+
+
+    Desc.CameraDesc = &CameraDesc;
+    Desc.TransformDesc = &TransDesc;
+
+
+    CGameObject* pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MainCamera"), &Desc));
+    m_pGameInstance->RegisterCamera(L"MainCamera", pInstance, false);
+
+}
+
+void CLevel_Logo::Create_UICamera()
+{
+    CUICamera::GAMEOBJECT_DESC UIDesc = {};
+    UIDesc.ObjTag = L"UICamera";
+
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+
+    COrthographicCameraComponent::ORTHOGRAPHIC_DESC UICameraDesc = {};
+
+    UICameraDesc.fNear = 0.1f;
+    UICameraDesc.fFar = 1000.f;
+
+    UICameraDesc.ViewWdith = (float)g_iWinSizeX;
+    UICameraDesc.ViewHeight = (float)g_iWinSizeY;
+
+    UIDesc.CameraDesc = &UICameraDesc;
+    UIDesc.TransformDesc = &TransDesc;
+
+
+    CGameObject* pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"UICamera"), &UIDesc));
+    m_pGameInstance->RegisterCamera(L"UICamera", pInstance, true);
+}
+
+void CLevel_Logo::Create_FreeCamera()
+{
+    CMainCamera::GAMEOBJECT_DESC Desc = {};
+    Desc.ObjTag = L"FreeCamera";
+
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+  
+    CPerspectiveCameraComponent::PERSPECTIVE_DESC CameraDesc = {};
+    CameraDesc.Aspect = (float)g_iWinSizeX / g_iWinSizeY;
+    CameraDesc.fNear = 0.1f;
+    CameraDesc.fFar = 1000.f;
+
+
+    Desc.CameraDesc = &CameraDesc;
+    Desc.TransformDesc = &TransDesc;
+
+
+    CGameObject* pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FreeCamera"), &Desc));
+    m_pGameInstance->RegisterCamera(L"FreeCamera", pInstance, false);
 }

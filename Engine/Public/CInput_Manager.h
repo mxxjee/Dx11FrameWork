@@ -39,6 +39,7 @@ public:
 
 	POINT GetMousePos() const;
 	_float2 GetMousePosF() const;
+	POINT GetMouseDelta() const;
 private:
 	void Free() override;
 	void UpdateMouseState();

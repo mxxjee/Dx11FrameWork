@@ -6,7 +6,7 @@
 #include "CFloor.h"
 #include "CMainCamera.h"
 #include "CUICamera.h"
-
+#include "CFreeCamera.h"
 
 #include "CTransform.h"
 #include "CPerspectiveCameraComponent.h"
@@ -160,6 +160,10 @@ HRESULT CLoader::Loading_Logo()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"UICamera"), CUICamera::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    //Freecam Test¿ë
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FreeCamera"), CFreeCamera::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), CPanel::Create(m_pDevice, m_pDeviceContext))))

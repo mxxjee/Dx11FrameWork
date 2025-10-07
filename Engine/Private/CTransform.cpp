@@ -204,6 +204,27 @@ void CTransform::Rotation(_float3 fEularDegree)
 
 }
 
+void CTransform::AddRotation(_float3 fEularDegree)
+{
+	//x,y,z 쿼터니온 4원수회전, 누적회전
+
+	Matrix QuaternionMat = XMMatrixRotationRollPitchYaw(
+		XMConvertToRadians(fEularDegree.x),
+		XMConvertToRadians(fEularDegree.y),
+		XMConvertToRadians(fEularDegree.z));
+	_float3 vScale = Get_Scale();			//크기유지
+
+	//크기 유지
+	_vector vRight = XMVector3Normalize(Get_State(STATE::RIGHT)) * vScale.x;
+	_vector vUp = XMVector3Normalize(Get_State(STATE::UP)) * vScale.y;
+	_vector vLook = XMVector3Normalize(Get_State(STATE::LOOK)) * vScale.z;
+
+	Set_State(STATE::RIGHT, XMVector3TransformNormal(vRight, QuaternionMat));
+	Set_State(STATE::UP, XMVector3TransformNormal(vUp, QuaternionMat));
+	Set_State(STATE::LOOK, XMVector3TransformNormal(vLook, QuaternionMat));
+
+}
+
 void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 {
 	//누적회전

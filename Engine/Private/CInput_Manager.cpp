@@ -63,6 +63,13 @@ _float2 CInput_Manager::GetMousePosF() const
 		static_cast<float>(m_MouseState.position.y));
 
 }
+POINT CInput_Manager::GetMouseDelta() const
+{
+	POINT pt;
+	pt.x = static_cast<long>(m_CurrMouseRaw.lX);
+	pt.y = static_cast<long>(m_CurrMouseRaw.lY);
+	return pt;
+}
 void CInput_Manager::UpdateMouseState()
 {
 	m_MouseState.leftButton = (m_CurrMouseRaw.rgbButtons[0] & 0x80) != 0;

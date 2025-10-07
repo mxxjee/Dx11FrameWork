@@ -1,5 +1,6 @@
 #include "CFreeCamera.h"
 #include "CPerspectiveCameraComponent.h"
+#include "CGameInstance.h"
 
 CFreeCamera::CFreeCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CGameObject(pDevice,pContext)
@@ -13,11 +14,32 @@ CFreeCamera::CFreeCamera(const CFreeCamera& rhs)
 
 HRESULT CFreeCamera::Initialize_Prototype()
 {
+    if (FAILED(__super::Initialize_Prototype()))
+        return E_FAIL;
+
     return S_OK;
 }
 
 HRESULT CFreeCamera::Initialize_Copytype(void* pArg)
 {
+    if (FAILED(__super::Initialize_Copytype(pArg)))
+        return E_FAIL;
+
+    m_ScreenHeight = m_pGameInstance->Get_EngineDesc().iWinSizeY;
+    m_ScreenWidth = m_pGameInstance->Get_EngineDesc().iWinSizeX;
+
+    GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+
+    m_pPerspectiveCameraCom = dynamic_cast<CPerspectiveCameraComponent*>(m_pGameInstance->Clone_Prototype
+    (PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"PerspectiveCamera"), pDesc));
+
+    CheckNullResult(m_pPerspectiveCameraCom, E_FAIL);
+
+    Safe_AddRef(m_pPerspectiveCameraCom);
+    m_Components.emplace(L"PerspectiveCamera", m_pPerspectiveCameraCom);
+
+
+
     return S_OK;
 }
 
@@ -32,17 +54,18 @@ void CFreeCamera::Update(_float fTimeDelta)
     __super::Update(fTimeDelta);
 
     Mouse_Move();
+   // Mouse_Fix();
 
-    if (GetKeyState(VK_RIGHT) & 0x8000)
+    if (m_pGameInstance->IsKeyHeld(KeyCode::D))
         m_pTransformCom->Move(DIRECTION::RIGHT, fTimeDelta);
 
-    if (GetKeyState(VK_LEFT) & 0x8000)
+    if (m_pGameInstance->IsKeyHeld(KeyCode::A))
         m_pTransformCom->Move(DIRECTION::LEFT, fTimeDelta);
 
-    if (GetKeyState(VK_UP) & 0x8000)
+    if (m_pGameInstance->IsKeyHeld(KeyCode::W))
         m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta);
 
-    if (GetKeyState(VK_DOWN) & 0x8000)
+    if (m_pGameInstance->IsKeyHeld(KeyCode::S))
         m_pTransformCom->Move(DIRECTION::BACKWARD, fTimeDelta);
 }
 
@@ -60,16 +83,49 @@ void CFreeCamera::Update_Render(_float fTimeDelta)
 
 HRESULT CFreeCamera::Render()
 {
-    return E_NOTIMPL;
+    return S_OK;
 }
 
 void CFreeCamera::Mouse_Move()
 {
+    long MouseMove = {};
+
+    //오른쪽 클릭하고있을때만 활성화
+    CheckFalse(m_pGameInstance->IsMouseButtonHeld(1))
+
+    if (MouseMove=m_pGameInstance->GetMouseDelta().x)
+    {
+        int A = MouseMove;
+        m_pTransformCom->AddRotation(_float3(0.f, (MouseMove / 10.f), 0.f));
+        
+    }
+
+    if (MouseMove=m_pGameInstance->GetMouseDelta().y)
+    {
+        int A = MouseMove;
+        m_pTransformCom->AddRotation(_float3((MouseMove / 10.f), 0.f, 0.f));
+        
+    }
+}
+
+void CFreeCamera::Mouse_Fix()
+{
+    POINT	ptMouse{ m_ScreenWidth>>1, m_ScreenHeight >> 1 };
+    ClientToScreen(m_pGameInstance->Get_EngineDesc().hWnd, &ptMouse);
+    SetCursorPos(ptMouse.x, ptMouse.y);
+
 }
 
 CFreeCamera* CFreeCamera::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
-    return nullptr;
+    CFreeCamera* pInstance = new CFreeCamera(_pDevice, _pDeviceContext);
+    if (FAILED(pInstance->Initialize_Prototype()))
+    {
+        MSG_BOX("Failed to Create :CFreeCamera ");
+        Safe_Release(pInstance);
+
+    }
+    return pInstance;
 }
 
 CGameObject* CFreeCamera::Clone(void* pArg)

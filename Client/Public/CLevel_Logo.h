@@ -37,7 +37,11 @@ public:
 public:
     static  CLevel_Logo* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext,LevelArgs& args);
     virtual     void        Free();
-
+    void        Set_UIPos_ByWorld(_float3 OffSet);
+private:
+    void        Create_MainCamera();
+    void        Create_UICamera();
+    void        Create_FreeCamera();
 private:
     int iTargetIdx = 0;
 

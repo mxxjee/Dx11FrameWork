@@ -1,5 +1,6 @@
 #pragma once
 #include "CGameObject.h"
+
 namespace Engine
 {
     class CPerspectiveCameraComponent;
@@ -27,6 +28,7 @@ public:
 
 private:
     void    Mouse_Move();
+    void    Mouse_Fix();
 public:
     static CFreeCamera* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg);
@@ -34,5 +36,8 @@ public:
 
 private:
     CPerspectiveCameraComponent* m_pPerspectiveCameraCom = { nullptr };
+    long                    m_ScreenWidth = {};
+    long                    m_ScreenHeight = {};
+
 };
 NS_END
