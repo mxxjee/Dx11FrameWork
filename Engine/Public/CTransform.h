@@ -49,6 +49,9 @@ public:
         XMStoreFloat4((_float4*)&m_WorldMatrix.m[ENUM_TO_UINT(eState)], vState);
     }
 
+    //강제 WorldMatrix대입
+    void  Set_WorldMatrix(const _float4x4& Mat){  m_WorldMatrix = Mat;}
+
     void  Set_Scale(_float4 vScale);
    
 
