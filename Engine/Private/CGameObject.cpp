@@ -53,6 +53,8 @@ void CGameObject::Update(_float fTimeDelta)
 
 void CGameObject::Update_Late(_float fTimeDelta)
 {
+    if (m_pTransformCom)
+        m_pTransformCom->Update_Matrix();
 }
 
 void CGameObject::Update_Render(_float fTimeDelta)

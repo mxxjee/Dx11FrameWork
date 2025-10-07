@@ -30,13 +30,56 @@ HRESULT CTransform::Initialize_Copytype(void* pArg)
 	m_fSpeedPerSec = pDesc->fSpeedPerSec;
 	m_fRotationPerSec = pDesc->fRotationPerSec;
 
-	XMStoreFloat4x4(&m_WorldMatrix, DirectX::XMMatrixIdentity());
+	XMStoreFloat4x4(&m_LocalWorldMatrix, DirectX::XMMatrixIdentity());
 
 	Set_State(STATE::POSITION, pDesc->vLocalPosition);
 	Set_Scale(pDesc->vLocalScale);
 	Rotation(_float3(pDesc->vLocalRotation.x, pDesc->vLocalRotation.y, pDesc->vLocalRotation.z));
 
 	return S_OK;
+}
+
+void CTransform::Update_Matrix()
+{
+	if (m_pParent)
+	{
+		//부모행렬 가져와서 계산
+		_matrix LocalMatrix = XMLoadFloat4x4(&m_LocalWorldMatrix);
+		_matrix ParentMatrix = XMLoadFloat4x4(&m_pParent->Get_World());
+
+		_matrix ResultMatrix = XMMatrixMultiply(LocalMatrix, ParentMatrix);
+
+		XMStoreFloat4x4(&m_WorldMatrix, ResultMatrix);
+
+
+	}
+
+	else
+		m_WorldMatrix = m_LocalWorldMatrix;
+}
+
+_vector CTransform::Get_State(STATE eState, TransformScope eScope)
+{
+	//부모가있다면, escope를 선택해서 리턴
+	//mat행렬 전체를 연산용 행렬로 만든 뒤, 그 중 eState번째 행만 가져오기
+	if (m_pParent)
+	{
+		switch (eScope)
+		{
+		case Engine::TransformScope::LOCAL:
+			return XMLoadFloat4x4(&m_LocalWorldMatrix).r[ENUM_TO_UINT(eState)];;
+
+		case Engine::TransformScope::WORLD:
+			return XMLoadFloat4x4(&m_WorldMatrix).r[ENUM_TO_UINT(eState)];;
+
+
+		}
+
+	}
+
+	//부모가 지정되지 않았다면, 그냥 localMatrix리턴
+	else
+		return XMLoadFloat4x4(&m_LocalWorldMatrix).r[ENUM_TO_UINT(eState)];;
 }
 
 void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space)
@@ -115,6 +158,29 @@ void CTransform::MoveLerp(_fvector vTargetPos, float fLerpSpeed, float fTimeDelt
 	Set_State(STATE::POSITION, vNew);
 }
 
+const _float4x4& CTransform::Get_World(TransformScope eScope)
+{
+
+	//부모가있다면, escope를 선택해서 리턴
+	if (m_pParent)
+	{
+		switch (eScope)
+		{
+		case Engine::TransformScope::LOCAL:
+			return m_LocalWorldMatrix;
+
+		case Engine::TransformScope::WORLD:
+			return m_WorldMatrix;
+
+		}
+
+	}
+
+	//부모가 지정되지 않았다면, 그냥 localMatrix리턴
+	else
+		return m_LocalWorldMatrix;
+}
+
 _float3 CTransform::Get_Scale()
 {
 	return _float3(
@@ -130,7 +196,7 @@ _vector CTransform::Get_SRT(SRTType eType)
 	_vector vScale, vTrans, vQuat;
 
 
-	XMMatrixDecompose(&vScale, &vQuat, &vTrans, XMLoadFloat4x4(&m_WorldMatrix));
+	XMMatrixDecompose(&vScale, &vQuat, &vTrans, XMLoadFloat4x4(&m_LocalWorldMatrix));
 	switch (eType)
 	{
 	case Engine::SRTType::SCALE:
@@ -168,6 +234,30 @@ void CTransform::Rotation(_fvector vAxis, _float fRadian)
 	Set_State(STATE::LOOK, XMVector3TransformNormal(vLook, AxisRotationMat));
 	
 
+}
+
+void CTransform::Set_WorldMatrix(const _float4x4& Mat, TransformScope eScope)
+{
+	//부모가있다면, escope를 선택해서 저장가능.
+	if (m_pParent)
+	{
+		switch (eScope)
+		{
+		case Engine::TransformScope::LOCAL:
+			m_LocalWorldMatrix = Mat;
+			break;
+
+		case Engine::TransformScope::WORLD:
+			m_WorldMatrix = Mat;
+			break;
+
+		}
+
+	}
+
+	//부모가 지정되지 않았다면, LocalMatrix == WorldMatrix==Mat
+	else
+		m_LocalWorldMatrix = m_WorldMatrix = Mat;
 }
 
 void CTransform::Set_Scale(_float4 vScale)

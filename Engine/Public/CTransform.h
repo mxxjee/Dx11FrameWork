@@ -28,57 +28,53 @@ public:
     virtual         HRESULT     Initialize_Prototype() override;
     virtual         HRESULT     Initialize_Copytype(void* pArg) override;
 
-
+public:
+    //매프레임마다 m_pParent를 통해 부모행렬 계산
+    void        Update_Matrix();
 public:
     //State를 연산용데이터로 얻어오기
-    _vector Get_State(STATE eState)
-    {
-        //mat행렬 전체를 연산용 행렬로 만든 뒤, 그 중 eState번째 행만 가져오기
-        return XMLoadFloat4x4(&m_WorldMatrix).r[ENUM_TO_UINT(eState)];
-    }
+    _vector Get_State(STATE eState, TransformScope eScope=TransformScope::LOCAL);
 
     //저장용데이터 -> 저장용행렬
     void    Set_State(STATE eState, const _float4& vState)
     {
-        memcpy(&m_WorldMatrix.m[ENUM_TO_UINT(eState)], &vState, sizeof(_float4));
+        memcpy(&m_LocalWorldMatrix.m[ENUM_TO_UINT(eState)], &vState, sizeof(_float4));
     }
 
     //연산용데이터를 저장용행렬에 저장
     void    Set_State(STATE eState, _vector vState)
     {
-        XMStoreFloat4((_float4*)&m_WorldMatrix.m[ENUM_TO_UINT(eState)], vState);
+        XMStoreFloat4((_float4*)&m_LocalWorldMatrix.m[ENUM_TO_UINT(eState)], vState);
     }
 
     //강제 WorldMatrix대입
-    void  Set_WorldMatrix(const _float4x4& Mat){  m_WorldMatrix = Mat;}
+    void  Set_WorldMatrix(const _float4x4& Mat, TransformScope eScope=TransformScope::LOCAL);
 
     void  Set_Scale(_float4 vScale);
-   
+    void  Set_Parent(CTransform* pParent) { m_pParent = pParent; }
 
 public:
-    const _float4x4& Get_World() { return m_WorldMatrix; }
-    _float3  Get_Scale();        //right.up.forward벡터 길이만 리턴하자.
-    _vector  Get_SRT(SRTType eType);
+    const _float4x4& Get_World(TransformScope eScope = TransformScope::LOCAL);
+    _float3                 Get_Scale();           //right.up.forward벡터 길이만 리턴하자.
+    _vector                 Get_SRT(SRTType eType);
 
-#pragma region Translation
+#pragma region Translation(모두 로컬기준 이동/회전)
 public:
     void    Move(DIRECTION eDir, float fTimeDelta,Space space=Space::Local);                                                                  //look벡터 갱신여부
     void    MoveLerp(_fvector vTargetPos, float fLerpSpeed, float fTimeDelta, bool bUpdateLook=true);
    
     void    Rotation(_fvector vAxis, _float fRadian);       //즉각회전,vAxis축을 기준으로 fRAdian만큼 회전시킨다. 
     void    Rotation(_float3 fEularDegree);
-    void    AddRotation(_float3 fEularDegree);
+    void    AddRotation(_float3 fEularDegree);              //누적회전 , 기존의 회전에 더함
 
     void    Turn(_fvector vAxis, _float fTimeDelta);  //누적회전,매프레임마다 vAxis축을 기준으로 회전
-
-    void    LookAt(_fvector vWorldPoint);    //즉각회전,한 점을 바로 바라보도록회전
-
-    void    LookAt(_fvector vAxis, _fvector vWorldPoint, _float fTimeDelta, _float fSpeed = 5); //누적 회전, 특정 축을 기준으로 vWorldpoint를 바라보도록 회전한다.
-    void    LookAtSmooth(_fvector vTargetPos, float fLerpSpped, float fTimeDelta);
     
-
-    void    LookAt(CTransform* target);     
-
+    void    LookAt(_fvector vWorldPoint);    //즉각회전,한 점을 바로 바라보도록회전
+    void    LookAt(_fvector vAxis, _fvector vWorldPoint, _float fTimeDelta, _float fSpeed = 5); //누적 회전, 특정 축을 기준으로 vWorldpoint를 바라보도록 회전한다.
+    void    LookAt(CTransform* target);
+    void    LookAtSmooth(_fvector vTargetPos, float fLerpSpped, float fTimeDelta);
+  
+       
     void    Chase(_fvector vPoint, _float fTimeDelta, _float MinDistance = 0.f);    //최소 거리 까지만 쫓아간다.
 
 #pragma endregion
@@ -87,10 +83,15 @@ private:
     /*저장용 데이터( 직렬 계산)*/
     _float  m_fSpeedPerSec = {};
     _float  m_fRotationPerSec = {};
-    _float4x4  m_WorldMatrix = {};
-
     //누적회전을 위한 각도
     _float3   m_fEularDegree = { 0.f,0.f,0.f };
+
+
+private:
+    CTransform* m_pParent = { nullptr };
+
+    _float4x4   m_LocalWorldMatrix = {};//로컬 상태의 matrix
+    _float4x4   m_WorldMatrix = {};     //부모행렬까지 모두 계산된 matrix
 
 
 public:

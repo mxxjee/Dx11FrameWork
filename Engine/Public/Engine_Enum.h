@@ -6,9 +6,10 @@ namespace Engine
 	enum class WINMODE { FULL, WIN }; 
 	enum class STATE{RIGHT,UP,LOOK,POSITION,END};
 	enum class DIRECTION {FORWARD,RIGHT,UP,BACKWARD,LEFT,DOWN,END};
+	
 	enum class Space : UINT8 
 	{Local=1<<0,
-	Space=1<<1,
+	WORLD=1<<1,
 	END};
 
 	enum class SRTType {SCALE,ROTATION,TRANSFORM,END};
@@ -35,6 +36,10 @@ namespace Engine
 
 	enum class RENDERGROUP {PRIORITY,NONALPHA, ALPHA,UI,END};
 
+	enum class TransformScope { 
+		LOCAL, //로컬 기준  ,
+		WORLD ,//부모행렬이 모두 계산된 전역좌표 
+		END};
 #pragma region KeyCode
 	//KeyCode 입력 처리용 키 코드 열거형
 
