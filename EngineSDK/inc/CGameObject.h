@@ -39,6 +39,7 @@ public:
 public:
     const _wstring& Get_Tag() { return tag; }
     CComponent* Get_Component(const _wstring Tag);
+    CTransform* Get_Transform() const { return m_pTransformCom; }
 
     bool            Is_Active() { return m_bActive; }
 protected:
@@ -53,6 +54,7 @@ protected:
     map<const _wstring, class CComponent*>      m_Components;
     bool                                        m_bActive=true;
     CGameObject*                                m_pTarget = { nullptr };
+           
 public:
     virtual CGameObject* Clone(void* pArg)=0;
     virtual void    Free() override;

@@ -1,8 +1,7 @@
 #include "../Public/CLoader.h"
 #include "CGameInstance.h"
 
-#include "CMainCamera.h"
-#include "CUICamera.h"
+#include "CFreeCamera.h"
 
 
 #include "CTransform.h"
@@ -113,10 +112,7 @@ HRESULT CLoader::Loading_MapTool()
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
 
  
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MainCamera"), CMainCamera::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"UICamera"), CUICamera::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FreeCamera"), CFreeCamera::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
    

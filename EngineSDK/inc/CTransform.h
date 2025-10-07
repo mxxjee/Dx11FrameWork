@@ -63,7 +63,8 @@ public:
    
     void    Rotation(_fvector vAxis, _float fRadian);       //즉각회전,vAxis축을 기준으로 fRAdian만큼 회전시킨다. 
     void    Rotation(_float3 fEularDegree);
-    
+    void    AddRotation(_float3 fEularDegree);
+
     void    Turn(_fvector vAxis, _float fTimeDelta);  //누적회전,매프레임마다 vAxis축을 기준으로 회전
 
     void    LookAt(_fvector vWorldPoint);    //즉각회전,한 점을 바로 바라보도록회전

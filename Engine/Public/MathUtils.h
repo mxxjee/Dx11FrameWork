@@ -4,13 +4,14 @@
 namespace MathUtils
 {
 	//UI오브젝트를 화면에 띄우기 위해 transform에게 worldpos를 전달할때, 변환용(UI)
-	static _float4 ScreenToWorld_UI(_vector& vScreenPos, FLOAT fViewPortWidth, FLOAT fViewPortHeight)
+	//이떄 vScreenPos는 좌상단 (0,0)을 기준으로 한 스크린좌표를 넣는다.
+	static _float4 ScreenToWorld_UI(const _vector& vScreenPos, FLOAT fViewPortWidth, FLOAT fViewPortHeight)
 	{
 		_float4 Result;
 		Result.x = XMVectorGetX(vScreenPos) - fViewPortWidth * 0.5f;
 		Result.y = ((-1)*XMVectorGetY(vScreenPos)) + fViewPortHeight * 0.5f;
 		Result.z = XMVectorGetZ(vScreenPos);
-		Result.w = XMVectorGetW(vScreenPos);
+		Result.w = 1;
 
 
 		return Result;
@@ -18,21 +19,22 @@ namespace MathUtils
 
 	}
 
-	static _vector WorldToScreen(_vector& vWorldPos,
-		_float4x4& view, _float4x4& proj, int screenWidth, int screenHeight)
+	//월드좌표를 스크린좌표로 변환
+	static _vector WorldToScreen(const _vector& vWorldPos,
+		const _float4x4& view, const _float4x4& proj, int screenWidth, int screenHeight)
 	{
 		//View,Proj 행렬을 연산용 데이터로 바꾸기.
 		_matrix matView = XMLoadFloat4x4(&view);
 		_matrix matProj = XMLoadFloat4x4(&proj);
 
 		_matrix matViewProj = XMMatrixMultiply(matView, matProj); // view * proj
-		vWorldPos=XMVector3TransformCoord(vWorldPos, matViewProj);
+		_vector NewWorldPos=XMVector3TransformCoord(vWorldPos, matViewProj);
 
 
 		_float4 screenPos;
-		screenPos.x = XMVectorGetX(vWorldPos) + (screenWidth * 0.5f);
-		screenPos.y = XMVectorGetY(vWorldPos) - (screenHeight * 0.5f);
-		screenPos.z = XMVectorGetZ(vWorldPos);
+		screenPos.x = XMVectorGetX(NewWorldPos) + (screenWidth * 0.5f);
+		screenPos.y = XMVectorGetY(NewWorldPos) + (screenHeight * 0.5f);
+		screenPos.z = XMVectorGetZ(NewWorldPos);
 
 
 		return XMLoadFloat4(&screenPos);
@@ -44,8 +46,8 @@ namespace MathUtils
 	//UI Obj 좌표 -> World (view : Identity, proj : 직교투영)
 	//마우스클릭 -> (View : camera view/ proj:원근투영)
 
-	static _vector ScreenToWorld(_vector& vScreenPos,
-		_float4x4& view, _float4x4& proj, int screenWidth, int screenHeight)
+	static _vector ScreenToWorld(const _vector& vScreenPos,
+		const _float4x4& view, const _float4x4& proj, int screenWidth, int screenHeight)
 	{
 		// 1. Screen → NDC
 		float ndcX = (XMVectorGetX(vScreenPos) / screenWidth) * 2.0f - 1.0f;
