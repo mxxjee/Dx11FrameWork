@@ -70,12 +70,7 @@ void CQuad::Update(_float fTimeDelta)
     __super::Update(fTimeDelta);
     CheckNull(m_pTransformCom);
 
-    m_transformData.matworld = m_pTransformCom->Get_World();
-    m_transformData.view = m_pGameInstance->GetViewMatrix();
-    m_transformData.proj = m_pGameInstance->GetProjMatrix();
-
-    m_Pipeline.constantBuffer->CopyData(m_transformData);
-
+   
 
 }
 
@@ -94,6 +89,14 @@ void CQuad::Update_Render(_float fTimeDelta)
 HRESULT CQuad::Render()
 {
     __super::Render();
+
+    //렌더 할때 copydata로 GPU에게 데이터전송
+    m_transformData.matworld = m_pTransformCom->Get_World();
+
+    m_transformData.view = m_pGameInstance->GetViewMatrix(m_eRenderGroup==RENDERGROUP::UI);
+    m_transformData.proj = m_pGameInstance->GetProjMatrix(m_eRenderGroup == RENDERGROUP::UI);
+
+    m_Pipeline.constantBuffer->CopyData(m_transformData);
 
 
     Set_IA();

@@ -29,7 +29,7 @@ HRESULT CUI::Initialize_Copytype(void* pArg)
 {
     UI_DESC* pDesc = static_cast<UI_DESC*>(pArg);
 
-    m_eRenderGroup = RENDERGROUP::UI;
+    pDesc->eRenderGroup = RENDERGROUP::UI;
        
 	CTransform::TRANSFORM_DESC* pTransDesc = static_cast<CTransform::TRANSFORM_DESC*>(pDesc->TransformDesc);
 	_vector vScreenPos = XMVectorSet(pDesc->fX, pDesc->fY, pDesc->Depth, 1.f);
@@ -54,13 +54,8 @@ void CUI::Update_Priority(_float fTimeDelta)
 void CUI::Update(_float fTimeDelta)
 {
     CGameObject::Update(fTimeDelta);
-    CheckNull(m_pTransformCom);
 
-    m_transformData.matworld = m_pTransformCom->Get_World();
-    m_transformData.view = m_pGameInstance->GetViewMatrix(true);
-    m_transformData.proj = m_pGameInstance->GetProjMatrix(true);
 
-    m_Pipeline.constantBuffer->CopyData(m_transformData);
 }
 
 void CUI::Update_Late(_float fTimeDelta)

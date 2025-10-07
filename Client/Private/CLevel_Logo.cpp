@@ -186,8 +186,8 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
 
     Desc.fSizeX = 38.f;
     Desc.fSizeY = 38.f;
-    Desc.fX =  50;
-    Desc.fY = 50;
+    Desc.fX = 50.f;
+    Desc.fY = 50.f;
 
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
