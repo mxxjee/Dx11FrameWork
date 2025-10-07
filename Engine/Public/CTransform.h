@@ -84,6 +84,7 @@ private:
     _float  m_fRotationPerSec = {};
     _float4x4  m_WorldMatrix = {};
 
+    _float3   m_fEularDegree = { 0.f,0.f,0.f };
 
 
 public:
