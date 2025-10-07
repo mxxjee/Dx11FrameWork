@@ -133,9 +133,6 @@
     <Filter Include="05.Component\Transform">
       <UniqueIdentifier>{21e66bba-704e-4fa5-9634-25f2cd9c3879}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\99.MathUtils">
-      <UniqueIdentifier>{4c109192-e737-480d-bed2-dbc5776ae09b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05.Component\VIBuffer">
       <UniqueIdentifier>{f995508f-dda4-4798-bf18-a6fe4b5891b1}</UniqueIdentifier>
     </Filter>
@@ -189,6 +186,15 @@
     </Filter>
     <Filter Include="00.System\03.Input">
       <UniqueIdentifier>{931be7c8-fb84-4035-a606-e145c17a4517}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\99.EtcUtils">
+      <UniqueIdentifier>{4c109192-e737-480d-bed2-dbc5776ae09b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\99.EtcUtils\MathUtil">
+      <UniqueIdentifier>{7446648a-89b3-4630-abd7-4a735adb9135}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\99.EtcUtils\ColorUtil">
+      <UniqueIdentifier>{2bcd2bc9-dc1c-4bb5-a345-9e8bfff277b6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -327,9 +333,6 @@
     <ClInclude Include="..\Public\CTransform.h">
       <Filter>05.Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\MathUtils.h">
-      <Filter>01.Utility\99.MathUtils</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CVIBuffer.h">
       <Filter>05.Component\VIBuffer</Filter>
     </ClInclude>
@@ -376,6 +379,12 @@
       <Filter>03.GameObject\CameraObject\Orthgraphic</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CInput_Manager.h" />
+    <ClInclude Include="..\Public\MathUtils.h">
+      <Filter>01.Utility\99.EtcUtils\MathUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ColorUtils.h">
+      <Filter>01.Utility\99.EtcUtils\ColorUtil</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">

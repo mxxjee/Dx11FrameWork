@@ -27,13 +27,13 @@ namespace Engine
 
 	typedef		wstring						_wstring;
 
-
+	
 	/*저장용 데이터*/
 	typedef		XMFLOAT2					_float2;
 	typedef		XMFLOAT3					_float3;
 	typedef		XMFLOAT4					_float4;
 	typedef		XMFLOAT4X4					_float4x4;
-
+	typedef		_float4						Color;
 
 	typedef	  DirectX::SimpleMath::Matrix		Matrix;
 

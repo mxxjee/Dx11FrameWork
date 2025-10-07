@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 #include "Engine_Enum.h"
 #include "CBase.h"
+#include "ColorUtils.h"
 
 namespace Engine
 {
@@ -47,7 +48,7 @@ public:
 
 private:
 	 CGameInstance* pGameInstance;
-	_float4		ClearColor = _float4(0.f, 0.f, 1.f, 1.f);
+	 _float4		ClearColor = COLOR_PINK;
 	CImGui_Manager* pImGui_Manager = { nullptr };
 
 };

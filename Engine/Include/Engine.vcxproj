@@ -175,6 +175,7 @@
     <ClInclude Include="..\Public\CImGui_Manager.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
     <ClInclude Include="..\Public\CMainCamera.h" />
+    <ClInclude Include="..\Public\ColorUtils.h" />
     <ClInclude Include="..\Public\COrthographicCameraComponent.h" />
     <ClInclude Include="..\Public\CPerspectiveCameraComponent.h" />
     <ClInclude Include="..\Public\CPixelShader.h" />
