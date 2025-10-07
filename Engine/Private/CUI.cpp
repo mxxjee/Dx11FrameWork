@@ -29,6 +29,7 @@ HRESULT CUI::Initialize_Copytype(void* pArg)
 {
     UI_DESC* pDesc = static_cast<UI_DESC*>(pArg);
 
+    m_eRenderGroup = RENDERGROUP::UI;
        
 	CTransform::TRANSFORM_DESC* pTransDesc = static_cast<CTransform::TRANSFORM_DESC*>(pDesc->TransformDesc);
 	_vector vScreenPos = XMVectorSet(pDesc->fX, pDesc->fY, pDesc->Depth, 1.f);
@@ -71,8 +72,7 @@ void CUI::Update_Late(_float fTimeDelta)
 void CUI::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
-    m_pGameInstance->Add_RenderObject(RENDERGROUP::UI, this);
-
+   
 }
 
 HRESULT CUI::Render()

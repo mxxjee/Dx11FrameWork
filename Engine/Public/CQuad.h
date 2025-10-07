@@ -11,6 +11,7 @@ public:
     typedef struct tagQuad_DESC : CGameObject::GAMEOBJECT_DESC
     {
         _wstring ImgPath;
+        RENDERGROUP eRenderGroup = RENDERGROUP::PRIORITY;
 
     }QUAD_DESC;
 
@@ -45,6 +46,8 @@ private:
     HRESULT		CreateSamplerState();
     HRESULT		CreateBlendState();
 
+public:
+    void            Set_RenderGroup(RENDERGROUP eGroup) { m_eRenderGroup = eGroup; }
 private:
     void		Set_IA();
     void		Set_VS();
@@ -59,6 +62,7 @@ public:
 
 protected:
     RenderPipelineResource<VertexTextureData, TransformData> m_Pipeline;
+    RENDERGROUP m_eRenderGroup = RENDERGROUP::PRIORITY;
 
 };
 

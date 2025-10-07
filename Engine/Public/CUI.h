@@ -10,6 +10,7 @@ public:
     {
         _float fX = {}, fY = {},Depth = { 0.5f };
         _float fSizeX = {}, fSizeY = {};
+        
     }UI_DESC;
 
 protected:

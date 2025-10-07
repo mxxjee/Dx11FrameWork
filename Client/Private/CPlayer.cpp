@@ -40,6 +40,8 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
  
+    m_eRenderGroup = RENDERGROUP::ALPHA;
+
     return S_OK;
 }
 
@@ -66,8 +68,7 @@ void CPlayer::Update_Late(_float fTimeDelta)
 void CPlayer::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
-    m_pGameInstance->Add_RenderObject(RENDERGROUP::ALPHA, this);
-
+   
 }
 
 HRESULT CPlayer::Render()

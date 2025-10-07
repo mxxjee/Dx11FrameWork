@@ -41,6 +41,7 @@ HRESULT CQuad::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
     QUAD_DESC* pQuad_Desc = static_cast<QUAD_DESC*>(pArg);
+    m_eRenderGroup = pQuad_Desc->eRenderGroup;
 
     CreateGeometry();
     VertexShader();
@@ -86,6 +87,8 @@ void CQuad::Update_Late(_float fTimeDelta)
 void CQuad::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
+    m_pGameInstance->Add_RenderObject(m_eRenderGroup, this);
+
 }
 
 HRESULT CQuad::Render()
