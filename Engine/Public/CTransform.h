@@ -52,6 +52,7 @@ public:
     void  Set_Scale(_float4 vScale);
    
 
+public:
     const _float4x4& Get_World() { return m_WorldMatrix; }
     _float3  Get_Scale();        //right.up.forward벡터 길이만 리턴하자.
     _vector  Get_SRT(SRTType eType);
@@ -78,12 +79,14 @@ public:
     void    Chase(_fvector vPoint, _float fTimeDelta, _float MinDistance = 0.f);    //최소 거리 까지만 쫓아간다.
 
 #pragma endregion
+
 private:
     /*저장용 데이터( 직렬 계산)*/
     _float  m_fSpeedPerSec = {};
     _float  m_fRotationPerSec = {};
     _float4x4  m_WorldMatrix = {};
 
+    //누적회전을 위한 각도
     _float3   m_fEularDegree = { 0.f,0.f,0.f };
 
 
