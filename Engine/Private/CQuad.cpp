@@ -91,7 +91,7 @@ HRESULT CQuad::Render()
     __super::Render();
 
     //렌더 할때 copydata로 GPU에게 데이터전송
-    m_transformData.matworld = m_pTransformCom->Get_World();
+    m_transformData.matworld = m_pTransformCom->Get_World(TransformScope::WORLD);
 
     m_transformData.view = m_pGameInstance->GetViewMatrix(m_eRenderGroup==RENDERGROUP::UI);
     m_transformData.proj = m_pGameInstance->GetProjMatrix(m_eRenderGroup == RENDERGROUP::UI);

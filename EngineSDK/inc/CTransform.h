@@ -19,6 +19,7 @@ public:
 
     }TRANSFORM_DESC;
 
+
 private:
     CTransform(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CTransform(const CTransform& Prototype);
@@ -51,12 +52,15 @@ public:
     void  Set_WorldMatrix(const _float4x4& Mat, TransformScope eScope=TransformScope::LOCAL);
 
     void  Set_Scale(_float4 vScale);
-    void  Set_Parent(CTransform* pParent) { m_pParent = pParent; }
+
+    //부모 설정, setParent할때 local scale유지 여부
+    void  Set_Parent(CTransform* pParent);
 
 public:
     const _float4x4& Get_World(TransformScope eScope = TransformScope::LOCAL);
     _float3                 Get_Scale();           //right.up.forward벡터 길이만 리턴하자.
     _vector                 Get_SRT(SRTType eType);
+    CTransform*             Get_Parent() { return m_pParent; }
 
 #pragma region Translation(모두 로컬기준 이동/회전)
 public:

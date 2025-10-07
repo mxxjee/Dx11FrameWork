@@ -8,8 +8,11 @@ CTransform::CTransform(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext>
 }
 
 CTransform::CTransform(const CTransform& Prototype)
-	:CComponent(Prototype)
+	:CComponent(Prototype), m_fSpeedPerSec{Prototype.m_fSpeedPerSec},
+	m_fRotationPerSec{ Prototype.m_fRotationPerSec}, m_fEularDegree{Prototype.m_fEularDegree},
+	m_pParent{nullptr},m_LocalWorldMatrix{Prototype.m_LocalWorldMatrix},m_WorldMatrix{ Prototype.m_WorldMatrix}
 {
+
 }
 
 HRESULT CTransform::Initialize_Prototype()
@@ -30,7 +33,8 @@ HRESULT CTransform::Initialize_Copytype(void* pArg)
 	m_fSpeedPerSec = pDesc->fSpeedPerSec;
 	m_fRotationPerSec = pDesc->fRotationPerSec;
 
-	XMStoreFloat4x4(&m_LocalWorldMatrix, DirectX::XMMatrixIdentity());
+	XMStoreFloat4x4(&m_LocalWorldMatrix, XMMatrixIdentity());
+	m_WorldMatrix = m_LocalWorldMatrix;
 
 	Set_State(STATE::POSITION, pDesc->vLocalPosition);
 	Set_Scale(pDesc->vLocalScale);
@@ -47,10 +51,12 @@ void CTransform::Update_Matrix()
 		_matrix LocalMatrix = XMLoadFloat4x4(&m_LocalWorldMatrix);
 		_matrix ParentMatrix = XMLoadFloat4x4(&m_pParent->Get_World());
 
+
 		_matrix ResultMatrix = XMMatrixMultiply(LocalMatrix, ParentMatrix);
 
 		XMStoreFloat4x4(&m_WorldMatrix, ResultMatrix);
-
+		
+		
 
 	}
 
@@ -88,7 +94,7 @@ void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space)
 
 	STATE TargetState=STATE::END;
 	_float fTargetSpeed = (eDir > DIRECTION::UP) ? m_fSpeedPerSec * (-1) : m_fSpeedPerSec;
-	_vector vTargetAxis;
+	_vector vTargetAxis = {};
 
 	if (space == Space::Local)
 	{
@@ -179,6 +185,8 @@ const _float4x4& CTransform::Get_World(TransformScope eScope)
 	//부모가 지정되지 않았다면, 그냥 localMatrix리턴
 	else
 		return m_LocalWorldMatrix;
+
+	return m_LocalWorldMatrix;
 }
 
 _float3 CTransform::Get_Scale()
@@ -213,6 +221,8 @@ _vector CTransform::Get_SRT(SRTType eType)
 	default:
 		break;
 	}
+
+	return vScale;
 }
 
 
@@ -270,6 +280,44 @@ void CTransform::Set_Scale(_float4 vScale)
 	Set_State(STATE::UP, XMVector3Normalize(vUp) * vScale.y);
 	Set_State(STATE::LOOK, XMVector3Normalize(vLook) * vScale.z);
 
+
+}
+
+void CTransform::Set_Parent(CTransform* pParent)
+{
+	if (pParent != nullptr && !m_pParent)
+	{
+		m_pParent = pParent;
+
+		//스케일조절(만약 부모껄안쓴다면, 스케일을 조절해서 설정)
+		/*if (!bUseParentScale)
+		{
+			_float3 vLocalScale = Get_Scale();
+			_float3 vParentScale = pParent->Get_Scale();
+
+			_vector vNewScale = XMLoadFloat3(&vLocalScale) / XMLoadFloat3(&vParentScale);
+			_float4 fResult;
+			XMStoreFloat4(&fResult, vNewScale);
+
+			Set_Scale(fResult);
+
+		}*/
+
+		//부모의 상대적인 위치로 변환
+		_matrix ParentWorldInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(&pParent->Get_World(TransformScope::WORLD)));
+		_matrix NewLocalMatrix = XMLoadFloat4x4(&Get_World()) * ParentWorldInv;
+		XMStoreFloat4x4(&m_LocalWorldMatrix, NewLocalMatrix);
+
+	}
+
+	//nullptr인경우, 부모를 끊는다.
+	else
+	{
+		m_pParent = nullptr;
+		m_LocalWorldMatrix = m_WorldMatrix;
+
+		XMStoreFloat4x4(&m_WorldMatrix, XMMatrixIdentity());
+	}
 
 }
 
