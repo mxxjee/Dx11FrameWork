@@ -37,9 +37,12 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_Player(L"Player_Layer")))
         return E_FAIL;
 
-    if (FAILED(Ready_Layer_MainCamera(L"Camera_Layer")))
+    /*부모행렬 테스트*/
+    if (FAILED(Reday_Layer_Test(L"Test_Layer")))
         return E_FAIL;
 
+    if (FAILED(Ready_Layer_MainCamera(L"Camera_Layer")))
+        return E_FAIL;
 
 
     return S_OK;
@@ -139,6 +142,23 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
 
     /*UI Screen좌펴 변환 테스트*/
    // Set_UIPos_ByWorld(_float3(0.f,-100.f,0.f));
+
+    /*부모행렬테스트*/
+    if (m_pGameInstance->IsKeyPressed(KeyCode::Q))
+    {
+        CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Test_Layer", L"Test");
+        CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");
+
+        if (pTestObject)
+        {
+            if (pTestObject->Get_Transform()->Get_Parent() == nullptr)
+                pTestObject->Get_Transform()->Set_Parent(pPlayerObject->Get_Transform());
+
+            else
+                pTestObject->Get_Transform()->Set_Parent(nullptr);
+
+        }
+    }
 }
 
 void CLevel_Logo::Render()
@@ -241,6 +261,31 @@ HRESULT CLevel_Logo::Ready_Layer_Player(const _wstring& strLayerTag)
     return S_OK;
 }
 
+HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
+{
+    CQuad::QUAD_DESC        Desc = {};
+
+    Desc.ObjTag = L"Test";
+    Desc.ImgPath = L"../../Resource/Character.png";
+
+
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    TransDesc.vLocalPosition = { 0.f,0.f,0.f,1.f };
+    TransDesc.vLocalScale = { 1.f,1.f,1.f,1.f };
+
+    Desc.TransformDesc = &TransDesc;
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"Quad"),
+        ENUM_TO_UINT(LEVEL_ID::STATIC),
+        strLayerTag, &Desc)))
+        return E_FAIL;
+
+    return S_OK;
+}
+
 void CLevel_Logo::OnEnter()
 {
     //메인카메라 등록
@@ -258,6 +303,8 @@ void CLevel_Logo::OnEnter()
             L"Player_Layer",
             L"Player"),true);
     }
+    
+ 
 }
 
 void CLevel_Logo::OnResume()

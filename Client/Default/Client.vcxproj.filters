@@ -44,7 +44,7 @@
       <Filter>999.ImguiObject\ObjectInspectorWindow</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayer.h">
-      <Filter>02.GameObjects\Player</Filter>
+      <Filter>02.GameObjects\TestPlayer</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CFloor.h">
       <Filter>02.GameObjects\Floor</Filter>
@@ -107,11 +107,11 @@
     <Filter Include="02.GameObjects\UI\00.Panel\00.Background">
       <UniqueIdentifier>{a8a9cb85-f5d9-42bf-9359-4cdd0223099e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\Player">
-      <UniqueIdentifier>{0bc6481b-f5a7-4dd4-92ed-61f25bc7866a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\Floor">
       <UniqueIdentifier>{467ec163-af8f-413a-ade4-db51d15a2b96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\TestPlayer">
+      <UniqueIdentifier>{0bc6481b-f5a7-4dd4-92ed-61f25bc7866a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -146,7 +146,7 @@
       <Filter>999.ImguiObject\ObjectInspectorWindow</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayer.cpp">
-      <Filter>02.GameObjects\Player</Filter>
+      <Filter>02.GameObjects\TestPlayer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CFloor.cpp">
       <Filter>02.GameObjects\Floor</Filter>

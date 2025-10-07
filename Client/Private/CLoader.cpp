@@ -61,9 +61,9 @@ HRESULT CLoader::Loading()
     EnterCriticalSection(&m_CriticalSection);
 
     /*메인스레드에서 사용했던 COM객체를 사용하는 경우에는 반드시 이 함수를 호출해야한다.*/
-    CoInitializeEx(nullptr, 0);
+    HRESULT hr=CoInitializeEx(nullptr, 0);
 
-    HRESULT		hr = {};
+    hr = {};
 
     switch (m_iNextLevelID)
     {
@@ -164,6 +164,9 @@ HRESULT CLoader::Loading_Logo()
 
     //Freecam Test용
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FreeCamera"), CFreeCamera::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Quad"), CQuad::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), CPanel::Create(m_pDevice, m_pDeviceContext))))

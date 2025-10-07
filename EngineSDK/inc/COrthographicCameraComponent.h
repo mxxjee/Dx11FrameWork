@@ -9,8 +9,8 @@ class ENGINE_DLL COrthographicCameraComponent :
 public:
     typedef struct tagOrthographic_CameraDesc : public CCameraComponent::CAMERA_DESC
     {
-        _float ViewHeight;
-        _float ViewWdith;
+        _float ViewHeight = {};
+        _float ViewWdith = {};
 
     }ORTHOGRAPHIC_DESC;
 private:

@@ -96,6 +96,13 @@ void CPlayer::Move_Input(_float fTimeDelta)
     if (m_pGameInstance->IsKeyHeld(KeyCode::DownArrow))
         m_pTransformCom->Move(DIRECTION::BACKWARD, fTimeDelta);
 
+    if (m_pGameInstance->IsKeyHeld(KeyCode::A))
+        m_pTransformCom->AddRotation(_float3(0.f, 10.f, 0.f));
+
+    if (m_pGameInstance->IsKeyHeld(KeyCode::D))
+        m_pTransformCom->AddRotation(_float3(0.f, -10.f, 0.f));
+
+
 }
 
 CPlayer* CPlayer::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
