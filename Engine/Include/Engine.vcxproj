@@ -126,7 +126,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;Effects11d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;Effects11d.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>../ThirdPartyLib/;../../EngineSDK/lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -146,7 +146,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;Effects11.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;Effects11.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>../ThirdPartyLib/;../../EngineSDK/lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -178,11 +178,9 @@
     <ClInclude Include="..\Public\ColorUtils.h" />
     <ClInclude Include="..\Public\COrthographicCameraComponent.h" />
     <ClInclude Include="..\Public\CPerspectiveCameraComponent.h" />
-    <ClInclude Include="..\Public\CPixelShader.h" />
     <ClInclude Include="..\Public\CPrototype_Manager.h" />
     <ClInclude Include="..\Public\CQuad.h" />
     <ClInclude Include="..\Public\CRenderer.h" />
-    <ClInclude Include="..\Public\CDefaultShader.h" />
     <ClInclude Include="..\Public\CShader.h" />
     <ClInclude Include="..\Public\CShader_Manager.h" />
     <ClInclude Include="..\Public\CTexture.h" />
@@ -192,7 +190,6 @@
     <ClInclude Include="..\Public\CUI.h" />
     <ClInclude Include="..\Public\CUICamera.h" />
     <ClInclude Include="..\Public\CVertexBuffer.h" />
-    <ClInclude Include="..\Public\CVertexShader.h" />
     <ClInclude Include="..\Public\CVIBuffer.h" />
     <ClInclude Include="..\Public\CVIBuffer_Rect.h" />
     <ClInclude Include="..\Public\Engine_Define.h" />
@@ -244,11 +241,9 @@
     <ClCompile Include="..\Private\CMainCamera.cpp" />
     <ClCompile Include="..\Private\COrthographicCameraComponent.cpp" />
     <ClCompile Include="..\Private\CPerspectiveCameraComponent.cpp" />
-    <ClCompile Include="..\Private\CPixelShader.cpp" />
     <ClCompile Include="..\Private\CPrototype_Manager.cpp" />
     <ClCompile Include="..\Private\CQuad.cpp" />
     <ClCompile Include="..\Private\CRenderer.cpp" />
-    <ClCompile Include="..\Private\CDefaultShader.cpp" />
     <ClCompile Include="..\Private\CShader.cpp" />
     <ClCompile Include="..\Private\CShader_Manager.cpp" />
     <ClCompile Include="..\Private\CTexture.cpp" />
@@ -258,7 +253,6 @@
     <ClCompile Include="..\Private\CUI.cpp" />
     <ClCompile Include="..\Private\CUICamera.cpp" />
     <ClCompile Include="..\Private\CVertexBuffer.cpp" />
-    <ClCompile Include="..\Private\CVertexShader.cpp" />
     <ClCompile Include="..\Private\CVIBuffer.cpp" />
     <ClCompile Include="..\Private\CVIBuffer_Rect.cpp" />
     <ClCompile Include="..\Private\GeometryHelper.cpp" />

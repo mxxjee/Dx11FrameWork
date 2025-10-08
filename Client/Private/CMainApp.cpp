@@ -1,6 +1,6 @@
 #include "CMainApp.h"
 #include "CGameInstance.h"
-
+#include "CShader.h"
 
 #include "CLevel_Logo.h"
 #include "CLevel_GamePlay.h"
@@ -38,7 +38,10 @@ HRESULT CMainApp::Initialize()
 	if(FAILED(pGameInstance->Initialize_Engine(desc,&m_pDevice,&m_pContext)))
 		return E_FAIL;
 
-	Reigster_Levels();
+	Register_Levels();
+	Register_Shaders();
+
+	//Imgui 디버그창
 #ifdef _DEBUG
 	pImGui_Manager->Init(g_hWnd, m_pDevice.Get(), m_pContext.Get());
 	CreateLevelDebugWindow();
@@ -93,7 +96,7 @@ void CMainApp::Render()
 
 }
 
-void CMainApp::Reigster_Levels()
+void CMainApp::Register_Levels()
 {
 	CheckNull(pGameInstance);
 	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOGO), [this](LevelArgs& args)->CLevel*
@@ -114,6 +117,20 @@ void CMainApp::Reigster_Levels()
 
 
 
+}
+
+void CMainApp::Register_Shaders()
+{
+	wchar_t buffer[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, buffer);
+	OutputDebugStringW(buffer);
+
+	CShader* pInstance = CShader::Create(m_pDevice,
+		m_pContext, L"../Bin/ShaderFiles/Shader_VtxPosTex.hlsl",
+		"DefaultTechnique","Default");
+
+
+	pGameInstance->Register_Shader(L"Default", pInstance);
 }
 
 HRESULT CMainApp::Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)

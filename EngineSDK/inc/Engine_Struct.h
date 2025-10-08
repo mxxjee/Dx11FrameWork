@@ -54,8 +54,8 @@ namespace Engine
 		shared_ptr<class CGeometry<TVertex>> geometry;
 
 		// ºŒ¿Ã¥ı
-		shared_ptr<class CVertexShader>   vertexShader;
-		shared_ptr<class CPixelShader>    pixelShader;
+	/*	shared_ptr<class CVertexShader>   vertexShader;
+		shared_ptr<class CPixelShader>    pixelShader;*/
 
 		shared_ptr<class CTexture> texture1 = { nullptr };
 		

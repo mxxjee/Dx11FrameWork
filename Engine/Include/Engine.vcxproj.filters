@@ -309,23 +309,11 @@
     <ClInclude Include="..\Public\CIndexBuffer.h">
       <Filter>06.PipeLine\01.InputAssembler\IndexBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CVertexBuffer.h">
-      <Filter>06.PipeLine\01.InputAssembler\VertexBuffer</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CInputLayout.h">
       <Filter>06.PipeLine\01.InputAssembler\InputLayout</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CConstantBuffer.h">
       <Filter>06.PipeLine\02.VertexShader\ConstantBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CDefaultShader.h">
-      <Filter>06.PipeLine\02.VertexShader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CVertexShader.h">
-      <Filter>06.PipeLine\02.VertexShader\VS</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\CPixelShader.h">
-      <Filter>06.PipeLine\02.VertexShader\PS</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CTexture.h">
       <Filter>06.PipeLine\02.VertexShader\Texture</Filter>
@@ -392,6 +380,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CShader_Manager.h">
       <Filter>00.System\04.Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CVertexBuffer.h">
+      <Filter>06.PipeLine\01.InputAssembler\VertexBuffer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -479,23 +470,11 @@
     <ClCompile Include="..\Private\CIndexBuffer.cpp">
       <Filter>06.PipeLine\01.InputAssembler\IndexBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CVertexBuffer.cpp">
-      <Filter>06.PipeLine\01.InputAssembler\VertexBuffer</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CInputLayout.cpp">
       <Filter>06.PipeLine\01.InputAssembler\InputLayout</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CDefaultShader.cpp">
-      <Filter>06.PipeLine\02.VertexShader</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CConstantBuffer.cpp">
       <Filter>06.PipeLine\02.VertexShader\ConstantBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CVertexShader.cpp">
-      <Filter>06.PipeLine\02.VertexShader\VS</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CPixelShader.cpp">
-      <Filter>06.PipeLine\02.VertexShader\PS</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CTexture.cpp">
       <Filter>06.PipeLine\02.VertexShader\Texture</Filter>
@@ -556,6 +535,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CShader_Manager.cpp">
       <Filter>00.System\04.Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CVertexBuffer.cpp">
+      <Filter>06.PipeLine\01.InputAssembler\VertexBuffer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

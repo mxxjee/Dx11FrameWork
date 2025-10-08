@@ -57,6 +57,8 @@ private:
 	HRESULT		Set_Pass(const string& strPassName);
 
 
+public:
+
 private:
 	SHADER_INFO			m_ShaderInfo;
 

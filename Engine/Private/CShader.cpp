@@ -68,15 +68,14 @@ void CShader::Free()
 
 HRESULT CShader::LoadShaderFromFile(const wstring& path)
 {
-    const UINT32 compileFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
-
+   
     //일반 hlsl함수 컴파일함수와는 달리 compileFlag를 지정안해도됨, technique랑 pass가 내부적으로 수행중
     
     HRESULT hr = D3DX11CompileEffectFromFile(
         path.c_str(),
         nullptr,
         D3D_COMPILE_STANDARD_FILE_INCLUDE,
-        D3DCOMPILE_ENABLE_STRICTNESS,
+        0,//D3DCOMPILE_ENABLE_STRICTNESS,
         0,
         m_pDevice.Get(),
         m_ShaderInfo.m_pEffect.GetAddressOf(),

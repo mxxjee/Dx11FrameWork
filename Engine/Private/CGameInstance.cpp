@@ -22,15 +22,16 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 {
 	m_EngineDesc = EngineDesc;
 
-	D3D11_VIEWPORT          ViewportDesc{};
-	_uint           iNumViewports = { 1 };
-	(*pContext)->RSGetViewports(&iNumViewports, &ViewportDesc);
-	m_ViewPorts.push_back(ViewportDesc);
 
 
 	/* 그래픽 디바이스 초기화 */
 	m_pGraphicDev = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.winMode, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, pDevice, pContext);
 	CheckNullResult(m_pGraphicDev, E_FAIL);
+
+	D3D11_VIEWPORT          ViewportDesc{};
+	_uint           iNumViewports = { 1 };
+	(*pContext)->RSGetViewports(&iNumViewports, &ViewportDesc);
+	m_ViewPorts.push_back(ViewportDesc);
 
 	/*레벨 매니저 초기화*/
 	m_pLevelManager = CLevel_Manager::Create();

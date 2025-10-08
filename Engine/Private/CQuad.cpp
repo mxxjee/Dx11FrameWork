@@ -6,9 +6,9 @@
 #include "CVertexBuffer.h"
 #include "CIndexBuffer.h"
 #include "CGeometry.h"
-#include "CVertexShader.h"
-#include "CPixelShader.h"
-#include "CDefaultShader.h"
+//#include "CVertexShader.h"
+//#include "CPixelShader.h"
+//#include "CDefaultShader.h"
 #include "CInputLayout.h"
 
 
@@ -117,8 +117,8 @@ HRESULT CQuad::Initialize_Piepline()
     m_Pipeline.inputLayout = make_shared<CInputLayout>(m_pDevice);
     m_Pipeline.geometry = make_shared <CGeometry<VertexTextureData>>();
 
-    m_Pipeline.vertexShader = make_shared<CVertexShader>(m_pDevice);
-    m_Pipeline.pixelShader = make_shared<CPixelShader>(m_pDevice);
+    //m_Pipeline.vertexShader = make_shared<CVertexShader>(m_pDevice);
+    //m_Pipeline.pixelShader = make_shared<CPixelShader>(m_pDevice);
     m_Pipeline.constantBuffer = make_shared<CConstantBuffer<TransformData>>(m_pDevice, m_pContext);
 
     m_Pipeline.texture1 = make_shared<CTexture>(m_pDevice);
@@ -139,19 +139,19 @@ void CQuad::CreateGeometry()
 
 void CQuad::CreateInputLayout()
 {
-    m_Pipeline.inputLayout->Create(VertexTextureData::desc, m_Pipeline.vertexShader->GetBlob());
+   // m_Pipeline.inputLayout->Create(VertexTextureData::desc, m_Pipeline.vertexShader->GetBlob());
 
 }
 
 void CQuad::VertexShader()
 {
-    m_Pipeline.vertexShader->Create(L"../../EngineSDK/inc/Default.hlsl", "main", "vs_5_0");
+   // m_Pipeline.vertexShader->Create(L"../../EngineSDK/inc/Default.hlsl", "main", "vs_5_0");
 
 }
 
 void CQuad::PixelShader()
 {
-    m_Pipeline.pixelShader->Create(L"../../EngineSDK/inc/Default.hlsl", "PS", "ps_5_0");
+  //  m_Pipeline.pixelShader->Create(L"../../EngineSDK/inc/Default.hlsl", "PS", "ps_5_0");
 
 }
 
@@ -231,7 +231,7 @@ void CQuad::Set_IA()
 
 void CQuad::Set_VS()
 {
-    m_pContext.Get()->VSSetShader(m_Pipeline.vertexShader->GetComPtr().Get(), nullptr, 0);
+    //m_pContext.Get()->VSSetShader(m_Pipeline.vertexShader->GetComPtr().Get(), nullptr, 0);
 
     ID3D11Buffer* buffer = m_Pipeline.constantBuffer->GetComPtr().Get();
     m_pContext.Get()->VSSetConstantBuffers(0, 1, &buffer);
@@ -246,7 +246,7 @@ void CQuad::Set_RS()
 
 void CQuad::Set_PS()
 {
-    m_pContext.Get()->PSSetShader(m_Pipeline.pixelShader->GetComPtr().Get(), nullptr, 0);
+    //m_pContext.Get()->PSSetShader(m_Pipeline.pixelShader->GetComPtr().Get(), nullptr, 0);
     m_pContext.Get()->PSSetShaderResources(0, 1, m_Pipeline.texture1->GetComPtr().GetAddressOf());
     m_pContext.Get()->PSSetSamplers(0, 1, m_Pipeline._samplerState.GetAddressOf());
 
