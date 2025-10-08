@@ -24,7 +24,7 @@ public:
 
 public:
     void        Update_ViewMatrix(_float fTimeDelta) override;
-    void        Update_ProjectionMatrix() override;
+    void        Set_ProjectionMatrix() override;
 public:
     static COrthographicCameraComponent* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual     CComponent* Clone(void* pArg) override;

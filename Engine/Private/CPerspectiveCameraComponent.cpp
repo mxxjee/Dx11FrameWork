@@ -29,18 +29,20 @@ HRESULT CPerspectiveCameraComponent::Initialize_Copytype(void* pArg)
 	m_fFov = pDesc->fFov;
 	m_fAspect = pDesc->Aspect;
 
+	Set_ProjectionMatrix();
+
+
 	return S_OK;
 }
 
 void CPerspectiveCameraComponent::Update_ViewMatrix(_float fTimeDelta)
 {
 	__super::Update_ViewMatrix(fTimeDelta);
-	Update_ProjectionMatrix();
-
+	
 	
 }
 
-void CPerspectiveCameraComponent::Update_ProjectionMatrix()
+void CPerspectiveCameraComponent::Set_ProjectionMatrix()
 {
 	XMStoreFloat4x4(&m_matProj, XMMatrixPerspectiveFovLH(m_fFov, m_fAspect, m_fNear, m_fFar));
 }

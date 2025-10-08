@@ -30,16 +30,19 @@ HRESULT COrthographicCameraComponent::Initialize_Copytype(void* pArg)
 	m_vViewHeight = pDesc->ViewHeight;
 	m_vViewWidth = pDesc->ViewWdith;
 
+
+	Set_ProjectionMatrix();
+
 	return S_OK;
 }
 
 void COrthographicCameraComponent::Update_ViewMatrix(_float fTimeDelta)
 {
 	XMStoreFloat4x4(&m_matView,XMMatrixIdentity());
-	Update_ProjectionMatrix();
+	
 }
 
-void COrthographicCameraComponent::Update_ProjectionMatrix()
+void COrthographicCameraComponent::Set_ProjectionMatrix()
 {
 	XMStoreFloat4x4(&m_matProj, XMMatrixOrthographicLH(m_vViewWidth, m_vViewHeight, m_fNear, m_fFar));
 }
