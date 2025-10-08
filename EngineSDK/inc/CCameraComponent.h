@@ -41,7 +41,7 @@ public:
 
 public:
     virtual void        Update_ViewMatrix(_float fTimeDelta);
-    virtual void        Update_ProjectionMatrix() {};
+    virtual void        Set_ProjectionMatrix() {};
 
 protected:
     class       CGameObject* m_pTarget = { nullptr };

@@ -50,19 +50,17 @@ HRESULT CVIBuffer::Bind_Resource()
 
     m_iNumVertexBuffers = 1;
 
+                      
     m_pContext->IASetVertexBuffers(0, m_iNumVertexBuffers, pVertexBuffers->GetAddressOf(), &m_iVertexStride, iOffsets);
+                      //몇번의 버텍스버퍼 슬롯부터 바인딩할건지, 버텍스버퍼개수 
+    
     m_pContext->IASetIndexBuffer(m_pIB.Get(), m_iIndexStride == 2 ? DXGI_FORMAT_R16_UINT : DXGI_FORMAT_R32_UINT, 0);
     m_pContext->IASetPrimitiveTopology(m_ePrimitiveType);
 
 
     //2.InputLayout생성
     ComPtr<ID3D11InputLayout>       pInputLayout;
-    D3D11_INPUT_ELEMENT_DESC    layoutDesc[] = {
-        //(float3)
-        { "POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0},
-        { "TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0}
-    };
-
+  
     ComPtr<ID3D11VertexShader>  VertexShader;
     ComPtr<ID3DBlob>  vsBlob;
 

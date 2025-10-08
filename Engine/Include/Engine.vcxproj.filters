@@ -151,9 +151,6 @@
     <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\Text">
       <UniqueIdentifier>{d5fed461-117a-431a-86dc-2872aa201244}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05.Component\Shader">
-      <UniqueIdentifier>{81f12b77-764a-4b41-a9fc-0044c8e060c0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00.System\02.Camera">
       <UniqueIdentifier>{277a74f4-8253-4611-9ce3-89df7fbf8a8a}</UniqueIdentifier>
     </Filter>
@@ -195,6 +192,12 @@
     </Filter>
     <Filter Include="01.Utility\99.EtcUtils\ColorUtil">
       <UniqueIdentifier>{2bcd2bc9-dc1c-4bb5-a345-9e8bfff277b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\04.Shader">
+      <UniqueIdentifier>{d520339e-b9f5-4372-b9a3-824b730f9c44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\04.Shader\Shader">
+      <UniqueIdentifier>{81f12b77-764a-4b41-a9fc-0044c8e060c0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -352,7 +355,7 @@
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Text</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CShader.h">
-      <Filter>05.Component\Shader</Filter>
+      <Filter>00.System\04.Shader\Shader</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CCameraComponent.h">
       <Filter>05.Component\Camera</Filter>
@@ -378,12 +381,17 @@
     <ClInclude Include="..\Public\CUICamera.h">
       <Filter>03.GameObject\CameraObject\Orthgraphic</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CInput_Manager.h" />
     <ClInclude Include="..\Public\MathUtils.h">
       <Filter>01.Utility\99.EtcUtils\MathUtil</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\ColorUtils.h">
       <Filter>01.Utility\99.EtcUtils\ColorUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CInput_Manager.h">
+      <Filter>00.System\03.Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CShader_Manager.h">
+      <Filter>00.System\04.Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -517,7 +525,7 @@
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Text</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CShader.cpp">
-      <Filter>05.Component\Shader</Filter>
+      <Filter>00.System\04.Shader\Shader</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CCameraComponent.cpp">
       <Filter>05.Component\Camera</Filter>
@@ -543,6 +551,11 @@
     <ClCompile Include="..\Private\CUICamera.cpp">
       <Filter>03.GameObject\CameraObject\Orthgraphic</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CInput_Manager.cpp" />
+    <ClCompile Include="..\Private\CInput_Manager.cpp">
+      <Filter>00.System\03.Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CShader_Manager.cpp">
+      <Filter>00.System\04.Shader</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

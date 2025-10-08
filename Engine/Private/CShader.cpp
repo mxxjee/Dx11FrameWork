@@ -1,18 +1,29 @@
 #include "CShader.h"
 
 CShader::CShader(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CComponent{pDevice,pContext}
+    :m_pDevice{ pDevice }, m_pDeviceContext{pContext}
 {
 }
 
 CShader::CShader(const CShader& Prototype)
-    :CComponent{Prototype}
+    : m_pDevice{ Prototype.m_pDevice }, m_pDeviceContext{Prototype.m_pDeviceContext},
+    m_ShaderInfo{Prototype.m_ShaderInfo}
 {
+
 }
 
-HRESULT CShader::Initialize_Prototype(const _tchar* pShaderFilePath)
+HRESULT CShader::Initialize_Prototype(const wstring& filePath, const string& strTechName, const string& passName)
 {
-    return S_OK;
+    //1. 셰이더 파일 로드 및 Effect객체 생성
+    if(FAILED(LoadShaderFromFile(filePath)))
+        return E_FAIL;
+
+    //2. Technique/Pass캐싱
+    if(FAILED(Set_Technique(strTechName)))
+        return S_OK;
+
+    if (FAILED(Set_Pass(passName)))
+        return S_OK;
 }
 
 HRESULT CShader::Initialize_Copytype(void* pArg)
@@ -20,11 +31,15 @@ HRESULT CShader::Initialize_Copytype(void* pArg)
     return S_OK;
 }
 
-CShader* CShader::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const _tchar* pShaderFilePath)
+CShader* CShader::Create(ComPtr<ID3D11Device> pDevice,
+    ComPtr<ID3D11DeviceContext> pContext,
+    const wstring& filePath,
+    const string& strTechName,
+    const string& passName)
 {
     CShader* pInstance = new CShader(pDevice, pContext);
 
-    if (FAILED(pInstance->Initialize_Prototype(pShaderFilePath)))
+    if (FAILED(pInstance->Initialize_Prototype(filePath,strTechName,passName)))
     {
         MSG_BOX("Failed to Created : CShader");
         Safe_Release(pInstance);
@@ -32,20 +47,85 @@ CShader* CShader::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContex
     return pInstance;
 }
 
-CComponent* CShader::Clone(void* pArg)
+CShader* CShader::Clone(void* pArg)
 {
     CShader* pInstance = new CShader(*this);
 
     if (FAILED(pInstance->Initialize_Copytype(pArg)))
     {
-        MSG_BOX("Failed to Cloned : CShader");
+        MSG_BOX("Failed to Created : CShader");
         Safe_Release(pInstance);
     }
     return pInstance;
-    return nullptr;
 }
 
 void CShader::Free()
 {
     __super::Free();
+    Safe_Release(m_ShaderInfo.m_pEffect);
+
+}
+
+HRESULT CShader::LoadShaderFromFile(const wstring& path)
+{
+    const UINT32 compileFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
+
+    //일반 hlsl함수 컴파일함수와는 달리 compileFlag를 지정안해도됨, technique랑 pass가 내부적으로 수행중
+    
+    HRESULT hr = D3DX11CompileEffectFromFile(
+        path.c_str(),
+        nullptr,
+        D3D_COMPILE_STANDARD_FILE_INCLUDE,
+        D3DCOMPILE_ENABLE_STRICTNESS,
+        0,
+        m_pDevice.Get(),
+        m_ShaderInfo.m_pEffect.GetAddressOf(),
+        m_ShaderInfo.m_pErrorBlob.GetAddressOf());
+    
+    /*실패시 문자열 디버그출력*/
+    if (FAILED(hr))
+    {
+        if (m_ShaderInfo.m_pErrorBlob)
+            OutputDebugStringA((char*)m_ShaderInfo.m_pErrorBlob->GetBufferPointer());
+        return hr;
+    }
+
+    return hr;
+}
+
+HRESULT CShader::Set_Technique(const string& strTechName)
+{
+    m_ShaderInfo.m_strTechniqueName = strTechName;
+    m_ShaderInfo.m_pTechnique= m_ShaderInfo.m_pEffect->GetTechniqueByName(strTechName.c_str());
+    
+    /*예외처리.*/
+    if (!m_ShaderInfo.m_pTechnique->IsValid())
+    {
+        OutputDebugStringA(("Technique not found: " + std::string(strTechName.begin(), strTechName.end()) + "\n").c_str());
+        return E_FAIL;
+    }
+
+    // 기본 pass 0번 설정
+    m_ShaderInfo.m_pPass = m_ShaderInfo.m_pTechnique->GetPassByIndex(0);
+    return S_OK;
+}
+
+HRESULT CShader::Set_Pass(const string& strPassName)
+{
+    m_ShaderInfo.m_strPassName = strPassName;
+    CheckTrueResult(strPassName == "",E_FAIL);
+
+    //strPass 따로지정하지 않았다면  multiplass
+    if (!m_ShaderInfo.m_pTechnique)
+        return E_FAIL;
+
+
+    m_ShaderInfo.m_pPass = m_ShaderInfo.m_pTechnique->GetPassByName(strPassName.c_str());
+    if (!m_ShaderInfo.m_pPass->IsValid())
+    {
+        OutputDebugStringA(("Pass not found: " + std::string(strPassName.begin(), strPassName.end()) + "\n").c_str());
+        return E_FAIL;
+    }
+
+    return S_OK;
 }

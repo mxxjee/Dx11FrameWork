@@ -115,7 +115,6 @@ public:
 #pragma endregion
 
 #pragma region Input_Manager
-
 public:
     bool    IsKeyPressed(KeyCode key) const;
     bool    IsKeyHeld(KeyCode key) const;
@@ -124,6 +123,11 @@ public:
     bool    IsMouseButtonHeld(int button) const;
     POINT     GetMouseDelta() const;
 
+#pragma endregion
+
+#pragma region Shader_Manager
+    HRESULT     Register_Shader(const _wstring& Tag, class CShader* pInstance);
+    class CShader*     Find_Shader(const _wstring& Tag);
 #pragma endregion
 public:
 #pragma region Default
@@ -140,6 +144,8 @@ private:
     class CRenderer* m_pRenderer = nullptr;
     class CCamera_Manager* m_pCameraManager = { nullptr };
     class CInput_Manager* m_pInputManager = { nullptr };
+    class CShader_Manager* m_pShaderManager = { nullptr };
+
 
 private:
     vector<D3D11_VIEWPORT>          m_ViewPorts;

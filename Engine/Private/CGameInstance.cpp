@@ -9,6 +9,7 @@
 #include "CRenderer.h"
 #include "CCamera_Manager.h"
 #include "CInput_Manager.h"
+#include "CShader_Manager.h"
 
 
 IMPLEMENT_SINGLETON(CGameInstance)
@@ -20,6 +21,12 @@ CGameInstance::CGameInstance()
 HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID3D11Device>* pDevice, ComPtr<ID3D11DeviceContext>*pContext)
 {
 	m_EngineDesc = EngineDesc;
+
+	D3D11_VIEWPORT          ViewportDesc{};
+	_uint           iNumViewports = { 1 };
+	(*pContext)->RSGetViewports(&iNumViewports, &ViewportDesc);
+	m_ViewPorts.push_back(ViewportDesc);
+
 
 	/* 그래픽 디바이스 초기화 */
 	m_pGraphicDev = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.winMode, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, pDevice, pContext);
@@ -62,13 +69,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	m_pCameraManager = CCamera_Manager::Create();
 	CheckNullResult(m_pCameraManager, E_FAIL);
 
-	D3D11_VIEWPORT          ViewportDesc{};
-	_uint           iNumViewports = { 1 };
-
-
-	(*pContext)->RSGetViewports(&iNumViewports, &ViewportDesc);
-
-	m_ViewPorts.push_back(ViewportDesc);
+	/*쉐이더 매니져 초기화*/
+	m_pShaderManager = CShader_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pShaderManager, E_FAIL);
 
 	return S_OK;
 }
@@ -348,6 +351,18 @@ bool CGameInstance::IsMouseButtonHeld(int button) const
 POINT CGameInstance::GetMouseDelta() const
 {
 	return m_pInputManager->GetMouseDelta();
+}
+
+HRESULT CGameInstance::Register_Shader(const _wstring& Tag, CShader* pInstance)
+{
+	CheckNullResult(m_pShaderManager, E_FAIL);
+	return m_pShaderManager->Register_Shader(Tag, pInstance);
+}
+
+CShader* CGameInstance::Find_Shader(const _wstring& Tag)
+{
+	CheckNullResult(m_pShaderManager, nullptr);
+	return m_pShaderManager->Find_Shader(Tag);
 }
 
 #pragma endregion
