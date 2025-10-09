@@ -305,6 +305,10 @@ const _float4x4& CGameInstance::GetProjMatrix(bool isOrtho) const
 {
 	return m_pCameraManager->GetProjMatrix(isOrtho);
 }
+const _matrix CGameInstance::GetMulViewProjMatrix(bool isOrtho) const
+{
+	return m_pCameraManager->GetMulViewProjMatrix(isOrtho);
+}
 CGameObject* CGameInstance::GetMainPerspectiveCamera()
 {
 	CheckNullResult(m_pCameraManager, nullptr);

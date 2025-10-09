@@ -98,6 +98,21 @@ const _float4x4& CCamera_Manager::GetProjMatrix(bool isOrtho) const
 
 		return pOrtho->Get_ProjMatrix();
 	}
+
+}
+
+const _matrix CCamera_Manager::GetMulViewProjMatrix(bool isOrtho) const
+{
+	// TODO: 여기에 return 문을 삽입합니다.
+
+	_float4x4 Proj = GetProjMatrix(isOrtho);
+	_float4x4 View = GetViewMatrix(isOrtho);
+
+	_matrix ProjMat = XMLoadFloat4x4(&Proj);
+	_matrix ViewMat = XMLoadFloat4x4(&View);
+
+	return XMMatrixMultiply(ViewMat, ProjMat);
+	
 }
 
 CGameObject* CCamera_Manager::GetMainPerspectiveCamera()

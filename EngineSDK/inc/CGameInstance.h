@@ -104,6 +104,7 @@ public:
     //뷰,투영행렬가져오기
     const _float4x4& GetViewMatrix(bool isOrtho = false) const;
     const _float4x4& GetProjMatrix(bool isOrtho = false) const;
+    const _matrix GetMulViewProjMatrix(bool isOrtho = false) const;
 
     //메인 카메라 가져오기
     class CGameObject* GetMainPerspectiveCamera();
