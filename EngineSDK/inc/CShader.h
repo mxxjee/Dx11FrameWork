@@ -3,6 +3,9 @@
 #include "CBase.h"
 
 NS_BEGIN(Engine)
+
+class CInputLayout;
+
 class ENGINE_DLL CShader final :
                 public CBase
 {
@@ -31,18 +34,20 @@ public:
 		}
 
 	}SHADER_INFO;
+
 private:
 	CShader(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
 	CShader(const CShader& Prototype);
 	virtual ~CShader() = default;
 
 public:
-	HRESULT     Initialize_Prototype(const wstring& filePath, const string& strTechName, const string& passName);
+	HRESULT     Initialize_Prototype(const vector<D3D11_INPUT_ELEMENT_DESC>& layout, const wstring& filePath, const string& strTechName, const string& passName);
 	HRESULT     Initialize_Copytype(void *pArg);
 
 public:
 	static CShader* Create(ComPtr<ID3D11Device> pDevice,
 		ComPtr<ID3D11DeviceContext> pContext,
+		const vector<D3D11_INPUT_ELEMENT_DESC>& layout,
 		const wstring& filePath,
 		const string& strTechName,
 		const string& passName="");
@@ -55,10 +60,19 @@ private:
 	HRESULT		LoadShaderFromFile(const wstring & path);
 	HRESULT		Set_Technique(const string& strTechName);
 	HRESULT		Set_Pass(const string& strPassName);
+	HRESULT		Create_InputLayout(const vector<D3D11_INPUT_ELEMENT_DESC>& layout);
 
-
+public:
+	void		SetMatrix(const string& Variable, const _float4x4& mat);
+	void		SetVector(const string& Variable, const _float4& vector);
+	void		SetFloat(const string& Variable, const _float fValue);
+	void		SetResource(const string& Variable, ComPtr<ID3D11ShaderResourceView> resource);
+	void		SetSampler(const string& Variable, ComPtr< ID3D11SamplerState> sampler, UINT iIdx = 0);
+public:
+	void		Apply();
 private:
 	SHADER_INFO			m_ShaderInfo;
+	CInputLayout*		m_pInputLayout = { nullptr };
 
 private:
 	ComPtr<ID3D11Device>		m_pDevice = { nullptr };
