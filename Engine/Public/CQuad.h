@@ -34,14 +34,6 @@ public:
     virtual HRESULT Render();
 
 private:
-    HRESULT		Initialize_Piepline();
- 
-private:
-    void	CreateGeometry();
-    void	CreateInputLayout();
-    void	VertexShader();
-    void	PixelShader();
-
     HRESULT		CreateRasterizerState();
     HRESULT		CreateSamplerState();
     HRESULT		CreateBlendState();
@@ -49,21 +41,24 @@ private:
 public:
     void            Set_RenderGroup(RENDERGROUP eGroup) { m_eRenderGroup = eGroup; }
 private:
-    void		Set_IA();
-    void		Set_VS();
-    void		Set_RS();
-    void		Set_PS();
-    void		Set_OM();
+    void		Set_RasterizerState();
+    void		Set_BlendState();
 
 public:
     static CQuad* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
+    
 protected:
-    RenderPipelineResource<VertexTextureData, TransformData> m_Pipeline;
-    RENDERGROUP m_eRenderGroup = RENDERGROUP::PRIORITY;
+    RenderStates            m_RenderStates;
+    class CTexture* m_pTexture = nullptr;
+    class CShader* m_pTexShader = nullptr;
+    class CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
+
+protected:
+    RENDERGROUP m_eRenderGroup = RENDERGROUP::PRIORITY;
 };
 
 NS_END
