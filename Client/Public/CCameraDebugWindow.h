@@ -52,6 +52,7 @@ private:
     CImgui_Button* m_pOrthoGraphicCamButton = { nullptr };
     
     vector<CImgui_Slider*> m_Sliders;
+    vector<CImgui_Button*> m_CamButtons;
 
 private:
     CGameInstance* m_pGameInstance = { nullptr };

@@ -45,6 +45,7 @@ HRESULT CQuad::Initialize_Copytype(void* pArg)
     }
 
     m_pTexShader = m_pGameInstance->Find_Shader(L"Default");
+    Safe_AddRef(m_pTexShader);
 
     QUAD_DESC* pQuad_Desc = static_cast<QUAD_DESC*>(pArg);
     m_eRenderGroup = pQuad_Desc->eRenderGroup;
@@ -229,6 +230,7 @@ CGameObject* CQuad::Clone(void* pArg)
 void CQuad::Free()
 {
     __super::Free();
+    Safe_Release(m_pTexShader);
     Safe_Release(m_pTexture);
     Safe_Release(m_pVIBufferCom);
 }

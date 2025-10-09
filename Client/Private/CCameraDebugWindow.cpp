@@ -33,10 +33,12 @@ void CCameraDebugWindow::Update()
 {
     ImGui::Begin(m_WindowTitle.c_str(), &m_bOpen);
 
+    ShowMainCameraDebug(m_bClickOrtho);
+
     for (auto& i : m_vWidgets)
         i->Update();
 
-    ShowMainCameraDebug(m_bClickOrtho);
+    
 
     ImGui::End();
 
@@ -106,6 +108,35 @@ HRESULT CCameraDebugWindow::Create_Widgets()
     if (FAILED(Create_Slider(&SliderDesc, &m_Sliders[2])))
         return E_FAIL;
 
+
+    ////////////////////////////////////////////////////
+    //카메라 바꾸는 버튼 세팅
+    m_CamButtons.resize(2);
+    CImgui_Button::IMGUIBUTTON_DESC TargetCamDesc;
+    TargetCamDesc.Label = "TargetCam";
+    TargetCamDesc.m_RelativePos = ImVec2(0.f, 320.f);
+    TargetCamDesc.Tag = L"TargetCamMode";
+    TargetCamDesc.callback = [this]()
+    {
+        m_pGameInstance->SetMainPerspectiveCamera(L"MainCamera");
+
+    };
+    if (FAILED(Create_Button(&TargetCamDesc, &m_CamButtons[0])))
+        return E_FAIL;
+
+    CImgui_Button::IMGUIBUTTON_DESC FreeCamDesc;
+    FreeCamDesc.Label = "FreeCam";
+    FreeCamDesc.m_RelativePos = ImVec2(150.f, 320.f);
+    FreeCamDesc.Tag = L"FreeCam";
+    FreeCamDesc.callback = [this]()
+    {
+        m_pGameInstance->SetMainPerspectiveCamera(L"FreeCamera");
+
+    };
+    if (FAILED(Create_Button(&FreeCamDesc, &m_CamButtons[1])))
+        return E_FAIL;
+
+
     return S_OK;
 }
 
@@ -135,8 +166,13 @@ void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
 
 
     CGameObject* pMainCam = (m_bClickOrtho) ? m_pGameInstance->GetMainOrthoCamera() : m_pGameInstance->GetMainPerspectiveCamera();
+    CCameraComponent* pCameracomp = nullptr;
+
     if (pMainCam == nullptr)
     {
+
+        for (auto& i : m_CamButtons)
+            i->Set_Active(false);
         ImGui::SetCursorPos(ImVec2(0.f, 80.f));
         ImGui::TextColored(ImVec4(255, 0, 0, 255), "MainCam  is Null!!");
         return;
@@ -145,8 +181,13 @@ void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
 
     CheckTrue(m_bClickOrtho == -1);
 
+    for (auto& i : m_CamButtons)
+        i->Set_Active(true);
+
     if (m_bClickOrtho)
     {
+        pCameracomp = dynamic_cast<CCameraComponent*>(pMainCam->Get_Component(L"OrthographicCamera"));
+
         ImGui::SetCursorPos(ImVec2(0.f, 70.f));
         wstring Name = pMainCam->Get_Tag();
         ImGui::TextColored(ImVec4(0, 255, 0, 255), "Name : %s", WStringToUTF8(Name).c_str());
@@ -157,6 +198,8 @@ void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
 
     else
     {
+        pCameracomp = dynamic_cast<CCameraComponent*>(pMainCam->Get_Component(L"PerspectiveCamera"));
+
         ImGui::SetCursorPos(ImVec2(0.f, 70.f));
         wstring Name = pMainCam->Get_Tag();
         ImGui::TextColored(ImVec4(0, 255, 0, 255), "Name : %s", WStringToUTF8(Name).c_str());
@@ -169,9 +212,38 @@ void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
 
     ImGui::SetCursorPos(ImVec2(0.f, 110.f));
     ImGui::Separator();
-    ImGui::SetCursorPos(ImVec2(0.f, 0.f));
+
+ 
+    //카메라의 vAt/Eye/타겟표시
+    _float4 vAt, vEye;
+    class CGameObject* Target = pCameracomp->Get_Target();
+
+  
+    XMStoreFloat4(&vEye, pCameracomp->Get_Eye());
+    XMStoreFloat4(&vAt, pCameracomp->Get_At());
+
+    ImGui::SetCursorPos(ImVec2(0.f, 130.f));
+
+    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
+    ImGui::BulletText("Eye X:%f, Y:%f, Z:%f", vEye.x, vEye.y, vEye.z);
+    ImGui::PopStyleColor();
 
 
+    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 255, 255));
+    ImGui::BulletText("At X:%f, Y:%f, Z:%f", vAt.x, vAt.y, vAt.z);
+    ImGui::PopStyleColor();
+
+    CheckNull(Target);
+    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 0, 255));
+    ImGui::BulletText("Target : %s", WStringToUTF8(Target->Get_Tag()).c_str());
+    ImGui::PopStyleColor();
+
+    ImGui::SetCursorPos(ImVec2(0.f, 190.f));
+    ImGui::Separator();
+
+    ///카메라 바꾸는 버튼 구별 선
+    ImGui::SetCursorPos(ImVec2(0.f, 300.f));
+    ImGui::Separator();
 }
 
 void CCameraDebugWindow::ToggleClickOrtho(bool _b)

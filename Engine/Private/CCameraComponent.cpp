@@ -45,8 +45,8 @@ void CCameraComponent::Update_ViewMatrix(_float fTimeDelta)
     if (!pTransform) return;
 
 
-    _vector vEye = pTransform->Get_State(STATE::POSITION);
-    _vector vAt = vEye + XMVector3Normalize(pTransform->Get_State(STATE::LOOK));
+    vEye = pTransform->Get_State(STATE::POSITION);
+    vAt = vEye + XMVector3Normalize(pTransform->Get_State(STATE::LOOK));
     
 
     //if (m_pTarget)

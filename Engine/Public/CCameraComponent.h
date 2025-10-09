@@ -34,13 +34,17 @@ public:
 public:
     void        Set_Target(class CGameObject* pTarget) { m_pTarget = pTarget; }
     
-
+public:
     const _float4x4& Get_ViewMatrix() { return m_matView; }
     const _float4x4& Get_ProjMatrix() { return m_matProj; }
     const _float3& Get_OffSet() { return m_vOffSet; }
 
     _float Get_Near() { return m_fNear; }
     _float Get_Far() { return m_fFar; }
+
+    const _vector Get_Eye() { return vEye; }
+    const _vector Get_At() { return vAt; }
+    class CGameObject* Get_Target() { return m_pTarget; }
 
 public:
     virtual void        Update_ViewMatrix(_float fTimeDelta);
@@ -66,6 +70,9 @@ public:
     virtual     CComponent* Clone(void* pArg) override;
     virtual     void        Free() override;
 
+private:
+    _vector     vEye;
+    _vector     vAt;
 
 };
 
