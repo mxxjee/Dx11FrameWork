@@ -10,7 +10,7 @@ CTexture::~CTexture()
 {
 }
 
-void CTexture::Create(const wstring& path)
+HRESULT CTexture::LoadImg(const wstring& path)
 {
 
 	//1.이미지 파일을 가져와라.
@@ -23,4 +23,6 @@ void CTexture::Create(const wstring& path)
 
 	hr = CreateShaderResourceView(_device.Get(), img.GetImages(), img.GetImageCount(), md, _shaderResourceView.GetAddressOf());
 	CHECK(hr);
+
+	return hr;
 }
