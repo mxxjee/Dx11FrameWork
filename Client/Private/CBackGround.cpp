@@ -1,16 +1,6 @@
 #include "CBackGround.h"
 #include "CGameInstance.h"
 
-#include "CVertexBuffer.h"
-#include "CIndexBuffer.h"
-#include "CInputLayout.h" 
-#include "CGeometry.h"
-#include "CVertexShader.h"
-#include "CPixelShader.h"
-#include "GeometryHelper.h"
-#include "CDefaultShader.h"
-#include "CConstantBuffer.h"
-#include "CTexture.h"
 #include "Client_Defines.h"
 
 

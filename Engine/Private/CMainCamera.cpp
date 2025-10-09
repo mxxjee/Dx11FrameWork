@@ -102,7 +102,7 @@ void CMainCamera::Follow_Target(_float fTimeDelta)
 {
 	if (!m_pTarget)
 		return;
-	OutputDebugString(L"[CAMERA] Update Tick\n");
+	//OutputDebugString(L"[CAMERA] Update Tick\n");
 
 	CTransform* pTargetTransform = static_cast<CTransform*>(m_pTarget->Get_Component(L"Transform"));
 	if (!m_pTransformCom || !pTargetTransform)

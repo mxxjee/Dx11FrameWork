@@ -1,6 +1,7 @@
 #include "CMainApp.h"
 #include "CGameInstance.h"
 #include "CShader.h"
+#include "VertexData.h"
 
 #include "CLevel_Logo.h"
 #include "CLevel_GamePlay.h"
@@ -126,7 +127,7 @@ void CMainApp::Register_Shaders()
 	OutputDebugStringW(buffer);
 
 	CShader* pInstance = CShader::Create(m_pDevice,
-		m_pContext, L"../Bin/ShaderFiles/Shader_VtxPosTex.hlsl",
+		m_pContext, VTXPOSTEX::desc, L"../Bin/ShaderFiles/Shader_VtxPosTex.hlsl",
 		"DefaultTechnique","Default");
 
 

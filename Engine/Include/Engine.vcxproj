@@ -159,14 +159,13 @@
     <ClInclude Include="..\Public\CFreeCamera.h" />
     <ClInclude Include="..\Public\CGameInstance.h" />
     <ClInclude Include="..\Public\CGameObject.h" />
-    <ClInclude Include="..\Public\CGeometry.h" />
     <ClInclude Include="..\Public\CGraphic_Device.h" />
     <ClInclude Include="..\Public\CImgui_Base.h" />
     <ClInclude Include="..\Public\CImgui_Button.h" />
     <ClInclude Include="..\Public\CImgui_Text.h" />
     <ClInclude Include="..\Public\CImgui_Widget.h" />
     <ClInclude Include="..\Public\CImgui_Window.h" />
-    <ClInclude Include="..\Public\CIndexBuffer.h" />
+    <ClInclude Include="..\Public\CInputLayout.h" />
     <ClInclude Include="..\Public\CInput_Manager.h" />
     <ClInclude Include="..\Public\CLayer.h" />
     <ClInclude Include="..\Public\CLevel.h" />
@@ -189,7 +188,6 @@
     <ClInclude Include="..\Public\CTransform.h" />
     <ClInclude Include="..\Public\CUI.h" />
     <ClInclude Include="..\Public\CUICamera.h" />
-    <ClInclude Include="..\Public\CVertexBuffer.h" />
     <ClInclude Include="..\Public\CVIBuffer.h" />
     <ClInclude Include="..\Public\CVIBuffer_Rect.h" />
     <ClInclude Include="..\Public\Engine_Define.h" />
@@ -199,7 +197,6 @@
     <ClInclude Include="..\Public\Engine_Macro.h" />
     <ClInclude Include="..\Public\Engine_Struct.h" />
     <ClInclude Include="..\Public\Engine_Typedef.h" />
-    <ClInclude Include="..\Public\GeometryHelper.h" />
     <ClInclude Include="..\Public\imconfig.h" />
     <ClInclude Include="..\Public\imgui.h" />
     <ClInclude Include="..\Public\imgui_impl_dx11.h" />
@@ -209,7 +206,6 @@
     <ClInclude Include="..\Public\imstb_rectpack.h" />
     <ClInclude Include="..\Public\imstb_textedit.h" />
     <ClInclude Include="..\Public\imstb_truetype.h" />
-    <ClInclude Include="..\Public\CInputLayout.h" />
     <ClInclude Include="..\Public\MathUtils.h" />
     <ClInclude Include="..\Public\VertexData.h" />
   </ItemGroup>
@@ -223,14 +219,13 @@
     <ClCompile Include="..\Private\CFreeCamera.cpp" />
     <ClCompile Include="..\Private\CGameInstance.cpp" />
     <ClCompile Include="..\Private\CGameObject.cpp" />
-    <ClCompile Include="..\Private\CGeometry.cpp" />
     <ClCompile Include="..\Private\CGraphic_Device.cpp" />
     <ClCompile Include="..\Private\CImgui_Base.cpp" />
     <ClCompile Include="..\Private\CImgui_Button.cpp" />
     <ClCompile Include="..\Private\CImgui_Text.cpp" />
     <ClCompile Include="..\Private\CImgui_Widget.cpp" />
     <ClCompile Include="..\Private\CImgui_Window.cpp" />
-    <ClCompile Include="..\Private\CIndexBuffer.cpp" />
+    <ClCompile Include="..\Private\CInputLayout.cpp" />
     <ClCompile Include="..\Private\CInput_Manager.cpp" />
     <ClCompile Include="..\Private\CLayer.cpp" />
     <ClCompile Include="..\Private\CLevel.cpp" />
@@ -252,10 +247,8 @@
     <ClCompile Include="..\Private\CTransform.cpp" />
     <ClCompile Include="..\Private\CUI.cpp" />
     <ClCompile Include="..\Private\CUICamera.cpp" />
-    <ClCompile Include="..\Private\CVertexBuffer.cpp" />
     <ClCompile Include="..\Private\CVIBuffer.cpp" />
     <ClCompile Include="..\Private\CVIBuffer_Rect.cpp" />
-    <ClCompile Include="..\Private\GeometryHelper.cpp" />
     <ClCompile Include="..\Private\imgui.cpp" />
     <ClCompile Include="..\Private\imgui_demo.cpp" />
     <ClCompile Include="..\Private\imgui_draw.cpp" />
@@ -263,7 +256,6 @@
     <ClCompile Include="..\Private\imgui_impl_win32.cpp" />
     <ClCompile Include="..\Private\imgui_tables.cpp" />
     <ClCompile Include="..\Private\imgui_widgets.cpp" />
-    <ClCompile Include="..\Private\CInputLayout.cpp" />
     <ClCompile Include="..\Public\VertexData.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
