@@ -24,13 +24,13 @@ struct ENGINE_DLL VertexTextureData
 };
 
 //////////////////Vertex Struct////////////////////////
-typedef struct tagVertexPositionTexcoord
+typedef struct ENGINE_DLL  tagVertexPositionTexcoord
 {
 	XMFLOAT3		vPosition;
 	XMFLOAT2		vTexcoord;
 
-	static D3D11_INPUT_ELEMENT_DESC    layoutDesc[];
-
+	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
+	
 }VTXPOSTEX;
 
 
