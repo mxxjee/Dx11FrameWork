@@ -2,6 +2,7 @@
 #include "CGameObject.h"
 #include "CTransform.h"
 #include "MathUtils.h"
+#include "ColorUtils.h"
 
 USING(Client)
 CObjectDebugWindow::CObjectDebugWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -41,14 +42,22 @@ void CObjectDebugWindow::Update()
           
             _float3 rResult = MathUtils::QuaternionToEuler(XMLoadFloat4(&r));
             
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
             ImGui::BulletText("Position X:%f, Y:%f, Z:%f", t.x, t.y, t.z);
+            ImGui::PopStyleColor();
+
             ImGui::Separator();
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
             ImGui::BulletText("Scale X:%f, Y:%f, Z:%f", s.x, s.y, s.z);
+            ImGui::PopStyleColor();
+
             ImGui::Separator();
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 255, 255));
             ImGui::BulletText("Rotation X:%f, Y:%f, Z:%f", 
                 rResult.x,
                 rResult.y,
                 rResult.z);
+            ImGui::PopStyleColor();
         }
     }
         
