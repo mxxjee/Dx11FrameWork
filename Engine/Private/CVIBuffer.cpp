@@ -58,16 +58,7 @@ HRESULT CVIBuffer::Bind_Resource()
     m_pContext->IASetPrimitiveTopology(m_ePrimitiveType);
 
 
-    //2.InputLayout생성
-    ComPtr<ID3D11InputLayout>       pInputLayout;
-  
-    ComPtr<ID3D11VertexShader>  VertexShader;
-    ComPtr<ID3DBlob>  vsBlob;
-
-   // m_pDevice->CreateVertexShader()
-    //m_pDevice->CreateInputL ayout(layoutDesc,sizeof(layoutDesc)/sizeof(layoutDesc[0]),
-   
-    // m_pContext->IASetInputLayout(pInputLayout.Get());
+    //InputLayout은 Shader클래스에서 생성
 
     return S_OK;
 }
