@@ -74,11 +74,16 @@ void CLevelDebugWindow::Update()
                     {
                         const _wstring LayerTag = pair.first;
                         CLayer* pLayer = pair.second;
-                      
+                        int count = pLayer->Get_ObjList().size();
+                        string name = WStringToUTF8(LayerTag);
+
+                        char label[256];
+                        sprintf_s(label, "%s   /  count: %d##%s", name.c_str(), count, name.c_str());
+
                         //현재 씬의 레이어/오브젝트 이름 표시
                         if (pLayer)
                         {
-                            if (ImGui::TreeNode(WStringToUTF8(LayerTag).c_str()))
+                            if (ImGui::TreeNode(label))
                             {
                                 for (auto& i : pLayer->Get_ObjList())
                                 {
@@ -114,10 +119,15 @@ void CLevelDebugWindow::Update()
                 const _wstring LayerTag = pair.first;
                 CLayer* pLayer = pair.second;
 
+                string name = WStringToUTF8(LayerTag);
+                int count = pLayer->Get_ObjList().size();
+
+                char label[256];
+                sprintf_s(label, "%s   /  count: %d##%s", name.c_str(), count, name.c_str());
                 //현재 씬의 레이어/오브젝트 이름 표시
                 if (pLayer)
                 {
-                    if (ImGui::TreeNode(WStringToUTF8(LayerTag).c_str()))
+                    if (ImGui::TreeNode(label))
                     {
                         for (auto& i : pLayer->Get_ObjList())
                         {
@@ -136,7 +146,7 @@ void CLevelDebugWindow::Update()
 
                         ImGui::TreePop();
                     }
-
+                   
                 }
 
             }

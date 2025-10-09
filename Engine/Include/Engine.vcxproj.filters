@@ -190,6 +190,9 @@
     <Filter Include="00.System\04.Shader\InputLayout">
       <UniqueIdentifier>{500e3021-be2b-4b62-92d9-e782a4469fd9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\Slider">
+      <UniqueIdentifier>{0f780794-a478-40ee-a5d4-4234951bc54d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -363,6 +366,9 @@
     <ClInclude Include="..\Public\CInputLayout.h">
       <Filter>00.System\04.Shader\InputLayout</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CImgui_Slider.h">
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Slider</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -505,6 +511,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CInputLayout.cpp">
       <Filter>00.System\04.Shader\InputLayout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CImgui_Slider.cpp">
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Slider</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

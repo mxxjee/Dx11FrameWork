@@ -162,6 +162,7 @@
     <ClInclude Include="..\Public\CGraphic_Device.h" />
     <ClInclude Include="..\Public\CImgui_Base.h" />
     <ClInclude Include="..\Public\CImgui_Button.h" />
+    <ClInclude Include="..\Public\CImgui_Slider.h" />
     <ClInclude Include="..\Public\CImgui_Text.h" />
     <ClInclude Include="..\Public\CImgui_Widget.h" />
     <ClInclude Include="..\Public\CImgui_Window.h" />
@@ -222,6 +223,7 @@
     <ClCompile Include="..\Private\CGraphic_Device.cpp" />
     <ClCompile Include="..\Private\CImgui_Base.cpp" />
     <ClCompile Include="..\Private\CImgui_Button.cpp" />
+    <ClCompile Include="..\Private\CImgui_Slider.cpp" />
     <ClCompile Include="..\Private\CImgui_Text.cpp" />
     <ClCompile Include="..\Private\CImgui_Widget.cpp" />
     <ClCompile Include="..\Private\CImgui_Window.cpp" />

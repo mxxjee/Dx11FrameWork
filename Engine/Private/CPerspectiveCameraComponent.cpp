@@ -47,6 +47,15 @@ void CPerspectiveCameraComponent::Set_ProjectionMatrix()
 	XMStoreFloat4x4(&m_matProj, XMMatrixPerspectiveFovLH(m_fFov, m_fAspect, m_fNear, m_fFar));
 }
 
+void CPerspectiveCameraComponent::Set_CameraValue(float _fNear, float _fFar, float _fFov)
+{
+	m_fNear = _fNear;
+	m_fFar = _fFar;
+	m_fFov = _fFov;
+
+	Set_ProjectionMatrix();
+}
+
 CPerspectiveCameraComponent* CPerspectiveCameraComponent::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 {
 	CPerspectiveCameraComponent* pInstance = new CPerspectiveCameraComponent(pDevice, pContext);

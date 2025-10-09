@@ -71,7 +71,6 @@ CShader* CShader::Clone(void* pArg)
 void CShader::Free()
 {
     __super::Free();
-    Safe_Release(m_ShaderInfo.m_pEffect);
     Safe_Release(m_pInputLayout);
 
 }

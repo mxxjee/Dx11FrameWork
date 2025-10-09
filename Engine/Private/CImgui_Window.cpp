@@ -29,7 +29,7 @@ HRESULT CImgui_Window::Initialize(void* pArg)
 
 void CImgui_Window::Update()
 {
-    if (!m_bOpen)
+    if (!m_bOpen || !m_bActive)
         return;
 
     ImGui::Begin(m_WindowTitle.c_str(),&m_bOpen);

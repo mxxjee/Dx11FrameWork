@@ -39,9 +39,13 @@ public:
     const _float4x4& Get_ProjMatrix() { return m_matProj; }
     const _float3& Get_OffSet() { return m_vOffSet; }
 
+    _float Get_Near() { return m_fNear; }
+    _float Get_Far() { return m_fFar; }
+
 public:
     virtual void        Update_ViewMatrix(_float fTimeDelta);
     virtual void        Set_ProjectionMatrix() {};
+
 
 protected:
     class       CGameObject* m_pTarget = { nullptr };

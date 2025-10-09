@@ -49,6 +49,9 @@
     <ClInclude Include="..\Public\CFloor.h">
       <Filter>02.GameObjects\Floor</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CCameraDebugWindow.h">
+      <Filter>999.ImguiObject\CameraDebugWindow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -113,6 +116,9 @@
     <Filter Include="02.GameObjects\TestPlayer">
       <UniqueIdentifier>{0bc6481b-f5a7-4dd4-92ed-61f25bc7866a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="999.ImguiObject\CameraDebugWindow">
+      <UniqueIdentifier>{9022e8c2-dc6a-45af-9c40-56a09d857aa1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -150,6 +156,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CPanel.cpp">
       <Filter>02.GameObjects\UI\00.Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CCameraDebugWindow.cpp">
+      <Filter>999.ImguiObject\CameraDebugWindow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

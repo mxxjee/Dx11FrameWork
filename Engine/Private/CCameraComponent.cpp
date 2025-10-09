@@ -78,6 +78,7 @@ void CCameraComponent::Update_ViewMatrix(_float fTimeDelta)
     XMStoreFloat4x4(&m_matView, XMMatrixLookAtLH(vEye, vAt,  WORLD_UP));
 }
 
+
 CCameraComponent* CCameraComponent::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 {
     CCameraComponent* pInstance = new CCameraComponent(pDevice, pContext);

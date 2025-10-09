@@ -22,7 +22,7 @@ public:
 	virtual		void	Render()=0;
 
 	const wstring& Get_Tag() { return m_Tag; }
-
+	void		Set_Active(bool _b) { m_bActive = _b; }
 protected:
 	wstring	m_Tag = L"";				//오브젝트 식별용 Tag
 	ComPtr<ID3D11Device>			m_pDevice;
@@ -32,6 +32,8 @@ protected:
 public:
 	virtual void Free();
 
+protected:
+	bool        m_bActive = { true };
 
 };
 NS_END

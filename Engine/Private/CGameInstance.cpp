@@ -382,6 +382,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pObjectManager);
 	Safe_Release(m_pCameraManager);
 	Safe_Release(m_pInputManager);
+	Safe_Release(m_pShaderManager);
 
 	Safe_Release(m_pGraphicDev);
 

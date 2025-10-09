@@ -47,6 +47,23 @@ void COrthographicCameraComponent::Set_ProjectionMatrix()
 	XMStoreFloat4x4(&m_matProj, XMMatrixOrthographicLH(m_vViewWidth, m_vViewHeight, m_fNear, m_fFar));
 }
 
+void COrthographicCameraComponent::Set_CameraValue(float _fNear, float _fFar, float _vViewHeight, float _vViewWidth)
+{
+	m_fNear = _fNear;
+	m_fFar =  _fFar; 
+
+	if (_vViewHeight != 0 || _vViewWidth != 0)
+	{
+		m_vViewHeight = _vViewHeight;
+		m_vViewWidth = _vViewWidth;
+	}
+
+
+	Set_ProjectionMatrix();
+}
+
+
+
 COrthographicCameraComponent* COrthographicCameraComponent::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 {
 	COrthographicCameraComponent* pInstance = new COrthographicCameraComponent(pDevice, pContext);
