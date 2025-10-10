@@ -30,7 +30,7 @@ HRESULT CUI::Initialize_Copytype(void* pArg)
     UI_DESC* pDesc = static_cast<UI_DESC*>(pArg);
 
     pDesc->eRenderGroup = RENDERGROUP::UI;
-       
+
 	CTransform::TRANSFORM_DESC* pTransDesc = static_cast<CTransform::TRANSFORM_DESC*>(pDesc->TransformDesc);
 	_vector vScreenPos = XMVectorSet(pDesc->fX, pDesc->fY, pDesc->Depth, 1.f);
     
@@ -75,6 +75,18 @@ HRESULT CUI::Render()
     __super::Render();
     return S_OK;
 }
+
+_float CUI::Get_Depth()
+{
+    CheckNullResult(m_pTransformCom, 0.f);
+
+    _vector vPos = m_pTransformCom->Get_State(STATE::POSITION, TransformScope::WORLD);
+    
+    return XMVectorGetZ(vPos);
+
+
+}
+ 
 
 
 void CUI::Free()

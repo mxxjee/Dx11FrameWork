@@ -50,10 +50,6 @@ HRESULT CQuad::Initialize_Copytype(void* pArg)
     QUAD_DESC* pQuad_Desc = static_cast<QUAD_DESC*>(pArg);
     m_eRenderGroup = pQuad_Desc->eRenderGroup;
 
-    CreateRasterizerState();
-    CreateSamplerState();
-    CreateBlendState();
-
     m_pTexture = new CTexture(m_pDevice);
     if(FAILED(m_pTexture->LoadImg(pQuad_Desc->ImgPath)))
         return E_FAIL;
@@ -102,7 +98,7 @@ HRESULT CQuad::Render()
 
     m_pTexShader->SetMatrix("g_ViewProjMatrix", _fViewProj);
     m_pTexShader->SetResource("texture0", m_pTexture->GetComPtr());
-    m_pTexShader->SetSampler("sampler0", m_RenderStates._samplerState);
+    //m_pTexShader->SetSampler("sampler0", m_RenderStates._samplerState);
 
 
     //IA단계
@@ -112,9 +108,9 @@ HRESULT CQuad::Render()
     m_pTexShader->Apply();
 
     //RS단계
-    Set_RasterizerState();
+    //Set_RasterizerState();
     
-    Set_BlendState();           //OM단계
+    //Set_BlendState();           //OM단계
     m_pVIBufferCom->Render();      //OM단계
     return S_OK;
 }
@@ -124,81 +120,7 @@ HRESULT CQuad::Render()
 
 
 
-HRESULT CQuad::CreateRasterizerState()
-{
-    D3D11_RASTERIZER_DESC desc;
-    memset(&desc, 0, sizeof(desc));
 
-    desc.FillMode = D3D11_FILL_SOLID;//WIREFRAME of SOLID
-    desc.CullMode = D3D11_CULL_NONE;//CULLMODE: 반시계 컬링
-    desc.FrontCounterClockwise = false;
-    desc.DepthClipEnable = true;
-
-    HRESULT hr = m_pDevice->CreateRasterizerState(&desc, m_RenderStates._rasterizerState.GetAddressOf());
-    CHECK(hr);
-
-    return S_OK;
-}
-
-HRESULT CQuad::CreateSamplerState()
-{
-    D3D11_SAMPLER_DESC desc;
-    memset(&desc, 0, sizeof(desc));
-    desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-    desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-    desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-    desc.BorderColor[0] = 0.0f;
-    desc.BorderColor[1] = 0.0f;
-    desc.BorderColor[2] = 0.0f;
-    desc.BorderColor[3] = 0.0f;
-
-
-    desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-    desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-    desc.MaxAnisotropy = 16;
-    desc.MaxLOD = FLT_MAX;
-    desc.MinLOD = FLT_MIN;
-    desc.MipLODBias = 0.0f;
-
-    m_pDevice->CreateSamplerState(&desc, m_RenderStates._samplerState.GetAddressOf());
-
-    return S_OK;
-}
-
-HRESULT CQuad::CreateBlendState()
-{
-    D3D11_BLEND_DESC desc;
-    memset(&desc, 0, sizeof(desc));
-    desc.AlphaToCoverageEnable = false;
-    desc.IndependentBlendEnable = false;
-
-    desc.RenderTarget[0].BlendEnable = true;
-    desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-    desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-    desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-    desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-    desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-    desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-    desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-    HRESULT hr = m_pDevice->CreateBlendState(&desc, m_RenderStates._BlendState.GetAddressOf());
-    CHECK(hr);
-    return S_OK;
-}
-
-
-void CQuad::Set_RasterizerState()
-{
-    m_pContext.Get()->RSSetState(m_RenderStates._rasterizerState.Get());
-
-}
-
-
-void CQuad::Set_BlendState()
-{
-    m_pContext.Get()->OMSetBlendState(m_RenderStates._BlendState.Get(), nullptr, 0xFFFFFFFF);
-    
-}
 
 CQuad* CQuad::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
@@ -209,9 +131,6 @@ CQuad* CQuad::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> 
         Safe_Release(pInstance);
 
     }
-
-
-
     return pInstance;
 }
 

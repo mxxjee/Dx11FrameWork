@@ -4,6 +4,7 @@
 NS_BEGIN(Engine)
 class CGameObject;
 
+
 class CRenderer :
     public CBase
 {
@@ -23,7 +24,13 @@ private:
     void        Render_NonBlend();
     void        Render_Blend();
     void        Render_UI();
-
+    
+private:
+    void    CreateSamplerStates();
+    void    CreateBlendStates();
+    void    CreateRasterizerStates();
+    void    CreateDepthStencilStates();
+    
 private:
     ComPtr<ID3D11Device> m_pDevice = nullptr;
     ComPtr<ID3D11DeviceContext> m_pContext = nullptr;
@@ -34,6 +41,9 @@ public:
     list<class CGameObject*>        m_RenderObjects[ENUM_TO_UINT(RENDERGROUP::END)];
     virtual void    Free() override;
 
+private:
+    RenderStates m_RenderStates[ENUM_TO_UINT(RENDERGROUP::END)];
+    _matrix       m_MainCameraView;
 };
 
 NS_END

@@ -67,18 +67,26 @@ const _float4x4& CCamera_Manager::GetViewMatrix(bool isOrtho) const
 	if (!isOrtho)
 	{
 		CComponent* pComp = m_pMainPerspectiveCamera->Get_Component(L"PerspectiveCamera");
-		CPerspectiveCameraComponent* pPers = dynamic_cast<CPerspectiveCameraComponent*>(pComp);
+		if (pComp)
+		{
+			CPerspectiveCameraComponent* pPers = dynamic_cast<CPerspectiveCameraComponent*>(pComp);
+			return pPers->Get_ViewMatrix();
+		}
 
-		return pPers->Get_ViewMatrix();
+	
 
 	}
 
 	else
 	{
 		CComponent* pComp = m_pMainOrthoCamera->Get_Component(L"OrthographicCamera");
-		COrthographicCameraComponent* pOrtho = dynamic_cast<COrthographicCameraComponent*>(pComp);
+		if (pComp)
+		{
+			COrthographicCameraComponent* pOrtho = dynamic_cast<COrthographicCameraComponent*>(pComp);
 
-		return pOrtho->Get_ViewMatrix();
+			return pOrtho->Get_ViewMatrix();
+		}
+		
 	}
 }
 

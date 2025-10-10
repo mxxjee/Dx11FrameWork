@@ -267,6 +267,7 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
 
     Desc.ObjTag = L"Test";
     Desc.ImgPath = L"../../Resource/Character.png";
+    Desc.eRenderGroup = RENDERGROUP::ALPHA;
 
 
     CTransform::TRANSFORM_DESC TransDesc = {};
@@ -299,7 +300,7 @@ void CLevel_Logo::OnEnter()
     {
         CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
         CheckNull(ppMainCamera);
-        ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO),
             L"Player_Layer",
             L"Player"),true);
     }

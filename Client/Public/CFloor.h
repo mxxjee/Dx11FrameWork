@@ -22,12 +22,19 @@ public:
     virtual void        Update_Render(_float fTimeDelta) override;
 
 
-    virtual HRESULT Render();
+    virtual HRESULT Render();\
+       
+
+private:
+    HRESULT CreateRasterizerState();
 
 public:
     static CFloor* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
+
+private:
+    ComPtr<ID3D11RasterizerState> RasterizerState;
 
 };
 

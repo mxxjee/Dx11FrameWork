@@ -33,16 +33,10 @@ public:
 
     virtual HRESULT Render();
 
-private:
-    HRESULT		CreateRasterizerState();
-    HRESULT		CreateSamplerState();
-    HRESULT		CreateBlendState();
 
 public:
     void            Set_RenderGroup(RENDERGROUP eGroup) { m_eRenderGroup = eGroup; }
-private:
-    void		Set_RasterizerState();
-    void		Set_BlendState();
+
 
 public:
     static CQuad* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);

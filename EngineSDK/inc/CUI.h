@@ -29,6 +29,8 @@ public:
 
     virtual HRESULT Render();
 
+public:
+    _float        Get_Depth();
 
 public:
     virtual CGameObject* Clone(void* pArg)=0;

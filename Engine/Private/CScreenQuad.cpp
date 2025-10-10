@@ -42,7 +42,7 @@ HRESULT CScreenQuad::Initialize_Copytype(void* pArg)
     m_pTexShader = m_pGameInstance->Find_Shader(L"Brightness");
     Safe_AddRef(m_pTexShader);
 
-    m_eRenderGroup = RENDERGROUP::UI;
+    m_eRenderGroup = RENDERGROUP::NONALPHA;
 
     CreateRasterizerState();
     CreateSamplerState();
@@ -90,20 +90,15 @@ HRESULT CScreenQuad::Render()
     m_pTexShader->SetMatrix("g_ViewProjMatrix", _fViewProj);
     m_pTexShader->SetFloat("g_Brightness", 0.4f);
 
-    m_pTexShader->SetResource("texture0", m_pTexture->GetComPtr());
-    m_pTexShader->SetSampler("sampler0", m_RenderStates._samplerState);
-    
+    m_pTexShader->SetResource("texture0", m_pTexture->GetComPtr());  
 
     //IA단계
     m_pVIBufferCom->Bind_Resource();
-
+    Set_RasterizerState();
     //VS-PS
     m_pTexShader->Apply();
 
-    //RS단계
-    Set_RasterizerState();
-
-    Set_BlendState();           //OM단계
+    //OM단계
     m_pVIBufferCom->Render();      //OM단계
     return S_OK;
 }

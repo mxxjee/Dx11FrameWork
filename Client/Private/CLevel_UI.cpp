@@ -21,7 +21,7 @@ void CLevel_UI::Update_Priority(_float fTimeDelta)
 {
 	__super::Update_Priority(fTimeDelta);
 	if (m_pGameInstance->IsKeyPressed(KeyCode::Space))
-		m_pGameInstance->Pop_Level();
+		m_pGameInstance->Pop_Level() ;
 
 }
 

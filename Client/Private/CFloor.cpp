@@ -27,6 +27,9 @@ HRESULT CFloor::Initialize_Copytype(void* pArg)
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
+    if (FAILED(CreateRasterizerState()))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -49,17 +52,28 @@ void CFloor::Update_Late(_float fTimeDelta)
 void CFloor::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
-    m_pGameInstance->Add_RenderObject(RENDERGROUP::NONALPHA, this);
+    m_pGameInstance->Add_RenderObject(RENDERGROUP::PRIORITY, this);
 
 }
 
 HRESULT CFloor::Render()
 {
     __super::Render();
+    m_pContext->RSSetState(RasterizerState.Get());
 
     return S_OK;
 }
 
+
+HRESULT CFloor::CreateRasterizerState()
+{
+    D3D11_RASTERIZER_DESC desc = CD3D11_RASTERIZER_DESC(D3D11_DEFAULT);
+    desc.CullMode = D3D11_CULL_NONE;
+
+    m_pDevice->CreateRasterizerState(&desc, RasterizerState.GetAddressOf());
+
+    return S_OK;
+}
 
 CFloor* CFloor::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
