@@ -34,6 +34,7 @@ HRESULT CTransform::Initialize_Copytype(void* pArg)
 	m_fRotationPerSec = pDesc->fRotationPerSec;
 
 	XMStoreFloat4x4(&m_LocalWorldMatrix, XMMatrixIdentity());
+
 	m_WorldMatrix = m_LocalWorldMatrix;
 
 	Set_State(STATE::POSITION, pDesc->vLocalPosition);
@@ -91,6 +92,7 @@ _vector CTransform::Get_State(STATE eState, TransformScope eScope)
 void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space)
 {
 	_vector vPosition = Get_State(STATE::POSITION);
+	bool	m_bCross = false;
 
 	STATE TargetState=STATE::END;
 	_float fTargetSpeed = (eDir > DIRECTION::UP) ? m_fSpeedPerSec * (-1) : m_fSpeedPerSec;
@@ -118,11 +120,48 @@ void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space)
 
 			break;
 
+		case Engine::DIRECTION::RIGHTUP:
+		case Engine::DIRECTION::LEFTDOWN:
+		{
+			m_bCross = true;
+
+			_vector vUp = Get_State(STATE::LOOK);
+			_vector vRight = Get_State(STATE::RIGHT);
+
+			vTargetAxis = vUp + vRight;
+
+			fTargetSpeed = m_fSpeedPerSec;
+			float fValue = eDir == DIRECTION::RIGHTUP ? 1 : -1;
+
+			fTargetSpeed *= fValue;
+
+		}
+			break;
+
+		case Engine::DIRECTION::LEFTUP:
+		case Engine::DIRECTION::RIGHTDOWN:
+		{
+			m_bCross = true;
+
+			_vector vUp = Get_State(STATE::LOOK);
+			_vector vLeft = Get_State(STATE::RIGHT) * (-1);
+
+			vTargetAxis = vUp + vLeft;
+
+			fTargetSpeed = m_fSpeedPerSec;
+			float fValue = eDir == DIRECTION::LEFTUP ? 1 : -1;
+
+			fTargetSpeed *= fValue;
+
+		}
+		break;
+
 		default:
 			break;
 		}
-
-		vTargetAxis = Get_State(TargetState);
+		
+		if(!m_bCross)
+			vTargetAxis = Get_State(TargetState);
 	}
 
 	else
@@ -150,9 +189,10 @@ void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space)
 	}
 	
 
-	
+
 	vPosition += XMVector3Normalize(vTargetAxis) * fTargetSpeed * fTimeDelta;
 	Set_State(STATE::POSITION, vPosition);
+
 
 }
 

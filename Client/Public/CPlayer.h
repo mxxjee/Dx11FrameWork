@@ -32,6 +32,8 @@ public:
     virtual void Free() override;
 
 
+private:
+    bool bPressed = false;
 };
 
 NS_END

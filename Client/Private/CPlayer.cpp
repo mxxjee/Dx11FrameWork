@@ -73,23 +73,56 @@ HRESULT CPlayer::Render()
 void CPlayer::Move_Input(_float fTimeDelta)
 {
     if (m_pGameInstance->IsKeyHeld(KeyCode::RightArrow))
-        m_pTransformCom->Move(DIRECTION::RIGHT, fTimeDelta);
+    {
+        bPressed = true;
+
+        if (m_pGameInstance->IsKeyHeld(KeyCode::UpArrow))
+            m_pTransformCom->Rotation(_float3(0.f, -135.f, 0.f));
+
+        else if (m_pGameInstance->IsKeyHeld(KeyCode::DownArrow))
+            m_pTransformCom->Rotation(_float3(0.f, -45.f, 0.f));
+        else
+            m_pTransformCom->Rotation(_float3(0.f, -90.f, 0.f));
+    }
 
 
-    if (m_pGameInstance->IsKeyHeld(KeyCode::LeftArrow))
-        m_pTransformCom->Move(DIRECTION::LEFT, fTimeDelta);
 
-    if (m_pGameInstance->IsKeyHeld(KeyCode::UpArrow))
-        m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta);
+    else if (m_pGameInstance->IsKeyHeld(KeyCode::LeftArrow))
+    {
+        bPressed = true;
 
-    if (m_pGameInstance->IsKeyHeld(KeyCode::DownArrow))
-        m_pTransformCom->Move(DIRECTION::BACKWARD, fTimeDelta);
+        if (m_pGameInstance->IsKeyHeld(KeyCode::UpArrow))
+            m_pTransformCom->Rotation(_float3(0.f, 135.f, 0.f));
 
-    if (m_pGameInstance->IsKeyHeld(KeyCode::A))
-        m_pTransformCom->AddRotation(_float3(0.f, 10.f, 0.f));
+        else if (m_pGameInstance->IsKeyHeld(KeyCode::DownArrow))
+            m_pTransformCom->Rotation(_float3(0.f, 45.f, 0.f));
+        else
+            m_pTransformCom->Rotation(_float3(0.f, 90.f, 0.f));
+    }
 
-    if (m_pGameInstance->IsKeyHeld(KeyCode::D))
-        m_pTransformCom->AddRotation(_float3(0.f, -10.f, 0.f));
+
+    else if (m_pGameInstance->IsKeyHeld(KeyCode::UpArrow))
+    {
+        bPressed = true;
+        m_pTransformCom->Rotation(_float3(0.f, 180.f, 0.f));
+    }
+
+
+    else if (m_pGameInstance->IsKeyHeld(KeyCode::DownArrow))
+    {
+        bPressed = true;
+        m_pTransformCom->Rotation(_float3(0.f, 0.f, 0.f));
+    }
+
+
+    if (m_pGameInstance->IsKeyReleased(KeyCode::UpArrow) ||
+        m_pGameInstance->IsKeyReleased(KeyCode::DownArrow) ||
+        m_pGameInstance->IsKeyReleased(KeyCode::LeftArrow) ||
+        m_pGameInstance->IsKeyReleased(KeyCode::RightArrow))
+        bPressed = false;
+
+      if (bPressed)
+        m_pTransformCom->Move(DIRECTION::FORWARD, (-1)*fTimeDelta);
 
 
 }
