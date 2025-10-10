@@ -51,17 +51,17 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
 void CLevel_Logo::Update_Priority(_float fTimeDelta)
 {
     __super::Update_Priority(fTimeDelta);
-    if (GetKeyState('P') & 0x8000)
+    if (m_pGameInstance->IsKeyPressed(KeyCode::P))
     {
         LevelArgs args;
-        args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::GAMEPLAY);
-        args.changeType = LEVELCHANGETYPE::OVERLAY;
-        args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+        args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
+        args.changeType = LEVELCHANGETYPE::PUSH;
+        //args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
 
 
         if (FAILED(m_pGameInstance->Level_Changer(
-            ENUM_TO_UINT(LEVEL_ID::LOADING),
+            ENUM_TO_UINT(LEVEL_ID::UI),
             args)))
             return;
     }
@@ -190,7 +190,7 @@ HRESULT CLevel_Logo::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
     if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
         PROTO_OBJ_NAME(L"Floor"),
-        ENUM_TO_UINT(LEVEL_ID::STATIC),
+        ENUM_TO_UINT(LEVEL_ID::LOGO),
         strLayerTag, &desc)))
         return E_FAIL;
         
@@ -217,7 +217,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
 
     if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
         PROTO_OBJ_NAME(L"Panel"),
-        ENUM_TO_UINT(LEVEL_ID::STATIC),
+        ENUM_TO_UINT(LEVEL_ID::LOGO),
         strLayerTag, &Desc)))
         return E_FAIL;
 
@@ -254,7 +254,7 @@ HRESULT CLevel_Logo::Ready_Layer_Player(const _wstring& strLayerTag)
 
     if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
         PROTO_OBJ_NAME(L"Player"),
-        ENUM_TO_UINT(LEVEL_ID::STATIC),
+        ENUM_TO_UINT(LEVEL_ID::LOGO),
         strLayerTag, &Desc)))
         return E_FAIL;
 
@@ -279,7 +279,7 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
 
     if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
         PROTO_OBJ_NAME(L"Quad"),
-        ENUM_TO_UINT(LEVEL_ID::STATIC),
+        ENUM_TO_UINT(LEVEL_ID::LOGO),
         strLayerTag, &Desc)))
         return E_FAIL;
 

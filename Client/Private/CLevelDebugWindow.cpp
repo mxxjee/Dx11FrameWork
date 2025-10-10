@@ -65,6 +65,10 @@ void CLevelDebugWindow::Update()
                 case LEVEL_ID::GAMEPLAY:
                     LevelName = "GAMEPLAY";
                     break;
+
+                case LEVEL_ID::UI:
+                    LevelName = "UI";
+                    break;
                 }
 
                 if (ImGui::CollapsingHeader(LevelName.c_str()))

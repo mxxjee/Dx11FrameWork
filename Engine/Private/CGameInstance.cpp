@@ -273,6 +273,10 @@ HRESULT CGameInstance::Add_RenderObject(RENDERGROUP eID, CGameObject* pRenderObj
 	CheckNullResult(m_pRenderer, E_FAIL);
 	return m_pRenderer->Add_RenderObject(eID, pRenderObject);
 }
+HRESULT CGameInstance::Get_Buffer(ComPtr<ID3D11Texture2D>* pBuffer, UINT iFlag)
+{
+	return m_pGraphicDev->Get_Buffer(pBuffer,iFlag);
+}
 #pragma endregion
 
 

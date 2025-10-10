@@ -7,6 +7,7 @@
 #include "CMainCamera.h"
 #include "CUICamera.h"
 #include "CFreeCamera.h"
+#include "CScreenQuad.h"
 
 #include "CTransform.h"
 #include "CPerspectiveCameraComponent.h"
@@ -80,6 +81,9 @@ HRESULT CLoader::Loading()
         Loading_GamePlay();
         break;
 
+    case LEVEL_ID::UI:
+        Loading_UI();
+        break;
     case Client::LEVEL_ID::END:
         break;
 
@@ -182,9 +186,35 @@ HRESULT CLoader::Loading_Logo()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Player"), CPlayer::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"ScreenQuad"), CScreenQuad::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
     m_isFinished = true;
     return S_OK;
 }
+
+HRESULT CLoader::Loading_UI()
+{
+    lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
+    for (size_t i = 0; i < 88899999; i++)
+    {
+        int a = 10;
+    }
+    lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
+    for (size_t i = 0; i < 88889999; i++)
+    {
+        int a = 10;
+    }
+    lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
+    for (size_t i = 0; i < 88889999; i++)
+    {
+        int a = 10;
+    }
+    lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
+    m_isFinished = true;
+    return S_OK;
+}
+
 
 
 CLoader* CLoader::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LEVEL_ID iNextLevelID)

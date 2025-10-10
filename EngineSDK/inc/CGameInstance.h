@@ -48,13 +48,10 @@ public:
     const vector<CLevel*>* Get_LevelStack();
 #pragma endregion
   
-
-
 #pragma region LevelFactory
     void            Register_Level(_uint iSceneID, LevelCreator Creator);
     CLevel* Create_Level(_uint iSceneID, LevelArgs _Arg);
 #pragma endregion
-
 
 #pragma region TimerManager
 public:
@@ -62,7 +59,6 @@ public:
     HRESULT			Add_Timer(const _tchar * pTimerTag);
     void			Compute_TimeDelta(const _tchar * pTimerTag);
 #pragma endregion
-
 
 #pragma region ProtoManager
 public:
@@ -85,11 +81,14 @@ public:
     class CGameObject* Find_GameObject(_uint iLevelIndex, const _wstring & LayerTag, const _wstring & Tag);
 #pragma endregion
 
-
 #pragma region Renderer
 public:
     HRESULT         Add_RenderObject(RENDERGROUP eID, class CGameObject * pRenderObject);
 
+#pragma endregion
+
+#pragma region GraphicDevice
+    HRESULT     Get_Buffer(ComPtr<ID3D11Texture2D>*pBuffer, UINT iFlag = 0);
 #pragma endregion
 
 #pragma region CameraManager

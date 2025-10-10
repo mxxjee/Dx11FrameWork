@@ -39,6 +39,9 @@ public:
 	/* 후면 버퍼를 전면버퍼로 교체한다.(백버퍼를 화면에 직접 보여준다.) */
 	HRESULT Present();
 
+	/*백버퍼를 가져온다.*/
+	HRESULT		Get_Buffer(ComPtr<ID3D11Texture2D>* pBuffer,UINT iFlag=0);
+
 private:
 	// IDirect3DDevice9* == LPDIRECT3DDEVICE9 == ID3D11Device + ID3D11DeviceContext 	
 

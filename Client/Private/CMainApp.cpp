@@ -6,6 +6,7 @@
 #include "CLevel_Logo.h"
 #include "CLevel_GamePlay.h"
 #include "CLevel_Loading.h"
+#include "CLevel_UI.h"
 
 #include "CImGui_Manager.h"
 #include "CImgui_Button.h"
@@ -114,6 +115,11 @@ void CMainApp::Register_Levels()
 			return CLevel_GamePlay::Create(m_pDevice, m_pContext, args);
 		});
 
+	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::UI), [this](LevelArgs& args)->CLevel*
+		{
+			return CLevel_UI::Create(m_pDevice, m_pContext, args);
+		});
+
 
 	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOADING), [this](LevelArgs& args)->CLevel*
 		{
@@ -134,8 +140,14 @@ void CMainApp::Register_Shaders()
 		m_pContext, VTXPOSTEX::desc, L"../Bin/ShaderFiles/Shader_VtxPosTex.hlsl",
 		"DefaultTechnique","Default");
 
+	CShader* pBrightInstance = CShader::Create(m_pDevice,
+		m_pContext, VTXPOSTEX::desc, L"../Bin/ShaderFiles/Shader_VtxPosTex.hlsl",
+		"DefaultTechnique", "Brightness");
+
 
 	pGameInstance->Register_Shader(L"Default", pInstance);
+	pGameInstance->Register_Shader(L"Brightness", pBrightInstance);
+	
 }
 
 HRESULT CMainApp::Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)

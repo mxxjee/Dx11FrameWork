@@ -193,6 +193,9 @@
     <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\Slider">
       <UniqueIdentifier>{0f780794-a478-40ee-a5d4-4234951bc54d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObject\ScreenQuad">
+      <UniqueIdentifier>{bc36f309-c887-4cca-afb5-f4edd4432e5d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -369,6 +372,9 @@
     <ClInclude Include="..\Public\CImgui_Slider.h">
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Slider</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CScreenQuad.h">
+      <Filter>03.GameObject\ScreenQuad</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -514,6 +520,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CImgui_Slider.cpp">
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Slider</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CScreenQuad.cpp">
+      <Filter>03.GameObject\ScreenQuad</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

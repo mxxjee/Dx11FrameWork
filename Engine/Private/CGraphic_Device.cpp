@@ -102,6 +102,17 @@ HRESULT CGraphic_Device::Present()
 	return m_pSwapChain->Present(0, 0);
 }
 
+HRESULT CGraphic_Device::Get_Buffer(ComPtr<ID3D11Texture2D>* pBuffer,UINT iFlag)
+{
+	//매개변수로 받은 pBuffer를 채워줌
+	m_pSwapChain->GetBuffer(iFlag, __uuidof(ID3D11Texture2D), (void**)(pBuffer->GetAddressOf()));
+	
+	if (pBuffer->Get() == nullptr)
+		return E_FAIL;
+
+	return S_OK;
+}
+
 
 HRESULT CGraphic_Device::Ready_SwapChain(HWND hWnd, WINMODE isWindowed, _uint iWinCX, _uint iWinCY)
 {

@@ -52,6 +52,9 @@
     <ClInclude Include="..\Public\CCameraDebugWindow.h">
       <Filter>999.ImguiObject\CameraDebugWindow</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CLevel_UI.h">
+      <Filter>01.Levels\OverlayUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -119,6 +122,9 @@
     <Filter Include="999.ImguiObject\CameraDebugWindow">
       <UniqueIdentifier>{9022e8c2-dc6a-45af-9c40-56a09d857aa1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\OverlayUI">
+      <UniqueIdentifier>{3f3f6354-b4d1-4f75-8b52-2b1ab05e3537}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -159,6 +165,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CCameraDebugWindow.cpp">
       <Filter>999.ImguiObject\CameraDebugWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_UI.cpp">
+      <Filter>01.Levels\OverlayUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
