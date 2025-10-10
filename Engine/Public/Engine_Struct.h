@@ -50,6 +50,8 @@ namespace Engine
 		ComPtr<ID3D11RasterizerState> _rasterizerState = nullptr;
 		ComPtr<ID3D11SamplerState>		_samplerState = nullptr;
 		ComPtr<ID3D11BlendState> _BlendState = nullptr;
+		ComPtr<ID3D11DepthStencilState> _DepthStencilState = nullptr;
+
 	};
 
 

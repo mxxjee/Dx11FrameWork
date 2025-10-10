@@ -86,7 +86,7 @@ void CMainCamera::Set_Target(CGameObject* pTarget, bool bInit)
 		CTransform* pTargetTransform = static_cast<CTransform*>(m_pTarget->Get_Component(L"Transform"));
 		if (pTargetTransform && m_pTransformCom)
 		{
-			_vector vTargetPos = pTargetTransform->Get_State(STATE::POSITION);
+			_vector vTargetPos = pTargetTransform->Get_State(STATE::POSITION,TransformScope::WORLD);
 			_float3 vOffset = pCamera->Get_OffSet();
 
 			_vector vStartPos = vTargetPos + XMLoadFloat3(&vOffset);
@@ -113,7 +113,7 @@ void CMainCamera::Follow_Target(_float fTimeDelta)
 	CCameraComponent* pCamera = static_cast<CCameraComponent*>(Get_Component(L"PerspectiveCamera"));
 	CheckNull(pCamera);
 
-	const _vector TargetPos = pTargetTransform->Get_State(STATE::POSITION);
+	const _vector TargetPos = pTargetTransform->Get_State(STATE::POSITION,TransformScope::WORLD);
 	const _float3 Offset = pCamera->Get_OffSet();
 	
 	m_pTransformCom->MoveLerp(TargetPos + XMLoadFloat3(&Offset), 5.f, fTimeDelta);

@@ -5,7 +5,10 @@ namespace Engine
 {
 	enum class WINMODE { FULL, WIN }; 
 	enum class STATE{RIGHT,UP,LOOK,POSITION,END};
-	enum class DIRECTION {FORWARD,RIGHT,UP,BACKWARD,LEFT,DOWN,END};
+	enum class DIRECTION {FORWARD,RIGHT,UP,BACKWARD,LEFT,DOWN,
+
+						RIGHTUP,RIGHTDOWN,
+						LEFTUP,LEFTDOWN,END};
 	
 	enum class Space : UINT8 
 	{Local=1<<0,

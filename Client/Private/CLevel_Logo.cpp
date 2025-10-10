@@ -146,7 +146,7 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
     /*부모행렬테스트*/
     if (m_pGameInstance->IsKeyPressed(KeyCode::Q))
     {
-        CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Test_Layer", L"Test");
+      /*  CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Test_Layer", L"Test");
         CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");
 
         if (pTestObject)
@@ -157,7 +157,7 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
             else
                 pTestObject->Get_Transform()->Set_Parent(nullptr);
 
-        }
+        }*/
     }
 }
 
@@ -284,27 +284,47 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
         strLayerTag, &Desc)))
         return E_FAIL;
 
+
     return S_OK;
 }
 
 void CLevel_Logo::OnEnter()
-{
+{    
     //메인카메라 등록
     m_pGameInstance->SetMainOrthoCamara(L"UICamera");
+    m_pGameInstance->SetMainPerspectiveCamera(L"MainCamera");
 
-	m_pGameInstance->SetMainPerspectiveCamera(L"MainCamera");
-   
 
+    CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Test_Layer", L"Test");
+    CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Player_Layer", L"Player");
+
+    if (pTestObject)
+    {
+        if (pTestObject->Get_Transform()->Get_Parent() == nullptr)
+        {
+            pTestObject->Get_Transform()->Set_State(STATE::POSITION, XMVectorSet(0.f, 0.f, -1.f, 1.f));
+            pTestObject->Get_Transform()->Set_Parent(pPlayerObject->Get_Transform());
+        }
+
+
+        else
+            pTestObject->Get_Transform()->Set_Parent(nullptr);
+
+    }
+
+    //소켓을 카메라 타겟으로
     CGameObject* pMainCamera = m_pGameInstance->GetMainPerspectiveCamera();
     if (pMainCamera)
     {
         CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
         CheckNull(ppMainCamera);
         ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO),
-            L"Player_Layer",
-            L"Player"),true);
+            L"Test_Layer",
+            L"Test"),true);
     }
     
+    
+
  
 }
 
@@ -424,7 +444,7 @@ void CLevel_Logo::Create_UICamera()
     COrthographicCameraComponent::ORTHOGRAPHIC_DESC UICameraDesc = {};
 
     UICameraDesc.fNear = 0.1f;
-    UICameraDesc.fFar = 1000.f;
+    UICameraDesc.fFar = 1.f;
 
     UICameraDesc.ViewWdith = (float)g_iWinSizeX;
     UICameraDesc.ViewHeight = (float)g_iWinSizeY;

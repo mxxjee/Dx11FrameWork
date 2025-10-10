@@ -84,7 +84,6 @@ public:
 #pragma region Renderer
 public:
     HRESULT         Add_RenderObject(RENDERGROUP eID, class CGameObject * pRenderObject);
-
 #pragma endregion
 
 #pragma region GraphicDevice
