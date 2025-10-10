@@ -87,7 +87,6 @@ HRESULT CScreenQuad::Render()
     XMStoreFloat4x4(&_fViewProj, m_pGameInstance->GetMulViewProjMatrix(true));
      
 
-    m_pTexShader->SetMatrix("g_ViewProjMatrix", _fViewProj);
     m_pTexShader->SetFloat("g_Brightness", 0.4f);
 
     m_pTexShader->SetResource("texture0", m_pTexture->GetComPtr());  
@@ -184,7 +183,7 @@ void CScreenQuad::Set_ScreenTexture(UINT iFlag)
 
     //GPUº¹»ç
     m_pContext->CopyResource(pCopiedTex.Get(), pBackBuffer.Get());
-
+     
     m_pTexture->CreateResourceViewByTex(pCopiedTex);
 
 

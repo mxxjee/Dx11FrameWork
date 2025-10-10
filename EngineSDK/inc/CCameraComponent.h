@@ -51,6 +51,8 @@ public:
     virtual void        Set_ProjectionMatrix() {};
 
 
+public:
+    _matrix         Get_MulViewProjMatrix();
 protected:
     class       CGameObject* m_pTarget = { nullptr };
    

@@ -78,6 +78,14 @@ void CCameraComponent::Update_ViewMatrix(_float fTimeDelta)
     XMStoreFloat4x4(&m_matView, XMMatrixLookAtLH(vEye, vAt,  WORLD_UP));
 }
 
+_matrix CCameraComponent::Get_MulViewProjMatrix()
+{
+    _matrix ProjMat = XMLoadFloat4x4(&m_matProj);
+    _matrix ViewMat = XMLoadFloat4x4(&m_matView);
+
+    return XMMatrixMultiply(ViewMat, ProjMat);
+}
+
 
 CCameraComponent* CCameraComponent::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 {

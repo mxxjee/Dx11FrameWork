@@ -112,14 +112,20 @@ const _float4x4& CCamera_Manager::GetProjMatrix(bool isOrtho) const
 const _matrix CCamera_Manager::GetMulViewProjMatrix(bool isOrtho) const
 {
 	// TODO: 여기에 return 문을 삽입합니다.
+	if (!isOrtho)
+	{
+		CComponent* pComp = m_pMainPerspectiveCamera->Get_Component(L"PerspectiveCamera");
+		CPerspectiveCameraComponent* pPers = dynamic_cast<CPerspectiveCameraComponent*>(pComp);
 
-	_float4x4 Proj = GetProjMatrix(isOrtho);
-	_float4x4 View = GetViewMatrix(isOrtho);
+		return pPers->Get_MulViewProjMatrix();
+	}
+	else
+	{
+		CComponent* pComp = m_pMainOrthoCamera->Get_Component(L"OrthographicCamera");
+		COrthographicCameraComponent* pOrtho = dynamic_cast<COrthographicCameraComponent*>(pComp);
 
-	_matrix ProjMat = XMLoadFloat4x4(&Proj);
-	_matrix ViewMat = XMLoadFloat4x4(&View);
-
-	return XMMatrixMultiply(ViewMat, ProjMat);
+		return pOrtho->Get_MulViewProjMatrix();
+	}
 	
 }
 

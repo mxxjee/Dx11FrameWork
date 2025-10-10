@@ -28,7 +28,6 @@ public:
 public:
     virtual  void            Set_CameraValue(float _fNear, float _fFar,float _vViewHeight=0.f, float _vViewWidth=0.f);
 
-
 public:
     static COrthographicCameraComponent* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual     CComponent* Clone(void* pArg) override;

@@ -26,6 +26,10 @@ private:
     void        Render_UI();
     
 private:
+    void        Bind_PerspectiveCamera();
+    void        Bind_OrthoCamera();
+
+private:
     void    CreateSamplerStates();
     void    CreateBlendStates();
     void    CreateRasterizerStates();

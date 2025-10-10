@@ -4,6 +4,7 @@
 namespace Engine
 {
     class CPerspectiveCameraComponent;
+    class CShader;
 }
 
 NS_BEGIN(Engine)
@@ -27,6 +28,8 @@ public:
     virtual HRESULT Render();
 
 public:
+    void        Bind_ViewProjMatrix();
+public:
     //bInit = 초기화용, 첫프레임시 튀는걸 방지한다(바로스냅). 자연스럽게 타겟변경시에는 Set_Target()사용
     void        Set_Target(CGameObject* pTarget,bool bInit=false);
     void        Follow_Target(_float fTimeDelta);
@@ -38,6 +41,9 @@ public:
 
 private:
     CPerspectiveCameraComponent* m_pPerspectiveCameraCom = { nullptr };
+
+private:
+    CShader* m_pMainShader = { nullptr };
 };
 
 NS_END

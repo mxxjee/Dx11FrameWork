@@ -1,7 +1,7 @@
 #include "CMainCamera.h"
 #include "CPerspectiveCameraComponent.h"
 #include "CGameInstance.h"
-
+#include "CShader.h"
 
 CMainCamera::CMainCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CGameObject(pDevice,pContext)
@@ -33,6 +33,8 @@ HRESULT CMainCamera::Initialize_Copytype(void* pArg)
 	Safe_AddRef(m_pPerspectiveCameraCom);
 	m_Components.emplace(L"PerspectiveCamera", m_pPerspectiveCameraCom);
 
+	
+	m_pMainShader = m_pGameInstance->Find_Shader(L"Default");
 
 	return S_OK;
 }
@@ -65,11 +67,33 @@ void CMainCamera::Update_Late(_float fTimeDelta)
 void CMainCamera::Update_Render(_float fTimeDelta)
 {
 	__super::Update_Render(fTimeDelta);
+	
+
 }
 
 HRESULT CMainCamera::Render()
 {
+	//카메라 view/투영 세팅
+	if (m_pMainShader)
+	{
+		_float4x4 viewproj;
+		XMStoreFloat4x4(&viewproj, m_pPerspectiveCameraCom->Get_MulViewProjMatrix());
+		m_pMainShader->SetMatrix("g_ViewProjMatrix", viewproj);
+	}
+		
+	
 	return S_OK;
+}
+
+void CMainCamera::Bind_ViewProjMatrix()
+{
+	//카메라 view/투영 세팅
+	if (m_pMainShader)
+	{
+		_float4x4 viewproj;
+		XMStoreFloat4x4(&viewproj, m_pPerspectiveCameraCom->Get_MulViewProjMatrix());
+		m_pMainShader->SetMatrix("g_ViewProjMatrix", viewproj);
+	}
 }
 
 void CMainCamera::Set_Target(CGameObject* pTarget, bool bInit)
@@ -116,7 +140,7 @@ void CMainCamera::Follow_Target(_float fTimeDelta)
 	const _vector TargetPos = pTargetTransform->Get_State(STATE::POSITION,TransformScope::WORLD);
 	const _float3 Offset = pCamera->Get_OffSet();
 	
-	m_pTransformCom->MoveLerp(TargetPos + XMLoadFloat3(&Offset), 5.f, fTimeDelta);
+	m_pTransformCom->MoveLerp(TargetPos + XMLoadFloat3(&Offset), 7.f, fTimeDelta);
 
 	
 	

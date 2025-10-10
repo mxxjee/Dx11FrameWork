@@ -2,6 +2,9 @@
 #include "CGameObject.h"
 #include "CGameInstance.h"
 #include "CUI.h"
+#include "CMainCamera.h"
+#include "CUICamera.h"
+
 
 CRenderer::CRenderer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:m_pDevice(pDevice),m_pContext(pContext)
@@ -34,16 +37,19 @@ HRESULT CRenderer::Add_RenderObject(RENDERGROUP eID, CGameObject* pRenderObject)
 
 void CRenderer::Draw()
 {
+	Bind_PerspectiveCamera();
 	Render_Priority();
 	Render_NonBlend();
 	Render_Blend();
+
+	Bind_OrthoCamera();
 	Render_UI();
 }
 
 void CRenderer::Render_Priority()
 {
 	CheckTrue(m_RenderObjects[ENUM_TO_UINT(RENDERGROUP::PRIORITY)].empty());
-
+	
 	m_pContext->RSSetState(m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._rasterizerState.Get());
 	m_pContext->PSSetSamplers(0,1,m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._samplerState.GetAddressOf());
 	m_pContext->OMSetBlendState(m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._BlendState.Get(),nullptr,0xFFFFFFFF);
@@ -154,6 +160,28 @@ void CRenderer::Render_UI()
 
 	//매프레임이후 삭제
 	m_RenderObjects[ENUM_TO_UINT(RENDERGROUP::UI)].clear();
+}
+
+void CRenderer::Bind_PerspectiveCamera()
+{
+	CGameObject* pMainCam = CGameInstance::GetInstance()->GetMainPerspectiveCamera();
+	if (pMainCam)
+	{
+		CMainCamera* ppMainCam = dynamic_cast<CMainCamera*>(pMainCam);
+		if (ppMainCam)
+			ppMainCam->Bind_ViewProjMatrix();
+	}
+}
+
+void CRenderer::Bind_OrthoCamera()
+{
+	CGameObject* pMainCam = CGameInstance::GetInstance()->GetMainOrthoCamera();
+	if (pMainCam)
+	{
+		CUICamera* ppMainCam = dynamic_cast<CUICamera*>(pMainCam);
+		if (ppMainCam)
+			ppMainCam->Bind_ViewProjMatrix();
+	}
 }
 
 void CRenderer::CreateSamplerStates()

@@ -324,6 +324,15 @@ void CLevel_Logo::OnEnter()
     }
     
     
+  /*  CGameObject* pMainCamera = m_pGameInstance->GetMainPerspectiveCamera();
+    if (pMainCamera)
+    {
+        CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
+        CheckNull(ppMainCamera);
+        ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO),
+            L"Player_Layer",
+            L"Player"), true);
+    }*/
 
  
 }

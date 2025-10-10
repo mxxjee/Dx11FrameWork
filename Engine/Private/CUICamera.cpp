@@ -1,6 +1,7 @@
 #include "CUICamera.h"
 #include "COrthographicCameraComponent.h"
 #include "CGameInstance.h"
+#include "CShader.h"
 
 CUICamera::CUICamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CGameObject(pDevice, pContext)
@@ -32,6 +33,7 @@ HRESULT CUICamera::Initialize_Copytype(void* pArg)
 	Safe_AddRef(m_pOrthographicCameraCom);
 	m_Components.emplace(L"OrthographicCamera", m_pOrthographicCameraCom);
 
+	m_pMainShader = m_pGameInstance->Find_Shader(L"Default");
 
 	return S_OK;
 }
@@ -62,6 +64,7 @@ void CUICamera::Update_Render(_float fTimeDelta)
 
 HRESULT CUICamera::Render()
 {
+	
     return S_OK;
 }
 
@@ -71,6 +74,17 @@ void CUICamera::Set_Target(CGameObject* pTarget)
 
 void CUICamera::Follow_Target(_float fTimeDelta)
 {
+}
+
+void CUICamera::Bind_ViewProjMatrix()
+{
+	//카메라 view/투영 세팅
+	if (m_pMainShader)
+	{
+		_float4x4 viewproj;
+		XMStoreFloat4x4(&viewproj, m_pOrthographicCameraCom->Get_MulViewProjMatrix());
+		m_pMainShader->SetMatrix("g_ViewProjMatrix", viewproj);
+	}
 }
 
 CUICamera* CUICamera::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)

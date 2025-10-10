@@ -34,6 +34,7 @@ HRESULT CTransform::Initialize_Copytype(void* pArg)
 	m_fRotationPerSec = pDesc->fRotationPerSec;
 
 	XMStoreFloat4x4(&m_LocalWorldMatrix, XMMatrixIdentity());
+	
 
 	m_WorldMatrix = m_LocalWorldMatrix;
 
@@ -117,7 +118,7 @@ void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space)
 		case Engine::DIRECTION::UP:
 		case Engine::DIRECTION::DOWN:
 			TargetState = STATE::UP;
-
+			        
 			break;
 
 		case Engine::DIRECTION::RIGHTUP:

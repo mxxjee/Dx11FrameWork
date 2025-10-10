@@ -4,6 +4,7 @@
 namespace Engine
 {
     class COrthographicCameraComponent;
+    class CShader;
 }
 
 
@@ -32,12 +33,19 @@ public:
     void        Follow_Target(_float fTimeDelta);
 
 public:
+    void        Bind_ViewProjMatrix();
+
+
+public:
     static CUICamera* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg);
     virtual void    Free() override;
 
 private:
     COrthographicCameraComponent* m_pOrthographicCameraCom = { nullptr };
+
+private:
+    CShader* m_pMainShader = { nullptr };
 };
 NS_END
 
