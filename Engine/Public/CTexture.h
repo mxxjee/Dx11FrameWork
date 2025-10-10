@@ -11,6 +11,7 @@ public:
 	ComPtr<ID3D11ShaderResourceView> GetComPtr() { return _shaderResourceView; }
 
 	HRESULT LoadImg(const wstring& path);
+	HRESULT CreateResourceViewByTex(ComPtr<ID3D11Texture2D>& Source);
 private:
 	ComPtr<ID3D11Device> _device;
 	ComPtr<ID3D11ShaderResourceView> _shaderResourceView = nullptr;
