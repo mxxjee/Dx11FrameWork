@@ -4,12 +4,12 @@
 #include "CShader.h"
 
 CMainCamera::CMainCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-	:CGameObject(pDevice,pContext)
+	:CCamera_Base(pDevice,pContext)
 {
 }
 
 CMainCamera::CMainCamera(const CMainCamera& rhs)
-	:CGameObject(rhs),m_pPerspectiveCameraCom(rhs.m_pPerspectiveCameraCom)
+	: CCamera_Base(rhs),m_pPerspectiveCameraCom(rhs.m_pPerspectiveCameraCom)
 {
 }
 
@@ -32,9 +32,6 @@ HRESULT CMainCamera::Initialize_Copytype(void* pArg)
 
 	Safe_AddRef(m_pPerspectiveCameraCom);
 	m_Components.emplace(L"PerspectiveCamera", m_pPerspectiveCameraCom);
-
-	
-	m_pMainShader = m_pGameInstance->Find_Shader(L"Default");
 
 	return S_OK;
 }

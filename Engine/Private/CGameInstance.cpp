@@ -325,6 +325,12 @@ CGameObject* CGameInstance::GetMainOrthoCamera()
 	return m_pCameraManager->GetMainOrthoCamera();
 }
 
+void CGameInstance::Bind_ViewProjMatrix(bool isOrtho)
+{
+	CheckNull(m_pCameraManager);
+	return m_pCameraManager->Bind_ViewProjMatrix(isOrtho);
+}
+
 void CGameInstance::Update_MainCamera(_float fTimeDelta)
 {
 	CheckNull(m_pCameraManager);

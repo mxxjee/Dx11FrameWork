@@ -24,6 +24,8 @@ public:
     const _float4x4& GetProjMatrix(bool isOrtho = false) const;
     const _matrix GetMulViewProjMatrix(bool isOrtho = false) const;
 
+    void    Bind_ViewProjMatrix(bool isOrtho);
+
     //메인 카메라 가져오기
     CGameObject*           GetMainPerspectiveCamera();
     CGameObject*           GetMainOrthoCamera();

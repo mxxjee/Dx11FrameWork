@@ -164,24 +164,12 @@ void CRenderer::Render_UI()
 
 void CRenderer::Bind_PerspectiveCamera()
 {
-	CGameObject* pMainCam = CGameInstance::GetInstance()->GetMainPerspectiveCamera();
-	if (pMainCam)
-	{
-		CMainCamera* ppMainCam = dynamic_cast<CMainCamera*>(pMainCam);
-		if (ppMainCam)
-			ppMainCam->Bind_ViewProjMatrix();
-	}
+	CGameInstance::GetInstance()->Bind_ViewProjMatrix(true);
 }
 
 void CRenderer::Bind_OrthoCamera()
 {
-	CGameObject* pMainCam = CGameInstance::GetInstance()->GetMainOrthoCamera();
-	if (pMainCam)
-	{
-		CUICamera* ppMainCam = dynamic_cast<CUICamera*>(pMainCam);
-		if (ppMainCam)
-			ppMainCam->Bind_ViewProjMatrix();
-	}
+	CGameInstance::GetInstance()->Bind_ViewProjMatrix(false);
 }
 
 void CRenderer::CreateSamplerStates()

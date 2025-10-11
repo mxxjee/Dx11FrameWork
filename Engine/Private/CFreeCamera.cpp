@@ -2,15 +2,16 @@
 #include "CPerspectiveCameraComponent.h"
 #include "CGameInstance.h"
 #include "CInput_Manager.h"
+#include "CShader.h"
 
 
 CFreeCamera::CFreeCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CGameObject(pDevice,pContext)
+    :CCamera_Base(pDevice,pContext)
 {
 }
 
 CFreeCamera::CFreeCamera(const CFreeCamera& rhs)
-    : CGameObject(rhs), m_pPerspectiveCameraCom(rhs.m_pPerspectiveCameraCom)
+    : CCamera_Base(rhs), m_pPerspectiveCameraCom(rhs.m_pPerspectiveCameraCom)
 {
 }
 
@@ -86,6 +87,17 @@ void CFreeCamera::Update_Render(_float fTimeDelta)
 HRESULT CFreeCamera::Render()
 {
     return S_OK;
+}
+
+void CFreeCamera::Bind_ViewProjMatrix()
+{
+    //카메라 view/투영 세팅
+    if (m_pMainShader)
+    {
+        _float4x4 viewproj;
+        XMStoreFloat4x4(&viewproj, m_pPerspectiveCameraCom->Get_MulViewProjMatrix());
+        m_pMainShader->SetMatrix("g_ViewProjMatrix", viewproj);
+    }
 }
 
 void CFreeCamera::Mouse_Move()

@@ -348,9 +348,6 @@
     <ClInclude Include="..\Public\CQuad.h">
       <Filter>03.GameObject\Quad</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CMainCamera.h">
-      <Filter>03.GameObject\CameraObject\Perspective\MainCamera</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CFreeCamera.h">
       <Filter>03.GameObject\CameraObject\Perspective\FreeCamera</Filter>
     </ClInclude>
@@ -380,6 +377,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\CScreenShot_Manager.h">
       <Filter>00.System\05.ScreenShot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CCamera_Base.h">
+      <Filter>03.GameObject\CameraObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMainCamera.h">
+      <Filter>03.GameObject\CameraObject\Perspective\MainCamera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -532,6 +535,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CScreenShot_Manager.cpp">
       <Filter>00.System\05.ScreenShot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CCamera_Base.cpp">
+      <Filter>03.GameObject\CameraObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

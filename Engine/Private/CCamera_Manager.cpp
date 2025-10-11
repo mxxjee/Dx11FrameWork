@@ -2,6 +2,8 @@
 #include "CPerspectiveCameraComponent.h"
 #include "COrthographicCameraComponent.h"
 #include "CGameObject.h"
+#include "CCamera_Base.h"
+
 
 void CCamera_Manager::RegisterCamera(const _wstring& Tag, CGameObject* pObj, bool isOrtho)
 {
@@ -127,6 +129,24 @@ const _matrix CCamera_Manager::GetMulViewProjMatrix(bool isOrtho) const
 		return pOrtho->Get_MulViewProjMatrix();
 	}
 	
+}
+
+void CCamera_Manager::Bind_ViewProjMatrix(bool isOrtho)
+{
+	
+	if (!isOrtho)
+	{
+		CCamera_Base* pBase = dynamic_cast<CCamera_Base*>(m_pMainPerspectiveCamera);
+		if (pBase)
+			pBase->Bind_ViewProjMatrix();
+	}
+
+	else
+	{
+		CCamera_Base* pBase = dynamic_cast<CCamera_Base*>(m_pMainOrthoCamera);
+		if (pBase)
+			pBase->Bind_ViewProjMatrix();
+	}
 }
 
 CGameObject* CCamera_Manager::GetMainPerspectiveCamera()

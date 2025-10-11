@@ -13,7 +13,8 @@ CGameObject::CGameObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContex
 CGameObject::CGameObject(const CGameObject& rhs)
     :m_pDevice(rhs.m_pDevice),
     m_pContext(rhs.m_pContext),
-    m_pGameInstance(CGameInstance::GetInstance())
+    m_pGameInstance(CGameInstance::GetInstance()),
+    m_pTransformCom(nullptr)
 {
 
     Safe_AddRef(m_pGameInstance);
@@ -22,7 +23,7 @@ CGameObject::CGameObject(const CGameObject& rhs)
 HRESULT CGameObject::Initialize_Prototype()
 {
 
-    return S_OK;
+    return S_OK; 
 }
 
 HRESULT CGameObject::Initialize_Copytype(void* pArg)

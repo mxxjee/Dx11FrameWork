@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h" />
     <ClInclude Include="..\Public\CCameraComponent.h" />
+    <ClInclude Include="..\Public\CCamera_Base.h" />
     <ClInclude Include="..\Public\CCamera_Manager.h" />
     <ClInclude Include="..\Public\CComponent.h" />
     <ClInclude Include="..\Public\CConstantBuffer.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="..\..\Libraries\Include\SimpleMath\SimpleMath.cpp" />
     <ClCompile Include="..\Private\CBase.cpp" />
     <ClCompile Include="..\Private\CCameraComponent.cpp" />
+    <ClCompile Include="..\Private\CCamera_Base.cpp" />
     <ClCompile Include="..\Private\CCamera_Manager.cpp" />
     <ClCompile Include="..\Private\CComponent.cpp" />
     <ClCompile Include="..\Private\CConstantBuffer.cpp" />

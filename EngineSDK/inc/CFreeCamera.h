@@ -1,5 +1,5 @@
 #pragma once
-#include "CGameObject.h"
+#include "CCamera_Base.h"
 
 namespace Engine
 {
@@ -8,7 +8,7 @@ namespace Engine
 
 NS_BEGIN(Engine)
 class ENGINE_DLL CFreeCamera :
-    public CGameObject
+    public CCamera_Base
 {
 private:
     CFreeCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
@@ -25,6 +25,10 @@ public:
     virtual void        Update_Render(_float fTimeDelta);
 
     virtual HRESULT Render();
+
+public:
+    virtual void        Bind_ViewProjMatrix() override;
+
 
 private:
     void    Mouse_Move();

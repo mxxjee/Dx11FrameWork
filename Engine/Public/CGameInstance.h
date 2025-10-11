@@ -108,6 +108,8 @@ public:
     class CGameObject* GetMainPerspectiveCamera();
     class CGameObject* GetMainOrthoCamera();
 
+    void    Bind_ViewProjMatrix(bool isOrtho);
+
     void        Update_MainCamera(_float fTimeDelta);
     void        LateUpdate_MainCamera(_float fTimeDelta);
 

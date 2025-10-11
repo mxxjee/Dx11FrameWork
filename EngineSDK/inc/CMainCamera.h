@@ -1,5 +1,5 @@
 #pragma once
-#include "CGameObject.h"
+#include "CCamera_Base.h"
 
 namespace Engine
 {
@@ -9,7 +9,7 @@ namespace Engine
 
 NS_BEGIN(Engine)
 class ENGINE_DLL CMainCamera :
-    public CGameObject
+    public CCamera_Base
 {
 private:
     CMainCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
@@ -42,8 +42,6 @@ public:
 private:
     CPerspectiveCameraComponent* m_pPerspectiveCameraCom = { nullptr };
 
-private:
-    CShader* m_pMainShader = { nullptr };
 };
 
 NS_END

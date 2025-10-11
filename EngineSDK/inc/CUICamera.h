@@ -1,5 +1,5 @@
 #pragma once
-#include "CGameObject.h"
+#include "CCamera_Base.h"
 
 namespace Engine
 {
