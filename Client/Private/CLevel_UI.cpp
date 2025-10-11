@@ -91,14 +91,22 @@ void CLevel_UI::Free()
 
 HRESULT CLevel_UI::Ready_Layer_UI(const _wstring& strLayerTag)
 {
-	CScreenQuad::tagGameObjectDesc        Desc = {};
+	CUI::tagUIDesc        Desc = {};
 
 	Desc.ObjTag = L"ScreenQuad";
 	
+	Desc.fSizeX = g_iWinSizeX;
+	Desc.fSizeY = g_iWinSizeY;
+
+	Desc.fX = g_iWinSizeX>>1;
+	Desc.fY = g_iWinSizeY>>1;
+
+	Desc.ShaderName = L"Brightness";
+
+
+	Desc.Depth = 0.6f;
 
 	CTransform::TRANSFORM_DESC TransDesc = {};
-	TransDesc.vLocalScale = { g_iWinSizeX,g_iWinSizeY,1.f,1.f };
-
 	Desc.TransformDesc = &TransDesc;
 
 	if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),

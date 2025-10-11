@@ -44,16 +44,22 @@ HRESULT CQuad::Initialize_Copytype(void* pArg)
 
     }
 
-    m_pTexShader = m_pGameInstance->Find_Shader(L"Default");
-    Safe_AddRef(m_pTexShader);
+ 
 
     QUAD_DESC* pQuad_Desc = static_cast<QUAD_DESC*>(pArg);
     m_eRenderGroup = pQuad_Desc->eRenderGroup;
 
-    m_pTexture = new CTexture(m_pDevice);
-    if(FAILED(m_pTexture->LoadImg(pQuad_Desc->ImgPath)))
-        return E_FAIL;
+    m_pTexShader = m_pGameInstance->Find_Shader(pQuad_Desc->ShaderName);
+    Safe_AddRef(m_pTexShader);
 
+    if (pQuad_Desc->ImgPath != L"")
+    {
+        m_pTexture = new CTexture(m_pDevice);
+        if (FAILED(m_pTexture->LoadImg(pQuad_Desc->ImgPath)))
+            return E_FAIL;
+
+    }
+   
 
 
     return S_OK;

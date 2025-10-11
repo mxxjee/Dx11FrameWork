@@ -252,6 +252,8 @@ void CRenderer::CreateRasterizerStates()
 	m_pDevice->CreateRasterizerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._rasterizerState.GetAddressOf());
 	m_pDevice->CreateRasterizerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::NONALPHA)]._rasterizerState.GetAddressOf());
 	m_pDevice->CreateRasterizerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::ALPHA)]._rasterizerState.GetAddressOf());
+	
+	desc.DepthClipEnable = false;
 	m_pDevice->CreateRasterizerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::UI)]._rasterizerState.GetAddressOf());
 
 }

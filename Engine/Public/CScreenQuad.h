@@ -1,10 +1,10 @@
 #pragma once
-#include "CGameObject.h"
+#include "CUI.h"
 
 NS_BEGIN(Engine)
 
 class ENGINE_DLL CScreenQuad :
-    public CGameObject
+    public CUI 
 {
 protected:
     CScreenQuad(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
@@ -23,33 +23,16 @@ public:
 
     virtual HRESULT Render();  
 
-private:
-    HRESULT		CreateRasterizerState();
-    HRESULT		CreateSamplerState();
-    HRESULT		CreateBlendState();
 public:
-    void            Set_RenderGroup(RENDERGROUP eGroup) { m_eRenderGroup = eGroup; }
-    void            Set_ScreenTexture(UINT iFlag=0);
-private:
-    void		Set_RasterizerState();
-    void		Set_BlendState();
-
-protected:
-    RenderStates            m_RenderStates;
-    class CTexture* m_pTexture = nullptr;
-    class CShader* m_pTexShader = nullptr;
-    class CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
+    void Set_ScreenTexture(UINT Flag);
+    HRESULT CreateBlendState();
+    void Set_BlendState();
 
 public:
     static CScreenQuad* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
-
-
-
-protected:
-    RENDERGROUP m_eRenderGroup = RENDERGROUP::PRIORITY;
 
 };
 

@@ -11,8 +11,10 @@ public:
     typedef struct tagQuad_DESC : CGameObject::GAMEOBJECT_DESC
     {
         _wstring ImgPath;
-        RENDERGROUP eRenderGroup = RENDERGROUP::PRIORITY;
+        _wstring ShaderName = L"Default";
 
+        RENDERGROUP eRenderGroup = RENDERGROUP::PRIORITY;
+        
     }QUAD_DESC;
 
 
