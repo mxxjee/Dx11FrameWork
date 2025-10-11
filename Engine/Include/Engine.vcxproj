@@ -182,6 +182,7 @@
     <ClInclude Include="..\Public\CQuad.h" />
     <ClInclude Include="..\Public\CRenderer.h" />
     <ClInclude Include="..\Public\CScreenQuad.h" />
+    <ClInclude Include="..\Public\CScreenShot_Manager.h" />
     <ClInclude Include="..\Public\CShader.h" />
     <ClInclude Include="..\Public\CShader_Manager.h" />
     <ClInclude Include="..\Public\CTexture.h" />
@@ -243,6 +244,7 @@
     <ClCompile Include="..\Private\CQuad.cpp" />
     <ClCompile Include="..\Private\CRenderer.cpp" />
     <ClCompile Include="..\Private\CScreenQuad.cpp" />
+    <ClCompile Include="..\Private\CScreenShot_Manager.cpp" />
     <ClCompile Include="..\Private\CShader.cpp" />
     <ClCompile Include="..\Private\CShader_Manager.cpp" />
     <ClCompile Include="..\Private\CTexture.cpp" />

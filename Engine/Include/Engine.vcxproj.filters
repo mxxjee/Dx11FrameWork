@@ -196,6 +196,9 @@
     <Filter Include="03.GameObject\ScreenQuad">
       <UniqueIdentifier>{bc36f309-c887-4cca-afb5-f4edd4432e5d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\05.ScreenShot">
+      <UniqueIdentifier>{cb8eec21-9e17-4e99-ac8a-4b380a3b8bda}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -375,6 +378,9 @@
     <ClInclude Include="..\Public\CScreenQuad.h">
       <Filter>03.GameObject\ScreenQuad</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CScreenShot_Manager.h">
+      <Filter>00.System\05.ScreenShot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -523,6 +529,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CScreenQuad.cpp">
       <Filter>03.GameObject\ScreenQuad</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CScreenShot_Manager.cpp">
+      <Filter>00.System\05.ScreenShot</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

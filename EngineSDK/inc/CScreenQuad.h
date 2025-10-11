@@ -24,7 +24,7 @@ public:
     virtual HRESULT Render();  
 
 public:
-    void Set_ScreenTexture(UINT Flag);
+    void Make_ScreenShot(class CTexture* pTex);
     HRESULT CreateBlendState();
     void Set_BlendState();
 

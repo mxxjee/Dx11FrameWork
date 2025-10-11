@@ -29,6 +29,7 @@ HRESULT CTexture::LoadImg(const wstring& path)
 
 HRESULT CTexture::CreateResourceViewByTex(ComPtr<ID3D11Texture2D>& Source)
 {
+	_texture = Source;
 	_device->CreateShaderResourceView(Source.Get(), nullptr, _shaderResourceView.GetAddressOf());
 
 	return S_OK;

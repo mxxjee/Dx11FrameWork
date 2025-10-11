@@ -10,6 +10,8 @@
 #include "CCamera_Manager.h"
 #include "CInput_Manager.h"
 #include "CShader_Manager.h"
+#include "CScreenShot_Manager.h"
+
 
 
 IMPLEMENT_SINGLETON(CGameInstance)
@@ -73,6 +75,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	/*쉐이더 매니져 초기화*/
 	m_pShaderManager = CShader_Manager::Create(*pDevice, *pContext);
 	CheckNullResult(m_pShaderManager, E_FAIL);
+
+	/*스크린샷매니저 초기화*/
+	m_pScreenshotManager = CScreenShot_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pScreenshotManager, E_FAIL);
 
 	return S_OK;
 }
@@ -374,6 +380,24 @@ CShader* CGameInstance::Find_Shader(const _wstring& Tag)
 	return m_pShaderManager->Find_Shader(Tag);
 }
 
+void CGameInstance::ScreenShot(const _wstring& Key)
+{
+	CheckNull(m_pScreenshotManager);
+	return m_pScreenshotManager->ScreenShot(Key);
+}
+ 
+CTexture* CGameInstance::Find_ScreenTexture(const _wstring& Key)
+{
+	CheckNullResult(m_pScreenshotManager,nullptr);
+	return m_pScreenshotManager->Find_ScreenTexture(Key);
+}
+
+HRESULT CGameInstance::SaveTextureToFile(const _wstring& Key, const _wstring& filePath)
+{
+	CheckNullResult(m_pScreenshotManager,E_FAIL);
+	return m_pScreenshotManager->SaveTextureToFile(Key, filePath);
+}
+
 #pragma endregion
 
 void CGameInstance::Release_Engine()
@@ -387,6 +411,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pCameraManager);
 	Safe_Release(m_pInputManager);
 	Safe_Release(m_pShaderManager);
+	Safe_Release(m_pScreenshotManager);
 
 	Safe_Release(m_pGraphicDev);
 

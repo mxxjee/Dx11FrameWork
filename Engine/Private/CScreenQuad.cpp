@@ -83,6 +83,12 @@ HRESULT CScreenQuad::Render()
 
 
 
+void CScreenQuad::Make_ScreenShot(CTexture* pTex)
+{
+    m_pTexture = pTex;
+    Safe_AddRef(m_pTexture);
+}
+
 HRESULT CScreenQuad::CreateBlendState()
 {
     D3D11_BLEND_DESC desc;
@@ -112,30 +118,30 @@ void CScreenQuad::Set_BlendState()
 
 }
 
-void CScreenQuad::Set_ScreenTexture(UINT Flag)
-{
-    ComPtr<ID3D11Texture2D> pBackBuffer;
-    ComPtr<ID3D11Texture2D> pCopiedTex;
-
-    m_pGameInstance->Get_Buffer(&pBackBuffer, 0);
-
-    //텍스처생성
-    D3D11_TEXTURE2D_DESC desc{};
-    pBackBuffer->GetDesc(&desc);
-    desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-    desc.Usage = D3D11_USAGE_DEFAULT;
-    desc.CPUAccessFlags = 0;
-
-    m_pDevice->CreateTexture2D(&desc, nullptr, pCopiedTex.GetAddressOf());
-
-
-    //GPU복사
-    m_pContext->CopyResource(pCopiedTex.Get(), pBackBuffer.Get());
-    
-    m_pTexture = new CTexture(m_pDevice) ;
-                m_pTexture->CreateResourceViewByTex(pCopiedTex);
-    Safe_AddRef(m_pTexture);
-}
+//void CScreenQuad::Set_ScreenTexture(UINT Flag)
+//{
+//    ComPtr<ID3D11Texture2D> pBackBuffer;
+//    ComPtr<ID3D11Texture2D> pCopiedTex;
+//
+//    m_pGameInstance->Get_Buffer(&pBackBuffer, 0);
+//
+//    //텍스처생성
+//    D3D11_TEXTURE2D_DESC desc{};
+//    pBackBuffer->GetDesc(&desc);
+//    desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+//    desc.Usage = D3D11_USAGE_DEFAULT;
+//    desc.CPUAccessFlags = 0;
+//
+//    m_pDevice->CreateTexture2D(&desc, nullptr, pCopiedTex.GetAddressOf());
+//
+//
+//    //GPU복사
+//    m_pContext->CopyResource(pCopiedTex.Get(), pBackBuffer.Get());
+//    
+//    m_pTexture = new CTexture(m_pDevice) ;
+//                m_pTexture->CreateResourceViewByTex(pCopiedTex);
+//    Safe_AddRef(m_pTexture);
+//}
 
 CScreenQuad* CScreenQuad::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
@@ -167,7 +173,5 @@ CGameObject* CScreenQuad::Clone(void* pArg)
 void CScreenQuad::Free()
 {
     __super::Free();
-    Safe_Release(m_pTexShader);
-    Safe_Release(m_pTexture);
-    Safe_Release(m_pVIBufferCom);
+
 }

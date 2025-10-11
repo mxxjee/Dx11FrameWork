@@ -20,6 +20,7 @@ using namespace Microsoft::WRL;
 
 #include "Fx11/d3dx11effect.h"
 
+#include <wincodec.h>
 
 using namespace DirectX;
 #include <vector>

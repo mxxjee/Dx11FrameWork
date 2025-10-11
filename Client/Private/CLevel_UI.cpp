@@ -23,6 +23,9 @@ void CLevel_UI::Update_Priority(_float fTimeDelta)
 	if (m_pGameInstance->IsKeyPressed(KeyCode::Space))
 		m_pGameInstance->Pop_Level() ;
 
+	if (m_pGameInstance->IsKeyPressed(KeyCode::P))
+		m_pGameInstance->SaveTextureToFile(L"RenderBehind", L"../../ScreenShots/1.png");
+
 }
 
 void CLevel_UI::Update(const _float fTimeDelta)
@@ -46,15 +49,20 @@ void CLevel_UI::Render()
 
 void CLevel_UI::OnEnter()
 {
+	m_pGameInstance->ScreenShot(L"RenderBehind");
+
 	//뒤에화면을 블러처리한 텍스처로 복사
 	CGameObject* pObj = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::UI),
 		L"UI_Layer", L"ScreenQuad");
 
 	if (pObj)
 	{
+		CTexture* pTexture = m_pGameInstance->Find_ScreenTexture(L"RenderBehind");
+
 		CScreenQuad* pScreenQuad = dynamic_cast<CScreenQuad*>(pObj);
-		if (pScreenQuad)
-			pScreenQuad->Set_ScreenTexture(0);
+		if (pScreenQuad && pTexture)
+			pScreenQuad->Make_ScreenShot(pTexture);
+
 	}
 }
 

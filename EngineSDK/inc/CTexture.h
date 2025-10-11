@@ -9,11 +9,13 @@ public:
 	~CTexture();
 
 	ComPtr<ID3D11ShaderResourceView> GetComPtr() { return _shaderResourceView; }
+	ComPtr<ID3D11Texture2D> GetTexture() { return _texture; }
 
 	HRESULT LoadImg(const wstring& path);
 	HRESULT CreateResourceViewByTex(ComPtr<ID3D11Texture2D>& Source);
 private:
 	ComPtr<ID3D11Device> _device;
+	ComPtr<ID3D11Texture2D> _texture;
 	ComPtr<ID3D11ShaderResourceView> _shaderResourceView = nullptr;
 
 };

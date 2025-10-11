@@ -128,6 +128,14 @@ public:
     HRESULT     Register_Shader(const _wstring& Tag, class CShader* pInstance);
     class CShader*     Find_Shader(const _wstring& Tag);
 #pragma endregion
+
+
+#pragma region ScreenShot_Manager
+    void                    ScreenShot(const _wstring& Key);
+    class CTexture*         Find_ScreenTexture(const _wstring& Key);
+    HRESULT                 SaveTextureToFile(const _wstring& Key, const _wstring& filePath);
+
+#pragma endregion
 public:
 #pragma region Default
     const vector<D3D11_VIEWPORT>& Get_Viewports() { return m_ViewPorts; }
@@ -144,6 +152,8 @@ private:
     class CCamera_Manager* m_pCameraManager = { nullptr };
     class CInput_Manager* m_pInputManager = { nullptr };
     class CShader_Manager* m_pShaderManager = { nullptr };
+    class CScreenShot_Manager* m_pScreenshotManager = { nullptr };
+
 
 
 private:
