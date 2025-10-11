@@ -4,6 +4,7 @@
 
 #pragma comment(lib, "winmm.lib")
 
+IMPLEMENT_SINGLETON(CInput_Manager)
 CInput_Manager::CInput_Manager()
 {
 	ZeroMemory(m_LastClickTime, sizeof(m_LastClickTime));
@@ -110,6 +111,7 @@ EInputState CInput_Manager::GetKeyState(KeyCode key) const
 		return EInputState::Released;
 	return EInputState::None;
 }
+
 
 bool CInput_Manager::IsKeyPressed(KeyCode key) const { return GetKeyState(key) == EInputState::Pressed; }
 bool CInput_Manager::IsKeyHeld(KeyCode key) const { return GetKeyState(key) == EInputState::Held; }

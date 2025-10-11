@@ -14,7 +14,7 @@
 #include "CObjectDebugWindow.h"
 #include "CCameraDebugWindow.h"
 
-
+#include "CInput_Manager.h"
 
 USING(Client)
 
@@ -41,6 +41,8 @@ HRESULT CMainApp::Initialize()
 
 	if(FAILED(pGameInstance->Initialize_Engine(desc,&m_pDevice,&m_pContext)))
 		return E_FAIL;
+
+	CInput_Manager::GetInstance()->Init_Input(g_hInst, g_hWnd);
 
 	Register_Levels();
 	Register_Shaders();
@@ -69,8 +71,10 @@ void CMainApp::Update_Priority(_float fTimeDelta)
 void CMainApp::Update(_float fTimeDelta)
 {
 	/*내 게임의 반복적인 작업 수행*/
+	
+	CInput_Manager::GetInstance()->Update_Input();
 	pGameInstance->Update_Engine(fTimeDelta);
-
+	
 #ifdef _DEBUG
 	pImGui_Manager->Update();
 #endif
@@ -203,6 +207,7 @@ void CMainApp::Free()
 
 	//자신의 리소스정리
 	
+	CInput_Manager::DestroyInstance();
 	Safe_Release(pGameInstance);
 
 }

@@ -4,6 +4,8 @@
 #include "CLevel_Loading.h"
 #include "MathUtils.h"
 
+#include "CInput_Manager.h"
+
 #include "CBackGround.h"
 #include "CPlayer.h"
 #include "CMainCamera.h"
@@ -51,7 +53,7 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
 void CLevel_Logo::Update_Priority(_float fTimeDelta)
 {
     __super::Update_Priority(fTimeDelta);
-    if (m_pGameInstance->IsKeyPressed(KeyCode::P))
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::P))
     {
         LevelArgs args;
         args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
@@ -81,7 +83,7 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
     __super::Update_Late(fTimeDelta);
     
     /*타겟 바꾸기 테스트*/
-    if (m_pGameInstance->IsKeyPressed(KeyCode::Tab))
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Tab))
     {
         if (iTargetIdx == 1)
             iTargetIdx = 0;
@@ -117,7 +119,7 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
     }
 
     /*카메라 변경 테스트*/
-    if (m_pGameInstance->IsKeyPressed(KeyCode::C))
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::C))
     {
         if (iTargetIdx == 1)
             iTargetIdx = 0;
@@ -144,7 +146,7 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
    // Set_UIPos_ByWorld(_float3(0.f,-100.f,0.f));
 
     /*부모행렬테스트*/
-    if (m_pGameInstance->IsKeyPressed(KeyCode::Q))
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Q))
     {
       /*  CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Test_Layer", L"Test");
         CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");

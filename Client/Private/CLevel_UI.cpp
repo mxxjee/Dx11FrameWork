@@ -1,6 +1,8 @@
 #include "CLevel_UI.h"
 #include "CScreenQuad.h"
 #include "CGameInstance.h"
+#include "CInput_Manager.h"
+
 
 CLevel_UI::CLevel_UI(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 	:CLevel(_pDevice, _pDeviceContext)
@@ -20,10 +22,10 @@ HRESULT CLevel_UI::Initialize(LevelArgs& args)
 void CLevel_UI::Update_Priority(_float fTimeDelta)
 {
 	__super::Update_Priority(fTimeDelta);
-	if (m_pGameInstance->IsKeyPressed(KeyCode::Space))
+	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
 		m_pGameInstance->Pop_Level() ;
 
-	if (m_pGameInstance->IsKeyPressed(KeyCode::P))
+	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::P))
 		m_pGameInstance->SaveTextureToFile(L"RenderBehind", L"../../ScreenShots/1.png");
 
 }

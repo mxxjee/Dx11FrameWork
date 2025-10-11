@@ -2,9 +2,10 @@
 #include "CBase.h"
 
 NS_BEGIN(Engine)
-class CInput_Manager
+class ENGINE_DLL CInput_Manager
 	:public CBase
 {
+	DECLARE_SINGLETON(CInput_Manager)
 private:
 	explicit CInput_Manager();
 	virtual ~CInput_Manager();

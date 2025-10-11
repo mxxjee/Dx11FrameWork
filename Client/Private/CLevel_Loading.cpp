@@ -5,6 +5,8 @@
 #include "CLevel_GamePlay.h"
 #include "CLevel_Logo.h"
 
+#include "CInput_Manager.h"
+
 
 
 USING(Client)
@@ -40,7 +42,7 @@ void CLevel_Loading::Update_Priority(_float fTimeDelta)
 {
     __super::Update_Priority(fTimeDelta);
     if (m_pLoader->IsFinished() &&
-        GetKeyState(VK_RETURN) & 0x8000)
+        CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Enter))
     {
         LevelArgs args;
         args.changeType = m_eChangeType;

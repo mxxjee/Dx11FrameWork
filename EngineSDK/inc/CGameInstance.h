@@ -113,16 +113,6 @@ public:
 
 #pragma endregion
 
-#pragma region Input_Manager
-public:
-    bool    IsKeyPressed(KeyCode key) const;
-    bool    IsKeyHeld(KeyCode key) const;
-    bool     IsKeyReleased(KeyCode key) const;
-    
-    bool    IsMouseButtonHeld(int button) const;
-    POINT     GetMouseDelta() const;
-
-#pragma endregion
 
 #pragma region Shader_Manager
     HRESULT     Register_Shader(const _wstring& Tag, class CShader* pInstance);
@@ -150,7 +140,6 @@ private:
     class CObject_Manager* m_pObjectManager = { nullptr };
     class CRenderer* m_pRenderer = nullptr;
     class CCamera_Manager* m_pCameraManager = { nullptr };
-    class CInput_Manager* m_pInputManager = { nullptr };
     class CShader_Manager* m_pShaderManager = { nullptr };
     class CScreenShot_Manager* m_pScreenshotManager = { nullptr };
 

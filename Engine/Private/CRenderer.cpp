@@ -266,7 +266,10 @@ void CRenderer::CreateDepthStencilStates()
 	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._DepthStencilState.GetAddressOf());
 	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::NONALPHA)]._DepthStencilState.GetAddressOf());
 	
+				//깊이 테스트여부
 	desc.DepthEnable = true;
+	
+				//깊이 기록여부
 	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::ALPHA)]._DepthStencilState.GetAddressOf());
 	

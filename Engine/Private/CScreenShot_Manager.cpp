@@ -127,6 +127,7 @@ HRESULT CScreenShot_Manager::SaveTextureToFile(const _wstring& Key, const _wstri
         return E_FAIL;
 
     ScratchImage rgbImage;
+    //그냥저장하면 Alpha값이 
     hr = DirectX::Convert(
         *img.GetImage(0, 0, 0),
         DXGI_FORMAT_B8G8R8X8_UNORM,

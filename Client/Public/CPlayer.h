@@ -2,7 +2,12 @@
 #include "CQuad.h"
 #include "VertexData.h"
 
+namespace Engine
+{
+    class CInput_Manager;
+}
 NS_BEGIN(Client)
+
 
 class CPlayer :
     public CQuad
@@ -34,6 +39,8 @@ public:
 
 private:
     bool bPressed = false;
+    CInput_Manager*         m_pInputManager = nullptr;
+    
 };
 
 NS_END

@@ -1,17 +1,19 @@
 #include "CPlayer.h"
 #include "CGameInstance.h"
 #include "Client_Defines.h"
+#include "CInput_Manager.h"
 
 
 
 USING(Client)
 CPlayer::CPlayer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CQuad(pDevice,pContext)
+    :CQuad(pDevice,pContext),m_pInputManager(CInput_Manager::GetInstance())
 {
+    Safe_AddRef(m_pInputManager);
 }
 
 CPlayer::CPlayer(const CPlayer& rhs)
-    : CQuad(rhs)
+    : CQuad(rhs),m_pInputManager(rhs.m_pInputManager)
 {
 }
 
@@ -72,14 +74,14 @@ HRESULT CPlayer::Render()
 
 void CPlayer::Move_Input(_float fTimeDelta)
 {
-    if (m_pGameInstance->IsKeyHeld(KeyCode::RightArrow))
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::RightArrow))
     {
         bPressed = true;
 
-        if (m_pGameInstance->IsKeyHeld(KeyCode::UpArrow))
+        if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
             m_pTransformCom->Rotation(_float3(0.f, -135.f, 0.f));
 
-        else if (m_pGameInstance->IsKeyHeld(KeyCode::DownArrow))
+        else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
             m_pTransformCom->Rotation(_float3(0.f, -45.f, 0.f));
         else
             m_pTransformCom->Rotation(_float3(0.f, -90.f, 0.f));
@@ -87,38 +89,38 @@ void CPlayer::Move_Input(_float fTimeDelta)
 
 
 
-    else if (m_pGameInstance->IsKeyHeld(KeyCode::LeftArrow))
+    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LeftArrow))
     {
         bPressed = true;
 
-        if (m_pGameInstance->IsKeyHeld(KeyCode::UpArrow))
+        if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
             m_pTransformCom->Rotation(_float3(0.f, 135.f, 0.f));
 
-        else if (m_pGameInstance->IsKeyHeld(KeyCode::DownArrow))
+        else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
             m_pTransformCom->Rotation(_float3(0.f, 45.f, 0.f));
         else
             m_pTransformCom->Rotation(_float3(0.f, 90.f, 0.f));
     }
 
 
-    else if (m_pGameInstance->IsKeyHeld(KeyCode::UpArrow))
+    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::UpArrow))
     {
         bPressed = true;
         m_pTransformCom->Rotation(_float3(0.f, 180.f, 0.f));
     }
 
 
-    else if (m_pGameInstance->IsKeyHeld(KeyCode::DownArrow))
+    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::DownArrow))
     {
         bPressed = true;
         m_pTransformCom->Rotation(_float3(0.f, 0.f, 0.f));
     }
 
 
-    if (m_pGameInstance->IsKeyReleased(KeyCode::UpArrow) ||
-        m_pGameInstance->IsKeyReleased(KeyCode::DownArrow) ||
-        m_pGameInstance->IsKeyReleased(KeyCode::LeftArrow) ||
-        m_pGameInstance->IsKeyReleased(KeyCode::RightArrow))
+    if (m_pInputManager->IsKeyReleased(KeyCode::UpArrow) ||
+        m_pInputManager->IsKeyReleased(KeyCode::DownArrow) ||
+        m_pInputManager->IsKeyReleased(KeyCode::LeftArrow) ||
+        m_pInputManager->IsKeyReleased(KeyCode::RightArrow))
         bPressed = false;
 
       if (bPressed)
@@ -156,6 +158,7 @@ CGameObject* CPlayer::Clone(void* pArg)
 
 void CPlayer::Free()
 {
+    Safe_Release(m_pInputManager);
     __super::Free();
 }
 

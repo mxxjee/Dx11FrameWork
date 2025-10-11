@@ -1,6 +1,8 @@
 #include "CFreeCamera.h"
 #include "CPerspectiveCameraComponent.h"
 #include "CGameInstance.h"
+#include "CInput_Manager.h"
+
 
 CFreeCamera::CFreeCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CGameObject(pDevice,pContext)
@@ -56,16 +58,16 @@ void CFreeCamera::Update(_float fTimeDelta)
     Mouse_Move();
    // Mouse_Fix();
 
-    if (m_pGameInstance->IsKeyHeld(KeyCode::D))
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::D))
         m_pTransformCom->Move(DIRECTION::RIGHT, fTimeDelta);
 
-    if (m_pGameInstance->IsKeyHeld(KeyCode::A))
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::A))
         m_pTransformCom->Move(DIRECTION::LEFT, fTimeDelta);
 
-    if (m_pGameInstance->IsKeyHeld(KeyCode::W))
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::W))
         m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta);
 
-    if (m_pGameInstance->IsKeyHeld(KeyCode::S))
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::S))
         m_pTransformCom->Move(DIRECTION::BACKWARD, fTimeDelta);
 }
 
@@ -91,16 +93,16 @@ void CFreeCamera::Mouse_Move()
     long MouseMove = {};
 
     //오른쪽 클릭하고있을때만 활성화
-    CheckFalse(m_pGameInstance->IsMouseButtonHeld(1))
+    CheckFalse(CInput_Manager::GetInstance()->IsMouseButtonHeld(1))
 
-    if (MouseMove=m_pGameInstance->GetMouseDelta().x)
+    if (MouseMove= CInput_Manager::GetInstance()->GetMouseDelta().x)
     {
         int A = MouseMove;
         m_pTransformCom->AddRotation(_float3(0.f, (MouseMove / 10.f), 0.f));
         
     }
 
-    if (MouseMove=m_pGameInstance->GetMouseDelta().y)
+    if (MouseMove= CInput_Manager::GetInstance()->GetMouseDelta().y)
     {
         int A = MouseMove;
         m_pTransformCom->AddRotation(_float3((MouseMove / 10.f), 0.f, 0.f));
