@@ -159,6 +159,27 @@ CGameObject* CCamera_Manager::GetMainOrthoCamera()
 	return m_pMainOrthoCamera;
 }
 
+CGameObject* CCamera_Manager::Find_Camera(const _wstring& tag,bool isOrtho)
+{
+	if (!isOrtho)
+	{
+		auto iter = m_mapPerspectiveCams.find(tag);
+		if (iter != m_mapPerspectiveCams.end())
+			return iter->second;
+
+		return nullptr;
+	}
+
+	else
+	{
+		auto iter = m_mapOrthoCams.find(tag);
+		if (iter != m_mapOrthoCams.end())
+			return iter->second;
+
+		return nullptr;
+	}
+}
+
 void CCamera_Manager::Update_MainCamera(_float fTimeDelta)
 {
 	if (m_pMainPerspectiveCamera)

@@ -32,6 +32,8 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
         return E_FAIL;
  
     m_eRenderGroup = RENDERGROUP::ALPHA;
+    /*m_pTarget = m_pGameInstance->Find_Camera(L"FreeCam");*/
+
 
     return S_OK;
 }
@@ -74,7 +76,7 @@ HRESULT CPlayer::Render()
 
 void CPlayer::Move_Input(_float fTimeDelta)
 {
-    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::RightArrow))
+    /*if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::RightArrow))
     {
         bPressed = true;
 
@@ -125,8 +127,12 @@ void CPlayer::Move_Input(_float fTimeDelta)
 
       if (bPressed)
         m_pTransformCom->Move(DIRECTION::FORWARD, (-1)*fTimeDelta);
+*/
 
+    if (m_pTarget)
+        m_pTransformCom->Chase(m_pTarget->Get_Transform()->Get_State(STATE::POSITION, TransformScope::WORLD), fTimeDelta, 5);
 
+   
 }
 
 CPlayer* CPlayer::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)

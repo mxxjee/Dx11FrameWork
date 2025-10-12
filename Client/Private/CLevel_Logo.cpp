@@ -260,6 +260,7 @@ HRESULT CLevel_Logo::Ready_Layer_Player(const _wstring& strLayerTag)
         strLayerTag, &Desc)))
         return E_FAIL;
 
+
     return S_OK;
 }
 
@@ -299,6 +300,8 @@ void CLevel_Logo::OnEnter()
 
     CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Test_Layer", L"Test");
     CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Player_Layer", L"Player");
+    pPlayerObject->Set_Target(m_pGameInstance->Find_Camera(L"FreeCamera"));
+
 
     if (pTestObject)
     {

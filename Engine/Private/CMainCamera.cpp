@@ -137,7 +137,7 @@ void CMainCamera::Follow_Target(_float fTimeDelta)
 	const _vector TargetPos = pTargetTransform->Get_State(STATE::POSITION,TransformScope::WORLD);
 	const _float3 Offset = pCamera->Get_OffSet();
 	
-	m_pTransformCom->MoveLerp(TargetPos + XMLoadFloat3(&Offset), 7.f, fTimeDelta);
+	m_pTransformCom->MoveLerp(TargetPos + XMLoadFloat3(&Offset), 3.f, fTimeDelta);
 
 	
 	

@@ -35,6 +35,7 @@ public:
     
 public:
     void    Set_Active(bool _b) { m_bActive = _b; }
+    void    Set_Target(CGameObject* pObj) { m_pTarget = pObj; }
 
 public:
     const _wstring& Get_Tag() { return tag; }

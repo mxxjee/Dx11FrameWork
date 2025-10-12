@@ -31,6 +31,8 @@ public:
     CGameObject*           GetMainOrthoCamera();
 
 public:
+    CGameObject*        Find_Camera(const _wstring& tag, bool isOrtho=false);
+public:
     void        Update_MainCamera(_float fTimeDelta);
     void        LateUpdate_MainCamera(_float fTimeDelta);
 public:

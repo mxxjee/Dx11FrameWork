@@ -343,6 +343,12 @@ void CGameInstance::LateUpdate_MainCamera(_float fTimeDelta)
 	m_pCameraManager->LateUpdate_MainCamera(fTimeDelta);
 }
 
+CGameObject* CGameInstance::Find_Camera(const _wstring& tag, bool isOrtho)
+{
+	CheckNullResult(m_pCameraManager, nullptr);
+	return m_pCameraManager->Find_Camera(tag, isOrtho);
+}
+
 
 
 
