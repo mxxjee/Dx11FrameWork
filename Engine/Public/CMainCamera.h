@@ -39,8 +39,6 @@ public:
     virtual CGameObject* Clone(void* pArg);
     virtual void    Free() override;
 
-private:
-    CPerspectiveCameraComponent* m_pPerspectiveCameraCom = { nullptr };
 
 };
 

@@ -4,6 +4,8 @@
 namespace Engine
 {
     class CShader;
+    class CCameraComponent;
+
 }
 
 NS_BEGIN(Engine)
@@ -27,8 +29,10 @@ public:
 
 public:
     virtual void        Bind_ViewProjMatrix()=0;
+    CCameraComponent* Get_CameraComp() { return m_pCameraCom; }
 
 protected:
+    CCameraComponent* m_pCameraCom = { nullptr };
     CShader* m_pMainShader = { nullptr };
 };
 

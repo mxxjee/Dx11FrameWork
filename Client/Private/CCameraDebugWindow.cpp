@@ -5,6 +5,7 @@
 #include "CGameObject.h"
 #include "COrthographicCameraComponent.h"
 #include "CPerspectiveCameraComponent.h"
+#include "CCamera_Base.h"
 
 
 
@@ -118,7 +119,7 @@ HRESULT CCameraDebugWindow::Create_Widgets()
     TargetCamDesc.Tag = L"TargetCamMode";
     TargetCamDesc.callback = [this]()
     {
-        m_pGameInstance->SetMainPerspectiveCamera(L"MainCamera");
+        m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
 
     };
     if (FAILED(Create_Button(&TargetCamDesc, &m_CamButtons[0])))
@@ -130,7 +131,7 @@ HRESULT CCameraDebugWindow::Create_Widgets()
     FreeCamDesc.Tag = L"FreeCam";
     FreeCamDesc.callback = [this]()
     {
-        m_pGameInstance->SetMainPerspectiveCamera(L"FreeCamera");
+        m_pGameInstance->Set_MainCamera(CAMERA_TYPE::FREE);
 
     };
     if (FAILED(Create_Button(&FreeCamDesc, &m_CamButtons[1])))
@@ -165,7 +166,7 @@ void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
     ImGui::SetCursorPos(ImVec2(0.f, 0.f));
 
 
-    CGameObject* pMainCam = (m_bClickOrtho) ? m_pGameInstance->GetMainOrthoCamera() : m_pGameInstance->GetMainPerspectiveCamera();
+    CCamera_Base* pMainCam = (m_bClickOrtho) ? m_pGameInstance->Find_Camera(CAMERA_TYPE::UI) : m_pGameInstance->Get_MainCamera();
     CCameraComponent* pCameracomp = nullptr;
 
     if (pMainCam == nullptr)
@@ -250,7 +251,7 @@ void CCameraDebugWindow::ToggleClickOrtho(bool _b)
 {
     m_bClickOrtho = _b;
 
-    CGameObject* pMainCam = (m_bClickOrtho) ? m_pGameInstance->GetMainOrthoCamera() : m_pGameInstance->GetMainPerspectiveCamera();
+    CGameObject* pMainCam = (m_bClickOrtho) ? m_pGameInstance->Find_Camera(CAMERA_TYPE::UI) : m_pGameInstance->Get_MainCamera();
     CheckNull(pMainCam);
 
     //orthographic 선택했을떄  바인딩정보

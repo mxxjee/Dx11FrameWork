@@ -108,5 +108,7 @@ namespace Engine
 		Held = 1<<1,
 		Released = 1<<2,
 	};
+
+	enum class CAMERA_TYPE {TARGET,FREE,UI,MINIMAP,CUTSCENE,SHADOW,END};
 }
 #endif // Engine_Enum_h__

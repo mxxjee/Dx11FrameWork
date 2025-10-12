@@ -39,7 +39,6 @@ public:
     virtual void    Free() override;
 
 private:
-    CPerspectiveCameraComponent* m_pPerspectiveCameraCom = { nullptr };
     long                    m_ScreenWidth = {};
     long                    m_ScreenHeight = {};
 

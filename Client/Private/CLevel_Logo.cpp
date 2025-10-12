@@ -93,7 +93,7 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
         iTargetIdx = MathUtils::Clamp(iTargetIdx, 0, 1);
 
 
-        CGameObject* pMainCamera = m_pGameInstance->GetMainPerspectiveCamera();
+        CGameObject* pMainCamera = m_pGameInstance->Get_MainCamera();
         CheckNull(pMainCamera);
         CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
         CheckNull(ppMainCamera);
@@ -131,11 +131,11 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
         switch (iTargetIdx)
         {
         case 0:
-            m_pGameInstance->SetMainPerspectiveCamera(L"MainCamera");
+            m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
             break;
 
         case 1:
-            m_pGameInstance->SetMainPerspectiveCamera(L"FreeCamera");
+            m_pGameInstance->Set_MainCamera(CAMERA_TYPE::FREE);
 
             break;
         }
@@ -294,13 +294,12 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
 void CLevel_Logo::OnEnter()
 {    
     //메인카메라 등록
-    m_pGameInstance->SetMainOrthoCamara(L"UICamera");
-    m_pGameInstance->SetMainPerspectiveCamera(L"MainCamera");
+    m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
 
 
     CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Test_Layer", L"Test");
     CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Player_Layer", L"Player");
-    pPlayerObject->Set_Target(m_pGameInstance->Find_Camera(L"FreeCamera"));
+    //pPlayerObject->Set_Target(m_pGameInstance->Find_Camera(L"FreeCamera"));
 
 
     if (pTestObject)
@@ -318,7 +317,7 @@ void CLevel_Logo::OnEnter()
     }
 
     //소켓을 카메라 타겟으로
-    CGameObject* pMainCamera = m_pGameInstance->GetMainPerspectiveCamera();
+    CGameObject* pMainCamera = m_pGameInstance->Get_MainCamera();
     if (pMainCamera)
     {
         CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
@@ -403,8 +402,8 @@ void CLevel_Logo::Set_UIPos_ByWorld(_float3 OffSet)
         {
             _vector vWorldPos = MathUtils::WorldToScreen(
                 vPlayerPos ,
-                m_pGameInstance->GetViewMatrix(),
-                m_pGameInstance->GetProjMatrix(),
+                m_pGameInstance->Get_Main_ViewMatrix(),
+                m_pGameInstance->Get_Main_ProjMatrix(),
                 g_iWinSizeX, g_iWinSizeY
             );
 
@@ -442,7 +441,7 @@ void CLevel_Logo::Create_MainCamera()
 
 
     CGameObject* pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MainCamera"), &Desc));
-    m_pGameInstance->RegisterCamera(L"MainCamera", pInstance, false);
+    m_pGameInstance->RegisterCamera(CAMERA_TYPE::TARGET, pInstance);
 
 }
 
@@ -468,7 +467,7 @@ void CLevel_Logo::Create_UICamera()
 
 
     CGameObject* pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"UICamera"), &UIDesc));
-    m_pGameInstance->RegisterCamera(L"UICamera", pInstance, true);
+    m_pGameInstance->RegisterCamera(CAMERA_TYPE::UI , pInstance);
 }
 
 void CLevel_Logo::Create_FreeCamera()
@@ -492,5 +491,5 @@ void CLevel_Logo::Create_FreeCamera()
 
 
     CGameObject* pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FreeCamera"), &Desc));
-    m_pGameInstance->RegisterCamera(L"FreeCamera", pInstance, false);
+    m_pGameInstance->RegisterCamera(CAMERA_TYPE::FREE, pInstance);
 }

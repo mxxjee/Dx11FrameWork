@@ -101,7 +101,7 @@ void CRenderer::Render_Blend()
 	m_pContext->OMSetDepthStencilState(m_RenderStates[ENUM_TO_UINT(RENDERGROUP::ALPHA)]._DepthStencilState.Get(), 0);
 
 	
-	m_MainCameraView = XMLoadFloat4x4(&CGameInstance::GetInstance()->GetViewMatrix(false));
+	m_MainCameraView = XMLoadFloat4x4(&CGameInstance::GetInstance()->Get_Main_ViewMatrix());
 
 	m_RenderObjects[ENUM_TO_UINT(RENDERGROUP::ALPHA)].sort([&](CGameObject* a, CGameObject* b)
 		{
@@ -164,12 +164,12 @@ void CRenderer::Render_UI()
 
 void CRenderer::Bind_PerspectiveCamera()
 {
-	CGameInstance::GetInstance()->Bind_ViewProjMatrix(true);
+	CGameInstance::GetInstance()->Bind_Main_ViewProjMatrix();
 }
 
 void CRenderer::Bind_OrthoCamera()
 {
-	CGameInstance::GetInstance()->Bind_ViewProjMatrix(false);
+	CGameInstance::GetInstance()->Bind_ViewProjMatrix(CAMERA_TYPE::UI);
 }
 
 void CRenderer::CreateSamplerStates()

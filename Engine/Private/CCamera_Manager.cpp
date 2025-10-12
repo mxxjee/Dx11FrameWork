@@ -5,220 +5,161 @@
 #include "CCamera_Base.h"
 
 
-void CCamera_Manager::RegisterCamera(const _wstring& Tag, CGameObject* pObj, bool isOrtho)
+HRESULT CCamera_Manager::Initialize()
 {
-	if (!isOrtho)
-		m_mapPerspectiveCams.emplace(Tag, pObj);
+	for (int i = 0; i < ENUM_TO_UINT(CAMERA_TYPE::END); ++i)
+		m_Cameras[i] = nullptr;
 
-	else
-		m_mapOrthoCams.emplace(Tag, pObj);
+	XMStoreFloat4x4(&g_Identityfloat4x4, XMMatrixIdentity());
+	g_IdentityMatrix = XMMatrixIdentity();
+	
+	return S_OK;
 }
 
-void CCamera_Manager::UnRegisterCamera(const _wstring& Tag, bool isOrtho)
+void CCamera_Manager::RegisterCamera(CAMERA_TYPE eType, CGameObject* pObj)
 {
-	auto& Map = isOrtho ? m_mapOrthoCams : m_mapPerspectiveCams;
 
-	auto iter = Map.find(Tag);
-	if (iter != Map.end())
-	{
-		if (!isOrtho)
-		{
-			if (iter->second == m_pMainPerspectiveCamera)
-				m_pMainPerspectiveCamera = nullptr;
-		}
+	CCamera_Base* pCamera = dynamic_cast<CCamera_Base*>(pObj);
+	if (pCamera)
+		m_Cameras[ENUM_TO_UINT(eType)] = pCamera;
 
-		else
-		{
-			if (iter->second == m_pMainOrthoCamera)
-				m_pMainOrthoCamera = nullptr;
-		}
-
-		Safe_Release(iter->second);
-		Map.erase(iter);
-
-	}
 }
 
-bool CCamera_Manager::SetMainPerspectiveCamera(const _wstring& tag)
+void CCamera_Manager::UnRegisterCamera(CAMERA_TYPE eType)
 {
-	auto it = m_mapPerspectiveCams.find(tag);
-	if (it != m_mapPerspectiveCams.end())
-	{
-		m_pMainPerspectiveCamera = it->second;
-		return true;
-	}
-
-	return false;
+	Safe_Release(m_Cameras[ENUM_TO_UINT(eType)]);
 }
 
-bool CCamera_Manager::SetMainOrthoCamera(const _wstring& tag)
+void CCamera_Manager::Set_MainCamera(CAMERA_TYPE eType)
 {
-	auto it = m_mapOrthoCams.find(tag);
-	if (it != m_mapOrthoCams.end())
-	{
-		m_pMainOrthoCamera = it->second;
-		return true;
-	}
-
-	return false;
+	m_pMainCamera = m_Cameras[ENUM_TO_UINT(eType)];
 }
 
-const _float4x4& CCamera_Manager::GetViewMatrix(bool isOrtho) const
+const _float4x4& CCamera_Manager::GetViewMatrix(CAMERA_TYPE eType) const
 {
 	//뷰행렬
-	if (!isOrtho)
+	if (m_Cameras[ENUM_TO_UINT(eType)])
 	{
-		CComponent* pComp = m_pMainPerspectiveCamera->Get_Component(L"PerspectiveCamera");
-		if (pComp)
-		{
-			CPerspectiveCameraComponent* pPers = dynamic_cast<CPerspectiveCameraComponent*>(pComp);
-			return pPers->Get_ViewMatrix();
-		}
-
+		CCamera_Base* pBase = m_Cameras[ENUM_TO_UINT(eType)];
+		return pBase->Get_CameraComp()->Get_ViewMatrix();
+	}
 	
+}
 
+const _float4x4& CCamera_Manager::GetProjMatrix(CAMERA_TYPE eType) const
+{
+	//투영행렬
+	if (m_Cameras[ENUM_TO_UINT(eType)])
+	{
+		CCamera_Base* pBase = m_Cameras[ENUM_TO_UINT(eType)];
+		return pBase->Get_CameraComp()->Get_ProjMatrix();
 	}
 
-	else
-	{
-		CComponent* pComp = m_pMainOrthoCamera->Get_Component(L"OrthographicCamera");
-		if (pComp)
-		{
-			COrthographicCameraComponent* pOrtho = dynamic_cast<COrthographicCameraComponent*>(pComp);
+}
 
-			return pOrtho->Get_ViewMatrix();
+const _matrix CCamera_Manager::GetMulViewProjMatrix(CAMERA_TYPE eType) const
+{
+	//뷰 x 투영행렬
+	if (m_Cameras[ENUM_TO_UINT(eType)])
+	{
+		CCamera_Base* pBase = m_Cameras[ENUM_TO_UINT(eType)];
+		return pBase->Get_CameraComp()->Get_MulViewProjMatrix();
+	}
+	
+}
+
+void CCamera_Manager::Bind_ViewProjMatrix(CAMERA_TYPE eType)
+{
+	if (m_Cameras[ENUM_TO_UINT(eType)])
+	{
+		CCamera_Base* pBase = m_Cameras[ENUM_TO_UINT(eType)];
+		pBase->Bind_ViewProjMatrix();
+	}
+
+	
+}
+
+CCamera_Base* CCamera_Manager::Find_Camera(CAMERA_TYPE eType)
+{
+	return m_Cameras[ENUM_TO_UINT(eType)];
+}
+
+const _float4x4& CCamera_Manager::Get_Main_ViewMatrix()
+{
+	if (!m_pMainCamera)
+		return g_Identityfloat4x4;
+
+	return m_pMainCamera->Get_CameraComp()->Get_ViewMatrix();
+}
+
+const _float4x4& CCamera_Manager::Get_Main_ProjMatrix()
+{
+	if (!m_pMainCamera)
+		return g_Identityfloat4x4;
+
+	return m_pMainCamera->Get_CameraComp()->Get_ProjMatrix();
+}
+
+_matrix CCamera_Manager::Get_Main_MulViewProjMatrix()
+{
+	if (!m_pMainCamera)
+		return g_IdentityMatrix;
+
+	return m_pMainCamera->Get_CameraComp()->Get_MulViewProjMatrix();
+}
+
+void CCamera_Manager::Bind_Main_ViewProjMatrix() const
+{
+	CheckNull(m_pMainCamera);
+	m_pMainCamera->Bind_ViewProjMatrix();
+}
+
+void CCamera_Manager::Update_Cameras(_float fTimeDelta)
+{
+	for (int i = 0; i < ENUM_TO_UINT(CAMERA_TYPE::END); ++i)
+	{
+		if (m_Cameras[i] != nullptr)
+		{
+			if (m_Cameras[i]->Is_Active())
+				m_Cameras[i]->Update(fTimeDelta);
 		}
 		
 	}
-}
-
-const _float4x4& CCamera_Manager::GetProjMatrix(bool isOrtho) const
-{
-	if (!isOrtho)
-	{
-		CComponent* pComp = m_pMainPerspectiveCamera->Get_Component(L"PerspectiveCamera");
-		CPerspectiveCameraComponent* pPers = dynamic_cast<CPerspectiveCameraComponent*>(pComp);
-
-		return pPers->Get_ProjMatrix();
-	}
-	else
-	{
-		CComponent* pComp = m_pMainOrthoCamera->Get_Component(L"OrthographicCamera");
-		COrthographicCameraComponent* pOrtho = dynamic_cast<COrthographicCameraComponent*>(pComp);
-
-		return pOrtho->Get_ProjMatrix();
-	}
+		
 
 }
 
-const _matrix CCamera_Manager::GetMulViewProjMatrix(bool isOrtho) const
+void CCamera_Manager::LateUpdate_Cameras(_float fTimeDelta)
 {
-	// TODO: 여기에 return 문을 삽입합니다.
-	if (!isOrtho)
+	for (int i = 0; i < ENUM_TO_UINT(CAMERA_TYPE::END); ++i)
 	{
-		CComponent* pComp = m_pMainPerspectiveCamera->Get_Component(L"PerspectiveCamera");
-		CPerspectiveCameraComponent* pPers = dynamic_cast<CPerspectiveCameraComponent*>(pComp);
-
-		return pPers->Get_MulViewProjMatrix();
-	}
-	else
-	{
-		CComponent* pComp = m_pMainOrthoCamera->Get_Component(L"OrthographicCamera");
-		COrthographicCameraComponent* pOrtho = dynamic_cast<COrthographicCameraComponent*>(pComp);
-
-		return pOrtho->Get_MulViewProjMatrix();
-	}
+		if (m_Cameras[i] != nullptr)
+		{
+			if (m_Cameras[i]->Is_Active())
+				m_Cameras[i]->Update_Late(fTimeDelta);
+		}
 	
-}
-
-void CCamera_Manager::Bind_ViewProjMatrix(bool isOrtho)
-{
-	
-	if (!isOrtho)
-	{
-		CCamera_Base* pBase = dynamic_cast<CCamera_Base*>(m_pMainPerspectiveCamera);
-		if (pBase)
-			pBase->Bind_ViewProjMatrix();
 	}
-
-	else
-	{
-		CCamera_Base* pBase = dynamic_cast<CCamera_Base*>(m_pMainOrthoCamera);
-		if (pBase)
-			pBase->Bind_ViewProjMatrix();
-	}
-}
-
-CGameObject* CCamera_Manager::GetMainPerspectiveCamera()
-{
-	return m_pMainPerspectiveCamera;
-}
-
-CGameObject* CCamera_Manager::GetMainOrthoCamera()
-{
-	return m_pMainOrthoCamera;
-}
-
-CGameObject* CCamera_Manager::Find_Camera(const _wstring& tag,bool isOrtho)
-{
-	if (!isOrtho)
-	{
-		auto iter = m_mapPerspectiveCams.find(tag);
-		if (iter != m_mapPerspectiveCams.end())
-			return iter->second;
-
-		return nullptr;
-	}
-
-	else
-	{
-		auto iter = m_mapOrthoCams.find(tag);
-		if (iter != m_mapOrthoCams.end())
-			return iter->second;
-
-		return nullptr;
-	}
-}
-
-void CCamera_Manager::Update_MainCamera(_float fTimeDelta)
-{
-	if (m_pMainPerspectiveCamera)
-		m_pMainPerspectiveCamera->Update(fTimeDelta);
-
-	if (m_pMainOrthoCamera)
-		m_pMainOrthoCamera->Update(fTimeDelta);
-}
-
-void CCamera_Manager::LateUpdate_MainCamera(_float fTimeDelta)
-{
-	if (m_pMainPerspectiveCamera)
-		m_pMainPerspectiveCamera->Update_Late(fTimeDelta);
-
-	if (m_pMainOrthoCamera)
-		m_pMainOrthoCamera->Update_Late(fTimeDelta);
+		
 }
 
 
 
 CCamera_Manager* CCamera_Manager::Create()
 {
-	return new CCamera_Manager;
+	CCamera_Manager* pInstance = new CCamera_Manager;
+	if (HRESULT(pInstance->Initialize()))
+	{
+		MSG_BOX("Failed to Create : Camera_manager");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
 }
 
 void CCamera_Manager::Free()
 {
-	for (auto& pair : m_mapPerspectiveCams)
-	{
-		Safe_Release(pair.second);
-		
-	}
+	for (int i = 0; i < ENUM_TO_UINT(CAMERA_TYPE::END); ++i)
+		Safe_Release(m_Cameras[i]);
 
-	for (auto& pair : m_mapOrthoCams)
-	{
-		Safe_Release(pair.second);
-
-	}
-
-	m_mapPerspectiveCams.clear();
-	m_mapOrthoCams.clear();
 }

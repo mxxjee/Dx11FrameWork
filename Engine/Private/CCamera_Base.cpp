@@ -1,5 +1,7 @@
 #include "CCamera_Base.h"
 #include "CGameInstance.h"
+#include "CCameraComponent.h"
+
 
 CCamera_Base::CCamera_Base(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CGameObject(pDevice,pContext)
@@ -7,7 +9,7 @@ CCamera_Base::CCamera_Base(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceCont
 }
 
 CCamera_Base::CCamera_Base(const CCamera_Base& rhs)
-    :CGameObject(rhs)
+    :CGameObject(rhs),m_pMainShader(rhs.m_pMainShader),m_pCameraCom(rhs.m_pCameraCom)
 {
 }
 
@@ -29,6 +31,7 @@ HRESULT CCamera_Base::Initialize_Copytype(void* pArg)
 void CCamera_Base::Free()
 {
     __super::Free();
+    Safe_Release(m_pCameraCom);
 }
 
 

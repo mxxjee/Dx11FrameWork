@@ -65,7 +65,7 @@ HRESULT CScreenQuad::Render()
         m_pTexShader->SetResource("texture0", m_pTexture->GetComPtr());  
 
     _float4x4       viewproj;
-    XMStoreFloat4x4(&viewproj, m_pGameInstance->GetMulViewProjMatrix(true));
+    XMStoreFloat4x4(&viewproj, m_pGameInstance->GetMulViewProjMatrix(CAMERA_TYPE::UI));
 
     m_pTexShader->SetMatrix("g_ViewProjMatrix",viewproj);
 

@@ -92,7 +92,7 @@ void CGameInstance::Update_Engine(_float fTimedelta)
 	m_pObjectManager->Update_Late(fTimedelta);*/
 
 	m_pLevelManager->Update(fTimedelta);
-	Update_MainCamera(fTimedelta);
+	Update_Cameras(fTimedelta);
 	
 
 
@@ -101,8 +101,7 @@ void CGameInstance::Update_Engine(_float fTimedelta)
 void CGameInstance::LateUpdate_Engine(float fTimedelta)
 {
 	m_pLevelManager->Update_Late(fTimedelta);
-	
-	LateUpdate_MainCamera(fTimedelta);
+	LateUpdate_Cameras(fTimedelta);
 }
 
 void CGameInstance::Update_Render(float fTimedelta)
@@ -282,74 +281,88 @@ HRESULT CGameInstance::Get_Buffer(ComPtr<ID3D11Texture2D>* pBuffer, UINT iFlag)
 
 
 #pragma region CameraManager
-void CGameInstance::RegisterCamera(const _wstring& Tag, CGameObject* pObj, bool isOrtho)
+void CGameInstance::RegisterCamera(CAMERA_TYPE eType, CGameObject* pObj)
 {
 	CheckNull(m_pCameraManager);
-	m_pCameraManager->RegisterCamera(Tag, pObj, isOrtho);
+	m_pCameraManager->RegisterCamera(eType, pObj);
 }
-void CGameInstance::UnRegisterCamera(const _wstring& Tag, bool isOrtho)
+void CGameInstance::UnRegisterCamera(CAMERA_TYPE eType)
 {
 	CheckNull(m_pCameraManager);
-	m_pCameraManager->UnRegisterCamera(Tag, isOrtho);
+	m_pCameraManager->UnRegisterCamera(eType);
 }
-bool CGameInstance::SetMainPerspectiveCamera(const _wstring& tag)
+
+void CGameInstance::Set_MainCamera(CAMERA_TYPE eType)
 {
-	CheckNullResult(m_pCameraManager,false);
-	return m_pCameraManager->SetMainPerspectiveCamera(tag);
+	CheckNull(m_pCameraManager);
+	return m_pCameraManager->Set_MainCamera(eType);
+
 }
-bool CGameInstance::SetMainOrthoCamara(const _wstring& tag)
+
+const _float4x4& CGameInstance::GetViewMatrix(CAMERA_TYPE eType) const
 {
-	CheckNullResult(m_pCameraManager, false);
-	return m_pCameraManager->SetMainOrthoCamera(tag);
+	return m_pCameraManager->GetViewMatrix(eType);
 }
-const _float4x4& CGameInstance::GetViewMatrix(bool isOrtho) const
+const _float4x4& CGameInstance::GetProjMatrix(CAMERA_TYPE eType) const
 {
-	return m_pCameraManager->GetViewMatrix(isOrtho);
+	return m_pCameraManager->GetProjMatrix(eType);
 }
-const _float4x4& CGameInstance::GetProjMatrix(bool isOrtho) const
+const _matrix CGameInstance::GetMulViewProjMatrix(CAMERA_TYPE eType) const
 {
-	return m_pCameraManager->GetProjMatrix(isOrtho);
+	return m_pCameraManager->GetMulViewProjMatrix(eType);
 }
-const _matrix CGameInstance::GetMulViewProjMatrix(bool isOrtho) const
+void CGameInstance::Bind_ViewProjMatrix(CAMERA_TYPE eType)
 {
-	return m_pCameraManager->GetMulViewProjMatrix(isOrtho);
+	CheckNull(m_pCameraManager);
+	return m_pCameraManager->Bind_ViewProjMatrix(eType);
 }
-CGameObject* CGameInstance::GetMainPerspectiveCamera()
+
+void CGameInstance::Update_Cameras(_float fTimeDelta)
+{
+	CheckNull(m_pCameraManager);
+	m_pCameraManager->Update_Cameras(fTimeDelta);
+}
+
+void CGameInstance::LateUpdate_Cameras(_float fTimeDelta)
+{
+	CheckNull(m_pCameraManager);
+	m_pCameraManager->LateUpdate_Cameras(fTimeDelta);
+}
+
+CCamera_Base* CGameInstance::Find_Camera(CAMERA_TYPE eType)
 {
 	CheckNullResult(m_pCameraManager, nullptr);
-	return m_pCameraManager->GetMainPerspectiveCamera();
+	return m_pCameraManager->Find_Camera(eType);
 }
-CGameObject* CGameInstance::GetMainOrthoCamera()
+
+const _float4x4& CGameInstance::Get_Main_ViewMatrix()
 {
-	CheckNullResult(m_pCameraManager, nullptr);
-	return m_pCameraManager->GetMainOrthoCamera();
+	return m_pCameraManager->Get_Main_ViewMatrix();
 }
 
-void CGameInstance::Bind_ViewProjMatrix(bool isOrtho)
+const _float4x4& CGameInstance::Get_Main_ProjMatrix()
 {
-	CheckNull(m_pCameraManager);
-	return m_pCameraManager->Bind_ViewProjMatrix(isOrtho);
+	return m_pCameraManager->Get_Main_ProjMatrix();
 }
 
-void CGameInstance::Update_MainCamera(_float fTimeDelta)
+_matrix CGameInstance::Get_Main_MulViewProjMatrix()
 {
-	CheckNull(m_pCameraManager);
-	m_pCameraManager->Update_MainCamera(fTimeDelta);
+	return m_pCameraManager->Get_Main_MulViewProjMatrix();
 }
 
-void CGameInstance::LateUpdate_MainCamera(_float fTimeDelta)
+void CGameInstance::Bind_Main_ViewProjMatrix() const
 {
-	CheckNull(m_pCameraManager);
-	m_pCameraManager->LateUpdate_MainCamera(fTimeDelta);
+	return m_pCameraManager->Bind_Main_ViewProjMatrix();
 }
 
-CGameObject* CGameInstance::Find_Camera(const _wstring& tag, bool isOrtho)
+CCamera_Base* CGameInstance::Get_MainCamera()
 {
-	CheckNullResult(m_pCameraManager, nullptr);
-	return m_pCameraManager->Find_Camera(tag, isOrtho);
+	CheckNullResult(m_pCameraManager,nullptr);
+	return m_pCameraManager->Get_MainCamera();
+
 }
 
-
+#pragma endregion
 
 
 HRESULT CGameInstance::Register_Shader(const _wstring& Tag, CShader* pInstance)

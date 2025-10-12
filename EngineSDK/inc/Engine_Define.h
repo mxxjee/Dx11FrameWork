@@ -29,6 +29,7 @@ using namespace DirectX;
 #include <algorithm>
 #include <functional>
 #include <string>
+#include <array>
 using namespace std;
 #include <unordered_map>
 #include <ctime>

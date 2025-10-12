@@ -10,7 +10,7 @@ namespace Engine
 
 NS_BEGIN(Engine)
 class ENGINE_DLL CUICamera :
-    public CGameObject
+    public CCamera_Base
 {
 private:
     CUICamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
@@ -40,10 +40,6 @@ public:
     static CUICamera* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg);
     virtual void    Free() override;
-
-private:
-    COrthographicCameraComponent* m_pOrthographicCameraCom = { nullptr };
-
 private:
     CShader* m_pMainShader = { nullptr };
 };

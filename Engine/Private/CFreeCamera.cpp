@@ -11,7 +11,7 @@ CFreeCamera::CFreeCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContex
 }
 
 CFreeCamera::CFreeCamera(const CFreeCamera& rhs)
-    : CCamera_Base(rhs), m_pPerspectiveCameraCom(rhs.m_pPerspectiveCameraCom)
+    : CCamera_Base(rhs)
 {
 }
 
@@ -33,13 +33,13 @@ HRESULT CFreeCamera::Initialize_Copytype(void* pArg)
 
     GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
-    m_pPerspectiveCameraCom = dynamic_cast<CPerspectiveCameraComponent*>(m_pGameInstance->Clone_Prototype
+    m_pCameraCom = dynamic_cast<CPerspectiveCameraComponent*>(m_pGameInstance->Clone_Prototype
     (PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"PerspectiveCamera"), pDesc));
 
-    CheckNullResult(m_pPerspectiveCameraCom, E_FAIL);
+    CheckNullResult(m_pCameraCom, E_FAIL);
 
-    Safe_AddRef(m_pPerspectiveCameraCom);
-    m_Components.emplace(L"PerspectiveCamera", m_pPerspectiveCameraCom);
+    Safe_AddRef(m_pCameraCom);
+    m_Components.emplace(L"PerspectiveCamera", m_pCameraCom);
 
 
 
@@ -76,7 +76,7 @@ void CFreeCamera::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
 
-    m_pPerspectiveCameraCom->Update_ViewMatrix(fTimeDelta);
+    m_pCameraCom->Update_ViewMatrix(fTimeDelta);
 
 }
 
@@ -95,7 +95,7 @@ void CFreeCamera::Bind_ViewProjMatrix()
     if (m_pMainShader)
     {
         _float4x4 viewproj;
-        XMStoreFloat4x4(&viewproj, m_pPerspectiveCameraCom->Get_MulViewProjMatrix());
+        XMStoreFloat4x4(&viewproj, m_pCameraCom->Get_MulViewProjMatrix());
         m_pMainShader->SetMatrix("g_ViewProjMatrix", viewproj);
     }
 }
@@ -156,7 +156,7 @@ CGameObject* CFreeCamera::Clone(void* pArg)
 
 void CFreeCamera::Free()
 {
-    Safe_Release(m_pPerspectiveCameraCom);
+    Safe_Release(m_pCameraCom);
     __super::Free();
 
 }

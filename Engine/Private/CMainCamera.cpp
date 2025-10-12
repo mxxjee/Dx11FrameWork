@@ -3,13 +3,14 @@
 #include "CGameInstance.h"
 #include "CShader.h"
 
+
 CMainCamera::CMainCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CCamera_Base(pDevice,pContext)
 {
 }
 
 CMainCamera::CMainCamera(const CMainCamera& rhs)
-	: CCamera_Base(rhs),m_pPerspectiveCameraCom(rhs.m_pPerspectiveCameraCom)
+	: CCamera_Base(rhs)
 {
 }
 
@@ -25,13 +26,13 @@ HRESULT CMainCamera::Initialize_Copytype(void* pArg)
 
 	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
-	m_pPerspectiveCameraCom= dynamic_cast<CPerspectiveCameraComponent*>(m_pGameInstance->Clone_Prototype
+	m_pCameraCom = dynamic_cast<CPerspectiveCameraComponent*>(m_pGameInstance->Clone_Prototype
 	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"PerspectiveCamera"), pDesc));
 
-	CheckNullResult(m_pPerspectiveCameraCom, E_FAIL);
+	CheckNullResult(m_pCameraCom, E_FAIL);
 
-	Safe_AddRef(m_pPerspectiveCameraCom);
-	m_Components.emplace(L"PerspectiveCamera", m_pPerspectiveCameraCom);
+	Safe_AddRef(m_pCameraCom);
+	m_Components.emplace(L"PerspectiveCamera", m_pCameraCom);
 
 	return S_OK;
 }
@@ -56,7 +57,7 @@ void CMainCamera::Update_Late(_float fTimeDelta)
 {
 	__super::Update_Late(fTimeDelta);
 	
-	m_pPerspectiveCameraCom->Update_ViewMatrix(fTimeDelta);
+	m_pCameraCom->Update_ViewMatrix(fTimeDelta);
 
 	
 }
@@ -74,7 +75,7 @@ HRESULT CMainCamera::Render()
 	if (m_pMainShader)
 	{
 		_float4x4 viewproj;
-		XMStoreFloat4x4(&viewproj, m_pPerspectiveCameraCom->Get_MulViewProjMatrix());
+		XMStoreFloat4x4(&viewproj, m_pCameraCom->Get_MulViewProjMatrix());
 		m_pMainShader->SetMatrix("g_ViewProjMatrix", viewproj);
 	}
 		
@@ -88,7 +89,7 @@ void CMainCamera::Bind_ViewProjMatrix()
 	if (m_pMainShader)
 	{
 		_float4x4 viewproj;
-		XMStoreFloat4x4(&viewproj, m_pPerspectiveCameraCom->Get_MulViewProjMatrix());
+		XMStoreFloat4x4(&viewproj, m_pCameraCom->Get_MulViewProjMatrix());
 		m_pMainShader->SetMatrix("g_ViewProjMatrix", viewproj);
 	}
 }
@@ -114,7 +115,7 @@ void CMainCamera::Set_Target(CGameObject* pTarget, bool bInit)
 			m_pTransformCom->Set_State(STATE::POSITION, vStartPos);
 
 			// 필요하다면 view 행렬도 바로 계산
-			m_pPerspectiveCameraCom->Update_ViewMatrix(0.f);
+			m_pCameraCom->Update_ViewMatrix(0.f);
 		}
 	}
 }
@@ -172,7 +173,7 @@ CGameObject* CMainCamera::Clone(void* pArg)
 
 void CMainCamera::Free()
 {
-	Safe_Release(m_pPerspectiveCameraCom);
+	
 
 	__super::Free();
 	

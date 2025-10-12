@@ -4,12 +4,12 @@
 #include "CShader.h"
 
 CUICamera::CUICamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CGameObject(pDevice, pContext)
+    :CCamera_Base(pDevice, pContext)
 {
 }
 
 CUICamera::CUICamera(const CUICamera& rhs)
-    :CGameObject(rhs),m_pOrthographicCameraCom(rhs.m_pOrthographicCameraCom)
+    : CCamera_Base(rhs)
 {
 }
 
@@ -25,13 +25,13 @@ HRESULT CUICamera::Initialize_Copytype(void* pArg)
 
 	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
-	m_pOrthographicCameraCom = dynamic_cast<COrthographicCameraComponent*>(m_pGameInstance->Clone_Prototype
+	m_pCameraCom = dynamic_cast<COrthographicCameraComponent*>(m_pGameInstance->Clone_Prototype
 	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"OrthographicCamera"), pDesc));
 
-	CheckNullResult(m_pOrthographicCameraCom, E_FAIL);
+	CheckNullResult(m_pCameraCom, E_FAIL);
 
-	Safe_AddRef(m_pOrthographicCameraCom);
-	m_Components.emplace(L"OrthographicCamera", m_pOrthographicCameraCom);
+	Safe_AddRef(m_pCameraCom);
+	m_Components.emplace(L"OrthographicCamera", m_pCameraCom);
 
 	m_pMainShader = m_pGameInstance->Find_Shader(L"Default");
 
@@ -45,15 +45,15 @@ void CUICamera::Update_Priority(_float fTimeDelta)
 
 void CUICamera::Update(_float fTimeDelta)
 {
-	__super::Update(fTimeDelta);
+	//__super::Update(fTimeDelta);
 
 }
 
 void CUICamera::Update_Late(_float fTimeDelta)
 {
-	__super::Update_Late(fTimeDelta);
+	//__super::Update_Late(fTimeDelta);
 
-	m_pOrthographicCameraCom->Update_ViewMatrix(fTimeDelta);
+	//m_pCameraCom->Update_ViewMatrix(fTimeDelta);
 
 }
 
@@ -82,7 +82,7 @@ void CUICamera::Bind_ViewProjMatrix()
 	if (m_pMainShader)
 	{
 		_float4x4 viewproj;
-		XMStoreFloat4x4(&viewproj, m_pOrthographicCameraCom->Get_MulViewProjMatrix());
+		XMStoreFloat4x4(&viewproj, m_pCameraCom->Get_MulViewProjMatrix());
 		m_pMainShader->SetMatrix("g_ViewProjMatrix", viewproj);
 	}
 }
@@ -113,7 +113,7 @@ CGameObject* CUICamera::Clone(void* pArg)
 
 void CUICamera::Free()
 {
-	Safe_Release(m_pOrthographicCameraCom);
+	Safe_Release(m_pCameraCom);
 
 	__super::Free();
 }

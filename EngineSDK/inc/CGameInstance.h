@@ -92,29 +92,30 @@ public:
 
 #pragma region CameraManager
     //카메라 등록 및 제거..
-    void        RegisterCamera(const _wstring & Tag, class CGameObject * pObj, bool isOrtho);
-    void        UnRegisterCamera(const _wstring & Tag, bool isOrtho);
-    
-    //메인카메라 설정
-    bool        SetMainPerspectiveCamera(const _wstring & tag);
-    bool        SetMainOrthoCamara(const _wstring & tag);
+    void        RegisterCamera(CAMERA_TYPE eType, CGameObject * pObj);
+    void        UnRegisterCamera(CAMERA_TYPE eType);
+    void        Set_MainCamera(CAMERA_TYPE eType);
 
     //뷰,투영행렬가져오기
-    const _float4x4& GetViewMatrix(bool isOrtho = false) const;
-    const _float4x4& GetProjMatrix(bool isOrtho = false) const;
-    const _matrix GetMulViewProjMatrix(bool isOrtho = false) const;
+    const _float4x4& GetViewMatrix(CAMERA_TYPE eType) const;
+    const _float4x4& GetProjMatrix(CAMERA_TYPE eType) const;
+    const _matrix GetMulViewProjMatrix(CAMERA_TYPE eType) const;
 
-    //메인 카메라 가져오기
-    class CGameObject* GetMainPerspectiveCamera();
-    class CGameObject* GetMainOrthoCamera();
+    void    Bind_ViewProjMatrix(CAMERA_TYPE eType);
 
-    void    Bind_ViewProjMatrix(bool isOrtho);
+    void        Update_Cameras(_float fTimeDelta);
+    void        LateUpdate_Cameras(_float fTimeDelta);
 
-    void        Update_MainCamera(_float fTimeDelta);
-    void        LateUpdate_MainCamera(_float fTimeDelta);
 
-public:
-    CGameObject* Find_Camera(const _wstring & tag, bool isOrtho = false);
+    //카메라 가져오기
+    class CCamera_Base* Find_Camera(CAMERA_TYPE eType);
+    CCamera_Base* Get_MainCamera();
+
+    //메인카메라의 뷰,투영행렬 관련
+    const _float4x4& Get_Main_ViewMatrix();
+    const _float4x4& Get_Main_ProjMatrix();
+    _matrix Get_Main_MulViewProjMatrix();
+    void    Bind_Main_ViewProjMatrix() const;
 
 #pragma endregion
 

@@ -76,7 +76,7 @@ HRESULT CPlayer::Render()
 
 void CPlayer::Move_Input(_float fTimeDelta)
 {
-    /*if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::RightArrow))
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::RightArrow))
     {
         bPressed = true;
 
@@ -127,7 +127,7 @@ void CPlayer::Move_Input(_float fTimeDelta)
 
       if (bPressed)
         m_pTransformCom->Move(DIRECTION::FORWARD, (-1)*fTimeDelta);
-*/
+
 
     if (m_pTarget)
         m_pTransformCom->Chase(m_pTarget->Get_Transform()->Get_State(STATE::POSITION, TransformScope::WORLD), fTimeDelta, 5);
