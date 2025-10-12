@@ -199,7 +199,7 @@ void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
 
     else
     {
-        pCameracomp = dynamic_cast<CCameraComponent*>(pMainCam->Get_Component(COMPONENT_TYPE::ORTHOGRAPHIC_CAM));
+        pCameracomp = dynamic_cast<CCameraComponent*>(pMainCam->Get_Component(COMPONENT_TYPE::PERSPECTIVE_CACM));
 
         ImGui::SetCursorPos(ImVec2(0.f, 70.f));
         wstring Name = pMainCam->Get_Tag();

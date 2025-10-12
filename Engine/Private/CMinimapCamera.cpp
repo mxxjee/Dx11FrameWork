@@ -37,6 +37,8 @@ HRESULT CMinimapCamera::Initialize_Copytype(void* pArg)
     Safe_AddRef(m_pCameraCom);
     m_Components.emplace(COMPONENT_TYPE::ORTHOGRAPHIC_CAM, m_pCameraCom);
 
+    if (FAILED(Create_RenderTagetview()))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -97,6 +99,33 @@ void CMinimapCamera::Follow_Target(_float fTimeDelta)
     _float3 vNewUp;
     XMStoreFloat3(&vNewUp, XMVector3Normalize(m_pTransformCom->Get_State(STATE::UP)));
     m_pCameraCom->Set_Up(vNewUp);
+}
+
+HRESULT CMinimapCamera::Create_RenderTagetview()
+{
+    //렌더타겟 = (색상버퍼) + (깊이버퍼)
+    //색상 버퍼 생성
+    D3D11_TEXTURE2D_DESC texDesc{};
+    texDesc.Width = 512;
+    texDesc.Height = 512;
+    texDesc.MipLevels = 1;
+    texDesc.ArraySize = 1;
+    texDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    texDesc.SampleDesc.Count = 1;
+    texDesc.Usage = D3D11_USAGE_DEFAULT;
+    texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+
+    m_pDevice->CreateTexture2D(&texDesc, nullptr, m_tRenderTarget.pColorTex.GetAddressOf());
+    m_pDevice->CreateRenderTargetView(m_tRenderTarget.pColorTex.Get(), nullptr, m_tRenderTarget.RTV.GetAddressOf());
+
+
+    //깊이 텍스처 생성
+    texDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+    texDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+    m_pDevice->CreateTexture2D(&texDesc, nullptr, m_tRenderTarget.pDepthTex.GetAddressOf());
+    m_pDevice->CreateDepthStencilView(m_tRenderTarget.pDepthTex.Get(), nullptr, m_tRenderTarget.pDSV.GetAddressOf());
+
+    return S_OK;
 }
 
 CMinimapCamera* CMinimapCamera::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
