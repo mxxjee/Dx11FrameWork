@@ -17,6 +17,8 @@ public:
         _float fNear = 0.1f;
         _float fFar = 1000.f;
 
+        _bool   m_bDynamic = true;
+
     }CAMERA_DESC;
 
 
@@ -33,7 +35,7 @@ public:
 
 public:
     void        Set_Target(class CGameObject* pTarget) { m_pTarget = pTarget; }
-    
+    void        Set_Up(_float3 vUp) { m_vUp = vUp; }
 public:
     const _float4x4& Get_ViewMatrix() { return m_matView; }
     const _float4x4& Get_ProjMatrix() { return m_matProj; }
@@ -72,9 +74,10 @@ public:
     virtual     CComponent* Clone(void* pArg) override;
     virtual     void        Free() override;
 
-private:
+protected:
     _vector     vEye;
     _vector     vAt;
+    _bool       m_bDynamic = true;
 
 };
 

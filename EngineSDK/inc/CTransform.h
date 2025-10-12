@@ -65,21 +65,24 @@ public:
 #pragma region Translation(모두 로컬기준 이동/회전)
 public:
     void    Move(DIRECTION eDir, float fTimeDelta,Space space=Space::Local);                                                                  //look벡터 갱신여부
-    void    MoveLerp(_fvector vTargetPos, float fLerpSpeed, float fTimeDelta, bool bUpdateLook=true);
+    void    MoveLerp(_vector vTargetPos, float fLerpSpeed, float fTimeDelta, bool bUpdateLook=true);
    
-    void    Rotation(_fvector vAxis, _float fRadian);       //즉각회전,vAxis축을 기준으로 fRAdian만큼 회전시킨다. 
+    void    Rotation(_vector vAxis, _float fRadian);       //즉각회전,vAxis축을 기준으로 fRAdian만큼 회전시킨다. 
     void    Rotation(_float3 fEularDegree);
     void    AddRotation(_float3 fEularDegree);              //누적회전 , 기존의 회전에 더함
 
-    void    Turn(_fvector vAxis, _float fTimeDelta);  //누적회전,매프레임마다 vAxis축을 기준으로 회전
+    void    Turn(_vector vAxis, _float fTimeDelta);  //누적회전,매프레임마다 vAxis축을 기준으로 회전
     
-    void    LookAt(_fvector vWorldPoint);    //즉각회전,한 점을 바로 바라보도록회전
-    void    LookAt(_fvector vAxis, _fvector vWorldPoint, _float fTimeDelta, _float fSpeed = 5); //누적 회전, 특정 축을 기준으로 vWorldpoint를 바라보도록 회전한다.
+    void    LookAt(_vector vWorldPoint);    //즉각회전,한 점을 바로 바라보도록회전
+    void    LookAt(_vector vAxis, _vector vWorldPoint, _float fTimeDelta, _float fSpeed = 5); //누적 회전, 특정 축을 기준으로 vWorldpoint를 바라보도록 회전한다.
     void    LookAt(CTransform* target);
-    void    LookAtSmooth(_fvector vTargetPos, float fLerpSpped, float fTimeDelta);
+    
+    void    LookAtWithUpVector(_vector vWorldPoint, _vector vUp);
+    
+    void    LookAtSmooth(_vector vTargetPos, float fLerpSpped, float fTimeDelta);
   
        
-    void    Chase(_fvector vPoint, _float fTimeDelta, _float MinDistance = 0.f);    //최소 거리 까지만 쫓아간다.
+    void    Chase(_vector vPoint, _float fTimeDelta, _float MinDistance = 0.f);    //최소 거리 까지만 쫓아간다.
 
 #pragma endregion
 

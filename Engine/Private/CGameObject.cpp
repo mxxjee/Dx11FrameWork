@@ -39,7 +39,7 @@ HRESULT CGameObject::Initialize_Copytype(void* pArg)
     CheckNullResult(m_pTransformCom, E_FAIL);
 
     Safe_AddRef(m_pTransformCom);
-    m_Components.emplace(L"Transform", m_pTransformCom);
+    m_Components.emplace(COMPONENT_TYPE::TRANSFORM, m_pTransformCom);
 
     return S_OK;
 }
@@ -68,9 +68,9 @@ HRESULT CGameObject::Render()
     return S_OK;
 }
 
-CComponent* CGameObject::Get_Component(const _wstring Tag)
+CComponent* CGameObject::Get_Component(COMPONENT_TYPE eType)
 {
-    auto iter = m_Components.find(Tag);
+    auto iter = m_Components.find(eType);
     if (iter == m_Components.end())
         return nullptr;
 

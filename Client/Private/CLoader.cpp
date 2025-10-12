@@ -8,6 +8,8 @@
 #include "CUICamera.h"
 #include "CFreeCamera.h"
 #include "CScreenQuad.h"
+#include "CMinimapCamera.h"
+
 
 #include "CTransform.h"
 #include "CPerspectiveCameraComponent.h"
@@ -187,6 +189,9 @@ HRESULT CLoader::Loading_Logo()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"ScreenQuad"), CScreenQuad::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MinimapCamera"), CMinimapCamera::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     m_isFinished = true;

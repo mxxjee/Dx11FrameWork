@@ -197,7 +197,7 @@ void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space)
 
 }
 
-void CTransform::MoveLerp(_fvector vTargetPos, float fLerpSpeed, float fTimeDelta,bool bUpdateLook)
+void CTransform::MoveLerp(_vector vTargetPos, float fLerpSpeed, float fTimeDelta,bool bUpdateLook)
 {
 	float t = 1.0f - expf(-fTimeDelta * fLerpSpeed);
 	_vector vCur = Get_State(STATE::POSITION);
@@ -268,7 +268,7 @@ _vector CTransform::Get_SRT(SRTType eType)
 
 
 
-void CTransform::Rotation(_fvector vAxis, _float fRadian)
+void CTransform::Rotation(_vector vAxis, _float fRadian)
 {
 	
 	//특정 축을 통한 x ,y, z 회전.
@@ -413,7 +413,7 @@ void CTransform::AddRotation(_float3 fEularDegree)
 
 }
 
-void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
+void CTransform::Turn(_vector vAxis, _float fTimeDelta)
 {
 	//누적회전
 	//1.회전행렬구하기
@@ -434,7 +434,7 @@ void CTransform::Turn(_fvector vAxis, _float fTimeDelta)
 }
 
 
-void CTransform::LookAt(_fvector vWorldPoint)
+void CTransform::LookAt(_vector vWorldPoint)
 {
 	_float3 vScale = Get_Scale();
 
@@ -458,7 +458,7 @@ void CTransform::LookAt(_fvector vWorldPoint)
 
 }
 
-void CTransform::LookAt(_fvector vAxis, _fvector vWorldPoint, _float fTimeDelta, _float fSpeed)
+void CTransform::LookAt(_vector vAxis, _vector vWorldPoint, _float fTimeDelta, _float fSpeed)
 {
 	// 1. 회전축 정규화 (ex: (0,1,0) → Y축 회전)
 	_vector NormalAxis = XMVector3Normalize(vAxis);
@@ -512,7 +512,7 @@ void CTransform::LookAt(_fvector vAxis, _fvector vWorldPoint, _float fTimeDelta,
 	Set_State(STATE::LOOK, vLook * Get_Scale().z);
 }
 
-void CTransform::LookAtSmooth(_fvector vTargetPos, float fLerpSpped, float fTimeDelta)
+void CTransform::LookAtSmooth(_vector vTargetPos, float fLerpSpped, float fTimeDelta)
 {
 	//new look
 	_vector vDir = vTargetPos - Get_State(STATE::POSITION);
@@ -536,7 +536,7 @@ void CTransform::LookAtSmooth(_fvector vTargetPos, float fLerpSpped, float fTime
 }
 
 
-void CTransform::Chase(_fvector vPoint, _float fTimeDelta, _float MinDistance)
+void CTransform::Chase(_vector vPoint, _float fTimeDelta, _float MinDistance)
 {
 	//쫓아가는 방향구하기
 	_vector vPosition = Get_State(STATE::POSITION);
@@ -585,6 +585,29 @@ void CTransform::LookAt(CTransform* target)
 {
 	CheckNull(target);
 	LookAt(target->Get_State(STATE::POSITION));
+
+}
+
+void CTransform::LookAtWithUpVector(_vector vWorldPoint, _vector vUp)
+{
+	_float3 vScale = Get_Scale();
+
+	//new look 구하기
+	_vector vPosition = Get_State(STATE::POSITION);
+
+	_vector vNewLook = vWorldPoint - vPosition;
+	_vector vNewRight = XMVector3Cross(vUp, vNewLook);
+	_vector vNewUp = XMVector3Cross(vNewLook, vNewRight);
+
+
+	vNewRight = XMVector3Normalize(vNewRight) * vScale.x;
+	vNewUp = XMVector3Normalize(vNewUp) * vScale.y;
+	vNewLook = XMVector3Normalize(vNewLook) * vScale.z;
+
+
+	Set_State(STATE::RIGHT, vNewRight);
+	Set_State(STATE::UP, vNewUp);
+	Set_State(STATE::LOOK, vNewLook);
 
 }
 

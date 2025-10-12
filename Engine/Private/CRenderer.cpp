@@ -105,8 +105,8 @@ void CRenderer::Render_Blend()
 
 	m_RenderObjects[ENUM_TO_UINT(RENDERGROUP::ALPHA)].sort([&](CGameObject* a, CGameObject* b)
 		{
-			CTransform* aTrans = dynamic_cast<CTransform*>(a->Get_Component(L"Transform"));
-			CTransform* bTrans = dynamic_cast<CTransform*>(b->Get_Component(L"Transform"));
+			CTransform* aTrans = dynamic_cast<CTransform*>(a->Get_Component(COMPONENT_TYPE::TRANSFORM));
+			CTransform* bTrans = dynamic_cast<CTransform*>(b->Get_Component(COMPONENT_TYPE::TRANSFORM));
 
 			_vector aView=XMVector3TransformCoord(aTrans->Get_State(STATE::POSITION, TransformScope::WORLD),m_MainCameraView);
 			_vector bView = XMVector3TransformCoord(bTrans->Get_State(STATE::POSITION, TransformScope::WORLD), m_MainCameraView);

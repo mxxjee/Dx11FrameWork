@@ -26,9 +26,6 @@ public:
 
     virtual HRESULT Render();
 
-public:
-    virtual void        Bind_ViewProjMatrix() override;
-
 
 private:
     void    Mouse_Move();

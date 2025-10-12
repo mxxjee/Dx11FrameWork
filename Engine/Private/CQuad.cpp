@@ -38,7 +38,7 @@ HRESULT CQuad::Initialize_Copytype(void* pArg)
         if (m_pVIBufferCom)
         {
             m_pVIBufferCom->AddRef();
-            m_Components.emplace(L"VIBuffer_Rect", m_pVIBufferCom);
+            m_Components.emplace(COMPONENT_TYPE::VIBUFFER_RECT, m_pVIBufferCom);
 
         }
 

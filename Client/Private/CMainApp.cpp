@@ -207,9 +207,9 @@ void CMainApp::Free()
 
 	//자신의 리소스정리
 	
-	CInput_Manager::DestroyInstance();
+	
 	Safe_Release(pGameInstance);
-
+	CInput_Manager::DestroyInstance();
 }
 
 void CMainApp::CreateLevelDebugWindow()

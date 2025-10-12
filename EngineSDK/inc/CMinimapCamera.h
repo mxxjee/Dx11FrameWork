@@ -4,18 +4,17 @@
 namespace Engine
 {
     class COrthographicCameraComponent;
-    class CShader;
 }
 
-
 NS_BEGIN(Engine)
-class ENGINE_DLL CUICamera :
+
+class ENGINE_DLL CMinimapCamera :
     public CCamera_Base
 {
 private:
-    CUICamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
-    CUICamera(const CUICamera& rhs);
-    virtual ~CUICamera() = default;
+    CMinimapCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+    CMinimapCamera(const CMinimapCamera& rhs);
+    virtual ~CMinimapCamera() = default;
 
 public:
     virtual HRESULT     Initialize_Prototype(); /*원형 객체가 생성될때 부르는 Initialize*/
@@ -29,16 +28,16 @@ public:
     virtual HRESULT Render();
 
 public:
-    void        Set_Target(CGameObject * pTarget);
+    void        Set_Target(CGameObject* pTarget);
     void        Follow_Target(_float fTimeDelta);
 
-
-
 public:
-    static CUICamera* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
+    static CMinimapCamera* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg);
     virtual void    Free() override;
 
+
 };
+
 NS_END
 

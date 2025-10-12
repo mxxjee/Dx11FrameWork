@@ -11,6 +11,7 @@ public:
     {
         _float ViewHeight = {};
         _float ViewWdith = {};
+ 
 
     }ORTHOGRAPHIC_DESC;
 private:

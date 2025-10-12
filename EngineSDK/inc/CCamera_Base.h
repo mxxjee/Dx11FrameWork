@@ -28,12 +28,16 @@ public:
     virtual void    Free() override;
 
 public:
-    virtual void        Bind_ViewProjMatrix()=0;
+    virtual void        Bind_ViewProjMatrix();
     CCameraComponent* Get_CameraComp() { return m_pCameraCom; }
 
 protected:
     CCameraComponent* m_pCameraCom = { nullptr };
+    
+protected:
     CShader* m_pMainShader = { nullptr };
+    ComPtr<ID3DX11EffectMatrixVariable>     m_GlobalViewProj;
+
 };
 
 NS_END

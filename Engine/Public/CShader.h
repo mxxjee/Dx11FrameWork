@@ -19,7 +19,7 @@ public:
 
 		
 		ComPtr<ID3DBlob>		m_pErrorBlob = { nullptr };
-
+		ComPtr<ID3DX11EffectMatrixVariable>	m_GlobalViewProj;
 
 		string                m_strTechniqueName = "";
 		string                m_strPassName = "";
@@ -68,6 +68,10 @@ public:
 	void		SetFloat(const string& Variable, const _float fValue);
 	void		SetResource(const string& Variable, ComPtr<ID3D11ShaderResourceView> resource);
 	void		SetSampler(const string& Variable, ComPtr< ID3D11SamplerState> sampler, UINT iIdx = 0);
+
+public:
+	const SHADER_INFO& Get_ShaderInfo() const { return m_ShaderInfo; }
+
 public:
 	void		Apply();
 private:

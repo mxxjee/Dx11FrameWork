@@ -27,7 +27,7 @@ void CObjectDebugWindow::Update()
         ImGui::Text("Name : %s", WStringToUTF8(pSelectObject->Get_Tag()).c_str());
 
 
-        CTransform* pTransform = dynamic_cast<CTransform*>(pSelectObject->Get_Component(L"Transform"));
+        CTransform* pTransform = dynamic_cast<CTransform*>(pSelectObject->Get_Component(COMPONENT_TYPE::TRANSFORM));
         if (pTransform)
         {
             ImGui::Separator();

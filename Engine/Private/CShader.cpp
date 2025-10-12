@@ -31,6 +31,7 @@ HRESULT CShader::Initialize_Prototype(const vector<D3D11_INPUT_ELEMENT_DESC>& la
     if (FAILED(Create_InputLayout(layout)))
         return E_FAIL;
 
+    m_ShaderInfo.m_GlobalViewProj = m_ShaderInfo.m_pEffect->GetVariableByName("g_ViewProjMatrix")->AsMatrix();
     return S_OK;
 }
 

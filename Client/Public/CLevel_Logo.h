@@ -42,6 +42,7 @@ private:
     void        Create_MainCamera();
     void        Create_UICamera();
     void        Create_FreeCamera();
+    void        Create_MiniMapCamera();
 private:
     int iTargetIdx = 0;
 

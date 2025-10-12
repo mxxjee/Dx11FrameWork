@@ -39,7 +39,7 @@ HRESULT CFreeCamera::Initialize_Copytype(void* pArg)
     CheckNullResult(m_pCameraCom, E_FAIL);
 
     Safe_AddRef(m_pCameraCom);
-    m_Components.emplace(L"PerspectiveCamera", m_pCameraCom);
+    m_Components.emplace(COMPONENT_TYPE::PERSPECTIVE_CACM, m_pCameraCom);
 
 
 
@@ -89,16 +89,6 @@ HRESULT CFreeCamera::Render()
     return S_OK;
 }
 
-void CFreeCamera::Bind_ViewProjMatrix()
-{
-    //카메라 view/투영 세팅
-    if (m_pMainShader)
-    {
-        _float4x4 viewproj;
-        XMStoreFloat4x4(&viewproj, m_pCameraCom->Get_MulViewProjMatrix());
-        m_pMainShader->SetMatrix("g_ViewProjMatrix", viewproj);
-    }
-}
 
 void CFreeCamera::Mouse_Move()
 {

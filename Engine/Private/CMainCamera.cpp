@@ -32,7 +32,7 @@ HRESULT CMainCamera::Initialize_Copytype(void* pArg)
 	CheckNullResult(m_pCameraCom, E_FAIL);
 
 	Safe_AddRef(m_pCameraCom);
-	m_Components.emplace(L"PerspectiveCamera", m_pCameraCom);
+	m_Components.emplace(COMPONENT_TYPE::PERSPECTIVE_CACM, m_pCameraCom);
 
 	return S_OK;
 }
@@ -71,14 +71,7 @@ void CMainCamera::Update_Render(_float fTimeDelta)
 
 HRESULT CMainCamera::Render()
 {
-	//카메라 view/투영 세팅
-	if (m_pMainShader)
-	{
-		_float4x4 viewproj;
-		XMStoreFloat4x4(&viewproj, m_pCameraCom->Get_MulViewProjMatrix());
-		m_pMainShader->SetMatrix("g_ViewProjMatrix", viewproj);
-	}
-		
+
 	
 	return S_OK;
 }
@@ -97,19 +90,17 @@ void CMainCamera::Bind_ViewProjMatrix()
 void CMainCamera::Set_Target(CGameObject* pTarget, bool bInit)
 {
 	m_pTarget = pTarget;
-	CCameraComponent* pCamera = static_cast<CCameraComponent*>(Get_Component(L"PerspectiveCamera"));
-	CheckNull(pCamera);
-
-	pCamera->Set_Target(m_pTarget);
+	
+	m_pCameraCom->Set_Target(m_pTarget);
 
 	CheckFalse(bInit);
 	if (m_pTarget)
 	{
-		CTransform* pTargetTransform = static_cast<CTransform*>(m_pTarget->Get_Component(L"Transform"));
+		CTransform* pTargetTransform = static_cast<CTransform*>(m_pTarget->Get_Component(COMPONENT_TYPE::TRANSFORM));
 		if (pTargetTransform && m_pTransformCom)
 		{
 			_vector vTargetPos = pTargetTransform->Get_State(STATE::POSITION,TransformScope::WORLD);
-			_float3 vOffset = pCamera->Get_OffSet();
+			_float3 vOffset = m_pCameraCom->Get_OffSet();
 
 			_vector vStartPos = vTargetPos + XMLoadFloat3(&vOffset);
 			m_pTransformCom->Set_State(STATE::POSITION, vStartPos);
@@ -126,17 +117,14 @@ void CMainCamera::Follow_Target(_float fTimeDelta)
 		return;
 	//OutputDebugString(L"[CAMERA] Update Tick\n");
 
-	CTransform* pTargetTransform = static_cast<CTransform*>(m_pTarget->Get_Component(L"Transform"));
+	CTransform* pTargetTransform = static_cast<CTransform*>(m_pTarget->Get_Component(COMPONENT_TYPE::TRANSFORM));
 	if (!m_pTransformCom || !pTargetTransform)
 		return;
 
 	
-	
-	CCameraComponent* pCamera = static_cast<CCameraComponent*>(Get_Component(L"PerspectiveCamera"));
-	CheckNull(pCamera);
 
 	const _vector TargetPos = pTargetTransform->Get_State(STATE::POSITION,TransformScope::WORLD);
-	const _float3 Offset = pCamera->Get_OffSet();
+	const _float3 Offset = m_pCameraCom->Get_OffSet();
 	
 	m_pTransformCom->MoveLerp(TargetPos + XMLoadFloat3(&Offset), 3.f, fTimeDelta);
 

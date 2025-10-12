@@ -199,6 +199,12 @@
     <Filter Include="00.System\05.ScreenShot">
       <UniqueIdentifier>{cb8eec21-9e17-4e99-ac8a-4b380a3b8bda}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObject\CameraObject\Orthgraphic\UICamera">
+      <UniqueIdentifier>{0ef1c141-6e29-45b9-a8a0-7278c3f801ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\CameraObject\Orthgraphic\Minimap">
+      <UniqueIdentifier>{bc0aaa41-5ad7-4d30-a699-eec7fa420307}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -351,9 +357,6 @@
     <ClInclude Include="..\Public\CFreeCamera.h">
       <Filter>03.GameObject\CameraObject\Perspective\FreeCamera</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CUICamera.h">
-      <Filter>03.GameObject\CameraObject\Orthgraphic</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\MathUtils.h">
       <Filter>01.Utility\99.EtcUtils\MathUtil</Filter>
     </ClInclude>
@@ -383,6 +386,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\CMainCamera.h">
       <Filter>03.GameObject\CameraObject\Perspective\MainCamera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUICamera.h">
+      <Filter>03.GameObject\CameraObject\Orthgraphic\UICamera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMinimapCamera.h">
+      <Filter>03.GameObject\CameraObject\Orthgraphic\Minimap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -512,12 +521,6 @@
     <ClCompile Include="..\Private\CMainCamera.cpp">
       <Filter>03.GameObject\CameraObject\Perspective\MainCamera</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CFreeCamera.cpp">
-      <Filter>03.GameObject\CameraObject\Perspective\FreeCamera</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CUICamera.cpp">
-      <Filter>03.GameObject\CameraObject\Orthgraphic</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CInput_Manager.cpp">
       <Filter>00.System\03.Input</Filter>
     </ClCompile>
@@ -538,6 +541,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\CCamera_Base.cpp">
       <Filter>03.GameObject\CameraObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUICamera.cpp">
+      <Filter>03.GameObject\CameraObject\Orthgraphic\UICamera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMinimapCamera.cpp">
+      <Filter>03.GameObject\CameraObject\Orthgraphic\Minimap</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CFreeCamera.cpp">
+      <Filter>03.GameObject\CameraObject\Perspective\FreeCamera</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

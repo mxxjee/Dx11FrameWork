@@ -39,7 +39,7 @@ public:
 
 public:
     const _wstring& Get_Tag() { return tag; }
-    CComponent* Get_Component(const _wstring Tag);
+    CComponent* Get_Component(COMPONENT_TYPE eType);
     CTransform* Get_Transform() const { return m_pTransformCom; }
 
     bool            Is_Active() { return m_bActive; }
@@ -52,7 +52,7 @@ protected:
 
 protected:
     _wstring                tag = L"";
-    map<const _wstring, class CComponent*>      m_Components;
+    map<COMPONENT_TYPE, class CComponent*>      m_Components;
     bool                                        m_bActive=true;
     CGameObject*                                m_pTarget = { nullptr };
            

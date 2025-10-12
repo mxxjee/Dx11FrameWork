@@ -125,6 +125,9 @@
     <Filter Include="01.Levels\OverlayUI">
       <UniqueIdentifier>{3f3f6354-b4d1-4f75-8b52-2b1ab05e3537}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\CameraObjects">
+      <UniqueIdentifier>{c907f1de-fb25-4067-bca0-47451f77c536}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">

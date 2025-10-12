@@ -187,7 +187,7 @@ void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
 
     if (m_bClickOrtho)
     {
-        pCameracomp = dynamic_cast<CCameraComponent*>(pMainCam->Get_Component(L"OrthographicCamera"));
+        pCameracomp = dynamic_cast<CCameraComponent*>(pMainCam->Get_Component(COMPONENT_TYPE::ORTHOGRAPHIC_CAM));
 
         ImGui::SetCursorPos(ImVec2(0.f, 70.f));
         wstring Name = pMainCam->Get_Tag();
@@ -199,7 +199,7 @@ void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
 
     else
     {
-        pCameracomp = dynamic_cast<CCameraComponent*>(pMainCam->Get_Component(L"PerspectiveCamera"));
+        pCameracomp = dynamic_cast<CCameraComponent*>(pMainCam->Get_Component(COMPONENT_TYPE::ORTHOGRAPHIC_CAM));
 
         ImGui::SetCursorPos(ImVec2(0.f, 70.f));
         wstring Name = pMainCam->Get_Tag();
@@ -215,7 +215,7 @@ void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
     ImGui::Separator();
 
  
-    //카메라의 vAt/Eye/타겟표시
+    CheckNull(pCameracomp);
     _float4 vAt, vEye;
     class CGameObject* Target = pCameracomp->Get_Target();
 
@@ -258,7 +258,7 @@ void CCameraDebugWindow::ToggleClickOrtho(bool _b)
     if (_b)
     {
 
-        COrthographicCameraComponent* pOrthoComp = dynamic_cast<COrthographicCameraComponent*>(pMainCam->Get_Component(L"OrthographicCamera"));
+        COrthographicCameraComponent* pOrthoComp = dynamic_cast<COrthographicCameraComponent*>(pMainCam->Get_Component(COMPONENT_TYPE::ORTHOGRAPHIC_CAM));
 
         if (pOrthoComp)
         {
@@ -295,7 +295,7 @@ void CCameraDebugWindow::ToggleClickOrtho(bool _b)
     else
     {
       
-        CPerspectiveCameraComponent* pPersComp = dynamic_cast<CPerspectiveCameraComponent*>(pMainCam->Get_Component(L"PerspectiveCamera"));
+        CPerspectiveCameraComponent* pPersComp = dynamic_cast<CPerspectiveCameraComponent*>(pMainCam->Get_Component(COMPONENT_TYPE::PERSPECTIVE_CACM));
 
         if (pPersComp)
         {

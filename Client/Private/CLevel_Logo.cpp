@@ -135,7 +135,7 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
             break;
 
         case 1:
-            m_pGameInstance->Set_MainCamera(CAMERA_TYPE::FREE);
+            m_pGameInstance->Set_MainCamera(CAMERA_TYPE::MINIMAP);
 
             break;
         }
@@ -235,6 +235,7 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
 
     Create_FreeCamera();
    
+    Create_MiniMapCamera();
     return S_OK;
 }
 
@@ -269,7 +270,7 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
     CQuad::QUAD_DESC        Desc = {};
 
     Desc.ObjTag = L"Test";
-    Desc.ImgPath = L"../../Resource/Character.png";
+    Desc.ImgPath = L"../../Resource/Hp.png";
     Desc.eRenderGroup = RENDERGROUP::ALPHA;
 
 
@@ -306,7 +307,8 @@ void CLevel_Logo::OnEnter()
     {
         if (pTestObject->Get_Transform()->Get_Parent() == nullptr)
         {
-            pTestObject->Get_Transform()->Set_State(STATE::POSITION, XMVectorSet(0.f, 0.f, -1.f, 1.f));
+            pTestObject->Get_Transform()->Set_State(STATE::POSITION, XMVectorSet(0.f, 1.f, 0.f, 1.f));
+            pTestObject->Get_Transform()->Rotation(_float3(-90.f,0.f,0.f));
             pTestObject->Get_Transform()->Set_Parent(pPlayerObject->Get_Transform());
         }
 
@@ -317,18 +319,16 @@ void CLevel_Logo::OnEnter()
     }
 
     //소켓을 카메라 타겟으로
-    CGameObject* pMainCamera = m_pGameInstance->Get_MainCamera();
-    if (pMainCamera)
+    CCamera_Base* pMinimapCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
+    if (pMinimapCamera)
     {
-        CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
-        CheckNull(ppMainCamera);
-        ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO),
-            L"Test_Layer",
-            L"Test"),true);
+        pMinimapCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO),
+            L"Player_Layer",
+            L"Player"));
     }
     
     
-  /*  CGameObject* pMainCamera = m_pGameInstance->GetMainPerspectiveCamera();
+    CGameObject* pMainCamera = m_pGameInstance->Get_MainCamera();
     if (pMainCamera)
     {
         CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
@@ -336,7 +336,7 @@ void CLevel_Logo::OnEnter()
         ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO),
             L"Player_Layer",
             L"Player"), true);
-    }*/
+    }
 
  
 }
@@ -458,6 +458,7 @@ void CLevel_Logo::Create_UICamera()
 
     UICameraDesc.fNear = 0.1f;
     UICameraDesc.fFar = 1.f;
+    UICameraDesc.m_bDynamic = false;
 
     UICameraDesc.ViewWdith = (float)g_iWinSizeX;
     UICameraDesc.ViewHeight = (float)g_iWinSizeY;
@@ -492,4 +493,37 @@ void CLevel_Logo::Create_FreeCamera()
 
     CGameObject* pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FreeCamera"), &Desc));
     m_pGameInstance->RegisterCamera(CAMERA_TYPE::FREE, pInstance);
+}
+
+void CLevel_Logo::Create_MiniMapCamera()
+{
+    CMainCamera::GAMEOBJECT_DESC Desc = {};
+    Desc.ObjTag = L"MinimapCamera";
+
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+   // TransDesc.vLocalRotation = _float4(90.f, 180.f, 0.f,1.f);
+
+
+    COrthographicCameraComponent::ORTHOGRAPHIC_DESC CameraDesc = {};
+
+    CameraDesc.vOffset = _float3(0.f, 10.f, 0.f);
+    CameraDesc.vUp = _float3(0.f, 0.f, -1.f);
+    
+    CameraDesc.ViewHeight = (float)g_iWinSizeY * 0.05f;
+    CameraDesc.ViewWdith = (float)g_iWinSizeX*0.05f;
+   
+
+    CameraDesc.fNear = 0.1f;
+    CameraDesc.fFar = 1000.f;
+    
+
+
+    Desc.CameraDesc = &CameraDesc;
+    Desc.TransformDesc = &TransDesc;
+
+
+    CGameObject* pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MinimapCamera"), &Desc));
+    m_pGameInstance->RegisterCamera(CAMERA_TYPE::MINIMAP, pInstance);
 }

@@ -38,7 +38,8 @@ HRESULT COrthographicCameraComponent::Initialize_Copytype(void* pArg)
 
 void COrthographicCameraComponent::Update_ViewMatrix(_float fTimeDelta)
 {
-	
+	CheckFalse(m_bDynamic);
+	__super::Update_ViewMatrix(fTimeDelta);
 }
 
 void COrthographicCameraComponent::Set_ProjectionMatrix()

@@ -110,5 +110,8 @@ namespace Engine
 	};
 
 	enum class CAMERA_TYPE {TARGET,FREE,UI,MINIMAP,CUTSCENE,SHADOW,END};
+	enum class COMPONENT_TYPE {TRANSFORM,
+		PERSPECTIVE_CACM,ORTHOGRAPHIC_CAM,
+		VIBUFFER_RECT,};
 }
 #endif // Engine_Enum_h__

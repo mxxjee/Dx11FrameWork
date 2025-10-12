@@ -31,7 +31,7 @@ HRESULT CUICamera::Initialize_Copytype(void* pArg)
 	CheckNullResult(m_pCameraCom, E_FAIL);
 
 	Safe_AddRef(m_pCameraCom);
-	m_Components.emplace(L"OrthographicCamera", m_pCameraCom);
+	m_Components.emplace(COMPONENT_TYPE::PERSPECTIVE_CACM, m_pCameraCom);
 
 	m_pMainShader = m_pGameInstance->Find_Shader(L"Default");
 
@@ -76,16 +76,7 @@ void CUICamera::Follow_Target(_float fTimeDelta)
 {
 }
 
-void CUICamera::Bind_ViewProjMatrix()
-{
-	//카메라 view/투영 세팅
-	if (m_pMainShader)
-	{
-		_float4x4 viewproj;
-		XMStoreFloat4x4(&viewproj, m_pCameraCom->Get_MulViewProjMatrix());
-		m_pMainShader->SetMatrix("g_ViewProjMatrix", viewproj);
-	}
-}
+
 
 CUICamera* CUICamera::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {

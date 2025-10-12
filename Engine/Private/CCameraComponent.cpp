@@ -35,13 +35,18 @@ HRESULT CCameraComponent::Initialize_Copytype(void* pArg)
     m_vOffSet = pDesc->vOffset;
     m_pTarget = pDesc->pTarget;
 
+    m_bDynamic = pDesc->m_bDynamic;
+
+    Update_ViewMatrix(0.f);
 
     return S_OK;
 }
 
 void CCameraComponent::Update_ViewMatrix(_float fTimeDelta)
 { 
-    CTransform* pTransform = dynamic_cast<CTransform*>(Get_Owner()->Get_Component(L"Transform"));
+    CheckFalse(m_bDynamic);
+
+    CTransform* pTransform = dynamic_cast<CTransform*>(Get_Owner()->Get_Component(COMPONENT_TYPE::TRANSFORM));
     if (!pTransform) return;
 
 
@@ -74,8 +79,7 @@ void CCameraComponent::Update_ViewMatrix(_float fTimeDelta)
         pTransform->Set_State(STATE::POSITION, vEye);
     }*/
 
-
-    XMStoreFloat4x4(&m_matView, XMMatrixLookAtLH(vEye, vAt,  WORLD_UP));
+    XMStoreFloat4x4(&m_matView, XMMatrixLookAtLH(vEye, vAt, XMLoadFloat3(&m_vUp)));
 }
 
 _matrix CCameraComponent::Get_MulViewProjMatrix()
