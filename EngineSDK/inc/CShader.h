@@ -1,37 +1,57 @@
 #pragma once
 #include "CComponent.h"
+#include "CInputLayout.h"
 #include "CBase.h"
 
 NS_BEGIN(Engine)
 
-class CInputLayout;
 
 class ENGINE_DLL CShader final :
                 public CBase
 {
 public:
+	typedef struct tagShaderPass
+	{
+		string Name;		//패스이름
+
+		ComPtr<ID3DX11EffectPass> pPass;
+		CInputLayout* pInputLayout=nullptr;
+	}ShaderPass;
+
+
 	typedef struct tagCShaderInfo
 	{
 		ComPtr<ID3DX11Effect>			m_pEffect = { nullptr };
 		
+		string                m_strTechniqueName = "";
 		ComPtr<ID3DX11EffectTechnique>	m_pTechnique = { nullptr };
-		ComPtr<ID3DX11EffectPass>		m_pPass = { nullptr };
 
-		
+		//technique에 존재하는 모든pass들을 key값으로 모두 저장하기
+		//ShaderPass -> pass,inputlayout묶어놓은것들
+		unordered_map<string, tagShaderPass>		m_pPassInfos;
+
+
+		unsigned int		iPassCnt = 0;
+
 		ComPtr<ID3DBlob>		m_pErrorBlob = { nullptr };
+		
+		
 		ComPtr<ID3DX11EffectMatrixVariable>	m_GlobalViewProj;
 
-		string                m_strTechniqueName = "";
-		string                m_strPassName = "";
+		
+
 
 		tagCShaderInfo() {}
 		tagCShaderInfo(const tagCShaderInfo& Prototype)
 			:m_pEffect{Prototype.m_pEffect},m_pErrorBlob{Prototype.m_pErrorBlob},m_pTechnique{Prototype.m_pTechnique},
-			m_pPass{Prototype.m_pPass}
+			m_pPassInfos{Prototype.m_pPassInfos }
 		{
 			m_strTechniqueName = Prototype.m_strTechniqueName;
-			m_strPassName = Prototype.m_strPassName;
+			
 		}
+
+
+
 
 	}SHADER_INFO;
 
@@ -41,7 +61,7 @@ private:
 	virtual ~CShader() = default;
 
 public:
-	HRESULT     Initialize_Prototype(const vector<D3D11_INPUT_ELEMENT_DESC>& layout, const wstring& filePath, const string& strTechName, const string& passName);
+	HRESULT     Initialize_Prototype(const vector<D3D11_INPUT_ELEMENT_DESC>& layout, const wstring& filePath, const string& strTechName);
 	HRESULT     Initialize_Copytype(void *pArg);
 
 public:
@@ -49,8 +69,7 @@ public:
 		ComPtr<ID3D11DeviceContext> pContext,
 		const vector<D3D11_INPUT_ELEMENT_DESC>& layout,
 		const wstring& filePath,
-		const string& strTechName,
-		const string& passName="");
+		const string& strTechName);
 	virtual CShader* Clone(void* pArg);
 	virtual void Free() override;
 
@@ -59,9 +78,9 @@ private:
 	/*초기화 및 설정 함수들*/
 	HRESULT		LoadShaderFromFile(const wstring & path);
 	HRESULT		Set_Technique(const string& strTechName);
-	HRESULT		Set_Pass(const string& strPassName);
-	HRESULT		Create_InputLayout(const vector<D3D11_INPUT_ELEMENT_DESC>& layout);
 
+	//읽어온 Technique에대한 pass들을 모두 저장하고, 이에따른 inputlayout을 만든다.
+	HRESULT		Load_PassesAndCreateInputLayers(const vector<D3D11_INPUT_ELEMENT_DESC>& layout);
 public:
 	void		SetMatrix(const string& Variable, const _float4x4& mat);
 	void		SetVector(const string& Variable, const _float4& vector);
@@ -73,10 +92,9 @@ public:
 	const SHADER_INFO& Get_ShaderInfo() const { return m_ShaderInfo; }
 
 public:
-	void		Apply();
+	HRESULT		Begin(const string& _passName);
 private:
 	SHADER_INFO			m_ShaderInfo;
-	CInputLayout*		m_pInputLayout = { nullptr };
 
 private:
 	ComPtr<ID3D11Device>		m_pDevice = { nullptr };
