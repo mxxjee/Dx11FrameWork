@@ -24,15 +24,14 @@ HRESULT CMainCamera::Initialize_Copytype(void* pArg)
 	if(FAILED(__super::Initialize_Copytype(pArg)))
 		return E_FAIL;
 
-	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
+	/*컴포넌트 세팅*/
 	m_pCameraCom = dynamic_cast<CPerspectiveCameraComponent*>(m_pGameInstance->Clone_Prototype
-	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"PerspectiveCamera"), pDesc));
-
+	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"PerspectiveCamera"), pArg));
 	CheckNullResult(m_pCameraCom, E_FAIL);
-
 	Safe_AddRef(m_pCameraCom);
 	m_Components.emplace(COMPONENT_TYPE::PERSPECTIVE_CACM, m_pCameraCom);
+
 
 	return S_OK;
 }

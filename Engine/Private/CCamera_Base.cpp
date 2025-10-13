@@ -25,6 +25,11 @@ HRESULT CCamera_Base::Initialize_Copytype(void* pArg)
     if(FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
+    CAMERABASE_DESC* pDesc = static_cast<CAMERABASE_DESC*>(pArg);
+
+    pDesc->eCameraType = pDesc->eCameraType;
+    pDesc->eCameraFlag = pDesc->eCameraFlag;
+
     m_pMainShader = m_pGameInstance->Find_Shader(L"Default");
     m_GlobalViewProj = m_pMainShader->Get_ShaderInfo().m_GlobalViewProj;
 
@@ -46,6 +51,23 @@ void CCamera_Base::Bind_ViewProjMatrix()
         XMStoreFloat4x4(&viewproj, m_pCameraCom->Get_MulViewProjMatrix());
         m_GlobalViewProj->AsMatrix()->SetMatrix((float*)viewproj.m);
     }
+}
+
+HRESULT CCamera_Base::Bind_RenderTarget()
+{
+    CheckFalseResult(HasRenderTarget(),E_FAIL);
+
+}
+
+HRESULT CCamera_Base::UnBind_RenderTarget()
+{
+    CheckFalseResult(HasRenderTarget(),E_FAIL);
+}
+
+HRESULT CCamera_Base::Clear_RenderTargetView(const _float4* pClearColor)
+{
+    CheckFalseResult(HasRenderTarget(), E_FAIL);
+
 }
 
 

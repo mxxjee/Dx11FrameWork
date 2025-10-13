@@ -58,11 +58,13 @@ namespace Engine
 	struct RENDER_TARGET
 	{
 		ComPtr<ID3D11Texture2D>				pColorTex;//실제로 GPU가 사용하는 내부적인 texture buffer
-		
 		ComPtr<ID3D11DepthStencilView>		pDSV;
 		ComPtr<ID3D11Texture2D>				pDepthTex;
-
 		ComPtr<ID3D11RenderTargetView>		RTV;		//그릴 곳, 대상 렌더타겟뷰
+
+
+		ComPtr<ID3D11RenderTargetView>		PreRTV;
+		ComPtr<ID3D11DepthStencilView>		PreDSV;
 
 	};
 	

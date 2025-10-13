@@ -1,6 +1,7 @@
 #include "CMinimapCamera.h"
 #include "COrthographicCameraComponent.h"
 #include "CGameInstance.h"
+#include "ColorUtils.h"
 
 
 CMinimapCamera::CMinimapCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -70,6 +71,7 @@ HRESULT CMinimapCamera::Render()
 {
     __super::Render();
 
+
     return S_OK;
 }
 
@@ -125,6 +127,50 @@ HRESULT CMinimapCamera::Create_RenderTagetview()
     m_pDevice->CreateTexture2D(&texDesc, nullptr, m_tRenderTarget.pDepthTex.GetAddressOf());
     m_pDevice->CreateDepthStencilView(m_tRenderTarget.pDepthTex.Get(), nullptr, m_tRenderTarget.pDSV.GetAddressOf());
 
+    return S_OK;
+}
+
+HRESULT CMinimapCamera::Bind_RenderTarget()
+{
+    if (FAILED(__super::Bind_RenderTarget()))
+        return E_FAIL;
+
+    //이전 상태 백업
+    m_pContext->OMGetRenderTargets(1, m_tRenderTarget.PreRTV.GetAddressOf(), m_tRenderTarget.PreDSV.GetAddressOf());
+
+
+    //카메라 렌더타겟 바인딩
+    ID3D11RenderTargetView* pRTV = m_tRenderTarget.RTV.Get();
+    ID3D11DepthStencilView* pDSV = m_tRenderTarget.pDSV.Get();
+
+    m_pContext->OMSetRenderTargets(1, &pRTV, pDSV);
+
+    return S_OK;
+}
+
+HRESULT CMinimapCamera::UnBind_RenderTarget()
+{
+    if (FAILED(__super::Bind_RenderTarget()))
+        return E_FAIL;
+
+    //이전 렌더타겟으로 다시복원.
+    ID3D11RenderTargetView* pPreRTV = m_tRenderTarget.PreRTV.Get();
+    ID3D11DepthStencilView* pPreDSV = m_tRenderTarget.PreDSV.Get();
+    m_pContext->OMSetRenderTargets(1, &pPreRTV, pPreDSV);
+
+    
+    m_tRenderTarget.PreRTV.Reset();
+    m_tRenderTarget.PreDSV.Reset();
+
+
+    return S_OK;
+}
+
+HRESULT CMinimapCamera::Clear_RenderTargeView(const _float4* pClearColor)
+{
+    m_pContext->ClearRenderTargetView(m_tRenderTarget.RTV.Get(), reinterpret_cast<const _float*>(pClearColor));
+    m_pContext->ClearDepthStencilView(m_tRenderTarget.pDSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+    
     return S_OK;
 }
 

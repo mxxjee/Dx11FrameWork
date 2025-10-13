@@ -19,7 +19,7 @@ public:
 
         _bool   m_bDynamic = true;
 
-    }CAMERA_DESC;
+    }CAMERACOMP_DESC;
 
 
 
