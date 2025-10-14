@@ -6,6 +6,7 @@ NS_BEGIN(Engine)
 
 class CCamera_Base;
 class CGameObject;
+class CShader;
 
 class CCamera_Manager :
     public CBase
@@ -36,6 +37,13 @@ public:
 public:
     void        Update_Cameras(_float fTimeDelta);
     void        LateUpdate_Cameras(_float fTimeDelta);
+    void        Render_Cameras();
+
+public:
+    CShader* Get_RenderShader() { return m_pRenderShader; }
+    const string& Get_RenderPassName() { return m_pRenderPassName; }
+    CCamera_Base* Get_RenderCamera() { return m_pRenderCamera; }
+
 public:
     static CCamera_Manager* Create();
     virtual void        Free() override;
@@ -43,10 +51,15 @@ public:
 private:
     array<CCamera_Base*, ENUM_TO_UINT(CAMERA_TYPE::END)> m_Cameras;
     CCamera_Base*        m_pMainCamera = nullptr; //현재 활성중인 원근투영카메라
+    CCamera_Base*   m_pRenderCamera = nullptr;
 
 private:
     _float4x4       g_Identityfloat4x4;
     _matrix         g_IdentityMatrix;
+
+private:
+    CShader* m_pRenderShader = nullptr;
+    string  m_pRenderPassName = "";
 };
 NS_END
 

@@ -105,11 +105,12 @@ void CMinimapCamera::Follow_Target(_float fTimeDelta)
 
 HRESULT CMinimapCamera::Create_RenderTagetview()
 {
+
     //렌더타겟 = (색상버퍼) + (깊이버퍼)
     //색상 버퍼 생성
     D3D11_TEXTURE2D_DESC texDesc{};
-    texDesc.Width = 512;
-    texDesc.Height = 512;
+    texDesc.Width = m_pGameInstance->Get_EngineDesc().iWinSizeX;
+    texDesc.Height = m_pGameInstance->Get_EngineDesc().iWinSizeY;
     texDesc.MipLevels = 1;
     texDesc.ArraySize = 1;
     texDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -119,6 +120,8 @@ HRESULT CMinimapCamera::Create_RenderTagetview()
 
     m_pDevice->CreateTexture2D(&texDesc, nullptr, m_tRenderTarget.pColorTex.GetAddressOf());
     m_pDevice->CreateRenderTargetView(m_tRenderTarget.pColorTex.Get(), nullptr, m_tRenderTarget.RTV.GetAddressOf());
+                    //셰이더리소스뷰 만들기
+    m_pDevice->CreateShaderResourceView(m_tRenderTarget.pColorTex.Get(), nullptr, m_tRenderTarget.SRV.GetAddressOf());
 
 
     //깊이 텍스처 생성
@@ -126,6 +129,13 @@ HRESULT CMinimapCamera::Create_RenderTagetview()
     texDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
     m_pDevice->CreateTexture2D(&texDesc, nullptr, m_tRenderTarget.pDepthTex.GetAddressOf());
     m_pDevice->CreateDepthStencilView(m_tRenderTarget.pDepthTex.Get(), nullptr, m_tRenderTarget.pDSV.GetAddressOf());
+
+
+
+
+ 
+  
+
 
     return S_OK;
 }
@@ -135,23 +145,44 @@ HRESULT CMinimapCamera::Bind_RenderTarget()
     if (FAILED(__super::Bind_RenderTarget()))
         return E_FAIL;
 
+    ID3D11ShaderResourceView* nullSRV[8] = { nullptr };
+    m_pContext->PSSetShaderResources(0, 8, nullSRV);
+
+   
+
+    ComPtr<ID3D11RenderTargetView> BackRTV = m_pGameInstance->Get_BackBuffer_RTV();
+
     //이전 상태 백업
     m_pContext->OMGetRenderTargets(1, m_tRenderTarget.PreRTV.GetAddressOf(), m_tRenderTarget.PreDSV.GetAddressOf());
 
-
+  
+    if (m_tRenderTarget.PreRTV.Get() != BackRTV.Get())
+        OutputDebugString(L"[MinimapCamera] PreRTV is not BackBuffer RTV!\n");
     //카메라 렌더타겟 바인딩
     ID3D11RenderTargetView* pRTV = m_tRenderTarget.RTV.Get();
     ID3D11DepthStencilView* pDSV = m_tRenderTarget.pDSV.Get();
 
     m_pContext->OMSetRenderTargets(1, &pRTV, pDSV);
 
+    /*D3D11_VIEWPORT vp{};
+    vp.TopLeftX = 0;
+    vp.TopLeftY = 0;
+    vp.Width = (FLOAT)m_pGameInstance->Get_EngineDesc().iWinSizeX;
+    vp.Height = (FLOAT)m_pGameInstance->Get_EngineDesc().iWinSizeY;
+    vp.MinDepth = 0.0f;
+    vp.MaxDepth = 1.0f;
+    m_pContext->RSSetViewports(1, &vp);*/
+
     return S_OK;
 }
 
 HRESULT CMinimapCamera::UnBind_RenderTarget()
 {
-    if (FAILED(__super::Bind_RenderTarget()))
+    if (FAILED(__super::UnBind_RenderTarget()))
         return E_FAIL;
+
+    //ID3D11RenderTargetView* pNullRTV[1] = { nullptr };
+    //m_pContext->OMSetRenderTargets(1, pNullRTV, nullptr);
 
     //이전 렌더타겟으로 다시복원.
     ID3D11RenderTargetView* pPreRTV = m_tRenderTarget.PreRTV.Get();
@@ -166,7 +197,7 @@ HRESULT CMinimapCamera::UnBind_RenderTarget()
     return S_OK;
 }
 
-HRESULT CMinimapCamera::Clear_RenderTargeView(const _float4* pClearColor)
+HRESULT CMinimapCamera::Clear_RenderTargetView(const _float4* pClearColor)
 {
     m_pContext->ClearRenderTargetView(m_tRenderTarget.RTV.Get(), reinterpret_cast<const _float*>(pClearColor));
     m_pContext->ClearDepthStencilView(m_tRenderTarget.pDSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);

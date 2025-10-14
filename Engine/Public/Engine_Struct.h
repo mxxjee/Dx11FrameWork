@@ -66,6 +66,9 @@ namespace Engine
 		ComPtr<ID3D11RenderTargetView>		PreRTV;
 		ComPtr<ID3D11DepthStencilView>		PreDSV;
 
+		ComPtr<ID3D11Texture2D>				pSRVTex;
+		ComPtr<ID3D11ShaderResourceView>	SRV;	//현재 렌더타겟으로 만든 셰이더리소스뷰
+
 	};
 	
 }

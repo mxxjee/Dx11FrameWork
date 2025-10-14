@@ -95,20 +95,16 @@ HRESULT CQuad::Render()
 {
     __super::Render();
 
+
     //렌더 할때 copydata로 GPU에게 데이터전송
-    m_pTexShader->SetMatrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
-    m_pTexShader->SetResource("texture0", m_pTexture->GetComPtr());
-   
-
+    m_pGameInstance->Get_RenderShader()->SetMatrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
+    m_pGameInstance->Get_RenderShader()->SetResource("texture0", m_pTexture->GetComPtr());
     //IA단계
-    m_pVIBufferCom->Bind_Resource();
-    
-    //VS-PS
-    m_pTexShader->Apply();
 
-    //RS단계
-    //Set_RasterizerState();
-    
+    m_pVIBufferCom->Bind_Resource();
+
+    //VS-PS
+    m_pGameInstance->Get_RenderShader()->Begin(m_pGameInstance->Get_RenderPassName());
     //Set_BlendState();           //OM단계
     m_pVIBufferCom->Render();      //OM단계
     return S_OK;

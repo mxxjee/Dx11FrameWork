@@ -11,6 +11,8 @@
 #include "CInput_Manager.h"
 #include "CShader_Manager.h"
 #include "CScreenShot_Manager.h"
+#include "CShader.h"
+
 
 
 
@@ -125,7 +127,8 @@ HRESULT CGameInstance::Draw_Begin(const _float4* pClearColor)
 
 HRESULT CGameInstance::Draw()
 {
-	m_pRenderer->Draw();
+	//m_pRenderer->Draw();
+	m_pCameraManager->Render_Cameras();
 	m_pLevelManager->Render();
 	return S_OK;
 }
@@ -273,9 +276,17 @@ HRESULT CGameInstance::Add_RenderObject(RENDERGROUP eID, CGameObject* pRenderObj
 	CheckNullResult(m_pRenderer, E_FAIL);
 	return m_pRenderer->Add_RenderObject(eID, pRenderObject);
 }
+void CGameInstance::Render_Group(RENDERGROUP eType)
+{
+	return m_pRenderer->Render_Group(eType);
+}
 HRESULT CGameInstance::Get_Buffer(ComPtr<ID3D11Texture2D>* pBuffer, UINT iFlag)
 {
 	return m_pGraphicDev->Get_Buffer(pBuffer,iFlag);
+}
+ComPtr<ID3D11RenderTargetView> CGameInstance::Get_BackBuffer_RTV()
+{
+	return m_pGraphicDev->Get_BackBuffer_RTV();
 }
 #pragma endregion
 
@@ -353,6 +364,21 @@ _matrix CGameInstance::Get_Main_MulViewProjMatrix()
 void CGameInstance::Bind_Main_ViewProjMatrix() const
 {
 	return m_pCameraManager->Bind_Main_ViewProjMatrix();
+}
+
+CShader* CGameInstance::Get_RenderShader()
+{
+	return m_pCameraManager->Get_RenderShader();
+}
+
+const string& CGameInstance::Get_RenderPassName()
+{
+	return m_pCameraManager->Get_RenderPassName();
+}
+
+CCamera_Base* CGameInstance::Get_RenderCamera()
+{
+	return m_pCameraManager->Get_RenderCamera();;
 }
 
 CCamera_Base* CGameInstance::Get_MainCamera()

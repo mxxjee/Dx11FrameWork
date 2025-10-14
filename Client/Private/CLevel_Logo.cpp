@@ -10,6 +10,10 @@
 #include "CPlayer.h"
 #include "CMainCamera.h"
 #include "CUICamera.h"
+
+#include "CMinimapCamera.h"
+#include "CMinnimapQuad.h"
+
 #include "CPerspectiveCameraComponent.h"
 #include "COrthographicCameraComponent.h"
 
@@ -33,8 +37,6 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
         return E_FAIL;
 
 
-    if(FAILED(Ready_Layer_UI(L"UI_Layer")))
-        return E_FAIL;
 
     if (FAILED(Ready_Layer_Player(L"Player_Layer")))
         return E_FAIL;
@@ -47,6 +49,8 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
         return E_FAIL;
 
 
+    if (FAILED(Ready_Layer_UI(L"UI_Layer")))
+        return E_FAIL;
     return S_OK;
 }
 
@@ -83,7 +87,7 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
     __super::Update_Late(fTimeDelta);
     
     /*타겟 바꾸기 테스트*/
-    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Tab))
+  /*  if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Tab))
     {
         if (iTargetIdx == 1)
             iTargetIdx = 0;
@@ -116,7 +120,7 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
             break;
         }
 
-    }
+    }*/
 
     /*카메라 변경 테스트*/
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::C))
@@ -223,6 +227,27 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
         strLayerTag, &Desc)))
         return E_FAIL;
 
+
+
+    ///////////////////Minimapquad생성
+    CUI::tagUIDesc        MinimapDesc = {};
+    MinimapDesc.ObjTag = L"MinimapQuad";
+
+    MinimapDesc.fSizeX = 150;
+    MinimapDesc.fSizeY = 150;
+    MinimapDesc.fX = g_iWinSizeX - 100;
+    MinimapDesc.fY = g_iWinSizeY- 100;
+
+    CTransform::TRANSFORM_DESC MinimapTransDesc = {};
+    MinimapDesc.TransformDesc = &MinimapTransDesc;
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"MinimapQuad"),
+        ENUM_TO_UINT(LEVEL_ID::LOGO),
+        strLayerTag, &MinimapDesc)))
+        return E_FAIL;
+
+
     return S_OK;
 }
 
@@ -293,9 +318,9 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
 }
 
 void CLevel_Logo::OnEnter()
-{    
+{
     //메인카메라 등록
-    m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
+   // m_pGameInstance->Set_MainCamera(CAMERA_TYPE::MINIMAP);
 
 
     CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Test_Layer", L"Test");
@@ -308,7 +333,7 @@ void CLevel_Logo::OnEnter()
         if (pTestObject->Get_Transform()->Get_Parent() == nullptr)
         {
             pTestObject->Get_Transform()->Set_State(STATE::POSITION, XMVectorSet(0.f, 1.f, 0.f, 1.f));
-            pTestObject->Get_Transform()->Rotation(_float3(-90.f,0.f,0.f));
+            pTestObject->Get_Transform()->Rotation(_float3(-90.f, 0.f, 0.f));
             pTestObject->Get_Transform()->Set_Parent(pPlayerObject->Get_Transform());
         }
 
@@ -318,7 +343,7 @@ void CLevel_Logo::OnEnter()
 
     }
 
-    //소켓을 카메라 타겟으로
+    //미니맵 타겟 = 플레이어
     CCamera_Base* pMinimapCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
     if (pMinimapCamera)
     {
@@ -326,9 +351,27 @@ void CLevel_Logo::OnEnter()
             L"Player_Layer",
             L"Player"));
     }
-    
-    
-    CGameObject* pMainCamera = m_pGameInstance->Get_MainCamera();
+
+   /* CGameObject* pMinimapQuad = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"UI_Layer", L"MinimapQuad");
+    if (pMinimapQuad)
+    {
+        CMinnimapQuad* ppMinimapQuad = dynamic_cast<CMinnimapQuad*>(pMinimapQuad);
+        if (ppMinimapQuad)
+        {
+            CMinimapCamera* ppMinimapCamera = dynamic_cast<CMinimapCamera*>(pMinimapCamera);
+            if (ppMinimapCamera)
+            {
+                ppMinimapQuad->CreateTexture(ppMinimapCamera->Get_RenderTarget());
+            }
+            
+        }
+           
+    }*/
+
+      
+
+
+    CGameObject* pMainCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
     if (pMainCamera)
     {
         CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
@@ -338,7 +381,7 @@ void CLevel_Logo::OnEnter()
             L"Player"), true);
     }
 
- 
+
 }
 
 void CLevel_Logo::OnResume()
@@ -419,8 +462,14 @@ void CLevel_Logo::Set_UIPos_ByWorld(_float3 OffSet)
 
 void CLevel_Logo::Create_MainCamera()
 {
-    CMainCamera::GAMEOBJECT_DESC Desc = {};
+    CMainCamera::CAMERABASE_DESC Desc = {};
     Desc.ObjTag = L"MainCamera";
+
+    Desc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
+    Desc.PassName = "Default";
+
+    Desc.eCameraType = CAMERA_TYPE::TARGET;
+    Desc.eCameraFlag = CAMERA_FLAG::NONE;
 
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
@@ -443,12 +492,19 @@ void CLevel_Logo::Create_MainCamera()
     CGameObject* pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MainCamera"), &Desc));
     m_pGameInstance->RegisterCamera(CAMERA_TYPE::TARGET, pInstance);
 
+    //pInstance->Set_Active(false);
 }
 
 void CLevel_Logo::Create_UICamera()
 {
-    CUICamera::GAMEOBJECT_DESC UIDesc = {};
+    CUICamera::CAMERABASE_DESC UIDesc = {};
     UIDesc.ObjTag = L"UICamera";
+    
+    UIDesc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
+    UIDesc.PassName = "Default";
+
+    UIDesc.eCameraType = CAMERA_TYPE::UI;
+    UIDesc.eCameraFlag = CAMERA_FLAG::NONE;
 
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
@@ -473,8 +529,16 @@ void CLevel_Logo::Create_UICamera()
 
 void CLevel_Logo::Create_FreeCamera()
 {
-    CMainCamera::GAMEOBJECT_DESC Desc = {};
+    CMainCamera::CAMERABASE_DESC Desc = {};
     Desc.ObjTag = L"FreeCamera";
+
+    Desc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
+    Desc.PassName = "Default";
+
+
+    Desc.eCameraType = CAMERA_TYPE::FREE;
+    Desc.eCameraFlag = CAMERA_FLAG::NONE;
+
 
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
@@ -493,12 +557,25 @@ void CLevel_Logo::Create_FreeCamera()
 
     CGameObject* pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FreeCamera"), &Desc));
     m_pGameInstance->RegisterCamera(CAMERA_TYPE::FREE, pInstance);
+    pInstance->Set_Active(false);
 }
 
 void CLevel_Logo::Create_MiniMapCamera()
 {
-    CMainCamera::GAMEOBJECT_DESC Desc = {};
+    CMainCamera::CAMERABASE_DESC Desc = {};
     Desc.ObjTag = L"MinimapCamera";
+
+
+    //Desc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
+    //Desc.PassName = "Minimap";
+
+    Desc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
+    Desc.PassName = "Default";
+
+
+    Desc.eCameraFlag = CAMERA_FLAG::HAS_RENDERTARGET;
+    Desc.eCameraType = CAMERA_TYPE::MINIMAP;
+
 
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
@@ -511,8 +588,8 @@ void CLevel_Logo::Create_MiniMapCamera()
     CameraDesc.vOffset = _float3(0.f, 10.f, 0.f);
     CameraDesc.vUp = _float3(0.f, 0.f, -1.f);
     
-    CameraDesc.ViewHeight = (float)g_iWinSizeY * 0.05f;
-    CameraDesc.ViewWdith = (float)g_iWinSizeX*0.05f;
+    CameraDesc.ViewHeight = (float) 100.f;
+    CameraDesc.ViewWdith = (float)100.f;
    
 
     CameraDesc.fNear = 0.1f;
@@ -526,4 +603,5 @@ void CLevel_Logo::Create_MiniMapCamera()
 
     CGameObject* pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MinimapCamera"), &Desc));
     m_pGameInstance->RegisterCamera(CAMERA_TYPE::MINIMAP, pInstance);
+    //pInstance->Set_Active(false);
 }

@@ -4,6 +4,8 @@
 #include "CUI.h"
 #include "CMainCamera.h"
 #include "CUICamera.h"
+#include "CCameraComponent.h"
+
 
 
 CRenderer::CRenderer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -44,6 +46,32 @@ void CRenderer::Draw()
 
 	Bind_OrthoCamera();
 	Render_UI();
+}
+
+void CRenderer::Render_Group(RENDERGROUP eType)
+{
+	switch (eType)
+	{
+	case RENDERGROUP::PRIORITY:
+		Render_Priority();
+		break;
+
+
+	case RENDERGROUP::NONALPHA:
+		Render_NonBlend();
+		break;
+
+
+	case RENDERGROUP::ALPHA:
+		Render_Blend();
+		break;
+
+	case RENDERGROUP::UI:
+		Render_UI();
+		break;
+
+
+	}
 }
 
 void CRenderer::Render_Priority()
@@ -100,8 +128,9 @@ void CRenderer::Render_Blend()
 	m_pContext->OMSetBlendState(m_RenderStates[ENUM_TO_UINT(RENDERGROUP::ALPHA)]._BlendState.Get(), nullptr, 0xFFFFFFFF);
 	m_pContext->OMSetDepthStencilState(m_RenderStates[ENUM_TO_UINT(RENDERGROUP::ALPHA)]._DepthStencilState.Get(), 0);
 
-	
-	m_MainCameraView = XMLoadFloat4x4(&CGameInstance::GetInstance()->Get_Main_ViewMatrix());
+	CCameraComponent* pCameracomp = CGameInstance::GetInstance()->Get_RenderCamera()->Get_CameraComp();
+
+	m_MainCameraView = XMLoadFloat4x4(&pCameracomp->Get_ViewMatrix());
 
 	m_RenderObjects[ENUM_TO_UINT(RENDERGROUP::ALPHA)].sort([&](CGameObject* a, CGameObject* b)
 		{

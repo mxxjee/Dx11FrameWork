@@ -27,20 +27,19 @@ HRESULT CCamera_Base::Initialize_Copytype(void* pArg)
 
     CAMERABASE_DESC* pDesc = static_cast<CAMERABASE_DESC*>(pArg);
 
-    pDesc->eCameraType = pDesc->eCameraType;
-    pDesc->eCameraFlag = pDesc->eCameraFlag;
+    m_eCameraType = pDesc->eCameraType;
+    m_eCameraFlag = pDesc->eCameraFlag;
 
-    m_pMainShader = m_pGameInstance->Find_Shader(L"Default");
+    m_pMainShader = pDesc->pMainShader;
+    Safe_AddRef(m_pMainShader);
+
+    m_PassName = pDesc->PassName;
+
     m_GlobalViewProj = m_pMainShader->Get_ShaderInfo().m_GlobalViewProj;
 
     return S_OK;
 }
 
-void CCamera_Base::Free()
-{
-    __super::Free();
-    Safe_Release(m_pCameraCom);
-}
 
 void CCamera_Base::Bind_ViewProjMatrix()
 {
@@ -71,3 +70,11 @@ HRESULT CCamera_Base::Clear_RenderTargetView(const _float4* pClearColor)
 }
 
 
+
+void CCamera_Base::Free()
+{
+    __super::Free();
+    Safe_Release(m_pCameraCom);
+    Safe_Release(m_pMainShader);
+
+}

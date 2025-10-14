@@ -82,12 +82,15 @@ public:
 #pragma endregion
 
 #pragma region Renderer
-public:
+public:          
     HRESULT         Add_RenderObject(RENDERGROUP eID, class CGameObject * pRenderObject);
+    void            Render_Group(RENDERGROUP eType);
 #pragma endregion
 
 #pragma region GraphicDevice
     HRESULT     Get_Buffer(ComPtr<ID3D11Texture2D>*pBuffer, UINT iFlag = 0);
+    ComPtr<ID3D11RenderTargetView>	    Get_BackBuffer_RTV();
+
 #pragma endregion
 
 #pragma region CameraManager
@@ -116,6 +119,11 @@ public:
     const _float4x4& Get_Main_ProjMatrix();
     _matrix Get_Main_MulViewProjMatrix();
     void    Bind_Main_ViewProjMatrix() const;
+
+    class CShader* Get_RenderShader();
+    const string& Get_RenderPassName();
+    class CCamera_Base* Get_RenderCamera();
+
 
 #pragma endregion
 

@@ -19,7 +19,9 @@ public:
     HRESULT         Add_RenderObject(RENDERGROUP eID, CGameObject* pRenderObject);
     void            Draw();
 
-private:
+public:
+    void        Render_Group(RENDERGROUP eType);
+public:
     void        Render_Priority();
     void        Render_NonBlend();
     void        Render_Blend();

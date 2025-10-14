@@ -41,7 +41,7 @@ public:
 
 	/*백버퍼를 가져온다.*/
 	HRESULT		Get_Buffer(ComPtr<ID3D11Texture2D>* pBuffer,UINT iFlag=0);
-
+	ComPtr<ID3D11RenderTargetView>	    Get_BackBuffer_RTV() { return m_pBackBufferRTV; }
 private:
 	// IDirect3DDevice9* == LPDIRECT3DDEVICE9 == ID3D11Device + ID3D11DeviceContext 	
 

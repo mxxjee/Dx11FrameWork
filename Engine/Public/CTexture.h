@@ -13,6 +13,9 @@ public:
 
 	HRESULT LoadImg(const wstring& path);
 	HRESULT CreateResourceViewByTex(ComPtr<ID3D11Texture2D>& Source);
+	
+	void		Set_ShaderResourceView(ComPtr<ID3D11ShaderResourceView> pSRV) { _shaderResourceView = pSRV; }
+
 private:
 	ComPtr<ID3D11Device> _device;
 	ComPtr<ID3D11Texture2D> _texture;

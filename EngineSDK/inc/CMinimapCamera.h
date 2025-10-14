@@ -11,6 +11,7 @@ NS_BEGIN(Engine)
 class ENGINE_DLL CMinimapCamera :
     public CCamera_Base
 {
+
 private:
     CMinimapCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CMinimapCamera(const CMinimapCamera& rhs);
@@ -32,10 +33,18 @@ public:
     void        Follow_Target(_float fTimeDelta);
 
 public:
+    HRESULT     Create_RenderTagetview();
+    virtual HRESULT        Bind_RenderTarget() override;
+    virtual HRESULT        UnBind_RenderTarget()  override;
+    virtual HRESULT         Clear_RenderTargetView(const _float4* pClearColor) override;
+public:
     static CMinimapCamera* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg);
     virtual void    Free() override;
 
+    const RENDER_TARGET& Get_RenderTarget() const { return m_tRenderTarget; }
+private:
+    RENDER_TARGET   m_tRenderTarget;
 
 };
 

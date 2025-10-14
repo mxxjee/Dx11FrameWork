@@ -109,7 +109,16 @@ namespace Engine
 		Released = 1<<2,
 	};
 
-	enum class CAMERA_TYPE {TARGET,FREE,UI,MINIMAP,CUTSCENE,SHADOW,END};
+	enum class CAMERA_TYPE 
+	{	TARGET,
+		FREE,
+		UI,
+		MINIMAP,
+		CUTSCENE,
+		SHADOW,
+		END};
+
+
 	enum class CAMERA_FLAG :uint32_t
 	{
 		NONE=0,

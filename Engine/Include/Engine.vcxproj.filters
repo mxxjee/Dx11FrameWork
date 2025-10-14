@@ -193,9 +193,6 @@
     <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\Slider">
       <UniqueIdentifier>{0f780794-a478-40ee-a5d4-4234951bc54d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.GameObject\ScreenQuad">
-      <UniqueIdentifier>{bc36f309-c887-4cca-afb5-f4edd4432e5d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00.System\05.ScreenShot">
       <UniqueIdentifier>{cb8eec21-9e17-4e99-ac8a-4b380a3b8bda}</UniqueIdentifier>
     </Filter>
@@ -204,6 +201,12 @@
     </Filter>
     <Filter Include="03.GameObject\CameraObject\Orthgraphic\Minimap">
       <UniqueIdentifier>{bc0aaa41-5ad7-4d30-a699-eec7fa420307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\Quad\ScreenQuad">
+      <UniqueIdentifier>{bc36f309-c887-4cca-afb5-f4edd4432e5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\Quad\MinimapQuad">
+      <UniqueIdentifier>{6e94bc0d-666b-4e20-931b-700b88a3314e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -376,7 +379,7 @@
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Slider</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CScreenQuad.h">
-      <Filter>03.GameObject\ScreenQuad</Filter>
+      <Filter>03.GameObject\Quad\ScreenQuad</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CScreenShot_Manager.h">
       <Filter>00.System\05.ScreenShot</Filter>
@@ -392,6 +395,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CMinimapCamera.h">
       <Filter>03.GameObject\CameraObject\Orthgraphic\Minimap</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMinnimapQuad.h">
+      <Filter>03.GameObject\Quad\MinimapQuad</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -534,7 +540,7 @@
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Slider</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CScreenQuad.cpp">
-      <Filter>03.GameObject\ScreenQuad</Filter>
+      <Filter>03.GameObject\Quad\ScreenQuad</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CScreenShot_Manager.cpp">
       <Filter>00.System\05.ScreenShot</Filter>
@@ -550,6 +556,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CFreeCamera.cpp">
       <Filter>03.GameObject\CameraObject\Perspective\FreeCamera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMinnimapQuad.cpp">
+      <Filter>03.GameObject\Quad\MinimapQuad</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -33,7 +33,6 @@ HRESULT CUICamera::Initialize_Copytype(void* pArg)
 	Safe_AddRef(m_pCameraCom);
 	m_Components.emplace(COMPONENT_TYPE::PERSPECTIVE_CACM, m_pCameraCom);
 
-	m_pMainShader = m_pGameInstance->Find_Shader(L"Default");
 
 	return S_OK;
 }

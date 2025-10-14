@@ -49,10 +49,10 @@ HRESULT CMainApp::Initialize()
 
 	//Imgui 디버그창
 #ifdef _DEBUG
-	pImGui_Manager->Init(g_hWnd, m_pDevice.Get(), m_pContext.Get());
-	CreateLevelDebugWindow();
-	CreateObjectDebugWindow();
-	CreateCameraDebugWindow();
+	//pImGui_Manager->Init(g_hWnd, m_pDevice.Get(), m_pContext.Get());
+	//CreateLevelDebugWindow();
+	//CreateObjectDebugWindow();
+	//CreateCameraDebugWindow();
 
 #endif
 
@@ -76,7 +76,7 @@ void CMainApp::Update(_float fTimeDelta)
 	pGameInstance->Update_Engine(fTimeDelta);
 	
 #ifdef _DEBUG
-	pImGui_Manager->Update();
+	//pImGui_Manager->Update();
 #endif
 
 }
@@ -99,7 +99,7 @@ void CMainApp::Render()
 	pGameInstance->Draw();
 
 #ifdef _DEBUG
-	pImGui_Manager->Render(m_pContext.Get());
+	//pImGui_Manager->Render(m_pContext.Get());
 #endif
 
 	pGameInstance->Draw_End();
@@ -142,16 +142,11 @@ void CMainApp::Register_Shaders()
 
 	CShader* pInstance = CShader::Create(m_pDevice,
 		m_pContext, VTXPOSTEX::desc, L"../Bin/ShaderFiles/Shader_VtxPosTex.hlsl",
-		"DefaultTechnique","Default");
-
-	CShader* pBrightInstance = CShader::Create(m_pDevice,
-		m_pContext, VTXPOSTEX::desc, L"../Bin/ShaderFiles/Shader_VtxPosTex.hlsl",
-		"DefaultTechnique", "Brightness");
+		"DefaultTechnique");
 
 
 	pGameInstance->Register_Shader(L"Default", pInstance);
-	pGameInstance->Register_Shader(L"Brightness", pBrightInstance);
-	
+
 }
 
 HRESULT CMainApp::Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)
