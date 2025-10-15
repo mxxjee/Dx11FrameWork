@@ -26,11 +26,11 @@ HRESULT CMainCamera::Initialize_Copytype(void* pArg)
 
 
 	/*컴포넌트 세팅*/
-	m_pCameraCom = dynamic_cast<CPerspectiveCameraComponent*>(m_pGameInstance->Clone_Prototype
+	CComponent* pPerspectiveCam= dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype
 	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"PerspectiveCamera"), pArg));
-	CheckNullResult(m_pCameraCom, E_FAIL);
-	Safe_AddRef(m_pCameraCom);
-	m_Components.emplace(COMPONENT_TYPE::PERSPECTIVE_CACM, m_pCameraCom);
+	
+	if(FAILED(Add_Component(COMPONENT_TYPE::PERSPECTIVE_CACM,pPerspectiveCam,(CComponent**)(&m_pCameraCom))))
+		return E_FAIL;
 
 
 	return S_OK;

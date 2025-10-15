@@ -35,6 +35,10 @@ public:
     virtual HRESULT Render();
     
 public:
+    virtual     HRESULT     Ready_Components(void* pArg);
+    virtual     HRESULT     Add_Component(COMPONENT_TYPE eType, CComponent* pComp, CComponent** pOut);
+
+public:
     void    Set_Active(bool _b) { m_bActive = _b; }
     void    Set_Target(CGameObject* pObj) { m_pTarget = pObj; }
     

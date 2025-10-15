@@ -396,7 +396,7 @@
     <ClInclude Include="..\Public\CMinimapCamera.h">
       <Filter>03.GameObject\CameraObject\Orthgraphic\Minimap</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CMinnimapQuad.h">
+    <ClInclude Include="..\Public\CMinimapQuad.h">
       <Filter>03.GameObject\Quad\MinimapQuad</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CRenderState_Manager.h" />
@@ -558,7 +558,7 @@
     <ClCompile Include="..\Private\CFreeCamera.cpp">
       <Filter>03.GameObject\CameraObject\Perspective\FreeCamera</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CMinnimapQuad.cpp">
+    <ClCompile Include="..\Private\CMinimapQuad.cpp">
       <Filter>03.GameObject\Quad\MinimapQuad</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CRenderState_Manager.cpp" />

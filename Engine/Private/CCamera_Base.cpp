@@ -111,10 +111,6 @@ HRESULT CCamera_Base::Create_RenderTagetview(bool bCreateRenderTarget)
 HRESULT CCamera_Base::Bind_RenderTarget()
 {
 
- /*   ID3D11ShaderResourceView* nullSRV[8] = { nullptr };
-    m_pContext->PSSetShaderResources(0, 8, nullSRV);*/
-
-
     //Ä«¸Þ¶ó ·»´õÅ¸°Ù ¹ÙÀÎµù
     m_pContext->OMSetRenderTargets(1, m_tRenderTarget.RTV.GetAddressOf(), m_tRenderTarget.DSV.Get());
 

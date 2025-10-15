@@ -1,22 +1,22 @@
-#include "CMinnimapQuad.h"
+#include "CMinimapQuad.h"
 #include "CShader.h"
 #include "CTexture.h"
 #include "CVIBuffer_Rect.h"
 #include "CGameInstance.h"
 #include "CMinimapCamera.h"
 
-CMinnimapQuad::CMinnimapQuad(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
+CMinimapQuad::CMinimapQuad(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CUI(pDevice, pContext)
 {
 
 }
 
-CMinnimapQuad::CMinnimapQuad(const CMinnimapQuad& rhs)
+CMinimapQuad::CMinimapQuad(const CMinimapQuad& rhs)
     :CUI(rhs)
 {
 
 }
-HRESULT CMinnimapQuad::CreateTexture(const RENDER_TARGET& m_Target)
+HRESULT CMinimapQuad::CreateTexture(const RENDER_TARGET& m_Target)
 {
     
     ComPtr<ID3D11Texture2D> pRTTexture;
@@ -48,7 +48,7 @@ HRESULT CMinnimapQuad::CreateTexture(const RENDER_TARGET& m_Target)
     return S_OK;
 }
 
-void CMinnimapQuad::CreateBlendState()
+void CMinimapQuad::CreateBlendState()
 {
     D3D11_BLEND_DESC desc;
     memset(&desc, 0, sizeof(desc));
@@ -68,12 +68,12 @@ void CMinnimapQuad::CreateBlendState()
 
 }
 
-CMinnimapQuad* CMinnimapQuad::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
+CMinimapQuad* CMinimapQuad::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
-    CMinnimapQuad* pInstance = new CMinnimapQuad(_pDevice, _pDeviceContext);
+    CMinimapQuad* pInstance = new CMinimapQuad(_pDevice, _pDeviceContext);
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Create :CMinnimapQuad ");
+        MSG_BOX("Failed to Create :CMinimapQuad ");
         Safe_Release(pInstance);
 
     }
@@ -82,26 +82,26 @@ CMinnimapQuad* CMinnimapQuad::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D1
     return pInstance;
 }
 
-CGameObject* CMinnimapQuad::Clone(void* pArg)
+CGameObject* CMinimapQuad::Clone(void* pArg)
 {
-    CMinnimapQuad* pInstance = new CMinnimapQuad(*this);
+    CMinimapQuad* pInstance = new CMinimapQuad(*this);
     if (FAILED(pInstance->Initialize_Copytype(pArg)))
     {
-        MSG_BOX("Failed to Cloned :CMinnimapQuad ");
+        MSG_BOX("Failed to Cloned :CMinimapQuad ");
         Safe_Release(pInstance);
 
     }
     return pInstance;
 }
 
-void CMinnimapQuad::Free()
+void CMinimapQuad::Free()
 {
     __super::Free();
 }
 
 
 
-HRESULT CMinnimapQuad::Initialize_Prototype()
+HRESULT CMinimapQuad::Initialize_Prototype()
 {
     if (FAILED(__super::Initialize_Prototype()))
         return E_FAIL;
@@ -109,7 +109,7 @@ HRESULT CMinnimapQuad::Initialize_Prototype()
     return S_OK;
 }
 
-HRESULT CMinnimapQuad::Initialize_Copytype(void* pArg)
+HRESULT CMinimapQuad::Initialize_Copytype(void* pArg)
 {
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
@@ -122,28 +122,28 @@ HRESULT CMinnimapQuad::Initialize_Copytype(void* pArg)
     return S_OK;
 }
 
-void CMinnimapQuad::Update_Priority(_float fTimeDelta)
+void CMinimapQuad::Update_Priority(_float fTimeDelta)
 {
 
     __super::Update_Priority(fTimeDelta);
 }
 
-void CMinnimapQuad::Update(_float fTimeDelta)
+void CMinimapQuad::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
 }
 
-void CMinnimapQuad::Update_Late(_float fTimeDelta)
+void CMinimapQuad::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
 }
 
-void CMinnimapQuad::Update_Render(_float fTimeDelta)
+void CMinimapQuad::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
 }
 
-HRESULT CMinnimapQuad::Render()
+HRESULT CMinimapQuad::Render()
 {
     //////렌더 할때 copydata로 GPU에게 데이터전송
     //if (m_pMinimapCamera)

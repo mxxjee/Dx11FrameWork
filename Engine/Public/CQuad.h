@@ -37,7 +37,8 @@ public:
 
 
 public:
-    void            Set_RenderGroup(_uint eGroup) { m_eRenderGroup = eGroup; }
+    virtual         HRESULT     Ready_Components(void* pArg);
+    void                        Set_RenderGroup(_uint eGroup) { m_eRenderGroup = eGroup; }
 public:
     static CQuad* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;

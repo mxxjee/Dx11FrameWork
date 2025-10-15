@@ -12,7 +12,7 @@
 #include "CUICamera.h"
 
 #include "CMinimapCamera.h"
-#include "CMinnimapQuad.h"
+#include "CMinimapQuad.h"
 
 #include "CPerspectiveCameraComponent.h"
 #include "COrthographicCameraComponent.h"
@@ -364,9 +364,10 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
 void CLevel_Logo::OnEnter()
 {
     //메인카메라 등록
-#pragma region 메인카메라 등록및 transform 부모설정
-   // m_pGameInstance->Set_MainCamera(CAMERA_TYPE::MINIMAP);
+    m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
 
+#pragma region 메인카메라 등록및 transform 부모설정
+   
 
     //CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Test_Layer", L"Test");
     //CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Player_Layer", L"Player");

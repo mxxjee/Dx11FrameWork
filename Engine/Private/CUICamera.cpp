@@ -23,15 +23,12 @@ HRESULT CUICamera::Initialize_Copytype(void* pArg)
 	if (FAILED(__super::Initialize_Copytype(pArg)))
 		return E_FAIL;
 
-	GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+	CComponent* pOrtho = dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype
+	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"OrthographicCamera"), pArg));
 
-	m_pCameraCom = dynamic_cast<COrthographicCameraComponent*>(m_pGameInstance->Clone_Prototype
-	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"OrthographicCamera"), pDesc));
+	if (FAILED(Add_Component(COMPONENT_TYPE::ORTHOGRAPHIC_CAM, pOrtho, (CComponent**)(&m_pCameraCom))))
+		return E_FAIL;
 
-	CheckNullResult(m_pCameraCom, E_FAIL);
-
-	Safe_AddRef(m_pCameraCom);
-	m_Components.emplace(COMPONENT_TYPE::PERSPECTIVE_CACM, m_pCameraCom);
 
 
 	return S_OK;

@@ -27,6 +27,10 @@ public:
     const _float4x4& GetProjMatrix(CAMERA_TYPE eType) const;
     const _matrix GetMulViewProjMatrix(CAMERA_TYPE eType) const;
     void    Bind_ViewProjMatrix(CAMERA_TYPE eType);
+    
+
+    //메인카메라가져오기
+    CCamera_Base* Get_MainCamera()  { return m_pMainCamera; }
 
     //카메라 가져오기
     CCamera_Base*   Find_Camera(CAMERA_TYPE eType);
@@ -51,7 +55,7 @@ public:
 private:
     array<CCamera_Base*, ENUM_TO_UINT(CAMERA_TYPE::END)> m_Cameras;
     CCamera_Base*        m_pMainCamera = nullptr; //현재 활성중인 원근투영카메라
-    CCamera_Base*   m_pRenderCamera = nullptr;
+    CCamera_Base*       m_pRenderCamera = nullptr;
 
 private:
     _float4x4       g_Identityfloat4x4;

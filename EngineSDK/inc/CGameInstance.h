@@ -116,10 +116,12 @@ public:
 
     //카메라 가져오기
     class CCamera_Base* Find_Camera(CAMERA_TYPE eType);
+    class CCamera_Base* Get_MainCamera();
+
 
     //메인카메라의 뷰,투영행렬 관련
-    const _float4x4& Get_Main_ViewMatrix();
-    const _float4x4& Get_Main_ProjMatrix();
+    //const _float4x4& Get_Main_ViewMatrix();
+    //const _float4x4& Get_Main_ProjMatrix();
     // _matrix Get_Main_MulViewProjMatrix();
      //void    Bind_Main_ViewProjMatrix() const;
 

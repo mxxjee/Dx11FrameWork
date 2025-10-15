@@ -109,7 +109,7 @@ HRESULT CCameraDebugWindow::Create_Widgets()
     if (FAILED(Create_Slider(&SliderDesc, &m_Sliders[2])))
         return E_FAIL;
 
-
+    
     ////////////////////////////////////////////////////
     //카메라 바꾸는 버튼 세팅
     m_CamButtons.resize(2);
@@ -119,7 +119,8 @@ HRESULT CCameraDebugWindow::Create_Widgets()
     TargetCamDesc.Tag = L"TargetCamMode";
     TargetCamDesc.callback = [this]()
     {
-        m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
+        m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET)->Set_Active(true);
+        m_pGameInstance->Find_Camera(CAMERA_TYPE::FREE)->Set_Active(false);
 
     };
     if (FAILED(Create_Button(&TargetCamDesc, &m_CamButtons[0])))
@@ -131,7 +132,8 @@ HRESULT CCameraDebugWindow::Create_Widgets()
     FreeCamDesc.Tag = L"FreeCam";
     FreeCamDesc.callback = [this]()
     {
-        m_pGameInstance->Set_MainCamera(CAMERA_TYPE::FREE);
+        m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET)->Set_Active(false);
+        m_pGameInstance->Find_Camera(CAMERA_TYPE::FREE)->Set_Active(true);
 
     };
     if (FAILED(Create_Button(&FreeCamDesc, &m_CamButtons[1])))
@@ -166,7 +168,7 @@ void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
     ImGui::SetCursorPos(ImVec2(0.f, 0.f));
 
 
-    CCamera_Base* pMainCam = (m_bClickOrtho) ? m_pGameInstance->Find_Camera(CAMERA_TYPE::UI) : m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
+    CCamera_Base* pMainCam = (m_bClickOrtho) ? m_pGameInstance->Find_Camera(CAMERA_TYPE::UI) : m_pGameInstance->Get_MainCamera();
     CCameraComponent* pCameracomp = nullptr;
 
     if (pMainCam == nullptr)
@@ -199,14 +201,14 @@ void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
 
     else
     {
-        pCameracomp = dynamic_cast<CCameraComponent*>(pMainCam->Get_Component(COMPONENT_TYPE::ORTHOGRAPHIC_CAM));
+        pCameracomp = dynamic_cast<CCameraComponent*>(pMainCam->Get_Component(COMPONENT_TYPE::PERSPECTIVE_CACM));
 
         ImGui::SetCursorPos(ImVec2(0.f, 70.f));
         wstring Name = pMainCam->Get_Tag();
         ImGui::TextColored(ImVec4(0, 255, 0, 255), "Name : %s", WStringToUTF8(Name).c_str());
 
         ImGui::SetCursorPos(ImVec2(0.f, 85.f));
-        ImGui::TextColored(ImVec4(0, 255, 0, 255), "Projection : Minimap");
+        ImGui::TextColored(ImVec4(0, 255, 0, 255), "Projection : Target");
 
     }
 
@@ -251,92 +253,92 @@ void CCameraDebugWindow::ToggleClickOrtho(bool _b)
 {
     m_bClickOrtho = _b;
 
-    //CGameObject* pMainCam = (m_bClickOrtho) ? m_pGameInstance->Find_Camera(CAMERA_TYPE::UI) : m_pGameInstance->Get_MainCamera();
-    //CheckNull(pMainCam);
+    CGameObject* pMainCam = (m_bClickOrtho) ? m_pGameInstance->Find_Camera(CAMERA_TYPE::UI) : m_pGameInstance->Get_MainCamera();
+    CheckNull(pMainCam);
 
-    ////orthographic 선택했을떄  바인딩정보
-    //if (_b)
-    //{
+    //orthographic 선택했을떄  바인딩정보
+    if (_b)
+    {
 
-    //    COrthographicCameraComponent* pOrthoComp = dynamic_cast<COrthographicCameraComponent*>(pMainCam->Get_Component(COMPONENT_TYPE::ORTHOGRAPHIC_CAM));
+        COrthographicCameraComponent* pOrthoComp = dynamic_cast<COrthographicCameraComponent*>(pMainCam->Get_Component(COMPONENT_TYPE::ORTHOGRAPHIC_CAM));
 
-    //    if (pOrthoComp)
-    //    {
-    //        fDebugNear = pOrthoComp->Get_Near();
-    //        fDebugFar = pOrthoComp->Get_Far();
+        if (pOrthoComp)
+        {
+            fDebugNear = pOrthoComp->Get_Near();
+            fDebugFar = pOrthoComp->Get_Far();
 
-    //        m_Sliders[NearClip]->Set_BindValue(&fDebugNear);
-    //        m_Sliders[NearClip]->Set_Min(0.1f);
-    //        m_Sliders[NearClip]->Set_Max(999.f);
+            m_Sliders[NearClip]->Set_BindValue(&fDebugNear);
+            m_Sliders[NearClip]->Set_Min(0.1f);
+            m_Sliders[NearClip]->Set_Max(999.f);
 
-    //        m_Sliders[FarClip]->Set_BindValue(&fDebugFar);
-    //        m_Sliders[FarClip]->Set_Min(0.2f);
-    //        m_Sliders[FarClip]->Set_Max(1000.f);
+            m_Sliders[FarClip]->Set_BindValue(&fDebugFar);
+            m_Sliders[FarClip]->Set_Min(0.2f);
+            m_Sliders[FarClip]->Set_Max(1000.f);
 
-    //        m_Sliders[FOV]->Set_Active(false);
+            m_Sliders[FOV]->Set_Active(false);
 
-    //        for (int i = 0; i < 3; ++i)
-    //        {
-    //            m_Sliders[i]->Set_Callback([pOrthoComp, this]() {
-    //                float fNear = m_Sliders[NearClip]->Get_BindValue();
-    //                float fFar = m_Sliders[FarClip]->Get_BindValue();
-    //                pOrthoComp->Set_CameraValue(fNear, fFar);
-    //                });
-    //        }
-
-
-
-
-
-    //    }
-
-    //}
-
-    //else
-    //{
-    //  
-    //    CPerspectiveCameraComponent* pPersComp = dynamic_cast<CPerspectiveCameraComponent*>(pMainCam->Get_Component(COMPONENT_TYPE::PERSPECTIVE_CACM));
-
-    //    if (pPersComp)
-    //    {
-    //        fDebugNear = pPersComp->Get_Near();
-    //        fDebugFar = pPersComp->Get_Far();
-    //        fDebugFov = pPersComp->Get_Fov();
-    //        fDebugFov = XMConvertToDegrees(fDebugFov);
-
-    //        m_Sliders[NearClip]->Set_BindValue(&fDebugNear);
-    //        m_Sliders[NearClip]->Set_Min(0.1f);
-    //        m_Sliders[NearClip]->Set_Max(999.f);
-
-    //        m_Sliders[FarClip]->Set_BindValue(&fDebugFar);
-    //        m_Sliders[FarClip]->Set_Min(0.2f);
-    //        m_Sliders[FarClip]->Set_Max(1000.f);
-
-    //        m_Sliders[FOV]->Set_Active(true);
-
-
-    //        m_Sliders[FOV]->Set_BindValue(&fDebugFov);
-    //        m_Sliders[FOV]->Set_Min(0.f);
-    //        m_Sliders[FOV]->Set_Max(1000.f);
-
-    //        for (int i = 0; i < 3; ++i)
-    //        {
-    //            m_Sliders[i]->Set_Callback([pPersComp, this]() {
-    //                float fNear = m_Sliders[NearClip]->Get_BindValue();
-    //                float fFar = m_Sliders[FarClip]->Get_BindValue();
-    //                float fFov = m_Sliders[FOV]->Get_BindValue();
-
-    //                fFov = XMConvertToRadians(fFov);
-    //                pPersComp->Set_CameraValue(fNear, fFar, fFov);
-    //                });
-    //        }
+            for (int i = 0; i < 3; ++i)
+            {
+                m_Sliders[i]->Set_Callback([pOrthoComp, this]() {
+                    float fNear = m_Sliders[NearClip]->Get_BindValue();
+                    float fFar = m_Sliders[FarClip]->Get_BindValue();
+                    pOrthoComp->Set_CameraValue(fNear, fFar);
+                    });
+            }
 
 
 
 
 
-    //    }
-    //}
+        }
+
+    }
+
+    else
+    {
+      
+        CPerspectiveCameraComponent* pPersComp = dynamic_cast<CPerspectiveCameraComponent*>(pMainCam->Get_Component(COMPONENT_TYPE::PERSPECTIVE_CACM));
+
+        if (pPersComp)
+        {
+            fDebugNear = pPersComp->Get_Near();
+            fDebugFar = pPersComp->Get_Far();
+            fDebugFov = pPersComp->Get_Fov();
+            fDebugFov = XMConvertToDegrees(fDebugFov);
+
+            m_Sliders[NearClip]->Set_BindValue(&fDebugNear);
+            m_Sliders[NearClip]->Set_Min(0.1f);
+            m_Sliders[NearClip]->Set_Max(999.f);
+
+            m_Sliders[FarClip]->Set_BindValue(&fDebugFar);
+            m_Sliders[FarClip]->Set_Min(0.2f);
+            m_Sliders[FarClip]->Set_Max(1000.f);
+
+            m_Sliders[FOV]->Set_Active(true);
+
+
+            m_Sliders[FOV]->Set_BindValue(&fDebugFov);
+            m_Sliders[FOV]->Set_Min(0.f);
+            m_Sliders[FOV]->Set_Max(1000.f);
+
+            for (int i = 0; i < 3; ++i)
+            {
+                m_Sliders[i]->Set_Callback([pPersComp, this]() {
+                    float fNear = m_Sliders[NearClip]->Get_BindValue();
+                    float fFar = m_Sliders[FarClip]->Get_BindValue();
+                    float fFov = m_Sliders[FOV]->Get_BindValue();
+
+                    fFov = XMConvertToRadians(fFov);
+                    pPersComp->Set_CameraValue(fNear, fFar, fFov);
+                    });
+            }
+
+
+
+
+
+        }
+    }
 
 }
 

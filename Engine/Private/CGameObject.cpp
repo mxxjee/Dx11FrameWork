@@ -32,13 +32,9 @@ HRESULT CGameObject::Initialize_Copytype(void* pArg)
     tag = pDesc->ObjTag;
     pDesc->pOwner = this;
    
-    m_pTransformCom = dynamic_cast<CTransform*>(m_pGameInstance->Clone_Prototype
-    (PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"Transform"), pDesc));
+    if (FAILED(CGameObject::Ready_Components(pArg)))
+        return E_FAIL;
 
-    CheckNullResult(m_pTransformCom, E_FAIL);
-
-    Safe_AddRef(m_pTransformCom);
-    m_Components.emplace(COMPONENT_TYPE::TRANSFORM, m_pTransformCom);
 
     return S_OK;
 }
@@ -64,6 +60,31 @@ void CGameObject::Update_Render(_float fTimeDelta)
 
 HRESULT CGameObject::Render()
 {
+    return S_OK;
+}
+
+HRESULT CGameObject::Ready_Components(void* pArg)
+{
+    CComponent* pTransform = dynamic_cast<CTransform*>(m_pGameInstance->Clone_Prototype
+    (PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"Transform"), pArg));
+
+    if (FAILED(Add_Component(COMPONENT_TYPE::TRANSFORM, pTransform, reinterpret_cast<CComponent**>(&m_pTransformCom))))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CGameObject::Add_Component(COMPONENT_TYPE eType, CComponent* pComp, CComponent** pOut)
+{
+    auto iter = m_Components.find(eType);
+    if (iter != m_Components.end())
+        return E_FAIL;
+
+    m_Components.emplace(eType, pComp);
+    *pOut = pComp;
+
+    Safe_AddRef(pComp);
+
     return S_OK;
 }
 

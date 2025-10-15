@@ -373,6 +373,12 @@ CCamera_Base* CGameInstance::Find_Camera(CAMERA_TYPE eType)
 	return m_pCameraManager->Find_Camera(eType);
 }
 
+CCamera_Base* CGameInstance::Get_MainCamera()
+{
+	CheckNullResult(m_pCameraManager, nullptr);
+	return m_pCameraManager->Get_MainCamera();
+}
+
 //const _float4x4& CGameInstance::Get_Main_ViewMatrix()
 //{
 //	return m_pCameraManager->Get_Main_ViewMatrix();

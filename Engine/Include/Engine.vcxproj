@@ -175,7 +175,7 @@
     <ClInclude Include="..\Public\CLevel_Manager.h" />
     <ClInclude Include="..\Public\CImGui_Manager.h" />
     <ClInclude Include="..\Public\CMinimapCamera.h" />
-    <ClInclude Include="..\Public\CMinnimapQuad.h" />
+    <ClInclude Include="..\Public\CMinimapQuad.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
     <ClInclude Include="..\Public\CMainCamera.h" />
     <ClInclude Include="..\Public\ColorUtils.h" />
@@ -242,7 +242,7 @@
     <ClCompile Include="..\Private\CLevel_Manager.cpp" />
     <ClCompile Include="..\Private\CImGui_Manager.cpp" />
     <ClCompile Include="..\Private\CMinimapCamera.cpp" />
-    <ClCompile Include="..\Private\CMinnimapQuad.cpp" />
+    <ClCompile Include="..\Private\CMinimapQuad.cpp" />
     <ClCompile Include="..\Private\CObject_Manager.cpp" />
     <ClCompile Include="..\Private\CMainCamera.cpp" />
     <ClCompile Include="..\Private\COrthographicCameraComponent.cpp" />

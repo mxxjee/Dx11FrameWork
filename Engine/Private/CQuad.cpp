@@ -29,27 +29,13 @@ HRESULT CQuad::Initialize_Copytype(void* pArg)
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
-    //RectBuffer생성
-    CBase* pBuffer = m_pGameInstance->Clone_Prototype(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"VIBuffer_Rect"), pArg);
-    if (pBuffer)
-    {
-        m_pVIBufferCom = dynamic_cast<CVIBuffer_Rect*>(pBuffer);
-        
-        if (m_pVIBufferCom)
-        {
-            m_pVIBufferCom->AddRef();
-            m_Components.emplace(COMPONENT_TYPE::VIBUFFER_RECT, m_pVIBufferCom);
-
-        }
-
-    }
-
+    /*내 컴포넌트 값 세팅*/
+    if (FAILED(CQuad::Ready_Components(pArg)))
+        return E_FAIL;
  
 
     QUAD_DESC* pQuad_Desc = static_cast<QUAD_DESC*>(pArg);
     m_eRenderGroup = pQuad_Desc->eRenderGroup;
-
-
     m_pTexShader = m_pGameInstance->Find_Shader(pQuad_Desc->ShaderName);
     Safe_AddRef(m_pTexShader);
 
@@ -96,21 +82,36 @@ HRESULT CQuad::Render()
 {
     __super::Render();
 
+    CShader* pRenderShader = m_pGameInstance->Get_RenderShader();
+    string  pRenderPass = m_pGameInstance->Get_RenderPassName();
+
+    CheckNullResult(pRenderShader, E_FAIL);
 
     //렌더 할때 copydata로 GPU에게 데이터전송
-    m_pGameInstance->Get_RenderShader()->SetMatrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
-    m_pGameInstance->Get_RenderShader()->SetResource("texture0", m_pTexture->GetComPtr());
-    m_pGameInstance->Get_RenderShader()->SetFloat("g_Brightness", 1.f);
+    pRenderShader->SetMatrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
+    pRenderShader->SetResource("texture0", m_pTexture->GetComPtr());
+    pRenderShader->SetFloat("g_Brightness", 1.f);
 
 
-    //IA단계
+    pRenderShader->Begin(pRenderPass); //VS-PS
 
-    m_pVIBufferCom->Bind_Resource();
+ 
+    m_pVIBufferCom->Bind_Resource();   //IA단계
 
-    //VS-PS
-    m_pGameInstance->Get_RenderShader()->Begin(m_pGameInstance->Get_RenderPassName());
+
     //Set_BlendState();           //OM단계
     m_pVIBufferCom->Render();      //OM단계
+    return S_OK;
+}
+
+HRESULT CQuad::Ready_Components(void* pArg)
+{
+    CComponent* pBuffer = dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"VIBuffer_Rect"), pArg));
+    
+    if (FAILED(Add_Component(COMPONENT_TYPE::VIBUFFER_RECT, pBuffer, (CComponent**)&m_pVIBufferCom)))
+        return E_FAIL;
+
+   
     return S_OK;
 }
 
