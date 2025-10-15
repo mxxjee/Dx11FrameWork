@@ -161,12 +161,23 @@ void CCamera_Manager::Render_Cameras()
 		{
 		case CAMERA_TYPE::TARGET:
 		case CAMERA_TYPE::FREE:
-		case CAMERA_TYPE::MINIMAP:
 		case CAMERA_TYPE::CUTSCENE:
 		case CAMERA_TYPE::SHADOW:
-			m_pGameInstance->Render_Group(RENDERGROUP::PRIORITY);
-			m_pGameInstance->Render_Group(RENDERGROUP::NONALPHA);
-			m_pGameInstance->Render_Group(RENDERGROUP::ALPHA);
+		case CAMERA_TYPE::MINIMAP:
+		{
+			array<bool, ENUM_TO_UINT(RENDERGROUP::END)> RenderMask = m_pRenderCamera->Get_RenderMask();
+			for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+			{
+				if (RenderMask[i])
+					m_pGameInstance->Render_Group(RENDERGROUP(i));
+
+			}
+		}
+	
+
+			break;
+		
+
 			break;
  		}
 		m_pRenderCamera->UnBind_RenderTarget();

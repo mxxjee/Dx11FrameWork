@@ -65,6 +65,13 @@ public:
     CShader* Get_Shader()       { return m_pMainShader; }
     const string& Get_PassName() { return m_PassName; }
 
+public:
+                //이 카메라는 무슨무슨 렌더그룹을 렌더할건지,기본값 everything
+    void        Set_RenderMask(RENDERGROUP eGroup, bool bRender) { m_RenderMask[ENUM_TO_UINT(eGroup)] = bRender; }
+    void        Set_RenderAllRenderMask(bool bRender);
+    const       array<bool, ENUM_TO_UINT(RENDERGROUP::END)>& Get_RenderMask() { return m_RenderMask; }
+
+
 protected:
     CShader* m_pMainShader = { nullptr };       //카메라가 오브젝트 렌더 시 사용할 쉐이더.
     string  m_PassName = "";                    //이용할 패스.
@@ -77,6 +84,10 @@ protected:
     bool                            m_bUseNewRenderTarget = false;
     
     RENDER_TARGET                   m_tRenderTarget;        //모든 카메라는 렌더타겟을 갖는다.하지만 특수한경우에만 새로운 렌더타겟을 생성한다.
+
+
+protected:
+    array<bool, ENUM_TO_UINT(RENDERGROUP::END)>      m_RenderMask;
 };
 
 NS_END

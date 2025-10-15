@@ -33,10 +33,7 @@ public:
     void        Follow_Target(_float fTimeDelta);
 
 public:
-    HRESULT               Create_RenderTagetview(bool bUseDefault);
-    virtual             HRESULT        UnBind_RenderTarget();
-
-  
+    HRESULT               Create_RenderTagetview(bool bUseDefault); 
 public:
     static CMinimapCamera* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg);

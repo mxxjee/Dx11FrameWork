@@ -48,28 +48,9 @@ void CRenderer::Draw()
 
 void CRenderer::Render_Group(RENDERGROUP eType)
 {
-	switch (eType)
-	{
-	case RENDERGROUP::PRIORITY:
-		Render_Priority();
-		break;
-
-
-	case RENDERGROUP::NONALPHA:
-		Render_NonBlend();
-		break;
-
-
-	case RENDERGROUP::ALPHA:
-		Render_Blend();
-		break;
-
-	case RENDERGROUP::UI:
-		Render_UI();
-		break;
-
-
-	}
+	BindRenderState(eType);
+	SortByDepth(eType);
+	RenderGroupObjects(eType);
 }
 
 void CRenderer::Render_Priority()
@@ -177,6 +158,69 @@ void CRenderer::Render_UI()
 
 }
 
+void CRenderer::BindRenderState(RENDERGROUP eGroup)
+{
+
+	m_pContext->RSSetState(m_RenderStates[ENUM_TO_UINT(eGroup)]._rasterizerState.Get());
+	m_pContext->PSSetSamplers(0, 1, m_RenderStates[ENUM_TO_UINT(eGroup)]._samplerState.GetAddressOf());
+	m_pContext->OMSetBlendState(m_RenderStates[ENUM_TO_UINT(eGroup)]._BlendState.Get(), nullptr, 0xFFFFFFFF);
+	m_pContext->OMSetDepthStencilState(m_RenderStates[ENUM_TO_UINT(eGroup)]._DepthStencilState.Get(), 0);
+
+}
+
+void CRenderer::SortByDepth(RENDERGROUP eGroup)
+{
+	switch (eGroup)
+	{
+	case RENDERGROUP::ALPHA:
+	case RENDERGROUP::WORLD_UI_MINIMAP:
+	{
+		m_RenderObjects[ENUM_TO_UINT(eGroup)].sort([&](CGameObject* a, CGameObject* b)
+			{
+				CTransform* aTrans = dynamic_cast<CTransform*>(a->Get_Component(COMPONENT_TYPE::TRANSFORM));
+				CTransform* bTrans = dynamic_cast<CTransform*>(b->Get_Component(COMPONENT_TYPE::TRANSFORM));
+
+				_vector aView = XMVector3TransformCoord(aTrans->Get_State(STATE::POSITION, TransformScope::WORLD), m_MainCameraView);
+				_vector bView = XMVector3TransformCoord(bTrans->Get_State(STATE::POSITION, TransformScope::WORLD), m_MainCameraView);
+
+				//내림차순정렬, 먼것부터 그려야함
+				return XMVectorGetZ(aView) > XMVectorGetZ(bView);
+			});
+
+
+	}
+		break;
+
+
+	case RENDERGROUP::UI:
+	{
+		m_RenderObjects[ENUM_TO_UINT(RENDERGROUP::UI)].sort([&](CGameObject* a, CGameObject* b)
+			{
+				CUI* pUI_A = dynamic_cast<CUI*>(a);
+				CUI* pUI_B = dynamic_cast<CUI*>(b);
+
+				if (a && b)
+				{
+					return pUI_A->Get_Depth() > pUI_B->Get_Depth();
+				}
+			});
+	}
+		break;
+	}
+}
+
+void CRenderer::RenderGroupObjects(RENDERGROUP eGroup)
+{
+
+	for (auto& i : m_RenderObjects[ENUM_TO_UINT(eGroup)])
+	{
+		if (nullptr != i)
+			i->Render();
+	}
+
+
+}
+
 
 
 void CRenderer::Clear_RenderGroups()
@@ -212,12 +256,8 @@ void CRenderer::CreateSamplerStates()
 	desc.MinLOD = FLT_MIN;
 	desc.MipLODBias = 0.0f;
 
-
-	m_pDevice->CreateSamplerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._samplerState.GetAddressOf());
-	m_pDevice->CreateSamplerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::NONALPHA)]._samplerState.GetAddressOf());
-	m_pDevice->CreateSamplerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::ALPHA)]._samplerState.GetAddressOf());
-	m_pDevice->CreateSamplerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::UI)]._samplerState.GetAddressOf());
-
+	for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+		m_pDevice->CreateSamplerState(&desc, m_RenderStates[i]._samplerState.GetAddressOf());
 
 }
 
@@ -239,11 +279,11 @@ void CRenderer::CreateBlendStates()
 
 	m_pDevice->CreateBlendState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._BlendState.GetAddressOf());
 	m_pDevice->CreateBlendState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::NONALPHA)]._BlendState.GetAddressOf());
-	
+
 	desc.RenderTarget[0].BlendEnable = TRUE;
 
-	m_pDevice->CreateBlendState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::ALPHA)]._BlendState.GetAddressOf());
-	m_pDevice->CreateBlendState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::UI)]._BlendState.GetAddressOf());
+	for (int i = ENUM_TO_UINT(RENDERGROUP::ALPHA); i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+		m_pDevice->CreateBlendState(&desc, m_RenderStates[i]._BlendState.GetAddressOf());
 
 }
 
@@ -257,10 +297,9 @@ void CRenderer::CreateRasterizerStates()
 	desc.FrontCounterClockwise = false;
 	desc.DepthClipEnable = true;
 
-	m_pDevice->CreateRasterizerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._rasterizerState.GetAddressOf());
-	m_pDevice->CreateRasterizerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::NONALPHA)]._rasterizerState.GetAddressOf());
-	m_pDevice->CreateRasterizerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::ALPHA)]._rasterizerState.GetAddressOf());
-	
+	for(int i=0;i<ENUM_TO_UINT(RENDERGROUP::UI);++i)
+		m_pDevice->CreateRasterizerState(&desc, m_RenderStates[i]._rasterizerState.GetAddressOf());
+
 	desc.DepthClipEnable = false;
 	m_pDevice->CreateRasterizerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::UI)]._rasterizerState.GetAddressOf());
 
@@ -280,7 +319,8 @@ void CRenderer::CreateDepthStencilStates()
 				//깊이 기록여부
 	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::ALPHA)]._DepthStencilState.GetAddressOf());
-	
+	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP)]._DepthStencilState.GetAddressOf());
+
 	desc.DepthEnable = false;
 	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::UI)]._DepthStencilState.GetAddressOf());

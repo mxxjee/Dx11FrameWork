@@ -7,6 +7,7 @@
 CCamera_Base::CCamera_Base(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CGameObject(pDevice,pContext)
 {
+
 }
 
 CCamera_Base::CCamera_Base(const CCamera_Base& rhs)
@@ -26,6 +27,10 @@ HRESULT CCamera_Base::Initialize_Copytype(void* pArg)
 {
     if(FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
+
+
+    for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+        m_RenderMask[i] = true;
 
     CAMERABASE_DESC* pDesc = static_cast<CAMERABASE_DESC*>(pArg);
 
@@ -143,6 +148,13 @@ HRESULT CCamera_Base::Clear_RenderTargetView(const _float4* pClearColor)
    
 
     return S_OK;
+}
+
+void CCamera_Base::Set_RenderAllRenderMask(bool bRender)
+{
+    for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+        m_RenderMask[i] = bRender;
+
 }
 
 

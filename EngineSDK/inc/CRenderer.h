@@ -28,6 +28,11 @@ public:
     void        Render_UI();
     
 
+private:
+    void       BindRenderState(RENDERGROUP eGroup);
+    void       SortByDepth(RENDERGROUP eGroup);
+    void       RenderGroupObjects(RENDERGROUP eGroup);
+
 public:
     void        Clear_RenderGroups();
 

@@ -117,46 +117,38 @@ HRESULT CMinimapCamera::Create_RenderTagetview(bool bUseDefault)
     texDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     texDesc.SampleDesc.Count = 1;
     texDesc.Usage = D3D11_USAGE_DEFAULT;
-    texDesc.BindFlags = D3D11_BIND_RENDER_TARGET;
+    texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
 
     if(FAILED(m_pDevice->CreateTexture2D(&texDesc, nullptr, m_tRenderTarget.pColorTex.GetAddressOf())))
         return E_FAIL;
 
-    
     if (FAILED(m_pDevice->CreateRenderTargetView(m_tRenderTarget.pColorTex.Get(), nullptr, m_tRenderTarget.RTV.GetAddressOf())))
         return E_FAIL;
 
-                    
-    //--복사용텍스처--(SRV용)
-    D3D11_TEXTURE2D_DESC copyDesc = texDesc;
-    copyDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
-    
-    if (FAILED(m_pDevice->CreateTexture2D(&copyDesc, nullptr, m_tRenderTarget.pCopyTex.GetAddressOf())))
-        return E_FAIL;
-
-
 
     D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-    srvDesc.Format = copyDesc.Format;
+    srvDesc.Format = texDesc.Format;
     srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
     srvDesc.Texture2D.MostDetailedMip = 0;
     srvDesc.Texture2D.MipLevels = 1;
+
             //셰이더리소스뷰 만들기
-    if (FAILED(m_pDevice->CreateShaderResourceView(m_tRenderTarget.pCopyTex.Get(), &srvDesc, m_tRenderTarget.SRV.GetAddressOf())))
+    if (FAILED(m_pDevice->CreateShaderResourceView(m_tRenderTarget.pColorTex.Get(), &srvDesc, m_tRenderTarget.SRV.GetAddressOf())))
         return E_FAIL;
 
 
 
     //깊이 텍스처 생성
+    ComPtr<ID3D11Texture2D>     m_DepthTex;
+     
     D3D11_TEXTURE2D_DESC depthDesc = texDesc;
     depthDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
     depthDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 
-    if (FAILED(m_pDevice->CreateTexture2D(&depthDesc, nullptr, m_tRenderTarget.pDepthTex.GetAddressOf())))
+    if (FAILED(m_pDevice->CreateTexture2D(&depthDesc, nullptr, m_DepthTex.GetAddressOf())))
         return E_FAIL;
 
-
-    if (FAILED(m_pDevice->CreateDepthStencilView(m_tRenderTarget.pDepthTex.Get(), nullptr, m_tRenderTarget.DSV.GetAddressOf())))
+    if (FAILED(m_pDevice->CreateDepthStencilView(m_DepthTex.Get(), nullptr, m_tRenderTarget.DSV.GetAddressOf())))
         return E_FAIL;
 
 
@@ -167,17 +159,6 @@ HRESULT CMinimapCamera::Create_RenderTagetview(bool bUseDefault)
   
 
 
-    return S_OK;
-}
-
-HRESULT CMinimapCamera::UnBind_RenderTarget()
-{
-    if (FAILED(__super::UnBind_RenderTarget()))
-        return S_OK;
-
-
-    m_pContext->CopyResource(m_tRenderTarget.pCopyTex.Get(), m_tRenderTarget.pColorTex.Get());
-    
     return S_OK;
 }
 

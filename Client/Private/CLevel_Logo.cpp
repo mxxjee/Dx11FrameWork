@@ -36,19 +36,16 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_Enviroment(L"Enviroment_Layer")))
         return E_FAIL;
 
-
-
     if (FAILED(Ready_Layer_Player(L"Player_Layer")))
-        return E_FAIL;
-
-    /*부모행렬 테스트*/
-    if (FAILED(Reday_Layer_Test(L"Test_Layer")))
         return E_FAIL;
 
     if (FAILED(Ready_Layer_MainCamera(L"Camera_Layer")))
         return E_FAIL;
 
+    if (FAILED(Reday_Layer_Test(L"Test_Layer")))
+        return E_FAIL;
 
+    
     if (FAILED(Ready_Layer_UI(L"UI_Layer")))
         return E_FAIL;
     return S_OK;
@@ -147,7 +144,7 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
     }
 
     /*UI Screen좌펴 변환 테스트*/
-   // Set_UIPos_ByWorld(_float3(0.f,-100.f,0.f));
+    //Set_UIPos_ByWorld(_float3(0.f,-100.f,0.f));
 
     /*부모행렬테스트*/
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Q))
@@ -255,12 +252,47 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
 {
     Create_MainCamera();
 
-    /////////////////UICamera
+    /////////////////UICameraonenter
     Create_UICamera();
 
     Create_FreeCamera();
    
     Create_MiniMapCamera();
+
+    CCamera_Base* pTargetCam = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
+    if (pTargetCam)
+    {
+        pTargetCam->Set_RenderMask(RENDERGROUP::WORLD_UI_MINIMAP, false);
+        pTargetCam->Set_RenderMask(RENDERGROUP::UI, false);
+
+    }
+
+
+    CCamera_Base* pFreeCam = m_pGameInstance->Find_Camera(CAMERA_TYPE::FREE);
+    if (pFreeCam)
+    {
+        pFreeCam->Set_RenderMask(RENDERGROUP::WORLD_UI_MINIMAP, false);
+        pFreeCam->Set_RenderMask(RENDERGROUP::UI, false);
+
+    }
+
+
+    CCamera_Base* pUICam = m_pGameInstance->Find_Camera(CAMERA_TYPE::UI);
+    if (pUICam)
+    {
+        pUICam->Set_RenderAllRenderMask(false);
+        pUICam->Set_RenderMask(RENDERGROUP::UI, true);
+        
+    }
+
+
+    CCamera_Base* pMinimapCam = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
+    if (pMinimapCam)
+    {
+        pMinimapCam->Set_RenderMask(RENDERGROUP::UI, false);
+
+    }
+    
     return S_OK;
 }
 
@@ -296,7 +328,7 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
 
     Desc.ObjTag = L"Test";
     Desc.ImgPath = L"../../Resource/Hp.png";
-    Desc.eRenderGroup = RENDERGROUP::ALPHA;
+    Desc.eRenderGroup = RENDERGROUP::WORLD_UI_MINIMAP;
 
 
     CTransform::TRANSFORM_DESC TransDesc = {};
@@ -352,24 +384,8 @@ void CLevel_Logo::OnEnter()
             L"Player"));
     }
 
-   /* CGameObject* pMinimapQuad = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"UI_Layer", L"MinimapQuad");
-    if (pMinimapQuad)
-    {
-        CMinnimapQuad* ppMinimapQuad = dynamic_cast<CMinnimapQuad*>(pMinimapQuad);
-        if (ppMinimapQuad)
-        {
-            CMinimapCamera* ppMinimapCamera = dynamic_cast<CMinimapCamera*>(pMinimapCamera);
-            if (ppMinimapCamera)
-            {
-                ppMinimapQuad->CreateTexture(ppMinimapCamera->Get_RenderTarget());
-            }
-            
-        }
-           
-    }*/
 
-      
-
+     
 
     CGameObject* pMainCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
     if (pMainCamera)
@@ -430,7 +446,7 @@ void CLevel_Logo::Set_UIPos_ByWorld(_float3 OffSet)
 
     _vector vOffset = XMLoadFloat3(&OffSet);
 
-    CGameObject* pHeartUI = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"UI_Layer", L"Hp_UI");
+    CGameObject* pMarkerUI = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"UI_Layer", L"Player_Marker");
     CGameObject* pPlayer = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");
 
 
@@ -491,6 +507,7 @@ void CLevel_Logo::Create_MainCamera()
 
     CGameObject* pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MainCamera"), &Desc));
     m_pGameInstance->RegisterCamera(CAMERA_TYPE::TARGET, pInstance);
+    
 
     //pInstance->Set_Active(false);
 }
