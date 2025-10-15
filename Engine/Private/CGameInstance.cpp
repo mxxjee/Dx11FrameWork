@@ -67,7 +67,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	CheckNullResult(m_pRenderer, E_FAIL);
 
 	/*카메라 매니져 초기화*/
-	m_pCameraManager = CCamera_Manager::Create();
+	m_pCameraManager = CCamera_Manager::Create(*pDevice,*pContext);
 	CheckNullResult(m_pCameraManager, E_FAIL);
 
 	/*쉐이더 매니져 초기화*/
@@ -280,6 +280,10 @@ void CGameInstance::Render_Group(RENDERGROUP eType)
 {
 	return m_pRenderer->Render_Group(eType);
 }
+void CGameInstance::Clear_RenderGroups()
+{
+	return m_pRenderer->Clear_RenderGroups();
+}
 HRESULT CGameInstance::Get_Buffer(ComPtr<ID3D11Texture2D>* pBuffer, UINT iFlag)
 {
 	return m_pGraphicDev->Get_Buffer(pBuffer,iFlag);
@@ -287,6 +291,10 @@ HRESULT CGameInstance::Get_Buffer(ComPtr<ID3D11Texture2D>* pBuffer, UINT iFlag)
 ComPtr<ID3D11RenderTargetView> CGameInstance::Get_BackBuffer_RTV()
 {
 	return m_pGraphicDev->Get_BackBuffer_RTV();
+}
+ComPtr<ID3D11DepthStencilView> CGameInstance::Get_BackBuffer_DSV()
+{
+	return m_pGraphicDev->Get_BackBuffer_DSV();
 }
 #pragma endregion
 
@@ -346,25 +354,25 @@ CCamera_Base* CGameInstance::Find_Camera(CAMERA_TYPE eType)
 	return m_pCameraManager->Find_Camera(eType);
 }
 
-const _float4x4& CGameInstance::Get_Main_ViewMatrix()
-{
-	return m_pCameraManager->Get_Main_ViewMatrix();
-}
+//const _float4x4& CGameInstance::Get_Main_ViewMatrix()
+//{
+//	return m_pCameraManager->Get_Main_ViewMatrix();
+//}
+//
+//const _float4x4& CGameInstance::Get_Main_ProjMatrix()
+//{
+//	return m_pCameraManager->Get_Main_ProjMatrix();
+//}
 
-const _float4x4& CGameInstance::Get_Main_ProjMatrix()
-{
-	return m_pCameraManager->Get_Main_ProjMatrix();
-}
+//_matrix CGameInstance::Get_Main_MulViewProjMatrix()
+//{
+//	return m_pCameraManager->Get_Main_MulViewProjMatrix();
+//}
 
-_matrix CGameInstance::Get_Main_MulViewProjMatrix()
-{
-	return m_pCameraManager->Get_Main_MulViewProjMatrix();
-}
-
-void CGameInstance::Bind_Main_ViewProjMatrix() const
-{
-	return m_pCameraManager->Bind_Main_ViewProjMatrix();
-}
+//void CGameInstance::Bind_Main_ViewProjMatrix() const
+//{
+//	return m_pCameraManager->Bind_Main_ViewProjMatrix();
+//}
 
 CShader* CGameInstance::Get_RenderShader()
 {
@@ -378,15 +386,10 @@ const string& CGameInstance::Get_RenderPassName()
 
 CCamera_Base* CGameInstance::Get_RenderCamera()
 {
-	return m_pCameraManager->Get_RenderCamera();;
+	return m_pCameraManager->Get_RenderCamera();
 }
 
-CCamera_Base* CGameInstance::Get_MainCamera()
-{
-	CheckNullResult(m_pCameraManager,nullptr);
-	return m_pCameraManager->Get_MainCamera();
 
-}
 
 #pragma endregion
 

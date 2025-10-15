@@ -75,16 +75,6 @@ HRESULT CMainCamera::Render()
 	return S_OK;
 }
 
-void CMainCamera::Bind_ViewProjMatrix()
-{
-	//카메라 view/투영 세팅
-	if (m_pMainShader)
-	{
-		_float4x4 viewproj;
-		XMStoreFloat4x4(&viewproj, m_pCameraCom->Get_MulViewProjMatrix());
-		m_pMainShader->SetMatrix("g_ViewProjMatrix", viewproj);
-	}
-}
 
 void CMainCamera::Set_Target(CGameObject* pTarget, bool bInit)
 {

@@ -29,10 +29,8 @@ void CLevel_GamePlay::Update_Priority(_float fTimeDelta)
 
 void CLevel_GamePlay::Update(const _float fTimeDelta)
 {
+
     __super::Update(fTimeDelta);
-
- 
-
     return;
 }
 
@@ -81,9 +79,9 @@ HRESULT CLevel_GamePlay::Ready_Layer_Background(const _wstring& strLayerTag)
 void CLevel_GamePlay::OnEnter()
 {
     //메인카메라 등록
-   // m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
+    m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
 
-    CGameObject* pMainCamera = m_pGameInstance->Get_MainCamera();
+    /*CGameObject* pMainCamera = m_pGameInstance->Get_MainCamera();
     if (pMainCamera)
     {
         CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
@@ -94,7 +92,7 @@ void CLevel_GamePlay::OnEnter()
             L"Player"));
 
     
-    }
+    }*/
 }
 
 void CLevel_GamePlay::OnResume()

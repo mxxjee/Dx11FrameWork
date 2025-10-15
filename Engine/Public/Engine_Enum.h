@@ -110,20 +110,20 @@ namespace Engine
 	};
 
 	enum class CAMERA_TYPE 
-	{	TARGET,
+	{
+		TARGET,
 		FREE,
-		UI,
-		MINIMAP,
 		CUTSCENE,
 		SHADOW,
+		MINIMAP,
+		UI,
 		END};
 
 
 	enum class CAMERA_FLAG :uint32_t
 	{
 		NONE=0,
-		HAS_RENDERTARGET=1<<0,
-		USE_POSTEFFECT=1<<1, 
+		USE_POSTEFFECT=1<<0, 
 		END
 	};
 	ENABLE_BITMASK_OPERATORS(CAMERA_FLAG);

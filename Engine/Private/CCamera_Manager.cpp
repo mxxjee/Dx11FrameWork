@@ -10,6 +10,11 @@
 
 
 
+CCamera_Manager::CCamera_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
+	:m_pDevice(_pDevice),m_pContext(_pContext)
+{
+}
+
 HRESULT CCamera_Manager::Initialize()
 {
 	for (int i = 0; i < ENUM_TO_UINT(CAMERA_TYPE::END); ++i)
@@ -99,36 +104,6 @@ CCamera_Base* CCamera_Manager::Find_Camera(CAMERA_TYPE eType)
 	return m_Cameras[ENUM_TO_UINT(eType)];
 }
 
-const _float4x4& CCamera_Manager::Get_Main_ViewMatrix()
-{
-	if (!m_pMainCamera)
-		return g_Identityfloat4x4;
-
-	return m_pMainCamera->Get_CameraComp()->Get_ViewMatrix();
-}
-
-const _float4x4& CCamera_Manager::Get_Main_ProjMatrix()
-{
-	if (!m_pMainCamera)
-		return g_Identityfloat4x4;
-
-	return m_pMainCamera->Get_CameraComp()->Get_ProjMatrix();
-}
-
-_matrix CCamera_Manager::Get_Main_MulViewProjMatrix()
-{
-	if (!m_pMainCamera)
-		return g_IdentityMatrix;
-
-	return m_pMainCamera->Get_CameraComp()->Get_MulViewProjMatrix();
-}
-
-void CCamera_Manager::Bind_Main_ViewProjMatrix() const
-{
-	CheckNull(m_pMainCamera);
-	m_pMainCamera->Bind_ViewProjMatrix();
-}
-
 void CCamera_Manager::Update_Cameras(_float fTimeDelta)
 {
 	for (int i = 0; i < ENUM_TO_UINT(CAMERA_TYPE::END); ++i)
@@ -163,96 +138,42 @@ void CCamera_Manager::Render_Cameras()
 	auto m_pGameInstance = CGameInstance::GetInstance();
 	_float4		ClearColor = COLOR_YELLOW;
 
-#pragma region 고치기전(모든카메라순회)
-	//for (auto& i : m_Cameras)
-	//{
-	//	if (i == nullptr||!i->Is_Active())
-	//		continue;
 
-	//	m_pRenderCamera = i;
-	//	m_pRenderShader = i->Get_Shader();
-
-	//	m_pRenderPassName = i->Get_PassName();
-
-
-	//	i->Bind_ViewProjMatrix();
-
-	//	bool HasRenderTarget;
-	//	if (HasRenderTarget = i->HasRenderTarget())
-	//	{
-	//		//이전 백버퍼를 복원하고 새로운 렌더타겟으로 설정
-	//		i->Bind_RenderTarget();
-	//		i->Clear_RenderTargetView(&ClearColor);
-	//	}
-
-	//	
-
-	//	
-	//	switch (i->Get_CameraType())
-	//	{
-	//		
-
-	//	case CAMERA_TYPE::TARGET:
-	//	case CAMERA_TYPE::FREE:
-	//	case CAMERA_TYPE::MINIMAP:
-	//	case CAMERA_TYPE::CUTSCENE:
-	//		m_pGameInstance->Render_Group(RENDERGROUP::PRIORITY);
-	//		m_pGameInstance->Render_Group(RENDERGROUP::NONALPHA);
-	//		m_pGameInstance->Render_Group(RENDERGROUP::ALPHA);
-	//		break;
-
-
-	//	}
-	//	
-
-	//	//되돌려놓기
-	//	if(HasRenderTarget)
-	//		i->UnBind_RenderTarget();
-	//	
-	//	if(i->Get_CameraType() ==CAMERA_TYPE::UI)
-	//		m_pGameInstance->Render_Group(RENDERGROUP::UI);
-	//}
-
-#pragma endregion
-
-	//먼저 렌더타겟뷰 가지는거부터 렌더
-	for (auto& cam : m_Cameras)
+	for (int i = 0; i < ENUM_TO_UINT(CAMERA_TYPE::END)-1; ++i)
 	{
-		if (!cam || !cam->Is_Active() || !cam->HasRenderTarget())
+		CCamera_Base* pCam = m_Cameras[i];
+
+		if (!pCam || !pCam->Is_Active())
 			continue;
 
 
-		m_pRenderCamera = cam;
-		m_pRenderShader = cam->Get_Shader();
-		m_pRenderPassName = cam->Get_PassName();
+		m_pRenderCamera = pCam;
 
-		cam->Bind_RenderTarget();
-		cam->Clear_RenderTargetView(&ClearColor);
+		m_pRenderShader = m_pRenderCamera->Get_Shader();
+		m_pRenderPassName = m_pRenderCamera->Get_PassName();
 
-		cam->Bind_ViewProjMatrix();
-		m_pGameInstance->Render_Group(RENDERGROUP::PRIORITY);
-		m_pGameInstance->Render_Group(RENDERGROUP::NONALPHA);
-		m_pGameInstance->Render_Group(RENDERGROUP::ALPHA);
+		m_pRenderCamera->Bind_RenderTarget();
+		m_pRenderCamera->Clear_RenderTargetView(&ClearColor);
+		
+		
+		m_pRenderCamera->Bind_ViewProjMatrix();
+		switch (m_pRenderCamera->Get_CameraType())
+		{
+		case CAMERA_TYPE::TARGET:
+		case CAMERA_TYPE::FREE:
+		case CAMERA_TYPE::MINIMAP:
+		case CAMERA_TYPE::CUTSCENE:
+		case CAMERA_TYPE::SHADOW:
+			m_pGameInstance->Render_Group(RENDERGROUP::PRIORITY);
+			m_pGameInstance->Render_Group(RENDERGROUP::NONALPHA);
+			m_pGameInstance->Render_Group(RENDERGROUP::ALPHA);
+			break;
+ 		}
+		m_pRenderCamera->UnBind_RenderTarget();
 
-		cam->UnBind_RenderTarget();
 	}
 
-	//이후 백버퍼카메라 렌더
-	for (auto& cam : m_Cameras)
-	{
-		if (!cam || !cam->Is_Active() || cam->HasRenderTarget()||cam->Get_CameraType()==CAMERA_TYPE::UI)
-			continue;
-
-		m_pRenderCamera = cam;
-		m_pRenderShader = cam->Get_Shader();
-		m_pRenderPassName = cam->Get_PassName();
-
-		cam->Bind_ViewProjMatrix();
-		m_pGameInstance->Render_Group(RENDERGROUP::PRIORITY);
-		m_pGameInstance->Render_Group(RENDERGROUP::NONALPHA);
-		m_pGameInstance->Render_Group(RENDERGROUP::ALPHA);
-	}
-
+	
 	//마지막 ui렌더
 	CCamera_Base* pUICam = Find_Camera(CAMERA_TYPE::UI);
 	if (pUICam)
@@ -260,20 +181,21 @@ void CCamera_Manager::Render_Cameras()
 		m_pRenderCamera = pUICam;
 		m_pRenderShader = pUICam->Get_Shader();
 		m_pRenderPassName = pUICam->Get_PassName();
+		pUICam->Bind_RenderTarget();
 		pUICam->Bind_ViewProjMatrix();
 		m_pGameInstance->Render_Group(RENDERGROUP::UI);
 
 	}
 	
-
+	m_pGameInstance->Clear_RenderGroups();
 }
 
 
 
-CCamera_Manager* CCamera_Manager::Create()
+CCamera_Manager* CCamera_Manager::Create(ComPtr<ID3D11Device>  _pDevice, ComPtr<ID3D11DeviceContext>  _pContext)
 {
-	CCamera_Manager* pInstance = new CCamera_Manager;
-	if (HRESULT(pInstance->Initialize()))
+	CCamera_Manager* pInstance = new CCamera_Manager(_pDevice,_pContext);
+	if (FAILED(pInstance->Initialize()))
 	{
 		MSG_BOX("Failed to Create : Camera_manager");
 		Safe_Release(pInstance);
@@ -284,8 +206,6 @@ CCamera_Manager* CCamera_Manager::Create()
 
 void CCamera_Manager::Free()
 {
-
-
 	for (int i = 0; i < ENUM_TO_UINT(CAMERA_TYPE::END); ++i)
 		Safe_Release(m_Cameras[i]);
 

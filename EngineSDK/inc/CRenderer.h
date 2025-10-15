@@ -27,9 +27,9 @@ public:
     void        Render_Blend();
     void        Render_UI();
     
-private:
-    void        Bind_PerspectiveCamera();
-    void        Bind_OrthoCamera();
+
+public:
+    void        Clear_RenderGroups();
 
 private:
     void    CreateSamplerStates();

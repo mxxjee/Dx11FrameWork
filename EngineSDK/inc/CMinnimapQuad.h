@@ -22,6 +22,7 @@ public:
 
     virtual HRESULT     CreateTexture(const RENDER_TARGET& m_Target);
 
+    void            CreateBlendState();
 public:
     static CMinnimapQuad* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
@@ -30,6 +31,10 @@ public:
 
 private:
     class CMinimapCamera* m_pMinimapCamera = nullptr;
+
+
+private:
+    ComPtr<ID3D11BlendState>        m_BlendState;
 };
 
 

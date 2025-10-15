@@ -37,15 +37,35 @@ HRESULT CMinnimapQuad::CreateTexture(const RENDER_TARGET& m_Target)
     if (FAILED(m_pDevice->CreateTexture2D(&desc, nullptr, pCopyTexture.GetAddressOf())))
         return E_FAIL;
 
-    m_pContext->CopyResource(pCopyTexture.Get(), pRTTexture.Get());
+    
 
     if(!m_pTexture)
         m_pTexture = new CTexture(m_pDevice);
-
+    m_pContext->CopyResource(pCopyTexture.Get(), pRTTexture.Get());
     m_pTexture->CreateResourceViewByTex(pCopyTexture);
 
 
     return S_OK;
+}
+
+void CMinnimapQuad::CreateBlendState()
+{
+    D3D11_BLEND_DESC desc;
+    memset(&desc, 0, sizeof(desc));
+    desc.AlphaToCoverageEnable = false;
+    desc.IndependentBlendEnable = false;
+
+    desc.RenderTarget[0].BlendEnable = FALSE;
+    desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+    desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+    desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+    desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+    desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+    desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+    m_pDevice->CreateBlendState(&desc,m_BlendState.GetAddressOf());
+
 }
 
 CMinnimapQuad* CMinnimapQuad::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -57,7 +77,6 @@ CMinnimapQuad* CMinnimapQuad::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D1
         Safe_Release(pInstance);
 
     }
-
 
 
     return pInstance;
@@ -97,6 +116,9 @@ HRESULT CMinnimapQuad::Initialize_Copytype(void* pArg)
 
     CGameObject* pCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
     m_pMinimapCamera = dynamic_cast<CMinimapCamera*>(pCamera);
+
+    CreateBlendState();
+
     return S_OK;
 }
 
@@ -128,11 +150,16 @@ HRESULT CMinnimapQuad::Render()
     //    CreateTexture(m_pMinimapCamera->Get_RenderTarget());
 
 
-   
+    m_pContext->OMSetBlendState(m_BlendState.Get(), nullptr, 0xFFFFFFFF);
+
     m_pGameInstance->Get_RenderShader()->SetMatrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
 
     if (m_pMinimapCamera)
+    {
         m_pGameInstance->Get_RenderShader()->SetResource("texture0", m_pMinimapCamera->Get_RenderTarget().SRV);
+
+    }
+
 
 
     ////IA단계
@@ -144,6 +171,8 @@ HRESULT CMinnimapQuad::Render()
     //Set_BlendState();
     m_pVIBufferCom->Render();      //OM단계
 
+    if (m_pMinimapCamera)
+        m_pGameInstance->Get_RenderShader()->SetResource("texture0", nullptr);
 
     return S_OK;
 }

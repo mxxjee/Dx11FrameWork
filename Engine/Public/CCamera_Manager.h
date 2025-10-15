@@ -12,6 +12,9 @@ class CCamera_Manager :
     public CBase
 {
 private:
+    CCamera_Manager(ComPtr<ID3D11Device>  _pDevice, ComPtr<ID3D11DeviceContext>  _pContext);
+    virtual ~CCamera_Manager() = default;
+private:
     HRESULT         Initialize();
 public:
     //카메라 등록 및 제거..
@@ -27,13 +30,10 @@ public:
 
     //카메라 가져오기
     CCamera_Base*   Find_Camera(CAMERA_TYPE eType);
-    CCamera_Base* Get_MainCamera() { return m_pMainCamera; }
-
+    
     //메인카메라의 뷰,투영행렬 관련
-    const _float4x4& Get_Main_ViewMatrix();
-    const _float4x4& Get_Main_ProjMatrix();
-    _matrix Get_Main_MulViewProjMatrix();
-    void    Bind_Main_ViewProjMatrix() const;
+   // _matrix Get_Main_MulViewProjMatrix();
+    //void    Bind_Main_ViewProjMatrix() const;
 public:
     void        Update_Cameras(_float fTimeDelta);
     void        LateUpdate_Cameras(_float fTimeDelta);
@@ -45,7 +45,7 @@ public:
     CCamera_Base* Get_RenderCamera() { return m_pRenderCamera; }
 
 public:
-    static CCamera_Manager* Create();
+    static CCamera_Manager* Create(ComPtr<ID3D11Device>  _pDevice, ComPtr<ID3D11DeviceContext>  _pContext);
     virtual void        Free() override;
 
 private:
@@ -60,6 +60,10 @@ private:
 private:
     CShader* m_pRenderShader = nullptr;
     string  m_pRenderPassName = "";
+
+private:
+    ComPtr<ID3D11Device>            m_pDevice;
+    ComPtr<ID3D11DeviceContext>     m_pContext;
 };
 NS_END
 

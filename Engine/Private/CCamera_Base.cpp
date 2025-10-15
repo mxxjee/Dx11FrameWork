@@ -10,7 +10,9 @@ CCamera_Base::CCamera_Base(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceCont
 }
 
 CCamera_Base::CCamera_Base(const CCamera_Base& rhs)
-    :CGameObject(rhs),m_pMainShader(rhs.m_pMainShader),m_pCameraCom(rhs.m_pCameraCom), m_GlobalViewProj(rhs.m_GlobalViewProj)
+    :CGameObject(rhs),
+    m_pMainShader(rhs.m_pMainShader),m_pCameraCom(rhs.m_pCameraCom),
+    m_GlobalViewProj(rhs.m_GlobalViewProj),m_tRenderTarget(rhs.m_tRenderTarget)
 {
 }
 
@@ -36,6 +38,10 @@ HRESULT CCamera_Base::Initialize_Copytype(void* pArg)
     m_PassName = pDesc->PassName;
 
     m_GlobalViewProj = m_pMainShader->Get_ShaderInfo().m_GlobalViewProj;
+    m_bUseNewRenderTarget = pDesc->m_bCreateNewRenderTarget;
+
+    if(FAILED(Create_RenderTagetview(pDesc->m_bCreateNewRenderTarget)))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -52,21 +58,91 @@ void CCamera_Base::Bind_ViewProjMatrix()
     }
 }
 
+HRESULT CCamera_Base::Create_RenderTagetview(bool bCreateRenderTarget)
+{
+    if (!bCreateRenderTarget)
+    {
+        //기존의 렌더타겟으로 세팅하기.
+        m_tRenderTarget.RTV = m_pGameInstance->Get_BackBuffer_RTV();
+        m_tRenderTarget.DSV = m_pGameInstance->Get_BackBuffer_DSV();
+
+
+        //기존의 렌더타겟에서  colorTex가져오기
+        ComPtr<ID3D11Resource> pResource = nullptr;
+        m_tRenderTarget.RTV->GetResource(pResource.GetAddressOf());
+        
+        if(FAILED(pResource.As(&m_tRenderTarget.pColorTex)))
+            return E_FAIL;
+
+
+
+        //셰이더리소스뷰 만들기
+        ComPtr<ID3D11Texture2D> pBackBuffer;
+        if(FAILED(m_pGameInstance->Get_Buffer(&pBackBuffer, 0)))
+            return E_FAIL;
+
+        D3D11_TEXTURE2D_DESC desc;
+        pBackBuffer->GetDesc(&desc);
+        desc.BindFlags |= D3D11_BIND_SHADER_RESOURCE;
+        desc.Usage = D3D11_USAGE_DEFAULT;
+
+        ComPtr<ID3D11Texture2D> copyTex;
+        m_pDevice->CreateTexture2D(&desc, nullptr, &copyTex);
+        m_pContext->CopyResource(copyTex.Get(), pBackBuffer.Get());
+
+
+        if(FAILED(m_pDevice->CreateShaderResourceView(copyTex.Get(), nullptr, m_tRenderTarget.SRV.GetAddressOf())))
+            return E_FAIL;
+
+
+    }
+
+    return S_OK;
+}
+
 HRESULT CCamera_Base::Bind_RenderTarget()
 {
-    CheckFalseResult(HasRenderTarget(),E_FAIL);
 
+ /*   ID3D11ShaderResourceView* nullSRV[8] = { nullptr };
+    m_pContext->PSSetShaderResources(0, 8, nullSRV);*/
+
+
+    //카메라 렌더타겟 바인딩
+    m_pContext->OMSetRenderTargets(1, m_tRenderTarget.RTV.GetAddressOf(), m_tRenderTarget.DSV.Get());
+
+
+    return S_OK;
 }
 
 HRESULT CCamera_Base::UnBind_RenderTarget()
 {
-    CheckFalseResult(HasRenderTarget(),E_FAIL);
+
+
+    if (!m_bUseNewRenderTarget)
+        return S_OK;
+
+    
+    ID3D11RenderTargetView* nullRTV[1] = { nullptr };
+    m_pContext->OMSetRenderTargets(1, nullRTV, nullptr);
+    m_pContext->OMSetRenderTargets(0, nullptr, nullptr);
+    
+    return S_OK;
 }
+
+
+
 
 HRESULT CCamera_Base::Clear_RenderTargetView(const _float4* pClearColor)
 {
-    CheckFalseResult(HasRenderTarget(), E_FAIL);
+   
+    if (!m_bUseNewRenderTarget)
+        return S_OK; 
 
+    m_pContext->ClearDepthStencilView(m_tRenderTarget.DSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+    m_pContext->ClearRenderTargetView(m_tRenderTarget.RTV.Get(), reinterpret_cast<const _float*>(pClearColor));
+   
+
+    return S_OK;
 }
 
 

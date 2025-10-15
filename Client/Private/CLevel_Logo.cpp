@@ -236,7 +236,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     MinimapDesc.fSizeX = 150;
     MinimapDesc.fSizeY = 150;
     MinimapDesc.fX = g_iWinSizeX - 100;
-    MinimapDesc.fY = g_iWinSizeY- 100;
+    MinimapDesc.fY =  100;
 
     CTransform::TRANSFORM_DESC MinimapTransDesc = {};
     MinimapDesc.TransformDesc = &MinimapTransDesc;
@@ -303,7 +303,7 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
     TransDesc.vLocalPosition = { 0.f,0.f,0.f,1.f };
-    TransDesc.vLocalScale = { 1.f,1.f,1.f,1.f };
+    TransDesc.vLocalScale = { 5.f,5.f,1.f,1.f };
 
     Desc.TransformDesc = &TransDesc;
 
@@ -434,30 +434,30 @@ void CLevel_Logo::Set_UIPos_ByWorld(_float3 OffSet)
     CGameObject* pPlayer = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");
 
 
-    if (pHeartUI && pPlayer)
-    {
-        CTransform* pTransform = pHeartUI->Get_Transform();
-        CTransform* pPlayerTransform = pPlayer->Get_Transform();
+    //if (pHeartUI && pPlayer)
+    //{
+    //    CTransform* pTransform = pHeartUI->Get_Transform();
+    //    CTransform* pPlayerTransform = pPlayer->Get_Transform();
 
-        _vector vPlayerPos = pPlayerTransform->Get_State(STATE::POSITION);
+    //    _vector vPlayerPos = pPlayerTransform->Get_State(STATE::POSITION);
 
-        if (pTransform && pPlayerTransform)
-        {
-            _vector vWorldPos = MathUtils::WorldToScreen(
-                vPlayerPos ,
-                m_pGameInstance->Get_Main_ViewMatrix(),
-                m_pGameInstance->Get_Main_ProjMatrix(),
-                g_iWinSizeX, g_iWinSizeY
-            );
+    //    if (pTransform && pPlayerTransform)
+    //    {
+    //        _vector vWorldPos = MathUtils::WorldToScreen(
+    //            vPlayerPos ,
+    //            //m_pGameInstance->Get_Main_ViewMatrix(),
+    //            //m_pGameInstance->Get_Main_ProjMatrix(),
+    //            g_iWinSizeX, g_iWinSizeY
+    //        );
 
-            vWorldPos += vOffset;
+    //        vWorldPos += vOffset;
 
-            pTransform->Set_State(STATE::POSITION, 
-                MathUtils::ScreenToWorld_UI(
-                vWorldPos, g_iWinSizeX, g_iWinSizeY));
+    //        pTransform->Set_State(STATE::POSITION, 
+    //            MathUtils::ScreenToWorld_UI(
+    //            vWorldPos, g_iWinSizeX, g_iWinSizeY));
 
-        }
-    }
+    //    }
+    //}
 }
 
 void CLevel_Logo::Create_MainCamera()
@@ -564,7 +564,7 @@ void CLevel_Logo::Create_MiniMapCamera()
 {
     CMainCamera::CAMERABASE_DESC Desc = {};
     Desc.ObjTag = L"MinimapCamera";
-
+    Desc.m_bCreateNewRenderTarget = true;
 
     //Desc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
     //Desc.PassName = "Minimap";
@@ -572,8 +572,6 @@ void CLevel_Logo::Create_MiniMapCamera()
     Desc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
     Desc.PassName = "Default";
 
-
-    Desc.eCameraFlag = CAMERA_FLAG::HAS_RENDERTARGET;
     Desc.eCameraType = CAMERA_TYPE::MINIMAP;
 
 
@@ -588,8 +586,8 @@ void CLevel_Logo::Create_MiniMapCamera()
     CameraDesc.vOffset = _float3(0.f, 10.f, 0.f);
     CameraDesc.vUp = _float3(0.f, 0.f, -1.f);
     
-    CameraDesc.ViewHeight = (float) 100.f;
-    CameraDesc.ViewWdith = (float)100.f;
+    CameraDesc.ViewHeight = (float)20.f;
+    CameraDesc.ViewWdith = (float)20.f;
    
 
     CameraDesc.fNear = 0.1f;

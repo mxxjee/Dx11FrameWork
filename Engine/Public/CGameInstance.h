@@ -85,12 +85,13 @@ public:
 public:          
     HRESULT         Add_RenderObject(RENDERGROUP eID, class CGameObject * pRenderObject);
     void            Render_Group(RENDERGROUP eType);
+    void            Clear_RenderGroups();
 #pragma endregion
 
 #pragma region GraphicDevice
     HRESULT     Get_Buffer(ComPtr<ID3D11Texture2D>*pBuffer, UINT iFlag = 0);
     ComPtr<ID3D11RenderTargetView>	    Get_BackBuffer_RTV();
-
+    ComPtr<ID3D11DepthStencilView>	    Get_BackBuffer_DSV();
 #pragma endregion
 
 #pragma region CameraManager
@@ -112,13 +113,12 @@ public:
 
     //카메라 가져오기
     class CCamera_Base* Find_Camera(CAMERA_TYPE eType);
-    CCamera_Base* Get_MainCamera();
 
     //메인카메라의 뷰,투영행렬 관련
     const _float4x4& Get_Main_ViewMatrix();
     const _float4x4& Get_Main_ProjMatrix();
-    _matrix Get_Main_MulViewProjMatrix();
-    void    Bind_Main_ViewProjMatrix() const;
+   // _matrix Get_Main_MulViewProjMatrix();
+    //void    Bind_Main_ViewProjMatrix() const;
 
     class CShader* Get_RenderShader();
     const string& Get_RenderPassName();

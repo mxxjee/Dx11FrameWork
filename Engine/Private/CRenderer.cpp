@@ -39,13 +39,11 @@ HRESULT CRenderer::Add_RenderObject(RENDERGROUP eID, CGameObject* pRenderObject)
 
 void CRenderer::Draw()
 {
-	Bind_PerspectiveCamera();
-	Render_Priority();
-	Render_NonBlend();
-	Render_Blend();
 
-	Bind_OrthoCamera();
-	Render_UI();
+	//Render_Priority();
+	//Render_NonBlend();
+	//Render_Blend();
+	//Render_UI();
 }
 
 void CRenderer::Render_Group(RENDERGROUP eType)
@@ -87,12 +85,9 @@ void CRenderer::Render_Priority()
 	{
 		if(nullptr!=i)
 			i->Render();
-
-		Safe_Release(i);
 	}
 
-	//매프레임이후 삭제
-	m_RenderObjects[ENUM_TO_UINT(RENDERGROUP::PRIORITY)].clear();
+	
 }
 
 void CRenderer::Render_NonBlend()
@@ -109,12 +104,9 @@ void CRenderer::Render_NonBlend()
 	{
 		if (nullptr != i)
 			i->Render();
-
-		Safe_Release(i);
 	}
 
-	//매프레임이후 삭제
-	m_RenderObjects[ENUM_TO_UINT(RENDERGROUP::NONALPHA)].clear();
+	
 }
 
 void CRenderer::Render_Blend()
@@ -150,12 +142,9 @@ void CRenderer::Render_Blend()
 	{
 		if (nullptr != i)
 			i->Render();
-
-		Safe_Release(i);
 	}
 
-	//매프레임이후 삭제
-	m_RenderObjects[ENUM_TO_UINT(RENDERGROUP::ALPHA)].clear();
+
 }
 
 void CRenderer::Render_UI()
@@ -183,22 +172,24 @@ void CRenderer::Render_UI()
 	{
 		if (nullptr != i)
 			i->Render();
-
-		Safe_Release(i);
 	}
 
-	//매프레임이후 삭제
-	m_RenderObjects[ENUM_TO_UINT(RENDERGROUP::UI)].clear();
+
 }
 
-void CRenderer::Bind_PerspectiveCamera()
-{
-	CGameInstance::GetInstance()->Bind_Main_ViewProjMatrix();
-}
 
-void CRenderer::Bind_OrthoCamera()
+
+void CRenderer::Clear_RenderGroups()
 {
-	CGameInstance::GetInstance()->Bind_ViewProjMatrix(CAMERA_TYPE::UI);
+	for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+	{
+		for (auto& obj : m_RenderObjects[i])
+			Safe_Release(obj);
+
+
+		m_RenderObjects[i].clear();
+
+	}
 }
 
 void CRenderer::CreateSamplerStates()
