@@ -99,6 +99,9 @@ HRESULT CQuad::Render()
     //렌더 할때 copydata로 GPU에게 데이터전송
     m_pGameInstance->Get_RenderShader()->SetMatrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
     m_pGameInstance->Get_RenderShader()->SetResource("texture0", m_pTexture->GetComPtr());
+    m_pGameInstance->Get_RenderShader()->SetFloat("g_Brightness", 1.f);
+
+
     //IA단계
 
     m_pVIBufferCom->Bind_Resource();

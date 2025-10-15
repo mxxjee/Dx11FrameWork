@@ -160,6 +160,7 @@ HRESULT CMinnimapQuad::Render()
 
     }
 
+    m_pGameInstance->Get_RenderShader()->SetFloat("g_Brightness", 0.5f);
 
 
     ////IA´Ü°è

@@ -77,7 +77,7 @@ HRESULT CLevel_Editor::Ready_Layer_MainCamera(const _wstring& strLayerTag)
 	CGameObject* pInstance = dynamic_cast<CGameObject*>(
 		m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FreeCamera"), &Desc));
 	
-	m_pGameInstance->RegisterCamera(L"FreeCamera", pInstance, false);
+	m_pGameInstance->RegisterCamera(L"FreeCamera", pInstance);
 
 	return S_OK;
 }

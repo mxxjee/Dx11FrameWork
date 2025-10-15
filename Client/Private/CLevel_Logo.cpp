@@ -74,7 +74,15 @@ void CLevel_Logo::Update(const _float fTimeDelta)
 {
     __super::Update(fTimeDelta);
 
-    
+    CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Test_Layer", L"Test");
+    CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Player_Layer", L"Player");
+
+    if (pTestObject)
+    {
+        pTestObject->Get_Transform()->Rotation(_float3(90.f, 0.f, 0.f));
+        pTestObject->Get_Transform()->Set_State(STATE::POSITION, pPlayerObject->Get_Transform()->Get_State(STATE::POSITION, TransformScope::WORLD));
+
+    }
 
     return;
 }
@@ -83,6 +91,8 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
     
+   
+
     /*타겟 바꾸기 테스트*/
   /*  if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Tab))
     {
@@ -327,7 +337,7 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
     CQuad::QUAD_DESC        Desc = {};
 
     Desc.ObjTag = L"Test";
-    Desc.ImgPath = L"../../Resource/Hp.png";
+    Desc.ImgPath = L"../../Resource/Player_Marker.png";
     Desc.eRenderGroup = RENDERGROUP::WORLD_UI_MINIMAP;
 
 
@@ -352,28 +362,31 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
 void CLevel_Logo::OnEnter()
 {
     //메인카메라 등록
+#pragma region 메인카메라 등록및 transform 부모설정
    // m_pGameInstance->Set_MainCamera(CAMERA_TYPE::MINIMAP);
 
 
-    CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Test_Layer", L"Test");
-    CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Player_Layer", L"Player");
-    //pPlayerObject->Set_Target(m_pGameInstance->Find_Camera(L"FreeCamera"));
+    //CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Test_Layer", L"Test");
+    //CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Player_Layer", L"Player");
+    ////pPlayerObject->Set_Target(m_pGameInstance->Find_Camera(L"FreeCamera"));
 
 
-    if (pTestObject)
-    {
-        if (pTestObject->Get_Transform()->Get_Parent() == nullptr)
-        {
-            pTestObject->Get_Transform()->Set_State(STATE::POSITION, XMVectorSet(0.f, 1.f, 0.f, 1.f));
-            pTestObject->Get_Transform()->Rotation(_float3(-90.f, 0.f, 0.f));
-            pTestObject->Get_Transform()->Set_Parent(pPlayerObject->Get_Transform());
-        }
+    //if (pTestObject)
+    //{
+    //    if (pTestObject->Get_Transform()->Get_Parent() == nullptr)
+    //    {
+    //        pTestObject->Get_Transform()->Set_State(STATE::POSITION, XMVectorSet(0.f, 1.f, 0.f, 1.f));
+    //        pTestObject->Get_Transform()->Rotation(_float3(-90.f, 0.f, 0.f));
+    //        pTestObject->Get_Transform()->Set_Parent(pPlayerObject->Get_Transform());
+    //    }
 
 
-        else
-            pTestObject->Get_Transform()->Set_Parent(nullptr);
+    //    else
+    //        pTestObject->Get_Transform()->Set_Parent(nullptr);
 
-    }
+    //}
+
+#pragma endregion
 
     //미니맵 타겟 = 플레이어
     CCamera_Base* pMinimapCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
@@ -583,11 +596,11 @@ void CLevel_Logo::Create_MiniMapCamera()
     Desc.ObjTag = L"MinimapCamera";
     Desc.m_bCreateNewRenderTarget = true;
 
-    //Desc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
-    //Desc.PassName = "Minimap";
-
     Desc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
-    Desc.PassName = "Default";
+    Desc.PassName = "Brightness";
+
+    //Desc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
+    //Desc.PassName = "Default";
 
     Desc.eCameraType = CAMERA_TYPE::MINIMAP;
 

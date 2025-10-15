@@ -330,20 +330,7 @@ void CTransform::Set_Parent(CTransform* pParent)
 	{
 		m_pParent = pParent;
 
-		//스케일조절(만약 부모껄안쓴다면, 스케일을 조절해서 설정)
-		/*if (!bUseParentScale)
-		{
-			_float3 vLocalScale = Get_Scale();
-			_float3 vParentScale = pParent->Get_Scale();
-
-			_vector vNewScale = XMLoadFloat3(&vLocalScale) / XMLoadFloat3(&vParentScale);
-			_float4 fResult;
-			XMStoreFloat4(&fResult, vNewScale);
-
-			Set_Scale(fResult);
-
-		}*/
-
+	
 		//부모의 상대적인 위치로 변환
 		_matrix ParentWorldInv = XMMatrixInverse(nullptr, XMLoadFloat4x4(&pParent->Get_World(TransformScope::WORLD)));
 		_matrix NewLocalMatrix = XMLoadFloat4x4(&Get_World()) * ParentWorldInv;
