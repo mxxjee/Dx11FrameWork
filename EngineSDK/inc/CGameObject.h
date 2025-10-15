@@ -11,6 +11,7 @@ public:
     typedef struct tagGameObjectDesc : CComponent::tagComponentDesc
     {
         _wstring ObjTag;
+      
 
     }GAMEOBJECT_DESC;
 
@@ -36,13 +37,15 @@ public:
 public:
     void    Set_Active(bool _b) { m_bActive = _b; }
     void    Set_Target(CGameObject* pObj) { m_pTarget = pObj; }
-
+    
 public:
     const _wstring& Get_Tag() { return tag; }
     CComponent* Get_Component(COMPONENT_TYPE eType);
     CTransform* Get_Transform() const { return m_pTransformCom; }
 
     bool            Is_Active() { return m_bActive; }
+
+
 protected:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };
@@ -64,6 +67,7 @@ public:
 
 
 protected:
+ 
     TransformData m_transformData;
 };
 NS_END

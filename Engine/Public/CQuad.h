@@ -12,8 +12,8 @@ public:
     {
         _wstring ImgPath;
         _wstring ShaderName = L"Default";
-
-        RENDERGROUP eRenderGroup = RENDERGROUP::PRIORITY;
+        _uint eRenderGroup = 0;
+        
         
     }QUAD_DESC;
 
@@ -37,9 +37,7 @@ public:
 
 
 public:
-    void            Set_RenderGroup(RENDERGROUP eGroup) { m_eRenderGroup = eGroup; }
-
-
+    void            Set_RenderGroup(_uint eGroup) { m_eRenderGroup = eGroup; }
 public:
     static CQuad* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
@@ -52,9 +50,8 @@ protected:
     class CShader* m_pTexShader = nullptr;
     class CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
 
-
 protected:
-    RENDERGROUP m_eRenderGroup = RENDERGROUP::PRIORITY;
+    _uint m_eRenderGroup = 0;
 };
 
 NS_END

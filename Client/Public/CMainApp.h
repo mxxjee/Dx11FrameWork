@@ -21,12 +21,20 @@ private:
 
 public:
 	HRESULT Initialize();
+	HRESULT Initialize_Cilent();
+
 	void	Update_Priority(_float fTimeDelta);
 	void	Update(_float fTimeDelta);
 	void	Update_Late(float fTimeDelta);
 	void	Update_Render(float fTimeDelta);
 	void	Render();
 
+
+private:
+	void    CreateSamplerStates();
+	void    CreateBlendStates();
+	void    CreateRasterizerStates();
+	void    CreateDepthStencilStates();
 
 private:
 	void			Register_Levels();
@@ -52,6 +60,7 @@ private:
 	 CGameInstance* pGameInstance;
 	 _float4		ClearColor = COLOR_PINK;
 	CImGui_Manager* pImGui_Manager = { nullptr };
+	vector<RenderStates>			m_RenderStates;
 
 };
 

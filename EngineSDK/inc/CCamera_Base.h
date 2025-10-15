@@ -67,9 +67,9 @@ public:
 
 public:
                 //이 카메라는 무슨무슨 렌더그룹을 렌더할건지,기본값 everything
-    void        Set_RenderMask(RENDERGROUP eGroup, bool bRender) { m_RenderMask[ENUM_TO_UINT(eGroup)] = bRender; }
+    void        Set_RenderMask(_uint eGroup, bool bRender) { m_RenderMask[eGroup] = bRender; }
     void        Set_RenderAllRenderMask(bool bRender);
-    const       array<bool, ENUM_TO_UINT(RENDERGROUP::END)>& Get_RenderMask() { return m_RenderMask; }
+    const       vector<bool>& Get_RenderMask() { return m_RenderMask; }
 
 
 protected:
@@ -87,7 +87,8 @@ protected:
 
 
 protected:
-    array<bool, ENUM_TO_UINT(RENDERGROUP::END)>      m_RenderMask;
+    vector<bool>                    m_RenderMask;
+    int                             m_RenderGroupMax = 0;
 };
 
 NS_END

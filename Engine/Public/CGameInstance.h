@@ -83,9 +83,12 @@ public:
 
 #pragma region Renderer
 public:
-    HRESULT         Add_RenderObject(RENDERGROUP eID, class CGameObject* pRenderObject);
-    void            Render_Group(RENDERGROUP eType);
+    HRESULT         Initialize_Renderer(_uint RenderGroupCount);
+    HRESULT         Add_RenderObject(_uint eID, class CGameObject* pRenderObject);
+    HRESULT         Add_SortFunc(_uint eID, function<bool(class CGameObject*, class CGameObject*)> _Fun);
+    void            Render_Group(_uint eType);
     void            Clear_RenderGroups();
+    int             Get_RenderGroupCount();
 #pragma endregion
 
 #pragma region GraphicDevice
@@ -144,9 +147,6 @@ public:
 #pragma region RenderState_Manager
      HRESULT        Register_RenderStates(_uint iRenderGroup, const RenderStates& States);
      const RenderStates& Get_RenderStates(_uint iRenderGroup);
-
-
-
 #pragma endregion
 
  public:

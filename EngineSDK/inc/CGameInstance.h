@@ -24,13 +24,13 @@ private:
 
 #pragma region Engine
 public:
-    HRESULT Initialize_Engine(const ENGINE_DESC & EngineDesc,ComPtr<ID3D11Device>* pDevice, ComPtr<ID3D11DeviceContext>* pContext);
-    
+    HRESULT Initialize_Engine(const ENGINE_DESC & EngineDesc,ComPtr<ID3D11Device>*pDevice, ComPtr<ID3D11DeviceContext>*pContext);
+
     void    Update_Priority_Engine(_float fTimedelta);
     void    Update_Engine(_float fTimedelta);
     void    LateUpdate_Engine(float fTimedelta);
     void    Update_Render(float fTimedelta);
-    
+
     HRESULT     Draw_Begin(const _float4 * pClearColor);
     HRESULT     Draw();
     HRESULT     Draw_End();
@@ -44,10 +44,10 @@ public:
 public:
     HRESULT			Level_Changer(_uint iSceneID, LevelArgs & args);
     void            Pop_Level();
-    class CLevel*   Get_CurrentLevel();
+    class CLevel* Get_CurrentLevel();
     const vector<CLevel*>* Get_LevelStack();
 #pragma endregion
-  
+
 #pragma region LevelFactory
     void            Register_Level(_uint iSceneID, LevelCreator Creator);
     CLevel* Create_Level(_uint iSceneID, LevelArgs _Arg);
@@ -63,7 +63,7 @@ public:
 #pragma region ProtoManager
 public:
     HRESULT        Add_Prototype(_uint iLevelIndex, const _wstring & strProtoTag, CBase * pPrototype);
-    CBase*          Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelIndex, const _wstring & strPrototag, void* pArg);
+    CBase* Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelIndex, const _wstring & strPrototag, void* pArg);
 #pragma endregion
 
 #pragma region ObjectManager
@@ -82,10 +82,13 @@ public:
 #pragma endregion
 
 #pragma region Renderer
-public:          
-    HRESULT         Add_RenderObject(RENDERGROUP eID, class CGameObject * pRenderObject);
-    void            Render_Group(RENDERGROUP eType);
+public:
+    HRESULT         Initialize_Renderer(_uint RenderGroupCount);
+    HRESULT         Add_RenderObject(_uint eID, class CGameObject* pRenderObject);
+    HRESULT         Add_SortFunc(_uint eID, function<bool(class CGameObject*, class CGameObject*)> _Fun);
+    void            Render_Group(_uint eType);
     void            Clear_RenderGroups();
+    int             Get_RenderGroupCount();
 #pragma endregion
 
 #pragma region GraphicDevice
@@ -117,45 +120,52 @@ public:
     //메인카메라의 뷰,투영행렬 관련
     const _float4x4& Get_Main_ViewMatrix();
     const _float4x4& Get_Main_ProjMatrix();
-   // _matrix Get_Main_MulViewProjMatrix();
-    //void    Bind_Main_ViewProjMatrix() const;
+    // _matrix Get_Main_MulViewProjMatrix();
+     //void    Bind_Main_ViewProjMatrix() const;
 
-    class CShader* Get_RenderShader();
-    const string& Get_RenderPassName();
-    class CCamera_Base* Get_RenderCamera();
+     class CShader* Get_RenderShader();
+     const string& Get_RenderPassName();
+     class CCamera_Base* Get_RenderCamera();
 
 
+ #pragma endregion
+
+
+ #pragma region Shader_Manager
+     HRESULT     Register_Shader(const _wstring & Tag, class CShader* pInstance);
+     class CShader* Find_Shader(const _wstring & Tag);
+ #pragma endregion
+
+
+ #pragma region ScreenShot_Manager
+     void                    ScreenShot(const _wstring & Key);
+     class CTexture* Find_ScreenTexture(const _wstring & Key);
+     HRESULT                 SaveTextureToFile(const _wstring & Key, const _wstring & filePath);
+
+ #pragma endregion
+
+#pragma region RenderState_Manager
+     HRESULT        Register_RenderStates(_uint iRenderGroup, const RenderStates& States);
+     const RenderStates& Get_RenderStates(_uint iRenderGroup);
 #pragma endregion
 
-
-#pragma region Shader_Manager
-    HRESULT     Register_Shader(const _wstring& Tag, class CShader* pInstance);
-    class CShader*     Find_Shader(const _wstring& Tag);
-#pragma endregion
-
-
-#pragma region ScreenShot_Manager
-    void                    ScreenShot(const _wstring& Key);
-    class CTexture*         Find_ScreenTexture(const _wstring& Key);
-    HRESULT                 SaveTextureToFile(const _wstring& Key, const _wstring& filePath);
-
-#pragma endregion
-public:
-#pragma region Default
-    const vector<D3D11_VIEWPORT>& Get_Viewports() { return m_ViewPorts; }
-    const tagEngine_Desc& Get_EngineDesc() const { return m_EngineDesc; }
-#pragma endregion
-private:
-    class CLevel_Manager* m_pLevelManager = { nullptr };
-    class CTimer_Manager* m_pTimerManager = { nullptr };
-    class CGraphic_Device* m_pGraphicDev = { nullptr };
-    class CLevelFactroy* m_pLevelFactory = { nullptr };
-    class CPrototype_Manager* m_pProtoManager = { nullptr };
-    class CObject_Manager* m_pObjectManager = { nullptr };
-    class CRenderer* m_pRenderer = nullptr;
-    class CCamera_Manager* m_pCameraManager = { nullptr };
-    class CShader_Manager* m_pShaderManager = { nullptr };
-    class CScreenShot_Manager* m_pScreenshotManager = { nullptr };
+ public:
+ #pragma region Default
+     const vector<D3D11_VIEWPORT>& Get_Viewports() { return m_ViewPorts; }
+     const tagEngine_Desc& Get_EngineDesc() const { return m_EngineDesc; }
+ #pragma endregion
+ private:
+     class CLevel_Manager*      m_pLevelManager = { nullptr };
+     class CTimer_Manager*      m_pTimerManager = { nullptr };
+     class CGraphic_Device*         m_pGraphicDev = { nullptr };
+     class CLevelFactroy*       m_pLevelFactory = { nullptr };
+     class CPrototype_Manager*      m_pProtoManager = { nullptr };
+     class CObject_Manager*     m_pObjectManager = { nullptr };
+     class CRenderer*           m_pRenderer = nullptr;
+     class CCamera_Manager*         m_pCameraManager = { nullptr };
+     class CShader_Manager*         m_pShaderManager = { nullptr };
+     class CScreenShot_Manager*     m_pScreenshotManager = { nullptr };
+     class CRenderState_Manager*    m_pRenderStateManager = { nullptr };
 
 
 

@@ -52,6 +52,7 @@ HRESULT CLevel_GamePlay::Ready_Layer_Background(const _wstring& strLayerTag)
     CUI::UI_DESC desc;
     desc.ObjTag = L"BackGround_Gameplay";
     desc.ImgPath = L"../../Resource/Skeleton.png";
+    desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
 
     desc.fX = (g_iWinSizeX >> 1) +1.f;
     desc.fY = g_iWinSizeY >> 1;

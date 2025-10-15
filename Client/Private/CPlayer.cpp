@@ -31,7 +31,7 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
  
-    m_eRenderGroup = RENDERGROUP::ALPHA;
+    m_eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
     /*m_pTarget = m_pGameInstance->Find_Camera(L"FreeCam");*/
 
 

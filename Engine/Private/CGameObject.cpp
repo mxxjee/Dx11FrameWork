@@ -31,8 +31,7 @@ HRESULT CGameObject::Initialize_Copytype(void* pArg)
     GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
     tag = pDesc->ObjTag;
     pDesc->pOwner = this;
-
-
+   
     m_pTransformCom = dynamic_cast<CTransform*>(m_pGameInstance->Clone_Prototype
     (PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"Transform"), pDesc));
 

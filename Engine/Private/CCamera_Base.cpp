@@ -13,13 +13,14 @@ CCamera_Base::CCamera_Base(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceCont
 CCamera_Base::CCamera_Base(const CCamera_Base& rhs)
     :CGameObject(rhs),
     m_pMainShader(rhs.m_pMainShader),m_pCameraCom(rhs.m_pCameraCom),
-    m_GlobalViewProj(rhs.m_GlobalViewProj),m_tRenderTarget(rhs.m_tRenderTarget)
+    m_GlobalViewProj(rhs.m_GlobalViewProj),m_tRenderTarget(rhs.m_tRenderTarget),
+    m_RenderMask(rhs.m_RenderMask)
 {
 }
 
 HRESULT CCamera_Base::Initialize_Prototype()
 {
-    
+  
     return S_OK;
 }
 
@@ -28,9 +29,11 @@ HRESULT CCamera_Base::Initialize_Copytype(void* pArg)
     if(FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
-
-    for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+    m_RenderGroupMax = m_pGameInstance->Get_RenderGroupCount();
+    m_RenderMask.resize(m_RenderGroupMax);
+    for (int i = 0; i < m_RenderGroupMax; ++i)
         m_RenderMask[i] = true;
+
 
     CAMERABASE_DESC* pDesc = static_cast<CAMERABASE_DESC*>(pArg);
 
@@ -152,7 +155,7 @@ HRESULT CCamera_Base::Clear_RenderTargetView(const _float4* pClearColor)
 
 void CCamera_Base::Set_RenderAllRenderMask(bool bRender)
 {
-    for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+    for (int i = 0; i < m_RenderGroupMax; ++i)
         m_RenderMask[i] = bRender;
 
 }

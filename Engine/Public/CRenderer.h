@@ -15,32 +15,24 @@ private:
 
 
 public:
-    HRESULT         Initialize();
-    HRESULT         Add_RenderObject(RENDERGROUP eID, CGameObject* pRenderObject);
+    HRESULT         Initialize(_uint RenderGroupCount);
+    HRESULT         Add_RenderObject(_uint eID, CGameObject* pRenderObject);
+    HRESULT         Add_SortFunc(_uint eID, function<bool(class CGameObject*, class CGameObject*)> _Fun);
     void            Draw();
 
 public:
-    void        Render_Group(RENDERGROUP eType);
-public:
-    void        Render_Priority();
-    void        Render_NonBlend();
-    void        Render_Blend();
-    void        Render_UI();
-    
+    void        Render_Group(_uint eType);
 
 private:
-    void       BindRenderState(RENDERGROUP eGroup);
-    void       SortByDepth(RENDERGROUP eGroup);
-    void       RenderGroupObjects(RENDERGROUP eGroup);
+    void       BindRenderState(_uint eGroup);
+    void       SortByDepth(_uint eGroup);
+    void       RenderGroupObjects(_uint eGroup);
 
+public:
+    int         Get_RenderGroupCount()              { return m_RenderMaxCount; }
 public:
     void        Clear_RenderGroups();
 
-private:
-    void    CreateSamplerStates();
-    void    CreateBlendStates();
-    void    CreateRasterizerStates();
-    void    CreateDepthStencilStates();
     
 private:
     ComPtr<ID3D11Device> m_pDevice = nullptr;
@@ -49,12 +41,14 @@ private:
 
 public:
     static  CRenderer* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
-    list<class CGameObject*>        m_RenderObjects[ENUM_TO_UINT(RENDERGROUP::END)];
     virtual void    Free() override;
 
 private:
-    RenderStates m_RenderStates[ENUM_TO_UINT(RENDERGROUP::END)];
-    _matrix       m_MainCameraView;
+    _matrix         m_MainCameraView;
+    int             m_RenderMaxCount = 0;
+
+    vector<list<CGameObject*>>   m_RenderGroups;
+    vector<function<bool(class CGameObject*,class CGameObject*)>>      m_SortFuncMap;
 };
 
 NS_END

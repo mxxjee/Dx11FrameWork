@@ -29,8 +29,7 @@ HRESULT CUI::Initialize_Copytype(void* pArg)
 {
     UI_DESC* pDesc = static_cast<UI_DESC*>(pArg);
 
-    pDesc->eRenderGroup = RENDERGROUP::UI;
-
+    
 	CTransform::TRANSFORM_DESC* pTransDesc = static_cast<CTransform::TRANSFORM_DESC*>(pDesc->TransformDesc);
 	_vector vScreenPos = XMVectorSet(pDesc->fX, pDesc->fY, pDesc->Depth, 1.f);
     
@@ -41,6 +40,7 @@ HRESULT CUI::Initialize_Copytype(void* pArg)
 
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
+
 
 
     return S_OK;

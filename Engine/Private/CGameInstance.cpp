@@ -276,18 +276,32 @@ CGameObject* CGameInstance::Find_GameObject(_uint iLevelIndex, const _wstring& L
 #pragma endregion
 
 #pragma region Renderer
-HRESULT CGameInstance::Add_RenderObject(RENDERGROUP eID, CGameObject* pRenderObject)
+HRESULT CGameInstance::Add_RenderObject(_uint eID, CGameObject* pRenderObject)
 {
 	CheckNullResult(m_pRenderer, E_FAIL);
 	return m_pRenderer->Add_RenderObject(eID, pRenderObject);
 }
-void CGameInstance::Render_Group(RENDERGROUP eType)
+HRESULT CGameInstance::Add_SortFunc(_uint eID, function<bool(CGameObject*, CGameObject*)> _Fun)
+{
+	CheckNullResult(m_pRenderer, E_FAIL);
+	return m_pRenderer->Add_SortFunc(eID,_Fun);
+}
+void CGameInstance::Render_Group(_uint eType)
 {
 	return m_pRenderer->Render_Group(eType);
+}
+HRESULT CGameInstance::Initialize_Renderer(_uint RenderGroupCount)
+{
+	CheckNullResult(m_pRenderer, E_FAIL);
+	return m_pRenderer->Initialize(RenderGroupCount);
 }
 void CGameInstance::Clear_RenderGroups()
 {
 	return m_pRenderer->Clear_RenderGroups();
+}
+int CGameInstance::Get_RenderGroupCount()
+{
+	return m_pRenderer->Get_RenderGroupCount();
 }
 HRESULT CGameInstance::Get_Buffer(ComPtr<ID3D11Texture2D>* pBuffer, UINT iFlag)
 {
@@ -453,6 +467,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pCameraManager);
 	Safe_Release(m_pShaderManager);
 	Safe_Release(m_pScreenshotManager);
+	Safe_Release(m_pRenderStateManager);
 
 	Safe_Release(m_pGraphicDev);
 

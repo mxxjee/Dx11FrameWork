@@ -102,7 +102,8 @@ void CLevel_UI::Free()
 HRESULT CLevel_UI::Ready_Layer_UI(const _wstring& strLayerTag)
 {
 	CUI::tagUIDesc        Desc = {};
-
+	
+	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
 	Desc.ObjTag = L"ScreenQuad";
 	
 	Desc.fSizeX = g_iWinSizeX;

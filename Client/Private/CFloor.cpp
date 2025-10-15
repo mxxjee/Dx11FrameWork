@@ -1,5 +1,7 @@
 #include "CFloor.h"
 #include "CGameInstance.h"
+#include "Client_Defines.h"
+
 
 USING(Client)
 
@@ -52,8 +54,7 @@ void CFloor::Update_Late(_float fTimeDelta)
 void CFloor::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
-    m_pGameInstance->Add_RenderObject(RENDERGROUP::PRIORITY, this);
-
+  
 }
 
 HRESULT CFloor::Render()

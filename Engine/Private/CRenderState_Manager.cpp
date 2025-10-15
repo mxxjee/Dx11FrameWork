@@ -44,3 +44,8 @@ CRenderState_Manager* CRenderState_Manager::Create(ComPtr<ID3D11Device> _pDevice
 
     return pInstance;
 }
+
+void CRenderState_Manager::Free()
+{
+    m_RenderStates.clear();
+}

@@ -49,6 +49,7 @@ HRESULT CQuad::Initialize_Copytype(void* pArg)
     QUAD_DESC* pQuad_Desc = static_cast<QUAD_DESC*>(pArg);
     m_eRenderGroup = pQuad_Desc->eRenderGroup;
 
+
     m_pTexShader = m_pGameInstance->Find_Shader(pQuad_Desc->ShaderName);
     Safe_AddRef(m_pTexShader);
 

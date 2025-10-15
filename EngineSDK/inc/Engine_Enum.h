@@ -37,8 +37,6 @@ namespace Engine
 	enum class PROTOTYPE
 	{GAMEOBJECT, COMPONENT};
 
-	enum class RENDERGROUP {PRIORITY,NONALPHA, ALPHA, WORLD_UI_MINIMAP,UI,END};
-
 	enum class TransformScope { 
 		LOCAL, //로컬 기준  ,
 		WORLD ,//부모행렬이 모두 계산된 전역좌표 
@@ -116,7 +114,8 @@ namespace Engine
 		CUTSCENE,
 		SHADOW,
 		MINIMAP,
-		UI,
+
+		UI,	//항상 마지막이여야함.
 		END};
 
 

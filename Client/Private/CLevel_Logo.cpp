@@ -185,6 +185,7 @@ HRESULT CLevel_Logo::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 {
     CQuad::QUAD_DESC desc;
     desc.ObjTag = L"Floor";
+    desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
     desc.ImgPath = L"../../Resource/Terrain0.png";
 
 
@@ -215,6 +216,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     CUI::tagUIDesc        Desc = {};
 
     Desc.ObjTag = L"Hp_UI";
+    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
     Desc.ImgPath = L"../../Resource/Hp.png";
 
     Desc.fSizeX = 38.f;
@@ -239,7 +241,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     ///////////////////Minimapquad»ý¼º
     CUI::tagUIDesc        MinimapDesc = {};
     MinimapDesc.ObjTag = L"MinimapQuad";
-
+    MinimapDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
     MinimapDesc.fSizeX = 150;
     MinimapDesc.fSizeY = 150;
     MinimapDesc.fX = g_iWinSizeX - 100;
@@ -272,8 +274,8 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
     CCamera_Base* pTargetCam = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
     if (pTargetCam)
     {
-        pTargetCam->Set_RenderMask(RENDERGROUP::WORLD_UI_MINIMAP, false);
-        pTargetCam->Set_RenderMask(RENDERGROUP::UI, false);
+        pTargetCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP), false);
+        pTargetCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::UI), false);
 
     }
 
@@ -281,8 +283,8 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
     CCamera_Base* pFreeCam = m_pGameInstance->Find_Camera(CAMERA_TYPE::FREE);
     if (pFreeCam)
     {
-        pFreeCam->Set_RenderMask(RENDERGROUP::WORLD_UI_MINIMAP, false);
-        pFreeCam->Set_RenderMask(RENDERGROUP::UI, false);
+        pFreeCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP), false);
+        pFreeCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::UI), false);
 
     }
 
@@ -291,7 +293,7 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
     if (pUICam)
     {
         pUICam->Set_RenderAllRenderMask(false);
-        pUICam->Set_RenderMask(RENDERGROUP::UI, true);
+        pUICam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::UI), true);
         
     }
 
@@ -299,7 +301,7 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
     CCamera_Base* pMinimapCam = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
     if (pMinimapCam)
     {
-        pMinimapCam->Set_RenderMask(RENDERGROUP::UI, false);
+        pMinimapCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::UI), false);
 
     }
     
@@ -312,7 +314,7 @@ HRESULT CLevel_Logo::Ready_Layer_Player(const _wstring& strLayerTag)
 
     Desc.ObjTag = L"Player";
     Desc.ImgPath = L"../../Resource/Keroro.png";
-
+    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
 
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
@@ -338,7 +340,7 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
 
     Desc.ObjTag = L"Test";
     Desc.ImgPath = L"../../Resource/Player_Marker.png";
-    Desc.eRenderGroup = RENDERGROUP::WORLD_UI_MINIMAP;
+    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP);
 
 
     CTransform::TRANSFORM_DESC TransDesc = {};

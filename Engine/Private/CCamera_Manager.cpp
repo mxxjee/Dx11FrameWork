@@ -139,7 +139,7 @@ void CCamera_Manager::Render_Cameras()
 	_float4		ClearColor = COLOR_YELLOW;
 
 
-	for (int i = 0; i < ENUM_TO_UINT(CAMERA_TYPE::END)-1; ++i)
+	for (int i = 0; i < ENUM_TO_UINT(CAMERA_TYPE::END); ++i)
 	{
 		CCamera_Base* pCam = m_Cameras[i];
 
@@ -157,46 +157,24 @@ void CCamera_Manager::Render_Cameras()
 		
 		
 		m_pRenderCamera->Bind_ViewProjMatrix();
-		switch (m_pRenderCamera->Get_CameraType())
-		{
-		case CAMERA_TYPE::TARGET:
-		case CAMERA_TYPE::FREE:
-		case CAMERA_TYPE::CUTSCENE:
-		case CAMERA_TYPE::SHADOW:
-		case CAMERA_TYPE::MINIMAP:
-		{
-			array<bool, ENUM_TO_UINT(RENDERGROUP::END)> RenderMask = m_pRenderCamera->Get_RenderMask();
-			for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
-			{
-				if (RenderMask[i])
-					m_pGameInstance->Render_Group(RENDERGROUP(i));
 
-			}
+		//각 카메라가 렌더할 렌더그룹을 접근해서 Render()호출
+		vector<bool> RenderMask = m_pRenderCamera->Get_RenderMask();
+		for (int i = 0; i < RenderMask.size(); ++i)
+		{
+			if (RenderMask[i])
+				m_pGameInstance->Render_Group(i);
+
 		}
-	
 
-			break;
-		
 
-			break;
- 		}
+
+ 		
 		m_pRenderCamera->UnBind_RenderTarget();
 
 	}
 
 	
-	//마지막 ui렌더
-	CCamera_Base* pUICam = Find_Camera(CAMERA_TYPE::UI);
-	if (pUICam)
-	{
-		m_pRenderCamera = pUICam;
-		m_pRenderShader = pUICam->Get_Shader();
-		m_pRenderPassName = pUICam->Get_PassName();
-		pUICam->Bind_RenderTarget();
-		pUICam->Bind_ViewProjMatrix();
-		m_pGameInstance->Render_Group(RENDERGROUP::UI);
-
-	}
 	
 	m_pGameInstance->Clear_RenderGroups();
 }
