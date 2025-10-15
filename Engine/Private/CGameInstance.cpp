@@ -11,6 +11,7 @@
 #include "CInput_Manager.h"
 #include "CShader_Manager.h"
 #include "CScreenShot_Manager.h"
+#include "CRenderState_Manager.h"
 #include "CShader.h"
 
 
@@ -77,6 +78,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	/*스크린샷매니저 초기화*/
 	m_pScreenshotManager = CScreenShot_Manager::Create(*pDevice, *pContext);
 	CheckNullResult(m_pScreenshotManager, E_FAIL);
+
+	/*렌더스테이트 매니져 초기화*/
+	m_pRenderStateManager = CRenderState_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pRenderStateManager, E_FAIL);
 
 	return S_OK;
 }
@@ -422,6 +427,17 @@ HRESULT CGameInstance::SaveTextureToFile(const _wstring& Key, const _wstring& fi
 {
 	CheckNullResult(m_pScreenshotManager,E_FAIL);
 	return m_pScreenshotManager->SaveTextureToFile(Key, filePath);
+}
+
+HRESULT CGameInstance::Register_RenderStates(_uint iRenderGroup, const RenderStates& States)
+{
+	CheckNullResult(m_pRenderStateManager, E_FAIL);
+	return m_pRenderStateManager->Register_RenderStates(iRenderGroup, States);
+}
+
+const RenderStates& CGameInstance::Get_RenderStates(_uint iRenderGroup)
+{
+	return m_pRenderStateManager->Get_RenderStates(iRenderGroup);
 }
 
 #pragma endregion

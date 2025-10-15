@@ -28,12 +28,6 @@
     <Filter Include="00.System\00.Timers\Manager\00.Time_Manager">
       <UniqueIdentifier>{9052872d-cfb4-4983-85b0-3ee3ea62c6c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\01.Level">
-      <UniqueIdentifier>{dfa791a8-13dd-4672-ac36-013d743a847d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Utility\01.Level\Manager">
-      <UniqueIdentifier>{d425f67c-b040-4063-8aaf-a61142ca5581}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\98.Factory">
       <UniqueIdentifier>{aeb56964-473b-45c2-a870-49694d8f4e58}</UniqueIdentifier>
     </Filter>
@@ -112,9 +106,6 @@
     <Filter Include="06.PipeLine\02.VertexShader\Texture">
       <UniqueIdentifier>{f2082105-9b65-4e8d-869f-2a561e123ccd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\02.DefaultShader">
-      <UniqueIdentifier>{4a87f6c4-7e45-40d0-b9a2-c0d0699f56ac}</UniqueIdentifier>
-    </Filter>
     <Filter Include="06.PipeLine\00.Geometry\VertexData">
       <UniqueIdentifier>{faa96231-47ad-4672-9059-d32ba0a05551}</UniqueIdentifier>
     </Filter>
@@ -138,9 +129,6 @@
     </Filter>
     <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\Text">
       <UniqueIdentifier>{d5fed461-117a-431a-86dc-2872aa201244}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00.System\02.Camera">
-      <UniqueIdentifier>{277a74f4-8253-4611-9ce3-89df7fbf8a8a}</UniqueIdentifier>
     </Filter>
     <Filter Include="05.Component\Camera">
       <UniqueIdentifier>{8aac56f4-c3e9-4893-b9fc-51efd3f71699}</UniqueIdentifier>
@@ -169,9 +157,6 @@
     <Filter Include="03.GameObject\CameraObject\Perspective\FreeCamera">
       <UniqueIdentifier>{11cd7b22-b664-4e22-bf9c-427615f5a286}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00.System\03.Input">
-      <UniqueIdentifier>{931be7c8-fb84-4035-a606-e145c17a4517}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Utility\99.EtcUtils">
       <UniqueIdentifier>{4c109192-e737-480d-bed2-dbc5776ae09b}</UniqueIdentifier>
     </Filter>
@@ -181,20 +166,8 @@
     <Filter Include="01.Utility\99.EtcUtils\ColorUtil">
       <UniqueIdentifier>{2bcd2bc9-dc1c-4bb5-a345-9e8bfff277b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="00.System\04.Shader">
-      <UniqueIdentifier>{d520339e-b9f5-4372-b9a3-824b730f9c44}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00.System\04.Shader\Shader">
-      <UniqueIdentifier>{81f12b77-764a-4b41-a9fc-0044c8e060c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00.System\04.Shader\InputLayout">
-      <UniqueIdentifier>{500e3021-be2b-4b62-92d9-e782a4469fd9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\Slider">
       <UniqueIdentifier>{0f780794-a478-40ee-a5d4-4234951bc54d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00.System\05.ScreenShot">
-      <UniqueIdentifier>{cb8eec21-9e17-4e99-ac8a-4b380a3b8bda}</UniqueIdentifier>
     </Filter>
     <Filter Include="03.GameObject\CameraObject\Orthgraphic\UICamera">
       <UniqueIdentifier>{0ef1c141-6e29-45b9-a8a0-7278c3f801ac}</UniqueIdentifier>
@@ -207,6 +180,33 @@
     </Filter>
     <Filter Include="03.GameObject\Quad\MinimapQuad">
       <UniqueIdentifier>{6e94bc0d-666b-4e20-931b-700b88a3314e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\02.Level">
+      <UniqueIdentifier>{dfa791a8-13dd-4672-ac36-013d743a847d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\02.Level\Manager">
+      <UniqueIdentifier>{d425f67c-b040-4063-8aaf-a61142ca5581}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\03.Camera">
+      <UniqueIdentifier>{277a74f4-8253-4611-9ce3-89df7fbf8a8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\04.Input">
+      <UniqueIdentifier>{931be7c8-fb84-4035-a606-e145c17a4517}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\05.Shader">
+      <UniqueIdentifier>{d520339e-b9f5-4372-b9a3-824b730f9c44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\05.Shader\Shader">
+      <UniqueIdentifier>{81f12b77-764a-4b41-a9fc-0044c8e060c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\05.Shader\InputLayout">
+      <UniqueIdentifier>{500e3021-be2b-4b62-92d9-e782a4469fd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\06.ScreenShot">
+      <UniqueIdentifier>{cb8eec21-9e17-4e99-ac8a-4b380a3b8bda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\07.RenderState">
+      <UniqueIdentifier>{69233a6c-de5a-4ac3-b221-0007a1417fb5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -271,7 +271,7 @@
       <Filter>999.Imgui\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLevel_Manager.h">
-      <Filter>01.Utility\01.Level\Manager</Filter>
+      <Filter>00.System\02.Level\Manager</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLevelFactroy.h">
       <Filter>01.Utility\98.Factory\LevelFactory</Filter>
@@ -283,7 +283,7 @@
       <Filter>03.GameObject</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLevel.h">
-      <Filter>01.Utility\01.Level</Filter>
+      <Filter>00.System\02.Level</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUI.h">
       <Filter>03.GameObject\UIObject</Filter>
@@ -340,13 +340,13 @@
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Text</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CShader.h">
-      <Filter>00.System\04.Shader\Shader</Filter>
+      <Filter>00.System\05.Shader\Shader</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CCameraComponent.h">
       <Filter>05.Component\Camera</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CCamera_Manager.h">
-      <Filter>00.System\02.Camera</Filter>
+      <Filter>00.System\03.Camera</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPerspectiveCameraComponent.h">
       <Filter>05.Component\Camera\PerpectiveCamera</Filter>
@@ -367,13 +367,13 @@
       <Filter>01.Utility\99.EtcUtils\ColorUtil</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CInput_Manager.h">
-      <Filter>00.System\03.Input</Filter>
+      <Filter>00.System\04.Input</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CShader_Manager.h">
-      <Filter>00.System\04.Shader</Filter>
+      <Filter>00.System\05.Shader</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CInputLayout.h">
-      <Filter>00.System\04.Shader\InputLayout</Filter>
+      <Filter>00.System\05.Shader\InputLayout</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CImgui_Slider.h">
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Slider</Filter>
@@ -382,7 +382,7 @@
       <Filter>03.GameObject\Quad\ScreenQuad</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CScreenShot_Manager.h">
-      <Filter>00.System\05.ScreenShot</Filter>
+      <Filter>00.System\06.ScreenShot</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CCamera_Base.h">
       <Filter>03.GameObject\CameraObject</Filter>
@@ -399,6 +399,7 @@
     <ClInclude Include="..\Public\CMinnimapQuad.h">
       <Filter>03.GameObject\Quad\MinimapQuad</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CRenderState_Manager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -438,7 +439,7 @@
       <Filter>999.Imgui\ImguiDefault</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_Manager.cpp">
-      <Filter>01.Utility\01.Level\Manager</Filter>
+      <Filter>00.System\02.Level\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevelFactroy.cpp">
       <Filter>01.Utility\98.Factory\LevelFactory</Filter>
@@ -447,7 +448,7 @@
       <Filter>03.GameObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevel.cpp">
-      <Filter>01.Utility\01.Level</Filter>
+      <Filter>00.System\02.Level</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUI.cpp">
       <Filter>03.GameObject\UIObject</Filter>
@@ -507,13 +508,13 @@
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Text</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CShader.cpp">
-      <Filter>00.System\04.Shader\Shader</Filter>
+      <Filter>00.System\05.Shader\Shader</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CCameraComponent.cpp">
       <Filter>05.Component\Camera</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CCamera_Manager.cpp">
-      <Filter>00.System\02.Camera</Filter>
+      <Filter>00.System\03.Camera</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPerspectiveCameraComponent.cpp">
       <Filter>05.Component\Camera\PerpectiveCamera</Filter>
@@ -528,13 +529,13 @@
       <Filter>03.GameObject\CameraObject\Perspective\MainCamera</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CInput_Manager.cpp">
-      <Filter>00.System\03.Input</Filter>
+      <Filter>00.System\04.Input</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CShader_Manager.cpp">
-      <Filter>00.System\04.Shader</Filter>
+      <Filter>00.System\05.Shader</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CInputLayout.cpp">
-      <Filter>00.System\04.Shader\InputLayout</Filter>
+      <Filter>00.System\05.Shader\InputLayout</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CImgui_Slider.cpp">
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Slider</Filter>
@@ -543,7 +544,7 @@
       <Filter>03.GameObject\Quad\ScreenQuad</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CScreenShot_Manager.cpp">
-      <Filter>00.System\05.ScreenShot</Filter>
+      <Filter>00.System\06.ScreenShot</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CCamera_Base.cpp">
       <Filter>03.GameObject\CameraObject</Filter>
@@ -560,5 +561,6 @@
     <ClCompile Include="..\Private\CMinnimapQuad.cpp">
       <Filter>03.GameObject\Quad\MinimapQuad</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CRenderState_Manager.cpp" />
   </ItemGroup>
 </Project>
