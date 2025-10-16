@@ -117,10 +117,12 @@ HRESULT CMainApp::Initialize_Cilent()
 			CUI* pUI_A = dynamic_cast<CUI*>(a);
 			CUI* pUI_B = dynamic_cast<CUI*>(b);
 
-			if (a && b)
+			if (pUI_A && pUI_B)
 			{
 				return pUI_A->Get_Depth() > pUI_B->Get_Depth();
 			}
+
+			return false;
 		};
 
 	if(FAILED(pGameInstance->Add_SortFunc(ENUM_TO_UINT(RENDERGROUP::ALPHA), AlphaSort)))
@@ -268,16 +270,17 @@ void CMainApp::Free()
 	Safe_Release(pImGui_Manager);
 #endif
 
+
+	//CInput_Manager::GetInstance()->DestroyInstance();
 	pGameInstance->Release_Engine();
 
 
 
 
 	//자신의 리소스정리
-	
-	
+
 	Safe_Release(pGameInstance);
-	CInput_Manager::DestroyInstance();
+
 }
 
 void CMainApp::CreateSamplerStates()

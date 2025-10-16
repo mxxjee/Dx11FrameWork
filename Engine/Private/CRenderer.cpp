@@ -18,7 +18,7 @@ HRESULT CRenderer::Initialize(_uint RenderGroupCount)
 	m_RenderMaxCount = RenderGroupCount;
 
 	m_RenderGroups.resize(m_RenderMaxCount);
-	m_SortFuncMap.resize(m_RenderMaxCount);
+	m_SortFuncTable.resize(m_RenderMaxCount);
 
 	return S_OK;
 }
@@ -26,7 +26,7 @@ HRESULT CRenderer::Initialize(_uint RenderGroupCount)
 
 HRESULT CRenderer::Add_RenderObject(_uint eID, CGameObject* pRenderObject)
 {
-	if (eID > m_RenderMaxCount)
+	if (eID > (_uint)m_RenderMaxCount)
 		return E_FAIL;
 
 	auto& iter = m_RenderGroups[eID];
@@ -39,7 +39,11 @@ HRESULT CRenderer::Add_RenderObject(_uint eID, CGameObject* pRenderObject)
 
 HRESULT CRenderer::Add_SortFunc(_uint eID, function<bool(CGameObject*, CGameObject*)> _Fun)
 {
-	m_SortFuncMap[eID] = _Fun;
+	if (eID >= (_uint)m_RenderMaxCount|| !_Fun)
+		return E_FAIL;
+
+
+	m_SortFuncTable[eID] = _Fun;
 	return S_OK;
 }
 
@@ -75,8 +79,8 @@ void CRenderer::BindRenderState(_uint eGroup)
 
 void CRenderer::SortByDepth(_uint eGroup)
 {
-	if (m_SortFuncMap[eGroup])
-		m_RenderGroups[eGroup].sort(m_SortFuncMap[eGroup]);
+	if (m_SortFuncTable[eGroup])
+		m_RenderGroups[eGroup].sort(m_SortFuncTable[eGroup]);
 
 
 }

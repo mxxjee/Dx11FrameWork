@@ -208,6 +208,9 @@
     <Filter Include="00.System\07.RenderState">
       <UniqueIdentifier>{69233a6c-de5a-4ac3-b221-0007a1417fb5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\Checkbox">
+      <UniqueIdentifier>{b7cae33f-0f8d-4731-bb5c-7bd79ec83764}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -399,7 +402,12 @@
     <ClInclude Include="..\Public\CMinimapQuad.h">
       <Filter>03.GameObject\Quad\MinimapQuad</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CRenderState_Manager.h" />
+    <ClInclude Include="..\Public\CRenderState_Manager.h">
+      <Filter>00.System\07.RenderState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CImgui_Checkbox.h">
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Checkbox</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -561,6 +569,11 @@
     <ClCompile Include="..\Private\CMinimapQuad.cpp">
       <Filter>03.GameObject\Quad\MinimapQuad</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CRenderState_Manager.cpp" />
+    <ClCompile Include="..\Private\CRenderState_Manager.cpp">
+      <Filter>00.System\07.RenderState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CImgui_Checkbox.cpp">
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Checkbox</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -48,7 +48,7 @@ private:
     int             m_RenderMaxCount = 0;
 
     vector<list<CGameObject*>>   m_RenderGroups;
-    vector<function<bool(class CGameObject*,class CGameObject*)>>      m_SortFuncMap;
+    vector<function<bool(class CGameObject*, class CGameObject*)>>      m_SortFuncTable;
 };
 
 NS_END

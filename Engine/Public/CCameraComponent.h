@@ -51,7 +51,7 @@ public:
 public:
     virtual void        Update_ViewMatrix(_float fTimeDelta);
     virtual void        Set_ProjectionMatrix() {};
-
+    void                Set_Offset(_float3 vOffSet)  { m_vOffSet = vOffSet; }
 
 public:
     _matrix         Get_MulViewProjMatrix();

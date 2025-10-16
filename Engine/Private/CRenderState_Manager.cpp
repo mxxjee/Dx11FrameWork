@@ -18,7 +18,7 @@ HRESULT CRenderState_Manager::Register_RenderStates(_uint iRenderGroup, const Re
         return E_FAIL;
 
     m_RenderStates.emplace(iRenderGroup, States);
-
+    return S_OK;
 }
 
 const RenderStates& CRenderState_Manager::Get_RenderStates(_uint iRenderGroup)

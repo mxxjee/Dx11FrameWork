@@ -89,7 +89,13 @@ HRESULT CQuad::Render()
 
     //렌더 할때 copydata로 GPU에게 데이터전송
     pRenderShader->SetMatrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
-    pRenderShader->SetResource("texture0", m_pTexture->GetComPtr());
+
+    if (m_pTexture)
+    {
+        ComPtr<ID3D11ShaderResourceView> resource = m_pTexture->GetComPtr();
+        pRenderShader->SetResource("texture0", resource);
+    }
+   
     pRenderShader->SetFloat("g_Brightness", 1.f);
 
 

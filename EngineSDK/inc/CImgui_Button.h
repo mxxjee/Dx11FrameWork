@@ -24,6 +24,8 @@ public:
     virtual void Update() override;
     virtual void Render() override;
 
+public:
+    void            Set_Callback(function<void()> callBack) { m_Callback = callBack; }
 
 public:
     static CImgui_Button* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);

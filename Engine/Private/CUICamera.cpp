@@ -100,7 +100,7 @@ CGameObject* CUICamera::Clone(void* pArg)
 
 void CUICamera::Free()
 {
-	Safe_Release(m_pCameraCom);
+
 
 	__super::Free();
 }

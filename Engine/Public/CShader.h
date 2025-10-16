@@ -85,7 +85,7 @@ public:
 	void		SetMatrix(const string& Variable, const _float4x4& mat);
 	void		SetVector(const string& Variable, const _float4& vector);
 	void		SetFloat(const string& Variable, const _float fValue);
-	void		SetResource(const string& Variable, ComPtr<ID3D11ShaderResourceView> resource);
+	void		SetResource(const string& Variable, ComPtr<ID3D11ShaderResourceView>& resourc);
 	void		SetSampler(const string& Variable, ComPtr< ID3D11SamplerState> sampler, UINT iIdx = 0);
 
 public:

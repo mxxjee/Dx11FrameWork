@@ -156,7 +156,8 @@ HRESULT CMinimapQuad::Render()
 
     if (m_pMinimapCamera)
     {
-        m_pGameInstance->Get_RenderShader()->SetResource("texture0", m_pMinimapCamera->Get_RenderTarget().SRV);
+        ComPtr< ID3D11ShaderResourceView>  resource = m_pMinimapCamera->Get_RenderTarget().SRV;
+        m_pGameInstance->Get_RenderShader()->SetResource("texture0", resource);
 
     }
 
@@ -172,8 +173,8 @@ HRESULT CMinimapQuad::Render()
     //Set_BlendState();
     m_pVIBufferCom->Render();      //OM´Ü°è
 
-    if (m_pMinimapCamera)
-        m_pGameInstance->Get_RenderShader()->SetResource("texture0", nullptr);
+   /* if (m_pMinimapCamera)
+        m_pGameInstance->Get_RenderShader()->SetResource("texture0", nullptr);*/
 
     return S_OK;
 }

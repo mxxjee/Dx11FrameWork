@@ -161,6 +161,13 @@ void CCamera_Base::Set_RenderAllRenderMask(bool bRender)
 void CCamera_Base::Free()
 {
     __super::Free();
+    
+    m_tRenderTarget.SRV.Reset();
+    m_tRenderTarget.pColorTex.Reset();
+    m_tRenderTarget.DSV.Reset();
+  
+    m_tRenderTarget.RTV.Reset();
+
     Safe_Release(m_pCameraCom);
     Safe_Release(m_pMainShader);
 

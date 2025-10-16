@@ -61,8 +61,12 @@ HRESULT CScreenQuad::Render()
     m_pGameInstance->Get_RenderShader()->SetMatrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
     m_pGameInstance->Get_RenderShader()->SetFloat("g_Brightness", 0.4f);
 
-    if(m_pTexture)
-        m_pGameInstance->Get_RenderShader()->SetResource("texture0", m_pTexture->GetComPtr());
+    if (m_pTexture)
+    {
+        ComPtr< ID3D11ShaderResourceView>  resource = m_pTexture->GetComPtr();
+        m_pGameInstance->Get_RenderShader()->SetResource("texture0", resource);
+    }
+       
 
     ////IA´Ü°è
     m_pVIBufferCom->Bind_Resource();

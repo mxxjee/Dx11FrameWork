@@ -5,7 +5,9 @@ namespace Engine
 {
     class CImgui_Button;
     class CImgui_Slider;
+    class CImgui_Checkbox;
     class CGameInstance;
+    class CCamera_Base;
 }
 
 NS_BEGIN(Client)
@@ -19,6 +21,7 @@ private:
         NearClip,
         FarClip,
         FOV,
+        OFFSET_X,OFFSET_Y,OFFSET_Z,
         END
     };
 protected:
@@ -40,6 +43,7 @@ private:
 
 private:
     void            ShowMainCameraDebug(bool isOrtho);
+    void            ToggleOffSetDebug();
     void            ToggleClickOrtho(bool _b);
 
 public:
@@ -50,9 +54,12 @@ public:
 private:
     CImgui_Button* m_pPerspectiveCamButton = { nullptr };
     CImgui_Button* m_pOrthoGraphicCamButton = { nullptr };
-    
+    CImgui_Button* m_pDefaultOffSetButton = { nullptr };
+
+
     vector<CImgui_Slider*> m_Sliders;
     vector<CImgui_Button*> m_CamButtons;
+    vector<CImgui_Checkbox*> m_CheckBoxs;
 
 private:
     CGameInstance* m_pGameInstance = { nullptr };
@@ -61,6 +68,11 @@ private:
     float fDebugNear = 0.f;
     float fDebugFar = 0.f;
     float fDebugFov = 0.f;
+
+    _float3 fDebugOffSet;
+    _float3 fDefaultOffSet;
+
+    CCamera_Base*           pTargetCamera = nullptr;
 };
 
 NS_END

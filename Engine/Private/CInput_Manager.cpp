@@ -190,19 +190,19 @@ bool CInput_Manager::IsActionReleased(const string& actionName) const
 
 void CInput_Manager::Free()
 {
-	if (m_pKeyboard)
+	auto SafeReleaseDevice = [](LPDIRECTINPUTDEVICE8& pDev)
 	{
-		m_pKeyboard->Unacquire();
-		m_pKeyboard->Release();
-		m_pKeyboard = nullptr;
-	}
+		if (pDev)
+		{
+			HRESULT hr = pDev->Unacquire();
+			if (SUCCEEDED(hr))
+				pDev->Release();
+			pDev = nullptr;
+		}
+	};
 
-	if (m_pMouse)
-	{
-		m_pMouse->Unacquire();
-		m_pMouse->Release();
-		m_pMouse = nullptr;
-	}
+	SafeReleaseDevice(m_pKeyboard);
+	SafeReleaseDevice(m_pMouse);
 
 	if (m_pInput)
 	{

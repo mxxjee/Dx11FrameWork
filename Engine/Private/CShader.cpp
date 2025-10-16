@@ -188,7 +188,7 @@ void CShader::SetFloat(const string& Variable, const _float fValue)
     m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str())->AsScalar()->SetFloat(fValue);
 }
 
-void CShader::SetResource(const string& Variable, ComPtr<ID3D11ShaderResourceView> resource)
+void CShader::SetResource(const string& Variable, ComPtr<ID3D11ShaderResourceView>& resource)
 {
     m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str())->AsShaderResource()->SetResource(resource.Get());
     
