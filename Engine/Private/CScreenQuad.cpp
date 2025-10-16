@@ -58,14 +58,12 @@ HRESULT CScreenQuad::Render()
 
    
     ////렌더 할때 copydata로 GPU에게 데이터전송
-    m_pGameInstance->Get_RenderShader()->SetMatrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
-    m_pGameInstance->Get_RenderShader()->SetFloat("g_Brightness", 0.4f);
+    m_pGameInstance->Get_RenderShader()->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
+    m_pGameInstance->Get_RenderShader()->Bind_Float("g_Brightness", 0.4f);
 
     if (m_pTexture)
-    {
-        ComPtr< ID3D11ShaderResourceView>  resource = m_pTexture->GetComPtr();
-        m_pGameInstance->Get_RenderShader()->SetResource("texture0", resource);
-    }
+        m_pTexture->Bind_ShaderResource(m_pGameInstance->Get_RenderShader(), "texture0", 0);
+
        
 
     ////IA단계

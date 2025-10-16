@@ -41,9 +41,7 @@ HRESULT CQuad::Initialize_Copytype(void* pArg)
 
     if (pQuad_Desc->ImgPath != L"")
     {
-        m_pTexture = new CTexture(m_pDevice);
-        if (FAILED(m_pTexture->LoadImg(pQuad_Desc->ImgPath)))
-            return E_FAIL;
+        m_pTexture = CTexture::Create(m_pDevice,m_pContext,pQuad_Desc->ImgPath.c_str(), pQuad_Desc->ImgCnt);
 
     }
    
@@ -88,24 +86,23 @@ HRESULT CQuad::Render()
     CheckNullResult(pRenderShader, E_FAIL);
 
     //렌더 할때 copydata로 GPU에게 데이터전송
-    pRenderShader->SetMatrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
+    pRenderShader->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
 
     if (m_pTexture)
     {
-        ComPtr<ID3D11ShaderResourceView> resource = m_pTexture->GetComPtr();
-        pRenderShader->SetResource("texture0", resource);
+        m_pTexture->Bind_ShaderResource(pRenderShader, "texture0", 0);
+
     }
    
-    pRenderShader->SetFloat("g_Brightness", 1.f);
+    pRenderShader->Bind_Float("g_Brightness", 1.f);
 
 
     pRenderShader->Begin(pRenderPass); //VS-PS
 
  
     m_pVIBufferCom->Bind_Resource();   //IA단계
+   
 
-
-    //Set_BlendState();           //OM단계
     m_pVIBufferCom->Render();      //OM단계
     return S_OK;
 }

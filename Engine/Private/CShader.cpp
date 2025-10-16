@@ -171,32 +171,58 @@ HRESULT CShader::Load_PassesAndCreateInputLayers(const vector<D3D11_INPUT_ELEMEN
     return S_OK;
 }
 
-void CShader::SetMatrix(const string& Variable, const _float4x4& mat)
+HRESULT CShader::Bind_Matrix(const string& Variable, const _float4x4& mat)
 {
+    ComPtr<ID3DX11EffectVariable> pVariable = m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str());
+    CheckNullResult(pVariable, E_FAIL);
+
+    ComPtr<ID3DX11EffectMatrixVariable>     pMatrixVariable = pVariable->AsMatrix();
+    CheckNullResult(pMatrixVariable, E_FAIL);
+
+    return pMatrixVariable->SetMatrix(reinterpret_cast<const _float*>(mat.m));
+
+}
+
+HRESULT CShader::Bind_Vector(const string& Variable, const _float4& vector)
+{
+    ComPtr<ID3DX11EffectVariable> pVariable = m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str());
+    CheckNullResult(pVariable, E_FAIL);
+
+    ComPtr<ID3DX11EffectVectorVariable>     pVectorVariable = pVariable->AsVector();
+    CheckNullResult(pVectorVariable, E_FAIL);
+
+
+    return pVectorVariable->SetFloatVector((float*)(&vector));
+}
+
+HRESULT CShader::Bind_Float(const string& Variable, const _float fValue)
+{
+     ComPtr<ID3DX11EffectVariable> pVariable = m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str());
+    CheckNullResult(pVariable, E_FAIL);
+
+    ComPtr<ID3DX11EffectScalarVariable>     pScalarVariable = pVariable->AsScalar();
+    CheckNullResult(pScalarVariable, E_FAIL);
+
+    return pScalarVariable->SetFloat(fValue);
+}
+
+HRESULT CShader::Bind_SRV(const string& Variable, ComPtr<ID3D11ShaderResourceView>& resource)
+{
+    ID3DX11EffectVariable* pVariable = m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str());
+    CheckNullResult(pVariable, E_FAIL);
+
+
+    ID3DX11EffectShaderResourceVariable* pSRVVariable = pVariable->AsShaderResource();
+    CheckNullResult(pSRVVariable, E_FAIL);
+
+
+    return pSRVVariable->SetResource(resource.Get());
     
-    m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str())->AsMatrix()->SetMatrix((float*)mat.m);
-
 }
 
-void CShader::SetVector(const string& Variable, const _float4& vector)
+HRESULT CShader::Bind_Sampler(const string& Variable, ComPtr<ID3D11SamplerState> sampler,UINT iIdx)
 {
-    m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str())->AsVector()->SetFloatVector((float*)(&vector));
-}
-
-void CShader::SetFloat(const string& Variable, const _float fValue)
-{
-    m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str())->AsScalar()->SetFloat(fValue);
-}
-
-void CShader::SetResource(const string& Variable, ComPtr<ID3D11ShaderResourceView>& resource)
-{
-    m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str())->AsShaderResource()->SetResource(resource.Get());
-    
-}
-
-void CShader::SetSampler(const string& Variable, ComPtr<ID3D11SamplerState> sampler,UINT iIdx)
-{
-    m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str())->AsSampler()->SetSampler(iIdx,sampler.Get());
+    return m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str())->AsSampler()->SetSampler(iIdx,sampler.Get());
 }
 
 HRESULT CShader::Begin(const string& _passName)

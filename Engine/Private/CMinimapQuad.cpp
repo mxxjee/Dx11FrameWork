@@ -39,10 +39,14 @@ HRESULT CMinimapQuad::CreateTexture(const RENDER_TARGET& m_Target)
 
     
 
-    if(!m_pTexture)
-        m_pTexture = new CTexture(m_pDevice);
-    m_pContext->CopyResource(pCopyTexture.Get(), pRTTexture.Get());
-    m_pTexture->CreateResourceViewByTex(pCopyTexture);
+    if (!m_pTexture)
+    {
+        m_pContext->CopyResource(pCopyTexture.Get(), pRTTexture.Get());
+        m_pTexture = CTexture::Create(m_pDevice, m_pContext, pCopyTexture);
+
+
+    }
+   
 
 
     return S_OK;
@@ -152,16 +156,17 @@ HRESULT CMinimapQuad::Render()
 
     m_pContext->OMSetBlendState(m_BlendState.Get(), nullptr, 0xFFFFFFFF);
 
-    m_pGameInstance->Get_RenderShader()->SetMatrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
+    m_pGameInstance->Get_RenderShader()->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
 
     if (m_pMinimapCamera)
     {
         ComPtr< ID3D11ShaderResourceView>  resource = m_pMinimapCamera->Get_RenderTarget().SRV;
-        m_pGameInstance->Get_RenderShader()->SetResource("texture0", resource);
+        //얘는 그냥 외부껄 그대로 srv에던져주기.저장할필요없음
+        m_pGameInstance->Get_RenderShader()->Bind_SRV("texture0", resource);
 
     }
 
-    m_pGameInstance->Get_RenderShader()->SetFloat("g_Brightness", 0.5f);
+    m_pGameInstance->Get_RenderShader()->Bind_Float("g_Brightness", 0.5f);
 
 
     ////IA단계

@@ -49,9 +49,13 @@ void CScreenShot_Manager::ScreenShot(const _wstring& Key)
     //GPU복사
     m_pContext->CopyResource(pCopiedTex.Get(), pBackBuffer.Get());
 
-    pTexture = new CTexture(m_pDevice);
-    pTexture->CreateResourceViewByTex(pCopiedTex);
-   
+    
+
+    ComPtr<ID3D11ShaderResourceView> SRV;
+
+    m_pDevice->CreateShaderResourceView(pCopiedTex.Get(), nullptr, SRV.GetAddressOf());
+
+    pTexture = CTexture::Create(m_pDevice, m_pContext, SRV);
 
     m_Texmap.emplace(Key, pTexture);
     
@@ -87,10 +91,16 @@ HRESULT CScreenShot_Manager::SaveTextureToFile(const _wstring& Key, const _wstri
     CTexture* pTexture = Find_ScreenTexture(Key);
     CheckNullResult(pTexture, E_FAIL);
 
-    ComPtr<ID3D11Texture2D> comTex = pTexture->GetTexture();
+    ComPtr<ID3D11ShaderResourceView> SRV = pTexture->Get_SRV(0);
+    ComPtr<ID3D11Resource> pResource = nullptr;
+
+    SRV->GetResource(&pResource);
+
+    ComPtr<ID3D11Texture2D> pTexture2D;
+    pResource.As(&pTexture2D);
 
     D3D11_TEXTURE2D_DESC desc{};
-    comTex->GetDesc(&desc);
+    pTexture2D->GetDesc(&desc);
 
     desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
     desc.Usage = D3D11_USAGE_STAGING;
@@ -104,7 +114,7 @@ HRESULT CScreenShot_Manager::SaveTextureToFile(const _wstring& Key, const _wstri
         return E_FAIL;
 
     //받은 소스를 staging버퍼에 복사
-    m_pContext->CopyResource(staging.Get(), comTex.Get());
+    m_pContext->CopyResource(staging.Get(), pTexture2D.Get());
 
     //D3D11_MAPPED_SUBRESOURCE mapped{};
     //hr = m_pContext->Map(staging.Get(), 0, D3D11_MAP_READ, 0, &mapped);

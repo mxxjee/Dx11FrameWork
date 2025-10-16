@@ -19,8 +19,8 @@ using namespace Microsoft::WRL;
 #include "DirectXTex/DirectXTex.inl"
 
 #include "Fx11/d3dx11effect.h"
-#include <DirectXTK/DDSTextureLoader.h>
-#include <DirectXTK/WICTextureLoader.h>
+#include "DirectXTK/DDSTextureLoader.h"
+#include "DirectXTK/WICTextureLoader.h"
 
 #include <wincodec.h>
 

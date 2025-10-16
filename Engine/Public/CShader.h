@@ -82,11 +82,11 @@ private:
 	//읽어온 Technique에대한 pass들을 모두 저장하고, 이에따른 inputlayout을 만든다.
 	HRESULT		Load_PassesAndCreateInputLayers(const vector<D3D11_INPUT_ELEMENT_DESC>& layout);
 public:
-	void		SetMatrix(const string& Variable, const _float4x4& mat);
-	void		SetVector(const string& Variable, const _float4& vector);
-	void		SetFloat(const string& Variable, const _float fValue);
-	void		SetResource(const string& Variable, ComPtr<ID3D11ShaderResourceView>& resourc);
-	void		SetSampler(const string& Variable, ComPtr< ID3D11SamplerState> sampler, UINT iIdx = 0);
+	HRESULT		Bind_Matrix(const string& Variable, const _float4x4& mat);
+	HRESULT		Bind_Vector(const string& Variable, const _float4& vector);
+	HRESULT		Bind_Float(const string& Variable, const _float fValue);
+	HRESULT		Bind_SRV(const string& Variable, ComPtr<ID3D11ShaderResourceView>& resourc);
+	HRESULT		Bind_Sampler(const string& Variable, ComPtr< ID3D11SamplerState> sampler, UINT iIdx = 0);
 
 public:
 	const SHADER_INFO& Get_ShaderInfo() const { return m_ShaderInfo; }
