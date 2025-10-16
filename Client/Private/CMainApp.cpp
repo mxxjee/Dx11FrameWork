@@ -289,9 +289,9 @@ void CMainApp::CreateSamplerStates()
 
 	D3D11_SAMPLER_DESC desc;
 	memset(&desc, 0, sizeof(desc));
-	desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-	desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-	desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+	desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	desc.BorderColor[0] = 0.0f;
 	desc.BorderColor[1] = 0.0f;
 	desc.BorderColor[2] = 0.0f;
@@ -305,7 +305,14 @@ void CMainApp::CreateSamplerStates()
 	desc.MinLOD = FLT_MIN;
 	desc.MipLODBias = 0.0f;
 
-	for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+	for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP); ++i)
+		m_pDevice->CreateSamplerState(&desc, m_RenderStates[i]._samplerState.GetAddressOf());
+
+	desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+	desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+	desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+
+	for (int i = ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP); i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
 		m_pDevice->CreateSamplerState(&desc, m_RenderStates[i]._samplerState.GetAddressOf());
 }
 
