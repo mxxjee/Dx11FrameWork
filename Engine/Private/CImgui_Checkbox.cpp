@@ -11,10 +11,16 @@ HRESULT CImgui_Checkbox::Initialize(void* pArg)
 
 	m_Label = pDesc->Label;
 	m_Callback = pDesc->callback;
+
+	
 	m_bValue = pDesc->bValue;
+	if (pDesc->bValue == nullptr)
+		m_bValue = nullptr;
 
 
-	if (FAILED(__super::Initialize(pArg)))
+
+
+	if (FAILED(__super::Initialize(pArg)))     
 		return E_FAIL;
 
 
@@ -23,13 +29,18 @@ HRESULT CImgui_Checkbox::Initialize(void* pArg)
 
 void CImgui_Checkbox::Update()
 {
-	CheckFalse(m_bActive);
 	__super::Update();
 
-	if (ImGui::Checkbox(m_Label.c_str(),m_bValue))
+
+
+	if (m_bValue)
 	{
-		if (m_Callback)
-			m_Callback();
+		if (ImGui::Checkbox(m_Label.c_str(), m_bValue))
+		{
+			if (m_Callback)
+				m_Callback();
+		}
+
 	}
 
 }

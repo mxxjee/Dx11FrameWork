@@ -27,10 +27,12 @@ HRESULT CImgui_Slider::Initialize(void* pArg)
 
 void CImgui_Slider::Update()
 {
-	CheckNull(m_fBindValue);
-	CheckFalse(m_bActive);
-
 	__super::Update();
+
+	CheckNull(m_fBindValue);
+	//CheckFalse(m_bActive);
+
+	
 	
 
 

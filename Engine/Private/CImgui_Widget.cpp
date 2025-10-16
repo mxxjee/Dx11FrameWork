@@ -16,7 +16,7 @@ HRESULT CImgui_Widget::Initialize(void* pArg)
 
 void CImgui_Widget::Update()
 {
-	ImGui::SetCursorPos(RelativePos);
+	ImGui::SetCursorScreenPos(RelativePos);
 }
 
 void CImgui_Widget::Render()

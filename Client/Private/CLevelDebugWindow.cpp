@@ -94,7 +94,7 @@ void CLevelDebugWindow::Update()
                                     //각 오브젝트 표시 UI 선택가능
                                     if (ImGui::Selectable(WStringToUTF8(i->Get_Tag()).c_str(), pSelectObject ==i))
                                     {
-                                        CImgui_Base* pBase = CImGui_Manager::GetInstance()->Find_Window(L"ObjectDebugWindow");
+                                        CImgui_Base* pBase = CImGui_Manager::GetInstance()->Find_Window("ObjectDebugWindow");
                                         if (pBase)
                                         {
                                             CObjectDebugWindow* pWindow = dynamic_cast<CObjectDebugWindow*>(pBase);
@@ -138,7 +138,7 @@ void CLevelDebugWindow::Update()
                             //각 오브젝트 표시 UI 선택가능
                             if (ImGui::Selectable(WStringToUTF8(i->Get_Tag()).c_str(), pSelectObject == i))
                             {
-                                CImgui_Base* pBase = CImGui_Manager::GetInstance()->Find_Window(L"ObjectDebugWindow");
+                                CImgui_Base* pBase = CImGui_Manager::GetInstance()->Find_Window("ObjectDebugWindow");
                                 if (pBase)
                                 {
                                     CObjectDebugWindow* pWindow = dynamic_cast<CObjectDebugWindow*>(pBase);

@@ -6,6 +6,8 @@
 #include "COrthographicCameraComponent.h"
 #include "CPerspectiveCameraComponent.h"
 #include "CCamera_Base.h"
+#include "Client_Defines.h"
+#include "CImgui_Checkbox.h"
 
 
 
@@ -90,27 +92,27 @@ HRESULT CCameraDebugWindow::Create_Widgets()
 {
     CImgui_Button::IMGUIBUTTON_DESC PersDesc;
     PersDesc.Label = "PerspectiveCam";
-    PersDesc.Tag = L"PerspectiveCam";
+    PersDesc.Tag = "PerspectiveCam";
     PersDesc.m_RelativePos = ImVec2(10.f, 30.f);
     PersDesc.callback = [&]()
     {
         ToggleClickOrtho(false);
     };
 
-    if (FAILED(Create_Button(&PersDesc, &m_pPerspectiveCamButton)))
+    if (FAILED(Add_Widgets<CImgui_Button>(&PersDesc, reinterpret_cast<CImgui_Widget**>(&m_pPerspectiveCamButton))))
         return E_FAIL;
 
 
     CImgui_Button::IMGUIBUTTON_DESC OrthoDesc;
     OrthoDesc.Label = "OrthoGraphicCam";
-    OrthoDesc.Tag = L"OrthoGraphicCam";
+    OrthoDesc.Tag = "OrthoGraphicCam";
     OrthoDesc.m_RelativePos = ImVec2(130.f, 30.f);
     OrthoDesc.callback = [&]()
     {
         ToggleClickOrtho(true);
     };
 
-    if (FAILED(Create_Button(&OrthoDesc,&m_pOrthoGraphicCamButton)))
+    if (FAILED(Add_Widgets<CImgui_Button>(&OrthoDesc, reinterpret_cast<CImgui_Widget**>(&m_pOrthoGraphicCamButton))))
         return E_FAIL;
 
    
@@ -125,7 +127,7 @@ HRESULT CCameraDebugWindow::Create_Widgets()
     SliderDesc.vMax = 999.f;
 
 
-    if (FAILED(Create_Slider(&SliderDesc, &m_Sliders[0])))
+    if (FAILED(Add_Widgets<CImgui_Slider>(&SliderDesc, reinterpret_cast<CImgui_Widget**>(&m_Sliders[0]))))
         return E_FAIL;
 
     //[Plane 슬라이더]
@@ -134,17 +136,17 @@ HRESULT CCameraDebugWindow::Create_Widgets()
     SliderDesc.vMin = 0.2f;
     SliderDesc.vMax = 1000.f;
 
-    if (FAILED(Create_Slider(&SliderDesc, &m_Sliders[1])))
+    if (FAILED(Add_Widgets<CImgui_Slider>(&SliderDesc, reinterpret_cast<CImgui_Widget**>(&m_Sliders[1]))))
         return E_FAIL;
 
     //[NearClipPlane 슬라이더]
     SliderDesc.m_LabelName = "Fov Clip Plane";
     SliderDesc.m_RelativePos = ImVec2(0.f, 270.f);
 
-
-    if (FAILED(Create_Slider(&SliderDesc, &m_Sliders[2])))
+    if (FAILED(Add_Widgets<CImgui_Slider>(&SliderDesc, reinterpret_cast<CImgui_Widget**>(&m_Sliders[2]))))
         return E_FAIL;
     //////////////////////////////////////////////////////
+    // 
     //[OffSetSlider]
     const char* pLabelNames[3] = { "OffSet_X","OffSet_Y","OffSet_Z" };
     for (int i = OFFSET_X; i <= OFFSET_Z; ++i)
@@ -154,26 +156,44 @@ HRESULT CCameraDebugWindow::Create_Widgets()
         SliderDesc.vMin = -100.f;
         SliderDesc.vMax = 1000.f;
 
-        if (FAILED(Create_Slider(&SliderDesc, &m_Sliders[i])))
+        if (FAILED(Add_Widgets<CImgui_Slider>(&SliderDesc, reinterpret_cast<CImgui_Widget**>(&m_Sliders[i]))))
             return E_FAIL;
 
     }
     ////[OffSetDefault Button]
     CImgui_Button::IMGUIBUTTON_DESC DefaultOffSetDesc;
     DefaultOffSetDesc.Label = "OffSetDefaultButton";
-    DefaultOffSetDesc.Tag = L"OffSetDefaultButton";
+    DefaultOffSetDesc.Tag = "OffSetDefaultButton";
     DefaultOffSetDesc.m_RelativePos = ImVec2(230.f, 330.f + ((END-OFFSET_X) * 20));
     DefaultOffSetDesc.callback = nullptr;
 
-    if (FAILED(Create_Button(&DefaultOffSetDesc, &m_pDefaultOffSetButton)))
+    if (FAILED(Add_Widgets<CImgui_Button>(&DefaultOffSetDesc, reinterpret_cast<CImgui_Widget**>(&m_pDefaultOffSetButton))))
         return E_FAIL;
-
     m_pDefaultOffSetButton->Set_Active(false);
 
     /////////////////////////////////////////////////////
 
     //렌더그룹체크박스
-    
+   /* m_CheckBoxs.resize(ENUM_TO_UINT(RENDERGROUP::END));
+    const char* pElemets[ENUM_TO_UINT(RENDERGROUP::END)] = {
+        "PRIORITY","NONALPHA","ALPHA", "WORLD_UI_MINIMAP","UI"
+    };
+
+
+    for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+    {
+        CImgui_Checkbox::IMGUICHECKBOX_DESC CheckboxDesc;
+        CheckboxDesc.Tag = pElemets[i];
+        CheckboxDesc.Label = pElemets[i];
+
+        CheckboxDesc.Label = pElemets[i];
+        CheckboxDesc.m_RelativePos = ImVec2((10.f) * i, 360.f + (i / 3) * 30.f);
+
+
+        if (FAILED(Add_Widgets<CImgui_Checkbox>(&CheckboxDesc, reinterpret_cast<CImgui_Widget**>(&m_CheckBoxs[i]))))
+            return E_FAIL;
+    }*/
+
         
     
     ////////////////////////////////////////////////////
@@ -182,48 +202,32 @@ HRESULT CCameraDebugWindow::Create_Widgets()
     CImgui_Button::IMGUIBUTTON_DESC TargetCamDesc;
     TargetCamDesc.Label = "TargetCam";
     TargetCamDesc.m_RelativePos = ImVec2(0.f, 620.f);
-    TargetCamDesc.Tag = L"TargetCamMode";
+    TargetCamDesc.Tag = "TargetCamMode";
     TargetCamDesc.callback = [this]()
     {
         m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET)->Set_Active(true);
         m_pGameInstance->Find_Camera(CAMERA_TYPE::FREE)->Set_Active(false);
 
     };
-    if (FAILED(Create_Button(&TargetCamDesc, &m_CamButtons[0])))
+    if (FAILED(Add_Widgets<CImgui_Button>(&TargetCamDesc, reinterpret_cast<CImgui_Widget**>(&m_CamButtons[0]))))
         return E_FAIL;
 
     CImgui_Button::IMGUIBUTTON_DESC FreeCamDesc;
     FreeCamDesc.Label = "FreeCam";
     FreeCamDesc.m_RelativePos = ImVec2(150.f, 620.f);
-    FreeCamDesc.Tag = L"FreeCam";
+    FreeCamDesc.Tag = "FreeCam";
     FreeCamDesc.callback = [this]()
     {
         m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET)->Set_Active(false);
         m_pGameInstance->Find_Camera(CAMERA_TYPE::FREE)->Set_Active(true);
 
     };
-    if (FAILED(Create_Button(&FreeCamDesc, &m_CamButtons[1])))
+    if (FAILED(Add_Widgets<CImgui_Button>(&FreeCamDesc, reinterpret_cast<CImgui_Widget**>(&m_CamButtons[1]))))
         return E_FAIL;
 
-
     return S_OK;
 }
 
-HRESULT CCameraDebugWindow::Create_Button(void* pArg, CImgui_Button** ppOut)
-{
-    *ppOut = CImgui_Button::Create(m_pDevice, m_pContext, pArg);
-    m_vWidgets.push_back(*ppOut);
-    Safe_AddRef(*ppOut);
-    return S_OK;
-}
-
-HRESULT CCameraDebugWindow::Create_Slider(void* pArg, CImgui_Slider** ppOut)
-{
-    *ppOut = CImgui_Slider::Create(m_pDevice, m_pContext, pArg);
-    m_vWidgets.push_back(*ppOut);
-    Safe_AddRef(*ppOut);
-    return S_OK;
-}
 
 void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
 {
@@ -506,6 +510,8 @@ void CCameraDebugWindow::Free()
     for (auto& i: m_CamButtons)
         Safe_Release(i);
 
+    for (auto& i : m_CheckBoxs)
+        Safe_Release(i);
 
 
 }

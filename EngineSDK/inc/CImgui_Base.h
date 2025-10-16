@@ -7,7 +7,7 @@ class ENGINE_DLL CImgui_Base abstract : public CBase
 public:
 	typedef struct Imgui_Desc
 	{
-		wstring	Tag						= L"";
+		string	Tag						= "";
 
 
 	}IMGUI_DESC;
@@ -21,10 +21,10 @@ public:
 	virtual		void	Update()=0;
 	virtual		void	Render()=0;
 
-	const wstring& Get_Tag() { return m_Tag; }
+	const string& Get_Tag() { return m_Tag; }
 	void		Set_Active(bool _b) { m_bActive = _b; }
 protected:
-	wstring	m_Tag = L"";				//오브젝트 식별용 Tag
+	string	m_Tag = "";				//오브젝트 식별용 Tag
 	ComPtr<ID3D11Device>			m_pDevice;
 	ComPtr<ID3D11DeviceContext>		m_pContext;
 

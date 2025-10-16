@@ -13,6 +13,12 @@ public:
         function<void()> callback;
         bool* bValue = nullptr;
 
+
+        ImguiCheckbox_Desc()
+            :Label(""), callback(nullptr), bValue(nullptr)
+        {
+
+        }
     }IMGUICHECKBOX_DESC;
 
 protected:

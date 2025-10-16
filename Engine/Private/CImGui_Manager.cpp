@@ -189,7 +189,7 @@ void CImGui_Manager::RegisterWindow(CImgui_Base* pInstance)
         m_Windows[pInstance->Get_Tag()] = pInstance;
 }
 
-CImgui_Base* CImGui_Manager::Find_Window(wstring _tag)
+CImgui_Base* CImGui_Manager::Find_Window(string _tag)
 {
     auto pTargetIter = m_Windows.find(_tag);
     CImgui_Base* pTarget = nullptr;

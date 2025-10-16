@@ -25,14 +25,14 @@ class ENGINE_DLL CImGui_Manager final :
 
     public:
         void        RegisterWindow(CImgui_Base* pInstance);
-        CImgui_Base* Find_Window(wstring _tag);
+        CImgui_Base* Find_Window(string _tag);
     private:
         bool        show_another_window ={ false };
         bool        show_demo_window = { true };
         _float4     clearColor = { 0.f,0.f,0.f,0.f };
 
     private:
-        unordered_map<wstring, CImgui_Base*>        m_Windows;
+        unordered_map<string, CImgui_Base*>        m_Windows;
 };
 
 NS_END

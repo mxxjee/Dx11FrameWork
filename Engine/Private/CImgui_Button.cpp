@@ -21,9 +21,9 @@ HRESULT CImgui_Button::Initialize(void* pArg)
 
 void CImgui_Button::Update()
 {
-	CheckFalse(m_bActive);
 	__super::Update();
-	
+	CheckFalse(m_bActive);
+
 	if (ImGui::Button(m_Label.c_str()))
 	{
 		if (m_Callback)

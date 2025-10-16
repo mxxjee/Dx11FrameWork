@@ -63,7 +63,7 @@ HRESULT CMainApp::Initialize()
 	pImGui_Manager->Init(g_hWnd, m_pDevice.Get(), m_pContext.Get());
 	CreateLevelDebugWindow();
 	CreateObjectDebugWindow();
-	CreateCameraDebugWindow();
+	//CreateCameraDebugWindow();
 
 #endif
 
@@ -379,7 +379,7 @@ void CMainApp::CreateLevelDebugWindow()
 	Desc.m_WindowTitle = "LevelDebugWindow";
 	Desc.m_WindowPos = ImVec2(100, 100);
 	//Desc.m_WindowSize = ImVec2(300, 500);
-	Desc.Tag = L"LevelDebugWindow";
+	Desc.Tag = "LevelDebugWindow";
 
 
 	pImGui_Manager->RegisterWindow(CLevelDebugWindow::Create(m_pDevice, m_pContext, &Desc));
@@ -391,7 +391,7 @@ void CMainApp::CreateObjectDebugWindow()
 	Desc.m_WindowTitle = "ObjectDebugWindow";
 	Desc.m_WindowPos = ImVec2(g_iWinSizeX, 100);
 	//Desc.m_WindowSize = ImVec2(300, 500);
-	Desc.Tag = L"ObjectDebugWindow";
+	Desc.Tag = "ObjectDebugWindow";
 
 
 	pImGui_Manager->RegisterWindow(CObjectDebugWindow::Create(m_pDevice, m_pContext, &Desc));
@@ -404,7 +404,7 @@ void CMainApp::CreateCameraDebugWindow()
 	Desc.m_WindowTitle = "CameraDebugWindow";
 	Desc.m_WindowPos = ImVec2(g_iWinSizeX, 100);
 	//Desc.m_WindowSize = ImVec2(300, 500);
-	Desc.Tag = L"CameraDebugWindow";
+	Desc.Tag = "CameraDebugWindow";
 
 	pImGui_Manager->RegisterWindow(CCameraDebugWindow::Create(m_pDevice, m_pContext, &Desc));
 

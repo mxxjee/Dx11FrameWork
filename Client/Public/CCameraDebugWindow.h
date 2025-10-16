@@ -37,8 +37,6 @@ public:
 
 private:
     HRESULT     Create_Widgets();
-    HRESULT     Create_Button(void* pArg, CImgui_Button** ppOut);
-    HRESULT     Create_Slider(void* pArg, CImgui_Slider** ppOut);
 
 
 private:
