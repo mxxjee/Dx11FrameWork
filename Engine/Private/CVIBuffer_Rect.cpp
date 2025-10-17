@@ -66,7 +66,7 @@ HRESULT CVIBuffer_Rect::Initialize_Prototype()
 	D3D11_BUFFER_DESC IndexDesc;
 	m_iNumIndices = 6;
 	m_iIndexStride = m_iNumVertices >= 65535 ? 4 : 2;
-
+	m_iNumVertexBuffers = 1;
 
 
 	IndexDesc.ByteWidth = m_iIndexStride * m_iNumIndices;		//할당할 크기
@@ -124,7 +124,7 @@ CComponent* CVIBuffer_Rect::Clone(void* pArg)
 	CVIBuffer_Rect* pInstance = new CVIBuffer_Rect(*this);
 	if (FAILED(pInstance->Initialize_Copytype(pArg)))
 	{
-		MSG_BOX("Failed to Cloned : CTransform");
+		MSG_BOX("Failed to Cloned : CVIBuffer_Rect");
 		Safe_Release(pInstance);
 	}
 

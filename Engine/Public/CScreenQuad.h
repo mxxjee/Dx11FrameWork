@@ -23,6 +23,9 @@ public:
 
     virtual HRESULT Render();  
 
+private:
+    HRESULT Ready_Resources(void* pArg);
+    HRESULT Bind_ShaderResources();
 public:
     void Make_ScreenShot(class CTexture* pTex);
     HRESULT CreateBlendState();

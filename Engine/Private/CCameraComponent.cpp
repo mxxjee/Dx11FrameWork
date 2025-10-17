@@ -52,32 +52,6 @@ void CCameraComponent::Update_ViewMatrix(_float fTimeDelta)
 
     vEye = pTransform->Get_State(STATE::POSITION);
     vAt = vEye + XMVector3Normalize(pTransform->Get_State(STATE::LOOK));
-    
-
-    //if (m_pTarget)
-    //{
-    //    CTransform* pTargetTransform = dynamic_cast<CTransform*>(m_pTarget->Get_Component(L"Transform"));
-    //    if (pTargetTransform)
-    //    {
-    //        vAt = pTargetTransform->Get_State(STATE::POSITION);
-    //    }
-    //}
-    //타겟설정되었다면, 오프셋만큼 떨어져서보기.
-  /*  if (m_pTarget)
-    {
-        CTransform* pTargetTransform = dynamic_cast<CTransform*>(m_pTarget->Get_Component(L"Transform"));
-        vAt = pTargetTransform->Get_State(STATE::POSITION);
-        
-        _vector vQuat = pTransform->Get_SRT(SRTType::ROTATION);
-        _matrix matRot = XMMatrixRotationQuaternion(vQuat);
-
-        _vector vRotatedoffset = XMVector3TransformCoord(XMLoadFloat3(&m_vOffSet), matRot);
-
-
-  
-        vEye = vAt + vRotatedoffset;
-        pTransform->Set_State(STATE::POSITION, vEye);
-    }*/
 
     XMStoreFloat4x4(&m_matView, XMMatrixLookAtLH(vEye, vAt, XMLoadFloat3(&m_vUp)));
 }

@@ -58,6 +58,9 @@
     <ClInclude Include="CScreenFilter.h">
       <Filter>02.GameObjects\00.WorldObjects\Screen</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CTerrain.h">
+      <Filter>02.GameObjects\00.WorldObjects\Terrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -134,6 +137,9 @@
     <Filter Include="02.GameObjects\00.WorldObjects\Screen">
       <UniqueIdentifier>{bc3d8787-78cc-4ad7-be0d-6a5d27aab420}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\Terrain">
+      <UniqueIdentifier>{78c68c6f-24f3-4338-9a15-71e38fd682fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -181,6 +187,9 @@
     <ClCompile Include="CScreenFilter.cpp">
       <Filter>02.GameObjects\00.WorldObjects\Screen</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CTerrain.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\Terrain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -192,6 +201,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\Bin\ShaderFiles\Default.hlsli">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

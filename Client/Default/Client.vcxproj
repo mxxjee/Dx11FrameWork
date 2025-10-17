@@ -161,6 +161,7 @@
     <ClInclude Include="..\Public\CObjectDebugWindow.h" />
     <ClInclude Include="..\Public\CPanel.h" />
     <ClInclude Include="..\Public\CPlayer.h" />
+    <ClInclude Include="..\Public\CTerrain.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="CScreenFilter.h" />
     <ClInclude Include="framework.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="..\Private\CObjectDebugWindow.cpp" />
     <ClCompile Include="..\Private\CPanel.cpp" />
     <ClCompile Include="..\Private\CPlayer.cpp" />
+    <ClCompile Include="..\Private\CTerrain.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="CScreenFilter.cpp" />
   </ItemGroup>
@@ -199,6 +201,14 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Geometry</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">4.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\Bin\ShaderFiles\Shader_VtxNorTex.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>

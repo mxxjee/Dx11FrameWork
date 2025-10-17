@@ -57,6 +57,9 @@ public:
     void  Set_Parent(CTransform* pParent);
 
 public:
+    //셰이더에게 데이터전송
+    HRESULT             Bind_ShaderResource(class CShader* pShader, const string& Variable);
+public:
     const _float4x4&        Get_World(TransformScope eScope = TransformScope::LOCAL);
     _float3                 Get_Scale();           //right.up.forward벡터 길이만 리턴하자.
     _vector                 Get_SRT(SRTType eType);

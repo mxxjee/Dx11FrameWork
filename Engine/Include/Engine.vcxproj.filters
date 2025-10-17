@@ -214,6 +214,9 @@
     <Filter Include="03.GameObject\CameraObject\PostProcess">
       <UniqueIdentifier>{88290678-cca7-408e-b83f-acff352ca615}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\VIBuffer\VIBuffer_Terrain">
+      <UniqueIdentifier>{94e50676-b5ff-4b50-aee5-d6d22ae36e2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -414,6 +417,9 @@
     <ClInclude Include="..\Public\CPostProcessCamera.h">
       <Filter>03.GameObject\CameraObject\PostProcess</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CVIBuffer_Terrain.h">
+      <Filter>05.Component\VIBuffer\VIBuffer_Terrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -583,6 +589,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CPostProcessCamera.cpp">
       <Filter>03.GameObject\CameraObject\PostProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CVIBuffer_Terrain.cpp">
+      <Filter>05.Component\VIBuffer\VIBuffer_Terrain</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

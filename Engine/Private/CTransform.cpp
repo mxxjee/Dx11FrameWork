@@ -1,5 +1,7 @@
 #include "CTransform.h"
 #include "MathUtils.h"
+#include "CShader.h"
+
 
 CTransform::CTransform(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CComponent(pDevice,pContext)
@@ -203,6 +205,13 @@ void CTransform::MoveLerp(_vector vTargetPos, float fLerpSpeed, float fTimeDelta
 	_vector vCur = Get_State(STATE::POSITION);
 	_vector vNew = XMVectorLerp(vCur, vTargetPos, t);
 	Set_State(STATE::POSITION, vNew);
+}
+
+HRESULT CTransform::Bind_ShaderResource(CShader* pShader, const string& Variable)
+{
+	CheckNullResult(pShader, E_FAIL);
+	return pShader->Bind_Matrix(Variable, m_WorldMatrix);
+
 }
 
 const _float4x4& CTransform::Get_World(TransformScope eScope)

@@ -1,5 +1,6 @@
 #include "CQuad.h"
 #include "CGameInstance.h"
+
 #include "CTexture.h"
 #include "CShader.h"
 #include "CVIBuffer_Rect.h"
@@ -30,20 +31,13 @@ HRESULT CQuad::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
     /*내 컴포넌트 값 세팅*/
-    if (FAILED(CQuad::Ready_Components(pArg)))
+    if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
  
+    if (FAILED(Ready_Resources(pArg)))
+        return E_FAIL;
 
-    QUAD_DESC* pQuad_Desc = static_cast<QUAD_DESC*>(pArg);
-    m_eRenderGroup = pQuad_Desc->eRenderGroup;
-    m_pTexShader = m_pGameInstance->Find_Shader(pQuad_Desc->ShaderName);
-    Safe_AddRef(m_pTexShader);
 
-    if (pQuad_Desc->ImgPath != L"")
-    {
-        m_pTexture = CTexture::Create(m_pDevice,m_pContext,pQuad_Desc->ImgPath.c_str(), pQuad_Desc->ImgCnt);
-
-    }
    
 
 
@@ -80,30 +74,18 @@ HRESULT CQuad::Render()
 {
     __super::Render();
 
-    CShader* pRenderShader = m_pGameInstance->Get_RenderShader();
-    string  pRenderPass = m_pGameInstance->Get_RenderPassName();
+    if (FAILED(Bind_ShaderResources()))
+        return E_FAIL;
 
-    CheckNullResult(pRenderShader, E_FAIL);
+    if (FAILED(m_pShader->Begin(m_passName)))
+        return E_FAIL;
 
-    //렌더 할때 copydata로 GPU에게 데이터전송
-    pRenderShader->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
-
-    if (m_pTexture)
-    {
-        m_pTexture->Bind_ShaderResource(pRenderShader, "texture0", 0);
-
-    }
+    if (FAILED(m_pVIBufferCom->Bind_Resource()))
+        return E_FAIL;          //IA단계
    
-    pRenderShader->Bind_Float("g_Brightness", 1.f);
+    if (FAILED(m_pVIBufferCom->Render()))
+        return E_FAIL;
 
-
-    pRenderShader->Begin(pRenderPass); //VS-PS
-
- 
-    m_pVIBufferCom->Bind_Resource();   //IA단계
-   
-
-    m_pVIBufferCom->Render();      //OM단계
     return S_OK;
 }
 
@@ -111,7 +93,7 @@ HRESULT CQuad::Ready_Components(void* pArg)
 {
     CComponent* pBuffer = dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"VIBuffer_Rect"), pArg));
     
-    if (FAILED(Add_Component(COMPONENT_TYPE::VIBUFFER_RECT, pBuffer, (CComponent**)&m_pVIBufferCom)))
+    if (FAILED(__super::Add_Component(COMPONENT_TYPE::VIBUFFER_RECT, pBuffer, (CComponent**)&m_pVIBufferCom)))
         return E_FAIL;
 
    
@@ -149,10 +131,42 @@ CGameObject* CQuad::Clone(void* pArg)
     return pInstance;
 }
 
+HRESULT CQuad::Ready_Resources(void* pArg)
+{
+    CheckNullResult(pArg, E_FAIL);
+    QUAD_DESC* pQuad_Desc = static_cast<QUAD_DESC*>(pArg);
+
+    m_eRenderGroup = pQuad_Desc->eRenderGroup;
+    m_ShaderName = pQuad_Desc->ShaderName;
+    m_passName = pQuad_Desc->passName;
+
+   
+    m_pShader = m_pGameInstance->Find_Shader(pQuad_Desc->ShaderName);
+    Safe_AddRef(m_pShader);
+
+    if (pQuad_Desc->ImgPath != L"")
+        m_pTexture = CTexture::Create(m_pDevice, m_pContext, pQuad_Desc->ImgPath.c_str(), pQuad_Desc->ImgCnt);
+
+    return S_OK;
+}
+
 void CQuad::Free()
 {
     __super::Free();
-    Safe_Release(m_pTexShader);
+    Safe_Release(m_pShader);
     Safe_Release(m_pTexture);
     Safe_Release(m_pVIBufferCom);
+}
+
+HRESULT CQuad::Bind_ShaderResources()
+{
+    if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
+        return E_FAIL;
+
+    if (FAILED(m_pTexture->Bind_ShaderResource(m_pShader, "texture0", 0)))
+        return E_FAIL;
+
+
+
+
 }

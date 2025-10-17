@@ -28,6 +28,10 @@ HRESULT CScreenQuad::Initialize_Copytype(void* pArg)
     if(FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
+    if (FAILED(Ready_Resources(pArg)))
+        return E_FAIL;
+
+
     CreateBlendState();
     return S_OK;
 }
@@ -56,6 +60,8 @@ void CScreenQuad::Update_Render(_float fTimeDelta)
 HRESULT CScreenQuad::Render()
 {
 
+    if (FAILED(Bind_ShaderResources()))
+        return E_FAIL;
    
     
     CShader* pShader = m_pGameInstance->Find_Shader(L"Default");
@@ -82,6 +88,25 @@ HRESULT CScreenQuad::Render()
     ////OM단계
     Set_BlendState();
     m_pVIBufferCom->Render();      //OM단계
+    return S_OK;
+}
+
+HRESULT CScreenQuad::Ready_Resources(void* pArg)
+{
+    return S_OK;
+}
+
+HRESULT CScreenQuad::Bind_ShaderResources()
+{
+    if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
+        return E_FAIL;
+
+    if (FAILED(m_pTexture->Bind_ShaderResource(m_pShader, "texture0", 0)))
+        return E_FAIL;
+
+    if (FAILED(m_pShader->Bind_Float("g_Brightness", 0.7f)))
+        return E_FAIL;
+
     return S_OK;
 }
 

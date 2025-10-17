@@ -32,7 +32,7 @@ HRESULT CGameObject::Initialize_Copytype(void* pArg)
     tag = pDesc->ObjTag;
     pDesc->pOwner = this;
    
-    if (FAILED(CGameObject::Ready_Components(pArg)))
+    if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
 
 
