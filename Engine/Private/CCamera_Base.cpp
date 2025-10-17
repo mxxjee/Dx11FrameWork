@@ -122,7 +122,7 @@ HRESULT CCamera_Base::UnBind_RenderTarget()
 {
 
 
-    if (!m_bUseNewRenderTarget)
+    if (!m_bUseNewRenderTarget) 
         return S_OK;
 
     

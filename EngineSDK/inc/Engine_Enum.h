@@ -114,7 +114,7 @@ namespace Engine
 		CUTSCENE,
 		SHADOW,
 		MINIMAP,
-
+		POSTPROCESS,
 		UI,	//항상 마지막이여야함.
 		END};
 

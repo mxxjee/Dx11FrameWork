@@ -211,6 +211,9 @@
     <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\Checkbox">
       <UniqueIdentifier>{b7cae33f-0f8d-4731-bb5c-7bd79ec83764}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObject\CameraObject\PostProcess">
+      <UniqueIdentifier>{88290678-cca7-408e-b83f-acff352ca615}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -408,6 +411,9 @@
     <ClInclude Include="..\Public\CImgui_Checkbox.h">
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Checkbox</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CPostProcessCamera.h">
+      <Filter>03.GameObject\CameraObject\PostProcess</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -574,6 +580,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CImgui_Checkbox.cpp">
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Checkbox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPostProcessCamera.cpp">
+      <Filter>03.GameObject\CameraObject\PostProcess</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -57,10 +57,16 @@ HRESULT CScreenQuad::Render()
 {
 
    
-    ////렌더 할때 copydata로 GPU에게 데이터전송
-    m_pGameInstance->Get_RenderShader()->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
-    m_pGameInstance->Get_RenderShader()->Bind_Float("g_Brightness", 0.4f);
+    
+    CShader* pShader = m_pGameInstance->Find_Shader(L"Default");
+    if (pShader)
+    {
+        ////렌더 할때 copydata로 GPU에게 데이터전송
+        
+        pShader->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
+        pShader->Bind_Float("g_Brightness", 0.7f);
 
+    }
     if (m_pTexture)
         m_pTexture->Bind_ShaderResource(m_pGameInstance->Get_RenderShader(), "texture0", 0);
 
@@ -71,7 +77,7 @@ HRESULT CScreenQuad::Render()
   
   
     ////VS-PS
-    m_pGameInstance->Get_RenderShader()->Begin("Brightness");
+    m_pGameInstance->Get_RenderShader()->Begin("Blur");
 
     ////OM단계
     Set_BlendState();

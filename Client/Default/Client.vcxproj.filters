@@ -55,6 +55,9 @@
     <ClInclude Include="..\Public\CLevel_UI.h">
       <Filter>01.Levels\OverlayUI</Filter>
     </ClInclude>
+    <ClInclude Include="CScreenFilter.h">
+      <Filter>02.GameObjects\00.WorldObjects\Screen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -128,6 +131,9 @@
     <Filter Include="02.GameObjects\99.UI\00.Panel\00.Background">
       <UniqueIdentifier>{a8a9cb85-f5d9-42bf-9359-4cdd0223099e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\Screen">
+      <UniqueIdentifier>{bc3d8787-78cc-4ad7-be0d-6a5d27aab420}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -171,6 +177,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_UI.cpp">
       <Filter>01.Levels\OverlayUI</Filter>
+    </ClCompile>
+    <ClCompile Include="CScreenFilter.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\Screen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -498,7 +498,7 @@ void CLevel_Logo::Create_MainCamera()
     Desc.ObjTag = L"MainCamera";
 
     Desc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
-    Desc.PassName = "Default";
+    Desc.PassName = "Threshold";
 
     Desc.eCameraType = CAMERA_TYPE::TARGET;
     Desc.eCameraFlag = CAMERA_FLAG::NONE;
