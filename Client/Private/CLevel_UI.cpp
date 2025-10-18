@@ -25,8 +25,8 @@ void CLevel_UI::Update_Priority(_float fTimeDelta)
 	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
 		m_pGameInstance->Pop_Level() ;
 
-	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::P))
-		m_pGameInstance->SaveTextureToFile(L"RenderBehind", L"../../ScreenShots/1.png");
+	/*if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::P))
+		m_pGameInstance->SaveTextureToFile(L"RenderBehind", L"../../ScreenShots/1.png");*/
 
 }
 
@@ -112,7 +112,7 @@ HRESULT CLevel_UI::Ready_Layer_UI(const _wstring& strLayerTag)
 	Desc.fX = g_iWinSizeX>>1;
 	Desc.fY = g_iWinSizeY>>1;
 
-	Desc.ShaderName = L"Brightness";
+	Desc.passName = "Blur";
 
 
 	Desc.Depth = 0.6f;

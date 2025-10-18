@@ -23,6 +23,10 @@ public:
     virtual HRESULT     CreateTexture(const RENDER_TARGET& m_Target);
 
     void            CreateBlendState();
+
+private:
+    HRESULT                     Ready_Resources(void* pArg);
+    HRESULT                     Bind_ShaderResources();
 public:
     static CMinimapQuad* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;

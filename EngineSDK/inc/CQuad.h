@@ -10,10 +10,12 @@ class ENGINE_DLL CQuad :
 public:
     typedef struct tagQuad_DESC : CGameObject::GAMEOBJECT_DESC
     {
-        _wstring ImgPath;
+        _wstring    ImgPath;
         _uint     ImgCnt = 1;
 
-        _wstring ShaderName = L"Default";
+        _wstring    ShaderName = L"Default";
+        string      passName = "Default";
+
         _uint eRenderGroup = 0;
         
         
@@ -40,6 +42,9 @@ public:
 
 public:
     HRESULT                     Ready_Components(void* pArg);
+    HRESULT                     Ready_Resources(void* pArg);
+    HRESULT                     Bind_ShaderResources();
+public:
     void                        Set_RenderGroup(_uint eGroup) { m_eRenderGroup = eGroup; }
 public:
     static CQuad* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
@@ -48,13 +53,16 @@ public:
 
     
 protected:
-    RenderStates            m_RenderStates;
-    class CTexture* m_pTexture = nullptr;
-    class CShader* m_pTexShader = nullptr;
-    class CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
+    RenderStates                m_RenderStates;
+    class CTexture*             m_pTexture = nullptr;
+    class CShader*              m_pShader = nullptr;
+    class CVIBuffer_Rect*       m_pVIBufferCom = { nullptr };
 
 protected:
-    _uint m_eRenderGroup = 0;
+    _uint       m_eRenderGroup = 0;
+    _wstring    m_ShaderName = L"";
+    string      m_passName = "";
+
 };
 
 NS_END

@@ -30,19 +30,40 @@ HRESULT CTransform::Initialize_Copytype(void* pArg)
 	COMPONENT_DESC* pComponentDest = static_cast<COMPONENT_DESC*>(pArg);
 	TRANSFORM_DESC* pDesc = static_cast<TRANSFORM_DESC*>(pComponentDest->TransformDesc);
 	
-	//vLocalScale = pDesc->vLocalScale;
-	//vLocalRotation = pDesc->vLocalRotation;
-	m_fSpeedPerSec = pDesc->fSpeedPerSec;
-	m_fRotationPerSec = pDesc->fRotationPerSec;
-
 	XMStoreFloat4x4(&m_LocalWorldMatrix, XMMatrixIdentity());
-	
-
 	m_WorldMatrix = m_LocalWorldMatrix;
 
-	Set_State(STATE::POSITION, pDesc->vLocalPosition);
-	Set_Scale(pDesc->vLocalScale);
-	Rotation(_float3(pDesc->vLocalRotation.x, pDesc->vLocalRotation.y, pDesc->vLocalRotation.z));
+
+	if (pDesc)
+	{
+		m_fSpeedPerSec = pDesc->fSpeedPerSec;
+		m_fRotationPerSec = pDesc->fRotationPerSec;
+
+		Set_State(STATE::POSITION, pDesc->vLocalPosition);
+		Set_Scale(pDesc->vLocalScale);
+		Rotation(_float3(pDesc->vLocalRotation.x, pDesc->vLocalRotation.y, pDesc->vLocalRotation.z));
+	}
+	
+	else
+	{
+		m_fSpeedPerSec = 5.f;
+		m_fRotationPerSec = 0.f;
+
+		_float4 vLocalPosition = { 0.f,0.f,0.f,1.f };
+		_float4 vLocalScale = { 1.f,1.f,1.f,1.f };
+		_float4 vLocalRotation = { 0.f,0.f,0.f,1.f };
+
+
+		Set_State(STATE::POSITION, vLocalPosition);
+		Set_Scale(vLocalScale);
+		Rotation(_float3(vLocalRotation.x, vLocalRotation.y, vLocalRotation.z));
+	}
+
+
+
+
+
+
 
 	return S_OK;
 }

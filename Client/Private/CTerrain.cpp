@@ -45,14 +45,17 @@ HRESULT CTerrain::Initialize_Copytype(void* pArg)
 
 void CTerrain::Update_Priority(_float fTimeDelta)
 {
+    __super::Update_Priority(fTimeDelta);
 }
 
 void CTerrain::Update(_float fTimeDelta)
 {
+    __super::Update(fTimeDelta);
 }
 
 void CTerrain::Update_Late(_float fTimeDelta)
 {
+    __super::Update_Late(fTimeDelta);
 }
 
 void CTerrain::Update_Render(_float fTimeDelta)
@@ -112,7 +115,13 @@ HRESULT CTerrain::Ready_Resources(void* pArg)
 
 HRESULT CTerrain::Bind_ShaderResources()
 {
-    if(FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader,"g_WorldMatrix")))
+    _float4x4           ViewMul;
+    XMStoreFloat4x4(&ViewMul,m_pGameInstance->Get_RenderCamera_GetMulViewProjMatrix());
+
+    if (m_pShader->Bind_Matrix("g_ViewProjMatrix", ViewMul))
+        return E_FAIL;
+
+    if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
         return E_FAIL;
 
     if (FAILED(m_pTexture->Bind_ShaderResource(m_pShader, "texture0",0)))

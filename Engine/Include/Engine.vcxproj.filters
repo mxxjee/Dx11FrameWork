@@ -217,6 +217,9 @@
     <Filter Include="05.Component\VIBuffer\VIBuffer_Terrain">
       <UniqueIdentifier>{94e50676-b5ff-4b50-aee5-d6d22ae36e2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\99.EtcUtils\GraphicUtil">
+      <UniqueIdentifier>{a6e48c36-403b-44fd-887d-ba9b6855c0bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -419,6 +422,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CVIBuffer_Terrain.h">
       <Filter>05.Component\VIBuffer\VIBuffer_Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GraphicUtil.h">
+      <Filter>01.Utility\99.EtcUtils\GraphicUtil</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

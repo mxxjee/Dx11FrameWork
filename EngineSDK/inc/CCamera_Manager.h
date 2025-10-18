@@ -38,6 +38,12 @@ public:
     //메인카메라의 뷰,투영행렬 관련
    // _matrix Get_Main_MulViewProjMatrix();
     //void    Bind_Main_ViewProjMatrix() const;
+
+
+    //현재 Render함수에서 호출되고있는 카메라의 뷰,투영가져오기
+    const _float4x4& Get_RenderCamera_ViewMatrix() const;
+    const _float4x4& Get_RenderCamera_GetProjMatrix() const;
+    const _matrix  Get_RenderCamera_GetMulViewProjMatrix() const;
 public:
     void        Update_Cameras(_float fTimeDelta);
     void        LateUpdate_Cameras(_float fTimeDelta);

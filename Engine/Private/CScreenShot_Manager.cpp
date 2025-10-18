@@ -28,13 +28,79 @@ void CScreenShot_Manager::ScreenShot(const _wstring& Key)
   
     CGameInstance::GetInstance()->Get_Buffer(&pBackBuffer, 0);
    
+    /*백버퍼 정보 가져오기*/
     D3D11_TEXTURE2D_DESC pdesc{};
     pBackBuffer->GetDesc(&pdesc);
     OutputDebugString((L"BackBuffer Format: " + std::to_wstring(pdesc.Format) + L"\n").c_str());
 
 
 
-    _wstring SavePath = L"../../ScreenShots/" + Key + L".png";
+    //_wstring SavePath = L"../../ScreenShots/" + Key + L".png";
+
+    //[HAZARD충돌방지용 . 먼저 STAGING으로 생성]
+    D3D11_TEXTURE2D_DESC stagingDesc = pdesc;
+    stagingDesc.BindFlags = 0;
+    stagingDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+    stagingDesc.Usage = D3D11_USAGE_STAGING;
+    stagingDesc.MiscFlags = 0; // 반드시 0
+    stagingDesc.SampleDesc.Count = 1; // 멀티샘플링 제거 (복사용)
+
+    ComPtr<ID3D11Texture2D> pStagingTex;
+    HRESULT hr = m_pDevice->CreateTexture2D(&stagingDesc, nullptr, pStagingTex.GetAddressOf());
+    if (FAILED(hr))
+    {
+        MSG_BOX("Staging Texture Create Failed");
+        return;
+    }
+
+
+    //GPU → CPU 복사
+    m_pContext->CopyResource(pStagingTex.Get(), pBackBuffer.Get());
+
+    //SRV용 GPU 텍스처 생성 (복사 목적)
+    D3D11_TEXTURE2D_DESC texDesc = pdesc;
+    texDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+    texDesc.CPUAccessFlags = 0;
+    texDesc.Usage = D3D11_USAGE_DEFAULT;
+    texDesc.MiscFlags = 0;
+
+    ComPtr<ID3D11Texture2D> pGpuTex;
+    hr = m_pDevice->CreateTexture2D(&texDesc, nullptr, pGpuTex.GetAddressOf());
+    if (FAILED(hr))
+    {
+        MSG_BOX("GPU Texture Create Failed");
+        return;
+    }
+
+    //스테이징 텍스처의 데이터를 GPU 텍스처로 복사
+    D3D11_MAPPED_SUBRESOURCE mapped{};
+    hr = m_pContext->Map(pStagingTex.Get(), 0, D3D11_MAP_READ, 0, &mapped);
+    if (SUCCEEDED(hr))
+    {
+        m_pContext->UpdateSubresource(
+            pGpuTex.Get(),
+            0,
+            nullptr,
+            mapped.pData,
+            mapped.RowPitch,
+            0
+        );
+        m_pContext->Unmap(pStagingTex.Get(), 0);
+    }
+    else
+    {
+        MSG_BOX("Map Failed");
+        return;
+    }
+
+    // SRV 생성
+    ComPtr<ID3D11ShaderResourceView> pSRV;
+    hr = m_pDevice->CreateShaderResourceView(pGpuTex.Get(), nullptr, pSRV.GetAddressOf());
+    if (FAILED(hr))
+    {
+        MSG_BOX("SRV Create Failed");
+        return;
+    }
 
     //텍스처생성
     D3D11_TEXTURE2D_DESC desc{};

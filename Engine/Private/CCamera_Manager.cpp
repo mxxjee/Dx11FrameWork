@@ -4,7 +4,10 @@
 #include "CGameObject.h"
 #include "CCamera_Base.h"
 #include "CGameInstance.h"
+
 #include "ColorUtils.h"
+#include "GraphicUtil.h"
+
 #include "CShader.h"
 
 
@@ -104,6 +107,25 @@ CCamera_Base* CCamera_Manager::Find_Camera(CAMERA_TYPE eType)
 	return m_Cameras[ENUM_TO_UINT(eType)];
 }
 
+const _float4x4& CCamera_Manager::Get_RenderCamera_ViewMatrix() const
+{
+	// TODO: 여기에 return 문을 삽입합니다.
+	CheckNullResult(m_pRenderCamera, g_Identityfloat4x4);
+	return m_pRenderCamera->Get_CameraComp()->Get_ViewMatrix();
+}
+
+const _float4x4& CCamera_Manager::Get_RenderCamera_GetProjMatrix() const
+{
+	CheckNullResult(m_pRenderCamera, g_Identityfloat4x4);
+	return m_pRenderCamera->Get_CameraComp()->Get_ProjMatrix();
+}
+
+const _matrix CCamera_Manager::Get_RenderCamera_GetMulViewProjMatrix() const
+{
+	CheckNullResult(m_pRenderCamera, g_IdentityMatrix);
+	return m_pRenderCamera->Get_CameraComp()->Get_MulViewProjMatrix();
+}
+
 void CCamera_Manager::Update_Cameras(_float fTimeDelta)
 {
 	for (int i = 0; i < ENUM_TO_UINT(CAMERA_TYPE::END); ++i)
@@ -171,7 +193,7 @@ void CCamera_Manager::Render_Cameras()
 
  		
 		m_pRenderCamera->UnBind_RenderTarget();
-
+		UnbindAllShaderResources(m_pContext.Get());   // 혹시 모를 잔여 바인딩 제거(HAZARD오류 방지)
 	}
 
 	

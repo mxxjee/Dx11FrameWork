@@ -43,7 +43,7 @@ HRESULT CCameraComponent::Initialize_Copytype(void* pArg)
 }
 
 void CCameraComponent::Update_ViewMatrix(_float fTimeDelta)
-{ 
+{
     CheckFalse(m_bDynamic);
 
     CTransform* pTransform = dynamic_cast<CTransform*>(Get_Owner()->Get_Component(COMPONENT_TYPE::TRANSFORM));

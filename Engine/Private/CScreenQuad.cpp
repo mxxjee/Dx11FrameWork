@@ -28,9 +28,6 @@ HRESULT CScreenQuad::Initialize_Copytype(void* pArg)
     if(FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
-    if (FAILED(Ready_Resources(pArg)))
-        return E_FAIL;
-
 
     CreateBlendState();
     return S_OK;
@@ -60,41 +57,48 @@ void CScreenQuad::Update_Render(_float fTimeDelta)
 HRESULT CScreenQuad::Render()
 {
 
+   
+
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
    
-    
-    CShader* pShader = m_pGameInstance->Find_Shader(L"Default");
-    if (pShader)
-    {
-        ////렌더 할때 copydata로 GPU에게 데이터전송
-        
-        pShader->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
-        pShader->Bind_Float("g_Brightness", 0.7f);
+    //
+    //CShader* pShader = m_pGameInstance->Find_Shader(L"Default");
+    //if (pShader)
+    //{
+    //    ////렌더 할때 copydata로 GPU에게 데이터전송
+    //    
+    //    pShader->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
+    //    pShader->Bind_Float("g_Brightness", 0.7f);
 
-    }
-    if (m_pTexture)
-        m_pTexture->Bind_ShaderResource(m_pGameInstance->Get_RenderShader(), "texture0", 0);
+    //}
+    //if (m_pTexture)
+    //    m_pTexture->Bind_ShaderResource(m_pGameInstance->Get_RenderShader(), "texture0", 0);
 
        
+     ////VS-PS
+    if (FAILED(m_pShader->Begin(m_passName)))
+        return E_FAIL;
 
     ////IA단계
-    m_pVIBufferCom->Bind_Resource();
+    if (FAILED(m_pVIBufferCom->Bind_Resource()))
+        return E_FAIL;
   
   
-    ////VS-PS
-    m_pGameInstance->Get_RenderShader()->Begin("Blur");
-
+   
     ////OM단계
     Set_BlendState();
-    m_pVIBufferCom->Render();      //OM단계
+    
+    if (FAILED(m_pVIBufferCom->Render()))
+        return E_FAIL;
+
+    ID3D11ShaderResourceView* pNullSRVs[8] = { nullptr };
+    m_pContext->PSSetShaderResources(0, 8, pNullSRVs);
+
+
     return S_OK;
 }
 
-HRESULT CScreenQuad::Ready_Resources(void* pArg)
-{
-    return S_OK;
-}
 
 HRESULT CScreenQuad::Bind_ShaderResources()
 {

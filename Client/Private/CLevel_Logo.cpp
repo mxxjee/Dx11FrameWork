@@ -10,6 +10,8 @@
 #include "CPlayer.h"
 #include "CMainCamera.h"
 #include "CUICamera.h"
+#include "CTerrain.h"
+
 
 #include "CMinimapCamera.h"
 #include "CMinimapQuad.h"
@@ -183,31 +185,57 @@ void CLevel_Logo::Render()
 
 HRESULT CLevel_Logo::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 {
-    CQuad::QUAD_DESC desc;
-    desc.ObjTag = L"Floor";
-    desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
-    desc.ImgPath = L"../../Resource/Terrain0.png";
+#pragma region 이전지형(일자지형)
+    //CQuad::QUAD_DESC desc;
+    //desc.ObjTag = L"Floor";
+    //desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+    //desc.ImgPath = L"../../Resource/Terrain0.png";
 
+
+    //CTransform::TRANSFORM_DESC TransDesc = {};
+
+    //TransDesc.fRotationPerSec = 0.f;
+    //TransDesc.fSpeedPerSec = 1.f;
+    //TransDesc.vLocalPosition = { 0.f,-2.f,0.f,1.f };
+
+    //TransDesc.vLocalScale = { 30.f,30.f,1.f,1.f };
+    //TransDesc.vLocalRotation = { -90.f,0.f,0.f,1.f };
+
+
+
+    //desc.TransformDesc = &TransDesc;
+
+    //if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+    //    PROTO_OBJ_NAME(L"Floor"),
+    //    ENUM_TO_UINT(LEVEL_ID::LOGO),
+    //    strLayerTag, &desc)))
+    //    return E_FAIL;
+
+#pragma endregion
+
+    /////////////////////////////////////
+    CTerrain::TERRAIN_DESC pDesc;
+    pDesc.ImgPath= L"../../Resource/Terrain0.png";
+    pDesc.ShaderName = L"VtxNorTex";
+    pDesc.passName = "Default";
 
     CTransform::TRANSFORM_DESC TransDesc = {};
 
     TransDesc.fRotationPerSec = 0.f;
     TransDesc.fSpeedPerSec = 1.f;
-    TransDesc.vLocalPosition = { 0.f,-2.f,0.f,1.f };
+    TransDesc.vLocalPosition = { -64.f,-5.f,-64.f,1.f };
 
-    TransDesc.vLocalScale = { 30.f,30.f,1.f,1.f };
-    TransDesc.vLocalRotation = { -90.f,0.f,0.f,1.f };
+    TransDesc.vLocalScale = { 1.f,1.f,1.f,1.f };
 
+    pDesc.TransformDesc = &TransDesc;
 
-
-    desc.TransformDesc = &TransDesc;
 
     if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-        PROTO_OBJ_NAME(L"Floor"),
-        ENUM_TO_UINT(LEVEL_ID::LOGO),
-        strLayerTag, &desc)))
-        return E_FAIL;
-        
+       PROTO_OBJ_NAME(L"Terrain"),
+       ENUM_TO_UINT(LEVEL_ID::LOGO),
+       strLayerTag, &pDesc)))
+       return E_FAIL;
+
     return S_OK;
 }
 
@@ -241,6 +269,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     ///////////////////Minimapquad생성
     CUI::tagUIDesc        MinimapDesc = {};
     MinimapDesc.ObjTag = L"MinimapQuad";
+    MinimapDesc.passName = "Blur";
     MinimapDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
     MinimapDesc.fSizeX = 150;
     MinimapDesc.fSizeY = 150;
@@ -320,7 +349,7 @@ HRESULT CLevel_Logo::Ready_Layer_Player(const _wstring& strLayerTag)
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
     TransDesc.vLocalPosition = { 0.f,0.f,0.f,1.f };
-    TransDesc.vLocalScale = { 3.f,3.f,1.f,1.f };
+    TransDesc.vLocalScale = {3.f,3.f,1.f,1.f };
 
     Desc.TransformDesc = &TransDesc;
 

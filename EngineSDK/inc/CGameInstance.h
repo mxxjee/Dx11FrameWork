@@ -108,6 +108,11 @@ public:
     const _float4x4& GetProjMatrix(CAMERA_TYPE eType) const;
     const _matrix GetMulViewProjMatrix(CAMERA_TYPE eType) const;
 
+    const _float4x4& Get_RenderCamera_ViewMatrix() const;
+    const _float4x4& Get_RenderCamera_GetProjMatrix() const;
+    const _matrix  Get_RenderCamera_GetMulViewProjMatrix() const;
+
+
     void    Bind_ViewProjMatrix(CAMERA_TYPE eType);
 
     void        Update_Cameras(_float fTimeDelta);

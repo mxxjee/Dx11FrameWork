@@ -221,7 +221,7 @@ void CMainApp::Register_Shaders()
 	pGameInstance->Register_Shader(L"Default", pInstance);
 
 	pInstance = CShader::Create(m_pDevice,
-		m_pContext, VTXPOSTEX::desc, L"../Bin/ShaderFiles/Shader_VtxNorTex.hlsl",
+		m_pContext, VTXNORTEX::desc, L"../Bin/ShaderFiles/Shader_VtxNorTex.hlsl",
 		"DefaultTechnique");
 	pGameInstance->Register_Shader(L"VtxNorTex", pInstance);
 

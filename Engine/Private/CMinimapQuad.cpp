@@ -72,6 +72,97 @@ void CMinimapQuad::CreateBlendState()
 
 }
 
+HRESULT CMinimapQuad::Ready_Resources(void* pArg)
+{
+    if (m_pMinimapCamera)
+    {
+        ComPtr< ID3D11ShaderResourceView>  resource = m_pMinimapCamera->Get_RenderTarget().SRV;
+        m_pTexture = CTexture::Create(m_pDevice, m_pContext, resource);
+
+    }
+    return S_OK;
+}
+
+
+HRESULT CMinimapQuad::Initialize_Prototype()
+{
+    if (FAILED(__super::Initialize_Prototype()))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CMinimapQuad::Initialize_Copytype(void* pArg)
+{
+    if (FAILED(__super::Initialize_Copytype(pArg)))
+        return E_FAIL;
+
+
+    CGameObject* pCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
+    m_pMinimapCamera = dynamic_cast<CMinimapCamera*>(pCamera);
+
+    /*리소스관련 세팅*/
+    if (FAILED(Ready_Resources(pArg)))
+        return E_FAIL;
+
+
+    CreateBlendState();
+
+    return S_OK;
+}
+
+
+
+
+void CMinimapQuad::Update_Priority(_float fTimeDelta)
+{
+
+    __super::Update_Priority(fTimeDelta);
+}
+
+void CMinimapQuad::Update(_float fTimeDelta)
+{
+    __super::Update(fTimeDelta);
+}
+
+void CMinimapQuad::Update_Late(_float fTimeDelta)
+{
+    __super::Update_Late(fTimeDelta);
+}
+
+void CMinimapQuad::Update_Render(_float fTimeDelta)
+{
+    __super::Update_Render(fTimeDelta);
+}
+
+HRESULT CMinimapQuad::Render()
+{
+    //////렌더 할때 copydata로 GPU에게 데이터전송
+    //if (m_pMinimapCamera)
+    //    CreateTexture(m_pMinimapCamera->Get_RenderTarget());
+
+  
+    if (FAILED(Bind_ShaderResources()))
+        return E_FAIL;
+
+
+    if (FAILED(m_pShader->Begin(m_passName)))
+        return E_FAIL;
+
+
+    if (FAILED(m_pVIBufferCom->Bind_Resource()))
+        return E_FAIL;
+
+    m_pContext->OMSetBlendState(m_BlendState.Get(), nullptr, 0xFFFFFFFF);
+
+    if (FAILED(m_pVIBufferCom->Render()))
+        return E_FAIL;
+
+ 
+
+    return S_OK;
+}
+
 CMinimapQuad* CMinimapQuad::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
     CMinimapQuad* pInstance = new CMinimapQuad(_pDevice, _pDeviceContext);
@@ -105,81 +196,18 @@ void CMinimapQuad::Free()
 
 
 
-HRESULT CMinimapQuad::Initialize_Prototype()
+HRESULT CMinimapQuad::Bind_ShaderResources()
 {
-    if (FAILED(__super::Initialize_Prototype()))
+    
+    if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
         return E_FAIL;
 
-    return S_OK;
-}
+    /*안나오면ㅇ ㅣ거떄문임*/
+	if (FAILED(m_pTexture->Bind_ShaderResource(m_pShader, "texture0",0)))
+		return E_FAIL;
 
-HRESULT CMinimapQuad::Initialize_Copytype(void* pArg)
-{
-    if (FAILED(__super::Initialize_Copytype(pArg)))
+    if (FAILED(m_pShader->Bind_Float("g_Brightness", 0.5f)))
         return E_FAIL;
-
-    CGameObject* pCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
-    m_pMinimapCamera = dynamic_cast<CMinimapCamera*>(pCamera);
-
-    CreateBlendState();
-
-    return S_OK;
-}
-
-void CMinimapQuad::Update_Priority(_float fTimeDelta)
-{
-
-    __super::Update_Priority(fTimeDelta);
-}
-
-void CMinimapQuad::Update(_float fTimeDelta)
-{
-    __super::Update(fTimeDelta);
-}
-
-void CMinimapQuad::Update_Late(_float fTimeDelta)
-{
-    __super::Update_Late(fTimeDelta);
-}
-
-void CMinimapQuad::Update_Render(_float fTimeDelta)
-{
-    __super::Update_Render(fTimeDelta);
-}
-
-HRESULT CMinimapQuad::Render()
-{
-    //////렌더 할때 copydata로 GPU에게 데이터전송
-    //if (m_pMinimapCamera)
-    //    CreateTexture(m_pMinimapCamera->Get_RenderTarget());
-
-
-    m_pContext->OMSetBlendState(m_BlendState.Get(), nullptr, 0xFFFFFFFF);
-
-    m_pGameInstance->Get_RenderShader()->Bind_Matrix("g_WorldMatrix", m_pTransformCom->Get_World((TransformScope::WORLD)));
-
-    if (m_pMinimapCamera)
-    {
-        ComPtr< ID3D11ShaderResourceView>  resource = m_pMinimapCamera->Get_RenderTarget().SRV;
-        //얘는 그냥 외부껄 그대로 srv에던져주기.저장할필요없음
-        m_pGameInstance->Get_RenderShader()->Bind_SRV("texture0", resource);
-
-    }
-
-    m_pGameInstance->Get_RenderShader()->Bind_Float("g_Brightness", 0.5f);
-
-
-    ////IA단계
-    m_pVIBufferCom->Bind_Resource();
-    //VS-PS
-    m_pGameInstance->Get_RenderShader()->Begin(m_pGameInstance->Get_RenderPassName());
-
-    ////OM단계
-    //Set_BlendState();
-    m_pVIBufferCom->Render();      //OM단계
-
-   /* if (m_pMinimapCamera)
-        m_pGameInstance->Get_RenderShader()->SetResource("texture0", nullptr);*/
 
     return S_OK;
 }

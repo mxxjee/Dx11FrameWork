@@ -349,6 +349,18 @@ const _matrix CGameInstance::GetMulViewProjMatrix(CAMERA_TYPE eType) const
 {
 	return m_pCameraManager->GetMulViewProjMatrix(eType);
 }
+const _float4x4& CGameInstance::Get_RenderCamera_ViewMatrix() const
+{
+	return m_pCameraManager->Get_RenderCamera_ViewMatrix();
+}
+const _float4x4& CGameInstance::Get_RenderCamera_GetProjMatrix() const
+{
+	return m_pCameraManager->Get_RenderCamera_GetProjMatrix();
+}
+const _matrix CGameInstance::Get_RenderCamera_GetMulViewProjMatrix() const
+{
+	return m_pCameraManager->Get_RenderCamera_GetMulViewProjMatrix();
+}
 void CGameInstance::Bind_ViewProjMatrix(CAMERA_TYPE eType)
 {
 	CheckNull(m_pCameraManager);

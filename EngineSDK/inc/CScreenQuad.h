@@ -23,10 +23,12 @@ public:
 
     virtual HRESULT Render();  
 
+private:
+    HRESULT Bind_ShaderResources();
 public:
-    void Make_ScreenShot(class CTexture* pTex);
-    HRESULT CreateBlendState();
-    void Set_BlendState();
+    void        Make_ScreenShot(class CTexture* pTex);
+    HRESULT     CreateBlendState();
+    void        Set_BlendState();
 
 public:
     static CScreenQuad* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);

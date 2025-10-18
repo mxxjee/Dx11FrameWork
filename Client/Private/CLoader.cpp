@@ -10,11 +10,15 @@
 #include "CScreenQuad.h"
 #include "CMinimapCamera.h"
 #include "CMinimapQuad.h"
+#include "CTerrain.h"
+
 
 #include "CTransform.h"
 #include "CPerspectiveCameraComponent.h"
 #include "COrthographicCameraComponent.h"
+
 #include "CVIBuffer_Rect.h" 
+#include "CVIBuffer_Terrain.h"
 
 
 USING(Client)
@@ -161,6 +165,10 @@ HRESULT CLoader::Loading_Logo()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Terrain"), CVIBuffer_Terrain::Create(m_pDevice, m_pDeviceContext,L"../../Resource/Height.bmp"))))
+        return E_FAIL;
+
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"BackGround"), CBackGround::Create(m_pDevice, m_pDeviceContext))))
@@ -195,6 +203,10 @@ HRESULT CLoader::Loading_Logo()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MinimapQuad"), CMinimapQuad::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Terrain"), CTerrain::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     m_isFinished = true;
