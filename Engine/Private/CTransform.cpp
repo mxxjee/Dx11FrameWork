@@ -414,10 +414,12 @@ void CTransform::Rotation(_float3 fEularDegree)
 	m_fEularDegree.y = fEularDegree.y;
 	m_fEularDegree.z = fEularDegree.z;
 
-	Matrix QuaternionMat = XMMatrixRotationRollPitchYaw(
-		XMConvertToRadians(fEularDegree.x), 
+	_vector vQuaternion = XMQuaternionRotationRollPitchYaw(XMConvertToRadians(fEularDegree.x),
 		XMConvertToRadians(fEularDegree.y),
 		XMConvertToRadians(fEularDegree.z));
+
+	_matrix RotationMatrix = XMMatrixRotationQuaternion(vQuaternion);
+
 	_float3 vScale= Get_Scale();			//크기유지
 	
 	//크기 유지
@@ -425,9 +427,9 @@ void CTransform::Rotation(_float3 fEularDegree)
 	_vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f)*vScale.y;
 	_vector vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f)*vScale.z;
 
-	Set_State(STATE::RIGHT, XMVector3TransformNormal(vRight, QuaternionMat));
-	Set_State(STATE::UP, XMVector3TransformNormal(vUp, QuaternionMat));
-	Set_State(STATE::LOOK, XMVector3TransformNormal(vLook, QuaternionMat));
+	Set_State(STATE::RIGHT, XMVector3TransformNormal(vRight, RotationMatrix));
+	Set_State(STATE::UP, XMVector3TransformNormal(vUp, RotationMatrix));
+	Set_State(STATE::LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
 
 
 }
@@ -440,10 +442,12 @@ void CTransform::AddRotation(_float3 fEularDegree)
 	m_fEularDegree.y += fEularDegree.y;
 	m_fEularDegree.z += fEularDegree.z;
 
-	Matrix QuaternionMat = XMMatrixRotationRollPitchYaw(
-		XMConvertToRadians(m_fEularDegree.x),
+
+	_vector vQuaternion = XMQuaternionRotationRollPitchYaw(XMConvertToRadians(m_fEularDegree.x),
 		XMConvertToRadians(m_fEularDegree.y),
 		XMConvertToRadians(m_fEularDegree.z));
+
+	_matrix RotationMatrix = XMMatrixRotationQuaternion(vQuaternion);
 	_float3 vScale = Get_Scale();			//크기유지
 
 	//크기 유지
@@ -451,9 +455,9 @@ void CTransform::AddRotation(_float3 fEularDegree)
 	_vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f) * vScale.y;
 	_vector vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f) * vScale.z;
 
-	Set_State(STATE::RIGHT, XMVector3TransformNormal(vRight, QuaternionMat));
-	Set_State(STATE::UP, XMVector3TransformNormal(vUp, QuaternionMat));
-	Set_State(STATE::LOOK, XMVector3TransformNormal(vLook, QuaternionMat));
+	Set_State(STATE::RIGHT, XMVector3TransformNormal(vRight, RotationMatrix));
+	Set_State(STATE::UP, XMVector3TransformNormal(vUp, RotationMatrix));
+	Set_State(STATE::LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
 
 }
 

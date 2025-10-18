@@ -5,6 +5,7 @@ NS_BEGIN(Engine)
 class ENGINE_DLL CImgui_Checkbox :
     public CImgui_Widget
 {
+
 public:
     typedef struct ImguiCheckbox_Desc : public CImgui_Widget::IMGUIWIDGET_DESC
     {
@@ -41,6 +42,7 @@ public:
 
 protected:
     string          m_Label;
+    bool            dummy = false;
     bool*           m_bValue = nullptr;
     function<void()> m_Callback = nullptr;
 

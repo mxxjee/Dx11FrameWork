@@ -59,11 +59,7 @@ public:
     //virtual void            Bind_ViewProjMatrix();
     //CCameraComponent*       Get_CameraComp() { return m_pCameraCom; }
 
-    const CAMERA_TYPE& Get_CameraType() { return m_eCameraType; }
-    const CAMERA_FLAG& Get_CameraFlag() { return m_eCameraFlag; }
-    const RENDER_TARGET& Get_RenderTarget() const { return m_tRenderTarget; }
-    const _float3& Get_Offset() { return m_vOffset; }
-
+ 
 
 protected:
     //pipeline에게 정보업데이트
@@ -86,14 +82,25 @@ public:
     void        Set_RenderMask(_uint eGroup, bool bRender) { m_RenderMask[eGroup] = bRender; }
     void        Set_RenderAllRenderMask(bool bRender);
     const       vector<bool>& Get_RenderMask() { return m_RenderMask; }
+    
     void        Set_Offset(_float3 Offset) { m_vOffset = Offset; }
+    void       Set_Fovy(_float Fov) { m_fFovy = Fov; }
+    void      Set_Near(float fNear) { m_fNearZ=fNear; }
+    void       Set_Far(float fFar) { m_fFarZ=fFar; }
+
+
+public:
+    //카메라의 get함수들
+    const CAMERA_TYPE& Get_CameraType() { return m_eCameraType; }
+    const CAMERA_FLAG& Get_CameraFlag() { return m_eCameraFlag; }
+    const RENDER_TARGET& Get_RenderTarget() const { return m_tRenderTarget; }
+    
+    const _float3& Get_Offset() { return m_vOffset; }
+    const _float    Get_Fovy() { return m_fFovy; }
+    const _float    Get_Near() { return m_fNearZ; }
+    const _float    Get_Far() { return m_fFarZ; }
 
 protected:
-    //CShader* m_pMainShader = { nullptr };       //카메라가 오브젝트 렌더 시 사용할 쉐이더.
-    //string  m_PassName = "";                    //이용할 패스.
-
-    //ComPtr<ID3DX11EffectMatrixVariable>     m_GlobalViewProj;
-
     CAMERA_TYPE                     m_eCameraType = CAMERA_TYPE::END;
     CAMERA_FLAG                     m_eCameraFlag = CAMERA_FLAG::END;
 

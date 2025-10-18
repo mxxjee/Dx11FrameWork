@@ -15,7 +15,7 @@ HRESULT CImgui_Checkbox::Initialize(void* pArg)
 	
 	m_bValue = pDesc->bValue;
 	if (pDesc->bValue == nullptr)
-		m_bValue = nullptr;
+		m_bValue = &dummy;
 
 
 
@@ -42,6 +42,8 @@ void CImgui_Checkbox::Update()
 		}
 
 	}
+
+
 
 }
 

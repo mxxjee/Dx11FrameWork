@@ -148,7 +148,7 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
             break;
 
         case 1:
-            m_pGameInstance->Set_MainCamera(CAMERA_TYPE::MINIMAP);
+            m_pGameInstance->Set_MainCamera(CAMERA_TYPE::FREE);
 
             break;
         }

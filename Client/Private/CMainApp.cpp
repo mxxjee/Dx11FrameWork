@@ -63,7 +63,7 @@ HRESULT CMainApp::Initialize()
 	pImGui_Manager->Init(g_hWnd, m_pDevice.Get(), m_pContext.Get());
 	CreateLevelDebugWindow();
 	CreateObjectDebugWindow();
-	//CreateCameraDebugWindow();
+	CreateCameraDebugWindow();
 
 #endif
 

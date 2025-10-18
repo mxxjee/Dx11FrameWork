@@ -1,5 +1,7 @@
 #include "CImgui_Widget.h"
 
+
+
 CImgui_Widget::CImgui_Widget(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CImgui_Base(pDevice,pContext)
 {
@@ -16,7 +18,10 @@ HRESULT CImgui_Widget::Initialize(void* pArg)
 
 void CImgui_Widget::Update()
 {
-	ImGui::SetCursorScreenPos(RelativePos);
+	//ImGui::SetCursorScreenPos(RelativePos);
+	ImGui::Dummy(ImVec2(0, 0));
+	ImGui::SetCursorPos(RelativePos);
+	
 }
 
 void CImgui_Widget::Render()

@@ -52,6 +52,8 @@ public:
 
     bool            Is_Active() { return m_bActive; }
 
+public:
+    CGameObject*    Get_Target() { return m_pTarget; }
 
 protected:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };
