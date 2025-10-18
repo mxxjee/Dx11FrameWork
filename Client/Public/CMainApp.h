@@ -38,7 +38,6 @@ private:
 
 private:
 	void			Register_Levels();
-	void			Register_Shaders();
 	HRESULT			Start_Level(LEVEL_ID iLevelID,LEVELCHANGETYPE eChangeType);
 
 

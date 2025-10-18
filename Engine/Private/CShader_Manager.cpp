@@ -1,5 +1,6 @@
 #include "CShader_Manager.h"
 #include "CShader.h"
+#include "CGameInstance.h"
 
 CShader_Manager::CShader_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
 	:m_pDevice{ _pDevice }, m_pContext{ _pContext }
@@ -52,6 +53,20 @@ void CShader_Manager::Free()
 
 	}
 
+}
+
+HRESULT CShader_Manager::Bind_GlobalPipelineData(_uint CameraType)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+
+	for (auto& pair : m_mapShader)
+	{
+		if (pair.second)
+		{
+			pGameInstance->Bind_PipeLineMatrixAll(pair.second, "g_ViewProjMatrix", CameraType);
+		}
+	}
+	return S_OK;
 }
 
 CShader* CShader_Manager::Find_Shader(const _wstring& Tag)

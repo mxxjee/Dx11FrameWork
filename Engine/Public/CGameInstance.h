@@ -103,18 +103,6 @@ public:
     void        UnRegisterCamera(CAMERA_TYPE eType);
     void        Set_MainCamera(CAMERA_TYPE eType);
 
-    //뷰,투영행렬가져오기
-    const _float4x4& GetViewMatrix(CAMERA_TYPE eType) const;
-    const _float4x4& GetProjMatrix(CAMERA_TYPE eType) const;
-    const _matrix GetMulViewProjMatrix(CAMERA_TYPE eType) const;
-
-    const _float4x4& Get_RenderCamera_ViewMatrix() const;
-    const _float4x4& Get_RenderCamera_GetProjMatrix() const;
-    const _matrix  Get_RenderCamera_GetMulViewProjMatrix() const;
-
-
-    void    Bind_ViewProjMatrix(CAMERA_TYPE eType);
-
     void        Update_Cameras(_float fTimeDelta);
     void        LateUpdate_Cameras(_float fTimeDelta);
 
@@ -141,6 +129,10 @@ public:
  #pragma region Shader_Manager
      HRESULT     Register_Shader(const _wstring & Tag, class CShader* pInstance);
      class CShader* Find_Shader(const _wstring & Tag);
+
+     //모든 셰이더파일들에게 전역변수들을 바인딩(카메라 뷰관련,, 수치등)
+     HRESULT         Bind_GlobalPipelineData(_uint CameraType);
+
  #pragma endregion
 
 
@@ -156,6 +148,31 @@ public:
      const RenderStates& Get_RenderStates(_uint iRenderGroup);
 #pragma endregion
 
+
+#pragma region Texture_Manager
+     HRESULT       Register_Texture(const _wstring& Tag, CTexture* pInstance);
+     CTexture*      Find_Texture(const _wstring& Tag);
+#pragma endregion
+
+#pragma region Pipeline
+public:
+    void		Set_Transform(_uint CameraType, D3DTS eTransformMatrix, _fmatrix TransformMatrix);
+    
+    //뷰,투영을 골라서 바인드가능
+    HRESULT Bind_PipeLineMatrix(class CShader* pShader, const _char* pConstant, _uint iCameraType, D3DTS eTransformMatrix);
+    
+    //뷰와 투영을 한번에 바인드
+    HRESULT Bind_PipeLineMatrixAll(class CShader* pShader, const _char* pConstant, _uint iCameraType);
+
+    HRESULT Bind_PipeLineInverseMatrix(class CShader* pShader, const _char* pConstant, _uint iCameraType, D3DTS eTransformMatrix);
+    HRESULT Bind_CamPosition(class CShader* pShader, const _char* pConstant, _uint iCameraType);
+
+
+public:
+    const _float4x4& Get_ViewMatrix(_uint CameraType);
+    const _float4x4& Get_ProjMatrix(_uint CameraType);
+    const _float4& Get_CamPosition(_uint CameraType);;
+#pragma region
  public:
  #pragma region Default
      const vector<D3D11_VIEWPORT>& Get_Viewports() { return m_ViewPorts; }
@@ -175,6 +192,7 @@ public:
      class CRenderState_Manager*    m_pRenderStateManager = { nullptr };
 
      class CPipeLine*               m_pPipeLine = { nullptr };
+     class CTexture_Manager*         m_pTextureManager = { nullptr };
 
 private:
     vector<D3D11_VIEWPORT>          m_ViewPorts;

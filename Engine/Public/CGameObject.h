@@ -11,7 +11,7 @@ public:
     typedef struct tagGameObjectDesc : CComponent::tagComponentDesc
     {
         _wstring ObjTag;
-      
+        class CGameObject* pTarget = nullptr;
 
     }GAMEOBJECT_DESC;
 
@@ -34,8 +34,11 @@ public:
 
     virtual HRESULT Render();
     
-public:
+private:
     HRESULT     Ready_Components(void* pArg);
+    HRESULT     Ready_Resource(void* pArg);
+
+public:
     HRESULT     Add_Component(COMPONENT_TYPE eType, CComponent* pComp, CComponent** pOut);
 
 public:

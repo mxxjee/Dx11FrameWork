@@ -29,12 +29,15 @@ HRESULT CGameObject::Initialize_Prototype()
 HRESULT CGameObject::Initialize_Copytype(void* pArg)
 {
     GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
-    tag = pDesc->ObjTag;
     pDesc->pOwner = this;
    
+    /*컴포넌트 생성과 컴포넌트에게 desc를 보냄*/
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
 
+    /*리소스관련이나 desc를 멤버에 저장*/
+    if (FAILED(Ready_Resource(pArg)))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -70,6 +73,16 @@ HRESULT CGameObject::Ready_Components(void* pArg)
 
     if (FAILED(Add_Component(COMPONENT_TYPE::TRANSFORM, pTransform, reinterpret_cast<CComponent**>(&m_pTransformCom))))
         return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CGameObject::Ready_Resource(void* pArg)
+{
+    GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+
+    m_pTarget=pDesc->pTarget;
+    tag = pDesc->ObjTag;
 
     return S_OK;
 }

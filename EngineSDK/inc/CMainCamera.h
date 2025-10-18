@@ -11,6 +11,7 @@ NS_BEGIN(Engine)
 class ENGINE_DLL CMainCamera :
     public CCamera_Base
 {
+
 private:
     CMainCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CMainCamera(const CMainCamera& rhs);
@@ -42,3 +43,4 @@ public:
 
 NS_END
 
+ 

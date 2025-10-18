@@ -10,8 +10,8 @@ class ENGINE_DLL CQuad :
 public:
     typedef struct tagQuad_DESC : CGameObject::GAMEOBJECT_DESC
     {
-        _wstring    ImgPath;
-        _uint     ImgCnt = 1;
+        _wstring    TextureKey;
+
 
         _wstring    ShaderName = L"Default";
         string      passName = "Default";

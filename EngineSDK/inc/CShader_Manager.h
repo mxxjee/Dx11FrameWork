@@ -19,6 +19,10 @@ public:
     virtual void                Free() override;
 
 public:
+    //모든 셰이더파일들에게 전역변수들을 바인딩(카메라 뷰관련,, 수치등)
+    HRESULT         Bind_GlobalPipelineData(_uint CameraType);
+
+public:
     CShader*                Find_Shader(const _wstring& Tag);
 
 private:

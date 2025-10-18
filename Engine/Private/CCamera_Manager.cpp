@@ -58,72 +58,10 @@ void CCamera_Manager::Set_MainCamera(CAMERA_TYPE eType)
 
 }
 
-const _float4x4& CCamera_Manager::GetViewMatrix(CAMERA_TYPE eType) const
-{
-	//뷰행렬
-	if (m_Cameras[ENUM_TO_UINT(eType)])
-	{
-		CCamera_Base* pBase = m_Cameras[ENUM_TO_UINT(eType)];
-		return pBase->Get_CameraComp()->Get_ViewMatrix();
-	}
-	
-}
-
-const _float4x4& CCamera_Manager::GetProjMatrix(CAMERA_TYPE eType) const
-{
-	//투영행렬
-	if (m_Cameras[ENUM_TO_UINT(eType)])
-	{
-		CCamera_Base* pBase = m_Cameras[ENUM_TO_UINT(eType)];
-		return pBase->Get_CameraComp()->Get_ProjMatrix();
-	}
-
-}
-
-const _matrix CCamera_Manager::GetMulViewProjMatrix(CAMERA_TYPE eType) const
-{
-	//뷰 x 투영행렬
-	if (m_Cameras[ENUM_TO_UINT(eType)])
-	{
-		CCamera_Base* pBase = m_Cameras[ENUM_TO_UINT(eType)];
-		return pBase->Get_CameraComp()->Get_MulViewProjMatrix();
-	}
-	
-}
-
-void CCamera_Manager::Bind_ViewProjMatrix(CAMERA_TYPE eType)
-{
-	if (m_Cameras[ENUM_TO_UINT(eType)])
-	{
-		CCamera_Base* pBase = m_Cameras[ENUM_TO_UINT(eType)];
-		pBase->Bind_ViewProjMatrix();
-	}
-
-	
-}
 
 CCamera_Base* CCamera_Manager::Find_Camera(CAMERA_TYPE eType)
 {
 	return m_Cameras[ENUM_TO_UINT(eType)];
-}
-
-const _float4x4& CCamera_Manager::Get_RenderCamera_ViewMatrix() const
-{
-	// TODO: 여기에 return 문을 삽입합니다.
-	CheckNullResult(m_pRenderCamera, g_Identityfloat4x4);
-	return m_pRenderCamera->Get_CameraComp()->Get_ViewMatrix();
-}
-
-const _float4x4& CCamera_Manager::Get_RenderCamera_GetProjMatrix() const
-{
-	CheckNullResult(m_pRenderCamera, g_Identityfloat4x4);
-	return m_pRenderCamera->Get_CameraComp()->Get_ProjMatrix();
-}
-
-const _matrix CCamera_Manager::Get_RenderCamera_GetMulViewProjMatrix() const
-{
-	CheckNullResult(m_pRenderCamera, g_IdentityMatrix);
-	return m_pRenderCamera->Get_CameraComp()->Get_MulViewProjMatrix();
 }
 
 void CCamera_Manager::Update_Cameras(_float fTimeDelta)
@@ -171,14 +109,12 @@ void CCamera_Manager::Render_Cameras()
 
 		m_pRenderCamera = pCam;
 
-		m_pRenderShader = m_pRenderCamera->Get_Shader();
-		m_pRenderPassName = m_pRenderCamera->Get_PassName();
-
 		m_pRenderCamera->Bind_RenderTarget();
 		m_pRenderCamera->Clear_RenderTargetView(&ClearColor);
 		
-		
-		m_pRenderCamera->Bind_ViewProjMatrix();
+		//모든셰이더에게 이 카메라의 뷰,투영을 바인딩한다.
+		m_pGameInstance->Bind_GlobalPipelineData(ENUM_TO_UINT(m_pRenderCamera->Get_CameraType()));
+
 
 		//각 카메라가 렌더할 렌더그룹을 접근해서 Render()호출
 		vector<bool> RenderMask = m_pRenderCamera->Get_RenderMask();
@@ -221,3 +157,72 @@ void CCamera_Manager::Free()
 		Safe_Release(m_Cameras[i]);
 
 }
+
+
+//const _float4x4& CCamera_Manager::GetViewMatrix(CAMERA_TYPE eType) const
+//{
+//	//뷰행렬
+//	if (m_Cameras[ENUM_TO_UINT(eType)])
+//	{
+//		CCamera_Base* pBase = m_Cameras[ENUM_TO_UINT(eType)];
+//		return pBase->Get_CameraComp()->Get_ViewMatrix();
+//	}
+//	
+//}
+//
+//const _float4x4& CCamera_Manager::GetProjMatrix(CAMERA_TYPE eType) const
+//{
+//	//투영행렬
+//	if (m_Cameras[ENUM_TO_UINT(eType)])
+//	{
+//		CCamera_Base* pBase = m_Cameras[ENUM_TO_UINT(eType)];
+//		return pBase->Get_CameraComp()->Get_ProjMatrix();
+//	}
+//
+//}
+//
+//const _matrix CCamera_Manager::GetMulViewProjMatrix(CAMERA_TYPE eType) const
+//{
+//	//뷰 x 투영행렬
+//	if (m_Cameras[ENUM_TO_UINT(eType)])
+//	{
+//		CCamera_Base* pBase = m_Cameras[ENUM_TO_UINT(eType)];
+//		return pBase->Get_CameraComp()->Get_MulViewProjMatrix();
+//	}
+//	
+//}
+//
+//void CCamera_Manager::Bind_ViewProjMatrix(CAMERA_TYPE eType)
+//{
+//	if (m_Cameras[ENUM_TO_UINT(eType)])
+//	{
+//		CCamera_Base* pBase = m_Cameras[ENUM_TO_UINT(eType)];
+//		pBase->Bind_ViewProjMatrix();
+//	}
+//
+//	
+//}
+//
+//CCamera_Base* CCamera_Manager::Find_Camera(CAMERA_TYPE eType)
+//{
+//	return m_Cameras[ENUM_TO_UINT(eType)];
+//}
+//
+//const _float4x4& CCamera_Manager::Get_RenderCamera_ViewMatrix() const
+//{
+//	// TODO: 여기에 return 문을 삽입합니다.
+//	CheckNullResult(m_pRenderCamera, g_Identityfloat4x4);
+//	return m_pRenderCamera->Get_CameraComp()->Get_ViewMatrix();
+//}
+//
+//const _float4x4& CCamera_Manager::Get_RenderCamera_GetProjMatrix() const
+//{
+//	CheckNullResult(m_pRenderCamera, g_Identityfloat4x4);
+//	return m_pRenderCamera->Get_CameraComp()->Get_ProjMatrix();
+//}
+//
+//const _matrix CCamera_Manager::Get_RenderCamera_GetMulViewProjMatrix() const
+//{
+//	CheckNullResult(m_pRenderCamera, g_IdentityMatrix);
+//	return m_pRenderCamera->Get_CameraComp()->Get_MulViewProjMatrix();
+//}

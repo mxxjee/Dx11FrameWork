@@ -24,15 +24,6 @@ HRESULT COrthographicCameraComponent::Initialize_Copytype(void* pArg)
 		return E_FAIL;
 
 
-	COMPONENT_DESC* pCompDesc = static_cast<COMPONENT_DESC*>(pArg);
-	ORTHOGRAPHIC_DESC* pDesc = static_cast<ORTHOGRAPHIC_DESC*>(pCompDesc->CameraDesc);
-
-	m_vViewHeight = pDesc->ViewHeight;
-	m_vViewWidth = pDesc->ViewWdith;
-
-	XMStoreFloat4x4(&m_matView, XMMatrixIdentity());
-	Set_ProjectionMatrix();
-
 	return S_OK;
 }
 

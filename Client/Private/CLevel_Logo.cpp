@@ -215,7 +215,7 @@ HRESULT CLevel_Logo::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
     /////////////////////////////////////
     CTerrain::TERRAIN_DESC pDesc;
-    pDesc.ImgPath= L"../../Resource/Terrain0.png";
+    pDesc.TextureKey = L"Terrain";
     pDesc.ShaderName = L"VtxNorTex";
     pDesc.passName = "Default";
 
@@ -245,7 +245,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
 
     Desc.ObjTag = L"Hp_UI";
     Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
-    Desc.ImgPath = L"../../Resource/Hp.png";
+    Desc.TextureKey = L"Hp";
 
     Desc.fSizeX = 38.f;
     Desc.fSizeY = 38.f;
@@ -342,7 +342,7 @@ HRESULT CLevel_Logo::Ready_Layer_Player(const _wstring& strLayerTag)
     CQuad::QUAD_DESC        Desc = {};
 
     Desc.ObjTag = L"Player";
-    Desc.ImgPath = L"../../Resource/Keroro.png";
+    Desc.TextureKey = L"Keroro";
     Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
 
     CTransform::TRANSFORM_DESC TransDesc = {};
@@ -368,7 +368,7 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
     CQuad::QUAD_DESC        Desc = {};
 
     Desc.ObjTag = L"Test";
-    Desc.ImgPath = L"../../Resource/Player_Marker.png";
+    Desc.TextureKey = L"Player_Marker";
     Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP);
 
 
@@ -526,27 +526,22 @@ void CLevel_Logo::Create_MainCamera()
     CMainCamera::CAMERABASE_DESC Desc = {};
     Desc.ObjTag = L"MainCamera";
 
-    Desc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
-    Desc.PassName = "Threshold";
-
     Desc.eCameraType = CAMERA_TYPE::TARGET;
     Desc.eCameraFlag = CAMERA_FLAG::NONE;
+    Desc.fWidth = (float)g_iWinSizeX;
+    Desc.fHeight = (float)g_iWinSizeY;
+    Desc.fFovy = 90.f;
+    Desc.fNear = 0.1f;
+    Desc.vPosition = _float3(0.f, 2.f, -2.f);
+    Desc.vOffset= _float3(0.f, 2.f, -2.f);
+    Desc.fFar = 1000.f;
+    Desc.pTarget = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Player_Layer", L"Player");
+
 
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
     TransDesc.vLocalRotation = { 30.f,0.f,0.f,1.f };
-
-    CPerspectiveCameraComponent::PERSPECTIVE_DESC CameraDesc = {};
-    CameraDesc.Aspect = (float)g_iWinSizeX / g_iWinSizeY;
-    CameraDesc.fNear =0.1f;
-    CameraDesc.fFar = 1000.f;
-
-    //CameraDesc.pTarget= m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"BackGround_Layer", L"BackGround");
-    CameraDesc.vOffset = _float3(0.f, 2.f, -2.f);
-
-
-    Desc.CameraDesc = &CameraDesc;
     Desc.TransformDesc = &TransDesc;
 
 
@@ -559,29 +554,23 @@ void CLevel_Logo::Create_MainCamera()
 
 void CLevel_Logo::Create_UICamera()
 {
-    CUICamera::CAMERABASE_DESC UIDesc = {};
+    CCamera_Base::CAMERABASE_DESC UIDesc = {};
     UIDesc.ObjTag = L"UICamera";
     
-    UIDesc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
-    UIDesc.PassName = "Default";
+
 
     UIDesc.eCameraType = CAMERA_TYPE::UI;
     UIDesc.eCameraFlag = CAMERA_FLAG::NONE;
+    UIDesc.fNear = 0.1f;
+    UIDesc.fFar = 1.f;
+    UIDesc.m_bDynamic = false;
+
+    UIDesc.fWidth = (float)g_iWinSizeX;
+    UIDesc.fHeight = (float)g_iWinSizeY;
 
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
-
-    COrthographicCameraComponent::ORTHOGRAPHIC_DESC UICameraDesc = {};
-
-    UICameraDesc.fNear = 0.1f;
-    UICameraDesc.fFar = 1.f;
-    UICameraDesc.m_bDynamic = false;
-
-    UICameraDesc.ViewWdith = (float)g_iWinSizeX;
-    UICameraDesc.ViewHeight = (float)g_iWinSizeY;
-
-    UIDesc.CameraDesc = &UICameraDesc;
     UIDesc.TransformDesc = &TransDesc;
 
 
@@ -591,29 +580,21 @@ void CLevel_Logo::Create_UICamera()
 
 void CLevel_Logo::Create_FreeCamera()
 {
-    CMainCamera::CAMERABASE_DESC Desc = {};
+    CCamera_Base::CAMERABASE_DESC Desc = {};
     Desc.ObjTag = L"FreeCamera";
-
-    Desc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
-    Desc.PassName = "Default";
-
 
     Desc.eCameraType = CAMERA_TYPE::FREE;
     Desc.eCameraFlag = CAMERA_FLAG::NONE;
-
+    Desc.fWidth = (float)g_iWinSizeX;
+    Desc.fHeight = (float)g_iWinSizeY;
+    Desc.fNear = 0.1f;
+    Desc.fFar = 1000.f;
 
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
     //TransDesc.vLocalPosition = _float4(0.f, 2.f, -2.f,1.f);
-  
-    CPerspectiveCameraComponent::PERSPECTIVE_DESC CameraDesc = {};
-    CameraDesc.Aspect = (float)g_iWinSizeX / g_iWinSizeY;
-    CameraDesc.fNear = 0.1f;
-    CameraDesc.fFar = 1000.f;
 
-
-    Desc.CameraDesc = &CameraDesc;
     Desc.TransformDesc = &TransDesc;
 
 
@@ -628,12 +609,16 @@ void CLevel_Logo::Create_MiniMapCamera()
     Desc.ObjTag = L"MinimapCamera";
     Desc.m_bCreateNewRenderTarget = true;
 
-    Desc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
-    Desc.PassName = "Brightness";
+    Desc.vOffset = _float3(0.f, 10.f, 0.f);
+    Desc.vUp = _float3(0.f, 0.f, -1.f);
 
-    //Desc.pMainShader = m_pGameInstance->Find_Shader(L"Default");
-    //Desc.PassName = "Default";
+    Desc.fWidth = (float)20.f;
+    Desc.fHeight = (float)20.f;
 
+
+    Desc.fNear = 0.1f;
+    Desc.fFar = 1000.f;
+ 
     Desc.eCameraType = CAMERA_TYPE::MINIMAP;
 
 
@@ -641,23 +626,6 @@ void CLevel_Logo::Create_MiniMapCamera()
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
    // TransDesc.vLocalRotation = _float4(90.f, 180.f, 0.f,1.f);
-
-
-    COrthographicCameraComponent::ORTHOGRAPHIC_DESC CameraDesc = {};
-
-    CameraDesc.vOffset = _float3(0.f, 10.f, 0.f);
-    CameraDesc.vUp = _float3(0.f, 0.f, -1.f);
-    
-    CameraDesc.ViewHeight = (float)20.f;
-    CameraDesc.ViewWdith = (float)20.f;
-   
-
-    CameraDesc.fNear = 0.1f;
-    CameraDesc.fFar = 1000.f;
-    
-
-
-    Desc.CameraDesc = &CameraDesc;
     Desc.TransformDesc = &TransDesc;
 
 

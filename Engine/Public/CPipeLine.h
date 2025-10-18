@@ -28,13 +28,22 @@ private:
 public:
 	void		Set_Transform(_uint CameraType, D3DTS eTransformMatrix, _fmatrix TransformMatrix);
 public:
+	//뷰,투영을 골라서 바인드가능
 	HRESULT Bind_PipeLineMatrix(class CShader* pShader, const _char* pConstant, _uint iCameraType,D3DTS eTransformMatrix);
+	
+	//뷰와 투영을 한번에 바인드
+	HRESULT Bind_PipeLineMatrixAll(class CShader* pShader, const _char* pConstant, _uint iCameraType);
+
 	HRESULT Bind_PipeLineInverseMatrix(class CShader* pShader, const _char* pConstant, _uint iCameraType,D3DTS eTransformMatrix);
 	HRESULT Bind_CamPosition(class CShader* pShader, const _char* pConstant ,_uint iCameraType );
 
 	//매프레임마다 역행렬을 구해서 저장한다.
 	void	Update();	
 
+public:
+	const _float4x4&		Get_ViewMatrix(_uint CameraType);
+	const _float4x4&		Get_ProjMatrix(_uint CameraType);
+	const _float4&			Get_CamPosition(_uint CameraType);;
 private:
 	vector<PIPE_DATA>		m_PipeDatas;
 

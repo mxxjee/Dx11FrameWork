@@ -12,8 +12,7 @@ CCamera_Base::CCamera_Base(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceCont
 
 CCamera_Base::CCamera_Base(const CCamera_Base& rhs)
     :CGameObject(rhs),
-    m_pMainShader(rhs.m_pMainShader),m_pCameraCom(rhs.m_pCameraCom),
-    m_GlobalViewProj(rhs.m_GlobalViewProj),m_tRenderTarget(rhs.m_tRenderTarget),
+   m_tRenderTarget(rhs.m_tRenderTarget),
     m_RenderMask(rhs.m_RenderMask)
 {
 }
@@ -26,44 +25,33 @@ HRESULT CCamera_Base::Initialize_Prototype()
 
 HRESULT CCamera_Base::Initialize_Copytype(void* pArg)
 {
+    CAMERABASE_DESC* pDesc = static_cast<CAMERABASE_DESC*>(pArg);
+
     if(FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
-    m_RenderGroupMax = m_pGameInstance->Get_RenderGroupCount();
-    m_RenderMask.resize(m_RenderGroupMax);
-    for (int i = 0; i < m_RenderGroupMax; ++i)
-        m_RenderMask[i] = true;
-
-
-    CAMERABASE_DESC* pDesc = static_cast<CAMERABASE_DESC*>(pArg);
-
-    m_eCameraType = pDesc->eCameraType;
-    m_eCameraFlag = pDesc->eCameraFlag;
-
-    m_pMainShader = pDesc->pMainShader;
-    Safe_AddRef(m_pMainShader);
-
-    m_PassName = pDesc->PassName;
-
-    m_GlobalViewProj = m_pMainShader->Get_ShaderInfo().m_GlobalViewProj;
-    m_bUseNewRenderTarget = pDesc->m_bCreateNewRenderTarget;
-
-    if(FAILED(Create_RenderTagetview(pDesc->m_bCreateNewRenderTarget)))
+    /*DEsc값을 이용하여 멤버변수 채우기 ,렌더타겟뷰 생성*/
+    if (FAILED(Ready_Resource(pArg)))
         return E_FAIL;
 
+    m_pTransformCom->Set_State(STATE::POSITION, XMVectorSetW(XMLoadFloat3(&pDesc->vPosition), 1.f));
+    m_pTransformCom->LookAt(XMVectorSetW(XMLoadFloat3(&pDesc->vAt), 1.f));
+    
     return S_OK;
 }
 
 
-void CCamera_Base::Bind_ViewProjMatrix()
+void CCamera_Base::Update_PipeLine()
 {
-    //카메라 view/투영 세팅
-    if (m_pMainShader)
-    {
-        _float4x4 viewproj;
-        XMStoreFloat4x4(&viewproj, m_pCameraCom->Get_MulViewProjMatrix());
-        m_GlobalViewProj->AsMatrix()->SetMatrix((float*)viewproj.m);
-    }
+    //pipeline에게 정보업데이트
+    m_pGameInstance->Set_Transform(ENUM_TO_UINT(m_eCameraType), D3DTS::VIEW, m_pTransformCom->Get_WorldInverse(TransformScope::WORLD));
+
+    if (m_bPerspective)
+        m_pGameInstance->Set_Transform(ENUM_TO_UINT(m_eCameraType), D3DTS::PROJ, XMMatrixPerspectiveFovLH(XMConvertToRadians(m_fFovy), (m_fWidth/m_fHeight), m_fNearZ, m_fFarZ));
+
+    else
+        m_pGameInstance->Set_Transform(ENUM_TO_UINT(m_eCameraType), D3DTS::PROJ, XMMatrixOrthographicLH(m_fWidth, m_fHeight, m_fNearZ, m_fFarZ));
+
 }
 
 HRESULT CCamera_Base::Create_RenderTagetview(bool bCreateRenderTarget)
@@ -158,6 +146,39 @@ void CCamera_Base::Set_RenderAllRenderMask(bool bRender)
 
 
 
+HRESULT CCamera_Base::Ready_Resource(void* pArg)
+{
+    m_RenderGroupMax = m_pGameInstance->Get_RenderGroupCount();
+    m_RenderMask.resize(m_RenderGroupMax);
+
+    for (int i = 0; i < m_RenderGroupMax; ++i)
+        m_RenderMask[i] = true;
+
+
+    CAMERABASE_DESC* pDesc = static_cast<CAMERABASE_DESC*>(pArg);
+
+    m_eCameraType = pDesc->eCameraType;
+    m_eCameraFlag = pDesc->eCameraFlag;
+
+    m_fFovy = pDesc->fFovy;
+
+    m_fWidth = pDesc->fWidth;
+    m_fHeight = pDesc->fHeight;
+
+    m_fNearZ = pDesc->fNear;
+    m_fFarZ = pDesc->fFar;
+    m_vOffset = pDesc->vOffset;
+
+
+
+    m_bUseNewRenderTarget = pDesc->m_bCreateNewRenderTarget;
+
+    if (FAILED(Create_RenderTagetview(pDesc->m_bCreateNewRenderTarget)))
+        return E_FAIL;
+
+    return S_OK;    
+}
+
 void CCamera_Base::Free()
 {
     __super::Free();
@@ -168,7 +189,6 @@ void CCamera_Base::Free()
   
     m_tRenderTarget.RTV.Reset();
 
-    Safe_Release(m_pCameraCom);
-    Safe_Release(m_pMainShader);
+
 
 }

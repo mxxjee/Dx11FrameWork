@@ -23,13 +23,8 @@ HRESULT CUICamera::Initialize_Copytype(void* pArg)
 	if (FAILED(__super::Initialize_Copytype(pArg)))
 		return E_FAIL;
 
-	CComponent* pOrtho = dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype
-	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"OrthographicCamera"), pArg));
-
-	if (FAILED(Add_Component(COMPONENT_TYPE::ORTHOGRAPHIC_CAM, pOrtho, (CComponent**)(&m_pCameraCom))))
-		return E_FAIL;
-
-
+	m_bPerspective = false;
+	Update_PipeLine();
 
 	return S_OK;
 }
@@ -42,6 +37,7 @@ void CUICamera::Update_Priority(_float fTimeDelta)
 void CUICamera::Update(_float fTimeDelta)
 {
 	//__super::Update(fTimeDelta);
+
 
 }
 

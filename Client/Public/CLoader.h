@@ -33,6 +33,10 @@ private:
     HRESULT        Loading_GamePlay();
     HRESULT        Loading_Logo();
     HRESULT        Loading_UI();//원래 UI는 로딩이없지만, 테스트용
+
+    /// load resource //
+    HRESULT         Register_Shaders();
+    HRESULT         Register_Textures();
 public:
     _bool       IsFinished() const { return m_isFinished; }
 

@@ -15,7 +15,7 @@ class CTerrain final:
 public:
     typedef struct tagTerrainDesc : CComponent::tagComponentDesc
     {
-        _wstring ImgPath = L"";
+        _wstring TextureKey = L"";
         _wstring  ShaderName = L"";
         string  passName = "";
 

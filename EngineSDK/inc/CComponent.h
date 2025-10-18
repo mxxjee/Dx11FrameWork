@@ -11,7 +11,6 @@ public:
     {
         class CGameObject* pOwner = nullptr;
         void* TransformDesc = nullptr;
-        void* CameraDesc = nullptr;
     }COMPONENT_DESC;
 
 protected:

@@ -22,14 +22,6 @@ HRESULT CPerspectiveCameraComponent::Initialize_Copytype(void* pArg)
 {
 	if (FAILED(__super::Initialize_Copytype(pArg)))
 		return E_FAIL;
-	//수정필요!!
-	COMPONENT_DESC* pCompDesc = static_cast<COMPONENT_DESC*>(pArg);
-	PERSPECTIVE_DESC* pDesc = static_cast<PERSPECTIVE_DESC*>(pCompDesc->CameraDesc);
-	
-	m_fFov = pDesc->fFov;
-	m_fAspect = pDesc->Aspect;
-
-	Set_ProjectionMatrix();
 
 
 	return S_OK;

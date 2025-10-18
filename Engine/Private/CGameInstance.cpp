@@ -12,6 +12,7 @@
 #include "CShader_Manager.h"
 #include "CScreenShot_Manager.h"
 #include "CRenderState_Manager.h"
+#include "CTexture_Manager.h"
 #include "CShader.h"
 #include "CPipeLine.h"
 
@@ -76,6 +77,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	m_pShaderManager = CShader_Manager::Create(*pDevice, *pContext);
 	CheckNullResult(m_pShaderManager, E_FAIL);
 
+	/*텍스쳐 매니저 초기화*/
+	m_pTextureManager = CTexture_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pTimerManager, E_FAIL);
+
 	/*스크린샷매니저 초기화*/
 	m_pScreenshotManager = CScreenShot_Manager::Create(*pDevice, *pContext);
 	CheckNullResult(m_pScreenshotManager, E_FAIL);
@@ -106,6 +111,8 @@ void CGameInstance::Update_Engine(_float fTimedelta)
 	m_pLevelManager->Update(fTimedelta);
 	Update_Cameras(fTimedelta);
 	
+	//카메라의 이동이모두 끝난 후 계산
+	m_pPipeLine->Update();
 
 
 }
@@ -115,8 +122,6 @@ void CGameInstance::LateUpdate_Engine(float fTimedelta)
 	m_pLevelManager->Update_Late(fTimedelta);
 	LateUpdate_Cameras(fTimedelta);
 
-	//카메라의 이동이모두 끝난 후 계산
-	m_pPipeLine->Update();
 
 }
 
@@ -346,35 +351,35 @@ void CGameInstance::Set_MainCamera(CAMERA_TYPE eType)
 
 }
 
-const _float4x4& CGameInstance::GetViewMatrix(CAMERA_TYPE eType) const
-{
-	return m_pCameraManager->GetViewMatrix(eType);
-}
-const _float4x4& CGameInstance::GetProjMatrix(CAMERA_TYPE eType) const
-{
-	return m_pCameraManager->GetProjMatrix(eType);
-}
-const _matrix CGameInstance::GetMulViewProjMatrix(CAMERA_TYPE eType) const
-{
-	return m_pCameraManager->GetMulViewProjMatrix(eType);
-}
-const _float4x4& CGameInstance::Get_RenderCamera_ViewMatrix() const
-{
-	return m_pCameraManager->Get_RenderCamera_ViewMatrix();
-}
-const _float4x4& CGameInstance::Get_RenderCamera_GetProjMatrix() const
-{
-	return m_pCameraManager->Get_RenderCamera_GetProjMatrix();
-}
-const _matrix CGameInstance::Get_RenderCamera_GetMulViewProjMatrix() const
-{
-	return m_pCameraManager->Get_RenderCamera_GetMulViewProjMatrix();
-}
-void CGameInstance::Bind_ViewProjMatrix(CAMERA_TYPE eType)
-{
-	CheckNull(m_pCameraManager);
-	return m_pCameraManager->Bind_ViewProjMatrix(eType);
-}
+//const _float4x4& CGameInstance::GetViewMatrix(CAMERA_TYPE eType) const
+//{
+//	return m_pCameraManager->GetViewMatrix(eType);
+//}
+//const _float4x4& CGameInstance::GetProjMatrix(CAMERA_TYPE eType) const
+//{
+//	return m_pCameraManager->GetProjMatrix(eType);
+//}
+//const _matrix CGameInstance::GetMulViewProjMatrix(CAMERA_TYPE eType) const
+//{
+//	return m_pCameraManager->GetMulViewProjMatrix(eType);
+//}
+//const _float4x4& CGameInstance::Get_RenderCamera_ViewMatrix() const
+//{
+//	return m_pCameraManager->Get_RenderCamera_ViewMatrix();
+//}
+//const _float4x4& CGameInstance::Get_RenderCamera_GetProjMatrix() const
+//{
+//	return m_pCameraManager->Get_RenderCamera_GetProjMatrix();
+//}
+//const _matrix CGameInstance::Get_RenderCamera_GetMulViewProjMatrix() const
+//{
+//	return m_pCameraManager->Get_RenderCamera_GetMulViewProjMatrix();
+//}
+//void CGameInstance::Bind_ViewProjMatrix(CAMERA_TYPE eType)
+//{
+//	CheckNull(m_pCameraManager);
+//	return m_pCameraManager->Bind_ViewProjMatrix(eType);
+//}
 
 void CGameInstance::Update_Cameras(_float fTimeDelta)
 {
@@ -452,6 +457,12 @@ CShader* CGameInstance::Find_Shader(const _wstring& Tag)
 	return m_pShaderManager->Find_Shader(Tag);
 }
 
+HRESULT CGameInstance::Bind_GlobalPipelineData(_uint CameraType)
+{
+	CheckNullResult(m_pShaderManager, E_FAIL);
+	return m_pShaderManager->Bind_GlobalPipelineData(CameraType);
+}
+
 void CGameInstance::ScreenShot(const _wstring& Key)
 {
 	CheckNull(m_pScreenshotManager);
@@ -481,6 +492,63 @@ const RenderStates& CGameInstance::Get_RenderStates(_uint iRenderGroup)
 	return m_pRenderStateManager->Get_RenderStates(iRenderGroup);
 }
 
+HRESULT CGameInstance::Register_Texture(const _wstring& Tag, CTexture* pInstance)
+{
+	CheckNullResult(m_pTextureManager, E_FAIL);
+	return m_pTextureManager->Register_Texture(Tag,pInstance);
+}
+
+CTexture* CGameInstance::Find_Texture(const _wstring& Tag)
+{
+	CheckNullResult(m_pTextureManager, nullptr);
+	return m_pTextureManager->Find_Texture(Tag);
+}
+
+#pragma region Pipeline
+void CGameInstance::Set_Transform(_uint CameraType, D3DTS eTransformMatrix, _fmatrix TransformMatrix)
+{
+	CheckNull(m_pPipeLine);
+	return m_pPipeLine->Set_Transform(CameraType, eTransformMatrix, TransformMatrix);
+
+}
+
+HRESULT CGameInstance::Bind_PipeLineMatrix(CShader* pShader, const _char* pConstant, _uint iCameraType, D3DTS eTransformMatrix)
+{
+	CheckNullResult(m_pPipeLine,E_FAIL);
+	return m_pPipeLine->Bind_PipeLineMatrix(pShader, pConstant, iCameraType, eTransformMatrix);
+
+}
+
+HRESULT CGameInstance::Bind_PipeLineMatrixAll(CShader* pShader, const _char* pConstant, _uint iCameraType)
+{
+	return m_pPipeLine->Bind_PipeLineMatrixAll(pShader,pConstant,iCameraType);
+}
+
+HRESULT CGameInstance::Bind_PipeLineInverseMatrix(CShader* pShader, const _char* pConstant, _uint iCameraType, D3DTS eTransformMatrix)
+{
+	CheckNullResult(m_pPipeLine, E_FAIL);
+	return m_pPipeLine->Bind_PipeLineInverseMatrix(pShader, pConstant, iCameraType, eTransformMatrix);
+}
+
+HRESULT CGameInstance::Bind_CamPosition(CShader* pShader, const _char* pConstant, _uint iCameraType)
+{
+	CheckNullResult(m_pPipeLine, E_FAIL);
+	return m_pPipeLine->Bind_CamPosition(pShader, pConstant, iCameraType);
+}
+const _float4x4& CGameInstance::Get_ViewMatrix(_uint CameraType)
+{
+	return m_pPipeLine->Get_ViewMatrix(CameraType);
+}
+const _float4x4& CGameInstance::Get_ProjMatrix(_uint CameraType)
+{
+	return m_pPipeLine->Get_ProjMatrix(CameraType);
+}
+const _float4& CGameInstance::Get_CamPosition(_uint CameraType)
+{
+	return m_pPipeLine->Get_CamPosition(CameraType);
+}
+#pragma endregion
+
 #pragma endregion
 
 void CGameInstance::Release_Engine()
@@ -495,6 +563,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pShaderManager);
 	Safe_Release(m_pScreenshotManager);
 	Safe_Release(m_pRenderStateManager);
+	Safe_Release(m_pPipeLine);
+	Safe_Release(m_pTextureManager);
 
 	Safe_Release(m_pGraphicDev);
 

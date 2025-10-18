@@ -12,6 +12,8 @@
 #include "CMinimapQuad.h"
 #include "CTerrain.h"
 
+#include "CTexture.h"
+#include "CShader.h"
 
 #include "CTransform.h"
 #include "CPerspectiveCameraComponent.h"
@@ -141,14 +143,17 @@ HRESULT CLoader::Loading_GamePlay()
 HRESULT CLoader::Loading_Logo()
 {
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
-  
+    if (FAILED(Register_Textures()))
+        return E_FAIL;
+
+
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
     
 
     lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
-  
 
-
+    if (FAILED(Register_Shaders()))
+        return E_FAIL;
   
 
   
@@ -232,6 +237,55 @@ HRESULT CLoader::Loading_UI()
     }
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
     m_isFinished = true;
+    return S_OK;
+}
+
+HRESULT CLoader::Register_Shaders()
+{
+	wchar_t buffer[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, buffer);
+	OutputDebugStringW(buffer);
+
+	CShader* pInstance = CShader::Create(m_pDevice,
+        m_pDeviceContext, VTXPOSTEX::desc, L"../Bin/ShaderFiles/Shader_VtxPosTex.hlsl",
+		"DefaultTechnique");
+    m_pGameInstance->Register_Shader(L"Default", pInstance);
+
+	pInstance = CShader::Create(m_pDevice,
+        m_pDeviceContext, VTXNORTEX::desc, L"../Bin/ShaderFiles/Shader_VtxNorTex.hlsl",
+		"DefaultTechnique");
+    m_pGameInstance->Register_Shader(L"VtxNorTex", pInstance);
+
+
+
+    return S_OK;
+}
+
+HRESULT CLoader::Register_Textures()
+{
+    CTexture* pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Keroro.png", 1);
+    if (FAILED(m_pGameInstance->Register_Texture(L"Keroro", pTexture)))
+        return E_FAIL;
+
+
+    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Player_Marker.png", 1);
+    if (FAILED(m_pGameInstance->Register_Texture(L"Player_Marker", pTexture)))
+        return E_FAIL;
+
+
+
+    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Hp.png", 1);
+    if (FAILED(m_pGameInstance->Register_Texture(L"Hp", pTexture)))
+        return E_FAIL;
+
+    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Terrain0.png", 1);
+    if (FAILED(m_pGameInstance->Register_Texture(L"Terrain", pTexture)))
+        return E_FAIL;
+
+    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Skeleton.png", 1);
+    if (FAILED(m_pGameInstance->Register_Texture(L"Skeleton", pTexture)))
+        return E_FAIL;
+
     return S_OK;
 }
 

@@ -56,7 +56,7 @@ HRESULT CMainApp::Initialize()
 	CInput_Manager::GetInstance()->Init_Input(g_hInst, g_hWnd);
 
 	Register_Levels();
-	Register_Shaders();
+
 
 	//Imgui 디버그창
 #ifdef _DEBUG
@@ -98,15 +98,18 @@ HRESULT CMainApp::Initialize_Cilent()
 	//렌더타입에 맞는 정렬함수 등록
 	auto AlphaSort = [&](CGameObject* a, CGameObject* b)
 	{
-		CCameraComponent* pCameracomp = CGameInstance::GetInstance()->Get_RenderCamera()->Get_CameraComp();
-		_matrix m_MainCameraView = XMLoadFloat4x4(&pCameracomp->Get_ViewMatrix());
+
+		CCamera_Base* pRenderCam = CGameInstance::GetInstance()->Get_RenderCamera();
+		
+		_float4x4 fViewMat = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(pRenderCam->Get_CameraType()));
+		_matrix ViewMat = XMLoadFloat4x4(&fViewMat);
 
 
 		CTransform* aTrans = dynamic_cast<CTransform*>(a->Get_Component(COMPONENT_TYPE::TRANSFORM));
 		CTransform* bTrans = dynamic_cast<CTransform*>(b->Get_Component(COMPONENT_TYPE::TRANSFORM));
 
-		_vector aView = XMVector3TransformCoord(aTrans->Get_State(STATE::POSITION, TransformScope::WORLD), m_MainCameraView);
-		_vector bView = XMVector3TransformCoord(bTrans->Get_State(STATE::POSITION, TransformScope::WORLD), m_MainCameraView);
+		_vector aView = XMVector3TransformCoord(aTrans->Get_State(STATE::POSITION, TransformScope::WORLD), ViewMat);
+		_vector bView = XMVector3TransformCoord(bTrans->Get_State(STATE::POSITION, TransformScope::WORLD), ViewMat);
 
 		//내림차순정렬, 먼것부터 그려야함
 		return XMVectorGetZ(aView) > XMVectorGetZ(bView);
@@ -209,26 +212,6 @@ void CMainApp::Register_Levels()
 
 }
 
-void CMainApp::Register_Shaders()
-{
-	wchar_t buffer[MAX_PATH];
-	GetCurrentDirectory(MAX_PATH, buffer);
-	OutputDebugStringW(buffer);
-
-	CShader* pInstance = CShader::Create(m_pDevice,
-		m_pContext, VTXPOSTEX::desc, L"../Bin/ShaderFiles/Shader_VtxPosTex.hlsl",
-		"DefaultTechnique");
-	pGameInstance->Register_Shader(L"Default", pInstance);
-
-	pInstance = CShader::Create(m_pDevice,
-		m_pContext, VTXNORTEX::desc, L"../Bin/ShaderFiles/Shader_VtxNorTex.hlsl",
-		"DefaultTechnique");
-	pGameInstance->Register_Shader(L"VtxNorTex", pInstance);
-
-
-
-
-}
 
 HRESULT CMainApp::Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)
 {

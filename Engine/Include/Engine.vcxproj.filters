@@ -196,6 +196,9 @@
     <Filter Include="01.Utility\99.EtcUtils\ConstantBuffer">
       <UniqueIdentifier>{87ac1b47-2459-4259-91e6-30bde4ad12b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\08.Texture\Texture">
+      <UniqueIdentifier>{ac5eb3e9-2f7b-4fd2-bd43-b1f649bad776}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -300,9 +303,6 @@
     <ClInclude Include="..\Public\CConstantBuffer.h">
       <Filter>01.Utility\99.EtcUtils\ConstantBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CTexture.h">
-      <Filter>00.System\08.Texture</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CTransform.h">
       <Filter>05.Component\Transform</Filter>
     </ClInclude>
@@ -403,6 +403,12 @@
       <Filter>01.Utility\99.EtcUtils</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPipeLine.h" />
+    <ClInclude Include="..\Public\CTexture_Manager.h">
+      <Filter>00.System\08.Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CTexture.h">
+      <Filter>00.System\08.Texture\Texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -482,9 +488,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CConstantBuffer.cpp">
       <Filter>01.Utility\99.EtcUtils\ConstantBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CTexture.cpp">
-      <Filter>00.System\08.Texture</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Libraries\Include\SimpleMath\SimpleMath.cpp">
       <Filter>01.Utility</Filter>
@@ -577,5 +580,11 @@
       <Filter>01.Utility\99.EtcUtils</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPipeLine.cpp" />
+    <ClCompile Include="..\Private\CTexture_Manager.cpp">
+      <Filter>00.System\08.Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTexture.cpp">
+      <Filter>00.System\08.Texture\Texture</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

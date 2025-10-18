@@ -144,9 +144,13 @@ HRESULT CQuad::Ready_Resources(void* pArg)
     m_pShader = m_pGameInstance->Find_Shader(pQuad_Desc->ShaderName);
     Safe_AddRef(m_pShader);
 
-    if (pQuad_Desc->ImgPath != L"")
-        m_pTexture = CTexture::Create(m_pDevice, m_pContext, pQuad_Desc->ImgPath.c_str(), pQuad_Desc->ImgCnt);
-
+    if (pQuad_Desc->TextureKey != L"")
+    {
+        m_pTexture = m_pGameInstance->Find_Texture(pQuad_Desc->TextureKey);
+        if(m_pTexture)
+            Safe_AddRef(m_pTexture);
+    }
+        
     return S_OK;
 }
 
@@ -167,6 +171,6 @@ HRESULT CQuad::Bind_ShaderResources()
         return E_FAIL;
 
 
-
+    return S_OK;
 
 }

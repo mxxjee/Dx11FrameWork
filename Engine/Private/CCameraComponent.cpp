@@ -1,6 +1,8 @@
 #include "CCameraComponent.h"
 #include "CTransform.h"
 #include "CGameObject.h"
+#include "CComponent.h"
+
 
 CCameraComponent::CCameraComponent(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CComponent(pDevice, pContext), m_matProj{}, m_matView{}
@@ -21,10 +23,9 @@ HRESULT CCameraComponent::Initialize_Prototype()
 HRESULT CCameraComponent::Initialize_Copytype(void* pArg)
 {
     if (FAILED(__super::Initialize_Copytype(pArg)))
-        return E_FAIL;
 
-    //수정필요!!
-    COMPONENT_DESC* pCompDesc = static_cast<COMPONENT_DESC*>(pArg);
+  /*  CComponent::COMPONENT_DESC* pCompDesc = static_cast<CComponent::COMPONENT_DESC*>(pArg);
+
     CAMERACOMP_DESC* pDesc = static_cast<CAMERACOMP_DESC*>(pCompDesc->CameraDesc);
 
     m_vUp = pDesc->vUp;
@@ -37,7 +38,7 @@ HRESULT CCameraComponent::Initialize_Copytype(void* pArg)
 
     m_bDynamic = pDesc->m_bDynamic;
 
-    Update_ViewMatrix(0.f);
+    Update_ViewMatrix(0.f);*/
 
     return S_OK;
 }

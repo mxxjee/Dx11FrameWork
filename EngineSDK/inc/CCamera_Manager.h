@@ -23,10 +23,10 @@ public:
     void        Set_MainCamera(CAMERA_TYPE eType);
 
     //뷰,투영행렬가져오기
-    const _float4x4& GetViewMatrix(CAMERA_TYPE eType) const;
+  /*  const _float4x4& GetViewMatrix(CAMERA_TYPE eType) const;
     const _float4x4& GetProjMatrix(CAMERA_TYPE eType) const;
     const _matrix GetMulViewProjMatrix(CAMERA_TYPE eType) const;
-    void    Bind_ViewProjMatrix(CAMERA_TYPE eType);
+    void    Bind_ViewProjMatrix(CAMERA_TYPE eType);*/
     
 
     //메인카메라가져오기
@@ -40,10 +40,10 @@ public:
     //void    Bind_Main_ViewProjMatrix() const;
 
 
-    //현재 Render함수에서 호출되고있는 카메라의 뷰,투영가져오기
-    const _float4x4& Get_RenderCamera_ViewMatrix() const;
-    const _float4x4& Get_RenderCamera_GetProjMatrix() const;
-    const _matrix  Get_RenderCamera_GetMulViewProjMatrix() const;
+    ////현재 Render함수에서 호출되고있는 카메라의 뷰,투영가져오기
+    //const _float4x4& Get_RenderCamera_ViewMatrix() const;
+    //const _float4x4& Get_RenderCamera_GetProjMatrix() const;
+    //const _matrix  Get_RenderCamera_GetMulViewProjMatrix() const;
 public:
     void        Update_Cameras(_float fTimeDelta);
     void        LateUpdate_Cameras(_float fTimeDelta);

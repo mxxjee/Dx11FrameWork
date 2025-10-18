@@ -20,6 +20,8 @@ HRESULT CFreeCamera::Initialize_Prototype()
     if (FAILED(__super::Initialize_Prototype()))
         return E_FAIL;
 
+    m_bPerspective = true;
+
     return S_OK;
 }
 
@@ -33,12 +35,7 @@ HRESULT CFreeCamera::Initialize_Copytype(void* pArg)
 
     GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
-    /*컴포넌트 세팅*/
-    CComponent* pPerspectiveCam = dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype
-    (PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"PerspectiveCamera"), pArg));
 
-    if (FAILED(Add_Component(COMPONENT_TYPE::PERSPECTIVE_CACM, pPerspectiveCam, (CComponent**)(&m_pCameraCom))))
-        return E_FAIL;
 
 
 
@@ -69,13 +66,15 @@ void CFreeCamera::Update(_float fTimeDelta)
 
     if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::S))
         m_pTransformCom->Move(DIRECTION::BACKWARD, fTimeDelta);
+
+    Update_PipeLine();
 }
 
 void CFreeCamera::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
 
-    m_pCameraCom->Update_ViewMatrix(fTimeDelta);
+
 
 }
 

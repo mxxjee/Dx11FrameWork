@@ -103,7 +103,10 @@ HRESULT CTerrain::Ready_Resources(void* pArg)
     m_passName = pTerrain_Desc->passName;
 
 
-    m_pTexture = CTexture::Create(m_pDevice, m_pContext, pTerrain_Desc->ImgPath.c_str(), 1);
+
+    m_pTexture = m_pGameInstance->Find_Texture(L"Terrain");
+    if (m_pTexture)
+        Safe_AddRef(m_pTexture);
 
 
     m_pShader = m_pGameInstance->Find_Shader(pTerrain_Desc->ShaderName);
@@ -115,11 +118,11 @@ HRESULT CTerrain::Ready_Resources(void* pArg)
 
 HRESULT CTerrain::Bind_ShaderResources()
 {
-    _float4x4           ViewMul;
-    XMStoreFloat4x4(&ViewMul,m_pGameInstance->Get_RenderCamera_GetMulViewProjMatrix());
+    /*_float4x4           ViewMul;
+    XMStoreFloat4x4(&ViewMul,m_pGameInstance->Get_RenderCamera_GetMulViewProjMatrix());*/
 
-    if (m_pShader->Bind_Matrix("g_ViewProjMatrix", ViewMul))
-        return E_FAIL;
+    //if (m_pShader->Bind_Matrix("g_ViewProjMatrix", ViewMul))
+    //    return E_FAIL;
 
     if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
         return E_FAIL;

@@ -25,13 +25,8 @@ HRESULT CMainCamera::Initialize_Copytype(void* pArg)
 		return E_FAIL;
 
 
-	/*컴포넌트 세팅*/
-	CComponent* pPerspectiveCam= dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype
-	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"PerspectiveCamera"), pArg));
-	
-	if(FAILED(Add_Component(COMPONENT_TYPE::PERSPECTIVE_CACM,pPerspectiveCam,(CComponent**)(&m_pCameraCom))))
-		return E_FAIL;
 
+	m_bPerspective = true;
 
 	return S_OK;
 }
@@ -47,7 +42,7 @@ void CMainCamera::Update(_float fTimeDelta)
 	__super::Update(fTimeDelta);
 	
 	Follow_Target(fTimeDelta);
-
+	Update_PipeLine();
 	
 	
 }
@@ -56,8 +51,6 @@ void CMainCamera::Update_Late(_float fTimeDelta)
 {
 	__super::Update_Late(fTimeDelta);
 	
-	m_pCameraCom->Update_ViewMatrix(fTimeDelta);
-
 	
 }
 
@@ -76,11 +69,12 @@ HRESULT CMainCamera::Render()
 }
 
 
+
+
 void CMainCamera::Set_Target(CGameObject* pTarget, bool bInit)
 {
+	CheckNull(m_pTarget);
 	m_pTarget = pTarget;
-	
-	m_pCameraCom->Set_Target(m_pTarget);
 
 	CheckFalse(bInit);
 	if (m_pTarget)
@@ -89,13 +83,12 @@ void CMainCamera::Set_Target(CGameObject* pTarget, bool bInit)
 		if (pTargetTransform && m_pTransformCom)
 		{
 			_vector vTargetPos = pTargetTransform->Get_State(STATE::POSITION,TransformScope::WORLD);
-			_float3 vOffset = m_pCameraCom->Get_OffSet();
-
-			_vector vStartPos = vTargetPos + XMLoadFloat3(&vOffset);
+			
+			_vector vStartPos = vTargetPos + XMLoadFloat3(&m_vOffset);
 			m_pTransformCom->Set_State(STATE::POSITION, vStartPos);
 
-			// 필요하다면 view 행렬도 바로 계산
-			m_pCameraCom->Update_ViewMatrix(0.f);
+			//// 필요하다면 view 행렬도 바로 계산
+			//m_pCameraCom->Update_ViewMatrix(0.f);
 		}
 	}
 }
@@ -113,14 +106,9 @@ void CMainCamera::Follow_Target(_float fTimeDelta)
 	
 
 	const _vector TargetPos = pTargetTransform->Get_State(STATE::POSITION,TransformScope::WORLD);
-	const _float3 Offset = m_pCameraCom->Get_OffSet();
-	
-	m_pTransformCom->MoveLerp(TargetPos + XMLoadFloat3(&Offset), 3.f, fTimeDelta);
+	m_pTransformCom->MoveLerp(TargetPos + XMLoadFloat3(&m_vOffset), 3.f, fTimeDelta);
 
-	
-	
-	//m_pTransformCom->LookAtSmooth(TargetPos, 5, fTimeDelta);
-	
+
 }
 
 

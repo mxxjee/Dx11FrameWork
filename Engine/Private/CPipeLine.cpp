@@ -18,6 +18,18 @@ HRESULT CPipeLine::Bind_PipeLineMatrix(CShader* pShader, const _char* pConstant,
 
 }
 
+HRESULT CPipeLine::Bind_PipeLineMatrixAll(CShader* pShader, const _char* pConstant, _uint iCameraType)
+{
+
+	_matrix ViewProj = XMMatrixMultiply(XMLoadFloat4x4(&m_PipeDatas[ENUM_TO_UINT(iCameraType)].m_TransformMatrices[ENUM_TO_UINT(D3DTS::VIEW)]),
+		XMLoadFloat4x4(&m_PipeDatas[ENUM_TO_UINT(iCameraType)].m_TransformMatrices[ENUM_TO_UINT(D3DTS::PROJ)]));
+
+	_float4x4	fViewProj;
+	XMStoreFloat4x4(&fViewProj, ViewProj);
+
+	return pShader->Bind_Matrix(pConstant, fViewProj);
+}
+
 HRESULT CPipeLine::Bind_PipeLineInverseMatrix(CShader* pShader, const _char* pConstant, _uint iCameraType, D3DTS eTransformMatrix)
 {
 	return pShader->Bind_Matrix(pConstant, m_PipeDatas[ENUM_TO_UINT(iCameraType)].m_TransformInverseMatrices[ENUM_TO_UINT(eTransformMatrix)]);
@@ -44,6 +56,21 @@ void CPipeLine::Update()
 		memcpy(&Data.m_vCamPosition, &Data.m_TransformMatrices[ENUM_TO_UINT(D3DTS::VIEW)].m[3], sizeof(_float4));
 
 	}
+}
+
+const _float4x4& CPipeLine::Get_ViewMatrix(_uint CameraType)
+{
+	return m_PipeDatas[CameraType].m_TransformMatrices[ENUM_TO_UINT(D3DTS::VIEW)];
+}
+
+const _float4x4& CPipeLine::Get_ProjMatrix(_uint CameraType)
+{
+	return m_PipeDatas[CameraType].m_TransformMatrices[ENUM_TO_UINT(D3DTS::PROJ)];
+}
+
+const _float4& CPipeLine::Get_CamPosition(_uint CameraType)
+{
+	return m_PipeDatas[CameraType].m_vCamPosition;
 }
 
 CPipeLine* CPipeLine::Create()

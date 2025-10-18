@@ -193,6 +193,7 @@
     <ClInclude Include="..\Public\CShader.h" />
     <ClInclude Include="..\Public\CShader_Manager.h" />
     <ClInclude Include="..\Public\CTexture.h" />
+    <ClInclude Include="..\Public\CTexture_Manager.h" />
     <ClInclude Include="..\Public\CTimer.h" />
     <ClInclude Include="..\Public\CTimer_Manager.h" />
     <ClInclude Include="..\Public\CTransform.h" />
@@ -264,6 +265,7 @@
     <ClCompile Include="..\Private\CShader.cpp" />
     <ClCompile Include="..\Private\CShader_Manager.cpp" />
     <ClCompile Include="..\Private\CTexture.cpp" />
+    <ClCompile Include="..\Private\CTexture_Manager.cpp" />
     <ClCompile Include="..\Private\CTimer.cpp" />
     <ClCompile Include="..\Private\CTimer_Manager.cpp" />
     <ClCompile Include="..\Private\CTransform.cpp" />
