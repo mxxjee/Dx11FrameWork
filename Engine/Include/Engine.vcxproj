@@ -182,6 +182,7 @@
     <ClInclude Include="..\Public\ColorUtils.h" />
     <ClInclude Include="..\Public\COrthographicCameraComponent.h" />
     <ClInclude Include="..\Public\CPerspectiveCameraComponent.h" />
+    <ClInclude Include="..\Public\CPipeLine.h" />
     <ClInclude Include="..\Public\CPostProcessCamera.h" />
     <ClInclude Include="..\Public\CPrototype_Manager.h" />
     <ClInclude Include="..\Public\CQuad.h" />
@@ -252,6 +253,7 @@
     <ClCompile Include="..\Private\CMainCamera.cpp" />
     <ClCompile Include="..\Private\COrthographicCameraComponent.cpp" />
     <ClCompile Include="..\Private\CPerspectiveCameraComponent.cpp" />
+    <ClCompile Include="..\Private\CPipeLine.cpp" />
     <ClCompile Include="..\Private\CPostProcessCamera.cpp" />
     <ClCompile Include="..\Private\CPrototype_Manager.cpp" />
     <ClCompile Include="..\Private\CQuad.cpp" />

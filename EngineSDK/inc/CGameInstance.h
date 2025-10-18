@@ -174,7 +174,7 @@ public:
      class CScreenShot_Manager*     m_pScreenshotManager = { nullptr };
      class CRenderState_Manager*    m_pRenderStateManager = { nullptr };
 
-
+     class CPipeLine*               m_pPipeLine = { nullptr };
 
 private:
     vector<D3D11_VIEWPORT>          m_ViewPorts;

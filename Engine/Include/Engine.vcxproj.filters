@@ -76,39 +76,6 @@
     <Filter Include="06.PipeLine">
       <UniqueIdentifier>{32a26077-7181-477a-aa89-7eb2a02029ee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="06.PipeLine\00.Geometry">
-      <UniqueIdentifier>{074fbb04-677b-463c-bd2c-26a7eed76435}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="06.PipeLine\01.InputAssembler">
-      <UniqueIdentifier>{e337cd6d-69a3-441e-a019-c15ea4e1857e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="06.PipeLine\02.VertexShader">
-      <UniqueIdentifier>{c0989da0-ebe4-4ef6-b10d-e112d3f90df1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="06.PipeLine\03.Rasterizer">
-      <UniqueIdentifier>{5eb13aae-992a-4afd-a76a-7b982f6daf12}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="06.PipeLine\04.PixelShader">
-      <UniqueIdentifier>{a54b06ff-ec4b-4cda-81ce-416aefdf5917}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="06.PipeLine\05.OutputMerger">
-      <UniqueIdentifier>{d1f4edb1-c101-4006-a681-56421f04c3f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="06.PipeLine\02.VertexShader\ConstantBuffer">
-      <UniqueIdentifier>{87ac1b47-2459-4259-91e6-30bde4ad12b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="06.PipeLine\02.VertexShader\VS">
-      <UniqueIdentifier>{5c0dce5e-60e5-497c-91e3-11dcbcf431de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="06.PipeLine\02.VertexShader\PS">
-      <UniqueIdentifier>{77625176-7dcc-4d28-8239-8fc02587790b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="06.PipeLine\02.VertexShader\Texture">
-      <UniqueIdentifier>{f2082105-9b65-4e8d-869f-2a561e123ccd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="06.PipeLine\00.Geometry\VertexData">
-      <UniqueIdentifier>{faa96231-47ad-4672-9059-d32ba0a05551}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05.Component\Transform">
       <UniqueIdentifier>{21e66bba-704e-4fa5-9634-25f2cd9c3879}</UniqueIdentifier>
     </Filter>
@@ -220,6 +187,15 @@
     <Filter Include="01.Utility\99.EtcUtils\GraphicUtil">
       <UniqueIdentifier>{a6e48c36-403b-44fd-887d-ba9b6855c0bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\08.Texture">
+      <UniqueIdentifier>{f2082105-9b65-4e8d-869f-2a561e123ccd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\99.EtcUtils\VertexData">
+      <UniqueIdentifier>{faa96231-47ad-4672-9059-d32ba0a05551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Utility\99.EtcUtils\ConstantBuffer">
+      <UniqueIdentifier>{87ac1b47-2459-4259-91e6-30bde4ad12b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -322,13 +298,10 @@
       <Filter>05.Component</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CConstantBuffer.h">
-      <Filter>06.PipeLine\02.VertexShader\ConstantBuffer</Filter>
+      <Filter>01.Utility\99.EtcUtils\ConstantBuffer</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CTexture.h">
-      <Filter>06.PipeLine\02.VertexShader\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Public\VertexData.h">
-      <Filter>06.PipeLine\00.Geometry\VertexData</Filter>
+      <Filter>00.System\08.Texture</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CTransform.h">
       <Filter>05.Component\Transform</Filter>
@@ -426,6 +399,10 @@
     <ClInclude Include="..\Public\GraphicUtil.h">
       <Filter>01.Utility\99.EtcUtils\GraphicUtil</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\VertexData.h">
+      <Filter>01.Utility\99.EtcUtils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPipeLine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -504,13 +481,10 @@
       <Filter>05.Component</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CConstantBuffer.cpp">
-      <Filter>06.PipeLine\02.VertexShader\ConstantBuffer</Filter>
+      <Filter>01.Utility\99.EtcUtils\ConstantBuffer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CTexture.cpp">
-      <Filter>06.PipeLine\02.VertexShader\Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Public\VertexData.cpp">
-      <Filter>06.PipeLine\00.Geometry\VertexData</Filter>
+      <Filter>00.System\08.Texture</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Libraries\Include\SimpleMath\SimpleMath.cpp">
       <Filter>01.Utility</Filter>
@@ -599,5 +573,9 @@
     <ClCompile Include="..\Private\CVIBuffer_Terrain.cpp">
       <Filter>05.Component\VIBuffer\VIBuffer_Terrain</Filter>
     </ClCompile>
+    <ClCompile Include="..\Public\VertexData.cpp">
+      <Filter>01.Utility\99.EtcUtils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPipeLine.cpp" />
   </ItemGroup>
 </Project>

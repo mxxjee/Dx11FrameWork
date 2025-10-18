@@ -132,5 +132,7 @@ namespace Engine
 		PERSPECTIVE_CACM,
 		ORTHOGRAPHIC_CAM,
 		VIBUFFER_RECT, VIBUFFER_TERRAIN};
+
+	enum class D3DTS {VIEW,PROJ,END};
 }
 #endif // Engine_Enum_h__

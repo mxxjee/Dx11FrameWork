@@ -13,6 +13,7 @@
 #include "CScreenShot_Manager.h"
 #include "CRenderState_Manager.h"
 #include "CShader.h"
+#include "CPipeLine.h"
 
 
 
@@ -83,6 +84,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	m_pRenderStateManager = CRenderState_Manager::Create(*pDevice, *pContext);
 	CheckNullResult(m_pRenderStateManager, E_FAIL);
 
+	/*파이프라인*/
+	m_pPipeLine = CPipeLine::Create();
+	CheckNullResult(m_pPipeLine, E_FAIL);
+
 	return S_OK;
 }
 
@@ -109,6 +114,10 @@ void CGameInstance::LateUpdate_Engine(float fTimedelta)
 {
 	m_pLevelManager->Update_Late(fTimedelta);
 	LateUpdate_Cameras(fTimedelta);
+
+	//카메라의 이동이모두 끝난 후 계산
+	m_pPipeLine->Update();
+
 }
 
 void CGameInstance::Update_Render(float fTimedelta)
