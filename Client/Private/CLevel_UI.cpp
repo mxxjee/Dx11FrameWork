@@ -106,6 +106,7 @@ HRESULT CLevel_UI::Ready_Layer_UI(const _wstring& strLayerTag)
 	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
 	Desc.ObjTag = L"ScreenQuad";
 	
+	Desc.Depth = 0.6f;
 	Desc.fSizeX = g_iWinSizeX;
 	Desc.fSizeY = g_iWinSizeY;
 

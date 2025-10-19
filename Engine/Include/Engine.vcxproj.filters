@@ -202,6 +202,9 @@
     <Filter Include="00.System\09.UI">
       <UniqueIdentifier>{bd257ac0-7c69-473a-9e96-e51af2caf445}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\UI">
+      <UniqueIdentifier>{ee8b2c78-04cf-4621-949f-136c5c89996a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -415,6 +418,7 @@
     <ClInclude Include="..\Public\CUI_Manager.h">
       <Filter>00.System\09.UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUIComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -595,5 +599,6 @@
     <ClCompile Include="..\Private\CUI_Manager.cpp">
       <Filter>00.System\09.UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CUIComponent.cpp" />
   </ItemGroup>
 </Project>

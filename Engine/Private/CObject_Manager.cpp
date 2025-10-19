@@ -83,6 +83,24 @@ HRESULT CObject_Manager::Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _
 	return S_OK;
 }
 
+HRESULT CObject_Manager::Add_GameObject_To_Layer(_uint iLayerLevelIndex, const _wstring& strLayerTag, CGameObject* pObject)
+{
+
+	CLayer* pLayer = Find_Layer(iLayerLevelIndex, strLayerTag);
+	if (!pLayer)
+	{
+		pLayer = CLayer::Create();
+		pLayer->Add_GameObject(pObject);
+		m_Layers[iLayerLevelIndex].emplace(strLayerTag, pLayer);
+
+	}
+
+	else
+		pLayer->Add_GameObject(pObject);
+
+	return S_OK;
+}
+
 const unordered_map<_wstring, CLayer*>& CObject_Manager::Get_Layers(_uint iLevel)
 {
 	// TODO: 여기에 return 문을 삽입합니다.

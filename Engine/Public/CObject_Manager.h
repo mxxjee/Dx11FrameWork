@@ -27,8 +27,13 @@ public:
 
 
 public:
+    //생성과 동시에 추가해주는 함수
     HRESULT     Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag,
         _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg = nullptr);
+
+    //이미생성한 것을 추가하는 함수
+    HRESULT     Add_GameObject_To_Layer(_uint iLayerLevelIndex, const _wstring& strLayerTag,CGameObject* pObject);
+
 
     const unordered_map<_wstring, CLayer*>& Get_Layers(_uint iLevel);
     class CGameObject* Find_GameObject(_uint iLevelIndex, const _wstring& LayerTag, const _wstring& Tag);

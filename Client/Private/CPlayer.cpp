@@ -118,6 +118,12 @@ void CPlayer::Move_Input(_float fTimeDelta)
         m_pTransformCom->Rotation(_float3(0.f, 0.f, 0.f));
     }
 
+    if (m_pInputManager->IsKeyPressed(KeyCode::B))
+    {
+        iHp--;
+        m_pGameInstance->BroadCastEvent(L"OnHeartDamaged",&iHp);
+
+    }
 
     if (m_pInputManager->IsKeyReleased(KeyCode::UpArrow) ||
         m_pInputManager->IsKeyReleased(KeyCode::DownArrow) ||

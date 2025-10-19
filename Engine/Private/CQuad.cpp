@@ -91,8 +91,8 @@ HRESULT CQuad::Render()
 
 HRESULT CQuad::Ready_Components(void* pArg)
 {
+
     CComponent* pBuffer = dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"VIBuffer_Rect"), pArg));
-    
     if (FAILED(__super::Add_Component(COMPONENT_TYPE::VIBUFFER_RECT, pBuffer, (CComponent**)&m_pVIBufferCom)))
         return E_FAIL;
 

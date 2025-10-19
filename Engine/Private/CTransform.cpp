@@ -27,8 +27,7 @@ HRESULT CTransform::Initialize_Copytype(void* pArg)
 	if(FAILED(__super::Initialize_Copytype(pArg)))
 		return E_FAIL;
 
-	COMPONENT_DESC* pComponentDest = static_cast<COMPONENT_DESC*>(pArg);
-	TRANSFORM_DESC* pDesc = static_cast<TRANSFORM_DESC*>(pComponentDest->TransformDesc);
+	TRANSFORM_DESC* pDesc = static_cast<TRANSFORM_DESC*>(pArg);
 	
 	XMStoreFloat4x4(&m_LocalWorldMatrix, XMMatrixIdentity());
 	m_WorldMatrix = m_LocalWorldMatrix;
@@ -228,6 +227,32 @@ void CTransform::MoveLerp(_vector vTargetPos, float fLerpSpeed, float fTimeDelta
 	Set_State(STATE::POSITION, vNew);
 }
 
+void CTransform::ScaleLerp(_vector vTargetPos, float fLerpSpeed, float fTimeDelta, bool bUpdateLook)
+{
+	float t = 1.0f - expf(-fTimeDelta * fLerpSpeed);
+	_vector vCur = Get_Scale_ByVector();
+	_vector vNew = XMVectorLerp(vCur, vTargetPos, t);
+
+	_float4 vScale;
+	XMStoreFloat4(&vScale, vNew);
+
+	Set_Scale(vScale);
+}
+
+void CTransform::RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDelta, bool bUpdateLook)
+{
+	float t = 1.0f - expf(-fTimeDelta * fLerpSpeed);
+	_vector vCur = XMLoadFloat3(&m_fEularDegree);
+	_vector vNew = XMVectorLerp(vCur, vTargetRot, t);
+
+	_float3 vRotation;
+	XMStoreFloat3(&vRotation, vNew);
+
+	AddRotation(vRotation);
+}
+
+
+
 HRESULT CTransform::Bind_ShaderResource(CShader* pShader, const string& Variable)
 {
 	CheckNullResult(pShader, E_FAIL);
@@ -287,7 +312,7 @@ _matrix CTransform::Get_WorldInverse(TransformScope eScope)
 	return XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_LocalWorldMatrix));
 }
 
-_float3 CTransform::Get_Scale()
+_float3 CTransform::Get_Scale_ByFloat3()
 {
 	return _float3(
 		XMVectorGetX(XMVector3Length(Get_State(STATE::RIGHT))),//float 추출
@@ -295,6 +320,16 @@ _float3 CTransform::Get_Scale()
 		XMVectorGetX(XMVector3Length(Get_State(STATE::LOOK)))
 		);
 
+}
+
+_vector CTransform::Get_Scale_ByVector()
+{
+	return XMVectorSet(
+		XMVectorGetX(XMVector3Length(Get_State(STATE::RIGHT))),//float 추출
+		XMVectorGetX(XMVector3Length(Get_State(STATE::UP))),
+		XMVectorGetX(XMVector3Length(Get_State(STATE::LOOK))),
+		1.f
+	);
 }
 
 _vector CTransform::Get_SRT(SRTType eType)
@@ -330,7 +365,7 @@ void CTransform::Rotation(_vector vAxis, _float fRadian)
 	
 	//특정 축을 통한 x ,y, z 회전.
 	_matrix AxisRotationMat = XMMatrixRotationAxis(vAxis, fRadian);
-	_float3 vScale = Get_Scale();
+	_float3 vScale = Get_Scale_ByFloat3();
 
 	//방향벡터이므로 , w=0
 	_vector vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * vScale.x;
@@ -420,7 +455,7 @@ void CTransform::Rotation(_float3 fEularDegree)
 
 	_matrix RotationMatrix = XMMatrixRotationQuaternion(vQuaternion);
 
-	_float3 vScale= Get_Scale();			//크기유지
+	_float3 vScale= Get_Scale_ByFloat3();			//크기유지
 	
 	//크기 유지
 	_vector vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f)*vScale.x;
@@ -448,7 +483,7 @@ void CTransform::AddRotation(_float3 fEularDegree)
 		XMConvertToRadians(m_fEularDegree.z));
 
 	_matrix RotationMatrix = XMMatrixRotationQuaternion(vQuaternion);
-	_float3 vScale = Get_Scale();			//크기유지
+	_float3 vScale = Get_Scale_ByFloat3();			//크기유지
 
 	//크기 유지
 	_vector vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f) * vScale.x;
@@ -484,7 +519,7 @@ void CTransform::Turn(_vector vAxis, _float fTimeDelta)
 
 void CTransform::LookAt(_vector vWorldPoint)
 {
-	_float3 vScale = Get_Scale();
+	_float3 vScale = Get_Scale_ByFloat3();
 
 	//new look 구하기
 	_vector vPosition = Get_State(STATE::POSITION);
@@ -555,9 +590,9 @@ void CTransform::LookAt(_vector vAxis, _vector vWorldPoint, _float fTimeDelta, _
 	vLook = XMVector3Normalize(XMVector3Cross(vRight, vUp));
 
 	// 10. 최종 세팅 (스케일 유지)
-	Set_State(STATE::RIGHT, vRight * Get_Scale().x);
-	Set_State(STATE::UP, vUp * Get_Scale().y);
-	Set_State(STATE::LOOK, vLook * Get_Scale().z);
+	Set_State(STATE::RIGHT, vRight * Get_Scale_ByFloat3().x);
+	Set_State(STATE::UP, vUp * Get_Scale_ByFloat3().y);
+	Set_State(STATE::LOOK, vLook * Get_Scale_ByFloat3().z);
 }
 
 void CTransform::LookAtSmooth(_vector vTargetPos, float fLerpSpped, float fTimeDelta)
@@ -577,7 +612,7 @@ void CTransform::LookAtSmooth(_vector vTargetPos, float fLerpSpped, float fTimeD
 
 	//Set_State(STATE::RIGHT, vNewLook * Get_Scale().x);
 	//Set_State(STATE::UP, vUp * Get_Scale().y);
-	Set_State(STATE::LOOK, vNewLook * Get_Scale().z);
+	Set_State(STATE::LOOK, vNewLook * Get_Scale_ByFloat3().z);
 
 
 
@@ -638,7 +673,7 @@ void CTransform::LookAt(CTransform* target)
 
 void CTransform::LookAtWithUpVector(_vector vWorldPoint, _vector vUp)
 {
-	_float3 vScale = Get_Scale();
+	_float3 vScale = Get_Scale_ByFloat3();
 
 	//new look 구하기
 	_vector vPosition = Get_State(STATE::POSITION);

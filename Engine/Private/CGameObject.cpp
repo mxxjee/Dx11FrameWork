@@ -28,9 +28,7 @@ HRESULT CGameObject::Initialize_Prototype()
 
 HRESULT CGameObject::Initialize_Copytype(void* pArg)
 {
-    GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
-    pDesc->pOwner = this;
-   
+  
     /*컴포넌트 생성과 컴포넌트에게 desc를 보냄*/
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
@@ -68,8 +66,14 @@ HRESULT CGameObject::Render()
 
 HRESULT CGameObject::Ready_Components(void* pArg)
 {
+    GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+    
+    CComponent::COMPONENT_DESC* compDesc = static_cast<CComponent::COMPONENT_DESC*>(pDesc->TransformDesc);
+    compDesc->pOwner = this;
+
+
     CComponent* pTransform = dynamic_cast<CTransform*>(m_pGameInstance->Clone_Prototype
-    (PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"Transform"), pArg));
+    (PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"Transform"), pDesc->TransformDesc));
 
     if (FAILED(Add_Component(COMPONENT_TYPE::TRANSFORM, pTransform, reinterpret_cast<CComponent**>(&m_pTransformCom))))
         return E_FAIL;
@@ -95,6 +99,7 @@ HRESULT CGameObject::Add_Component(COMPONENT_TYPE eType, CComponent* pComp, CCom
 
     m_Components.emplace(eType, pComp);
     *pOut = pComp;
+    pComp->Set_Owner(this);
 
     Safe_AddRef(pComp);
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "CQuad.h"
+#include "CUIComponent.h"
 
 NS_BEGIN(Engine)
 class ENGINE_DLL CUI :
@@ -10,7 +11,12 @@ public:
     {
         _float fX = {}, fY = {},Depth = { 0.5f };
         _float fSizeX = {}, fSizeY = {};
+        _uint           iIdx = 0;
         
+        UIAnimType      _UIAnimType = UIAnimType::NONE;
+
+        void* UICompDesc = nullptr;
+
     }UI_DESC;
 
 protected:
@@ -22,6 +28,9 @@ public:
     virtual HRESULT     Initialize_Prototype(); /*원형 객체가 생성될때 부르는 Initialize*/
     virtual HRESULT     Initialize_Copytype(void* pArg); /*사본 객체가 생성될때 부르는 Initialize*/
 
+    HRESULT             Ready_Components(void* pArg);
+    HRESULT             Ready_Resource(void* pArg);
+
     virtual void        Update_Priority(_float fTimeDelta);
     virtual void        Update(_float fTimeDelta);
     virtual void        Update_Late(_float fTimeDelta);
@@ -30,14 +39,28 @@ public:
     virtual HRESULT Render();
 
 public:
-    _float        Get_Depth();
+    _float          Get_Depth();
+    _uint           Get_Idx() { return m_iIdx; }
+    UIAnimType      Get_UIAnimType() { return m_UIAnimType; }
+public:
+    //UIEvent관련
+    //활성,비활성화 상태에 따른 호출
+    virtual void        OnActivated(bool isActive);
 
 public:
     virtual CGameObject* Clone(void* pArg)=0;
     virtual void    Free() override;
 
 
+   
+private:
+    function<void()>        m_ActiveAnim[2];
 
+
+private:
+    _uint                     m_iIdx = 0;         //UIGroup제어용, 기본값 0
+    UIAnimType                m_UIAnimType=UIAnimType::NONE;
+    CUIComponent*             m_pUICom = nullptr;
 };
 NS_END
 

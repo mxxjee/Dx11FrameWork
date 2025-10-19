@@ -10,7 +10,7 @@ public:
     typedef struct tagComponentDesc
     {
         class CGameObject* pOwner = nullptr;
-        void* TransformDesc = nullptr;
+
     }COMPONENT_DESC;
 
 protected:
@@ -26,6 +26,7 @@ public:
 
 public:
     class CGameObject* Get_Owner() { return m_pOwner; }
+    void               Set_Owner(class CGameObject* pObj) { m_pOwner = pObj; }
 
 protected:
     ComPtr<ID3D11Device> m_pDevice = nullptr;

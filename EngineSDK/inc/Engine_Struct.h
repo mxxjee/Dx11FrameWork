@@ -26,24 +26,6 @@ namespace Engine
 	}ENGINE_DESC;
 
 
-	
-	struct TransformData
-	{
-			Matrix	matworld; //= DirectX::SimpleMath::Matrix::Identity;
-			Matrix	view;// = DirectX::SimpleMath::Matrix::Identity;
-			Matrix  proj; //= DirectX::SimpleMath::Matrix::Identity;
-
-	};
-
-
-
-	template<typename T>
-	class CGeometry;
-
-
-	template<typename T>
-	class CConstantBuffer;
-
 
 	struct RenderStates
 	{
@@ -58,11 +40,8 @@ namespace Engine
 	struct RENDER_TARGET
 	{
 		ComPtr<ID3D11Texture2D>				pColorTex;//실제로 GPU가 사용하는 내부적인 texture buffer
-
 		ComPtr<ID3D11DepthStencilView>		DSV;
-		
 		ComPtr<ID3D11RenderTargetView>		RTV;		//그릴 곳, 대상 렌더타겟뷰
-		
 		ComPtr<ID3D11ShaderResourceView>	SRV;	//현재 렌더타겟으로 만든 셰이더리소스뷰
 
 	};
@@ -74,6 +53,7 @@ namespace Engine
 		vector<class CGameObject*>        Objects;        //그룹요소들
 		bool        isActive = true;                //활성화 여부
 	};
+
 	
 }
 

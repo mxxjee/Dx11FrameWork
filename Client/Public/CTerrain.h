@@ -13,7 +13,7 @@ class CTerrain final:
     public CGameObject
 {
 public:
-    typedef struct tagTerrainDesc : CComponent::tagComponentDesc
+    typedef struct tagTerrainDesc : CGameObject::tagGameObjectDesc
     {
         _wstring TextureKey = L"";
         _wstring  ShaderName = L"";

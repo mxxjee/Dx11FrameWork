@@ -23,6 +23,8 @@
 #include "CVIBuffer_Terrain.h"
 
 
+
+
 USING(Client)
 CLoader::CLoader(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
     :m_pDevice{_pDevice},
@@ -158,21 +160,9 @@ HRESULT CLoader::Loading_Logo()
 
   
     lstrcpy(m_szFPS, TEXT("컴포넌트 원형(를) 로딩 중 입니다."));
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Transform"), CTransform::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(Register_Components()))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"PerspectiveCamera"), CPerspectiveCameraComponent::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"OrthographicCamera"), COrthographicCameraComponent::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Terrain"), CVIBuffer_Terrain::Create(m_pDevice, m_pDeviceContext,L"../../Resource/Height.bmp"))))
-        return E_FAIL;
 
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
 
@@ -286,6 +276,28 @@ HRESULT CLoader::Register_Textures()
     if (FAILED(m_pGameInstance->Register_Texture(L"Skeleton", pTexture)))
         return E_FAIL;
 
+    return S_OK;
+}
+
+HRESULT CLoader::Register_Components()
+{
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Transform"), CTransform::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"PerspectiveCamera"), CPerspectiveCameraComponent::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"OrthographicCamera"), COrthographicCameraComponent::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Terrain"), CVIBuffer_Terrain::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Height.bmp"))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"UI"), CUIComponent::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
     return S_OK;
 }
 

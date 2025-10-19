@@ -291,6 +291,12 @@ CGameObject* CGameInstance::Find_GameObject(_uint iLevelIndex, const _wstring& L
 	return m_pObjectManager->Find_GameObject(iLevelIndex,LayerTag,Tag);
 }
 
+HRESULT CGameInstance::Add_GameObject_To_Layer(_uint iLayerLevelIndex, const _wstring& strLayerTag, CGameObject* pObject)
+{
+	CheckNullResult(m_pObjectManager, E_FAIL);
+	return m_pObjectManager->Add_GameObject_To_Layer(iLayerLevelIndex, strLayerTag, pObject);
+}
+
 #pragma endregion
 
 #pragma region Renderer
@@ -531,10 +537,10 @@ const _float4& CGameInstance::Get_CamPosition(_uint CameraType)
 #pragma endregion
 
 #pragma region UI_Manager
-HRESULT CGameInstance::Register_UIGroup(const _wstring& Key, const UIGroup& Group)
+HRESULT CGameInstance::Register_UIGroup(const UIGroup& Group, const _wstring& Key)
 {
 	CheckNullResult(m_pUIManager, E_FAIL);
-	return m_pUIManager->Register_UIGroup(Key,Group);
+	return m_pUIManager->Register_UIGroup(Group, Key);
 }
 HRESULT CGameInstance::AddUIToGroup(const _wstring& Key, CGameObject* pGameObject)
 {

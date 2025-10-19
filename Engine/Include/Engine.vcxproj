@@ -199,6 +199,7 @@
     <ClInclude Include="..\Public\CTransform.h" />
     <ClInclude Include="..\Public\CUI.h" />
     <ClInclude Include="..\Public\CUICamera.h" />
+    <ClInclude Include="..\Public\CUIComponent.h" />
     <ClInclude Include="..\Public\CUI_Manager.h" />
     <ClInclude Include="..\Public\CVIBuffer.h" />
     <ClInclude Include="..\Public\CVIBuffer_Rect.h" />
@@ -272,6 +273,7 @@
     <ClCompile Include="..\Private\CTransform.cpp" />
     <ClCompile Include="..\Private\CUI.cpp" />
     <ClCompile Include="..\Private\CUICamera.cpp" />
+    <ClCompile Include="..\Private\CUIComponent.cpp" />
     <ClCompile Include="..\Private\CUI_Manager.cpp" />
     <ClCompile Include="..\Private\CVIBuffer.cpp" />
     <ClCompile Include="..\Private\CVIBuffer_Rect.cpp" />

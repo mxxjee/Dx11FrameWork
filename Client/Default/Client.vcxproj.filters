@@ -140,6 +140,9 @@
     <Filter Include="02.GameObjects\00.WorldObjects\Terrain">
       <UniqueIdentifier>{78c68c6f-24f3-4338-9a15-71e38fd682fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.UI\00.Panel\NewFilter1">
+      <UniqueIdentifier>{dfd5dff4-e381-46d8-a534-2e0f43532338}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">

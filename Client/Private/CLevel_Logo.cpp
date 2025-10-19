@@ -241,30 +241,63 @@ HRESULT CLevel_Logo::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
 HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
 {
-    CUI::tagUIDesc        Desc = {};
+    UIGroup     HeartGroup;
+    HeartGroup.Key = L"HeartGroup";
+    
+    for (int i = 0; i < 5; ++i)
+    {
+        CUI::tagUIDesc        Desc = {};
 
-    Desc.ObjTag = L"Hp_UI";
-    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
-    Desc.TextureKey = L"Hp";
+        Desc.ObjTag = L"Hp_UI" + to_wstring(i);
+        Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+        Desc.TextureKey = L"Hp";
 
-    Desc.fSizeX = 38.f;
-    Desc.fSizeY = 38.f;
-    Desc.fX = 50.f;
-    Desc.fY = 50.f;
+        Desc.iIdx = i;
+        
+        Desc.fSizeX = 38.f;
+        Desc.fSizeY = 38.f;
+        Desc.fX = 50.f + (i*45.f);
+        Desc.fY = 50.f;
 
-    CTransform::TRANSFORM_DESC TransDesc = {};
-    TransDesc.fRotationPerSec = 10.f;
-    TransDesc.fSpeedPerSec = 5.f;
+        CTransform::TRANSFORM_DESC TransDesc = {};
+        TransDesc.fRotationPerSec = 10.f;
+        TransDesc.fSpeedPerSec = 5.f;
 
-    Desc.TransformDesc = &TransDesc;
+        Desc.TransformDesc = &TransDesc;
 
-    if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-        PROTO_OBJ_NAME(L"Panel"),
-        ENUM_TO_UINT(LEVEL_ID::LOGO),
-        strLayerTag, &Desc)))
-        return E_FAIL;
+        CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &Desc);
+        if (pObj)
+        {
+            CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+            if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), strLayerTag, pInstance)))
+                return E_FAIL;
 
 
+            HeartGroup.Objects.push_back(pInstance);
+
+        }
+
+    }
+
+    m_pGameInstance->Register_UIGroup(HeartGroup);
+    m_pGameInstance->RegisterEvent(L"OnHeartDamaged", [this](void* pData)
+        {
+            int* iHp = reinterpret_cast<int*>(pData);
+            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"HeartGroup");
+            if (pGroup)
+            {
+                for (auto& i : pGroup->Objects)
+                {
+                    CUI* pUI = dynamic_cast<CUI*>(i);
+                    if (pUI)
+                    {
+                        if (pUI->Get_Idx() == *iHp)
+                            pUI->OnActivated(false);
+                    }
+                }
+            }
+        });
+   
 
     ///////////////////Minimapquad»ý¼º
     CUI::tagUIDesc        MinimapDesc = {};
@@ -284,6 +317,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
         ENUM_TO_UINT(LEVEL_ID::LOGO),
         strLayerTag, &MinimapDesc)))
         return E_FAIL;
+
 
 
     return S_OK;
@@ -441,6 +475,8 @@ void CLevel_Logo::OnEnter()
             L"Player_Layer",
             L"Player"), true);
     }
+
+
 
 
 }

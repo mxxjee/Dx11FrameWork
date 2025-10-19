@@ -58,6 +58,10 @@ void CPanel::Update_Render(_float fTimeDelta)
 
 HRESULT CPanel::Render()
 {
+	RenderStates RS = m_pGameInstance->Get_RenderStates(ENUM_TO_UINT(RENDERGROUP::UI));
+
+	m_pContext->OMSetBlendState(RS._BlendState.Get(), nullptr, 0xFFFFFFFF);
+
 	__super::Render();
 
 

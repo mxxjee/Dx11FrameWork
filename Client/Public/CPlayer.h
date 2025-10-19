@@ -40,7 +40,7 @@ public:
 private:
     bool bPressed = false;
     CInput_Manager*         m_pInputManager = nullptr;
-    
+    int                     iHp = 5;
 };
 
 NS_END

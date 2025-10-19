@@ -18,7 +18,7 @@ private:
 
 public:
     //새로운  UIGroup 구조체를 만들어서 등록
-    HRESULT     Register_UIGroup(const _wstring& Key, const UIGroup& Group);
+    HRESULT     Register_UIGroup(const UIGroup& Group,const _wstring& Key=L"");
     
     //이미 매니저에 존재하는 그룹에 추가로 등록
     HRESULT     AddUIToGroup(const _wstring& Key, CGameObject* pGameObject);
@@ -34,7 +34,7 @@ public:
     HRESULT        SetActiveGroup(const _wstring& Key, bool bActive);
 
 
-    UIGroup* Get_UIGroup(const _wstring Key);
+    UIGroup*            Get_UIGroup(const _wstring Key);
     function<void(void*)> Get_EventFunction(const _wstring& Key);
 
 public:

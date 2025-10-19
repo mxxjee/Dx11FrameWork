@@ -6,7 +6,7 @@ class ENGINE_DLL CTransform :
     public CComponent
 {
 public:
-    typedef struct tagTransformDesc
+    typedef struct tagTransformDesc : CComponent::tagComponentDesc
     {
         _float4 vLocalPosition = {0.f,0.f,0.f,1.f};
         _float4 vLocalScale = { 1.f,1.f,1.f,1.f };
@@ -62,15 +62,17 @@ public:
 public:
     const _float4x4&        Get_World(TransformScope eScope = TransformScope::LOCAL);
     _matrix                 Get_WorldInverse(TransformScope eScope = TransformScope::LOCAL);
-    _float3                 Get_Scale();           //right.up.forward벡터 길이만 리턴하자.
+    
+    _float3                 Get_Scale_ByFloat3();           //right.up.forward벡터 길이만 리턴하자.
+    _vector                 Get_Scale_ByVector();
+
     _vector                 Get_SRT(SRTType eType);
     CTransform*             Get_Parent() { return m_pParent; }
 
 #pragma region Translation(모두 로컬기준 이동/회전)
 public:
     void    Move(DIRECTION eDir, float fTimeDelta,Space space=Space::Local);                                                                  //look벡터 갱신여부
-    void    MoveLerp(_vector vTargetPos, float fLerpSpeed, float fTimeDelta, bool bUpdateLook=true);
-   
+  
     void    Rotation(_vector vAxis, _float fRadian);       //즉각회전,vAxis축을 기준으로 fRAdian만큼 회전시킨다. 
     void    Rotation(_float3 fEularDegree);
     void    AddRotation(_float3 fEularDegree);              //누적회전 , 기존의 회전에 더함
@@ -88,6 +90,10 @@ public:
        
     void    Chase(_vector vPoint, _float fTimeDelta, _float MinDistance = 0.f);    //최소 거리 까지만 쫓아간다.
 
+//////////////////////////
+    void    MoveLerp(_vector vTargetPos, float fLerpSpeed, float fTimeDelta, bool bUpdateLook = true);
+    void    ScaleLerp(_vector vTargetScale, float fLerpSpeed, float fTimeDelta, bool bUpdateLook = true);
+    void    RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDelta, bool bUpdateLook = true);
 #pragma endregion
 
 private:

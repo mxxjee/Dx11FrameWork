@@ -47,6 +47,7 @@ float4 PS_MAIN(VS_OUT Input) : SV_Target0
 {
     float4 color = texture0.Sample(sampler0, Input.vTexcoord);
 
+    color.a *= g_Alpha;
     return color;
 }
 

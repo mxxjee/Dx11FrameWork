@@ -8,11 +8,11 @@ class ENGINE_DLL CGameObject :
     public CBase
 {
 public:
-    typedef struct tagGameObjectDesc : CComponent::tagComponentDesc
+    typedef struct tagGameObjectDesc 
     {
         _wstring ObjTag;
         class CGameObject* pTarget = nullptr;
-
+        void* TransformDesc = nullptr;
     }GAMEOBJECT_DESC;
 
 protected:
@@ -73,11 +73,6 @@ public:
     virtual void    Free() override;
 
 
-
-
-protected:
- 
-    TransformData m_transformData;
 };
 NS_END
 

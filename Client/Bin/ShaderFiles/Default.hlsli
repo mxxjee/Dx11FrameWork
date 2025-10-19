@@ -7,6 +7,7 @@ row_major matrix g_WorldMatrix;
 row_major matrix g_ViewProjMatrix;
 ////////
 float g_Brightness = 1.0f;
+float g_Alpha = 1.0f;
 
 
 // 샘플러 및 공통 텍스처

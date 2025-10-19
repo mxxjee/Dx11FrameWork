@@ -5,16 +5,21 @@ CUI_Manager::CUI_Manager()
 {
 }
 
-HRESULT CUI_Manager::Register_UIGroup(const _wstring& Key, const UIGroup& Group)
+HRESULT CUI_Manager::Register_UIGroup(const UIGroup& Group, const _wstring& Key)
 {
-	UIGroup* pGroup = Get_UIGroup(Key);
+	_wstring FindKey = Key;
+	if (FindKey == L"")
+		FindKey = Group.Key;
+
+
+	UIGroup* pGroup = Get_UIGroup(FindKey);
 	if (pGroup)
 		return E_FAIL;
 
 
 	else
 	{
-		m_UIMap.emplace(Key, Group);
+		m_UIMap.emplace(FindKey, Group);
 		for (auto& i : Group.Objects)
 			Safe_AddRef(i);
 
@@ -70,7 +75,11 @@ HRESULT CUI_Manager::SetActiveGroup(const _wstring& Key, bool bActive)
 
 	for (auto& i : pGroup->Objects)
 	{
-		i->Set_Active(true);
+		CUI* pUI = dynamic_cast<CUI*>(i);
+
+		//활성/비활성화에 따른 이벤트호출
+		if (pUI)
+			pUI->OnActivated(bActive);
 	}
 
 	return S_OK;

@@ -24,8 +24,6 @@ public:
 	  virtual HRESULT Render() override;
 
 
-private:
-	HRESULT		Add_Component(void *pArg);
 
 public:
 	static CBackGround* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);

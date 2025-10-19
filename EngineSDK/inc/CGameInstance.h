@@ -63,13 +63,14 @@ public:
 #pragma region ProtoManager
 public:
 	HRESULT        Add_Prototype(_uint iLevelIndex, const _wstring & strProtoTag, CBase * pPrototype);
-	CBase* Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelIndex, const _wstring & strPrototag, void* pArg);
+	CBase*			Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelIndex, const _wstring & strPrototag, void* pArg);
 #pragma endregion
 
 #pragma region ObjectManager
 public:
 	const unordered_map<_wstring, class CLayer*>& Get_Layers(_uint iLevel);
 
+	//생성과 동시에 추가해주는 함수
 	HRESULT Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _wstring & strPrototypeTag,
 		_uint iLayerLevelIndex, const _wstring & strLayerTag, void* pArg = nullptr);
 
@@ -79,6 +80,10 @@ public:
 	void        Update_Late_Static(_float fTimeDelta);
 	void        Update_Render_Static(_float fTimeDelta);
 	class CGameObject* Find_GameObject(_uint iLevelIndex, const _wstring & LayerTag, const _wstring & Tag);
+	
+	//이미생성한 것을 추가하는 함수
+	HRESULT     Add_GameObject_To_Layer(_uint iLayerLevelIndex, const _wstring & strLayerTag, CGameObject * pObject);
+
 #pragma endregion
 
 #pragma region Renderer
@@ -178,7 +183,7 @@ public:
 #pragma region UI_Manager
 public:
 		//새로운  UIGroup 구조체를 만들어서 등록
-	HRESULT     Register_UIGroup(const _wstring & Key, const UIGroup & Group);
+	HRESULT     Register_UIGroup(const UIGroup& Group, const _wstring& Key = L"");
 
 	//이미 매니저에 존재하는 그룹에 추가로 등록
 	HRESULT     AddUIToGroup(const _wstring & Key, CGameObject * pGameObject);

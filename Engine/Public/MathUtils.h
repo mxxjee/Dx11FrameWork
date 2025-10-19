@@ -103,4 +103,9 @@ namespace MathUtils
 		if (value > max) return max;
 		return value;
 	}
+	
+	float Lerp(float Start, float Target, float t)
+	{
+		return Start + (Target - Start) * t;
+	}
 }

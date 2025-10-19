@@ -32,9 +32,6 @@ HRESULT CBackGround::Initialize_Copytype(void* pArg)
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
-    if (FAILED(Add_Component(pArg)))
-        return E_FAIL;
-
  
 
     return S_OK;
@@ -83,16 +80,7 @@ HRESULT CBackGround::Render()
 }
 
 
-HRESULT CBackGround::Add_Component(void* pArg)
-{
-    //컴포넌트생성
-    UI_DESC* pDesc = static_cast<UI_DESC*>(pArg);
-    pDesc->pOwner = this;
 
- 
-
-    return S_OK;
-}
 
 
 CBackGround* CBackGround::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)

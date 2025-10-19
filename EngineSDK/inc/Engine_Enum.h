@@ -129,8 +129,29 @@ namespace Engine
 	
 	enum class COMPONENT_TYPE {
 		TRANSFORM,
-		VIBUFFER_RECT, VIBUFFER_TERRAIN};
+		VIBUFFER_RECT,
+		VIBUFFER_TERRAIN,
+		UI};
 
 	enum class D3DTS {VIEW,PROJ,END};
+
+	//애니메이션 사용여부(조합을 위해 비트마스크)
+	enum class UIAnimType : uint8_t
+	{
+		NONE = 0,
+		SCALE = 1 << 0,
+		POSITION = 1 << 1,
+		ROTATION = 1 << 2,
+		ALPHA = 1 << 3,
+		COUNT = 4,
+
+	
+	};
+	ENABLE_BITMASK_OPERATORS(UIAnimType);
+	inline bool HasFlag(UIAnimType value, UIAnimType flag)
+	{
+		return (static_cast<uint8_t>(value) & static_cast<uint8_t>(flag)) != 0;
+	}
+
 }
 #endif // Engine_Enum_h__
