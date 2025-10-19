@@ -117,7 +117,7 @@ void CCamera_Manager::Render_Cameras()
 
 
 		//각 카메라가 렌더할 렌더그룹을 접근해서 Render()호출
-		vector<bool> RenderMask = m_pRenderCamera->Get_RenderMask();
+		vector<uint8_t> RenderMask = m_pRenderCamera->Get_RenderMask();
 		for (int i = 0; i < RenderMask.size(); ++i)
 		{
 			if (RenderMask[i])

@@ -81,8 +81,11 @@ public:
     //이 카메라는 무슨무슨 렌더그룹을 렌더할건지,기본값 everything
     void        Set_RenderMask(_uint eGroup, bool bRender) { m_RenderMask[eGroup] = bRender; }
     void        Set_RenderAllRenderMask(bool bRender);
-    const       vector<bool>& Get_RenderMask() { return m_RenderMask; }
-    
+   
+    const       vector<uint8_t>& Get_RenderMask() { return m_RenderMask; }
+    uint8_t*   Get_RenderMaskValue(_uint i) { return &m_RenderMask[i]; }
+   
+
     void        Set_Offset(_float3 Offset) { m_vOffset = Offset; }
     void       Set_Fovy(_float Fov) { m_fFovy = Fov; }
     void      Set_Near(float fNear) { m_fNearZ=fNear; }
@@ -110,7 +113,7 @@ protected:
 
 
 protected:
-    vector<bool>                    m_RenderMask;
+    vector<uint8_t>                    m_RenderMask;
     int                             m_RenderGroupMax = 0;
 
 protected:

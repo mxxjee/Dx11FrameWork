@@ -71,6 +71,9 @@ private:
     _float3 fDefaultOffSet;
 
     CCamera_Base*           pTargetCamera = nullptr;
+    CCamera_Base*           m_pSelectCamera = nullptr;
+
+
 };
 
 NS_END

@@ -13,7 +13,7 @@ public:
         string Label;
         function<void()> callback;
         bool* bValue = nullptr;
-
+        function<bool*()> bValueGetter = nullptr;
 
         ImguiCheckbox_Desc()
             :Label(""), callback(nullptr), bValue(nullptr)
@@ -43,7 +43,10 @@ public:
 protected:
     string          m_Label;
     bool            dummy = false;
+
     bool*           m_bValue = nullptr;
+    function<bool* ()> bValueGetter = nullptr;
+
     function<void()> m_Callback = nullptr;
 
 

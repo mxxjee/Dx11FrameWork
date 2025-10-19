@@ -184,9 +184,26 @@ HRESULT CCameraDebugWindow::Create_Widgets()
         CheckboxDesc.Label = pElemets[i];
         CheckboxDesc.m_RelativePos = ImVec2((150.f) * (i%3), 500.f + (i / 3) * 30.f);
 
+        CheckboxDesc.bValueGetter = [i,this]()
+        {
+           
+            if (m_pSelectCamera)
+            {
+                
+                return reinterpret_cast<bool*>(m_pSelectCamera->Get_RenderMaskValue(i));
+            }
 
+            static bool dummy = false; // 안전한 기본값
+            return &dummy;
+            
+        };
+
+        
         if (FAILED(Add_Widgets<CImgui_Checkbox>(&CheckboxDesc, reinterpret_cast<CImgui_Widget**>(&m_CheckBoxs[i]))))
             return E_FAIL;
+        m_CheckBoxs[i]->Set_Active(false);
+
+        
     }
 
         
@@ -233,9 +250,9 @@ void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
     ImGui::SetCursorPos(ImVec2(0.f, 0.f));
     
 
-	CCamera_Base* pMainCam = (m_bClickOrtho) ? m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP) : m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
+    m_pSelectCamera = (m_bClickOrtho) ? m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP) : m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
 
-	if (pMainCam == nullptr)
+	if (m_pSelectCamera == nullptr)
 	{
 
 		for (auto& i : m_CamButtons)
@@ -250,11 +267,15 @@ void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
 
 	for (auto& i : m_CamButtons)
 		i->Set_Active(true);
+
+
+    for (auto& i : m_CheckBoxs)
+        i->Set_Active(true);
     
     if (m_bClickOrtho)
        {
          ImGui::SetCursorPos(ImVec2(0.f, 70.f));
-         wstring Name = pMainCam->Get_Tag();
+         wstring Name = m_pSelectCamera->Get_Tag();
          ImGui::TextColored(ImVec4(0, 255, 0, 255), "Name : %s", WStringToUTF8(Name).c_str());
     
          ImGui::SetCursorPos(ImVec2(0.f, 85.f));
@@ -264,7 +285,7 @@ void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
     else
         {
             ImGui::SetCursorPos(ImVec2(0.f, 70.f));
-            wstring Name = pMainCam->Get_Tag();
+            wstring Name = m_pSelectCamera->Get_Tag();
             ImGui::TextColored(ImVec4(0, 255, 0, 255), "Name : %s", WStringToUTF8(Name).c_str());
     
             ImGui::SetCursorPos(ImVec2(0.f, 85.f));
@@ -279,12 +300,12 @@ void CCameraDebugWindow::ShowMainCameraDebug(bool isOrtho)
 
 
       
-      _float4 vEye = m_pGameInstance->Get_CamPosition(ENUM_TO_UINT(pMainCam->Get_CameraType()));
+      _float4 vEye = m_pGameInstance->Get_CamPosition(ENUM_TO_UINT(m_pSelectCamera->Get_CameraType()));
       _float4 vAt;
 
-      XMStoreFloat4(&vAt, XMVector4Normalize(pMainCam->Get_Transform()->Get_State(STATE::LOOK)));
+      XMStoreFloat4(&vAt, XMVector4Normalize(m_pSelectCamera->Get_Transform()->Get_State(STATE::LOOK)));
      
-      class CGameObject* Target = pMainCam->Get_Target();
+      class CGameObject* Target = m_pSelectCamera->Get_Target();
    
       
    

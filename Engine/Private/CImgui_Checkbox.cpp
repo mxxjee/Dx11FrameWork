@@ -14,11 +14,8 @@ HRESULT CImgui_Checkbox::Initialize(void* pArg)
 
 	
 	m_bValue = pDesc->bValue;
-	if (pDesc->bValue == nullptr)
-		m_bValue = &dummy;
 
-
-
+	bValueGetter = pDesc->bValueGetter;
 
 	if (FAILED(__super::Initialize(pArg)))     
 		return E_FAIL;
@@ -32,15 +29,14 @@ void CImgui_Checkbox::Update()
 	__super::Update();
 
 
+	m_bValue = bValueGetter ? bValueGetter() : m_bValue;
 
-	if (m_bValue)
+	CheckNull(m_bValue);
+
+	if (ImGui::Checkbox(m_Label.c_str(), m_bValue))
 	{
-		if (ImGui::Checkbox(m_Label.c_str(), m_bValue))
-		{
-			if (m_Callback)
-				m_Callback();
-		}
-
+		if (m_Callback)
+			m_Callback();
 	}
 
 
