@@ -4,6 +4,9 @@
 HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 #include "Default.hlsli"
 
+float4 g_TintColor = float4(1.0, 0.871, 0.722, 0.529);
+
+
 struct VS_IN
 {
     float3 vPosition : POSITION;
@@ -145,7 +148,8 @@ float4 PS_GuasianBlur(VS_OUT In):SV_Target0
     for (int i = 0; i < 8;++i)
     {
         float2 Distance = In.vTexcoord - Location[i];
-        Weight = exp(-(pow(Distance.x, 2) + pow(Distance.y, 2)) / 2 * pow(((g_BlurValue)), 2));
+        Weight = exp(-((pow(Distance.x, 2) + pow(Distance.y, 2)) / (2 * pow(g_BlurValue, 2))));
+
         Color = texture0.Sample(sampler0, Location[i]) * Weight;
        
         ColorSum += Color;
@@ -153,7 +157,7 @@ float4 PS_GuasianBlur(VS_OUT In):SV_Target0
 
     }
     
-    return (ColorSum / WeightSum) * g_Brightness;
+    return (ColorSum / WeightSum) * g_Brightness * g_TintColor;
     
  
 }

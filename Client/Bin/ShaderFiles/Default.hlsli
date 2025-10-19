@@ -14,7 +14,7 @@ Texture2D texture0 : register(t0);
 SamplerState sampler0 : register(s0);
 
 //블러효과를 위한변수들
-float g_BlurValue = 3.f;
+float g_BlurValue =10.f;
 float2 OffSet = (2, 2);
 
 

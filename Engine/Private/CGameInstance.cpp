@@ -13,6 +13,7 @@
 #include "CScreenShot_Manager.h"
 #include "CRenderState_Manager.h"
 #include "CTexture_Manager.h"
+#include "CUI_Manager.h"
 #include "CShader.h"
 #include "CPipeLine.h"
 
@@ -93,6 +94,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	m_pPipeLine = CPipeLine::Create();
 	CheckNullResult(m_pPipeLine, E_FAIL);
 
+	/*UI¸Å´ÏÀú*/
+	m_pUIManager = CUI_Manager::Create();
+	CheckNullResult(m_pUIManager, E_FAIL);
 	return S_OK;
 }
 
@@ -351,35 +355,6 @@ void CGameInstance::Set_MainCamera(CAMERA_TYPE eType)
 
 }
 
-//const _float4x4& CGameInstance::GetViewMatrix(CAMERA_TYPE eType) const
-//{
-//	return m_pCameraManager->GetViewMatrix(eType);
-//}
-//const _float4x4& CGameInstance::GetProjMatrix(CAMERA_TYPE eType) const
-//{
-//	return m_pCameraManager->GetProjMatrix(eType);
-//}
-//const _matrix CGameInstance::GetMulViewProjMatrix(CAMERA_TYPE eType) const
-//{
-//	return m_pCameraManager->GetMulViewProjMatrix(eType);
-//}
-//const _float4x4& CGameInstance::Get_RenderCamera_ViewMatrix() const
-//{
-//	return m_pCameraManager->Get_RenderCamera_ViewMatrix();
-//}
-//const _float4x4& CGameInstance::Get_RenderCamera_GetProjMatrix() const
-//{
-//	return m_pCameraManager->Get_RenderCamera_GetProjMatrix();
-//}
-//const _matrix CGameInstance::Get_RenderCamera_GetMulViewProjMatrix() const
-//{
-//	return m_pCameraManager->Get_RenderCamera_GetMulViewProjMatrix();
-//}
-//void CGameInstance::Bind_ViewProjMatrix(CAMERA_TYPE eType)
-//{
-//	CheckNull(m_pCameraManager);
-//	return m_pCameraManager->Bind_ViewProjMatrix(eType);
-//}
 
 void CGameInstance::Update_Cameras(_float fTimeDelta)
 {
@@ -444,7 +419,7 @@ CCamera_Base* CGameInstance::Get_RenderCamera()
 
 #pragma endregion
 
-
+#pragma region ShaderManager
 HRESULT CGameInstance::Register_Shader(const _wstring& Tag, CShader* pInstance)
 {
 	CheckNullResult(m_pShaderManager, E_FAIL);
@@ -463,6 +438,9 @@ HRESULT CGameInstance::Bind_GlobalPipelineData(_uint CameraType)
 	return m_pShaderManager->Bind_GlobalPipelineData(CameraType);
 }
 
+#pragma endregion
+
+#pragma region ScreenShotManager
 void CGameInstance::ScreenShot(const _wstring& Key)
 {
 	CheckNull(m_pScreenshotManager);
@@ -480,6 +458,8 @@ HRESULT CGameInstance::SaveTextureToFile(const _wstring& Key, const _wstring& fi
 	CheckNullResult(m_pScreenshotManager,E_FAIL);
 	return m_pScreenshotManager->SaveTextureToFile(Key, filePath);
 }
+
+#pragma endregion
 
 HRESULT CGameInstance::Register_RenderStates(_uint iRenderGroup, const RenderStates& States)
 {
@@ -547,8 +527,45 @@ const _float4& CGameInstance::Get_CamPosition(_uint CameraType)
 {
 	return m_pPipeLine->Get_CamPosition(CameraType);
 }
+
 #pragma endregion
 
+#pragma region UI_Manager
+HRESULT CGameInstance::Register_UIGroup(const _wstring& Key, const UIGroup& Group)
+{
+	CheckNullResult(m_pUIManager, E_FAIL);
+	return m_pUIManager->Register_UIGroup(Key,Group);
+}
+HRESULT CGameInstance::AddUIToGroup(const _wstring& Key, CGameObject* pGameObject)
+{
+	CheckNullResult(m_pUIManager, E_FAIL);
+	return m_pUIManager->AddUIToGroup(Key, pGameObject);
+}
+HRESULT CGameInstance::RegisterEvent(const _wstring& Key, function<void(void*)> _function)
+{
+	CheckNullResult(m_pUIManager, E_FAIL);
+	return m_pUIManager->RegisterEvent(Key, _function);
+}
+HRESULT CGameInstance::BroadCastEvent(const _wstring& Key, void* pData)
+{
+	CheckNullResult(m_pUIManager, E_FAIL);
+	return m_pUIManager->BroadCastEvent(Key, pData);
+}
+HRESULT CGameInstance::SetActiveGroup(const _wstring& Key, bool bActive)
+{
+	CheckNullResult(m_pUIManager, E_FAIL);
+	return m_pUIManager->SetActiveGroup(Key, bActive);
+}
+UIGroup* CGameInstance::Get_UIGroup(const _wstring Key)
+{
+	CheckNullResult(m_pUIManager, nullptr);
+	return m_pUIManager->Get_UIGroup(Key);
+}
+function<void(void*)> CGameInstance::Get_EventFunction(const _wstring& Key)
+{
+	CheckNullResult(m_pUIManager, nullptr);
+	return m_pUIManager->Get_EventFunction(Key);
+}
 #pragma endregion
 
 void CGameInstance::Release_Engine()
@@ -565,6 +582,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pRenderStateManager);
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pTextureManager);
+	Safe_Release(m_pUIManager);
+
 
 	Safe_Release(m_pGraphicDev);
 

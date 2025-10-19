@@ -66,6 +66,14 @@ namespace Engine
 		ComPtr<ID3D11ShaderResourceView>	SRV;	//현재 렌더타겟으로 만든 셰이더리소스뷰
 
 	};
+
+
+	struct UIGroup
+	{
+		_wstring Key;       //그룹이름
+		vector<class CGameObject*>        Objects;        //그룹요소들
+		bool        isActive = true;                //활성화 여부
+	};
 	
 }
 

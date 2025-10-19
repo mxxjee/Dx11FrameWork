@@ -84,6 +84,7 @@ public:
    
     const       vector<uint8_t>& Get_RenderMask() { return m_RenderMask; }
     uint8_t*   Get_RenderMaskValue(_uint i) { return &m_RenderMask[i]; }
+   
 
     void        Set_Offset(_float3 Offset) { m_vOffset = Offset; }
     void       Set_Fovy(_float Fov) { m_fFovy = Fov; }
