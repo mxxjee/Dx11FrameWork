@@ -36,7 +36,10 @@ private:
 public:
     _bool       IsFinished() const { return m_isFinished; }
 
-
+    /// load resource //
+    HRESULT         Register_Shaders();
+    HRESULT         Register_Textures();
+    HRESULT         Register_Components();
 private:
     ComPtr<ID3D11Device>    m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext>    m_pDeviceContext = { nullptr };

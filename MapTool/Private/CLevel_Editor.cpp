@@ -5,6 +5,7 @@
 
 #include "CFreeCamera.h"
 #include "CPerspectiveCameraComponent.h"
+#include "CMapTerrain.h"
 
 
 USING(MapTool)
@@ -19,6 +20,10 @@ HRESULT CLevel_Editor::Initialize(LevelArgs& args)
 	__super::Initialize(args);
 
 	if (FAILED(Ready_Layer_MainCamera(L"Camera_Layer")))
+		return E_FAIL;
+
+
+	if (FAILED(Ready_Layer_Enviroment(L"Enviroment_Layer")))
 		return E_FAIL;
 
 	return S_OK;
@@ -47,7 +52,31 @@ void CLevel_Editor::Render()
 
 HRESULT CLevel_Editor::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 {
-	return E_NOTIMPL;
+	/////////////////////////////////////
+	CMapTerrain::TERRAIN_DESC pDesc;
+	pDesc.TextureKey = L"Terrain";
+	pDesc.ShaderName = L"VtxNorTex";
+	pDesc.passName = "Default";
+
+	CTransform::TRANSFORM_DESC TransDesc = {};
+
+	TransDesc.fRotationPerSec = 0.f;
+	TransDesc.fSpeedPerSec = 1.f;
+
+
+	TransDesc.vLocalScale = { 1.f,1.f,1.f,1.f };
+
+	pDesc.TransformDesc = &TransDesc;
+
+
+	if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+		PROTO_OBJ_NAME(L"MapTerrain"),
+		ENUM_TO_UINT(LEVEL_ID::MAPTOOL),
+		strLayerTag, &pDesc)))
+		return E_FAIL;
+
+
+	return S_OK;
 }
 
 HRESULT CLevel_Editor::Ready_Layer_UI(const _wstring& strLayerTag)
@@ -57,27 +86,29 @@ HRESULT CLevel_Editor::Ready_Layer_UI(const _wstring& strLayerTag)
 
 HRESULT CLevel_Editor::Ready_Layer_MainCamera(const _wstring& strLayerTag)
 {
-	CFreeCamera::GAMEOBJECT_DESC Desc = {};
+	CCamera_Base::CAMERABASE_DESC Desc = {};
 	Desc.ObjTag = L"FreeCamera";
+
+	Desc.eCameraType = CAMERA_TYPE::FREE;
+	Desc.eCameraFlag = CAMERA_FLAG::NONE;
+	Desc.fWidth = (float)g_iWinSizeX;
+	Desc.fHeight = (float)g_iWinSizeY;
+	Desc.fNear = 0.1f;
+	Desc.vPosition = _float3(0.f, 5.f, -5.f);
+	Desc.fFar = 1000.f;
 
 	CTransform::TRANSFORM_DESC TransDesc = {};
 	TransDesc.fRotationPerSec = 10.f;
 	TransDesc.fSpeedPerSec = 5.f;
-	TransDesc.vLocalRotation = { 30.f,0.f,0.f,1.f };
+	
 
-	CPerspectiveCameraComponent::PERSPECTIVE_DESC CameraDesc = {};
-	CameraDesc.Aspect = (float)g_iWinSizeX / g_iWinSizeY;
-	CameraDesc.fNear = 0.1f;
-	CameraDesc.fFar = 1000.f;
 
-	Desc.CameraDesc = &CameraDesc;
 	Desc.TransformDesc = &TransDesc;
 
 
-	CGameObject* pInstance = dynamic_cast<CGameObject*>(
-		m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FreeCamera"), &Desc));
-	
-	m_pGameInstance->RegisterCamera(L"FreeCamera", pInstance);
+	CGameObject* pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FreeCamera"), &Desc));
+	m_pGameInstance->RegisterCamera(CAMERA_TYPE::FREE, pInstance);
+
 
 	return S_OK;
 }
@@ -89,7 +120,6 @@ HRESULT CLevel_Editor::Ready_Layer_Player(const _wstring& strLayerTag)
 
 void CLevel_Editor::OnEnter()
 {
-	m_pGameInstance->SetMainPerspectiveCamera(L"FreeCamera");
 }
 
 void CLevel_Editor::OnResume()

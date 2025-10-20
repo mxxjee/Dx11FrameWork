@@ -237,12 +237,12 @@ HRESULT CLoader::Register_Shaders()
 	OutputDebugStringW(buffer);
 
 	CShader* pInstance = CShader::Create(m_pDevice,
-        m_pDeviceContext, VTXPOSTEX::desc, L"../Bin/ShaderFiles/Shader_VtxPosTex.hlsl",
+        m_pDeviceContext, VTXPOSTEX::desc, L"../../Resource/Shader/Shader_VtxPosTex.hlsl",
 		"DefaultTechnique");
     m_pGameInstance->Register_Shader(L"Default", pInstance);
 
 	pInstance = CShader::Create(m_pDevice,
-        m_pDeviceContext, VTXNORTEX::desc, L"../Bin/ShaderFiles/Shader_VtxNorTex.hlsl",
+        m_pDeviceContext, VTXNORTEX::desc, L"../../Resource/Shader/Shader_VtxNorTex.hlsl",
 		"DefaultTechnique");
     m_pGameInstance->Register_Shader(L"VtxNorTex", pInstance);
 

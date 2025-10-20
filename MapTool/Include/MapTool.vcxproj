@@ -23,6 +23,8 @@
     <ClInclude Include="..\Public\CLevel_Loading.h" />
     <ClInclude Include="..\Public\CLoader.h" />
     <ClInclude Include="..\Public\CMainTool.h" />
+    <ClInclude Include="..\Public\CMapTerrain.h" />
+    <ClInclude Include="..\Public\CTerrainDebugWindow.h" />
     <ClInclude Include="..\Public\MapTool_Defines.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MapTool.h" />
@@ -34,6 +36,8 @@
     <ClCompile Include="..\Private\CLevel_Loading.cpp" />
     <ClCompile Include="..\Private\CLoader.cpp" />
     <ClCompile Include="..\Private\CMainTool.cpp" />
+    <ClCompile Include="..\Private\CMapTerrain.cpp" />
+    <ClCompile Include="..\Private\CTerrainDebugWindow.cpp" />
     <ClCompile Include="MapTool.cpp" />
   </ItemGroup>
   <ItemGroup>

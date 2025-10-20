@@ -205,6 +205,12 @@
     <Filter Include="05.Component\UI">
       <UniqueIdentifier>{ee8b2c78-04cf-4621-949f-136c5c89996a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\InputText">
+      <UniqueIdentifier>{d93851e0-7f79-483b-9bc2-d1d06cb24cb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\VIBuffer\VIBuffer_CustomTerrain">
+      <UniqueIdentifier>{7b653668-df0b-481d-b398-687fe2499b76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -408,7 +414,6 @@
     <ClInclude Include="..\Public\VertexData.h">
       <Filter>01.Utility\99.EtcUtils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CPipeLine.h" />
     <ClInclude Include="..\Public\CTexture_Manager.h">
       <Filter>00.System\08.Texture</Filter>
     </ClInclude>
@@ -418,7 +423,18 @@
     <ClInclude Include="..\Public\CUI_Manager.h">
       <Filter>00.System\09.UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CUIComponent.h" />
+    <ClInclude Include="..\Public\CImgui_InputText.h">
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\InputText</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUIComponent.h">
+      <Filter>05.Component\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPipeLine.h">
+      <Filter>06.PipeLine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CVIBuffer_CustomTerrain.h">
+      <Filter>05.Component\VIBuffer\VIBuffer_CustomTerrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -589,7 +605,6 @@
     <ClCompile Include="..\Public\VertexData.cpp">
       <Filter>01.Utility\99.EtcUtils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CPipeLine.cpp" />
     <ClCompile Include="..\Private\CTexture_Manager.cpp">
       <Filter>00.System\08.Texture</Filter>
     </ClCompile>
@@ -599,6 +614,17 @@
     <ClCompile Include="..\Private\CUI_Manager.cpp">
       <Filter>00.System\09.UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CUIComponent.cpp" />
+    <ClCompile Include="..\Private\CImgui_InputText.cpp">
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\InputText</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUIComponent.cpp">
+      <Filter>05.Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPipeLine.cpp">
+      <Filter>06.PipeLine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CVIBuffer_CustomTerrain.cpp">
+      <Filter>05.Component\VIBuffer\VIBuffer_CustomTerrain</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

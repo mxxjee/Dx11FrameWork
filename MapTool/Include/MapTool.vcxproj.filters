@@ -25,6 +25,15 @@
     <Filter Include="03.Level\Loading\Loader">
       <UniqueIdentifier>{10f6cc78-1b65-4c22-a2a3-2e1593888df5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.ImguiObjects\TerrainDebugWindow">
+      <UniqueIdentifier>{9b10a5a2-8203-4737-8222-bebe4c1b433e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.GameObject">
+      <UniqueIdentifier>{275b3066-83a3-4135-a688-a144a40847c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.GameObject\MapTerrain">
+      <UniqueIdentifier>{7119959e-9abc-49ca-b63a-8d3980b12a76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CMainTool.h">
@@ -54,6 +63,12 @@
     <ClInclude Include="..\Public\CLevel_Loading.h">
       <Filter>03.Level\Loading</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CTerrainDebugWindow.h">
+      <Filter>02.ImguiObjects\TerrainDebugWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapTerrain.h">
+      <Filter>04.GameObject\MapTerrain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CMainTool.cpp">
@@ -70,6 +85,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_Loading.cpp">
       <Filter>03.Level\Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTerrainDebugWindow.cpp">
+      <Filter>02.ImguiObjects\TerrainDebugWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapTerrain.cpp">
+      <Filter>04.GameObject\MapTerrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

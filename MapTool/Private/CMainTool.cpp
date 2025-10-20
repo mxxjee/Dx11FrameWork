@@ -2,11 +2,18 @@
 #include "CImGui_Manager.h"
 #include "CGameInstance.h"
 #include "Client_Defines.h"
+
 #include "CImgui_Window.h"
 #include "CImgui_Button.h"
+#include "CTerrainDebugWindow.h"
+
+#include "CGameObject.h"
+#include "CCamera_Base.h"
 
 #include "../Public/CLevel_Loading.h"
 #include "CLevel_Editor.h"
+
+#include "CInput_Manager.h"
 
 USING(MapTool)
 
@@ -30,21 +37,78 @@ HRESULT CMainTool::Initialize()
     if(FAILED(pGameInstance->Initialize_Engine(desc, &m_pDevice, &m_pContext)))
         return E_FAIL;
 
+    if (FAILED(Initialize_MapTool()))
+        return E_FAIL;
+
     pImGui_Manager->Init(g_hWnd, m_pDevice.Get(), m_pContext.Get());
 
 
-    CreateMyWindow();
+    CreateTerrainDebugWindow();
 
     Reigster_Levels();
     if (FAILED(Start_Level(Client::LEVEL_ID::MAPTOOL, LEVELCHANGETYPE::REPLACETOP)))
         return E_FAIL;
 
+    CInput_Manager::GetInstance()->Init_Input(g_hInst, g_hWnd);
+
+
+
+    return S_OK;
+}
+
+HRESULT CMainTool::Initialize_MapTool()
+{
+    CreateSamplerStates();
+    CreateBlendStates();
+    CreateRasterizerStates();
+    CreateDepthStencilStates();
+
+    //렌더그룹 관련 초기화
+    if (FAILED(pGameInstance->Initialize_Renderer(ENUM_TO_UINT(RENDERGROUP::END))))
+        return E_FAIL;
+
+    //각 렌더그룹에맞는 세팅값등록
+    for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+    {
+        if (FAILED(pGameInstance->Register_RenderStates(i, m_RenderStates[i])))
+            return E_FAIL;
+
+    }
+
+
+    //렌더타입에 맞는 정렬함수 등록
+    auto AlphaSort = [&](CGameObject* a, CGameObject* b)
+    {
+
+        CCamera_Base* pRenderCam = CGameInstance::GetInstance()->Get_RenderCamera();
+
+        _float4x4 fViewMat = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(pRenderCam->Get_CameraType()));
+        _matrix ViewMat = XMLoadFloat4x4(&fViewMat);
+
+
+        CTransform* aTrans = dynamic_cast<CTransform*>(a->Get_Component(COMPONENT_TYPE::TRANSFORM));
+        CTransform* bTrans = dynamic_cast<CTransform*>(b->Get_Component(COMPONENT_TYPE::TRANSFORM));
+
+        _vector aView = XMVector3TransformCoord(aTrans->Get_State(STATE::POSITION, TransformScope::WORLD), ViewMat);
+        _vector bView = XMVector3TransformCoord(bTrans->Get_State(STATE::POSITION, TransformScope::WORLD), ViewMat);
+
+        //내림차순정렬, 먼것부터 그려야함
+        return XMVectorGetZ(aView) > XMVectorGetZ(bView);
+    };
+
+
+    if (FAILED(pGameInstance->Add_SortFunc(ENUM_TO_UINT(RENDERGROUP::ALPHA), AlphaSort)))
+        return E_FAIL;
+
+    if (FAILED(pGameInstance->Add_SortFunc(ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP), AlphaSort)))
+        return E_FAIL;
 
     return S_OK;
 }
 
 void CMainTool::Update_Priority(_float fTimeDelta)
 {
+    CInput_Manager::GetInstance()->Update_Input();
     pGameInstance->Update_Priority_Engine(fTimeDelta);
 }
 
@@ -72,33 +136,111 @@ void CMainTool::Render()
     pGameInstance->Draw_End();
 }
 
-void CMainTool::CreateMyWindow()
+void CMainTool::CreateSamplerStates()
+{
+    m_RenderStates.resize(ENUM_TO_UINT(RENDERGROUP::END));
+
+    D3D11_SAMPLER_DESC desc;
+    memset(&desc, 0, sizeof(desc));
+    desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    desc.BorderColor[0] = 0.0f;
+    desc.BorderColor[1] = 0.0f;
+    desc.BorderColor[2] = 0.0f;
+    desc.BorderColor[3] = 0.0f;
+
+
+    desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+    desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    desc.MaxAnisotropy = 16;
+    desc.MaxLOD = FLT_MAX;
+    desc.MinLOD = FLT_MIN;
+    desc.MipLODBias = 0.0f;
+
+    for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP); ++i)
+        m_pDevice->CreateSamplerState(&desc, m_RenderStates[i]._samplerState.GetAddressOf());
+
+    desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+    desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+    desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+
+    for (int i = ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP); i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+        m_pDevice->CreateSamplerState(&desc, m_RenderStates[i]._samplerState.GetAddressOf());
+}
+
+void CMainTool::CreateBlendStates()
+{
+    D3D11_BLEND_DESC desc;
+    memset(&desc, 0, sizeof(desc));
+    desc.AlphaToCoverageEnable = false;
+    desc.IndependentBlendEnable = false;
+
+    desc.RenderTarget[0].BlendEnable = FALSE;
+    desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+    desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+    desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+    desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+    desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+    desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+    m_pDevice->CreateBlendState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._BlendState.GetAddressOf());
+    m_pDevice->CreateBlendState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::NONALPHA)]._BlendState.GetAddressOf());
+
+    desc.RenderTarget[0].BlendEnable = TRUE;
+
+    for (int i = ENUM_TO_UINT(RENDERGROUP::ALPHA); i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+        m_pDevice->CreateBlendState(&desc, m_RenderStates[i]._BlendState.GetAddressOf());
+}
+
+void CMainTool::CreateRasterizerStates()
+{
+    D3D11_RASTERIZER_DESC desc;
+    memset(&desc, 0, sizeof(desc));
+
+    desc.FillMode = D3D11_FILL_SOLID;//WIREFRAME of SOLID
+    desc.CullMode = D3D11_CULL_NONE;//CULLMODE: 반시계 컬링
+    desc.FrontCounterClockwise = false;
+    desc.DepthClipEnable = true;
+
+    for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::UI); ++i)
+        m_pDevice->CreateRasterizerState(&desc, m_RenderStates[i]._rasterizerState.GetAddressOf());
+
+    desc.DepthClipEnable = false;
+    m_pDevice->CreateRasterizerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::UI)]._rasterizerState.GetAddressOf());
+}
+
+void CMainTool::CreateDepthStencilStates()
+{
+    D3D11_DEPTH_STENCIL_DESC desc = CD3D11_DEPTH_STENCIL_DESC(D3D11_DEFAULT);
+
+    m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._DepthStencilState.GetAddressOf());
+    m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::NONALPHA)]._DepthStencilState.GetAddressOf());
+
+    //깊이 테스트여부
+    desc.DepthEnable = true;
+
+    //깊이 기록여부
+    desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+    m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::ALPHA)]._DepthStencilState.GetAddressOf());
+    m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP)]._DepthStencilState.GetAddressOf());
+
+    desc.DepthEnable = false;
+    desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+    m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::UI)]._DepthStencilState.GetAddressOf());
+
+}
+
+void CMainTool::CreateTerrainDebugWindow()
 {
     CImgui_Window::IMGUIWINDOW_DESC Desc;
-    Desc.m_WindowTitle = "MyImguiWindow";
+    Desc.m_WindowTitle = "TerrainDebugWindow";
     Desc.m_WindowPos = ImVec2(100, 100);
     Desc.m_WindowSize = ImVec2(300, 300);
-    Desc.Tag = L"MyImguiWindow";
+    Desc.Tag = "TerrainDebugWindow";
 
-
-    //Create MyButton
-    {
-        CImgui_Button::IMGUIBUTTON_DESC ButtonDesc;
-        ButtonDesc.callback = []()
-        {
-
-        };
-
-        ButtonDesc.Label = "MyButton";
-        ButtonDesc.m_RelativePos = ImVec2(10, 80);
-        ButtonDesc.Tag = L"MyButton";
-
-
-        CImgui_Button* pButton = CImgui_Button::Create(m_pDevice, m_pContext, &ButtonDesc);
-        Desc.m_Widgets.push_back(pButton);
-    }
-   
-    pImGui_Manager->RegisterWindow(CImgui_Window::Create(m_pDevice, m_pContext, &Desc));
+    pImGui_Manager->RegisterWindow(CTerrainDebugWindow::Create(m_pDevice, m_pContext, &Desc));
 }
 
 void CMainTool::Reigster_Levels()
@@ -151,6 +293,7 @@ CMainTool* CMainTool::Create()
 
 void CMainTool::Free()
 {
+    __super::Free();
 
     Safe_Release(pImGui_Manager);
     Safe_Release(pGameInstance);
