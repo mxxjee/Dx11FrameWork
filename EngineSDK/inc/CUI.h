@@ -13,8 +13,6 @@ public:
         _float fSizeX = {}, fSizeY = {};
         _uint           iIdx = 0;
         
-        UIAnimType      _UIAnimType = UIAnimType::NONE;
-
         void* UICompDesc = nullptr;
 
     }UI_DESC;
@@ -41,7 +39,11 @@ public:
 public:
     _float          Get_Depth();
     _uint           Get_Idx() { return m_iIdx; }
-    UIAnimType      Get_UIAnimType() { return m_UIAnimType; }
+    _float4         Get_ARGB() { return m_vARGB; }
+    CUIComponent*   Get_UIComp() { return m_pUICom; }
+
+public:
+    void            Set_ActiveAnim(_uint Flag, function<void()> Func) { m_ActiveAnim[Flag] = Func; }
 public:
     //UIEvent관련
     //활성,비활성화 상태에 따른 호출
@@ -59,8 +61,9 @@ private:
 
 private:
     _uint                     m_iIdx = 0;         //UIGroup제어용, 기본값 0
-    UIAnimType                m_UIAnimType=UIAnimType::NONE;
+  
     CUIComponent*             m_pUICom = nullptr;
+ 
 };
 NS_END
 

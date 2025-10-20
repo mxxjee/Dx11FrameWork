@@ -92,8 +92,8 @@ public:
 
 //////////////////////////
     void    MoveLerp(_vector vTargetPos, float fLerpSpeed, float fTimeDelta, bool bUpdateLook = true);
-    void    ScaleLerp(_vector vTargetScale, float fLerpSpeed, float fTimeDelta, bool bUpdateLook = true);
-    void    RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDelta, bool bUpdateLook = true);
+    void    ScaleLerp(_vector vTargetScale, float fLerpSpeed, float fTimeDelta);
+    void    RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDelta);
 #pragma endregion
 
 private:

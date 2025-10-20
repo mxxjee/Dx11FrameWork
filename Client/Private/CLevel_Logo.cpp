@@ -262,9 +262,24 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
         CTransform::TRANSFORM_DESC TransDesc = {};
         TransDesc.fRotationPerSec = 10.f;
         TransDesc.fSpeedPerSec = 5.f;
-
         Desc.TransformDesc = &TransDesc;
+        
+        //AlphaAnimµî·Ï
+        CUIComponent::UICOMP_DESC UIDesc = {};
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].fStart = _float4(Desc.fX,Desc.fY,1.f,1.f);
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].fTarget = _float4(Desc.fX -10.f, Desc.fY, 1.f, 1.f);
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].m_fSpeed = 2.f;
+        
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].fStart = _float4(1.f, 0.f, 0.f, 0.f);
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].fTarget = _float4(0.f, 0.f, 0.f, 0.f);
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].m_fSpeed = 5.f;
 
+        Desc.UICompDesc = &UIDesc;
+
+
+
+
+        
         CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &Desc);
         if (pObj)
         {
@@ -292,7 +307,16 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
                     if (pUI)
                     {
                         if (pUI->Get_Idx() == *iHp)
+                        {
+                            pUI->Set_ActiveAnim(1, [pUI]()
+                                {
+                                    pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA);
+                                    pUI->Get_UIComp()->PlayAnim(UIAnimType::POSITION);
+                                });
+
+
                             pUI->OnActivated(false);
+                        }
                     }
                 }
             }

@@ -104,7 +104,7 @@ namespace MathUtils
 		return value;
 	}
 	
-	float Lerp(float Start, float Target, float t)
+	inline float Lerp(float Start, float Target, float t)
 	{
 		return Start + (Target - Start) * t;
 	}

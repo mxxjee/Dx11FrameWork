@@ -170,6 +170,9 @@ HRESULT CQuad::Bind_ShaderResources()
     if (FAILED(m_pTexture->Bind_ShaderResource(m_pShader, "texture0", 0)))
         return E_FAIL;
 
+    if (FAILED(m_pShader->Bind_Float("g_Alpha",m_vARGB.x)))
+        return E_FAIL;
+
 
     return S_OK;
 

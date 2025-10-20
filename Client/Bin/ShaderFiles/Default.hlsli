@@ -16,7 +16,7 @@ SamplerState sampler0 : register(s0);
 
 //블러효과를 위한변수들
 float g_BlurValue =10.f;
-float2 OffSet = (2, 2);
+float2 OffSet = float2(2, 2);
 
 
 

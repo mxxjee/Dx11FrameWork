@@ -58,11 +58,17 @@ protected:
     class CShader*              m_pShader = nullptr;
     class CVIBuffer_Rect*       m_pVIBufferCom = { nullptr };
 
-protected:
-    _uint       m_eRenderGroup = 0;
-    _wstring    m_ShaderName = L"";
-    string      m_passName = "";
+public:
+    void            Set_ARGB(_float4 rgba) { m_vARGB = rgba; }
 
+public:
+    _float4         Get_ARGB() { return m_vARGB; }
+
+protected:
+    _uint                   m_eRenderGroup = 0;
+    _wstring                m_ShaderName = L"";
+    string                  m_passName = "";
+    _float4                  m_vARGB = { 1.f,1.f,1.f,1.f };   //기본적으로 1,1,1,1(실제 색상이 아닌 비율값)
 };
 
 NS_END

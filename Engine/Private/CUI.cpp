@@ -2,7 +2,8 @@
 #include "CTransform.h"
 #include "MathUtils.h"
 #include "CGameInstance.h"
-#include "CConstantBuffer.h"
+#include "CShader.h"
+
 
 CUI::CUI(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CQuad(pDevice,pContext)
@@ -40,6 +41,8 @@ HRESULT CUI::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
 
+    m_pUICom->Set_OwnerTransform(m_pTransformCom);
+
 
     return S_OK;
 }
@@ -55,7 +58,6 @@ HRESULT CUI::Ready_Resource(void* pArg)
     pTransDesc->vLocalScale = _float4(pDesc->fSizeX, pDesc->fSizeY, 1.f, 1.f);
     
 
-    m_UIAnimType = pDesc->_UIAnimType;
     m_iIdx = pDesc->iIdx;
 
     return S_OK;
@@ -69,8 +71,7 @@ void CUI::Update_Priority(_float fTimeDelta)
 void CUI::Update(_float fTimeDelta)
 {
     CGameObject::Update(fTimeDelta);
-
-
+    m_pUICom->Update_Component(fTimeDelta);
 }
 
 void CUI::Update_Late(_float fTimeDelta)
@@ -87,6 +88,7 @@ void CUI::Update_Render(_float fTimeDelta)
 
 HRESULT CUI::Render()
 {
+ 
     __super::Render();
     return S_OK;
 }
@@ -107,12 +109,22 @@ HRESULT CUI::Ready_Components(void* pArg)
 {
     UI_DESC* pDesc = static_cast<UI_DESC*>(pArg);
 
+    CheckNullResult(pDesc, E_FAIL);
 
-    CComponent* pUIComp = dynamic_cast<CUIComponent*>(m_pGameInstance->Clone_Prototype
-    (PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"UI"), pDesc->UICompDesc));
+	CUIComponent::UICOMP_DESC* pUICompDesc = static_cast<CUIComponent::UICOMP_DESC*>(pDesc->UICompDesc);
+	if (pUICompDesc)
+		pUICompDesc->pOwner = this;
 
-    if (FAILED(Add_Component(COMPONENT_TYPE::UI, pUIComp, reinterpret_cast<CComponent**>(&m_pUICom))))
-        return E_FAIL;
+	CComponent* pUIComp = dynamic_cast<CUIComponent*>(m_pGameInstance->Clone_Prototype
+	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"UI"), pDesc->UICompDesc));
+
+	if (FAILED(Add_Component(COMPONENT_TYPE::UI, pUIComp, reinterpret_cast<CComponent**>(&m_pUICom))))
+		return E_FAIL;
+
+    
+
+    
+
 
     return S_OK;
 }
@@ -120,6 +132,7 @@ HRESULT CUI::Ready_Components(void* pArg)
 void CUI::Free()
 {
     __super::Free();
+    Safe_Release(m_pUICom);
 }
 
 void CUI::OnActivated(bool isActive)

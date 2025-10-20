@@ -227,7 +227,7 @@ void CTransform::MoveLerp(_vector vTargetPos, float fLerpSpeed, float fTimeDelta
 	Set_State(STATE::POSITION, vNew);
 }
 
-void CTransform::ScaleLerp(_vector vTargetPos, float fLerpSpeed, float fTimeDelta, bool bUpdateLook)
+void CTransform::ScaleLerp(_vector vTargetPos, float fLerpSpeed, float fTimeDelta)
 {
 	float t = 1.0f - expf(-fTimeDelta * fLerpSpeed);
 	_vector vCur = Get_Scale_ByVector();
@@ -239,7 +239,7 @@ void CTransform::ScaleLerp(_vector vTargetPos, float fLerpSpeed, float fTimeDelt
 	Set_Scale(vScale);
 }
 
-void CTransform::RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDelta, bool bUpdateLook)
+void CTransform::RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDelta)
 {
 	float t = 1.0f - expf(-fTimeDelta * fLerpSpeed);
 	_vector vCur = XMLoadFloat3(&m_fEularDegree);
