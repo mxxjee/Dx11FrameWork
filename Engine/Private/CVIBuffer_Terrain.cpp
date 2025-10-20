@@ -89,12 +89,6 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath
 	VertexData.pSysMem = pVertices;
 	VertexData.SysMemPitch = 0;
 	VertexData.SysMemSlicePitch = 0;
-
-	//정점버퍼를 만들고, 초기화 시키는함수
-	if (FAILED(m_pDevice->CreateBuffer(&VertexDesc, &VertexData, m_pVB.GetAddressOf())))
-		return E_FAIL;
-
-	Safe_Delete_Array(pVertices);
 	Safe_Delete_Array(pPixels);
 
 #pragma endregion
@@ -137,15 +131,49 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath
 			pIndices[iNumIndices++] = iIndices[0];
 			pIndices[iNumIndices++] = iIndices[1];
 			pIndices[iNumIndices++] = iIndices[2];
+			
+			_vector vSrv, vTmp, vNormal;
 
+			vSrv=XMLoadFloat3(&pVertices[iIndices[1]].vPosition) - XMLoadFloat3(&pVertices[iIndices[0]].vPosition);
+			vTmp= XMLoadFloat3(&pVertices[iIndices[2]].vPosition) - XMLoadFloat3(&pVertices[iIndices[1]].vPosition);
+			vNormal= XMVector3Normalize(XMVector3Cross(vSrv, vTmp));
+			
+			//Normal값 누적
+			XMStoreFloat3(&pVertices[iIndices[0]].vNormal, XMLoadFloat3(&pVertices[iIndices[0]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[1]].vNormal, XMLoadFloat3(&pVertices[iIndices[1]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[2]].vNormal, XMLoadFloat3(&pVertices[iIndices[2]].vNormal) + vNormal);
 
 			pIndices[iNumIndices++] = iIndices[0];
 			pIndices[iNumIndices++] = iIndices[2];
 			pIndices[iNumIndices++] = iIndices[3];
 
 
+			vSrv = XMLoadFloat3(&pVertices[iIndices[2]].vPosition) - XMLoadFloat3(&pVertices[iIndices[0]].vPosition);
+			vTmp = XMLoadFloat3(&pVertices[iIndices[3]].vPosition) - XMLoadFloat3(&pVertices[iIndices[2]].vPosition);
+			vNormal = XMVector3Normalize(XMVector3Cross(vSrv, vTmp));
+
+			//Normal값 누적
+			XMStoreFloat3(&pVertices[iIndices[0]].vNormal, XMLoadFloat3(&pVertices[iIndices[0]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[2]].vNormal, XMLoadFloat3(&pVertices[iIndices[2]].vNormal) + vNormal);
+			XMStoreFloat3(&pVertices[iIndices[3]].vNormal, XMLoadFloat3(&pVertices[iIndices[3]].vNormal) + vNormal);
 		}
 	}
+
+
+	//법선벡터 정규화
+	for (size_t i = 0; i < m_iNumVertices; ++i)
+	{
+		XMStoreFloat3(&pVertices[i].vNormal,
+			XMVector3Normalize(XMLoadFloat3(&pVertices[i].vNormal)));
+	}
+
+
+	//정점버퍼를 만들고, 초기화 시키는함수
+	if (FAILED(m_pDevice->CreateBuffer(&VertexDesc, &VertexData, m_pVB.GetAddressOf())))
+		return E_FAIL;
+
+	Safe_Delete_Array(pVertices);
+
 
 	D3D11_SUBRESOURCE_DATA IndexData;
 	IndexData.pSysMem = pIndices;

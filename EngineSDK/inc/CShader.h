@@ -13,7 +13,7 @@ public:
 	typedef struct tagShaderPass
 	{
 		string Name;		//패스이름
-
+		
 		ComPtr<ID3DX11EffectPass> pPass;
 		CInputLayout* pInputLayout=nullptr;
 	}ShaderPass;

@@ -133,7 +133,7 @@ void CUIComponent::Update_UIAnim(UIAnimType eType, _float fTimeDelta)
 		LerpAlpha(anim.fTarget.x, anim.m_fSpeed, fTimeDelta);
 		_float4 Color = m_pUIOwner->Get_ARGB();
 
-		Check_LoopAnimation(eType, anim, Color, 0.01f);
+		Check_LoopAnimation(eType, anim, Color, 0.1f);
 	}
 	
 		break;

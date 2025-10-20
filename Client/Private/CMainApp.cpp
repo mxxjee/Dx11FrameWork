@@ -143,6 +143,7 @@ HRESULT CMainApp::Initialize_Cilent()
 
 void CMainApp::Update_Priority(_float fTimeDelta)
 {
+	CInput_Manager::GetInstance()->Update_Input();
 	pGameInstance->Update_Priority_Engine(fTimeDelta);
 }
 
@@ -150,7 +151,7 @@ void CMainApp::Update(_float fTimeDelta)
 {
 	/*내 게임의 반복적인 작업 수행*/
 	
-	CInput_Manager::GetInstance()->Update_Input();
+	
 	pGameInstance->Update_Engine(fTimeDelta);
 	
 #ifdef _DEBUG
