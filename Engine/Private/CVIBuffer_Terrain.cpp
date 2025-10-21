@@ -46,15 +46,20 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath
 	m_iNumVerticesX = ih.biWidth;
 	m_iNumVerticesZ = ih.biHeight;
 
+	m_iVertexStride = sizeof(VTXNORTEX);
+	m_iNumVertices = m_iNumVerticesX * m_iNumVerticesZ;
+	m_iIndexStride = 4;
+
+	m_iNumIndices = (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2 * 3;
+	m_iNumVertexBuffers = 1;
+	m_ePrimitiveType = D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
 	//[1. 정점 버퍼를 정의하기 위한 정보]
 	D3D11_BUFFER_DESC VertexDesc;
-	m_iNumVertices = m_iNumVerticesX *m_iNumVerticesZ;
-	m_iVertexStride = sizeof(VTXNORTEX);
+	
 
 
-	//위치값 기록을 위한 동적배열(따로 멤버 보관)
-	m_pVertexPositions = new _float3[m_iNumVertices];
-
+	
 	VertexDesc.ByteWidth = m_iVertexStride * m_iNumVertices;		//할당할 크기
 	VertexDesc.Usage = D3D11_USAGE_DEFAULT;					 //cpu/gpu가 어떻게 읽을건지에 대한 플래그 설정
 	VertexDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;			//바인딩 플래그(사용 용도)
@@ -64,7 +69,11 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath
 
 	//[2. 정점 버퍼를 초기화 하기 위한 정보]
 	VTXNORTEX* pVertices = new VTXNORTEX[m_iNumVertices];
-	ZeroMemory(pVertices, sizeof(VTXPOSTEX) * m_iNumVertices);
+	ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
+
+	//위치값 기록을 위한 동적배열(따로 멤버 보관)
+	m_pVertexPositions = new _float3[m_iNumVertices];
+	ZeroMemory(m_pVertexPositions, sizeof(_float3)*m_iNumVertices);
 
 	for (size_t i = 0; i < m_iNumVerticesZ; ++i)
 	{
@@ -78,7 +87,7 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath
 	//&   00000000 00000000 00000000 11111111
 
 	//    00000000 00000000 00000000 10101111
-			pVertices[iIdx].vPosition = _float3(j, (pPixels[iIdx] & 0x000000ff) / 15.0f, i);
+			pVertices[iIdx].vPosition = _float3(j, (pPixels[iIdx] & 0x000000ff) / 10.0f, i);
 			pVertices[iIdx].vTexcoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
 			pVertices[iIdx].vNormal = _float3(0.f, 0.f, 0.f);
 		}
@@ -89,16 +98,14 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath
 	VertexData.pSysMem = pVertices;
 	VertexData.SysMemPitch = 0;
 	VertexData.SysMemSlicePitch = 0;
-	Safe_Delete_Array(pPixels);
+
 
 #pragma endregion
 
 
 	//[1.인덱스 버퍼를 만들기 위한 정보세팅]
 	D3D11_BUFFER_DESC IndexDesc;
-	m_iNumIndices = (m_iNumVerticesX - 1) * (m_iNumVerticesZ - 1) * 2 * 3;
-	m_iNumVertexBuffers = 1;
-	m_iIndexStride = m_iNumVertices >= 65535 ? 4 : 2;
+
 
 
 
@@ -110,7 +117,7 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath
 	IndexDesc.StructureByteStride = m_iIndexStride;
 
 	/*인덱스 정의*/
-	_ushort* pIndices = new _ushort[m_iNumIndices];
+	_uint* pIndices = new _uint[m_iNumIndices];
 	_uint       iNumIndices = {};
 
 	for (size_t i = 0; i < m_iNumVerticesZ - 1; ++i)
@@ -173,7 +180,7 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath
 		return E_FAIL;
 
 	Safe_Delete_Array(pVertices);
-
+	Safe_Delete_Array(pPixels);
 
 	D3D11_SUBRESOURCE_DATA IndexData;
 	IndexData.pSysMem = pIndices;

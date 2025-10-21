@@ -227,15 +227,13 @@ HRESULT CShader::Bind_Sampler(const string& Variable, ComPtr<ID3D11SamplerState>
     return m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str())->AsSampler()->SetSampler(iIdx,sampler.Get());
 }
 
-HRESULT CShader::Bind_RawFloat(const string& Variable, const void* pData, UINT iSize)
+HRESULT CShader::Bind_RawValue(const string& Variable, void* pData, UINT iSize)
 {
     ComPtr<ID3DX11EffectVariable> pVariable = m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str());
     CheckNullResult(pVariable, E_FAIL);
 
-    ComPtr<ID3DX11EffectScalarVariable>     pScalarVariable = pVariable->AsScalar();
-    CheckNullResult(pScalarVariable, E_FAIL);
 
-    return pScalarVariable->SetRawValue(pData,0,iSize);
+    return pVariable->SetRawValue(pData,0,iSize);
 }
 
 HRESULT CShader::Begin(const string& _passName)

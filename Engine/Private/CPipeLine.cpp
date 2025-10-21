@@ -38,8 +38,7 @@ HRESULT CPipeLine::Bind_PipeLineInverseMatrix(CShader* pShader, const _char* pCo
 
 HRESULT CPipeLine::Bind_CamPosition(CShader* pShader, const _char* pConstant, _uint iCameraType)
 {
-	return pShader->Bind_Vector(pConstant, m_PipeDatas[ENUM_TO_UINT(iCameraType)].m_vCamPosition);
-	return S_OK;
+	return pShader->Bind_RawValue(pConstant, &m_PipeDatas[ENUM_TO_UINT(iCameraType)].m_vCamPosition,sizeof(_float4));
 }
 
 void CPipeLine::Update()
@@ -49,7 +48,7 @@ void CPipeLine::Update()
 		PIPE_DATA& Data = m_PipeDatas[i];
 		for (int j = 0; j < ENUM_TO_UINT(D3DTS::END); ++j)
 		{
-			XMStoreFloat4x4(&Data.m_TransformInverseMatrices[j], XMMatrixInverse(nullptr, XMLoadFloat4x4(&Data.m_TransformMatrices[i])));
+			XMStoreFloat4x4(&Data.m_TransformInverseMatrices[j], XMMatrixInverse(nullptr, XMLoadFloat4x4(&Data.m_TransformMatrices[j])));
 
 		}
 

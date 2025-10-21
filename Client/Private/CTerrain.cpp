@@ -127,7 +127,7 @@ HRESULT CTerrain::Bind_ShaderResources()
     if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
         return E_FAIL;
 
-    if (FAILED(m_pTexture->Bind_ShaderResource(m_pShader, "texture0",0)))
+    if (FAILED(m_pTexture->Bind_ShaderResource(m_pShader, "g_DiffuseTexture",0)))
         return E_FAIL;
 
 
