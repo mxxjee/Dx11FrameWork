@@ -4,8 +4,12 @@
 #include "CGameInstance.h"
 
 #include "CFreeCamera.h"
-#include "CPerspectiveCameraComponent.h"
 #include "CMapTerrain.h"
+
+#include "CImGui_Manager.h"
+#include "CImgui_Base.h"
+#include "CTerrainDebugWindow.h"
+
 
 
 USING(MapTool)
@@ -55,6 +59,7 @@ HRESULT CLevel_Editor::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 	/////////////////////////////////////
 	CMapTerrain::TERRAIN_DESC pDesc;
 	pDesc.TextureKey = L"Terrain";
+	pDesc.ObjTag = L"MapTerrain";
 	pDesc.ShaderName = L"VtxNorTex";
 	pDesc.passName = "Default";
 
@@ -95,6 +100,7 @@ HRESULT CLevel_Editor::Ready_Layer_MainCamera(const _wstring& strLayerTag)
 	Desc.fHeight = (float)g_iWinSizeY;
 	Desc.fNear = 0.1f;
 	Desc.vPosition = _float3(0.f, 5.f, -5.f);
+	Desc.vAt = { 0.f,5.f, 0.f};
 	Desc.fFar = 1000.f;
 
 	CTransform::TRANSFORM_DESC TransDesc = {};
@@ -120,6 +126,18 @@ HRESULT CLevel_Editor::Ready_Layer_Player(const _wstring& strLayerTag)
 
 void CLevel_Editor::OnEnter()
 {
+	CImgui_Base* pWindow = CImGui_Manager::GetInstance()->Find_Window("TerrainDebugWindow");
+	if (pWindow)
+	{
+		CTerrainDebugWindow* pTerrainDebugWindow = dynamic_cast<CTerrainDebugWindow*>(pWindow);
+		if (pTerrainDebugWindow)
+		{
+			pTerrainDebugWindow->Set_MapTerrain(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::MAPTOOL), L"Enviroment_Layer", L"MapTerrain"));
+			pTerrainDebugWindow->Init_NumValues();
+
+		}
+
+	}
 }
 
 void CLevel_Editor::OnResume()

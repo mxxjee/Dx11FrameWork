@@ -4,7 +4,7 @@ namespace Engine
 {
     class CImgui_Button;
     class CImgui_Checkbox;
-    class CImgui_InputText;
+    class CImgui_InputInt;
     class CGameInstance;
     class CCamera_Base;
 }
@@ -31,6 +31,8 @@ private:
     HRESULT     Create_Widgets();
 
 public:
+    void        Init_NumValues();
+public:
     static CTerrainDebugWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
     virtual void Free();
 
@@ -38,8 +40,14 @@ private:
     CGameInstance* m_pGameInstance = { nullptr };
 
 private:
-    vector<class CImgui_InputText*>     m_InputTexts;
+    vector<class CImgui_InputInt*>     m_InputTexts;
+    class CImgui_Button*                m_pButton;
+
+
     class CMapTerrain*                  m_pMapTerrain = { nullptr };
+
+    int pNumVerticesX=0;
+    int pNumVerticesZ=0;
 };
 NS_END
 

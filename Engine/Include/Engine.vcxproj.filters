@@ -423,7 +423,7 @@
     <ClInclude Include="..\Public\CUI_Manager.h">
       <Filter>00.System\09.UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CImgui_InputText.h">
+    <ClInclude Include="..\Public\CImgui_InputInt.h">
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\InputText</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUIComponent.h">
@@ -614,7 +614,7 @@
     <ClCompile Include="..\Private\CUI_Manager.cpp">
       <Filter>00.System\09.UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CImgui_InputText.cpp">
+    <ClCompile Include="..\Private\CImgui_InputInt.cpp">
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\InputText</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUIComponent.cpp">

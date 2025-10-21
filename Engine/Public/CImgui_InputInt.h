@@ -2,7 +2,7 @@
 #include "CImgui_Widget.h"
 
 NS_BEGIN(Engine)
-class ENGINE_DLL CImgui_InputText :
+class ENGINE_DLL CImgui_InputInt :
     public CImgui_Widget
 {
 public:
@@ -11,13 +11,14 @@ public:
 
         string Label;
         function<void()> callback;
+        int*            pData;
 
        
     }IMGUITEXTINPUT_DESC;
 
 protected:
-    CImgui_InputText(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
-    virtual ~CImgui_InputText() = default;
+    CImgui_InputInt(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+    virtual ~CImgui_InputInt() = default;
 
 public:
     // CImgui_Base을(를) 통해 상속됨
@@ -29,11 +30,11 @@ public:
     void            Set_Callback(function<void()> callBack) { m_Callback = callBack; }
 
 public:
-    static CImgui_InputText* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
+    static CImgui_InputInt* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
 private:
-    char buf[MAX_PATH] = "";
     string m_Label = "";
     function<void()> m_Callback;
+    int* m_pData;
 };
 NS_END
 

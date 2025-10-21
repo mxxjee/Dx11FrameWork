@@ -118,7 +118,7 @@ HRESULT CLoader::Loading_MapTool()
         return E_FAIL;
 
    
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_CustomTerrain"), CVIBuffer_CustomTerrain::Create(m_pDevice, m_pDeviceContext,2,2))))
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_CustomTerrain"), CVIBuffer_CustomTerrain::Create(m_pDevice, m_pDeviceContext,5,30))))
         return E_FAIL;
 
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));

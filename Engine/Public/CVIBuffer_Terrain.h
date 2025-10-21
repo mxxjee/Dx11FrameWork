@@ -8,7 +8,7 @@ NS_BEGIN(Engine)
 class ENGINE_DLL CVIBuffer_Terrain final:
     public CVIBuffer
 {
-private:
+protected:
     CVIBuffer_Terrain(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CVIBuffer_Terrain(const CVIBuffer_Terrain& Prototype);
     virtual ~CVIBuffer_Terrain() = default;

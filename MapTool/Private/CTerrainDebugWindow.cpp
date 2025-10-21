@@ -1,8 +1,13 @@
 #include "CTerrainDebugWindow.h"
 #include "CImgui_Widget.h"
-#include "CImgui_InputText.h"
+#include "CImgui_InputInt.h"
 #include "CGameInstance.h"
+
 #include "CMapTerrain.h"
+#include "CVIBuffer_CustomTerrain.h"
+
+#include "CImgui_Button.h"
+
 
 
 
@@ -34,6 +39,7 @@ void CTerrainDebugWindow::Update()
         i->Update();
 
 
+
     ImGui::End();
 }
 
@@ -51,25 +57,46 @@ void CTerrainDebugWindow::Set_MapTerrain(CGameObject* pObj)
 
 HRESULT CTerrainDebugWindow::Create_Widgets()
 {
-    CImgui_InputText::IMGUITEXTINPUT_DESC InputTextDesc;
-    InputTextDesc.Label = "NumVerticesX";
-    InputTextDesc.Tag = InputTextDesc.Label;
-    InputTextDesc.m_RelativePos = ImVec2(30, 30);
+    CImgui_InputInt::IMGUITEXTINPUT_DESC InputIntDesc;
+    InputIntDesc.Label = "NumVerticesX";
+    InputIntDesc.Tag = InputIntDesc.Label;
+    InputIntDesc.m_RelativePos = ImVec2(30, 30);
+    InputIntDesc.pData = &pNumVerticesX;
 
 
-
-    if (FAILED(Add_Widgets<CImgui_InputText>(&InputTextDesc, reinterpret_cast<CImgui_Widget**>(&m_InputTexts[0]))))
+    if (FAILED(Add_Widgets<CImgui_InputInt>(&InputIntDesc, reinterpret_cast<CImgui_Widget**>(&m_InputTexts[0]))))
         return E_FAIL;
 
 
-    InputTextDesc.Label = "NumVerticesZ";
-    InputTextDesc.Tag = InputTextDesc.Label;
-    InputTextDesc.m_RelativePos = ImVec2(30, 50);
+    InputIntDesc.Label = "NumVerticesZ";
+    InputIntDesc.Tag = "NumVerticesZ";
+    InputIntDesc.m_RelativePos = ImVec2(30, 50);
+    InputIntDesc.pData = &pNumVerticesZ;
 
-    if (FAILED(Add_Widgets<CImgui_InputText>(&InputTextDesc, reinterpret_cast<CImgui_Widget**>(&m_InputTexts[1]))))
+    if (FAILED(Add_Widgets<CImgui_InputInt>(&InputIntDesc, reinterpret_cast<CImgui_Widget**>(&m_InputTexts[1]))))
+        return E_FAIL;
+
+
+    CImgui_Button::ImguiButton_Desc ButtonDesc;
+    ButtonDesc.Tag = "Apply";
+    ButtonDesc.Label = "Apply";
+    ButtonDesc.m_RelativePos = ImVec2(50, 100);
+    ButtonDesc.callback = [this]()
+    {
+        m_pMapTerrain->Update_Terrain(pNumVerticesX, pNumVerticesZ);
+    };
+
+    if (FAILED(Add_Widgets<CImgui_Button>(&ButtonDesc, reinterpret_cast<CImgui_Widget**>(&m_pButton))))
         return E_FAIL;
 
     return S_OK;
+}
+
+void CTerrainDebugWindow::Init_NumValues()
+{
+    CheckNull(m_pMapTerrain);
+    pNumVerticesX = m_pMapTerrain->Get_VIBufferCom()->Get_NumVerticesX();
+    pNumVerticesZ = m_pMapTerrain->Get_VIBufferCom()->Get_NumVerticesZ();
 }
 
 CTerrainDebugWindow* CTerrainDebugWindow::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg)

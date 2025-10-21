@@ -38,6 +38,8 @@ HRESULT CMapTerrain::Initialize_Copytype(void* pArg)
     if (FAILED(Ready_Resources(pArg)))
         return E_FAIL;
 
+    if (FAILED(CreateRasterizerState()))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -65,6 +67,14 @@ void CMapTerrain::Update_Render(_float fTimeDelta)
 
 HRESULT CMapTerrain::Render()
 {
+    // 기존 상태 저장
+    ComPtr<ID3D11RasterizerState> pOldRS = nullptr;
+    m_pContext->RSGetState(pOldRS.GetAddressOf());
+
+    // 와이어프레임 상태로 설정
+    m_pContext->RSSetState(m_pWireframeRS.Get());
+
+
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
 
@@ -77,7 +87,31 @@ HRESULT CMapTerrain::Render()
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
+    m_pContext->RSSetState(pOldRS.Get());
+
     return S_OK;
+}
+
+HRESULT CMapTerrain::CreateRasterizerState()
+{
+
+    D3D11_RASTERIZER_DESC desc{};
+    desc.FillMode = D3D11_FILL_WIREFRAME;  // 선 모드
+    desc.CullMode = D3D11_CULL_NONE;       // 뒷면도 그리게
+    desc.FrontCounterClockwise = FALSE;
+    desc.DepthClipEnable = TRUE;           // 보통 TRUE
+
+    if (FAILED(m_pDevice->CreateRasterizerState(&desc, m_pWireframeRS.GetAddressOf())))
+    {
+        MSG_BOX("Failed to Create Wireframe RasterizerState");
+        return E_FAIL;
+    }
+
+}
+
+void CMapTerrain::Update_Terrain(_float NumX, _float NumZ)
+{
+    m_pVIBufferCom->ResizeBuffer(NumX, NumZ);
 }
 
 HRESULT CMapTerrain::Ready_Components(void* pArg)

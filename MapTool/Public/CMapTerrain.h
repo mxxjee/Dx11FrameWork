@@ -36,6 +36,11 @@ public:
     virtual void        Update_Render(_float fTimeDelta) override;
     virtual HRESULT Render();
 
+public:
+    HRESULT         CreateRasterizerState();
+public:
+
+    void        Update_Terrain(_float NumX, _float NumZ);
 private:
     CVIBuffer_CustomTerrain* m_pVIBufferCom = { nullptr };
     CTexture* m_pTexture = { nullptr };
@@ -51,8 +56,14 @@ public:
     virtual CGameObject* Clone(void* pArg);
     virtual void Free() override;
 
+public:
+    CVIBuffer_CustomTerrain* Get_VIBufferCom() { return m_pVIBufferCom; }
+
 private:
     _wstring  m_ShaderName = L"";
     string      m_passName = "";
+
+private:
+    ComPtr<ID3D11RasterizerState> m_pWireframeRS = nullptr;
 };
 NS_END
