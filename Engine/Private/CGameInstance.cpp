@@ -17,6 +17,10 @@
 #include "CShader.h"
 #include "CPipeLine.h"
 
+#include "CTerrain_Manager.h"
+#include "CTerrain_Base.h"
+
+
 
 
 
@@ -97,12 +101,17 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	/*UI매니저*/
 	m_pUIManager = CUI_Manager::Create();
 	CheckNullResult(m_pUIManager, E_FAIL);
+
+	/*Terrain매니저*/
+	m_pTerrainManager = CTerrain_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pTerrainManager, E_FAIL);
 	return S_OK;
 }
 
 void CGameInstance::Update_Priority_Engine(_float fTimedelta)
 {
 	/*지연삭제 / Scenechange 용*/
+	m_pTerrainManager->Update_Priority(fTimedelta);
 	m_pLevelManager->Update_Priority(fTimedelta);
 }
 
@@ -112,6 +121,7 @@ void CGameInstance::Update_Engine(_float fTimedelta)
 	m_pObjectManager->Update(fTimedelta);
 	m_pObjectManager->Update_Late(fTimedelta);*/
 
+	m_pTerrainManager->Update(fTimedelta);
 	m_pLevelManager->Update(fTimedelta);
 	Update_Cameras(fTimedelta);
 	
@@ -123,6 +133,7 @@ void CGameInstance::Update_Engine(_float fTimedelta)
 
 void CGameInstance::LateUpdate_Engine(float fTimedelta)
 {
+	m_pTerrainManager->Update_Late(fTimedelta);
 	m_pLevelManager->Update_Late(fTimedelta);
 	LateUpdate_Cameras(fTimedelta);
 
@@ -131,6 +142,7 @@ void CGameInstance::LateUpdate_Engine(float fTimedelta)
 
 void CGameInstance::Update_Render(float fTimedelta)
 {
+	m_pTerrainManager->Update_Render(fTimedelta);
 	m_pLevelManager->Update_Render(fTimedelta);
 }
 
@@ -572,6 +584,21 @@ function<void(void*)> CGameInstance::Get_EventFunction(const _wstring& Key)
 	CheckNullResult(m_pUIManager, nullptr);
 	return m_pUIManager->Get_EventFunction(Key);
 }
+HRESULT CGameInstance::Register_Terrain(const _wstring& Key, CTerrain_Base* pTerrain)
+{
+	CheckNullResult(m_pTerrainManager, E_FAIL);
+	return m_pTerrainManager->Register_Terrain(Key,pTerrain);
+}
+HRESULT CGameInstance::UnRegister_Terrain(const _wstring& Key)
+{
+	CheckNullResult(m_pTerrainManager, E_FAIL);
+	return m_pTerrainManager->UnRegister_Terrain(Key);
+}
+CTerrain_Base* CGameInstance::Find_Terrain(const _wstring& Key)
+{
+	CheckNullResult(m_pTerrainManager, nullptr);
+	return m_pTerrainManager->Find_Terrain(Key);
+}
 #pragma endregion
 
 void CGameInstance::Release_Engine()
@@ -589,7 +616,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pPipeLine);
 	Safe_Release(m_pTextureManager);
 	Safe_Release(m_pUIManager);
-
+	Safe_Release(m_pTerrainManager);
 
 	Safe_Release(m_pGraphicDev);
 

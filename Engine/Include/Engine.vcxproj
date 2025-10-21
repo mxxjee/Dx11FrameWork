@@ -176,6 +176,7 @@
     <ClInclude Include="..\Public\CLevelFactroy.h" />
     <ClInclude Include="..\Public\CLevel_Manager.h" />
     <ClInclude Include="..\Public\CImGui_Manager.h" />
+    <ClInclude Include="..\Public\CMapToolObject.h" />
     <ClInclude Include="..\Public\CMinimapCamera.h" />
     <ClInclude Include="..\Public\CMinimapQuad.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
@@ -193,6 +194,8 @@
     <ClInclude Include="..\Public\CScreenShot_Manager.h" />
     <ClInclude Include="..\Public\CShader.h" />
     <ClInclude Include="..\Public\CShader_Manager.h" />
+    <ClInclude Include="..\Public\CTerrain_Base.h" />
+    <ClInclude Include="..\Public\CTerrain_Manager.h" />
     <ClInclude Include="..\Public\CTexture.h" />
     <ClInclude Include="..\Public\CTexture_Manager.h" />
     <ClInclude Include="..\Public\CTimer.h" />
@@ -253,6 +256,7 @@
     <ClCompile Include="..\Private\CLevelFactroy.cpp" />
     <ClCompile Include="..\Private\CLevel_Manager.cpp" />
     <ClCompile Include="..\Private\CImGui_Manager.cpp" />
+    <ClCompile Include="..\Private\CMapToolObject.cpp" />
     <ClCompile Include="..\Private\CMinimapCamera.cpp" />
     <ClCompile Include="..\Private\CMinimapQuad.cpp" />
     <ClCompile Include="..\Private\CObject_Manager.cpp" />
@@ -269,6 +273,8 @@
     <ClCompile Include="..\Private\CScreenShot_Manager.cpp" />
     <ClCompile Include="..\Private\CShader.cpp" />
     <ClCompile Include="..\Private\CShader_Manager.cpp" />
+    <ClCompile Include="..\Private\CTerrain_Base.cpp" />
+    <ClCompile Include="..\Private\CTerrain_Manager.cpp" />
     <ClCompile Include="..\Private\CTexture.cpp" />
     <ClCompile Include="..\Private\CTexture_Manager.cpp" />
     <ClCompile Include="..\Private\CTimer.cpp" />

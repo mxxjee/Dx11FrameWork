@@ -204,6 +204,11 @@ public:
 #pragma region
 
 
+#pragma region UI_Manager
+	HRESULT				Register_Terrain(const _wstring& Key, class CTerrain_Base* pTerrain);
+	HRESULT				UnRegister_Terrain(const _wstring& Key);
+	class CTerrain_Base*		Find_Terrain(const _wstring& Key);
+#pragma region
  public:
  #pragma region Default
 	 const vector<D3D11_VIEWPORT>& Get_Viewports() { return m_ViewPorts; }
@@ -225,6 +230,7 @@ public:
 	 class CPipeLine* m_pPipeLine = { nullptr };
 	 class CTexture_Manager* m_pTextureManager = { nullptr };
 	 class CUI_Manager* m_pUIManager = { nullptr };
+	 class CTerrain_Manager* m_pTerrainManager = { nullptr };
 
 
 private:

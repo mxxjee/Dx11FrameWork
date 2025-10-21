@@ -112,6 +112,7 @@ void CCamera_Manager::Render_Cameras()
 		m_pRenderCamera->Bind_RenderTarget();
 		m_pRenderCamera->Clear_RenderTargetView(&ClearColor);
 		
+
 		//모든셰이더에게 이 카메라의 뷰,투영,카메라위치를 바인딩한다.
 		m_pGameInstance->Bind_GlobalPipelineData(ENUM_TO_UINT(m_pRenderCamera->Get_CameraType()));
 		m_pGameInstance->Bind_CamPosition(m_pGameInstance->Find_Shader(L"VtxNorTex"), "g_CamPosition", ENUM_TO_UINT(m_pRenderCamera->Get_CameraType()));

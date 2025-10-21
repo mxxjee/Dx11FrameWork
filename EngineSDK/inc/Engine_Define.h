@@ -36,7 +36,7 @@ using namespace std;
 #include <unordered_map>
 #include <ctime>
 
-
+#include <DirectXCollision.h>
 
 
 #ifdef _DEBUG

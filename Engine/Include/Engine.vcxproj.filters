@@ -211,6 +211,15 @@
     <Filter Include="05.Component\VIBuffer\VIBuffer_CustomTerrain">
       <UniqueIdentifier>{7b653668-df0b-481d-b398-687fe2499b76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="998.MapTool">
+      <UniqueIdentifier>{c785285b-cfd9-4255-9374-cad13491afcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\10.Terrain">
+      <UniqueIdentifier>{937ded16-7920-4d33-93fd-d861db1d6c82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\Terrain_Base">
+      <UniqueIdentifier>{024e1d82-5b8c-4fe0-8231-f73bd4088637}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -435,6 +444,13 @@
     <ClInclude Include="..\Public\CVIBuffer_CustomTerrain.h">
       <Filter>05.Component\VIBuffer\VIBuffer_CustomTerrain</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CMapToolObject.h">
+      <Filter>998.MapTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CTerrain_Manager.h" />
+    <ClInclude Include="..\Public\CTerrain_Base.h">
+      <Filter>03.GameObject\Terrain_Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -625,6 +641,13 @@
     </ClCompile>
     <ClCompile Include="..\Private\CVIBuffer_CustomTerrain.cpp">
       <Filter>05.Component\VIBuffer\VIBuffer_CustomTerrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapToolObject.cpp">
+      <Filter>998.MapTool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTerrain_Manager.cpp" />
+    <ClCompile Include="..\Private\CTerrain_Base.cpp">
+      <Filter>03.GameObject\Terrain_Base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
