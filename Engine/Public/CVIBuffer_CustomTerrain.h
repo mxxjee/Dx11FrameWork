@@ -19,29 +19,21 @@ public:
 
 
 public:
-    HRESULT         CreateVertexBuffer_Begin(_float VertexCountX, _float VertexCountZ, VTXNORTEX** pVertices,D3D11_BUFFER_DESC* pDesc);
-    
-    //盒扁贸府
-    HRESULT         CreateIndexBuffer_Begin(_float VertexCountX, _float VertexCountZ, VTXNORTEX** pVertices,_ushort** pIndices, D3D11_BUFFER_DESC* pDesc);
-    HRESULT         CreateIndexBuffer_Begin(_float VertexCountX, _float VertexCountZ, VTXNORTEX** pVertices, _uint** pIndices, D3D11_BUFFER_DESC* pDesc);
-
-
+    HRESULT         CreateVertexBuffer_Begin(_uint VertexCountX, _uint VertexCountZ, VTXNORTEX** pVertices,D3D11_BUFFER_DESC* pDesc);
     HRESULT         CreateVertexBuffer_End(D3D11_BUFFER_DESC& VertexDesc, VTXNORTEX* pVertices);
-    
-    //盒扁贸府
-    HRESULT         CreateIndexBuffer_End(D3D11_BUFFER_DESC& IndexDesc, _ushort* pIndices);
+
+
+    HRESULT         CreateIndexBuffer_Begin(_uint VertexCountX, _uint VertexCountZ, VTXNORTEX** pVertices, _uint** pIndices, D3D11_BUFFER_DESC* pDesc);
     HRESULT         CreateIndexBuffer_End(D3D11_BUFFER_DESC& IndexDesc, _uint* pIndices);
 
   
 public:
-    HRESULT         Modify_VertexBuffer_Begin(D3D11_MAPPED_SUBRESOURCE* mapped, _float VertexCountX, _float VertexCountZ);
-    HRESULT         Modify_IndexBuffer_Begin(D3D11_MAPPED_SUBRESOURCE* mapped, _float VertexCountX, _float VertexCountZ);
+    HRESULT         Modify_VertexBuffer(D3D11_MAPPED_SUBRESOURCE* mapped);
+    HRESULT         Modify_IndexBuffer(D3D11_MAPPED_SUBRESOURCE* mapped);
 
-    HRESULT         Modify_VertexBuffer_End(D3D11_BUFFER_DESC& VertexDesc, VTXNORTEX* pVertices);
-    HRESULT         Modify_IndexBuffer_End(D3D11_BUFFER_DESC& IndexDesc, _ushort* pIndices);
 
 public:
-    HRESULT         ResizeBuffer(_float fNewVertexCountX, _float fNewVertexCountZ);
+    HRESULT         ResizeBuffer(_uint fNewVertexCountX, _uint fNewVertexCountZ);
 
 public:
     _uint           Get_NumVerticesX() { return m_iNumVerticesX; }

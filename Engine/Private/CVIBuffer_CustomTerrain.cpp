@@ -25,40 +25,22 @@ HRESULT CVIBuffer_CustomTerrain::Initialize_Prototype(_uint iNumVerticesX, _uint
 	VTXNORTEX* pVertice = nullptr;
 
 	D3D11_BUFFER_DESC IndexDesc{};
-	_ushort* pShortIndices = nullptr;
 	_uint* pIntIndices = nullptr;
 
 	if (FAILED(CreateVertexBuffer_Begin(m_iNumVerticesX, m_iNumVerticesZ, &pVertice, &VertexDesc)))
 		return E_FAIL;
 
-	if (m_iNumVertices >= 65535)		//4byte
-	{
-		if (FAILED(CreateIndexBuffer_Begin(m_iNumVerticesX, m_iNumVerticesZ, &pVertice, &pIntIndices, &IndexDesc)))
-			return E_FAIL;
+
+	if (FAILED(CreateIndexBuffer_Begin(m_iNumVerticesX, m_iNumVerticesZ, &pVertice, &pIntIndices, &IndexDesc)))
+		return E_FAIL;
 
 
-		if (FAILED(CreateVertexBuffer_End(VertexDesc, pVertice)))
-			return E_FAIL;
+	if (FAILED(CreateVertexBuffer_End(VertexDesc, pVertice)))
+		return E_FAIL;
 
 
-		if (FAILED(CreateIndexBuffer_End(IndexDesc, pIntIndices)))
-			return E_FAIL;
-
-	}
-
-
-	else
-	{
-		if (FAILED(CreateIndexBuffer_Begin(m_iNumVerticesX, m_iNumVerticesZ, &pVertice, &pShortIndices, &IndexDesc)))
-			return E_FAIL;
-
-		if (FAILED(CreateVertexBuffer_End(VertexDesc, pVertice)))
-			return E_FAIL;
-
-
-		if (FAILED(CreateIndexBuffer_End(IndexDesc, pShortIndices)))
-			return E_FAIL;
-	}
+	if (FAILED(CreateIndexBuffer_End(IndexDesc, pIntIndices)))
+		return E_FAIL;
 
 
 
@@ -70,7 +52,7 @@ HRESULT CVIBuffer_CustomTerrain::Initialize_Copytype(void* pArg)
 	return S_OK;
 }
 
-HRESULT CVIBuffer_CustomTerrain::ResizeBuffer(_float fNewVertexCountX, _float fNewVertexCountZ)
+HRESULT CVIBuffer_CustomTerrain::ResizeBuffer(_uint fNewVertexCountX, _uint fNewVertexCountZ)
 {
 	//원래 할당했떤 정점보다 클때만 다시 Buffer(정점 + 인덱스 둘다)을 재생성한다.
 	//작을 경우는 인덱스버퍼만 수정,
@@ -90,46 +72,23 @@ HRESULT CVIBuffer_CustomTerrain::ResizeBuffer(_float fNewVertexCountX, _float fN
 		VTXNORTEX* pVertice = nullptr;
 
 		D3D11_BUFFER_DESC IndexDesc{};
-		_ushort* pShortIndices = nullptr;
 		_uint* pIntIndices = nullptr;
 
 		if (FAILED(CreateVertexBuffer_Begin(m_iNumVerticesX, m_iNumVerticesZ, &pVertice, &VertexDesc)))
 			return E_FAIL;
-
-		if (m_iNumVertices >= 65535)		//4byte
-		{
-			if (FAILED(CreateIndexBuffer_Begin(m_iNumVerticesX, m_iNumVerticesZ, &pVertice, &pIntIndices, &IndexDesc)))
+		
+		if (FAILED(CreateIndexBuffer_Begin(m_iNumVerticesX, m_iNumVerticesZ, &pVertice, &pIntIndices, &IndexDesc)))
 				return E_FAIL;
 		
 
-			if (FAILED(CreateVertexBuffer_End(VertexDesc, pVertice)))
-				return E_FAIL;
+		if (FAILED(CreateVertexBuffer_End(VertexDesc, pVertice)))
+			return E_FAIL;
 
 
-			if (FAILED(CreateIndexBuffer_End(IndexDesc, pIntIndices)))
-				return E_FAIL;
+		if (FAILED(CreateIndexBuffer_End(IndexDesc, pIntIndices)))
+			return E_FAIL;
 
-		}
 		
-
-		else
-		{
-			if (FAILED(CreateIndexBuffer_Begin(m_iNumVerticesX, m_iNumVerticesZ, &pVertice, &pShortIndices, &IndexDesc)))
-				return E_FAIL;
-
-			if (FAILED(CreateVertexBuffer_End(VertexDesc, pVertice)))
-				return E_FAIL;
-
-
-			if (FAILED(CreateIndexBuffer_End(IndexDesc, pShortIndices)))
-				return E_FAIL;
-		}
-
-
-
-	
-
-
 
 	}
 
@@ -140,10 +99,10 @@ HRESULT CVIBuffer_CustomTerrain::ResizeBuffer(_float fNewVertexCountX, _float fN
 
 		D3D11_MAPPED_SUBRESOURCE mapped;
 
-		if (FAILED(Modify_VertexBuffer_Begin(&mapped,m_iNumVerticesX, m_iNumVerticesZ)))
+		if (FAILED(Modify_VertexBuffer(&mapped)))
 			return E_FAIL;
 
-		if (FAILED(Modify_IndexBuffer_Begin(&mapped,m_iNumVerticesX, m_iNumVerticesZ)))
+		if (FAILED(Modify_IndexBuffer(&mapped)))
 			return E_FAIL;
 	}
 
@@ -155,7 +114,7 @@ HRESULT CVIBuffer_CustomTerrain::ResizeBuffer(_float fNewVertexCountX, _float fN
 
 
 
-HRESULT CVIBuffer_CustomTerrain::CreateVertexBuffer_Begin(_float VertexCountX, _float VertexCountZ, VTXNORTEX** pVertices, D3D11_BUFFER_DESC* pDesc)
+HRESULT CVIBuffer_CustomTerrain::CreateVertexBuffer_Begin(_uint VertexCountX, _uint VertexCountZ, VTXNORTEX** pVertices, D3D11_BUFFER_DESC* pDesc)
 {
 	//[1. 정점 버퍼를 정의하기 위한 정보]
 
@@ -194,99 +153,6 @@ HRESULT CVIBuffer_CustomTerrain::CreateVertexBuffer_Begin(_float VertexCountX, _
 	return S_OK;
 }
 
-HRESULT CVIBuffer_CustomTerrain::CreateIndexBuffer_Begin(_float VertexCountX, _float VertexCountZ, VTXNORTEX** pVertices, _ushort** pIndices, D3D11_BUFFER_DESC* pDesc)
-{
-	//[1.인덱스 버퍼를 만들기 위한 정보세팅]
-	m_iNumIndices = (VertexCountX - 1) * (VertexCountZ - 1) * 2 * 3;
-	m_iNumVertexBuffers = 1;
-	m_iIndexStride = m_iNumVertices >= 65535 ? 4 : 2;
-
-
-
-	pDesc->ByteWidth = m_iIndexStride * m_iNumIndices;		//할당할 크기
-	pDesc->Usage = D3D11_USAGE_DYNAMIC;					 //cpu/gpu가 어떻게 읽을건지에 대한 플래그 설정
-	pDesc->BindFlags = D3D11_BIND_INDEX_BUFFER;			//바인딩 플래그(사용 용도)
-	pDesc->CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;							//CPU의 접근권한 설정 , 0일 경우 접근불가, 보통 0은 DEFAULT/IMMUTABLE과 함께 사용
-	pDesc->MiscFlags = 0;
-	pDesc->StructureByteStride = 0;
-
-	/*인덱스 정의*/
-
-
-	*pIndices = new _ushort[m_iNumIndices];
-	_uint       iNumIndices = {};
-
-	for (size_t i = 0; i < m_iNumVerticesZ - 1; ++i)
-	{
-		for (size_t j = 0; j < m_iNumVerticesX - 1; ++j)
-		{
-			_uint       iIndex = i * m_iNumVerticesX + j;
-
-			//좌하단 = iIndx
-			_uint iIndices[4] =
-			{
-				iIndex + m_iNumVerticesX,		//좌상단
-				iIndex + m_iNumVerticesX + 1,	//우상단
-				iIndex + 1,		//우하단
-				iIndex,			//좌상단
-			};
-
-			(*pIndices)[iNumIndices++] = iIndices[0];
-			(*pIndices)[iNumIndices++] = iIndices[1];
-			(*pIndices)[iNumIndices++] = iIndices[2];
-
-			_vector vSrv, vTmp, vNormal;
-
-
-			vSrv = XMLoadFloat3(&((*pVertices)[iIndices[1]].vPosition))
-				- XMLoadFloat3(&((*pVertices)[iIndices[0]].vPosition));
-
-			vTmp = XMLoadFloat3(&((*pVertices)[iIndices[2]].vPosition))
-				- XMLoadFloat3(&((*pVertices)[iIndices[1]].vPosition));
-
-			vNormal = XMVector3Normalize(XMVector3Cross(vSrv, vTmp));
-
-			//Normal값 누적
-			XMStoreFloat3(&(*pVertices)[iIndices[0]].vNormal,
-				XMLoadFloat3(&(*pVertices)[iIndices[0]].vNormal) + vNormal);
-
-			XMStoreFloat3(&(*pVertices)[iIndices[1]].vNormal,
-				XMLoadFloat3(&(*pVertices)[iIndices[1]].vNormal) + vNormal);
-
-			XMStoreFloat3(&(*pVertices)[iIndices[2]].vNormal,
-				XMLoadFloat3(&(*pVertices)[iIndices[2]].vNormal) + vNormal);
-
-
-			(*pIndices)[iNumIndices++] = iIndices[0];
-			(*pIndices)[iNumIndices++] = iIndices[2];
-			(*pIndices)[iNumIndices++] = iIndices[3];
-
-
-			vSrv = XMLoadFloat3(&((*pVertices)[iIndices[2]].vPosition))
-				- XMLoadFloat3(&((*pVertices)[iIndices[0]].vPosition));
-
-			vTmp = XMLoadFloat3(&((*pVertices)[iIndices[3]].vPosition))
-				- XMLoadFloat3(&((*pVertices)[iIndices[2]].vPosition));
-			vNormal = XMVector3Normalize(XMVector3Cross(vSrv, vTmp));
-
-			//Normal값 누적
-			XMStoreFloat3(&(*pVertices)[iIndices[0]].vNormal,
-				XMLoadFloat3(&(*pVertices)[iIndices[0]].vNormal) + vNormal);
-
-			XMStoreFloat3(&(*pVertices)[iIndices[2]].vNormal,
-				XMLoadFloat3(&(*pVertices)[iIndices[2]].vNormal) + vNormal);
-
-			XMStoreFloat3(&(*pVertices)[iIndices[3]].vNormal,
-				XMLoadFloat3(&(*pVertices)[iIndices[3]].vNormal) + vNormal);
-
-
-		}
-	}
-
-	return S_OK;
-}
-
-
 HRESULT CVIBuffer_CustomTerrain::CreateVertexBuffer_End(D3D11_BUFFER_DESC& VertexDesc, VTXNORTEX* pVertices)
 {
 	//법선벡터 정규화
@@ -309,20 +175,6 @@ HRESULT CVIBuffer_CustomTerrain::CreateVertexBuffer_End(D3D11_BUFFER_DESC& Verte
 	return S_OK;
 }
 
-HRESULT CVIBuffer_CustomTerrain::CreateIndexBuffer_End(D3D11_BUFFER_DESC& IndexDesc, _ushort* pIndices)
-{
-	D3D11_SUBRESOURCE_DATA IndexData;
-	IndexData.pSysMem = pIndices;
-
-	if (FAILED(m_pDevice->CreateBuffer(&IndexDesc, &IndexData, m_pIB.GetAddressOf())))
-		return E_FAIL;
-
-
-	Safe_Delete_Array(pIndices);
-
-	return S_OK;
-}
-
 HRESULT CVIBuffer_CustomTerrain::CreateIndexBuffer_End(D3D11_BUFFER_DESC& IndexDesc, _uint* pIndices)
 {
 	D3D11_SUBRESOURCE_DATA IndexData;
@@ -341,7 +193,7 @@ HRESULT CVIBuffer_CustomTerrain::CreateIndexBuffer_End(D3D11_BUFFER_DESC& IndexD
 
 
 
-HRESULT CVIBuffer_CustomTerrain::Modify_VertexBuffer_Begin(D3D11_MAPPED_SUBRESOURCE* mapped, _float VertexCountX, _float VertexCountZ)
+HRESULT CVIBuffer_CustomTerrain::Modify_VertexBuffer(D3D11_MAPPED_SUBRESOURCE* mapped)
 {
 	
 	//이전내용없애고 다시쓰자.
@@ -350,15 +202,15 @@ HRESULT CVIBuffer_CustomTerrain::Modify_VertexBuffer_Begin(D3D11_MAPPED_SUBRESOU
 
 
 	VTXNORTEX* pVertices = reinterpret_cast<VTXNORTEX*>(mapped->pData);
-	for (size_t i = 0; i < VertexCountZ; ++i)
+	for (size_t i = 0; i < m_iNumVerticesZ; ++i)
 	{
-		for (size_t j = 0; j < VertexCountX; ++j)
+		for (size_t j = 0; j < m_iNumVerticesX; ++j)
 		{
-			_uint iIdx = i * VertexCountX + j;
+			_uint iIdx = i * m_iNumVerticesX + j;
 
 
 			pVertices[iIdx].vPosition = _float3(j * m_iOffSet, 0.f, i * m_iOffSet);
-			pVertices[iIdx].vTexcoord = _float2(j / (VertexCountX - 1.f), i / (VertexCountZ - 1.f));
+			pVertices[iIdx].vTexcoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
 			pVertices[iIdx].vNormal = _float3(0.f, 0.f, 0.f);
 		}
 	}
@@ -367,7 +219,7 @@ HRESULT CVIBuffer_CustomTerrain::Modify_VertexBuffer_Begin(D3D11_MAPPED_SUBRESOU
 	return S_OK;
 }
 
-HRESULT CVIBuffer_CustomTerrain::Modify_IndexBuffer_Begin(D3D11_MAPPED_SUBRESOURCE* mapped, _float VertexCountX, _float VertexCountZ)
+HRESULT CVIBuffer_CustomTerrain::Modify_IndexBuffer(D3D11_MAPPED_SUBRESOURCE* mapped)
 {
 	D3D11_MAPPED_SUBRESOURCE Indexmapped;
 	if (FAILED(m_pContext->Map(m_pIB.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &Indexmapped)))
@@ -375,20 +227,20 @@ HRESULT CVIBuffer_CustomTerrain::Modify_IndexBuffer_Begin(D3D11_MAPPED_SUBRESOUR
 
 
 	VTXNORTEX* pVertices = reinterpret_cast<VTXNORTEX*>(mapped->pData);
-	_ushort* pIndices = reinterpret_cast<_ushort*>(Indexmapped.pData);
+	_uint* pIndices = reinterpret_cast<_uint*>(Indexmapped.pData);
 	_uint iNumIndices{};
 
-	for (size_t i = 0; i < VertexCountZ - 1; ++i)
+	for (size_t i = 0; i < m_iNumVerticesZ - 1; ++i)
 	{
-		for (size_t j = 0; j < VertexCountX - 1; ++j)
+		for (size_t j = 0; j < m_iNumVerticesX - 1; ++j)
 		{
-			_uint       iIndex = i * VertexCountX + j;
+			_uint       iIndex = i * m_iNumVerticesX + j;
 
 			//좌하단 = iIndx
 			_uint iIndices[4] =
 			{
-				iIndex + VertexCountX,		//좌상단
-				iIndex + VertexCountX + 1,	//우상단
+				iIndex + m_iNumVerticesX,		//좌상단
+				iIndex + m_iNumVerticesX + 1,	//우상단
 				iIndex + 1,		//우하단
 				iIndex,			//좌상단
 			};
@@ -445,18 +297,15 @@ HRESULT CVIBuffer_CustomTerrain::Modify_IndexBuffer_Begin(D3D11_MAPPED_SUBRESOUR
 		}
 	}
 
-	m_pContext->Unmap(m_pVB.Get(), 0);
-	m_pContext->Unmap(m_pVB.Get(), 0);
-	return S_OK;
-}
+	for (_uint i = 0; i < m_iNumVerticesX * m_iNumVerticesZ; ++i)
+	{
+		XMVECTOR n = XMLoadFloat3(&pVertices[i].vNormal);
+		n = XMVector3Normalize(n);
+		XMStoreFloat3(&pVertices[i].vNormal, n);
+	}
 
-HRESULT CVIBuffer_CustomTerrain::Modify_VertexBuffer_End(D3D11_BUFFER_DESC& VertexDesc, VTXNORTEX* pVertices)
-{
-	return S_OK;
-}
-
-HRESULT CVIBuffer_CustomTerrain::Modify_IndexBuffer_End(D3D11_BUFFER_DESC& IndexDesc, _ushort* pIndices)
-{
+	m_pContext->Unmap(m_pIB.Get(), 0);
+	m_pContext->Unmap(m_pVB.Get(), 0);
 	return S_OK;
 }
 
@@ -496,13 +345,13 @@ void CVIBuffer_CustomTerrain::Free()
 	__super::Free();
 }
 
-HRESULT CVIBuffer_CustomTerrain::CreateIndexBuffer_Begin(_float VertexCountX, _float VertexCountZ, VTXNORTEX** pVertices, _uint** pIndices, D3D11_BUFFER_DESC* pDesc)
+HRESULT CVIBuffer_CustomTerrain::CreateIndexBuffer_Begin(_uint VertexCountX, _uint VertexCountZ, VTXNORTEX** pVertices, _uint** pIndices, D3D11_BUFFER_DESC* pDesc)
 {
 
 	//[1.인덱스 버퍼를 만들기 위한 정보세팅]
 	m_iNumIndices = (VertexCountX - 1) * (VertexCountZ - 1) * 2 * 3;
 	m_iNumVertexBuffers = 1;
-	m_iIndexStride = m_iNumVertices >= 65535 ? 4 : 2;
+	m_iIndexStride = 4;
 
 
 
