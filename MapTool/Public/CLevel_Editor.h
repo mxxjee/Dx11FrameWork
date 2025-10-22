@@ -21,6 +21,8 @@ public:
     virtual void        Render() override;         //æ¿¿« ∑ª¥ı.
 
 public:
+    HRESULT                 Create_TerrainHighlight(_float3* PickingPos);
+public:
     HRESULT                 Ready_Layer_Enviroment(const _wstring & strLayerTag);
     HRESULT                 Ready_Layer_UI(const _wstring & strLayerTag);
     HRESULT                 Ready_Layer_MainCamera(const _wstring & strLayerTag);
@@ -36,7 +38,7 @@ public:
     static  CLevel_Editor* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs & args);
     virtual     void        Free();
 
-
+    int             m_iIdx = 0;
 };
 
 NS_END

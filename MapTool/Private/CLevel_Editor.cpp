@@ -10,6 +10,9 @@
 #include "CImgui_Base.h"
 #include "CTerrainDebugWindow.h"
 
+#include "CVIBuffer_Triangle.h"
+#include "CTerrain_Highlight.h"
+
 
 
 USING(MapTool)
@@ -41,8 +44,12 @@ void CLevel_Editor::Update_Priority(_float fTimeDelta)
 void CLevel_Editor::Update(const _float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
-	if (m_pGameInstance->PickTerrain(L"MapTerrain"))
-		return;
+	_float3* pPickingPos;
+	if (pPickingPos = m_pGameInstance->PickTerrain(L"MapTerrain"))
+	{
+		if (FAILED(Create_TerrainHighlight(pPickingPos)))
+			return;
+	}
 }
 
 void CLevel_Editor::Update_Late(_float fTimeDelta)
@@ -55,6 +62,37 @@ void CLevel_Editor::Render()
 {
 	__super::Render();
 	SetWindowText(g_hWnd, L"¸ÊÅø ¾À ÀÔ´Ï´Ù.");
+}
+
+HRESULT CLevel_Editor::Create_TerrainHighlight(_float3* PickingPos)
+{
+	CheckNullResult(PickingPos,E_FAIL);
+	CTerrain_Highlight::HIGHLIGHT_DESC Desc;
+	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+	Desc.ObjTag = L"Terrain_Highlight" + to_wstring(m_iIdx);
+	Desc.pOwner = m_pGameInstance->Find_Terrain(L"MapTerrain");
+	Desc.ShaderName = L"VtxPosCor";
+	Desc.passName = "Default";
+
+	CTransform::TRANSFORM_DESC transform;
+	Desc.TransformDesc = &transform;
+
+	CVIBuffer_Triangle::TRIANGLEBUFFER_DESC triangle;
+	triangle.v0 = PickingPos[0];
+	triangle.v1 = PickingPos[1];
+	triangle.v2 = PickingPos[2];
+	Desc.TriangleBuffer = &triangle;
+
+	if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+		PROTO_OBJ_NAME(L"Terrain_Highlight"),
+		ENUM_TO_UINT(LEVEL_ID::MAPTOOL),
+		L"Enviroment_Layer", &Desc)))
+		return E_FAIL;
+
+
+
+	++m_iIdx;
+	return S_OK;
 }
 
 HRESULT CLevel_Editor::Ready_Layer_Enviroment(const _wstring& strLayerTag)

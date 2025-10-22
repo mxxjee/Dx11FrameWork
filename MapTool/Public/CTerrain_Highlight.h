@@ -3,8 +3,8 @@
 
 namespace Engine
 {
+    class CVIBuffer_Triangle;
     class CShader;
-    class CTexture;
 }
 
 
@@ -12,6 +12,18 @@ NS_BEGIN(MapTool)
 class CTerrain_Highlight :
     public CGameObject
 {
+public:
+    typedef struct tagHighlightDesc : CGameObject::tagGameObjectDesc
+    {
+        _wstring  ShaderName = L"";
+        string  passName = "";
+        _uint eRenderGroup = 0;
+
+        class CGameObject* pOwner = nullptr;
+        void* TriangleBuffer = nullptr;
+
+    }HIGHLIGHT_DESC;
+
 private:
     CTerrain_Highlight(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CTerrain_Highlight(const CTerrain_Highlight& Prototype);
@@ -31,6 +43,17 @@ public:
     virtual CGameObject* Clone(void* pArg);
     virtual void Free() override;
 
+private:
+    HRESULT Ready_Component(void* pArg);
+    HRESULT Ready_Resources(void* pArg);
+    HRESULT Bind_ShaderResources();
+private:
+    CVIBuffer_Triangle*     m_pTriangleBuffer;
+    CShader*                m_pShader = { nullptr };
+private:
+    _uint                   m_eRenderGroup = 0;
+    _wstring  m_ShaderName = L"";
+    string      m_passName = "";
 };
 NS_END
 

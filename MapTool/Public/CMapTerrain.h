@@ -4,6 +4,7 @@
 namespace Engine
 {
     class CVIBuffer_CustomTerrain;
+    class CTerrain_Highlight;
     class CShader;
     class CTexture;
 }
@@ -29,7 +30,7 @@ public:
 public:
     HRESULT         CreateRasterizerState();
 public:
-    void        Update_Terrain(_float NumX, _float NumZ);
+    void        Update_Terrain(_uint NumX, _uint NumZ);
     CVIBuffer_CustomTerrain* Get_CustomVIBuffer() { return m_pCustomBuffer; }
 private:
     HRESULT Ready_Components(void* pArg);

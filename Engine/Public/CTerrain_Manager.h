@@ -21,8 +21,11 @@ public:
     void            Update_Late(_float fTimeDelta);
     void            Update_Render(_float fTimeDelta);
 
+
     CTerrain_Base*          Find_Terrain(const _wstring& Key);
-    bool                    PickTerrain(const _wstring& Key);
+
+    //픽킹한 삼각형의 점리턴 ( 로컬좌표)
+    _float3*                    PickTerrain(const _wstring& Key);
 
 public:
     static CTerrain_Manager* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext);
@@ -38,6 +41,7 @@ private:
 
 private:
     ENGINE_DESC             m_EngineDesc;
+    _float3                 PickLocalPos[3];
 };
 
 

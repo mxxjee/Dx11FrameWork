@@ -13,7 +13,12 @@ CVIBuffer_CustomTerrain::CVIBuffer_CustomTerrain(const CVIBuffer_CustomTerrain& 
 	, m_iOffSet{Prototype.m_iOffSet}
 	
 {
-	
+	if (Prototype.m_pIndices)
+	{
+		m_pIndices = new _uint[m_iNumIndices];
+		memcpy((_uint*)m_pIndices, (_uint*)Prototype.m_pIndices, sizeof(_uint) * m_iNumIndices);
+
+	}
 }
 
 HRESULT CVIBuffer_CustomTerrain::Initialize_Prototype(_uint iNumVerticesX, _uint iNumVerticesZ, _uint Offset)

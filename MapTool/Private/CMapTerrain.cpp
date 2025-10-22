@@ -98,7 +98,7 @@ HRESULT CMapTerrain::CreateRasterizerState()
 
 }
 
-void CMapTerrain::Update_Terrain(_float NumX, _float NumZ)
+void CMapTerrain::Update_Terrain(_uint NumX, _uint NumZ)
 {
     CheckNull(m_pCustomBuffer);
     if(m_pCustomBuffer)

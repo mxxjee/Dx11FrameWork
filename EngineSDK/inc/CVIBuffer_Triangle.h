@@ -5,6 +5,14 @@ NS_BEGIN(Engine)
 class ENGINE_DLL CVIBuffer_Triangle :
     public CVIBuffer
 {
+public:
+    typedef struct tagTriangleBuffer : CComponent::tagComponentDesc
+    {
+        _float3 v0, v1, v2;
+
+    }TRIANGLEBUFFER_DESC;
+
+
 private:
     CVIBuffer_Triangle(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CVIBuffer_Triangle(const CVIBuffer_Triangle& Prototype);
@@ -12,8 +20,9 @@ private:
 
 
 public:
-    virtual         HRESULT     Initialize_Prototype() override;
+    virtual         HRESULT     Initialize_Prototype();
     virtual         HRESULT     Initialize_Copytype(void* pArg) override;
+
 
 public:
     static CVIBuffer_Triangle* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);

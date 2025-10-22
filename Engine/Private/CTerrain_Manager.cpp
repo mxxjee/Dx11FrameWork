@@ -87,10 +87,12 @@ CTerrain_Base* CTerrain_Manager::Find_Terrain(const _wstring& Key)
 	
 }
 
-bool CTerrain_Manager::PickTerrain(const _wstring& Key)
+_float3* CTerrain_Manager::PickTerrain(const _wstring& Key)
 {
+	
+
 	CTerrain_Base* pTerrain = Find_Terrain(Key);
-	CheckNullResult(pTerrain, false);
+	CheckNullResult(pTerrain, nullptr);
 
 	if (CInput_Manager::GetInstance()->IsMouseButtonHeld(0))
 	{
@@ -117,16 +119,15 @@ bool CTerrain_Manager::PickTerrain(const _wstring& Key)
 			if (TriangleTests::Intersects(ray.Origin, ray.Dir, p0,p1,p2,dist))
 			{
 				if (isnan(dist))
-					return false;
+					return nullptr;
 
-				int idx0 = m_pIndices[i];
-				int idx1 = m_pIndices[i + 1];
-				int idx2 = m_pIndices[i + 2];
+		
 
-				wchar_t szBuf[128];
-				swprintf_s(szBuf, L"Idx0: %d, Idx1: %d, Idx2: %d\n", idx0, idx1, idx2);
-				OutputDebugString(szBuf);
-				return true;
+				PickLocalPos[0] = m_pPositions[m_pIndices[i]];
+				PickLocalPos[1] = m_pPositions[m_pIndices[i + 1]];
+				PickLocalPos[2] = m_pPositions[m_pIndices[i + 2]];
+
+				return PickLocalPos;
 
 			}
 
@@ -136,7 +137,7 @@ bool CTerrain_Manager::PickTerrain(const _wstring& Key)
 
 	}
 
-	return false;
+	return nullptr;
 }
 
 CTerrain_Manager* CTerrain_Manager::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)

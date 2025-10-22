@@ -208,7 +208,7 @@ public:
 	HRESULT						Register_Terrain(const _wstring& Key, class CTerrain_Base* pTerrain);
 	HRESULT						UnRegister_Terrain(const _wstring& Key);
 	class CTerrain_Base*		Find_Terrain(const _wstring& Key);
-	bool						PickTerrain(const _wstring& Key);
+	_float3*					PickTerrain(const _wstring& Key);
 #pragma region
  public:
  #pragma region Default
