@@ -10,12 +10,12 @@
 
 USING(Client)
 CTerrain::CTerrain(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CGameObject{pDevice,pContext}
+    :CTerrain_Base{pDevice,pContext}
 {
 }
 
 CTerrain::CTerrain(const CTerrain& Prototype)
-    :CGameObject(Prototype)
+    : CTerrain_Base(Prototype)
 {
 }
 
@@ -34,9 +34,6 @@ HRESULT CTerrain::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
     if (FAILED(Ready_Components(pArg)))
-        return E_FAIL;
-
-    if (FAILED(Ready_Resources(pArg)))
         return E_FAIL;
 
 
@@ -61,23 +58,14 @@ void CTerrain::Update_Late(_float fTimeDelta)
 void CTerrain::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta); 
-    m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::PRIORITY), this);
-
+  
 }
 
 HRESULT CTerrain::Render()
 {
-    if (FAILED(Bind_ShaderResources()))
+    if (FAILED(__super::Render()))
         return E_FAIL;
 
-    if(FAILED(m_pShader->Begin(m_passName)))
-        return E_FAIL;
-
-    if (FAILED(m_pVIBufferCom->Bind_Resource()))
-        return E_FAIL;
-
-    if (FAILED(m_pVIBufferCom->Render()))
-        return E_FAIL;
 
     return S_OK;
 }
@@ -95,45 +83,9 @@ HRESULT CTerrain::Ready_Components(void* pArg)
     return S_OK;
 }
 
-HRESULT CTerrain::Ready_Resources(void* pArg)
-{
-    CheckNullResult(pArg, E_FAIL);
-    TERRAIN_DESC* pTerrain_Desc = static_cast<TERRAIN_DESC*>(pArg);
-    m_ShaderName = pTerrain_Desc->ShaderName;
-    m_passName = pTerrain_Desc->passName;
 
 
 
-    m_pTexture = m_pGameInstance->Find_Texture(L"Terrain");
-    if (m_pTexture)
-        Safe_AddRef(m_pTexture);
-
-
-    m_pShader = m_pGameInstance->Find_Shader(pTerrain_Desc->ShaderName);
-    Safe_AddRef(m_pShader);
-
-  
-    return S_OK;
-}
-
-HRESULT CTerrain::Bind_ShaderResources()
-{
-    /*_float4x4           ViewMul;
-    XMStoreFloat4x4(&ViewMul,m_pGameInstance->Get_RenderCamera_GetMulViewProjMatrix());*/
-
-    //if (m_pShader->Bind_Matrix("g_ViewProjMatrix", ViewMul))
-    //    return E_FAIL;
-
-    if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
-        return E_FAIL;
-
-    if (FAILED(m_pTexture->Bind_ShaderResource(m_pShader, "g_DiffuseTexture",0)))
-        return E_FAIL;
-
-
-       
-    return S_OK;
-}
 
 CTerrain* CTerrain::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 {
@@ -165,8 +117,5 @@ CGameObject* CTerrain::Clone(void* pArg)
 void CTerrain::Free()
 {
     __super::Free();
-
-    Safe_Release(m_pVIBufferCom);
-    Safe_Release(m_pTexture);
-    Safe_Release(m_pShader);
+ 
 }

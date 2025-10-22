@@ -25,6 +25,7 @@
     <ClInclude Include="..\Public\CMainTool.h" />
     <ClInclude Include="..\Public\CMapTerrain.h" />
     <ClInclude Include="..\Public\CTerrainDebugWindow.h" />
+    <ClInclude Include="..\Public\CTerrain_Highlight.h" />
     <ClInclude Include="..\Public\MapTool_Defines.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MapTool.h" />
@@ -38,6 +39,7 @@
     <ClCompile Include="..\Private\CMainTool.cpp" />
     <ClCompile Include="..\Private\CMapTerrain.cpp" />
     <ClCompile Include="..\Private\CTerrainDebugWindow.cpp" />
+    <ClCompile Include="..\Private\CTerrain_Highlight.cpp" />
     <ClCompile Include="MapTool.cpp" />
   </ItemGroup>
   <ItemGroup>

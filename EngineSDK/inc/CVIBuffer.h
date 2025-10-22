@@ -15,6 +15,9 @@ public:
     virtual         HRESULT     Initialize_Copytype(void* pArg) override;
     virtual         HRESULT     Bind_Resource();
     virtual         HRESULT     Render();
+
+public:
+
 public:
     virtual CComponent* Clone(void* pArg) = 0;
     virtual void Free() override;
@@ -24,10 +27,17 @@ protected:
     ComPtr<ID3D11Buffer>        m_pIB;
 
 
+public:
+    virtual _uint           Get_NumVerticesX() {return 0;}
+    virtual _uint           Get_NumVerticesZ() { return 0; }
+    _uint                   Get_NumIndices() { return m_iNumIndices; }
+public:
+    const _float3* Get_VertexPositions() const { return m_pVertexPositions; }
+    const _uint* Get_Indices() const { return m_pIndices; }
 
 protected:
     _float3*        m_pVertexPositions = { nullptr };       //정점의 위치들만 기록하기 위한 동적배열, 얕은 참조 수행하므로 원본일 때만 메모리반환
-
+    _uint*          m_pIndices = nullptr;
     _uint           m_iNumVertices = {};           //정점 개수
     _uint           m_iVertexStride = {};       //정점 구조체 하나의 크기
 

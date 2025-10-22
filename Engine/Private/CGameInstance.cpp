@@ -599,6 +599,10 @@ CTerrain_Base* CGameInstance::Find_Terrain(const _wstring& Key)
 	CheckNullResult(m_pTerrainManager, nullptr);
 	return m_pTerrainManager->Find_Terrain(Key);
 }
+bool CGameInstance::PickTerrain(const _wstring& Key)
+{
+	return m_pTerrainManager->PickTerrain(Key);
+}
 #pragma endregion
 
 void CGameInstance::Release_Engine()

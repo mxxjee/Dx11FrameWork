@@ -54,6 +54,11 @@ namespace Engine
 		bool        isActive = true;                //활성화 여부
 	};
 
+	struct Ray
+	{
+		_vector Origin;		//시작점
+		_vector Dir;		//방향
+	};
 	
 }
 

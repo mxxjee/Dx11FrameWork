@@ -17,6 +17,8 @@ CVIBuffer::CVIBuffer(const CVIBuffer& Prototype)
     m_iNumIndexBuffers(Prototype.m_iNumIndexBuffers),
     m_pVertexPositions(Prototype.m_pVertexPositions)
 {
+    m_pIndices = new _uint[m_iNumIndices];
+    memcpy((_uint*)m_pIndices, (_uint*)Prototype.m_pIndices, sizeof(_uint) * m_iNumIndices);
 }
 
 

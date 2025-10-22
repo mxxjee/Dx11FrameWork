@@ -131,6 +131,7 @@ namespace Engine
 		TRANSFORM,
 		VIBUFFER_RECT,
 		VIBUFFER_TERRAIN,
+		VIBUFFER_TRIANGLE,
 		UI};
 
 	enum class D3DTS {VIEW,PROJ,END};

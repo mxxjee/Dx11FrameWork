@@ -34,6 +34,9 @@
     <Filter Include="04.GameObject\MapTerrain">
       <UniqueIdentifier>{7119959e-9abc-49ca-b63a-8d3980b12a76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="04.GameObject\TerrainHighlight">
+      <UniqueIdentifier>{b41a40e6-6670-4760-a1b7-fb43ebc5e870}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CMainTool.h">
@@ -69,6 +72,9 @@
     <ClInclude Include="..\Public\CMapTerrain.h">
       <Filter>04.GameObject\MapTerrain</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CTerrain_Highlight.h">
+      <Filter>04.GameObject\TerrainHighlight</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CMainTool.cpp">
@@ -91,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMapTerrain.cpp">
       <Filter>04.GameObject\MapTerrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTerrain_Highlight.cpp">
+      <Filter>04.GameObject\TerrainHighlight</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

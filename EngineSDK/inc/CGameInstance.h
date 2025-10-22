@@ -205,9 +205,10 @@ public:
 
 
 #pragma region UI_Manager
-	HRESULT				Register_Terrain(const _wstring& Key, class CTerrain_Base* pTerrain);
-	HRESULT				UnRegister_Terrain(const _wstring& Key);
+	HRESULT						Register_Terrain(const _wstring& Key, class CTerrain_Base* pTerrain);
+	HRESULT						UnRegister_Terrain(const _wstring& Key);
 	class CTerrain_Base*		Find_Terrain(const _wstring& Key);
+	bool						PickTerrain(const _wstring& Key);
 #pragma region
  public:
  #pragma region Default

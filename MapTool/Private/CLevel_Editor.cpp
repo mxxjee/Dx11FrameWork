@@ -41,11 +41,14 @@ void CLevel_Editor::Update_Priority(_float fTimeDelta)
 void CLevel_Editor::Update(const _float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
+	if (m_pGameInstance->PickTerrain(L"MapTerrain"))
+		return;
 }
 
 void CLevel_Editor::Update_Late(_float fTimeDelta)
 {
 	__super::Update_Late(fTimeDelta);
+	
 }
 
 void CLevel_Editor::Render()
@@ -62,6 +65,8 @@ HRESULT CLevel_Editor::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 	pDesc.ObjTag = L"MapTerrain";
 	pDesc.ShaderName = L"VtxNorTex";
 	pDesc.passName = "Default";
+	pDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+
 
 	CTransform::TRANSFORM_DESC TransDesc = {};
 
@@ -73,12 +78,13 @@ HRESULT CLevel_Editor::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
 	pDesc.TransformDesc = &TransDesc;
 
-
-	if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-		PROTO_OBJ_NAME(L"MapTerrain"),
-		ENUM_TO_UINT(LEVEL_ID::MAPTOOL),
-		strLayerTag, &pDesc)))
-		return E_FAIL;
+	CBase* pTerrain = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapTerrain"), &pDesc);
+	if (pTerrain)
+	{
+		CTerrain_Base* ppTerrain = dynamic_cast<CTerrain_Base*>(pTerrain);
+		if (ppTerrain)
+			m_pGameInstance->Register_Terrain(L"MapTerrain", ppTerrain);
+	}
 
 
 	return S_OK;
@@ -132,7 +138,7 @@ void CLevel_Editor::OnEnter()
 		CTerrainDebugWindow* pTerrainDebugWindow = dynamic_cast<CTerrainDebugWindow*>(pWindow);
 		if (pTerrainDebugWindow)
 		{
-			pTerrainDebugWindow->Set_MapTerrain(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::MAPTOOL), L"Enviroment_Layer", L"MapTerrain"));
+			pTerrainDebugWindow->Set_MapTerrain(m_pGameInstance->Find_Terrain(L"MapTerrain"));
 			pTerrainDebugWindow->Init_NumValues();
 
 		}

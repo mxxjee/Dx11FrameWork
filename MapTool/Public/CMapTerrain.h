@@ -1,5 +1,5 @@
 #pragma once
-#include "CGameObject.h"
+#include "CTerrain_Base.h"
 
 namespace Engine
 {
@@ -10,18 +10,8 @@ namespace Engine
 
 NS_BEGIN(MapTool)
 class CMapTerrain :
-    public CGameObject
+    public CTerrain_Base
 {
-public:
-    typedef struct tagTerrainDesc : CGameObject::tagGameObjectDesc
-    {
-        _wstring TextureKey = L"";
-        _wstring  ShaderName = L"";
-        string  passName = "";
-
-
-    }TERRAIN_DESC;
-
 private:
     CMapTerrain(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CMapTerrain(const CMapTerrain& Prototype);
@@ -39,31 +29,19 @@ public:
 public:
     HRESULT         CreateRasterizerState();
 public:
-
     void        Update_Terrain(_float NumX, _float NumZ);
-private:
-    CVIBuffer_CustomTerrain* m_pVIBufferCom = { nullptr };
-    CTexture* m_pTexture = { nullptr };
-    CShader* m_pShader = { nullptr };
-
+    CVIBuffer_CustomTerrain* Get_CustomVIBuffer() { return m_pCustomBuffer; }
 private:
     HRESULT Ready_Components(void* pArg);
-    HRESULT Ready_Resources(void* pArg);
-    HRESULT Bind_ShaderResources();
+
 
 public:
     static CMapTerrain* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual CGameObject* Clone(void* pArg);
     virtual void Free() override;
 
-public:
-    CVIBuffer_CustomTerrain* Get_VIBufferCom() { return m_pVIBufferCom; }
-
 private:
-    _wstring  m_ShaderName = L"";
-    string      m_passName = "";
-
-private:
+    CVIBuffer_CustomTerrain*        m_pCustomBuffer = nullptr;
     ComPtr<ID3D11RasterizerState> m_pWireframeRS = nullptr;
 };
 NS_END

@@ -1,5 +1,8 @@
 #pragma once
 #include "Engine_Define.h"
+#include "CGameObject.h"
+#include "CGameInstance.h"
+
 
 namespace MathUtils
 {
@@ -9,7 +12,7 @@ namespace MathUtils
 	{
 		_float4 Result;
 		Result.x = XMVectorGetX(vScreenPos) - fViewPortWidth * 0.5f;
-		Result.y = ((-1)*XMVectorGetY(vScreenPos)) + fViewPortHeight * 0.5f;
+		Result.y = ((-1) * XMVectorGetY(vScreenPos)) + fViewPortHeight * 0.5f;
 		Result.z = XMVectorGetZ(vScreenPos);
 		Result.w = 1;
 
@@ -28,7 +31,7 @@ namespace MathUtils
 		_matrix matProj = XMLoadFloat4x4(&proj);
 
 		_matrix matViewProj = XMMatrixMultiply(matView, matProj); // view * proj
-		_vector NewWorldPos=XMVector3TransformCoord(vWorldPos, matViewProj);
+		_vector NewWorldPos = XMVector3TransformCoord(vWorldPos, matViewProj);
 
 
 		_float4 screenPos;
@@ -103,9 +106,70 @@ namespace MathUtils
 		if (value > max) return max;
 		return value;
 	}
-	
+
 	inline float Lerp(float Start, float Target, float t)
 	{
 		return Start + (Target - Start) * t;
+	}
+
+	inline Ray CreateRay(HWND hWnd, ComPtr<ID3D11DeviceContext> m_pContext, CGameObject* pOther)
+	{
+		Ray newRay;
+
+		CGameInstance* pGameInstance = CGameInstance::GetInstance();
+
+		POINT ptMouse{};
+		GetCursorPos(&ptMouse);
+		ScreenToClient(hWnd, &ptMouse);
+
+		//뷰포트->투영
+		_vector vMousePos = {};
+
+		D3D11_VIEWPORT          ViewportDesc{};
+		_uint           iNumViewports = { 1 };
+		m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
+
+		vMousePos=XMVectorSet(ptMouse.x / (ViewportDesc.Width * 0.5f) - 1.f,
+			ptMouse.y / -(ViewportDesc.Height * 0.5f) + 1.f,
+			0,
+			1.f);
+
+		// 투영 -> 뷰스페이스
+		_matrix	matProj = XMMatrixIdentity();
+		matProj=XMLoadFloat4x4(&pGameInstance->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE)));
+		matProj=XMMatrixInverse(nullptr, matProj);
+		vMousePos=XMVector3TransformCoord(vMousePos, matProj);
+
+
+		//뷰스페이스->월드
+		_matrix	matView = {};
+
+
+		matView=XMLoadFloat4x4(&pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE)));
+		matView=XMMatrixInverse(nullptr, matView);
+
+		_vector	vRayPos{ 0.f, 0.f, 0.f };		// 뷰 스페이스
+		_vector	vRayDir = vMousePos - vRayPos;
+
+		vRayPos=XMVector3TransformCoord(vRayPos, matView);
+		vRayDir= XMVector3TransformNormal(vRayDir, matView);
+
+
+		// 월드 -> 로컬
+		_matrix	matWorld = {};
+
+		matWorld = XMLoadFloat4x4(&(pOther->Get_Transform()->Get_World(TransformScope::WORLD)));
+		matWorld=XMMatrixInverse(nullptr, matWorld);
+
+
+		vRayPos=XMVector3TransformCoord(vRayPos, matWorld);
+		vRayDir= XMVector3TransformNormal(vRayDir, matWorld);
+
+		newRay.Dir = XMVector3Normalize(vRayDir);
+		newRay.Origin = vRayPos;
+
+		return newRay;
+
+
 	}
 }

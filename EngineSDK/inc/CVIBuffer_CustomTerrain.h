@@ -36,8 +36,8 @@ public:
     HRESULT         ResizeBuffer(_uint fNewVertexCountX, _uint fNewVertexCountZ);
 
 public:
-    _uint           Get_NumVerticesX() { return m_iNumVerticesX; }
-    _uint           Get_NumVerticesZ() { return m_iNumVerticesZ; }
+    virtual _uint           Get_NumVerticesX() { return m_iNumVerticesX; }
+    virtual _uint           Get_NumVerticesZ() { return m_iNumVerticesZ; }
 
 private:
     _uint       m_iNumVerticesX;        //가로정점개수

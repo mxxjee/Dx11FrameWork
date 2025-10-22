@@ -9,7 +9,7 @@ CInputLayout::CInputLayout(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceCont
 HRESULT CInputLayout::Initialize_Prototype(const vector<D3D11_INPUT_ELEMENT_DESC>& desc, UINT iNumElements, const void* pShaderByteCode, SIZE_T ByteCodeLength)
 {
 	
-	HRESULT hr = m_pDevice->CreateInputLayout(desc.data(), desc.size(), pShaderByteCode, ByteCodeLength, m_pInputLayout.GetAddressOf());
+	HRESULT hr = m_pDevice->CreateInputLayout(desc.data(), (_uint)desc.size(), pShaderByteCode, ByteCodeLength, m_pInputLayout.GetAddressOf());
 	
 	return S_OK;
 }

@@ -1,4 +1,7 @@
 #include "CTerrain_Manager.h"
+#include "CInput_Manager.h"
+#include "MathUtils.h"
+#include "CVIBuffer.h"
 
 CTerrain_Manager::CTerrain_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
 	:m_pDevice{_pDevice},m_pDeviceContext{ _pContext }
@@ -84,9 +87,63 @@ CTerrain_Base* CTerrain_Manager::Find_Terrain(const _wstring& Key)
 	
 }
 
+bool CTerrain_Manager::PickTerrain(const _wstring& Key)
+{
+	CTerrain_Base* pTerrain = Find_Terrain(Key);
+	CheckNullResult(pTerrain, false);
+
+	if (CInput_Manager::GetInstance()->IsMouseButtonHeld(0))
+	{
+		//레이를 생성한다.
+		Ray ray = MathUtils::CreateRay(m_EngineDesc.hWnd,m_pDeviceContext,pTerrain);
+
+		_uint TerrainX = pTerrain->Get_VIBufferCom()->Get_NumVerticesX();
+		_uint TerrainZ = pTerrain->Get_VIBufferCom()->Get_NumVerticesZ();
+
+		const _uint* m_pIndices = pTerrain->Get_VIBufferCom()->Get_Indices();
+		const _float3* m_pPositions = pTerrain->Get_VIBufferCom()->Get_VertexPositions();
+
+		_uint IndicesNum = pTerrain->Get_VIBufferCom()->Get_NumIndices();
+
+		for (_uint i = 0; i < IndicesNum; i+=3)
+		{
+
+			
+			_vector p0 = XMLoadFloat3(&m_pPositions[m_pIndices[i]]);
+			_vector p1 = XMLoadFloat3(&m_pPositions[m_pIndices[i+1]]);
+			_vector p2 = XMLoadFloat3(&m_pPositions[m_pIndices[i+2]]);
+
+			float dist = 0.f;
+			if (TriangleTests::Intersects(ray.Origin, ray.Dir, p0,p1,p2,dist))
+			{
+				if (isnan(dist))
+					return false;
+
+				int idx0 = m_pIndices[i];
+				int idx1 = m_pIndices[i + 1];
+				int idx2 = m_pIndices[i + 2];
+
+				wchar_t szBuf[128];
+				swprintf_s(szBuf, L"Idx0: %d, Idx1: %d, Idx2: %d\n", idx0, idx1, idx2);
+				OutputDebugString(szBuf);
+				return true;
+
+			}
+
+
+		
+		}
+
+	}
+
+	return false;
+}
+
 CTerrain_Manager* CTerrain_Manager::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
 {
 	CTerrain_Manager* pInstance = new CTerrain_Manager(_pDevice, _pContext);
+	pInstance->m_EngineDesc = CGameInstance::GetInstance()->Get_EngineDesc();
+
 	return pInstance;
 }
 

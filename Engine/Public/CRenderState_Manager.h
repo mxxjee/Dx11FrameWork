@@ -26,6 +26,9 @@ private:
     ComPtr<ID3D11Device>                m_pDevice;
     ComPtr<ID3D11DeviceContext>         m_pContext;
     UMap<_uint, RenderStates>            m_RenderStates;
+
+    RenderStates                           m_DefaultRenerState;
+
 };
 
 NS_END

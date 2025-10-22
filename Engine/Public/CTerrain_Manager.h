@@ -22,7 +22,7 @@ public:
     void            Update_Render(_float fTimeDelta);
 
     CTerrain_Base*          Find_Terrain(const _wstring& Key);
-    //void            PickTerrain
+    bool                    PickTerrain(const _wstring& Key);
 
 public:
     static CTerrain_Manager* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext);
@@ -34,6 +34,10 @@ private:
     ComPtr<ID3D11DeviceContext>	m_pDeviceContext = { nullptr };
 
     UMap<_wstring, CTerrain_Base*>      m_TerrainMap;
+
+
+private:
+    ENGINE_DESC             m_EngineDesc;
 };
 
 

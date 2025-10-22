@@ -56,8 +56,13 @@ void CScreenQuad::Update_Render(_float fTimeDelta)
 
 HRESULT CScreenQuad::Render()
 {
-
    
+    ComPtr<ID3D11BlendState>        m_OldpBlendState;
+    FLOAT oldBlendFactor[4];
+    UINT oldSampleMask;
+
+    m_pContext->OMGetBlendState(&m_OldpBlendState, oldBlendFactor, &oldSampleMask);
+
 
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
@@ -95,6 +100,7 @@ HRESULT CScreenQuad::Render()
     ID3D11ShaderResourceView* pNullSRVs[8] = { nullptr };
     m_pContext->PSSetShaderResources(0, 8, pNullSRVs);
 
+    m_pContext->OMSetBlendState(m_OldpBlendState.Get(), oldBlendFactor, oldSampleMask);
 
     return S_OK;
 }

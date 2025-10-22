@@ -9,12 +9,12 @@
 
 USING(MapTool)
 CMapTerrain::CMapTerrain(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CGameObject(pDevice,pContext)
+    :CTerrain_Base(pDevice,pContext)
 {
 }
 
 CMapTerrain::CMapTerrain(const CMapTerrain& Prototype)
-    : CGameObject(Prototype)
+    : CTerrain_Base(Prototype)
 {
 }
 
@@ -35,12 +35,10 @@ HRESULT CMapTerrain::Initialize_Copytype(void* pArg)
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
 
-    if (FAILED(Ready_Resources(pArg)))
-        return E_FAIL;
-
     if (FAILED(CreateRasterizerState()))
         return E_FAIL;
 
+    
     return S_OK;
 }
 
@@ -62,7 +60,7 @@ void CMapTerrain::Update_Late(_float fTimeDelta)
 void CMapTerrain::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
-    m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::PRIORITY), this);
+
 }
 
 HRESULT CMapTerrain::Render()
@@ -74,18 +72,9 @@ HRESULT CMapTerrain::Render()
     // 와이어프레임 상태로 설정
     m_pContext->RSSetState(m_pWireframeRS.Get());
 
-
-    if (FAILED(Bind_ShaderResources()))
+    if (FAILED(__super::Render()))
         return E_FAIL;
-
-    if (FAILED(m_pShader->Begin(m_passName)))
-        return E_FAIL;
-
-    if (FAILED(m_pVIBufferCom->Bind_Resource()))
-        return E_FAIL;
-
-    if (FAILED(m_pVIBufferCom->Render()))
-        return E_FAIL;
+   
 
     m_pContext->RSSetState(pOldRS.Get());
 
@@ -111,7 +100,9 @@ HRESULT CMapTerrain::CreateRasterizerState()
 
 void CMapTerrain::Update_Terrain(_float NumX, _float NumZ)
 {
-    m_pVIBufferCom->ResizeBuffer(NumX, NumZ);
+    CheckNull(m_pCustomBuffer);
+    if(m_pCustomBuffer)
+        m_pCustomBuffer->ResizeBuffer(NumX, NumZ);
 }
 
 HRESULT CMapTerrain::Ready_Components(void* pArg)
@@ -124,44 +115,14 @@ HRESULT CMapTerrain::Ready_Components(void* pArg)
     if (FAILED(__super::Add_Component(COMPONENT_TYPE::VIBUFFER_TERRAIN, pBuffer_Terrain, (CComponent**)&m_pVIBufferCom)))
         return E_FAIL;
 
-    return S_OK;
-}
-
-HRESULT CMapTerrain::Ready_Resources(void* pArg)
-{
-    CheckNullResult(pArg, E_FAIL);
-    TERRAIN_DESC* pTerrain_Desc = static_cast<TERRAIN_DESC*>(pArg);
-    m_ShaderName = pTerrain_Desc->ShaderName;
-    m_passName = pTerrain_Desc->passName;
-
-
-
-    m_pTexture = m_pGameInstance->Find_Texture(L"Terrain");
-    if (m_pTexture)
-        Safe_AddRef(m_pTexture);
-
-
-    m_pShader = m_pGameInstance->Find_Shader(pTerrain_Desc->ShaderName);
-    Safe_AddRef(m_pShader);
+    m_pCustomBuffer = dynamic_cast<CVIBuffer_CustomTerrain*>(pBuffer_Terrain);
+    if (m_pCustomBuffer)
+        Safe_AddRef(m_pCustomBuffer);
 
 
     return S_OK;
 }
 
-HRESULT CMapTerrain::Bind_ShaderResources()
-{
-  
-
-    if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
-        return E_FAIL;
-
-    if (FAILED(m_pTexture->Bind_ShaderResource(m_pShader, "texture0", 0)))
-        return E_FAIL;
-
-
-
-    return S_OK;
-}
 
 CMapTerrain* CMapTerrain::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 {
@@ -194,7 +155,5 @@ void CMapTerrain::Free()
 {
     __super::Free();
 
-    Safe_Release(m_pVIBufferCom);
-    Safe_Release(m_pTexture);
-    Safe_Release(m_pShader);
+    Safe_Release(m_pCustomBuffer);
 }

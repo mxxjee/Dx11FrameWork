@@ -17,7 +17,9 @@ public:
     virtual         HRESULT     Initialize_Prototype(const _tchar* pHeightFileMapPath);
     virtual         HRESULT     Initialize_Copytype(void* pArg) override;
 
-
+public:
+    virtual _uint           Get_NumVerticesX() { return m_iNumVerticesX; }
+    virtual _uint           Get_NumVerticesZ() { return m_iNumVerticesZ; }
 private:
     _uint       m_iNumVerticesX = 0;        //가로정점개수
     _uint       m_iNumVerticesZ = 0;        //가로정점개수

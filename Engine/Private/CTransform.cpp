@@ -110,6 +110,9 @@ _vector CTransform::Get_State(STATE eState, TransformScope eScope)
 	//부모가 지정되지 않았다면, 그냥 localMatrix리턴
 	else
 		return XMLoadFloat4x4(&m_LocalWorldMatrix).r[ENUM_TO_UINT(eState)];;
+
+	return XMLoadFloat4x4(&m_LocalWorldMatrix).r[ENUM_TO_UINT(eState)];;
+
 }
 
 void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space)
@@ -154,7 +157,7 @@ void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space)
 			vTargetAxis = vUp + vRight;
 
 			fTargetSpeed = m_fSpeedPerSec;
-			float fValue = eDir == DIRECTION::RIGHTUP ? 1 : -1;
+			float fValue = eDir == DIRECTION::RIGHTUP ? 1.f : -1.f;
 
 			fTargetSpeed *= fValue;
 
@@ -172,7 +175,7 @@ void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space)
 			vTargetAxis = vUp + vLeft;
 
 			fTargetSpeed = m_fSpeedPerSec;
-			float fValue = eDir == DIRECTION::LEFTUP ? 1 : -1;
+			float fValue = eDir == DIRECTION::LEFTUP ? 1.f : -1.f;
 
 			fTargetSpeed *= fValue;
 

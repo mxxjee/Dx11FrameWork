@@ -1,22 +1,21 @@
 #pragma once
-#include "CTerrain_Base.h"
+#include "CGameObject.h"
 
 namespace Engine
 {
-    class CVIBuffer_Terrain;
     class CShader;
     class CTexture;
 }
 
-NS_BEGIN(Client)
-class CTerrain final:
-    public CTerrain_Base
-{
 
-protected:
-    CTerrain(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
-    CTerrain(const CTerrain& Prototype);
-    virtual ~CTerrain() = default;
+NS_BEGIN(MapTool)
+class CTerrain_Highlight :
+    public CGameObject
+{
+private:
+    CTerrain_Highlight(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+    CTerrain_Highlight(const CTerrain_Highlight& Prototype);
+    virtual ~CTerrain_Highlight() = default;
 
 public:
     virtual HRESULT Initialize_Prototype(); /* 원형객체가 만들어질 때 호출되는 함수. 무거운 초기화작업.  */
@@ -27,17 +26,11 @@ public:
     virtual void        Update_Render(_float fTimeDelta) override;
     virtual HRESULT Render();
 
-
-private:
-    HRESULT Ready_Components(void* pArg);
-
-
 public:
-    static CTerrain* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+    static CTerrain_Highlight* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual CGameObject* Clone(void* pArg);
     virtual void Free() override;
 
 };
-
 NS_END
 

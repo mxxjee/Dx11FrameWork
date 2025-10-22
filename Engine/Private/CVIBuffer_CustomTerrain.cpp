@@ -11,7 +11,9 @@ CVIBuffer_CustomTerrain::CVIBuffer_CustomTerrain(const CVIBuffer_CustomTerrain& 
 	, m_iNumVerticesX{ Prototype.m_iNumVerticesX }
 	, m_iNumVerticesZ{ Prototype.m_iNumVerticesZ }
 	, m_iOffSet{Prototype.m_iOffSet}
+	
 {
+	
 }
 
 HRESULT CVIBuffer_CustomTerrain::Initialize_Prototype(_uint iNumVerticesX, _uint iNumVerticesZ, _uint Offset)
@@ -136,16 +138,19 @@ HRESULT CVIBuffer_CustomTerrain::CreateVertexBuffer_Begin(_uint VertexCountX, _u
 	*pVertices = new VTXNORTEX[m_iNumVertices];
 	ZeroMemory(*pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
 
-	for (size_t i = 0; i < m_iNumVerticesZ; ++i)
+	for (_uint i = 0; i < m_iNumVerticesZ; ++i)
 	{
-		for (size_t j = 0; j < m_iNumVerticesX; ++j)
+		for (_uint j = 0; j < m_iNumVerticesX; ++j)
 		{
 			_uint iIdx = i * m_iNumVerticesX + j;
 
 
-			(*pVertices)[iIdx].vPosition = _float3(j * m_iOffSet, 0.f, i * m_iOffSet);
+			(*pVertices)[iIdx].vPosition = _float3(j * (float)m_iOffSet, 0.f, i * (float)m_iOffSet);
 			(*pVertices)[iIdx].vTexcoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
 			(*pVertices)[iIdx].vNormal = _float3(0.f, 0.f, 0.f);
+		
+			m_pVertexPositions[iIdx] = (*pVertices)[iIdx].vPosition;
+
 		}
 	}
 
@@ -202,16 +207,18 @@ HRESULT CVIBuffer_CustomTerrain::Modify_VertexBuffer(D3D11_MAPPED_SUBRESOURCE* m
 
 
 	VTXNORTEX* pVertices = reinterpret_cast<VTXNORTEX*>(mapped->pData);
-	for (size_t i = 0; i < m_iNumVerticesZ; ++i)
+	for (_uint i = 0; i < m_iNumVerticesZ; ++i)
 	{
-		for (size_t j = 0; j < m_iNumVerticesX; ++j)
+		for (_uint j = 0; j < m_iNumVerticesX; ++j)
 		{
 			_uint iIdx = i * m_iNumVerticesX + j;
 
 
-			pVertices[iIdx].vPosition = _float3(j * m_iOffSet, 0.f, i * m_iOffSet);
+			pVertices[iIdx].vPosition = _float3(j * (float)m_iOffSet, 0.f, i * (float)m_iOffSet);
 			pVertices[iIdx].vTexcoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
 			pVertices[iIdx].vNormal = _float3(0.f, 0.f, 0.f);
+
+			m_pVertexPositions[iIdx] = (pVertices)[iIdx].vPosition;
 		}
 	}
 
@@ -230,9 +237,9 @@ HRESULT CVIBuffer_CustomTerrain::Modify_IndexBuffer(D3D11_MAPPED_SUBRESOURCE* ma
 	_uint* pIndices = reinterpret_cast<_uint*>(Indexmapped.pData);
 	_uint iNumIndices{};
 
-	for (size_t i = 0; i < m_iNumVerticesZ - 1; ++i)
+	for (_uint i = 0; i < m_iNumVerticesZ - 1; ++i)
 	{
-		for (size_t j = 0; j < m_iNumVerticesX - 1; ++j)
+		for (_uint j = 0; j < m_iNumVerticesX - 1; ++j)
 		{
 			_uint       iIndex = i * m_iNumVerticesX + j;
 
@@ -295,6 +302,13 @@ HRESULT CVIBuffer_CustomTerrain::Modify_IndexBuffer(D3D11_MAPPED_SUBRESOURCE* ma
 
 
 		}
+	}
+
+	m_iNumIndices = iNumIndices;
+
+	for (_uint i = 0; i < m_iNumIndices; ++i)
+	{
+		m_pIndices[i] = pIndices[i];
 	}
 
 	for (_uint i = 0; i < m_iNumVerticesX * m_iNumVerticesZ; ++i)
@@ -366,11 +380,13 @@ HRESULT CVIBuffer_CustomTerrain::CreateIndexBuffer_Begin(_uint VertexCountX, _ui
 
 
 	*pIndices = new _uint[m_iNumIndices];
+	m_pIndices = new _uint[m_iNumIndices];		//따로멤버에 정의
+
 	_uint       iNumIndices = {};
 
-	for (size_t i = 0; i < m_iNumVerticesZ - 1; ++i)
+	for (_uint i = 0; i < m_iNumVerticesZ - 1; ++i)
 	{
-		for (size_t j = 0; j < m_iNumVerticesX - 1; ++j)
+		for (_uint j = 0; j < m_iNumVerticesX - 1; ++j)
 		{
 			_uint       iIndex = i * m_iNumVerticesX + j;
 
@@ -434,6 +450,13 @@ HRESULT CVIBuffer_CustomTerrain::CreateIndexBuffer_Begin(_uint VertexCountX, _ui
 
 		}
 	}
+	
+
+	for (_uint i = 0; i < m_iNumIndices; ++i)
+	{
+		m_pIndices[i] = (*pIndices)[i];
+	}
+
 
 	return S_OK;
 }

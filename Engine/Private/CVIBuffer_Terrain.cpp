@@ -75,9 +75,9 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath
 	m_pVertexPositions = new _float3[m_iNumVertices];
 	ZeroMemory(m_pVertexPositions, sizeof(_float3)*m_iNumVertices);
 
-	for (size_t i = 0; i < m_iNumVerticesZ; ++i)
+	for (_uint i = 0; i < m_iNumVerticesZ; ++i)
 	{
-		for (size_t j = 0; j < m_iNumVerticesX; ++j)
+		for (_uint j = 0; j < m_iNumVerticesX; ++j)
 		{
 			_uint iIdx = i * m_iNumVerticesX + j;
 			// pPixels[iIndex]
@@ -87,9 +87,13 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath
 	//&   00000000 00000000 00000000 11111111
 
 	//    00000000 00000000 00000000 10101111
-			pVertices[iIdx].vPosition = _float3(j, (pPixels[iIdx] & 0x000000ff) / 10.0f, i);
+			pVertices[iIdx].vPosition = _float3((float)j, (pPixels[iIdx] & 0x000000ff) / 10.0f, (float)i);
 			pVertices[iIdx].vTexcoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
 			pVertices[iIdx].vNormal = _float3(0.f, 0.f, 0.f);
+
+
+			m_pVertexPositions[iIdx] = pVertices[iIdx].vPosition;
+
 		}
 	}
 
@@ -118,11 +122,14 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath
 
 	/*인덱스 정의*/
 	_uint* pIndices = new _uint[m_iNumIndices];
+	m_pIndices = new _uint[m_iNumIndices];		//따로멤버에 정의
+
+
 	_uint       iNumIndices = {};
 
-	for (size_t i = 0; i < m_iNumVerticesZ - 1; ++i)
+	for (_uint i = 0; i < m_iNumVerticesZ - 1; ++i)
 	{
-		for (size_t j = 0; j < m_iNumVerticesX - 1; ++j)
+		for (_uint j = 0; j < m_iNumVerticesX - 1; ++j)
 		{
 			_uint       iIndex = i * m_iNumVerticesX + j;
 
@@ -188,6 +195,10 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath
 	if (FAILED(m_pDevice->CreateBuffer(&IndexDesc, &IndexData, m_pIB.GetAddressOf())))
 		return E_FAIL;
 
+	for (_uint i = 0; i < m_iNumIndices; ++i)
+	{
+		m_pIndices[i] = (pIndices)[i];
+	}
 
 	Safe_Delete_Array(pIndices);
 

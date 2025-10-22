@@ -185,39 +185,13 @@ void CLevel_Logo::Render()
 
 HRESULT CLevel_Logo::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 {
-#pragma region 이전지형(일자지형)
-    //CQuad::QUAD_DESC desc;
-    //desc.ObjTag = L"Floor";
-    //desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
-    //desc.ImgPath = L"../../Resource/Terrain0.png";
-
-
-    //CTransform::TRANSFORM_DESC TransDesc = {};
-
-    //TransDesc.fRotationPerSec = 0.f;
-    //TransDesc.fSpeedPerSec = 1.f;
-    //TransDesc.vLocalPosition = { 0.f,-2.f,0.f,1.f };
-
-    //TransDesc.vLocalScale = { 30.f,30.f,1.f,1.f };
-    //TransDesc.vLocalRotation = { -90.f,0.f,0.f,1.f };
-
-
-
-    //desc.TransformDesc = &TransDesc;
-
-    //if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-    //    PROTO_OBJ_NAME(L"Floor"),
-    //    ENUM_TO_UINT(LEVEL_ID::LOGO),
-    //    strLayerTag, &desc)))
-    //    return E_FAIL;
-
-#pragma endregion
 
     /////////////////////////////////////
     CTerrain::TERRAIN_DESC pDesc;
     pDesc.TextureKey = L"Terrain";
     pDesc.ShaderName = L"VtxNorTex";
     pDesc.passName = "Default";
+    pDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
 
     CTransform::TRANSFORM_DESC TransDesc = {};
 
@@ -230,11 +204,14 @@ HRESULT CLevel_Logo::Ready_Layer_Enviroment(const _wstring& strLayerTag)
     pDesc.TransformDesc = &TransDesc;
 
 
-    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-       PROTO_OBJ_NAME(L"Terrain"),
-       ENUM_TO_UINT(LEVEL_ID::LOGO),
-       strLayerTag, &pDesc)))
-       return E_FAIL;
+    CBase* pTerrain = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Terrain"), &pDesc);
+    if (pTerrain)
+    {
+        CTerrain_Base* ppTerrain = dynamic_cast<CTerrain_Base*>(pTerrain);
+        if (ppTerrain)
+            m_pGameInstance->Register_Terrain(L"Terrain", ppTerrain);
+    }
+
 
     return S_OK;
 }

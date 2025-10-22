@@ -220,6 +220,9 @@
     <Filter Include="03.GameObject\Terrain_Base">
       <UniqueIdentifier>{024e1d82-5b8c-4fe0-8231-f73bd4088637}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\VIBuffer\VIBuffer_Triangle">
+      <UniqueIdentifier>{0d229a13-2aef-4c5a-b1f0-7bfcf60df06e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -451,6 +454,9 @@
     <ClInclude Include="..\Public\CTerrain_Base.h">
       <Filter>03.GameObject\Terrain_Base</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CVIBuffer_Triangle.h">
+      <Filter>05.Component\VIBuffer\VIBuffer_Triangle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -648,6 +654,9 @@
     <ClCompile Include="..\Private\CTerrain_Manager.cpp" />
     <ClCompile Include="..\Private\CTerrain_Base.cpp">
       <Filter>03.GameObject\Terrain_Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CVIBuffer_Triangle.cpp">
+      <Filter>05.Component\VIBuffer\VIBuffer_Triangle</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

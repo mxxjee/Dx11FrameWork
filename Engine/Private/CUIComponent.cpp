@@ -15,8 +15,8 @@ CUIComponent::CUIComponent(const CUIComponent& Prototype)
 
 HRESULT CUIComponent::Initialize_Prototype()
 {
-	m_ViewPortWidth = m_pGameInstance->Get_EngineDesc().iWinSizeX;
-	m_ViewPortHeight = m_pGameInstance->Get_EngineDesc().iWinSizeY;
+	m_ViewPortWidth = static_cast<float>(m_pGameInstance->Get_EngineDesc().iWinSizeX);
+	m_ViewPortHeight = static_cast<float>(m_pGameInstance->Get_EngineDesc().iWinSizeY);
 
     return S_OK;
 }

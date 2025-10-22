@@ -8,7 +8,7 @@ class CVIBuffer;
 class CShader;
 class CTexture;
 
-class CTerrain_Base :
+class ENGINE_DLL CTerrain_Base :
     public CGameObject
 {
 public:
@@ -23,7 +23,7 @@ public:
 
     }TERRAIN_DESC;
 
-private:
+protected:
     CTerrain_Base(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CTerrain_Base(const CTerrain_Base& Prototype);
     virtual ~CTerrain_Base() = default;
@@ -42,9 +42,12 @@ private:
     HRESULT Bind_ShaderResources();
 
 public:
+    CVIBuffer* Get_VIBufferCom() { return m_pVIBufferCom; }
+
+public:
      virtual void Free() override;
 
-private:
+protected:
     CVIBuffer* m_pVIBufferCom = { nullptr };
     CTexture* m_pTexture = { nullptr };
     CShader* m_pShader = { nullptr };

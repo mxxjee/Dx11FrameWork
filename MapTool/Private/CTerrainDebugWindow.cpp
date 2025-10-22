@@ -11,6 +11,7 @@
 
 
 
+
 USING(MapTool)
 CTerrainDebugWindow::CTerrainDebugWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CImgui_Window(pDevice, pContext)
@@ -95,8 +96,8 @@ HRESULT CTerrainDebugWindow::Create_Widgets()
 void CTerrainDebugWindow::Init_NumValues()
 {
     CheckNull(m_pMapTerrain);
-    pNumVerticesX = m_pMapTerrain->Get_VIBufferCom()->Get_NumVerticesX();
-    pNumVerticesZ = m_pMapTerrain->Get_VIBufferCom()->Get_NumVerticesZ();
+    pNumVerticesX = m_pMapTerrain->Get_CustomVIBuffer()->Get_NumVerticesX();
+    pNumVerticesZ = m_pMapTerrain->Get_CustomVIBuffer()->Get_NumVerticesZ();
 }
 
 CTerrainDebugWindow* CTerrainDebugWindow::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg)

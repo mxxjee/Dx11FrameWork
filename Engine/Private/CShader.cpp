@@ -148,7 +148,7 @@ HRESULT CShader::Load_PassesAndCreateInputLayers(const vector<D3D11_INPUT_ELEMEN
         /*UMap 채워주기*/
         ShaderPass PassInfo;
 
-        ComPtr<ID3DX11EffectPass> pPass = m_ShaderInfo.m_pTechnique->GetPassByIndex(i);
+        ComPtr<ID3DX11EffectPass> pPass = m_ShaderInfo.m_pTechnique->GetPassByIndex((UINT32)i);
         D3DX11_PASS_DESC        PassDesc = {};
         pPass->GetDesc(&PassDesc);
 
