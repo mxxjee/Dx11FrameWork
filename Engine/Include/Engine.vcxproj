@@ -176,7 +176,8 @@
     <ClInclude Include="..\Public\CLevelFactroy.h" />
     <ClInclude Include="..\Public\CLevel_Manager.h" />
     <ClInclude Include="..\Public\CImGui_Manager.h" />
-    <ClInclude Include="..\Public\CMapToolObject.h" />
+    <ClInclude Include="..\Public\CMapObject.h" />
+    <ClInclude Include="..\Public\CMapObject_Manager.h" />
     <ClInclude Include="..\Public\CMinimapCamera.h" />
     <ClInclude Include="..\Public\CMinimapQuad.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
@@ -257,7 +258,8 @@
     <ClCompile Include="..\Private\CLevelFactroy.cpp" />
     <ClCompile Include="..\Private\CLevel_Manager.cpp" />
     <ClCompile Include="..\Private\CImGui_Manager.cpp" />
-    <ClCompile Include="..\Private\CMapToolObject.cpp" />
+    <ClCompile Include="..\Private\CMapObject.cpp" />
+    <ClCompile Include="..\Private\CMapObject_Manager.cpp" />
     <ClCompile Include="..\Private\CMinimapCamera.cpp" />
     <ClCompile Include="..\Private\CMinimapQuad.cpp" />
     <ClCompile Include="..\Private\CObject_Manager.cpp" />

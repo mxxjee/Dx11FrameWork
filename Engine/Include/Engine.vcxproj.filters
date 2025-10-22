@@ -223,6 +223,12 @@
     <Filter Include="05.Component\VIBuffer\VIBuffer_Triangle">
       <UniqueIdentifier>{0d229a13-2aef-4c5a-b1f0-7bfcf60df06e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="998.MapTool\Manager">
+      <UniqueIdentifier>{b911ae94-8bb7-4aa4-95cc-d97b80fad8a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="998.MapTool\Manager\MapObjectManager">
+      <UniqueIdentifier>{5594aa14-a061-4fd6-a91f-fd32bd6aa085}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -447,15 +453,20 @@
     <ClInclude Include="..\Public\CVIBuffer_CustomTerrain.h">
       <Filter>05.Component\VIBuffer\VIBuffer_CustomTerrain</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CMapToolObject.h">
+    <ClInclude Include="..\Public\CMapObject.h">
       <Filter>998.MapTool</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CTerrain_Manager.h" />
     <ClInclude Include="..\Public\CTerrain_Base.h">
       <Filter>03.GameObject\Terrain_Base</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CVIBuffer_Triangle.h">
       <Filter>05.Component\VIBuffer\VIBuffer_Triangle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CTerrain_Manager.h">
+      <Filter>00.System\10.Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapObject_Manager.h">
+      <Filter>998.MapTool\Manager\MapObjectManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -648,15 +659,20 @@
     <ClCompile Include="..\Private\CVIBuffer_CustomTerrain.cpp">
       <Filter>05.Component\VIBuffer\VIBuffer_CustomTerrain</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CMapToolObject.cpp">
+    <ClCompile Include="..\Private\CMapObject.cpp">
       <Filter>998.MapTool</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CTerrain_Manager.cpp" />
     <ClCompile Include="..\Private\CTerrain_Base.cpp">
       <Filter>03.GameObject\Terrain_Base</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CVIBuffer_Triangle.cpp">
       <Filter>05.Component\VIBuffer\VIBuffer_Triangle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTerrain_Manager.cpp">
+      <Filter>00.System\10.Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapObject_Manager.cpp">
+      <Filter>998.MapTool\Manager\MapObjectManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

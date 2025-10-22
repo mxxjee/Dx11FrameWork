@@ -20,6 +20,9 @@
 #include "CTerrain_Manager.h"
 #include "CTerrain_Base.h"
 
+#include "CMapObject_Manager.h"
+#include "CMapObject.h"
+#include "CLayer.h"
 
 
 
@@ -105,12 +108,20 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	/*Terrain매니저*/
 	m_pTerrainManager = CTerrain_Manager::Create(*pDevice, *pContext);
 	CheckNullResult(m_pTerrainManager, E_FAIL);
+
+	m_pMapObjectManager = CMapObject_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pMapObjectManager, E_FAIL);
+
 	return S_OK;
 }
 
 void CGameInstance::Update_Priority_Engine(_float fTimedelta)
 {
 	/*지연삭제 / Scenechange 용*/
+
+	m_pMapObjectManager->Update_Priority(fTimedelta);
+
+	
 	m_pTerrainManager->Update_Priority(fTimedelta);
 	m_pLevelManager->Update_Priority(fTimedelta);
 }
@@ -120,6 +131,9 @@ void CGameInstance::Update_Engine(_float fTimedelta)
 	/*m_pObjectManager->Update_Priority(fTimedelta);
 	m_pObjectManager->Update(fTimedelta);
 	m_pObjectManager->Update_Late(fTimedelta);*/
+
+
+	m_pMapObjectManager->Update(fTimedelta);
 
 	m_pTerrainManager->Update(fTimedelta);
 	m_pLevelManager->Update(fTimedelta);
@@ -133,6 +147,11 @@ void CGameInstance::Update_Engine(_float fTimedelta)
 
 void CGameInstance::LateUpdate_Engine(float fTimedelta)
 {
+
+
+	m_pMapObjectManager->Update_Late(fTimedelta);
+
+
 	m_pTerrainManager->Update_Late(fTimedelta);
 	m_pLevelManager->Update_Late(fTimedelta);
 	LateUpdate_Cameras(fTimedelta);
@@ -142,6 +161,10 @@ void CGameInstance::LateUpdate_Engine(float fTimedelta)
 
 void CGameInstance::Update_Render(float fTimedelta)
 {
+
+	m_pMapObjectManager->Update_Render(fTimedelta);
+
+
 	m_pTerrainManager->Update_Render(fTimedelta);
 	m_pLevelManager->Update_Render(fTimedelta);
 }
@@ -584,6 +607,10 @@ function<void(void*)> CGameInstance::Get_EventFunction(const _wstring& Key)
 	CheckNullResult(m_pUIManager, nullptr);
 	return m_pUIManager->Get_EventFunction(Key);
 }
+
+#pragma endregion
+
+#pragma region Terrain_Manager
 HRESULT CGameInstance::Register_Terrain(const _wstring& Key, CTerrain_Base* pTerrain)
 {
 	CheckNullResult(m_pTerrainManager, E_FAIL);
@@ -599,9 +626,43 @@ CTerrain_Base* CGameInstance::Find_Terrain(const _wstring& Key)
 	CheckNullResult(m_pTerrainManager, nullptr);
 	return m_pTerrainManager->Find_Terrain(Key);
 }
+
 _float3* CGameInstance::PickTerrain(const _wstring& Key)
 {
 	return m_pTerrainManager->PickTerrain(Key);
+}
+
+#pragma endregion
+
+#pragma region MapObjectManager
+
+HRESULT CGameInstance::Add_MapObject_To_Layer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag, const _wstring& strLayerTag, void* pArg)
+{
+	CheckNullResult(m_pMapObjectManager, E_FAIL);
+	return m_pMapObjectManager->Add_MapObject_To_Layer(iProtoLevelIndex,strPrototypeTag, strLayerTag, pArg);
+}
+HRESULT CGameInstance::Add_MapObject_To_Layer(const _wstring& LayerTag, CMapObject* pObj)
+{
+	CheckNullResult(m_pMapObjectManager, E_FAIL);
+	return m_pMapObjectManager->Add_MapObject_To_Layer(LayerTag, pObj);
+}
+CMapObject* CGameInstance::Find_MapObject(const _wstring& LayerTag, const _wstring& ObjTag)
+{
+	CheckNullResult(m_pMapObjectManager, nullptr);
+	return m_pMapObjectManager->Find_MapObject(LayerTag, ObjTag);
+}
+void CGameInstance::Clear(const _wstring& LayerTag)
+{
+	return m_pMapObjectManager->Clear(LayerTag);
+}
+CLayer* CGameInstance::Find_MapLayer(const _wstring& LayerTag)
+{
+	CheckNullResult(m_pMapObjectManager, nullptr);
+	return m_pMapObjectManager->Find_Layer(LayerTag);
+}
+const UMap<_wstring, CLayer*>& CGameInstance::Get_Layers()
+{
+	return m_pMapObjectManager->Get_Layers();
 }
 #pragma endregion
 
@@ -621,6 +682,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pTextureManager);
 	Safe_Release(m_pUIManager);
 	Safe_Release(m_pTerrainManager);
+	Safe_Release(m_pMapObjectManager);
+
 
 	Safe_Release(m_pGraphicDev);
 

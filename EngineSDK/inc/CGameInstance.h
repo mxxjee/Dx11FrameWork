@@ -172,12 +172,12 @@ public:
 	HRESULT Bind_PipeLineInverseMatrix(class CShader* pShader, const _char * pConstant, _uint iCameraType, D3DTS eTransformMatrix);
 	HRESULT Bind_CamPosition(class CShader* pShader, const _char * pConstant, _uint iCameraType);
 
+	public:
+		const _float4x4& Get_ViewMatrix(_uint CameraType);
+		const _float4x4& Get_ProjMatrix(_uint CameraType);
+		const _float4& Get_CamPosition(_uint CameraType);;
+#pragma endregion
 
-public:
-	const _float4x4& Get_ViewMatrix(_uint CameraType);
-	const _float4x4& Get_ProjMatrix(_uint CameraType);
-	const _float4& Get_CamPosition(_uint CameraType);;
-#pragma region
 
 
 #pragma region UI_Manager
@@ -201,15 +201,27 @@ public:
 
 	UIGroup* Get_UIGroup(const _wstring Key);
 	function<void(void*)> Get_EventFunction(const _wstring & Key);
-#pragma region
+#pragma endregion
 
 
-#pragma region UI_Manager
+#pragma region Terrain_Manager
 	HRESULT						Register_Terrain(const _wstring& Key, class CTerrain_Base* pTerrain);
 	HRESULT						UnRegister_Terrain(const _wstring& Key);
 	class CTerrain_Base*		Find_Terrain(const _wstring& Key);
 	_float3*					PickTerrain(const _wstring& Key);
-#pragma region
+#pragma endregion
+
+#pragma region MapObject_Manager
+	//생성과 동시에 추가해주는 함수
+	HRESULT						Add_MapObject_To_Layer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag, const _wstring& strLayerTag, void* pArg = nullptr);
+
+	//이미생성한 것을 추가하는 함수
+	HRESULT						Add_MapObject_To_Layer(const _wstring& LayerTag, class CMapObject* pObj);
+	class CMapObject*			Find_MapObject(const _wstring& LayerTag, const _wstring& ObjTag);
+	void						Clear(const _wstring& LayerTag);
+	class						CLayer* Find_MapLayer(const _wstring& LayerTag);
+	const						UMap<_wstring, CLayer*>& Get_Layers();
+#pragma endregion
  public:
  #pragma region Default
 	 const vector<D3D11_VIEWPORT>& Get_Viewports() { return m_ViewPorts; }
@@ -233,7 +245,7 @@ public:
 	 class CUI_Manager* m_pUIManager = { nullptr };
 	 class CTerrain_Manager* m_pTerrainManager = { nullptr };
 
-
+	 class CMapObject_Manager* m_pMapObjectManager = { nullptr };
 private:
 	vector<D3D11_VIEWPORT>          m_ViewPorts;
 	tagEngine_Desc                  m_EngineDesc;

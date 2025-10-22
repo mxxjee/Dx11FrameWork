@@ -61,7 +61,7 @@ HRESULT CTerrainDebugWindow::Create_Widgets()
     CImgui_InputInt::IMGUITEXTINPUT_DESC InputIntDesc;
     InputIntDesc.Label = "NumVerticesX";
     InputIntDesc.Tag = InputIntDesc.Label;
-    InputIntDesc.m_RelativePos = ImVec2(30, 30);
+    InputIntDesc.m_RelativePos = ImVec2(10, 30);
     InputIntDesc.pData = &pNumVerticesX;
 
 
@@ -71,7 +71,7 @@ HRESULT CTerrainDebugWindow::Create_Widgets()
 
     InputIntDesc.Label = "NumVerticesZ";
     InputIntDesc.Tag = "NumVerticesZ";
-    InputIntDesc.m_RelativePos = ImVec2(30, 50);
+    InputIntDesc.m_RelativePos = ImVec2(10, 50);
     InputIntDesc.pData = &pNumVerticesZ;
 
     if (FAILED(Add_Widgets<CImgui_InputInt>(&InputIntDesc, reinterpret_cast<CImgui_Widget**>(&m_InputTexts[1]))))
@@ -81,7 +81,7 @@ HRESULT CTerrainDebugWindow::Create_Widgets()
     CImgui_Button::ImguiButton_Desc ButtonDesc;
     ButtonDesc.Tag = "Apply";
     ButtonDesc.Label = "Apply";
-    ButtonDesc.m_RelativePos = ImVec2(50, 100);
+    ButtonDesc.m_RelativePos = ImVec2(100, 100);
     ButtonDesc.callback = [this]()
     {
         m_pMapTerrain->Update_Terrain(pNumVerticesX, pNumVerticesZ);

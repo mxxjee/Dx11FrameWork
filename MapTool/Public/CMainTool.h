@@ -40,6 +40,8 @@ private:
 
 private:
 	void		CreateTerrainDebugWindow();
+	void		CreateLayerDebugWindow();
+	void		CreateObjectInspectorWindow();
 private:
 	void			Reigster_Levels();
 	HRESULT			Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType);

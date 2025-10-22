@@ -1,5 +1,5 @@
 #pragma once
-#include "CGameObject.h"
+#include "CMapObject.h"
 
 namespace Engine
 {
@@ -10,7 +10,7 @@ namespace Engine
 
 NS_BEGIN(MapTool)
 class CTerrain_Highlight :
-    public CGameObject
+    public CMapObject
 {
 public:
     typedef struct tagHighlightDesc : CGameObject::tagGameObjectDesc

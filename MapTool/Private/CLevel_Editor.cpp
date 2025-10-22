@@ -83,10 +83,9 @@ HRESULT CLevel_Editor::Create_TerrainHighlight(_float3* PickingPos)
 	triangle.v2 = PickingPos[2];
 	Desc.TriangleBuffer = &triangle;
 
-	if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+	if (FAILED(m_pGameInstance->Add_MapObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
 		PROTO_OBJ_NAME(L"Terrain_Highlight"),
-		ENUM_TO_UINT(LEVEL_ID::MAPTOOL),
-		L"Enviroment_Layer", &Desc)))
+		L"Highlight_Layer", &Desc)))
 		return E_FAIL;
 
 

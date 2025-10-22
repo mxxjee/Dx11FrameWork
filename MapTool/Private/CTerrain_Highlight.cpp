@@ -6,11 +6,11 @@
 
 USING(MapTool)
 CTerrain_Highlight::CTerrain_Highlight(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-	:CGameObject{pDevice,pContext}
+	:CMapObject{pDevice,pContext}
 {
 }
 CTerrain_Highlight::CTerrain_Highlight(const CTerrain_Highlight& Prototype)
-	:CGameObject(Prototype)
+	: CMapObject(Prototype)
 {
 }
 HRESULT CTerrain_Highlight::Initialize_Prototype()

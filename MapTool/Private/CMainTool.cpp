@@ -5,7 +5,10 @@
 
 #include "CImgui_Window.h"
 #include "CImgui_Button.h"
+
 #include "CTerrainDebugWindow.h"
+#include "CLayerDebugWindow.h"
+#include "CObjectInspectorWindow.h"
 
 #include "CGameObject.h"
 #include "CCamera_Base.h"
@@ -44,6 +47,8 @@ HRESULT CMainTool::Initialize()
 
 
     CreateTerrainDebugWindow();
+    CreateLayerDebugWindow();
+    CreateObjectInspectorWindow();
 
     Reigster_Levels();
     if (FAILED(Start_Level(Client::LEVEL_ID::MAPTOOL, LEVELCHANGETYPE::REPLACETOP)))
@@ -241,6 +246,31 @@ void CMainTool::CreateTerrainDebugWindow()
     Desc.Tag = "TerrainDebugWindow";
 
     pImGui_Manager->RegisterWindow(CTerrainDebugWindow::Create(m_pDevice, m_pContext, &Desc));
+}
+
+void CMainTool::CreateLayerDebugWindow()
+{
+
+    CImgui_Window::IMGUIWINDOW_DESC Desc;
+    Desc.m_WindowTitle = "LayerDebugWindow";
+    Desc.m_WindowPos = ImVec2(100, 100);
+    Desc.m_WindowSize = ImVec2(300, 300);
+    Desc.Tag = "LayerDebugWindow";
+
+    pImGui_Manager->RegisterWindow(CLayerDebugWindow::Create(m_pDevice, m_pContext, &Desc));
+
+}
+
+void CMainTool::CreateObjectInspectorWindow()
+{
+    CObjectInspectorWindow::IMGUIWINDOW_DESC Desc;
+    Desc.m_WindowTitle = "Inspector";
+    Desc.m_WindowPos = ImVec2(100, 100);
+    Desc.m_WindowSize = ImVec2(300, 300);
+    Desc.Tag = "Inspector";
+
+    pImGui_Manager->RegisterWindow(CObjectInspectorWindow::Create(m_pDevice, m_pContext, &Desc));
+
 }
 
 void CMainTool::Reigster_Levels()

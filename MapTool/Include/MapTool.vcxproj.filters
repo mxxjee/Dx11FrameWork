@@ -37,6 +37,12 @@
     <Filter Include="04.GameObject\TerrainHighlight">
       <UniqueIdentifier>{b41a40e6-6670-4760-a1b7-fb43ebc5e870}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.ImguiObjects\LayerDebugWindow">
+      <UniqueIdentifier>{a7ec52c1-2a2a-4bda-8e8e-8d2743f3db8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.ImguiObjects\ObjectInspectorWindow">
+      <UniqueIdentifier>{e16cc3e9-0cdb-4449-9702-468e0d17b609}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CMainTool.h">
@@ -75,6 +81,12 @@
     <ClInclude Include="..\Public\CTerrain_Highlight.h">
       <Filter>04.GameObject\TerrainHighlight</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CLayerDebugWindow.h">
+      <Filter>02.ImguiObjects\LayerDebugWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CObjectInspectorWindow.h">
+      <Filter>02.ImguiObjects\ObjectInspectorWindow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CMainTool.cpp">
@@ -100,6 +112,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CTerrain_Highlight.cpp">
       <Filter>04.GameObject\TerrainHighlight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLayerDebugWindow.cpp">
+      <Filter>02.ImguiObjects\LayerDebugWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CObjectInspectorWindow.cpp">
+      <Filter>02.ImguiObjects\ObjectInspectorWindow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
