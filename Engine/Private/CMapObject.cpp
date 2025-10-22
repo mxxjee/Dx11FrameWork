@@ -64,3 +64,8 @@ HRESULT CMapObject::Render()
 
 	return S_OK;
 }
+
+void CMapObject::Free()
+{
+	__super::Free();
+}

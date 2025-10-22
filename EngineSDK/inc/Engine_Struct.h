@@ -60,6 +60,12 @@ namespace Engine
 		_vector Dir;		//πÊ«‚
 	};
 	
+	struct Triangle
+	{
+		_float3 v0 = {};
+		_float3 v1 = {};
+		_float3 v2 = {};
+	};
 }
 
 

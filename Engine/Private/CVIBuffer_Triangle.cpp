@@ -131,4 +131,5 @@ CComponent* CVIBuffer_Triangle::Clone(void* pArg)
 void CVIBuffer_Triangle::Free()
 {
 	__super::Free(); 
+	Safe_Delete_Array(m_pVertexPositions);
 }

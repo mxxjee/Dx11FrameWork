@@ -111,6 +111,16 @@ CLayer* CMapObject_Manager::Find_Layer(const _wstring& LayerTag)
     return nullptr;
 }
 
+void CMapObject_Manager::Set_SelectObject(CMapObject* pObj)
+{
+    if (m_pSelectObject)
+        m_pSelectObject->Set_Select(false); 
+    
+    m_pSelectObject = pObj;
+    pObj->Set_Select(true);
+
+}
+
 CMapObject_Manager* CMapObject_Manager::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 {
     CMapObject_Manager* pInstance = new CMapObject_Manager(pDevice, pContext);

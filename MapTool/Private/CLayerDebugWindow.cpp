@@ -2,6 +2,11 @@
 #include "CGameInstance.h"
 #include "CLayer.h"
 #include "CMapObject.h"
+#include "CObjectInspectorWindow.h"
+#include "CImGui_Manager.h"
+
+
+
 USING(MapTool)
 CLayerDebugWindow::CLayerDebugWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CImgui_Window(pDevice, pContext),
@@ -42,7 +47,7 @@ void CLayerDebugWindow::Update()
                 {
                     if (ImGui::Selectable(WStringToUTF8(i->Get_Tag()).c_str(), pSelectObject == i))
                     {
-
+                        pGameInstance->Set_SelectObject(dynamic_cast<CMapObject*>(i));
                     }
                 }
 

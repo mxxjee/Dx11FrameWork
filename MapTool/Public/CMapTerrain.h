@@ -4,12 +4,13 @@
 namespace Engine
 {
     class CVIBuffer_CustomTerrain;
-    class CTerrain_Highlight;
     class CShader;
     class CTexture;
 }
 
 NS_BEGIN(MapTool)
+class CTerrain_Highlight;
+
 class CMapTerrain :
     public CTerrain_Base
 {
@@ -32,6 +33,12 @@ public:
 public:
     void        Update_Terrain(_uint NumX, _uint NumZ);
     CVIBuffer_CustomTerrain* Get_CustomVIBuffer() { return m_pCustomBuffer; }
+
+public:
+    void            Add_TerrainHighlights(CTerrain_Highlight* pObj);
+
+                    ///true면 중복존재, false면 중복X
+    bool            CheckDuplication(Triangle* pTriangle);
 private:
     HRESULT Ready_Components(void* pArg);
 
@@ -44,5 +51,8 @@ public:
 private:
     CVIBuffer_CustomTerrain*        m_pCustomBuffer = nullptr;
     ComPtr<ID3D11RasterizerState> m_pWireframeRS = nullptr;
+
+private:
+    list<CTerrain_Highlight*>       m_Highlights;
 };
 NS_END

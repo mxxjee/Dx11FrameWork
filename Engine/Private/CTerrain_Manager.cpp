@@ -87,7 +87,7 @@ CTerrain_Base* CTerrain_Manager::Find_Terrain(const _wstring& Key)
 	
 }
 
-_float3* CTerrain_Manager::PickTerrain(const _wstring& Key)
+Triangle* CTerrain_Manager::PickTerrain(const _wstring& Key)
 {
 	
 
@@ -123,11 +123,11 @@ _float3* CTerrain_Manager::PickTerrain(const _wstring& Key)
 
 		
 
-				PickLocalPos[0] = m_pPositions[m_pIndices[i]];
-				PickLocalPos[1] = m_pPositions[m_pIndices[i + 1]];
-				PickLocalPos[2] = m_pPositions[m_pIndices[i + 2]];
+				PickLocalTriangle.v0 = m_pPositions[m_pIndices[i]];
+				PickLocalTriangle.v1 = m_pPositions[m_pIndices[i + 1]];
+				PickLocalTriangle.v2 = m_pPositions[m_pIndices[i + 2]];
 
-				return PickLocalPos;
+				return &PickLocalTriangle;
 
 			}
 

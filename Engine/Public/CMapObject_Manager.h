@@ -33,10 +33,16 @@ public:
     CMapObject*             Find_MapObject(const _wstring& LayerTag,const _wstring& ObjTag);
     void                    Clear(const _wstring& LayerTag);
     CLayer* Find_Layer(const _wstring& LayerTag);
+    void            Set_SelectObject(CMapObject* pObj);
 
 
+public:
     //레이어리스트를 가져온다.
     const UMap<_wstring, CLayer*>&    Get_Layers() { return m_Layers; }
+    CMapObject* Get_SelectObject() { return m_pSelectObject; }
+
+public:
+   
 public:
     UMap<_wstring, CLayer*> m_Layers;
 
@@ -49,6 +55,11 @@ private:
 public:
     static CMapObject_Manager* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual void Free();
+
+private:
+    CMapObject*         m_pSelectObject = nullptr;
+
+
 };
 
 

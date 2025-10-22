@@ -6,6 +6,8 @@
 #include "CTexture.h"
 #include "Client_Defines.h"
 
+#include "CTerrain_Highlight.h"
+
 
 USING(MapTool)
 CMapTerrain::CMapTerrain(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -105,6 +107,31 @@ void CMapTerrain::Update_Terrain(_uint NumX, _uint NumZ)
         m_pCustomBuffer->ResizeBuffer(NumX, NumZ);
 }
 
+void CMapTerrain::Add_TerrainHighlights(CTerrain_Highlight* pObj)
+{
+   Safe_AddRef(pObj); 
+   m_Highlights.push_back(pObj);
+}
+
+bool CMapTerrain::CheckDuplication(Triangle* pTriangle)
+{
+    //중복비교.
+    for (auto& i : m_Highlights)
+    {
+ 
+        
+        Triangle triangle = i->Get_Triangle();
+       
+
+        if (XMVector3Equal(XMLoadFloat3(&triangle.v0), XMLoadFloat3(&pTriangle->v0)) &&
+            XMVector3Equal(XMLoadFloat3(&triangle.v1), XMLoadFloat3(&pTriangle->v1)) &&
+            XMVector3Equal(XMLoadFloat3(&triangle.v2), XMLoadFloat3(&pTriangle->v2)))
+            return true;
+
+    }
+    return false;
+}
+
 HRESULT CMapTerrain::Ready_Components(void* pArg)
 {
 
@@ -154,6 +181,9 @@ CGameObject* CMapTerrain::Clone(void* pArg)
 void CMapTerrain::Free()
 {
     __super::Free();
+
+    for (auto& i : m_Highlights)
+        Safe_Release(i);
 
     Safe_Release(m_pCustomBuffer);
 }

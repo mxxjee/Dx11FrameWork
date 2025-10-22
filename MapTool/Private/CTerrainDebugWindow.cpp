@@ -121,5 +121,7 @@ void CTerrainDebugWindow::Free()
     for (auto& i : m_InputTexts)
         Safe_Release(i);
 
+    Safe_Release(m_pButton);
+
     Safe_Release(m_pGameInstance);
 }

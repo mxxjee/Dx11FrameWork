@@ -110,9 +110,12 @@ HRESULT CTerrain_Highlight::Ready_Component(void* pArg)
 	//transformºÎÂø
 	HIGHLIGHT_DESC* pDesc = static_cast<HIGHLIGHT_DESC*>(pArg);
 
-	CComponent::COMPONENT_DESC* TriangleBufferDesc = static_cast<CComponent::COMPONENT_DESC*>(pDesc->TriangleBuffer);
+	CVIBuffer_Triangle::TRIANGLEBUFFER_DESC* TriangleBufferDesc = static_cast<CVIBuffer_Triangle::TRIANGLEBUFFER_DESC*>(pDesc->TriangleBuffer);
 	TriangleBufferDesc->pOwner = this;
 
+	m_Triangle.v0 = TriangleBufferDesc->v0;
+	m_Triangle.v1 = TriangleBufferDesc->v1;
+	m_Triangle.v2 = TriangleBufferDesc->v2;
 
 	//vibufferºÎÂø
 	CComponent* pTriangleBuffer = dynamic_cast<CVIBuffer_Triangle*>(m_pGameInstance->Clone_Prototype
@@ -120,8 +123,7 @@ HRESULT CTerrain_Highlight::Ready_Component(void* pArg)
 
 	if (FAILED(__super::Add_Component(COMPONENT_TYPE::VIBUFFER_TRIANGLE, pTriangleBuffer, reinterpret_cast<CComponent**>(&m_pTriangleBuffer))))
 		return E_FAIL;
-
-
+	
 	//transform parent¼³Á¤
 	if (m_pTransformCom)
 	{
@@ -160,6 +162,7 @@ void CTerrain_Highlight::Free()
 {
 	
 	__super::Free();
+	Safe_Release(m_pShader);
 	Safe_Release(m_pTriangleBuffer);
 
 }

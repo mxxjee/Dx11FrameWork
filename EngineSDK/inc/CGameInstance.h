@@ -208,7 +208,7 @@ public:
 	HRESULT						Register_Terrain(const _wstring& Key, class CTerrain_Base* pTerrain);
 	HRESULT						UnRegister_Terrain(const _wstring& Key);
 	class CTerrain_Base*		Find_Terrain(const _wstring& Key);
-	_float3*					PickTerrain(const _wstring& Key);
+	Triangle*				 PickTerrain(const _wstring& Key);
 #pragma endregion
 
 #pragma region MapObject_Manager
@@ -221,8 +221,11 @@ public:
 	void						Clear(const _wstring& LayerTag);
 	class						CLayer* Find_MapLayer(const _wstring& LayerTag);
 	const						UMap<_wstring, CLayer*>& Get_Layers();
+	void						Set_SelectObject(CMapObject* pObj);
+	CMapObject*					Get_SelectObject();
 #pragma endregion
- public:
+
+
  #pragma region Default
 	 const vector<D3D11_VIEWPORT>& Get_Viewports() { return m_ViewPorts; }
 	 const tagEngine_Desc& Get_EngineDesc() const { return m_EngineDesc; }

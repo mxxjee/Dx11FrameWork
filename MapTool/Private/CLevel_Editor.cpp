@@ -44,8 +44,8 @@ void CLevel_Editor::Update_Priority(_float fTimeDelta)
 void CLevel_Editor::Update(const _float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
-	_float3* pPickingPos;
-	if (pPickingPos = m_pGameInstance->PickTerrain(L"MapTerrain"))
+	Triangle* pPickingPos= m_pGameInstance->PickTerrain(L"MapTerrain");
+	if (pPickingPos!=nullptr)
 	{
 		if (FAILED(Create_TerrainHighlight(pPickingPos)))
 			return;
@@ -64,9 +64,14 @@ void CLevel_Editor::Render()
 	SetWindowText(g_hWnd, L"∏ ≈¯ æ¿ ¿‘¥œ¥Ÿ.");
 }
 
-HRESULT CLevel_Editor::Create_TerrainHighlight(_float3* PickingPos)
+HRESULT CLevel_Editor::Create_TerrainHighlight(Triangle* PickingPos)
 {
 	CheckNullResult(PickingPos,E_FAIL);
+	CMapTerrain* pMapTerrain = dynamic_cast<CMapTerrain*>(m_pGameInstance->Find_Terrain(L"MapTerrain"));
+	CheckNullResult(pMapTerrain, E_FAIL);
+
+	CheckTrueResult(pMapTerrain->CheckDuplication(PickingPos),E_FAIL);
+
 	CTerrain_Highlight::HIGHLIGHT_DESC Desc;
 	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
 	Desc.ObjTag = L"Terrain_Highlight" + to_wstring(m_iIdx);
@@ -78,15 +83,23 @@ HRESULT CLevel_Editor::Create_TerrainHighlight(_float3* PickingPos)
 	Desc.TransformDesc = &transform;
 
 	CVIBuffer_Triangle::TRIANGLEBUFFER_DESC triangle;
-	triangle.v0 = PickingPos[0];
-	triangle.v1 = PickingPos[1];
-	triangle.v2 = PickingPos[2];
+	triangle.v0 = PickingPos->v0;
+	triangle.v1 = PickingPos->v1;
+	triangle.v2 = PickingPos->v2;
+
 	Desc.TriangleBuffer = &triangle;
 
-	if (FAILED(m_pGameInstance->Add_MapObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-		PROTO_OBJ_NAME(L"Terrain_Highlight"),
-		L"Highlight_Layer", &Desc)))
-		return E_FAIL;
+	CTerrain_Highlight* pTerrain_Highlight = dynamic_cast<CTerrain_Highlight*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT,
+		ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Terrain_Highlight"), &Desc));
+
+	if (pTerrain_Highlight)
+	{
+		if (FAILED(m_pGameInstance->Add_MapObject_To_Layer(L"Highlight_Layer", pTerrain_Highlight)))
+			return E_FAIL;
+
+		
+		pMapTerrain->Add_TerrainHighlights(pTerrain_Highlight);
+	}
 
 
 

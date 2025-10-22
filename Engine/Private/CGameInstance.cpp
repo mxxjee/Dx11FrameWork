@@ -627,7 +627,7 @@ CTerrain_Base* CGameInstance::Find_Terrain(const _wstring& Key)
 	return m_pTerrainManager->Find_Terrain(Key);
 }
 
-_float3* CGameInstance::PickTerrain(const _wstring& Key)
+Triangle* CGameInstance::PickTerrain(const _wstring& Key)
 {
 	return m_pTerrainManager->PickTerrain(Key);
 }
@@ -663,6 +663,15 @@ CLayer* CGameInstance::Find_MapLayer(const _wstring& LayerTag)
 const UMap<_wstring, CLayer*>& CGameInstance::Get_Layers()
 {
 	return m_pMapObjectManager->Get_Layers();
+}
+void CGameInstance::Set_SelectObject(CMapObject* pObj)
+{
+	return m_pMapObjectManager->Set_SelectObject(pObj);
+}
+CMapObject* CGameInstance::Get_SelectObject()
+{
+	CheckNullResult(m_pMapObjectManager, nullptr);
+	return m_pMapObjectManager->Get_SelectObject();
 }
 #pragma endregion
 

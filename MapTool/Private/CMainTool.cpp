@@ -24,6 +24,7 @@ CMainTool::CMainTool()
     :pImGui_Manager(CImGui_Manager::GetInstance()),
     pGameInstance(CGameInstance::GetInstance())
 {
+    Safe_AddRef(pGameInstance);
 }
 
 HRESULT CMainTool::Initialize()
@@ -326,5 +327,8 @@ void CMainTool::Free()
     __super::Free();
 
     Safe_Release(pImGui_Manager);
-    Safe_Release(pGameInstance);
+    CInput_Manager::GetInstance()->DestroyInstance();
+    pGameInstance->Release_Engine();
+
+   Safe_Release(pGameInstance);
 }

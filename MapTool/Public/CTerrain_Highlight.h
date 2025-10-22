@@ -43,17 +43,22 @@ public:
     virtual CGameObject* Clone(void* pArg);
     virtual void Free() override;
 
+public:
+    Triangle Get_Triangle() { return m_Triangle; }
+
 private:
     HRESULT Ready_Component(void* pArg);
     HRESULT Ready_Resources(void* pArg);
     HRESULT Bind_ShaderResources();
 private:
-    CVIBuffer_Triangle*     m_pTriangleBuffer;
+    CVIBuffer_Triangle*     m_pTriangleBuffer=nullptr;
     CShader*                m_pShader = { nullptr };
 private:
     _uint                   m_eRenderGroup = 0;
-    _wstring  m_ShaderName = L"";
-    string      m_passName = "";
+    _wstring            m_ShaderName = L"";
+    string              m_passName = "";
+
+    Triangle            m_Triangle;
 };
 NS_END
 

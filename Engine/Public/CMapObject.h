@@ -31,7 +31,7 @@ public:
 
 public:
     void        Set_Select(bool _bSelect) { m_bSelected = _bSelect; }
-
+    virtual     void    Free() override;
 public:
     bool            m_bSelected = false;        //(픽킹)선택여부
     _uint                   m_eRenderGroup = 0;
