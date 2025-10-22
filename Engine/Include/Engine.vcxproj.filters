@@ -205,9 +205,6 @@
     <Filter Include="05.Component\UI">
       <UniqueIdentifier>{ee8b2c78-04cf-4621-949f-136c5c89996a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\InputText">
-      <UniqueIdentifier>{d93851e0-7f79-483b-9bc2-d1d06cb24cb9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="05.Component\VIBuffer\VIBuffer_CustomTerrain">
       <UniqueIdentifier>{7b653668-df0b-481d-b398-687fe2499b76}</UniqueIdentifier>
     </Filter>
@@ -228,6 +225,15 @@
     </Filter>
     <Filter Include="998.MapTool\Manager\MapObjectManager">
       <UniqueIdentifier>{5594aa14-a061-4fd6-a91f-fd32bd6aa085}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\Input">
+      <UniqueIdentifier>{bdb511de-4536-4c92-b2ba-a95bb60eb88e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\Input\InputInt">
+      <UniqueIdentifier>{d93851e0-7f79-483b-9bc2-d1d06cb24cb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\Input\InputFloat">
+      <UniqueIdentifier>{6019935c-14d2-42da-9894-6cceaf0beb13}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -442,7 +448,7 @@
       <Filter>00.System\09.UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CImgui_InputInt.h">
-      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\InputText</Filter>
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Input\InputInt</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CUIComponent.h">
       <Filter>05.Component\UI</Filter>
@@ -467,6 +473,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CMapObject_Manager.h">
       <Filter>998.MapTool\Manager\MapObjectManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CImgui_InputFloat.h">
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Input\InputFloat</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -648,7 +657,7 @@
       <Filter>00.System\09.UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CImgui_InputInt.cpp">
-      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\InputText</Filter>
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Input\InputInt</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CUIComponent.cpp">
       <Filter>05.Component\UI</Filter>
@@ -673,6 +682,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMapObject_Manager.cpp">
       <Filter>998.MapTool\Manager\MapObjectManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CImgui_InputFloat.cpp">
+      <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Input\InputFloat</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

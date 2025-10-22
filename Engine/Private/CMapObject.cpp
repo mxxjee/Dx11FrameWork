@@ -30,6 +30,9 @@ HRESULT CMapObject::Initialize_Copytype(void* pArg)
 	if(FAILED(__super::Initialize_Copytype(pArg)))
 		return E_FAIL;
 
+	if (FAILED(Ready_Resource(pArg)))
+		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -62,6 +65,13 @@ HRESULT CMapObject::Render()
 {
 	__super::Render();
 
+	return S_OK;
+}
+
+HRESULT CMapObject::Ready_Resource(void* pArg)
+{
+	MapObject_DESC* pDesc = static_cast<MapObject_DESC*>(pArg);
+	m_eObjType = pDesc->ObjType;
 	return S_OK;
 }
 

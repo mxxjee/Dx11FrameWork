@@ -12,7 +12,7 @@ public:
         string Label;
         function<void()> callback;
         int*            pData;
-
+        int             Step = 1;
        
     }IMGUITEXTINPUT_DESC;
 
@@ -35,6 +35,7 @@ private:
     string m_Label = "";
     function<void()> m_Callback;
     int* m_pData;
+    int m_Step = 0;
 };
 NS_END
 

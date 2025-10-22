@@ -129,6 +129,7 @@ HRESULT CTerrain_Highlight::Ready_Component(void* pArg)
 	{
 		if(pDesc->pOwner)
 			m_pTransformCom->Set_Parent(pDesc->pOwner->Get_Transform());
+
 	}
 
 	return S_OK;

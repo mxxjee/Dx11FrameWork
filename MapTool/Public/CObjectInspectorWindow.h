@@ -4,6 +4,7 @@ namespace Engine
 {
     class CGameInstance;
     class CMapObject;
+    class CImgui_InputFloat;
 }
 
 #include "CImgui_Window.h"
@@ -23,6 +24,10 @@ public:
     virtual void Update() override;
     virtual void Render() override;
 
+private:
+    HRESULT     Create_Widgets();
+
+
 public:
     static CObjectInspectorWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
     virtual void Free();
@@ -30,5 +35,10 @@ public:
 private:
     CGameInstance* pGameInstance = { nullptr };
     CMapObject* pSelectObject = { nullptr };
+
+private:
+    _float3 vScale = { 1.f,1.f,1.f, };
+    CImgui_InputFloat*      ScaleInput[3] = { nullptr };
+
 };
 NS_END
