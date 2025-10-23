@@ -161,5 +161,11 @@ namespace Engine
 		END,
 	};
 
+	enum class MapObjType
+	{
+		TILE,
+		MODEL,
+		END
+	};
 }
 #endif // Engine_Enum_h__

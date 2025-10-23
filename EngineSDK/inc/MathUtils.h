@@ -112,7 +112,7 @@ namespace MathUtils
 		return Start + (Target - Start) * t;
 	}
 
-	inline Ray CreateRay(HWND hWnd, ComPtr<ID3D11DeviceContext> m_pContext, CGameObject* pOther)
+	inline Ray CreateRay(HWND hWnd, ComPtr<ID3D11DeviceContext> m_pContext, CGameObject* pOther,_float4x4& Proj, _float4x4& View)
 	{
 		Ray newRay;
 
@@ -136,7 +136,7 @@ namespace MathUtils
 
 		// 투영 -> 뷰스페이스
 		_matrix	matProj = XMMatrixIdentity();
-		matProj=XMLoadFloat4x4(&pGameInstance->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE)));
+		matProj=XMLoadFloat4x4(&Proj);
 		matProj=XMMatrixInverse(nullptr, matProj);
 		vMousePos=XMVector3TransformCoord(vMousePos, matProj);
 
@@ -145,7 +145,7 @@ namespace MathUtils
 		_matrix	matView = {};
 
 
-		matView=XMLoadFloat4x4(&pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE)));
+		matView=XMLoadFloat4x4(&View);
 		matView=XMMatrixInverse(nullptr, matView);
 
 		_vector	vRayPos{ 0.f, 0.f, 0.f };		// 뷰 스페이스

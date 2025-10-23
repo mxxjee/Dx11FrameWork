@@ -45,9 +45,12 @@ void CLayerDebugWindow::Update()
             {
                 for (auto& i : pLayer->Get_ObjList())
                 {
-                    if (ImGui::Selectable(WStringToUTF8(i->Get_Tag()).c_str(), pSelectObject == i))
+                    bool bSelected = (pSelectObject == i); // 현재 선택된 상태인지
+                    if (ImGui::Selectable(WStringToUTF8(i->Get_Tag()).c_str(), bSelected))
                     {
-                        pGameInstance->Set_SelectObject(dynamic_cast<CMapObject*>(i));
+                        pSelectObject = dynamic_cast<CMapObject*>(i);
+                        pGameInstance->Set_SelectObject(dynamic_cast<CMapObject*>(pSelectObject));
+                        
                     }
                 }
 

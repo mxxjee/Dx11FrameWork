@@ -97,7 +97,12 @@ Triangle* CTerrain_Manager::PickTerrain(const _wstring& Key)
 	if (CInput_Manager::GetInstance()->IsMouseButtonHeld(0))
 	{
 		//레이를 생성한다.
-		Ray ray = MathUtils::CreateRay(m_EngineDesc.hWnd,m_pDeviceContext,pTerrain);
+		//freecam의 view/proj가져오기
+		_float4x4 Proj = CGameInstance::GetInstance()->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+		_float4x4 View = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+
+
+		Ray ray = MathUtils::CreateRay(m_EngineDesc.hWnd,m_pDeviceContext,pTerrain, Proj,View);
 
 		_uint TerrainX = pTerrain->Get_VIBufferCom()->Get_NumVerticesX();
 		_uint TerrainZ = pTerrain->Get_VIBufferCom()->Get_NumVerticesZ();

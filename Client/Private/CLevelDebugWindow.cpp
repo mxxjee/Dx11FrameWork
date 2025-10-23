@@ -78,7 +78,7 @@ void CLevelDebugWindow::Update()
                     {
                         const _wstring LayerTag = pair.first;
                         CLayer* pLayer = pair.second;
-                        int count = pLayer->Get_ObjList().size();
+                        int count = static_cast<int>(pLayer->Get_ObjList().size());
                         string name = WStringToUTF8(LayerTag);
 
                         char label[256];
@@ -124,7 +124,7 @@ void CLevelDebugWindow::Update()
                 CLayer* pLayer = pair.second;
 
                 string name = WStringToUTF8(LayerTag);
-                int count = pLayer->Get_ObjList().size();
+                int count = static_cast<int>(pLayer->Get_ObjList().size());
 
                 char label[256];
                 sprintf_s(label, "%s   /  count: %d##%s", name.c_str(), count, name.c_str());

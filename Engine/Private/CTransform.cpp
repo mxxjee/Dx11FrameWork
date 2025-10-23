@@ -452,9 +452,9 @@ void CTransform::Rotation(_float3 fEularDegree)
 	m_fEularDegree.y = fEularDegree.y;
 	m_fEularDegree.z = fEularDegree.z;
 
-	_vector vQuaternion = XMQuaternionRotationRollPitchYaw(XMConvertToRadians(fEularDegree.x),
-		XMConvertToRadians(fEularDegree.y),
-		XMConvertToRadians(fEularDegree.z));
+	_vector vQuaternion = XMQuaternionRotationRollPitchYaw(XMConvertToRadians(m_fEularDegree.x),
+		XMConvertToRadians(m_fEularDegree.y),
+		XMConvertToRadians(m_fEularDegree.z));
 
 	_matrix RotationMatrix = XMMatrixRotationQuaternion(vQuaternion);
 

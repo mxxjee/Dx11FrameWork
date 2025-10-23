@@ -78,6 +78,9 @@ HRESULT CLevel_Editor::Create_TerrainHighlight(Triangle* PickingPos)
 	Desc.pOwner = m_pGameInstance->Find_Terrain(L"MapTerrain");
 	Desc.ShaderName = L"VtxPosCor";
 	Desc.passName = "Default";
+	Desc.ObjType = MapObjType::TILE;
+
+
 
 	CTransform::TRANSFORM_DESC transform;
 	Desc.TransformDesc = &transform;

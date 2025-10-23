@@ -32,13 +32,21 @@ public:
     static CObjectInspectorWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
     virtual void Free();
 
+
+private:
+    void            Update_SelectObject();
+
 private:
     CGameInstance* pGameInstance = { nullptr };
     CMapObject* pSelectObject = { nullptr };
 
 private:
     _float3 vScale = { 1.f,1.f,1.f, };
-    CImgui_InputFloat*      ScaleInput[3] = { nullptr };
+    _float3 vPosition;
+    _float3 vRotation;
 
+    CImgui_InputFloat*      ScaleInput[3] = { nullptr };
+    CImgui_InputFloat*      PositionInput[3] = { nullptr };
+    CImgui_InputFloat*      RotationInput[3] = { nullptr };
 };
 NS_END

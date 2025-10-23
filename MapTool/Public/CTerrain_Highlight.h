@@ -13,7 +13,7 @@ class CTerrain_Highlight :
     public CMapObject
 {
 public:
-    typedef struct tagHighlightDesc : CGameObject::tagGameObjectDesc
+    typedef struct tagHighlightDesc : CMapObject::MapObject_DESC
     {
         _wstring  ShaderName = L"";
         string  passName = "";

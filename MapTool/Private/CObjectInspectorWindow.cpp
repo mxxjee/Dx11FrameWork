@@ -4,6 +4,8 @@
 #include "CImgui_Widget.h"
 #include "CImgui_InputInt.h"
 #include "CImgui_InputFloat.h"
+#include "MathUtils.h"
+
 
 
 USING(MapTool)
@@ -28,30 +30,10 @@ HRESULT CObjectInspectorWindow::Initialize(void* pArg)
 void CObjectInspectorWindow::Update()
 {
     ImGui::Begin(m_WindowTitle.c_str(), &m_bOpen);
-    pSelectObject = pGameInstance->Get_SelectObject();
-    if (pSelectObject)
-    {
-        ImGui::TextColored(ImVec4(1.f,0.f,0.f,1.f),"Name : %s", WStringToUTF8(pSelectObject->Get_Tag()).c_str());
-        vScale.x = pSelectObject->Get_Transform()->Get_Scale_ByFloat3().x;
-        vScale.y = pSelectObject->Get_Transform()->Get_Scale_ByFloat3().y;
-        vScale.z = pSelectObject->Get_Transform()->Get_Scale_ByFloat3().z;
+  
+    Update_SelectObject();
 
-        for (int i = 0; i < 3; ++i)
-        {
-            if(ScaleInput[i])
-                ScaleInput[i]->Set_Active(true);
-        }
-           
-    }
 
-    else
-    {
-        for (int i = 0; i < 3; ++i)
-        {
-            if (ScaleInput[i])
-                ScaleInput[i]->Set_Active(false);
-        }
-    }
     ImGui::End();
 
     __super::Update();
@@ -63,29 +45,31 @@ void CObjectInspectorWindow::Render()
 
 HRESULT CObjectInspectorWindow::Create_Widgets()
 {
-    CImgui_InputFloat::IMGUITEXTFLOAT_DESC InputIntDesc;
-    InputIntDesc.Label = "ScaleX";
-    InputIntDesc.Tag = InputIntDesc.Label;
-    InputIntDesc.m_RelativePos = ImVec2(0,80);
-    InputIntDesc.pData = &vScale.x;
+    float fScaleButtonY = 80;
+
+    CImgui_InputFloat::IMGUITEXTFLOAT_DESC InputFloatDesc;
+    InputFloatDesc.Label = "ScaleX";
+    InputFloatDesc.Tag = InputFloatDesc.Label;
+    InputFloatDesc.m_RelativePos = ImVec2(0, fScaleButtonY);
+    InputFloatDesc.pData = &vScale.x;
 
 
-    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputIntDesc, reinterpret_cast<CImgui_Widget**>(&ScaleInput[0]))))
+    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc, reinterpret_cast<CImgui_Widget**>(&ScaleInput[0]))))
         return E_FAIL;
 
 
-    InputIntDesc.Label = "ScaleY";
-    InputIntDesc.Tag = InputIntDesc.Label;
-    InputIntDesc.m_RelativePos = ImVec2(0, 100);
-    InputIntDesc.pData = &vScale.y;
-    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputIntDesc, reinterpret_cast<CImgui_Widget**>(&ScaleInput[1]))))
+    InputFloatDesc.Label = "ScaleY";
+    InputFloatDesc.Tag = InputFloatDesc.Label;
+    InputFloatDesc.m_RelativePos = ImVec2(0, fScaleButtonY+20);
+    InputFloatDesc.pData = &vScale.y;
+    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc, reinterpret_cast<CImgui_Widget**>(&ScaleInput[1]))))
         return E_FAIL;
 
-    InputIntDesc.Label = "ScaleZ";
-    InputIntDesc.Tag = InputIntDesc.Label;
-    InputIntDesc.m_RelativePos = ImVec2(0, 120);
-    InputIntDesc.pData = &vScale.z;
-    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputIntDesc, reinterpret_cast<CImgui_Widget**>(&ScaleInput[2]))))
+    InputFloatDesc.Label = "ScaleZ";
+    InputFloatDesc.Tag = InputFloatDesc.Label;
+    InputFloatDesc.m_RelativePos = ImVec2(0, fScaleButtonY+40);
+    InputFloatDesc.pData = &vScale.z;
+    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc, reinterpret_cast<CImgui_Widget**>(&ScaleInput[2]))))
         return E_FAIL;
 
     for (int i = 0; i < 3; ++i)
@@ -102,7 +86,90 @@ HRESULT CObjectInspectorWindow::Create_Widgets()
         }
            
     }
-       
+
+    /// //////////////////////POSITIONS
+    float fPosButtonY = fScaleButtonY+80;
+    CImgui_InputFloat::IMGUITEXTFLOAT_DESC InputFloatDesc_Pos;
+    InputFloatDesc_Pos.Label = "PositionX";
+    InputFloatDesc_Pos.Tag = InputFloatDesc_Pos.Label;
+    InputFloatDesc_Pos.m_RelativePos = ImVec2(0, fPosButtonY);
+    InputFloatDesc_Pos.pData = &vPosition.x;
+
+
+    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc_Pos, reinterpret_cast<CImgui_Widget**>(&PositionInput[0]))))
+        return E_FAIL;
+
+
+    InputFloatDesc_Pos.Label = "PositionY";
+    InputFloatDesc_Pos.Tag = InputFloatDesc_Pos.Label;
+    InputFloatDesc_Pos.m_RelativePos = ImVec2(0, fPosButtonY+20);
+    InputFloatDesc_Pos.pData = &vPosition.y;
+    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc_Pos, reinterpret_cast<CImgui_Widget**>(&PositionInput[1]))))
+        return E_FAIL;
+
+    InputFloatDesc_Pos.Label = "PositionZ";
+    InputFloatDesc_Pos.Tag = InputFloatDesc_Pos.Label;
+    InputFloatDesc_Pos.m_RelativePos = ImVec2(0, fPosButtonY+40);
+    InputFloatDesc_Pos.pData = &vPosition.z;
+    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc_Pos, reinterpret_cast<CImgui_Widget**>(&PositionInput[2]))))
+        return E_FAIL;
+
+    for (int i = 0; i < 3; ++i)
+    {
+        if (PositionInput[i])
+        {
+            PositionInput[i]->Set_Callback([this]()
+                {
+                    if (pSelectObject)
+                        pSelectObject->Get_Transform()->Set_State(STATE::POSITION,_float4(vPosition.x, vPosition.y, vPosition.z, 1.f));
+
+                });
+            PositionInput[i]->Set_Active(false);
+        }
+
+    }
+
+    //////////////////Rotations
+    float fRotationButtonY = fPosButtonY + 80;
+    CImgui_InputFloat::IMGUITEXTFLOAT_DESC InputFloatDesc_Rot;
+    InputFloatDesc_Rot.Label = "RotationX";
+    InputFloatDesc_Rot.Tag = InputFloatDesc_Rot.Label;
+    InputFloatDesc_Rot.m_RelativePos = ImVec2(0, fRotationButtonY);
+    InputFloatDesc_Rot.pData = &vRotation.x;
+
+
+    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc_Rot, reinterpret_cast<CImgui_Widget**>(&RotationInput[0]))))
+        return E_FAIL;
+
+
+    InputFloatDesc_Rot.Label = "RotationY";
+    InputFloatDesc_Rot.Tag = InputFloatDesc_Rot.Label;
+    InputFloatDesc_Rot.m_RelativePos = ImVec2(0, fRotationButtonY + 20);
+    InputFloatDesc_Rot.pData = &vRotation.y;
+    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc_Rot, reinterpret_cast<CImgui_Widget**>(&RotationInput[1]))))
+        return E_FAIL;
+
+    InputFloatDesc_Rot.Label = "RotationZ";
+    InputFloatDesc_Rot.Tag = InputFloatDesc_Rot.Label;
+    InputFloatDesc_Rot.m_RelativePos = ImVec2(0, fRotationButtonY + 40);
+    InputFloatDesc_Rot.pData = &vRotation.z;
+    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc_Rot, reinterpret_cast<CImgui_Widget**>(&RotationInput[2]))))
+        return E_FAIL;
+
+    for (int i = 0; i < 3; ++i)
+    {
+        if (RotationInput[i])
+        {
+            RotationInput[i]->Set_Callback([this]()
+                {
+                    if (pSelectObject)
+                        pSelectObject->Get_Transform()->Rotation(vRotation);
+
+                });
+            RotationInput[i]->Set_Active(false);
+        }
+
+    }
     return S_OK;
 }
 
@@ -128,4 +195,83 @@ void CObjectInspectorWindow::Free()
         Safe_Release(ScaleInput[i]);
 
     Safe_Release(pGameInstance);
+}
+
+void CObjectInspectorWindow::Update_SelectObject()
+{
+    /*선택한 오브젝트에 따라서 바인딩값 변경*/
+    pSelectObject = pGameInstance->Get_SelectObject();
+    if (pSelectObject)
+    {
+        CTransform* pTransform = pSelectObject->Get_Transform();
+
+        ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "Name : %s", WStringToUTF8(pSelectObject->Get_Tag()).c_str());
+
+        string Type = "";
+        switch (pSelectObject->Get_ObjType())
+        {
+        case MapObjType::TILE:
+            Type = "TILE";
+            break;
+
+        case MapObjType::MODEL:
+            Type = "MODEL";
+            break;
+
+        default:
+            break;
+        }
+        ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "Type: %s", Type.c_str());
+
+        vScale.x = pTransform->Get_Scale_ByFloat3().x;
+        vScale.y = pTransform->Get_Scale_ByFloat3().y;
+        vScale.z = pTransform->Get_Scale_ByFloat3().z;
+
+        XMStoreFloat3(&vPosition, pTransform->Get_State(STATE::POSITION));
+
+        vRotation = MathUtils::QuaternionToEuler(pTransform->Get_SRT(SRTType::ROTATION));
+
+        for (int i = 0; i < 3; ++i)
+        {
+            if (ScaleInput[i])
+                ScaleInput[i]->Set_Active(true);
+        }
+
+        for (int i = 0; i < 3; ++i)
+        {
+            if (PositionInput[i])
+                PositionInput[i]->Set_Active(true);
+        }
+
+        for (int i = 0; i < 3; ++i)
+        {
+            if (RotationInput[i])
+                RotationInput[i]->Set_Active(true);
+        }
+
+    }
+
+    else
+    {
+        //선택된게 없으면 모두비활성화.
+        for (int i = 0; i < 3; ++i)
+        {
+            if (ScaleInput[i])
+                ScaleInput[i]->Set_Active(false);
+        }
+
+        //선택된게 없으면 모두비활성화.
+        for (int i = 0; i < 3; ++i)
+        {
+            if (PositionInput[i])
+                PositionInput[i]->Set_Active(false);
+        }
+
+        //선택된게 없으면 모두비활성화.
+        for (int i = 0; i < 3; ++i)
+        {
+            if (RotationInput[i])
+                RotationInput[i]->Set_Active(false);
+        }
+    }
 }
