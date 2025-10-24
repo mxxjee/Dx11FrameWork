@@ -98,10 +98,16 @@ HRESULT CTerrain::Bind_ShaderResources()
     if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
         return E_FAIL;
 
-    if (FAILED(m_pTexture->Bind_ShaderResource(m_pShader, "g_DiffuseTexture", 0)))
+    if (FAILED(m_pTexture->Bind_ShaderResources(m_pShader, "g_DiffuseTexture")))
         return E_FAIL;
 
-
+    //마스크 텍스처 적용
+    CTexture* pMask = m_pGameInstance->Find_Texture(L"Mask");
+    if (pMask)
+    {
+        if (FAILED(pMask->Bind_ShaderResource(m_pShader, "g_MaskTexture",0)))
+            return E_FAIL;
+    }
 
     return S_OK;
 

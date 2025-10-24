@@ -268,9 +268,15 @@ HRESULT CLoader::Register_Textures()
     if (FAILED(m_pGameInstance->Register_Texture(L"Hp", pTexture)))
         return E_FAIL;
 
-    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Terrain0.png", 1);
+
+    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Ground%d.dds", 2);
     if (FAILED(m_pGameInstance->Register_Texture(L"Terrain", pTexture)))
         return E_FAIL;
+
+    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Mask.bmp", 1);
+    if (FAILED(m_pGameInstance->Register_Texture(L"Mask", pTexture)))
+        return E_FAIL;
+
 
     pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Skeleton.png", 1);
     if (FAILED(m_pGameInstance->Register_Texture(L"Skeleton", pTexture)))

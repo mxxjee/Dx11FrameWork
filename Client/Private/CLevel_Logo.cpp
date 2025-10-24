@@ -35,6 +35,10 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
 
     __super::Initialize(args);
 
+    if (FAILED(Ready_Lights()))
+        return E_FAIL;
+
+
     if (FAILED(Ready_Layer_Enviroment(L"Enviroment_Layer")))
         return E_FAIL;
 
@@ -195,6 +199,8 @@ HRESULT CLevel_Logo::Ready_Lights()
     if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
         return E_FAIL;
 
+
+    ////////////
     
     return S_OK;
 }

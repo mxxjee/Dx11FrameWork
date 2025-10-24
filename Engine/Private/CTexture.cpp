@@ -129,10 +129,10 @@ HRESULT CTexture::Load_TextureSequence(const _tchar* pTextureFilePath, _uint iNu
 		wsprintf(szFilePath, pTextureFilePath, i);
 
 		HRESULT hr = {};
-		if (!lstrcmp(szEXT, TEXT("dds")))
+		if (!lstrcmp(szEXT, TEXT(".dds")))
 			hr = CreateDDSTextureFromFile(m_pDevice.Get(), szFilePath, nullptr, pSRV.GetAddressOf());
 
-		else if (!lstrcmp(szEXT, TEXT("tga")))
+		else if (!lstrcmp(szEXT, TEXT(".tga")))
 			return E_FAIL;
 
 		else
@@ -163,10 +163,10 @@ HRESULT CTexture::Load_Texture(const _tchar* pTextureFilePath)
 	ComPtr<ID3D11ShaderResourceView> pSRV;
 
 	HRESULT hr = {};
-	if (!lstrcmp(szEXT, TEXT("dds")))
+	if (!lstrcmp(szEXT, TEXT(".dds")))
 		hr = CreateDDSTextureFromFile(m_pDevice.Get(), pTextureFilePath, nullptr, pSRV.GetAddressOf());
 
-	else if (!lstrcmp(szEXT, TEXT("tga")))
+	else if (!lstrcmp(szEXT, TEXT(".tga")))
 		return E_FAIL;
 
 	else
