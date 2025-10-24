@@ -34,6 +34,7 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
 {
 
     __super::Initialize(args);
+ 
 
     if (FAILED(Ready_Lights()))
         return E_FAIL;
@@ -196,12 +197,25 @@ HRESULT CLevel_Logo::Ready_Lights()
     LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
     LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
-    if (FAILED(m_pGameInstance->Add_Light(LightDesc)))
+    if (FAILED(m_pGameInstance->Add_Light(m_iLevelID,LightDesc)))
         return E_FAIL;
 
 
-    ////////////
-    
+    ////////////說除 薄褻貲 纔蝶お//////////
+    LIGHT_DESC       RedLight;
+    RedLight.eType = LIGHT::POINT;
+
+    RedLight.vDiffuse = _float4(1.f, 0.f, 0.f, 1.f);//說除儀
+    RedLight.fRange = 10.f;
+    RedLight.vPosition = _float4(-64.f,-5.f,-64.f,1.f);
+    RedLight.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+    RedLight.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+
+
+    if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, RedLight)))
+        return E_FAIL;
+
+
     return S_OK;
 }
 

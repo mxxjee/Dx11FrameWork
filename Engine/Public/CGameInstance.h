@@ -46,6 +46,7 @@ public:
 	void            Pop_Level();
 	class CLevel* Get_CurrentLevel();
 	const vector<CLevel*>* Get_LevelStack();
+	_uint           Get_CurrentLevelID();
 #pragma endregion
 
 #pragma region LevelFactory
@@ -231,8 +232,8 @@ public:
 #pragma endregion
 
 #pragma region Light_Manager
-	HRESULT						Add_Light(const LIGHT_DESC& LightDesc);
-	const						LIGHT_DESC* Get_LightDesc(_uint iIndex);
+	HRESULT						Add_Light(_uint iLevelID,const LIGHT_DESC& LightDesc);
+	const						LIGHT_DESC* Get_LightDesc(_uint iLevelID,_uint iIndex);
 	HRESULT					 Bind_Lights(class CShader* pShader);
 
 

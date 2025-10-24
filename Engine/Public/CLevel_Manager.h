@@ -36,6 +36,7 @@ public:
 public:
     CLevel*         Get_PrevLevel();
     CLevel*         Get_CurrentLevel();
+    _uint           Get_CurrentLevelID() {return m_iCurrentLevelID;}
     const vector<CLevel*>* Get_LevelStack() { return &m_Stack; }
     void            Pop_Level();
 

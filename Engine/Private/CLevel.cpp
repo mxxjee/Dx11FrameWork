@@ -15,6 +15,7 @@ CLevel::CLevel(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContex
 HRESULT CLevel::Initialize(LevelArgs& args)
 {
     m_eLevelArgs = args;
+    m_iLevelID = args.m_iLevelID;
 
     return S_OK;
 }

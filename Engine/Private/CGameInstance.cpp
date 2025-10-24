@@ -118,7 +118,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 
 
 	/*라이트 매니저*/
-	m_pLightManager = CLight_Manager::Create();
+	m_pLightManager = CLight_Manager::Create(EngineDesc.iNumLevels);
 	CheckNullResult(m_pLightManager, E_FAIL);
 
 	return S_OK;
@@ -239,7 +239,12 @@ CLevel* CGameInstance::Get_CurrentLevel()
 }
 const vector<CLevel*>* CGameInstance::Get_LevelStack()
 {
+	CheckNullResult(m_pLevelManager, nullptr);
 	return m_pLevelManager->Get_LevelStack();
+}
+_uint CGameInstance::Get_CurrentLevelID()
+{
+	return m_pLevelManager->Get_CurrentLevelID();
 }
 #pragma endregion
 
@@ -684,15 +689,15 @@ CMapObject* CGameInstance::Get_SelectObject()
 #pragma endregion
 
 #pragma region Light_Manager
-HRESULT CGameInstance::Add_Light(const LIGHT_DESC& LightDesc)
+HRESULT CGameInstance::Add_Light(_uint iLevelID,const LIGHT_DESC& LightDesc)
 {
 	CheckNullResult(m_pLightManager, E_FAIL);
-	return m_pLightManager->Add_Light(LightDesc);
+	return m_pLightManager->Add_Light(iLevelID,LightDesc);
 }
-const LIGHT_DESC* CGameInstance::Get_LightDesc(_uint iIndex)
+const LIGHT_DESC* CGameInstance::Get_LightDesc(_uint iLevelID,_uint iIndex)
 {
 	CheckNullResult(m_pLightManager, nullptr);
-	return m_pLightManager->Get_LightDesc(iIndex);
+	return m_pLightManager->Get_LightDesc(iLevelID,iIndex);
 }
 HRESULT CGameInstance::Bind_Lights(CShader* pShader)
 {

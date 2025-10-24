@@ -49,6 +49,7 @@ namespace Engine
 	typedef struct tagLightDesc
 	{
 		LIGHT		eType;			//라이트 종류 (방향성/포인트)
+		
 		XMFLOAT4	vDiffuse;		//Diffuse색
 		XMFLOAT4	vAmbient;		//주변광 색
 		XMFLOAT4	vSpecular;		//정반사광 색

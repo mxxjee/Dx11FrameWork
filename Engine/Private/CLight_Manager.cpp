@@ -1,15 +1,25 @@
 #include "CLight_Manager.h"
 #include "CLight.h"
 #include "CShader.h"
+#include "CGameInstance.h"
+
 
 
 CLight_Manager::CLight_Manager()
 {
 }
 
-const LIGHT_DESC* CLight_Manager::Get_LightDesc(_uint iIndex)
+HRESULT CLight_Manager::Initialize(_uint iLevelNum)
 {
-    auto iter = m_Lights.begin();
+    m_DirectionalLights.resize(iLevelNum);
+    m_Lights.resize(iLevelNum);
+
+    return S_OK;
+}
+
+const LIGHT_DESC* CLight_Manager::Get_LightDesc(_uint iLevelID, _uint iIndex)
+{
+    auto iter = m_Lights[iLevelID].begin();
     for (_uint i = 0; i < iIndex; ++i)
         ++iter;
 
@@ -21,51 +31,137 @@ const LIGHT_DESC* CLight_Manager::Get_LightDesc(_uint iIndex)
 HRESULT CLight_Manager::Bind_Lights(CShader* pShader)
 {  
 
+    size_t LightSize = m_Lights.size();
+    _uint  LevelID = CGameInstance::GetInstance()->Get_CurrentLevelID();
 
-    for (auto& i : m_Lights)
-    {   
-        const LIGHT_DESC* pLightDesc = i->Get_LightDesc();
+    //전역조명 바인딩.
+    const LIGHT_DESC* pDirectional_LightDesc = m_DirectionalLights[LevelID]->Get_LightDesc();
+    Bind_Directional_Light(pShader, pDirectional_LightDesc);
 
-        if(FAILED(pShader->Bind_RawValue("g_vLightDirection", &pLightDesc->vDirection,sizeof(_float4))))
-            return E_FAIL;
+    //점 조명들 바인딩.
+    //현재 씬에있는 조명데이터 싹가져와
+    //활성화 되어있는 애들만 셰이더에 보내자.
+    
+    m_LightValues.clear();
 
-        if (FAILED(pShader->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
-            return E_FAIL;
+    for (auto& pLight : m_Lights[LevelID])
+    {
+        
+        const LIGHT_DESC* desc = pLight->Get_LightDesc();
+        if (!pLight || !pLight->IsActive())
+            continue;
 
-        if (FAILED(pShader->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
-            return E_FAIL;
-
-        if (FAILED(pShader->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
-            return E_FAIL;
-
+        
+        Add_LightValue(desc);
+        m_LightValues.m_LightsNum += 1;
 
     }
 
+    Bind_Point_Light(pShader);
     return S_OK;
 }
 
 
 
-HRESULT CLight_Manager::Add_Light(const LIGHT_DESC& LightDesc)
+HRESULT CLight_Manager::Add_Light(_uint iLevelID, const LIGHT_DESC& LightDesc)
 {
+    if (iLevelID >= m_Lights.size())
+        return E_FAIL;
+
     CLight* pLight = CLight::Create(LightDesc);
     CheckNullResult(pLight, E_FAIL);
+    
 
-    m_Lights.push_back(pLight);
+
+    if (LightDesc.eType == LIGHT::POINT)
+        m_Lights[iLevelID].push_back(pLight);
+      
+
+    else
+        m_DirectionalLights[iLevelID]=pLight;
+
     return S_OK;
 }
 
-CLight_Manager* CLight_Manager::Create()
+void CLight_Manager::Add_LightValue(const LIGHT_DESC* LightDesc)
 {
-    return new CLight_Manager();
+    m_LightValues.m_LightPositions.push_back(LightDesc->vPosition);
+    m_LightValues.m_LightRanges.push_back(LightDesc->fRange);
+
+    m_LightValues.m_LightDiffuses.push_back(LightDesc->vDiffuse);
+    m_LightValues.m_LightAmbients.push_back(LightDesc->vAmbient);
+    m_LightValues.m_LightSpeculars.push_back(LightDesc->vSpecular);
+ 
+}
+
+HRESULT CLight_Manager::Bind_Directional_Light(class CShader* pShader,const LIGHT_DESC* pLightDesc)
+{
+
+    //전역 조명 
+    if (FAILED(pShader->Bind_RawValue("g_vLightDirection", &pLightDesc->vDirection, sizeof(_float4))))
+        return E_FAIL;
+
+    if (FAILED(pShader->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
+        return E_FAIL;
+
+    if (FAILED(pShader->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
+        return E_FAIL;
+
+    if (FAILED(pShader->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CLight_Manager::Bind_Point_Light(class CShader* pShader)
+{
+
+    //포인트 라이트 조명 
+    if (FAILED(pShader->Bind_RawValue("g_PointLightNum", &m_LightValues.m_LightsNum, sizeof(int))))
+        return E_FAIL;
+
+    if (FAILED(pShader->Bind_RawValue("g_vPL_Position", &m_LightValues.m_LightPositions.front(), sizeof(_float4)*(_uint)m_LightValues.m_LightPositions.size())))
+        return E_FAIL;
+
+    if (FAILED(pShader->Bind_RawValue("g_vPL_Diffuse", &m_LightValues.m_LightDiffuses.front(), sizeof(_float4) * (_uint)m_LightValues.m_LightDiffuses.size())))
+        return E_FAIL;
+
+    if (FAILED(pShader->Bind_RawValue("g_vPL_Ambient", &m_LightValues.m_LightAmbients.front(), sizeof(_float4) * (_uint)m_LightValues.m_LightAmbients.size())))
+        return E_FAIL;
+
+    if (FAILED(pShader->Bind_RawValue("g_vPL_Specular", &m_LightValues.m_LightSpeculars.front(), sizeof(_float4) * (_uint)m_LightValues.m_LightSpeculars.size())))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+CLight_Manager* CLight_Manager::Create(_uint iLevelNum)
+{
+    CLight_Manager* pInstance = new CLight_Manager;
+    if (FAILED(pInstance->Initialize(iLevelNum)))
+    {
+        MSG_BOX("Failed to Create : CTexture_Manager");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
 }
 
 void CLight_Manager::Free()
 {
     __super::Free();
 
-    for (auto& i : m_Lights)
-        Safe_Release(i);
+    for (int i = 0; i < m_DirectionalLights.size(); ++i)
+        Safe_Release(m_DirectionalLights[i]);
 
-    m_Lights.clear();
+
+    for (int i = 0; i < m_Lights.size(); ++i)
+    {
+        for (auto& pLight : m_Lights[i])
+            Safe_Release(pLight);
+
+        m_Lights[i].clear();
+    }
+
+
 }
