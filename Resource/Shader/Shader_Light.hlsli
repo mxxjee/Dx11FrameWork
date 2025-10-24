@@ -11,6 +11,7 @@ vector g_vLightSpecular = vector(1.f, 1.f, 1.f, 1.f);
 /////////점조명 관련////////////
 int g_PointLightNum; //점 조명의 개수
 vector g_vPL_Position[MAX_POINT_LIGHTS];
+float g_vPL_Range[MAX_POINT_LIGHTS];
 vector g_vPL_Diffuse[MAX_POINT_LIGHTS];
 vector g_vPL_Ambient[MAX_POINT_LIGHTS];
 vector g_vPL_Specular[MAX_POINT_LIGHTS];
@@ -30,4 +31,13 @@ float Compute_Specular(float4 LightDirection, float4 Normal, float4 WorldPos, fl
     
     return fSpecular;
     
+}
+
+
+float Compute_Attenuation(float Range, float Distance)
+{
+    //거리가 멀수록 0에 가깝게.
+    return saturate(1.f - (Distance / Range));
+    
+
 }

@@ -46,10 +46,11 @@ HRESULT CLight_Manager::Bind_Lights(CShader* pShader)
 
     for (auto& pLight : m_Lights[LevelID])
     {
-        
-        const LIGHT_DESC* desc = pLight->Get_LightDesc();
         if (!pLight || !pLight->IsActive())
             continue;
+
+        const LIGHT_DESC* desc = pLight->Get_LightDesc();
+    
 
         
         Add_LightValue(desc);
@@ -119,6 +120,10 @@ HRESULT CLight_Manager::Bind_Point_Light(class CShader* pShader)
     //포인트 라이트 조명 
     if (FAILED(pShader->Bind_RawValue("g_PointLightNum", &m_LightValues.m_LightsNum, sizeof(int))))
         return E_FAIL;
+
+    if (FAILED(pShader->Bind_RawValue("g_vPL_Range", &m_LightValues.m_LightRanges, sizeof(_float4) * (_uint)m_LightValues.m_LightRanges.size())))
+        return E_FAIL;
+
 
     if (FAILED(pShader->Bind_RawValue("g_vPL_Position", &m_LightValues.m_LightPositions.front(), sizeof(_float4)*(_uint)m_LightValues.m_LightPositions.size())))
         return E_FAIL;

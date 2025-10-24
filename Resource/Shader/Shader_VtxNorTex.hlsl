@@ -71,6 +71,8 @@ VS_OUT VS_MAIN(VS_IN In)
 //이후 RS단계에서 GPU가 내부적으로 w나누기 수행
 float4 PS_MAIN(PS_IN Input) : SV_Target0
 {
+    float4 fDiffuseColor, fAmbientColor, fSpeculrColor;
+    
     //////////////////Direction_Light에 대한 연산///////////////////////////////////
     //DiffuseColor
     float4 TmpColor = g_DiffuseTexture[0].Sample(sampler0, Input.vTexcoord * 5.f);
@@ -80,7 +82,7 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
     float4 MaskColor = g_MaskTexture.Sample(sampler0, Input.vTexcoord);
     
     //Maskmap의 흰색부분 = 풀, 검은색 부분 = 흙
-    float4 DiffuseColor = SrvColor * MaskColor + TmpColor * (1 - MaskColor);
+    float4 MtrlDiffuseColor = SrvColor * MaskColor + TmpColor * (1 - MaskColor);
     
     
     //음영값 (diffuse 세기)
@@ -90,20 +92,39 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
     //specular 세기 = 반사벡터를 구해서  카메라 시야벡터 * (-1)와 내적
     float fSpecular = Compute_Specular(g_vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition);
     
+ 
+    fDiffuseColor = g_vLightDiffuse * MtrlDiffuseColor
+                      * saturate(fShade + (g_vLightAmbient * g_vMaterialAmbient));
+    fAmbientColor = float4(0, 0, 0, 0);
 
-    float4 ResultColor= g_vLightDiffuse * DiffuseColor * //diffuse속성끼리 계산
-    saturate(fShade + (g_vLightAmbient * g_vMaterialAmbient)) + //음영 + 최소음영 
-     (g_vLightSpecular * g_vMaterialSpecular) * fSpecular; //specular계산
+    fSpeculrColor = g_vLightSpecular * g_vMaterialSpecular * fSpecular;
+
+    
+
     
     ////////////////////점 조명에 대한 연산/////////////////////
-    for (int i = 0; i < g_PointLightNum;++i)
+    for (int i = 0; i < g_PointLightNum; ++i)
     {
+        //1.어디방향으로 빛이오는지 계산하자.
+        vector vLightDirection = g_vPL_Position[i] - Input.vWorldPos;
+        float Distance = length(vLightDirection);
         
+        float fShade = Compute_Shade(vLightDirection, Input.vNormal);
+        float fAttenuation = Compute_Attenuation(g_vPL_Range[i], Distance);
+        float fSpecular = Compute_Specular(vLightDirection,Input.vNormal, Input.vWorldPos, g_CamPosition);
+        
+        
+        ///이거 이상함.
+        fDiffuseColor += g_vPL_Diffuse[i] * MtrlDiffuseColor * fShade * fAttenuation * saturate(fShade + (g_vPL_Ambient[i] * g_vMaterialAmbient));
+        fSpeculrColor += g_vPL_Specular[i] * g_vMaterialSpecular * fSpecular;
+        
+
     }
   
     
     
-    return ResultColor;
+    float4 ResultColor = fDiffuseColor + fAmbientColor + fSpeculrColor;
+    return saturate(ResultColor);
 
 }
 

@@ -206,7 +206,7 @@ HRESULT CLevel_Logo::Ready_Lights()
     RedLight.eType = LIGHT::POINT;
 
     RedLight.vDiffuse = _float4(1.f, 0.f, 0.f, 1.f);//»¡°£»ö
-    RedLight.fRange = 10.f;
+    RedLight.fRange =1.f;
     RedLight.vPosition = _float4(-64.f,-5.f,-64.f,1.f);
     RedLight.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
     RedLight.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
