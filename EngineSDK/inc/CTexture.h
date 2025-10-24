@@ -20,6 +20,7 @@ public:
 
 				//srv를 바로  셰이더로 바인드
 	HRESULT			Bind_ShaderResource(class CShader* pShader, const _char* pConstantName, _uint iTextureIndex);
+	HRESULT			Bind_ShaderResources(class CShader* pShader, const _char* pConstantName);
 
 public:
 	virtual HRESULT Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNumTextures);
@@ -47,7 +48,7 @@ private:
 private:
 	_uint											m_iNumTextures=1;
 	vector<ComPtr<ID3D11ShaderResourceView>>			m_Textures;
-
+	vector<ID3D11ShaderResourceView*>					m_Raws;
 
 };
 

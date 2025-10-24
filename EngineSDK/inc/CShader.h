@@ -85,7 +85,10 @@ public:
 	HRESULT		Bind_Matrix(const string& Variable, const _float4x4& mat);
 	HRESULT		Bind_Vector(const string& Variable, const _float4& vector);
 	HRESULT		Bind_Float(const string& Variable, const _float fValue);
+
 	HRESULT		Bind_SRV(const string& Variable, ComPtr<ID3D11ShaderResourceView>& resourc);
+	HRESULT		Bind_SRVs(const _char* Variable, ID3D11ShaderResourceView** ppSRVs, _uint iNumSRVs);
+	
 	HRESULT		Bind_Sampler(const string& Variable, ComPtr< ID3D11SamplerState> sampler, UINT iIdx = 0);
 
 

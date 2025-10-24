@@ -14,7 +14,7 @@ vector g_vLightAmbient = vector(1.f, 1.f, 1.f, 1.f);
 vector g_vLightSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
 
-Texture2D g_DiffuseTexture;
+Texture2D g_DiffuseTexture[2];
 vector g_vMaterialAmbient = vector(0.3f, 0.3f, 0.3f, 1.f);
 vector g_vMaterialSpecular = vector(1.f, 1.f, 1.f, 1.f);
 

@@ -63,7 +63,17 @@ void CTerrain::Update_Render(_float fTimeDelta)
 
 HRESULT CTerrain::Render()
 {
-    if (FAILED(__super::Render()))
+
+    if (FAILED(Bind_ShaderResources()))
+        return E_FAIL;
+
+    if (FAILED(m_pShader->Begin(m_passName)))
+        return E_FAIL;
+
+    if (FAILED(m_pVIBufferCom->Bind_Resource()))
+        return E_FAIL;
+
+    if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
 
 
@@ -81,6 +91,20 @@ HRESULT CTerrain::Ready_Components(void* pArg)
         return E_FAIL;
 
     return S_OK;
+}
+
+HRESULT CTerrain::Bind_ShaderResources()
+{
+    if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
+        return E_FAIL;
+
+    if (FAILED(m_pTexture->Bind_ShaderResource(m_pShader, "g_DiffuseTexture", 0)))
+        return E_FAIL;
+
+
+
+    return S_OK;
+
 }
 
 

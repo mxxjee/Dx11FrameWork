@@ -29,8 +29,8 @@ public:
 
 
 private:
-    HRESULT Ready_Components(void* pArg);
-
+    HRESULT     Ready_Components(void* pArg);
+    HRESULT     Bind_ShaderResources();
 
 public:
     static CTerrain* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);

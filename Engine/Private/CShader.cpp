@@ -221,6 +221,19 @@ HRESULT CShader::Bind_SRV(const string& Variable, ComPtr<ID3D11ShaderResourceVie
     
 }
 
+HRESULT CShader::Bind_SRVs(const _char* Variable, ID3D11ShaderResourceView** ppSRVs, _uint iNumSRVs)
+{
+    ID3DX11EffectVariable* pVariable = m_ShaderInfo.m_pEffect->GetVariableByName(Variable);
+    if (nullptr == pVariable)
+        return E_FAIL;
+
+    ID3DX11EffectShaderResourceVariable* pSRVVariable = pVariable->AsShaderResource();
+    if (nullptr == pSRVVariable)
+        return E_FAIL;
+
+    return pSRVVariable->SetResourceArray(ppSRVs, 0, iNumSRVs);
+}
+
 
 HRESULT CShader::Bind_Sampler(const string& Variable, ComPtr<ID3D11SamplerState> sampler,UINT iIdx)
 {

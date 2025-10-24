@@ -54,7 +54,7 @@ HRESULT CTexture::Add_TextureToSRV(ComPtr<ID3D11Texture2D> pTex)
 		return hr;
 
 	// 벡터에 저장
-	m_Textures.push_back(pSRV.Get());
+	m_Textures.push_back(pSRV);
 
 	m_iNumTextures = static_cast<_uint>(m_Textures.size());
 	return S_OK;
@@ -78,6 +78,11 @@ HRESULT CTexture::Bind_ShaderResource(CShader* pShader, const _char* pConstantNa
 	return pShader->Bind_SRV(pConstantName, m_Textures[iTextureIndex]);
 
 	return S_OK;
+}
+
+HRESULT CTexture::Bind_ShaderResources(CShader* pShader, const _char* pConstantName)
+{
+	return pShader->Bind_SRVs(pConstantName,&m_Raws.front(),m_iNumTextures);
 }
 
 HRESULT CTexture::Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNumTextures)
@@ -138,6 +143,7 @@ HRESULT CTexture::Load_TextureSequence(const _tchar* pTextureFilePath, _uint iNu
 			return E_FAIL;
 
 		m_Textures.push_back(pSRV);
+		m_Raws.push_back(pSRV.Get());
 	}
 
 	return S_OK;
@@ -171,6 +177,7 @@ HRESULT CTexture::Load_Texture(const _tchar* pTextureFilePath)
 		return E_FAIL;
 
 	m_Textures.push_back(pSRV);
+	m_Raws.push_back(pSRV.Get());
 	
 	return S_OK;
 }
