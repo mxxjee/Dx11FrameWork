@@ -68,10 +68,9 @@ void CRenderer::Render_Group(_uint eType)
 void CRenderer::BindRenderState(_uint eGroup)
 {
 	RenderStates Renderstate = CGameInstance::GetInstance()->Get_RenderStates(eGroup);
-
-
+	
+	CGameInstance::GetInstance()->Bind_SamplerState(eGroup);
 	m_pContext->RSSetState(Renderstate._rasterizerState.Get());
-	m_pContext->PSSetSamplers(0, 1, Renderstate._samplerState.GetAddressOf());
 	m_pContext->OMSetBlendState(Renderstate._BlendState.Get(), nullptr, 0xFFFFFFFF);
 	m_pContext->OMSetDepthStencilState(Renderstate._DepthStencilState.Get(), 0);
 

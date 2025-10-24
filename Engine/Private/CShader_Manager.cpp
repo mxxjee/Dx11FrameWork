@@ -69,6 +69,34 @@ HRESULT CShader_Manager::Bind_GlobalPipelineData(_uint CameraType)
 	return S_OK;
 }
 
+HRESULT CShader_Manager::Bind_GlobalLightData()
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+
+	for (auto& pair : m_mapShader)
+	{
+		if (pair.second)
+		{
+			pGameInstance->Bind_Lights(pair.second);
+		}
+	}
+	return S_OK;
+}
+
+HRESULT CShader_Manager::Bind_SamplerState(_uint iRenderGroup)
+{
+	CGameInstance* pGameInstance = CGameInstance::GetInstance();
+
+	for (auto& pair : m_mapShader)
+	{
+		if (pair.second)
+		{
+			pGameInstance->Bind_SamplerState(pair.second,iRenderGroup);
+		}
+	}
+	return S_OK;
+}
+
 CShader* CShader_Manager::Find_Shader(const _wstring& Tag)
 {
 	auto iter = m_mapShader.find(Tag);

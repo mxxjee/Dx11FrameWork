@@ -137,7 +137,10 @@ public:
 
 	 //모든 셰이더파일들에게 전역변수들을 바인딩(카메라 뷰관련,, 수치등)
 	 HRESULT         Bind_GlobalPipelineData(_uint CameraType);
+	 HRESULT		 Bind_GlobalLightData();
 
+	 //모든 셰이더파일들에게 Sampler값 바인딩
+	 HRESULT         Bind_SamplerState(_uint iRenderGroup);
  #pragma endregion
 
 
@@ -151,6 +154,8 @@ public:
 #pragma region RenderState_Manager
 	 HRESULT        Register_RenderStates(_uint iRenderGroup, const RenderStates & States);
 	 const RenderStates& Get_RenderStates(_uint iRenderGroup);
+	 HRESULT             Bind_SamplerState(class CShader* pShader, _uint iRenderGroup);
+
 #pragma endregion
 
 
@@ -225,11 +230,21 @@ public:
 	CMapObject*					Get_SelectObject();
 #pragma endregion
 
+#pragma region Light_Manager
+	HRESULT						Add_Light(const LIGHT_DESC& LightDesc);
+	const						LIGHT_DESC* Get_LightDesc(_uint iIndex);
+	HRESULT					 Bind_Lights(class CShader* pShader);
+
+
+#pragma endregion
+
 
  #pragma region Default
 	 const vector<D3D11_VIEWPORT>& Get_Viewports() { return m_ViewPorts; }
 	 const tagEngine_Desc& Get_EngineDesc() const { return m_EngineDesc; }
  #pragma endregion
+
+
  private:
 	 class CLevel_Manager* m_pLevelManager = { nullptr };
 	 class CTimer_Manager* m_pTimerManager = { nullptr };
@@ -249,6 +264,9 @@ public:
 	 class CTerrain_Manager* m_pTerrainManager = { nullptr };
 
 	 class CMapObject_Manager* m_pMapObjectManager = { nullptr };
+
+	 class CLight_Manager* m_pLightManager = { nullptr };
+
 private:
 	vector<D3D11_VIEWPORT>          m_ViewPorts;
 	tagEngine_Desc                  m_EngineDesc;

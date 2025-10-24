@@ -177,6 +177,8 @@
     <ClInclude Include="..\Public\CLevelFactroy.h" />
     <ClInclude Include="..\Public\CLevel_Manager.h" />
     <ClInclude Include="..\Public\CImGui_Manager.h" />
+    <ClInclude Include="..\Public\CLight.h" />
+    <ClInclude Include="..\Public\CLight_Manager.h" />
     <ClInclude Include="..\Public\CMapObject.h" />
     <ClInclude Include="..\Public\CMapObject_Manager.h" />
     <ClInclude Include="..\Public\CMinimapCamera.h" />
@@ -260,6 +262,8 @@
     <ClCompile Include="..\Private\CLevelFactroy.cpp" />
     <ClCompile Include="..\Private\CLevel_Manager.cpp" />
     <ClCompile Include="..\Private\CImGui_Manager.cpp" />
+    <ClCompile Include="..\Private\CLight.cpp" />
+    <ClCompile Include="..\Private\CLight_Manager.cpp" />
     <ClCompile Include="..\Private\CMapObject.cpp" />
     <ClCompile Include="..\Private\CMapObject_Manager.cpp" />
     <ClCompile Include="..\Private\CMinimapCamera.cpp" />

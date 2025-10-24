@@ -167,5 +167,10 @@ namespace Engine
 		MODEL,
 		END
 	};
+
+	enum class LIGHT
+	{
+		DIRECTIONAL,POINT,END
+	};
 }
 #endif // Engine_Enum_h__

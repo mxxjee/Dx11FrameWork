@@ -1,4 +1,5 @@
 #include "CRenderState_Manager.h"
+#include "CShader.h"
 
 CRenderState_Manager::CRenderState_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
     :m_pDevice(_pDevice), m_pContext(_pContext)
@@ -44,6 +45,14 @@ const RenderStates& CRenderState_Manager::Get_RenderStates(_uint iRenderGroup)
     return m_DefaultRenerState;
 
 
+}
+
+HRESULT CRenderState_Manager::Bind_SamplerState(CShader* pShader, _uint iRenderGroup)
+{
+    if (FAILED(pShader->Bind_Sampler("sampler0", m_RenderStates[iRenderGroup]._samplerState, 0)))
+        return E_FAIL;
+
+    return S_OK;
 }
 
 CRenderState_Manager* CRenderState_Manager::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)

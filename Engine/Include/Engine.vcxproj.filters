@@ -235,6 +235,12 @@
     <Filter Include="999.Imgui\Objects\CImgui_Base\CImgui_Widget\Input\InputFloat">
       <UniqueIdentifier>{6019935c-14d2-42da-9894-6cceaf0beb13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\11.Light">
+      <UniqueIdentifier>{3b631d56-be66-4fba-a0d2-4c4d8a1b4231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\11.Light\Light">
+      <UniqueIdentifier>{2389544e-5517-48f9-9ac8-66999b955d4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -477,6 +483,10 @@
     <ClInclude Include="..\Public\CImgui_InputFloat.h">
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Input\InputFloat</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CLight.h">
+      <Filter>00.System\11.Light\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLight_Manager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -686,5 +696,9 @@
     <ClCompile Include="..\Private\CImgui_InputFloat.cpp">
       <Filter>999.Imgui\Objects\CImgui_Base\CImgui_Widget\Input\InputFloat</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CLight.cpp">
+      <Filter>00.System\11.Light\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLight_Manager.cpp" />
   </ItemGroup>
 </Project>

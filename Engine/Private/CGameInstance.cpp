@@ -21,6 +21,8 @@
 #include "CTerrain_Base.h"
 
 #include "CMapObject_Manager.h"
+#include "CLight_Manager.h"
+
 #include "CMapObject.h"
 #include "CLayer.h"
 
@@ -107,10 +109,17 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 
 	/*Terrain매니저*/
 	m_pTerrainManager = CTerrain_Manager::Create(*pDevice, *pContext);
+	
 	CheckNullResult(m_pTerrainManager, E_FAIL);
 
+	/*맵툴오브젝트 매니저 */
 	m_pMapObjectManager = CMapObject_Manager::Create(*pDevice, *pContext);
 	CheckNullResult(m_pMapObjectManager, E_FAIL);
+
+
+	/*라이트 매니저*/
+	m_pLightManager = CLight_Manager::Create();
+	CheckNullResult(m_pLightManager, E_FAIL);
 
 	return S_OK;
 }
@@ -421,26 +430,6 @@ CCamera_Base* CGameInstance::Get_MainCamera()
 	return m_pCameraManager->Get_MainCamera();
 }
 
-//const _float4x4& CGameInstance::Get_Main_ViewMatrix()
-//{
-//	return m_pCameraManager->Get_Main_ViewMatrix();
-//}
-//
-//const _float4x4& CGameInstance::Get_Main_ProjMatrix()
-//{
-//	return m_pCameraManager->Get_Main_ProjMatrix();
-//}
-
-//_matrix CGameInstance::Get_Main_MulViewProjMatrix()
-//{
-//	return m_pCameraManager->Get_Main_MulViewProjMatrix();
-//}
-
-//void CGameInstance::Bind_Main_ViewProjMatrix() const
-//{
-//	return m_pCameraManager->Bind_Main_ViewProjMatrix();
-//}
-
 CShader* CGameInstance::Get_RenderShader()
 {
 	return m_pCameraManager->Get_RenderShader();
@@ -479,6 +468,18 @@ HRESULT CGameInstance::Bind_GlobalPipelineData(_uint CameraType)
 	return m_pShaderManager->Bind_GlobalPipelineData(CameraType);
 }
 
+HRESULT CGameInstance::Bind_GlobalLightData()
+{
+	CheckNullResult(m_pShaderManager, E_FAIL);
+	return m_pShaderManager->Bind_GlobalLightData();
+}
+
+HRESULT CGameInstance::Bind_SamplerState(_uint iRenderGroup)
+{
+	CheckNullResult(m_pShaderManager, E_FAIL);
+	return m_pShaderManager->Bind_SamplerState(iRenderGroup);
+}
+
 #pragma endregion
 
 #pragma region ScreenShotManager
@@ -511,6 +512,12 @@ HRESULT CGameInstance::Register_RenderStates(_uint iRenderGroup, const RenderSta
 const RenderStates& CGameInstance::Get_RenderStates(_uint iRenderGroup)
 {
 	return m_pRenderStateManager->Get_RenderStates(iRenderGroup);
+}
+
+HRESULT CGameInstance::Bind_SamplerState(CShader* pShader, _uint iRenderGroup)
+{
+	CheckNullResult(m_pRenderStateManager, E_FAIL);
+	return m_pRenderStateManager->Bind_SamplerState(pShader, iRenderGroup);
 }
 
 HRESULT CGameInstance::Register_Texture(const _wstring& Tag, CTexture* pInstance)
@@ -673,6 +680,26 @@ CMapObject* CGameInstance::Get_SelectObject()
 	CheckNullResult(m_pMapObjectManager, nullptr);
 	return m_pMapObjectManager->Get_SelectObject();
 }
+
+#pragma endregion
+
+#pragma region Light_Manager
+HRESULT CGameInstance::Add_Light(const LIGHT_DESC& LightDesc)
+{
+	CheckNullResult(m_pLightManager, E_FAIL);
+	return m_pLightManager->Add_Light(LightDesc);
+}
+const LIGHT_DESC* CGameInstance::Get_LightDesc(_uint iIndex)
+{
+	CheckNullResult(m_pLightManager, nullptr);
+	return m_pLightManager->Get_LightDesc(iIndex);
+}
+HRESULT CGameInstance::Bind_Lights(CShader* pShader)
+{
+	CheckNullResult(m_pLightManager, E_FAIL);
+
+	return m_pLightManager->Bind_Lights(pShader);
+}
 #pragma endregion
 
 void CGameInstance::Release_Engine()
@@ -692,6 +719,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pUIManager);
 	Safe_Release(m_pTerrainManager);
 	Safe_Release(m_pMapObjectManager);
+	Safe_Release(m_pLightManager);
 
 
 	Safe_Release(m_pGraphicDev);

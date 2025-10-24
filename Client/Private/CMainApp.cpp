@@ -298,12 +298,9 @@ void CMainApp::CreateSamplerStates()
 	for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP); ++i)
 		m_pDevice->CreateSamplerState(&desc, m_RenderStates[i]._samplerState.GetAddressOf());
 
-	desc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-	desc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-	desc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-
 	for (int i = ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP); i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
 		m_pDevice->CreateSamplerState(&desc, m_RenderStates[i]._samplerState.GetAddressOf());
+
 }
 
 void CMainApp::CreateBlendStates()

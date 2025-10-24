@@ -74,7 +74,7 @@ VS_OUT VS_MAIN(VS_IN In)
 float4 PS_MAIN(PS_IN Input) : SV_Target0
 {
     //DiffuseColor
-    float4 DiffuseColor = g_DiffuseTexture.Sample(sampler0, Input.vTexcoord);
+    float4 DiffuseColor = g_DiffuseTexture.Sample(sampler0, Input.vTexcoord*5.f);
     float fShade = max(dot(normalize(g_vLightDirection) * (-1.f), normalize(Input.vNormal)), 0); //0이하이면 0, 1이상이면 1값으로 보정
     
     //specular 세기 = 반사벡터를 구해서  카메라 시야벡터 * (-1)와 내적
@@ -83,8 +83,7 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
     float fSpecular = pow(max(dot(Reflect, normalize(vLook) * (-1.f)), 0),10);
     
 
-       
-    return g_vLightDiffuse * DiffuseColor * //diffuse속성끼리 계산
+     return g_vLightDiffuse * DiffuseColor * //diffuse속성끼리 계산
     saturate(fShade + (g_vLightAmbient * g_vMaterialAmbient)) + //음영 + 최소음영 
      (g_vLightSpecular * g_vMaterialSpecular) * fSpecular; //specular계산
     

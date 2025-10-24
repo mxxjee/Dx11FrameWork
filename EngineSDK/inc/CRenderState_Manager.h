@@ -17,6 +17,8 @@ public:
     HRESULT        Register_RenderStates(_uint iRenderGroup, const RenderStates& States);
     const RenderStates& Get_RenderStates(_uint iRenderGroup);
 
+    //셰이더마다 바인딩
+    HRESULT             Bind_SamplerState(class CShader* pShader, _uint iRenderGroup);
 
 public:
     static CRenderState_Manager* Create(ComPtr<ID3D11Device>  _pDevice, ComPtr<ID3D11DeviceContext>  _pContext);

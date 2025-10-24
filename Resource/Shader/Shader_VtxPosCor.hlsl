@@ -4,6 +4,7 @@
 HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 #include "Default.hlsli"
 
+
 struct VS_IN
 {
     float3 vPosition : POSITION;

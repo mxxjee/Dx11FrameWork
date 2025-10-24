@@ -22,6 +22,11 @@ public:
     //모든 셰이더파일들에게 전역변수들을 바인딩(카메라 뷰관련,, 수치등)
     HRESULT         Bind_GlobalPipelineData(_uint CameraType);
 
+    //모든 셰이더파일들에게 LIGHT값 바인딩
+    HRESULT         Bind_GlobalLightData();
+
+    //모든 셰이더파일들에게 Sampler값 바인딩
+    HRESULT         Bind_SamplerState(_uint iRenderGroup);
 public:
     CShader*                Find_Shader(const _wstring& Tag);
 

@@ -89,7 +89,7 @@ public:
 	HRESULT		Bind_Sampler(const string& Variable, ComPtr< ID3D11SamplerState> sampler, UINT iIdx = 0);
 
 
-	HRESULT		Bind_RawValue(const string& Variable, void* pData, UINT iSize);
+	HRESULT		Bind_RawValue(const string& Variable, const void* pData, UINT iSize);
 public:
 	const SHADER_INFO& Get_ShaderInfo() const { return m_ShaderInfo; }
 
