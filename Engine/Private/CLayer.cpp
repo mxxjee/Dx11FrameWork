@@ -1,5 +1,6 @@
 #include "CLayer.h"
 #include "CGameObject.h"
+#include "MathUtils.h"
 
 
 CLayer::CLayer()
@@ -73,6 +74,20 @@ CGameObject* CLayer::Find_GameObject(const _wstring& Tag)
 
     }
     return nullptr;
+}
+
+bool CLayer::Check_Picking(HWND hWnd, ComPtr<ID3D11DeviceContext> m_pContext, _float4x4& Proj, _float4x4& View)
+{
+    for (auto& i : m_ObjList)
+    {
+        _float4x4 Proj = CGameInstance::GetInstance()->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+        _float4x4 View = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+
+
+        Ray ray = MathUtils::CreateRay(hWnd, m_pContext, i, Proj, View);
+
+    }
+    return false;
 }
 
 CLayer* CLayer::Create()

@@ -22,7 +22,7 @@ public:
     void Update_Late(_float fTimeDelta);
     void Update_Render(_float fTimeDelta);
 
-
+    void    Check_Picking();
 
 public:
     //생성과 동시에 추가해주는 함수
@@ -58,7 +58,7 @@ public:
 
 private:
     CMapObject*         m_pSelectObject = nullptr;
-
+    ENGINE_DESC             m_EngineDesc;
 
 };
 

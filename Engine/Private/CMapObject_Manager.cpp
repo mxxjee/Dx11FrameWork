@@ -44,6 +44,14 @@ void CMapObject_Manager::Update_Render(_float fTimeDelta)
     }
 }
 
+void CMapObject_Manager::Check_Picking()
+{
+ /*   for (auto& i : m_Layers)
+    {
+        for(i.second)
+    }*/
+}
+
 HRESULT CMapObject_Manager::Add_MapObject_To_Layer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag, const _wstring& strLayerTag, void* pArg)
 {
     CGameObject* pCloneObj = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, iProtoLevelIndex, strPrototypeTag, pArg));
@@ -124,6 +132,9 @@ void CMapObject_Manager::Set_SelectObject(CMapObject* pObj)
 CMapObject_Manager* CMapObject_Manager::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 {
     CMapObject_Manager* pInstance = new CMapObject_Manager(pDevice, pContext);
+    pInstance->m_EngineDesc = CGameInstance::GetInstance()->Get_EngineDesc();
+
+
     return pInstance;
 }
 

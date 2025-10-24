@@ -75,12 +75,12 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
 {
     //DiffuseColor
     float4 DiffuseColor = g_DiffuseTexture.Sample(sampler0, Input.vTexcoord);
-    float fShade = max(dot(normalize(g_vLightDirection) * (-1.f), Input.vNormal), 0); //0이하이면 0, 1이상이면 1값으로 보정
+    float fShade = max(dot(normalize(g_vLightDirection) * (-1.f), normalize(Input.vNormal)), 0); //0이하이면 0, 1이상이면 1값으로 보정
     
     //specular 세기 = 반사벡터를 구해서  카메라 시야벡터 * (-1)와 내적
     vector vLook = Input.vWorldPos - g_CamPosition;
     vector Reflect = reflect(normalize(g_vLightDirection), normalize(Input.vNormal));
-    float fSpecular = pow(max(dot(Reflect, normalize(vLook) * (-1.f)), 0),50);
+    float fSpecular = pow(max(dot(Reflect, normalize(vLook) * (-1.f)), 0),10);
     
 
        
