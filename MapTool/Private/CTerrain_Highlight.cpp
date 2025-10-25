@@ -138,14 +138,6 @@ HRESULT CTerrain_Highlight::Ready_Component(void* pArg)
 HRESULT CTerrain_Highlight::Ready_Resources(void* pArg)
 {
 	CheckNullResult(pArg, E_FAIL);
-	HIGHLIGHT_DESC* pHighlight_desc = static_cast<HIGHLIGHT_DESC*>(pArg);
-	m_ShaderName = pHighlight_desc->ShaderName;
-	m_passName = pHighlight_desc->passName;
-	m_eRenderGroup = pHighlight_desc->eRenderGroup;
-
-
-	m_pShader = m_pGameInstance->Find_Shader(pHighlight_desc->ShaderName);
-	Safe_AddRef(m_pShader);
 
 
 
@@ -163,7 +155,6 @@ void CTerrain_Highlight::Free()
 {
 	
 	__super::Free();
-	Safe_Release(m_pShader);
 	Safe_Release(m_pTriangleBuffer);
 
 }

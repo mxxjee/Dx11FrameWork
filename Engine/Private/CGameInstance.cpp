@@ -633,6 +633,11 @@ Triangle* CGameInstance::PickTerrain(const _wstring& Key)
 	return m_pTerrainManager->PickTerrain(Key);
 }
 
+_float3 CGameInstance::Get_PickingWorldPos()
+{
+	return m_pTerrainManager->Get_PickingWorldPos();
+}
+
 #pragma endregion
 
 

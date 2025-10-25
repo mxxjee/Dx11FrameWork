@@ -64,9 +64,7 @@ CAssetListWindow* CAssetListWindow::Create(ComPtr<ID3D11Device> pDevice, ComPtr<
     return pInstance;
 }
 
-void CAssetListWindow::Free()
-{
-}
+
 
 HRESULT CAssetListWindow::Create_ModelImages()
 {
@@ -113,16 +111,23 @@ void CAssetListWindow::Show_ModelGrid()
         
         if (ImGui::ImageButton(WStringToUTF8(info.TexKey).c_str(),tex, iconSize))
         {
+           
+           
+        }
+
+        if (ImGui::IsItemActivated())
+        {
             // 클릭 시 이벤트 처리
-            //just 클릭시 -> 0,0,0에 바로생성
-            //click->drag 시 마우스따라가면서 터레인에 생성, release 시 위치고정
+           //just 클릭시 -> 0,0,0에 바로생성
+           //click->drag 시 마우스따라가면서 터레인에 생성, release 시 위치고정
             CImgui_DataManager::PlaceObjectInfo Info;
             Info.ObjType = MapObjType::MODEL;
             Info.TexKey = info.TexKey;
 
             m_pImgui_DataManager->Active_PlacementMode(Info);
-           
         }
+
+      
 
         // 파일 이름 밑에 표시
         std::string name = WStringToUTF8(info.TexKey);
@@ -140,7 +145,14 @@ void CAssetListWindow::Show_ModelGrid()
 void CAssetListWindow::Show_TileGrid()
 {
 
+    
+}
+
+void CAssetListWindow::Free()
+{
+    __super::Free();
     Safe_Release(m_pMapObject_Manager);
     Safe_Release(m_pImgui_DataManager);
     Safe_Release(pGameInstance);
+
 }

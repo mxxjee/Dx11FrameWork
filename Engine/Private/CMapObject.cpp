@@ -11,7 +11,7 @@ CMapObject::CMapObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext>
 	pColliderComp{ nullptr },
 	m_pMapObject_Manager{ CMapObject_Manager ::GetInstance()}
 {
-	Safe_AddRef(m_pMapObject_Manager);
+	
 
 }
 
@@ -22,7 +22,7 @@ CMapObject::CMapObject(const CMapObject& rhs)
 	pColliderComp{nullptr},
 	m_pMapObject_Manager{rhs.m_pMapObject_Manager}
 {
-	Safe_AddRef(m_pMapObject_Manager);
+	
 }
 
 
@@ -88,13 +88,12 @@ HRESULT CMapObject::Render()
 	return S_OK;
 }
 
-bool CMapObject::Is_Picked(HWND hWnd, _float4x4& Proj, _float4x4& View, float& Dist)
+bool CMapObject::Is_Picked(_vector Origin, _vector Dir, float& Dist)
 {
 	CheckNullResult(pColliderComp, false);
 
-	Ray ray = MathUtils::CreateRayWorld(hWnd,m_pContext,this, Proj,View);
-	bool Result= pColliderComp->Intersects(ray.Origin,ray.Dir, Dist);
-	m_pMapObject_Manager->Set_SelectObject(this);
+	bool Result= pColliderComp->Intersects(Origin, Dir, Dist);
+
 
 	return Result;
 }
@@ -147,7 +146,7 @@ HRESULT CMapObject::Ready_Resource(void* pArg)
 void CMapObject::Free()
 {
 	__super::Free();
-	Safe_AddRef(m_pMapObject_Manager);
+
 	Safe_Release(m_pShader);
 	Safe_Release(pColliderComp);
 

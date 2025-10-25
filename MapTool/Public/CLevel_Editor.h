@@ -26,7 +26,7 @@ public:
     virtual void        Render() override;         //æ¿¿« ∑ª¥ı.
 
 public:
-    HRESULT                 Create_TerrainHighlight(Triangle* PickingPos);
+    HRESULT                 Create_TerrainHighlight();
 public:
     HRESULT                 Ready_Layer_Enviroment(const _wstring & strLayerTag);
     HRESULT                 Ready_Layer_UI(const _wstring & strLayerTag);

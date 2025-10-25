@@ -3,6 +3,12 @@
 
 //MAPTOOL프로젝트에서만 사용하는 임구이 데이터전달용
 
+namespace Engine
+{
+    class CInput_Manager;
+    class CMapObject_Manager;
+
+}
 NS_BEGIN(MapTool)
 class CImgui_DataManager :
     public CBase
@@ -35,6 +41,9 @@ public:
 
 
 public:
+    HRESULT     Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext);
+
+public:
                             //폴더를 지정하면 ,폴더안의 목록 중 png/jpg/dds인 파일들의 절대경로 목록을 vector<>에 담아 반환
     vector<wstring>      GetImageFiles(const wstring& folderPath);
     void            Send_SelectedCategory(const string& Str) { Data.m_SelectedCategory = Str; }
@@ -45,11 +54,24 @@ public:
     void        Active_PlacementMode(PlaceObjectInfo Info);
     void        Update_MouseInput();     //마우스클릭,release에 따른 생성명령
 
+
+private:
+    wstring         Generate_UniqueTag(MapObjType Type, const wstring& baseName);
 public:
     void            Free() override;
 
+   
 public:
     IMGUI_SHARED_DATA           Data;
     PlaceObjectInfo             m_PlaceObjInfo;
+
+private:
+    CInput_Manager* m_pInputManager = nullptr;
+    CMapObject_Manager* m_pMapObject_Manager = nullptr;
+    bool                m_bDrag = false;
+   
+private:
+    ComPtr<ID3D11Device> m_pDevice;
+    ComPtr<ID3D11DeviceContext> m_pContext;
 };
 NS_END

@@ -46,7 +46,7 @@ public:
 
 public:
                 //픽킹 확인
-    bool            Is_Picked(HWND hWnd, _float4x4& Proj, _float4x4& View,float& Dist);
+    bool            Is_Picked(_vector Origin, _vector Dir, float& Dist);
 
 private:
     HRESULT     Ready_Component(void* pArg);

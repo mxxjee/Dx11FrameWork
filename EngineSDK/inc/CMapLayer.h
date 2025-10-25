@@ -5,7 +5,7 @@ NS_BEGIN(Engine)
 
 class CMapObject;
 
-class CMapLayer :
+class ENGINE_DLL CMapLayer :
     public CBase
 {
 private:
@@ -20,9 +20,9 @@ public:
     void Update_Render(_float fTimeDelta);
 
     const list<CMapObject*>& Get_ObjList() { return m_ObjList; }
-    CMapObject* Find_GameObject(const _wstring & Tag);
+    CMapObject* Find_GameObject(const wstring & Tag);
 
-    bool        Check_Picking(HWND hwnd, _float4x4& Proj, _float4x4& View,float& Dist);
+    CMapObject*        Check_Picking(_vector Origin, _vector Dir, float& Dist);
 
 public:
     void        Set_AblePicking(bool b) { m_bAblePicking = b; }
@@ -30,7 +30,7 @@ private:
     list<CMapObject*>      m_ObjList;
 
 public:
-    static CMapLayer* Create(bool bAblePicking=true);
+    static CMapLayer* Create();
     virtual void Free() override;
 
 private:

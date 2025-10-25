@@ -49,7 +49,7 @@ private:
     HRESULT Bind_ShaderResources();
 private:
     CVIBuffer_Triangle*     m_pTriangleBuffer=nullptr;
-    CShader*                m_pShader = { nullptr };
+    
 private:
 
 

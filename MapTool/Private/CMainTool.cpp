@@ -82,6 +82,8 @@ HRESULT CMainTool::Initialize_MapTool()
     if(FAILED(pMapObject_Manager->Initialize(m_pDevice,m_pContext)))
         return E_FAIL;
 
+    if (FAILED(CImgui_DataManager::GetInstance()->Initialize(m_pDevice, m_pContext)))
+        return E_FAIL;
 
     //렌더그룹 관련 초기화
     if (FAILED(pGameInstance->Initialize_Renderer(ENUM_TO_UINT(RENDERGROUP::END))))
@@ -131,6 +133,8 @@ void CMainTool::Update_Priority(_float fTimeDelta)
     CInput_Manager::GetInstance()->Update_Input();
     pMapObject_Manager->Update_Priority(fTimeDelta);
     pGameInstance->Update_Priority_Engine(fTimeDelta);
+
+
 }
 
 void CMainTool::Update(_float fTimeDelta)
@@ -138,6 +142,7 @@ void CMainTool::Update(_float fTimeDelta)
     pMapObject_Manager->Update(fTimeDelta);
     pGameInstance->Update_Engine(fTimeDelta);
     pImGui_Manager->Update();
+    CImgui_DataManager::GetInstance()->Update_MouseInput();
 }
 
 void CMainTool::Update_Late(float fTimeDelta)
@@ -373,5 +378,7 @@ void CMainTool::Free()
 
     CImgui_DataManager::GetInstance()->DestroyInstance();
     CMapObject_Manager::GetInstance()->DestroyInstance();
+
+
 
 }

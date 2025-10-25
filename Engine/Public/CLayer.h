@@ -20,7 +20,7 @@ public:
     void Update_Render(_float fTimeDelta);
 
     const list<CGameObject*>& Get_ObjList() {return m_ObjList; }
-    CGameObject* Find_GameObject(const _wstring& Tag);
+    CGameObject* Find_GameObject(const wstring& Tag);
 
 private:
     list<CGameObject*>      m_ObjList;

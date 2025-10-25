@@ -94,53 +94,62 @@ Triangle* CTerrain_Manager::PickTerrain(const _wstring& Key)
 	CTerrain_Base* pTerrain = Find_Terrain(Key);
 	CheckNullResult(pTerrain, nullptr);
 
-	if (CInput_Manager::GetInstance()->IsMouseButtonHeld(0))
+
+	//레이를 생성한다.
+	//freecam의 view/proj가져오기
+	_float4x4 Proj = CGameInstance::GetInstance()->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+	_float4x4 View = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+
+	CheckTrueResult(MathUtils::IsZeroMatrix(Proj), nullptr);
+	CheckTrueResult(MathUtils::IsZeroMatrix(View), nullptr);
+
+
+	Ray ray = MathUtils::CreateRayLocal(m_EngineDesc.hWnd, m_pDeviceContext, pTerrain, Proj, View);
+
+	_uint TerrainX = pTerrain->Get_VIBufferCom()->Get_NumVerticesX();
+	_uint TerrainZ = pTerrain->Get_VIBufferCom()->Get_NumVerticesZ();
+
+	const _uint* m_pIndices = pTerrain->Get_VIBufferCom()->Get_Indices();
+	const _float3* m_pPositions = pTerrain->Get_VIBufferCom()->Get_VertexPositions();
+
+	_uint IndicesNum = pTerrain->Get_VIBufferCom()->Get_NumIndices();
+
+	for (_uint i = 0; i < IndicesNum; i += 3)
 	{
-		//레이를 생성한다.
-		//freecam의 view/proj가져오기
-		_float4x4 Proj = CGameInstance::GetInstance()->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
-		_float4x4 View = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
 
 
-		Ray ray = MathUtils::CreateRayLocal(m_EngineDesc.hWnd,m_pDeviceContext,pTerrain, Proj,View);
+		_vector p0 = XMLoadFloat3(&m_pPositions[m_pIndices[i]]);
+		_vector p1 = XMLoadFloat3(&m_pPositions[m_pIndices[i + 1]]);
+		_vector p2 = XMLoadFloat3(&m_pPositions[m_pIndices[i + 2]]);
 
-		_uint TerrainX = pTerrain->Get_VIBufferCom()->Get_NumVerticesX();
-		_uint TerrainZ = pTerrain->Get_VIBufferCom()->Get_NumVerticesZ();
-
-		const _uint* m_pIndices = pTerrain->Get_VIBufferCom()->Get_Indices();
-		const _float3* m_pPositions = pTerrain->Get_VIBufferCom()->Get_VertexPositions();
-
-		_uint IndicesNum = pTerrain->Get_VIBufferCom()->Get_NumIndices();
-
-		for (_uint i = 0; i < IndicesNum; i+=3)
+		float dist = 0.f;
+		if (TriangleTests::Intersects(ray.Origin, ray.Dir, p0, p1, p2, dist))
 		{
-
-			
-			_vector p0 = XMLoadFloat3(&m_pPositions[m_pIndices[i]]);
-			_vector p1 = XMLoadFloat3(&m_pPositions[m_pIndices[i+1]]);
-			_vector p2 = XMLoadFloat3(&m_pPositions[m_pIndices[i+2]]);
-
-			float dist = 0.f;
-			if (TriangleTests::Intersects(ray.Origin, ray.Dir, p0,p1,p2,dist))
-			{
-				if (isnan(dist))
-					return nullptr;
-
-		
-
-				PickLocalTriangle.v0 = m_pPositions[m_pIndices[i]];
-				PickLocalTriangle.v1 = m_pPositions[m_pIndices[i + 1]];
-				PickLocalTriangle.v2 = m_pPositions[m_pIndices[i + 2]];
-
-				return &PickLocalTriangle;
-
-			}
+			if (isnan(dist))
+				return nullptr;
 
 
-		
+
+			PickLocalTriangle.v0 = m_pPositions[m_pIndices[i]];
+			PickLocalTriangle.v1 = m_pPositions[m_pIndices[i + 1]];
+			PickLocalTriangle.v2 = m_pPositions[m_pIndices[i + 2]];
+
+			XMStoreFloat3(&PickingWolrdPos, ray.Origin + ray.Dir * dist);
+			std::wstring msg = L"PickingWolrdPos : " +
+				std::to_wstring(PickingWolrdPos.x) + L", " +
+				std::to_wstring(PickingWolrdPos.y) + L", " +
+				std::to_wstring(PickingWolrdPos.z) + L"\n";
+
+			OutputDebugString(msg.c_str());
+			return &PickLocalTriangle;
+
 		}
 
+
+
 	}
+
+
 
 	return nullptr;
 }

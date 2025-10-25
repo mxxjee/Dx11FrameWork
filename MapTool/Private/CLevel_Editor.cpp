@@ -53,12 +53,25 @@ void CLevel_Editor::Update_Priority(_float fTimeDelta)
 void CLevel_Editor::Update(const _float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
+
+	//좌표 잘얻어오는지 테스트.(케로로따라오게하기)
 	Triangle* pPickingPos= m_pGameInstance->PickTerrain(L"MapTerrain");
-	if (pPickingPos!=nullptr)
+	/*if (pPickingPos!=nullptr)
 	{
-		if (FAILED(Create_TerrainHighlight(pPickingPos)))
-			return;
-	}
+		CMapLayer* pLayer = CMapObject_Manager::GetInstance()->Find_MapLayer(L"Player_Layer");
+		if (pLayer)
+		{
+			CMapObject* pObj = pLayer->Find_GameObject(L"Test_Quad");
+			if (pObj)
+			{
+				_float3 vPos = m_pGameInstance->Get_PickingWorldPos();
+				_float4 pos = _float4(vPos.x, vPos.y, vPos.z, 1.f);
+
+				pObj->Get_Transform()->Set_State(STATE::POSITION, pos);
+			}
+		}
+	
+	}*/
 }
 
 void CLevel_Editor::Update_Late(_float fTimeDelta)
@@ -73,13 +86,11 @@ void CLevel_Editor::Render()
 	SetWindowText(g_hWnd, L"맵툴 씬 입니다.");
 }
 
-HRESULT CLevel_Editor::Create_TerrainHighlight(Triangle* PickingPos)
+HRESULT CLevel_Editor::Create_TerrainHighlight()
 {
-	CheckNullResult(PickingPos,E_FAIL);
-	CMapTerrain* pMapTerrain = dynamic_cast<CMapTerrain*>(m_pGameInstance->Find_Terrain(L"MapTerrain"));
-	CheckNullResult(pMapTerrain, E_FAIL);
 
-	CheckTrueResult(pMapTerrain->CheckDuplication(PickingPos),E_FAIL);
+	/*CMapTerrain* pMapTerrain = dynamic_cast<CMapTerrain*>(m_pGameInstance->Find_Terrain(L"MapTerrain"));
+	CheckNullResult(pMapTerrain, E_FAIL);
 
 	CTerrain_Highlight::HIGHLIGHT_DESC Desc;
 	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
@@ -115,10 +126,8 @@ HRESULT CLevel_Editor::Create_TerrainHighlight(Triangle* PickingPos)
 
 		pMapTerrain->Add_TerrainHighlights(pTerrain_Highlight);
 	}
+*/
 
-
-
-	++m_iIdx;
 	return S_OK;
 }
 
@@ -150,6 +159,7 @@ HRESULT CLevel_Editor::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 		if (ppTerrain)
 			m_pGameInstance->Register_Terrain(L"MapTerrain", ppTerrain);
 	}
+
 
 
 	return S_OK;
@@ -200,10 +210,12 @@ HRESULT CLevel_Editor::Ready_Layer_Player(const _wstring& strLayerTag)
 	Desc.ShaderName = L"Default";
 	Desc.passName = "Default";
 	Desc.ObjType = MapObjType::MODEL;
-
+	
 
 
 	CTransform::TRANSFORM_DESC transform;
+	transform.vLocalRotation = _float4(90.f, 0.f, 0.f, 1.f);
+
 	Desc.TransformDesc = &transform;
 	
 	if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapQuad"),

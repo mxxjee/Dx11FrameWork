@@ -65,7 +65,7 @@ void CLayer::Update_Render(_float fTimeDelta)
     }
 }
 
-CGameObject* CLayer::Find_GameObject(const _wstring& Tag)
+CGameObject* CLayer::Find_GameObject(const wstring& Tag)
 {
     for (auto& i : m_ObjList)
     {

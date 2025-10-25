@@ -67,18 +67,31 @@ HRESULT CGameObject::Render()
 HRESULT CGameObject::Ready_Components(void* pArg)
 {
     GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
-    
-    CComponent::COMPONENT_DESC* compDesc = static_cast<CComponent::COMPONENT_DESC*>(pDesc->TransformDesc);
+    CTransform::TRANSFORM_DESC tempDesc;   // 임시 생성용
+    CComponent::COMPONENT_DESC* compDesc = nullptr;
+
+    //TransformDesc가 없으면 새로 만든다
+    if (!pDesc->TransformDesc)
+        pDesc->TransformDesc = &tempDesc;
+
+  
+    compDesc = static_cast<CComponent::COMPONENT_DESC*>(pDesc->TransformDesc);
     compDesc->pOwner = this;
 
+    // Transform 생성 및 추가
+    CComponent* pTransform = dynamic_cast<CTransform*>(m_pGameInstance->Clone_Prototype(
+            PROTOTYPE::COMPONENT,
+            0,
+            PROTO_COMPONENT_NAME(L"Transform"),
+            pDesc->TransformDesc)
+        );
 
-    CComponent* pTransform = dynamic_cast<CTransform*>(m_pGameInstance->Clone_Prototype
-    (PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"Transform"), pDesc->TransformDesc));
-
-    if (FAILED(Add_Component(COMPONENT_TYPE::TRANSFORM, pTransform, reinterpret_cast<CComponent**>(&m_pTransformCom))))
+    if (FAILED(Add_Component(
+        COMPONENT_TYPE::TRANSFORM,
+        pTransform,
+        reinterpret_cast<CComponent**>(&m_pTransformCom)
+    )))
         return E_FAIL;
-
-    return S_OK;
 }
 
 HRESULT CGameObject::Ready_Resource(void* pArg)

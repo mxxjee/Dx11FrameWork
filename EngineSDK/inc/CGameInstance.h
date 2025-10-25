@@ -214,7 +214,9 @@ public:
 	HRESULT						Register_Terrain(const _wstring& Key, class CTerrain_Base* pTerrain);
 	HRESULT						UnRegister_Terrain(const _wstring& Key);
 	class CTerrain_Base*		Find_Terrain(const _wstring& Key);
-	Triangle*				 PickTerrain(const _wstring& Key);
+	Triangle*					PickTerrain(const _wstring& Key);
+	_float3						Get_PickingWorldPos();
+
 #pragma endregion
 
 

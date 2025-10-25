@@ -30,7 +30,7 @@ public:
 public:
     static CTerrain_Manager* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext);
     virtual void                Free() override;
-
+    _float3             Get_PickingWorldPos() { return PickingWolrdPos; }
 
 private:
     ComPtr<ID3D11Device>		m_pDevice = { nullptr };
@@ -42,6 +42,7 @@ private:
 private:
     ENGINE_DESC             m_EngineDesc;
     Triangle                 PickLocalTriangle;
+    _float3                    PickingWolrdPos;     //terrain픽킹한 월드좌표
 };
 
 

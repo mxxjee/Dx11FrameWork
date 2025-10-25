@@ -79,13 +79,19 @@ void CMapObject_Manager::Check_Picking()
     _float4x4 View = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
 
     float Dist = 0.f;
+    CMapObject* pObj = nullptr;
 
+    Ray ray = MathUtils::CreateRayWorld(m_EngineDesc.hWnd, m_pContext, Proj, View);
     for (auto& pair : m_Layers)
     {
         if (pair.second)
         {
-            if (pair.second->Check_Picking(m_EngineDesc.hWnd, Proj, View, Dist))
+            pObj = pair.second->Check_Picking(ray.Origin, ray.Dir, Dist);
+            if (pObj)
+            {
+                Set_SelectObject(pObj);
                 return;
+            }
 
         }
     }
@@ -119,6 +125,30 @@ HRESULT CMapObject_Manager::Add_MapObject_To_MapLayer(const _wstring& LayerTag, 
         pLayer = CMapLayer::Create();
         pLayer->Add_GameObject(pObj);
         m_Layers.emplace(LayerTag, pLayer);
+
+    }
+
+    else
+        pLayer->Add_GameObject(pObj);
+
+    return S_OK;
+}
+
+HRESULT CMapObject_Manager::Add_Model_To_MapLayer(void* pArg)
+{
+    CMapLayer* pLayer = Find_MapLayer(L"Model_Layer");
+
+    CGameObject* pCloneObj = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, 0, PROTO_OBJ_NAME(L"MapQuad"), pArg));
+    CheckNullResult(pCloneObj, E_FAIL);
+
+    CMapObject* pObj = dynamic_cast<CMapObject*>(pCloneObj);
+    CheckNullResult(pObj, E_FAIL);
+
+    if (!pLayer)
+    {
+        pLayer = CMapLayer::Create();
+        pLayer->Add_GameObject(pObj);
+        m_Layers.emplace(L"Model_Layer", pLayer);
 
     }
 

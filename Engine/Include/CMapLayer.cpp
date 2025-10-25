@@ -65,7 +65,7 @@ void CMapLayer::Update_Render(_float fTimeDelta)
     }
 }
 
-CMapObject* CMapLayer::Find_GameObject(const _wstring& Tag)
+CMapObject* CMapLayer::Find_GameObject(const wstring& Tag)
 {
     for (auto& i : m_ObjList)
     {
@@ -76,35 +76,41 @@ CMapObject* CMapLayer::Find_GameObject(const _wstring& Tag)
     return nullptr;
 }
 
-bool CMapLayer::Check_Picking(HWND hwnd, _float4x4& Proj, _float4x4& View, float& Dist)
+CMapObject* CMapLayer::Check_Picking(_vector Origin, _vector Dir, float& Dist)
 {
-    CheckTrueResult(m_ObjList.empty(),false);
-    CheckFalseResult(m_bAblePicking,false);
+    CheckTrueResult(m_ObjList.empty(),nullptr);
+    CheckFalseResult(m_bAblePicking, nullptr);
+
+    float fMinDist = FLT_MAX;
+    CMapObject* pPickedObj = nullptr;
 
 	for (auto& obj : m_ObjList)
 	{
-        if (obj->Is_Picked(hwnd, Proj, View, Dist))
+        float fDist = 0.f;
+        if (obj->Is_Picked(Origin, Dir, fDist))
         {
-            OutputDebugString((L"Dist: " + std::to_wstring(Dist) + L"/ name : " + obj->Get_Tag() + L"\n").c_str());
-            return true;
+            if (fDist < fMinDist)
+            {
+                fMinDist = fDist;
+                pPickedObj = obj;
+            }
         }
 
         else
             continue;
 
 	}
-   
-    return false;
+
+    Dist = fMinDist;
+    return pPickedObj;
 }
 
 
 
-CMapLayer* CMapLayer::Create(bool bAblePicking)
+CMapLayer* CMapLayer::Create()
 {
-   CMapLayer* pLayer =new CMapLayer();
-   pLayer->m_bAblePicking = bAblePicking;
-
-   return pLayer;
+   
+   return new CMapLayer;
 }
 
 void CMapLayer::Free()

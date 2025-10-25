@@ -173,7 +173,7 @@ namespace MathUtils
 
 	}
 
-	inline Ray CreateRayWorld(HWND hWnd, ComPtr<ID3D11DeviceContext> m_pContext, CGameObject* pOther, _float4x4& Proj, _float4x4& View)
+	inline Ray CreateRayWorld(HWND hWnd, ComPtr<ID3D11DeviceContext> m_pContext, _float4x4& Proj, _float4x4& View)
 	{
 		Ray newRay;
 
@@ -222,6 +222,17 @@ namespace MathUtils
 		return newRay;
 
 
+	}
+
+	inline bool IsZeroMatrix(const _float4x4& m)
+	{
+		const float* p = reinterpret_cast<const float*>(&m);
+		for (int i = 0; i < 16; ++i)
+		{
+			if (fabsf(p[i]) > FLT_EPSILON)
+				return false;
+		}
+		return true;
 	}
 
 
