@@ -135,12 +135,7 @@ Triangle* CTerrain_Manager::PickTerrain(const _wstring& Key)
 			PickLocalTriangle.v2 = m_pPositions[m_pIndices[i + 2]];
 
 			XMStoreFloat3(&PickingWolrdPos, ray.Origin + ray.Dir * dist);
-			std::wstring msg = L"PickingWolrdPos : " +
-				std::to_wstring(PickingWolrdPos.x) + L", " +
-				std::to_wstring(PickingWolrdPos.y) + L", " +
-				std::to_wstring(PickingWolrdPos.z) + L"\n";
 
-			OutputDebugString(msg.c_str());
 			return &PickLocalTriangle;
 
 		}

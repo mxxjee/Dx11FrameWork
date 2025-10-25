@@ -54,7 +54,7 @@ void CLevel_Editor::Update(const _float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
 
-	//좌표 잘얻어오는지 테스트.(케로로따라오게하기)
+	//좌표 잘얻어오는지 테스트.(케로로따라오게하기)quf
 	Triangle* pPickingPos= m_pGameInstance->PickTerrain(L"MapTerrain");
 	/*if (pPickingPos!=nullptr)
 	{

@@ -253,6 +253,9 @@
     <Filter Include="998.MapTool\Object\MapQuad">
       <UniqueIdentifier>{6bf5f083-61a6-4a38-9333-864a2e9cfac4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\Collision\Sphere">
+      <UniqueIdentifier>{b85b90e1-9860-48ed-95dc-558a0c99bc7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -498,9 +501,6 @@
     <ClInclude Include="..\Public\CLight.h">
       <Filter>00.System\11.Light\Light</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CSphereColliderComponent.h">
-      <Filter>05.Component\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CLight_Manager.h">
       <Filter>00.System\11.Light</Filter>
     </ClInclude>
@@ -509,6 +509,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\CMapQuad.h">
       <Filter>998.MapTool\Object\MapQuad</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSphereColliderComponent.h">
+      <Filter>05.Component\Collision\Sphere</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CCollider_Base.h">
+      <Filter>05.Component\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -722,9 +728,6 @@
     <ClCompile Include="..\Private\CLight.cpp">
       <Filter>00.System\11.Light\Light</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CSphereColliderComponent.cpp">
-      <Filter>05.Component\Collision</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CLight_Manager.cpp">
       <Filter>00.System\11.Light</Filter>
     </ClCompile>
@@ -733,6 +736,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMapQuad.cpp">
       <Filter>998.MapTool\Object\MapQuad</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSphereColliderComponent.cpp">
+      <Filter>05.Component\Collision\Sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CCollider_Base.cpp">
+      <Filter>05.Component\Collision</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

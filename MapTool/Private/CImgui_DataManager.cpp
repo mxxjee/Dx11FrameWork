@@ -122,47 +122,24 @@ wstring CImgui_DataManager::Generate_UniqueTag(MapObjType Type, const wstring& b
 
 HRESULT CImgui_DataManager::Create_Model(bool bDrag)
 {
-	//드래그생성이라면,
+	CMapQuad::MAPQUAD_DESC Desc;
+	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
+	Desc.ObjTag = Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
+	Desc.TextureKey = m_PlaceObjInfo.TexKey;
+	Desc.ObjType = m_PlaceObjInfo.ObjType;
+
+	//드래그생성이라면,위치가 따로존재함
 	if (bDrag)
 	{
-		//위치받아서 생성
-		CMapQuad::MAPQUAD_DESC Desc;
-		Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
-		Desc.ObjTag = Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
-		Desc.TextureKey = m_PlaceObjInfo.TexKey;
-		Desc.ObjType = m_PlaceObjInfo.ObjType;
-
-
 		_float3 PickingPos = CGameInstance::GetInstance()->Get_PickingWorldPos();
 		CTransform::TRANSFORM_DESC	 TransDesc;
 		TransDesc.vLocalPosition = _float4(PickingPos.x, PickingPos.y, PickingPos.z, 1.f);
-
 		Desc.TransformDesc = &TransDesc;
 
-
-
-		if (m_PlaceObjInfo.ObjType == MapObjType::MODEL)
-			return m_pMapObject_Manager->Add_Model_To_MapLayer(&Desc);
-
 	}
 
-	else
-	{
-		CMapQuad::MAPQUAD_DESC Desc;
-		Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
-		Desc.ObjTag = Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
-		Desc.TextureKey = m_PlaceObjInfo.TexKey;
-		Desc.ObjType = m_PlaceObjInfo.ObjType;
-
-
-		if (m_PlaceObjInfo.ObjType == MapObjType::MODEL)
-			return m_pMapObject_Manager->Add_Model_To_MapLayer(&Desc);
-
-
-
-
-
-	}
+	if (m_PlaceObjInfo.ObjType == MapObjType::MODEL)
+		return m_pMapObject_Manager->Add_Model_To_MapLayer(&Desc);
 
 	return E_FAIL;
 
