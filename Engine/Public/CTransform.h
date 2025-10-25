@@ -96,6 +96,9 @@ public:
     void    RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDelta);
 #pragma endregion
 
+public:
+    void        Set_Speed(float _fSpeed) { m_fSpeedPerSec = _fSpeed; }
+
 private:
     /*저장용 데이터( 직렬 계산)*/
     _float  m_fSpeedPerSec = {};

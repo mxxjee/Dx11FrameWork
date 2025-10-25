@@ -79,6 +79,7 @@ CMapObject* CMapLayer::Find_GameObject(const _wstring& Tag)
 bool CMapLayer::Check_Picking(HWND hwnd, _float4x4& Proj, _float4x4& View, float& Dist)
 {
     CheckTrueResult(m_ObjList.empty(),false);
+    CheckFalseResult(m_bAblePicking,false);
 
 	for (auto& obj : m_ObjList)
 	{
@@ -98,9 +99,12 @@ bool CMapLayer::Check_Picking(HWND hwnd, _float4x4& Proj, _float4x4& View, float
 
 
 
-CMapLayer* CMapLayer::Create()
+CMapLayer* CMapLayer::Create(bool bAblePicking)
 {
-    return new CMapLayer();
+   CMapLayer* pLayer =new CMapLayer();
+   pLayer->m_bAblePicking = bAblePicking;
+
+   return pLayer;
 }
 
 void CMapLayer::Free()

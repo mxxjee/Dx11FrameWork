@@ -33,8 +33,10 @@ HRESULT CFreeCamera::Initialize_Copytype(void* pArg)
     m_ScreenHeight = m_pGameInstance->Get_EngineDesc().iWinSizeY;
     m_ScreenWidth = m_pGameInstance->Get_EngineDesc().iWinSizeX;
 
-    GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
 
+    GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+    CTransform::TRANSFORM_DESC* pTransformDesc = static_cast<CTransform::TRANSFORM_DESC*>(pDesc->TransformDesc);
+    m_fInitSpeed=pTransformDesc->fSpeedPerSec;
 
 
 
@@ -54,6 +56,12 @@ void CFreeCamera::Update(_float fTimeDelta)
 
     Mouse_Move();
    // Mouse_Fix();
+
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LShift))
+        m_pTransformCom->Set_Speed(m_fInitSpeed + 5.f);
+
+    else if (CInput_Manager::GetInstance()->IsKeyReleased(KeyCode::LShift))
+        m_pTransformCom->Set_Speed(m_fInitSpeed);
 
     if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::D))
         m_pTransformCom->Move(DIRECTION::RIGHT, fTimeDelta);

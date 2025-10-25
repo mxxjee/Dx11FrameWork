@@ -23,12 +23,18 @@ public:
     CMapObject* Find_GameObject(const _wstring & Tag);
 
     bool        Check_Picking(HWND hwnd, _float4x4& Proj, _float4x4& View,float& Dist);
+
+public:
+    void        Set_AblePicking(bool b) { m_bAblePicking = b; }
 private:
     list<CMapObject*>      m_ObjList;
 
 public:
-    static CMapLayer* Create();
+    static CMapLayer* Create(bool bAblePicking=true);
     virtual void Free() override;
+
+private:
+    bool            m_bAblePicking = true;
 };
 
 NS_END

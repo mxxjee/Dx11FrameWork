@@ -37,8 +37,8 @@ public:
     HRESULT                 Add_MapObject_To_MapLayer(const _wstring& LayerTag,CMapObject* pObj);
     CMapObject*             Find_MapObject(const _wstring& LayerTag,const _wstring& ObjTag);
     void                    Clear(const _wstring& LayerTag);
-    CMapLayer* Find_MapLayer(const _wstring& LayerTag);
-    void            Set_SelectObject(CMapObject* pObj);
+    CMapLayer*              Find_MapLayer(const _wstring& LayerTag);
+    void                    Set_SelectObject(CMapObject* pObj);
 
 
 public:
@@ -49,7 +49,8 @@ public:
 public:
    
 public:
-    UMap<_wstring, CMapLayer*> m_Layers;
+    UMap<_wstring, CMapLayer*> m_Layers;        //월드상에 배치된애들
+
 
 private:
     ComPtr<ID3D11Device> m_pDevice;
@@ -68,6 +69,7 @@ private:
 
 protected:
     BoundingSphere      m_Sphere;
+
 
 
 };

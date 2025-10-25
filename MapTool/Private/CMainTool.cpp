@@ -9,15 +9,20 @@
 #include "CTerrainDebugWindow.h"
 #include "CLayerDebugWindow.h"
 #include "CObjectInspectorWindow.h"
+#include "CAssetCategoryWindow.h"
+#include "CAssetListWindow.h"
+
 
 #include "CGameObject.h"
-#include "CMapObject_Manager.h"
+
 #include "CCamera_Base.h"
 
 #include "../Public/CLevel_Loading.h"
 #include "CLevel_Editor.h"
 
 #include "CInput_Manager.h"
+#include "CMapObject_Manager.h"
+#include "CImgui_DataManager.h"
 
 USING(MapTool)
 
@@ -51,6 +56,7 @@ HRESULT CMainTool::Initialize()
     CreateTerrainDebugWindow();
     CreateLayerDebugWindow();
     CreateObjectInspectorWindow();
+    CreateAssetBrowserWindow();
 
     Reigster_Levels();
     if (FAILED(Start_Level(Client::LEVEL_ID::MAPTOOL, LEVELCHANGETYPE::REPLACETOP)))
@@ -286,6 +292,26 @@ void CMainTool::CreateObjectInspectorWindow()
 
 }
 
+void CMainTool::CreateAssetBrowserWindow()
+{
+    CAssetCategoryWindow::IMGUIWINDOW_DESC Desc;
+    Desc.m_WindowTitle = "AssetCategory";
+    Desc.m_WindowPos = ImVec2(100, 100);
+    Desc.m_WindowSize = ImVec2(300, 300);
+    Desc.Tag = "AssetCategory";
+
+    pImGui_Manager->RegisterWindow(CAssetCategoryWindow::Create(m_pDevice, m_pContext, &Desc));
+
+    ///////////////////////////////////
+    CAssetListWindow::IMGUIWINDOW_DESC ListDesc;
+    ListDesc.m_WindowTitle = "AssetList";
+    ListDesc.m_WindowPos = ImVec2(100, 100);
+    ListDesc.m_WindowSize = ImVec2(300, 300);
+    ListDesc.Tag = "AssetList";
+
+    pImGui_Manager->RegisterWindow(CAssetListWindow::Create(m_pDevice, m_pContext, &ListDesc));
+}
+
 void CMainTool::Reigster_Levels()
 {
     CheckNull(pGameInstance);
@@ -345,6 +371,7 @@ void CMainTool::Free()
     Safe_Release(pMapObject_Manager);
     Safe_Release(pGameInstance);
 
+    CImgui_DataManager::GetInstance()->DestroyInstance();
     CMapObject_Manager::GetInstance()->DestroyInstance();
 
 }

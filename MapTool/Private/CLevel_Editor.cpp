@@ -16,6 +16,7 @@
 #include "CVIBuffer_Triangle.h"
 #include "CTerrain_Highlight.h"
 
+#include "CMapLayer.h"
 
 
 USING(MapTool)
@@ -108,7 +109,10 @@ HRESULT CLevel_Editor::Create_TerrainHighlight(Triangle* PickingPos)
 		if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(L"Highlight_Layer", pTerrain_Highlight)))
 			return E_FAIL;
 
-		
+		CMapLayer* pLayer = m_pMapObject_Manager->Find_MapLayer(L"Highlight_Layer");
+		if (pLayer)
+			pLayer->Set_AblePicking(false);
+
 		pMapTerrain->Add_TerrainHighlights(pTerrain_Highlight);
 	}
 
@@ -172,7 +176,7 @@ HRESULT CLevel_Editor::Ready_Layer_MainCamera(const _wstring& strLayerTag)
 
 	CTransform::TRANSFORM_DESC TransDesc = {};
 	TransDesc.fRotationPerSec = 10.f;
-	TransDesc.fSpeedPerSec = 5.f;
+	TransDesc.fSpeedPerSec = 8.f;
 	
 
 

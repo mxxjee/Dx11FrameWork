@@ -4,8 +4,8 @@
 
 NS_BEGIN(Engine)
 class ENGINE_DLL CImGui_Manager final :
-    public CBase
-    {
+public CBase
+{
         DECLARE_SINGLETON(CImGui_Manager)
 
     private:
@@ -19,7 +19,7 @@ class ENGINE_DLL CImGui_Manager final :
 
         void            Test();
         void            BeginDockSpace();
-    public:
+public:
         void            Free() override;
 
 

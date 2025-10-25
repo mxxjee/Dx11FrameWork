@@ -186,28 +186,17 @@ HRESULT CLoader::Register_Shaders()
 
 HRESULT CLoader::Register_Textures()
 {
-    CTexture* pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Keroro.png", 1);
+   /* CTexture* pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Keroro.png", 1);
     if (FAILED(m_pGameInstance->Register_Texture(L"Keroro", pTexture)))
-        return E_FAIL;
-
-
-    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Player_Marker.png", 1);
-    if (FAILED(m_pGameInstance->Register_Texture(L"Player_Marker", pTexture)))
-        return E_FAIL;
+        return E_FAIL;*/
 
 
 
-    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Hp.png", 1);
-    if (FAILED(m_pGameInstance->Register_Texture(L"Hp", pTexture)))
-        return E_FAIL;
-
-    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Terrain0.png", 1);
+    CTexture*  pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Terrain0.png", 1);
     if (FAILED(m_pGameInstance->Register_Texture(L"Terrain", pTexture)))
         return E_FAIL;
 
-    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Skeleton.png", 1);
-    if (FAILED(m_pGameInstance->Register_Texture(L"Skeleton", pTexture)))
-        return E_FAIL;
+
 
     return S_OK;
 }

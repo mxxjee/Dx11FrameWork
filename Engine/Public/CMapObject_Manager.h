@@ -49,7 +49,8 @@ public:
 public:
    
 public:
-    UMap<_wstring, CMapLayer*> m_Layers;
+    UMap<_wstring, CMapLayer*> m_Layers;        //월드상에 배치된애들
+
 
 private:
     ComPtr<ID3D11Device> m_pDevice;
@@ -68,6 +69,7 @@ private:
 
 protected:
     BoundingSphere      m_Sphere;
+
 
 
 };

@@ -43,6 +43,18 @@
     <Filter Include="02.ImguiObjects\ObjectInspectorWindow">
       <UniqueIdentifier>{e16cc3e9-0cdb-4449-9702-468e0d17b609}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.ImguiObjects\AssetBrowser">
+      <UniqueIdentifier>{daf4e05b-5cd7-4075-abd3-2f361b5122f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.ImguiObjects\AssetBrowser\AssetListWindow">
+      <UniqueIdentifier>{e773a8b4-2d75-4ee3-8293-ccd18c455f5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.ImguiObjects\AssetBrowser\AssetCategoryWindow">
+      <UniqueIdentifier>{9228ab5e-d375-4d65-a0f3-c9606c0a7c76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Manager">
+      <UniqueIdentifier>{af0f80bf-704b-416b-a33f-4ed84f742cbb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CMainTool.h">
@@ -87,6 +99,15 @@
     <ClInclude Include="..\Public\CObjectInspectorWindow.h">
       <Filter>02.ImguiObjects\ObjectInspectorWindow</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CAssetCategoryWindow.h">
+      <Filter>02.ImguiObjects\AssetBrowser\AssetCategoryWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CImgui_DataManager.h">
+      <Filter>05.Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CAssetListWindow.h">
+      <Filter>02.ImguiObjects\AssetBrowser\AssetListWindow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CMainTool.cpp">
@@ -118,6 +139,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\CObjectInspectorWindow.cpp">
       <Filter>02.ImguiObjects\ObjectInspectorWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAssetCategoryWindow.cpp">
+      <Filter>02.ImguiObjects\AssetBrowser\AssetCategoryWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CImgui_DataManager.cpp">
+      <Filter>05.Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAssetListWindow.cpp">
+      <Filter>02.ImguiObjects\AssetBrowser\AssetListWindow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

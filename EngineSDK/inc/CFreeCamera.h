@@ -39,5 +39,8 @@ private:
     long                    m_ScreenWidth = {};
     long                    m_ScreenHeight = {};
 
+    float                   m_fInitSpeed = {};
+
+
 };
 NS_END
