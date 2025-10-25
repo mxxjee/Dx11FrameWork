@@ -56,10 +56,8 @@ vector<wstring> CImgui_DataManager::GetImageFiles(const wstring& folderPath)
 
 void CImgui_DataManager::Active_PlacementMode(PlaceObjectInfo Info)
 {
-	/// <summary>
+
 	/// //마우스 placement 활성화시키기 -> Update에서 체크
-	/// </summary>
-	/// <param name="Info"></param>
 	Data.m_bPlacementMode = true;
 	m_PlaceObjInfo = Info;
 }
@@ -71,19 +69,8 @@ void CImgui_DataManager::Update_MouseInput()
 	//그냥 클릭->뗐으면,
 	if (!m_bDrag&& m_pInputManager->IsMouseButtonReleased(0))
 	{
-		CMapQuad::MAPQUAD_DESC Desc;
-		Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
-		Desc.ObjTag = Generate_UniqueTag(m_PlaceObjInfo.ObjType,m_PlaceObjInfo.TexKey);
-		Desc.TextureKey = m_PlaceObjInfo.TexKey;
-		Desc.ObjType = m_PlaceObjInfo.ObjType;
-
-		
-		if(m_PlaceObjInfo.ObjType==MapObjType::MODEL)
-			if (FAILED(m_pMapObject_Manager->Add_Model_To_MapLayer(&Desc)))
+		if(FAILED(Create_Model(false)))
 			return;
-
-
-
 
 		Data.m_bPlacementMode = false;
 	}
@@ -91,45 +78,15 @@ void CImgui_DataManager::Update_MouseInput()
 
 	//드래그중이라면
 	if (m_pInputManager->IsMouseDragging())
-	{
 		m_bDrag = true;
-
-		_float4x4 Proj = CGameInstance::GetInstance()->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
-		_float4x4 View = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
-
-
-		
-	
-
-	}
 
 	if (m_bDrag && m_pInputManager->IsMouseButtonReleased(0))
 	{
-		int A = 10;
+		if (FAILED(Create_Model(true)))
+			return;
+
 		Data.m_bPlacementMode = false;
 		m_bDrag = false;
-
-		//위치받아서 생성
-		CMapQuad::MAPQUAD_DESC Desc;
-		Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
-		Desc.ObjTag = Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
-		Desc.TextureKey = m_PlaceObjInfo.TexKey;
-		Desc.ObjType = m_PlaceObjInfo.ObjType;
-
-
-		_float3 PickingPos= CGameInstance::GetInstance()->Get_PickingWorldPos();
-		CTransform::TRANSFORM_DESC	 TransDesc;
-		TransDesc.vLocalPosition = _float4(PickingPos.x, PickingPos.y, PickingPos.z, 1.f);
-
-		Desc.TransformDesc = &TransDesc;
-
-
-
-		if (m_PlaceObjInfo.ObjType == MapObjType::MODEL)
-			if (FAILED(m_pMapObject_Manager->Add_Model_To_MapLayer(&Desc)))
-				return;
-
-
 
 	}
 
@@ -159,6 +116,56 @@ wstring CImgui_DataManager::Generate_UniqueTag(MapObjType Type, const wstring& b
 		return baseName + L"_" + to_wstring(iIdx);
 
 	return Result;
+}
+
+
+
+HRESULT CImgui_DataManager::Create_Model(bool bDrag)
+{
+	//드래그생성이라면,
+	if (bDrag)
+	{
+		//위치받아서 생성
+		CMapQuad::MAPQUAD_DESC Desc;
+		Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
+		Desc.ObjTag = Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
+		Desc.TextureKey = m_PlaceObjInfo.TexKey;
+		Desc.ObjType = m_PlaceObjInfo.ObjType;
+
+
+		_float3 PickingPos = CGameInstance::GetInstance()->Get_PickingWorldPos();
+		CTransform::TRANSFORM_DESC	 TransDesc;
+		TransDesc.vLocalPosition = _float4(PickingPos.x, PickingPos.y, PickingPos.z, 1.f);
+
+		Desc.TransformDesc = &TransDesc;
+
+
+
+		if (m_PlaceObjInfo.ObjType == MapObjType::MODEL)
+			return m_pMapObject_Manager->Add_Model_To_MapLayer(&Desc);
+
+	}
+
+	else
+	{
+		CMapQuad::MAPQUAD_DESC Desc;
+		Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
+		Desc.ObjTag = Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
+		Desc.TextureKey = m_PlaceObjInfo.TexKey;
+		Desc.ObjType = m_PlaceObjInfo.ObjType;
+
+
+		if (m_PlaceObjInfo.ObjType == MapObjType::MODEL)
+			return m_pMapObject_Manager->Add_Model_To_MapLayer(&Desc);
+
+
+
+
+
+	}
+
+	return E_FAIL;
+
 }
 
 void CImgui_DataManager::Free()

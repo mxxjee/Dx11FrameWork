@@ -57,6 +57,11 @@ public:
 
 private:
     wstring         Generate_UniqueTag(MapObjType Type, const wstring& baseName);
+
+
+private:
+    HRESULT             Create_Model(bool bDrag);
+
 public:
     void            Free() override;
 
