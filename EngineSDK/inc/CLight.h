@@ -12,6 +12,7 @@ private:
 public:
     const LIGHT_DESC* Get_LightDesc() const { return &m_LightDesc; }
     bool            IsActive()              { return m_bActive; }
+    void            Set_LightDesc(const LIGHT_DESC& NewDesc) {m_LightDesc = NewDesc;}
 public:
     HRESULT         Initialize(const LIGHT_DESC& LightDesc);
 

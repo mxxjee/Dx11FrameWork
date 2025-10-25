@@ -10,11 +10,11 @@ vector g_vLightSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
 /////////점조명 관련////////////
 int g_PointLightNum; //점 조명의 개수
-vector g_vPL_Position[MAX_POINT_LIGHTS];
+float4 g_vPL_Position[MAX_POINT_LIGHTS];
 float g_vPL_Range[MAX_POINT_LIGHTS];
-vector g_vPL_Diffuse[MAX_POINT_LIGHTS];
-vector g_vPL_Ambient[MAX_POINT_LIGHTS];
-vector g_vPL_Specular[MAX_POINT_LIGHTS];
+float4 g_vPL_Diffuse[MAX_POINT_LIGHTS];
+float4 g_vPL_Ambient[MAX_POINT_LIGHTS];
+float4 g_vPL_Specular[MAX_POINT_LIGHTS];
 
 
 float Compute_Shade(float4 LightDirection, float4 Normal)
@@ -27,7 +27,7 @@ float Compute_Specular(float4 LightDirection, float4 Normal, float4 WorldPos, fl
 {
     vector vLook = WorldPos - CamPosition;
     vector Reflect = reflect(normalize(g_vLightDirection), normalize(Normal));
-    float fSpecular = pow(max(dot(Reflect, normalize(vLook) * (-1.f)), 0), 10);
+    float fSpecular = pow(max(dot(Reflect, normalize(vLook) * (-1.f)), 0),50);
     
     return fSpecular;
     
@@ -37,7 +37,8 @@ float Compute_Specular(float4 LightDirection, float4 Normal, float4 WorldPos, fl
 float Compute_Attenuation(float Range, float Distance)
 {
     //거리가 멀수록 0에 가깝게.
-    return saturate(1.f - (Distance / Range));
-    
+    //감쇠식 다른걸로 수정해도될듯?
+    float rangeAtt = saturate(1 - (Distance * Distance) / (Range * Range));
 
+    return rangeAtt;
 }

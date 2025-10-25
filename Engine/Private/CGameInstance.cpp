@@ -705,6 +705,12 @@ HRESULT CGameInstance::Bind_Lights(CShader* pShader)
 
 	return m_pLightManager->Bind_Lights(pShader);
 }
+CLight* CGameInstance::Get_Light(_uint iLevelID, _uint iIndex)
+{
+	CheckNullResult(m_pLightManager, nullptr);
+
+	return m_pLightManager->Get_Light(iLevelID,iIndex);
+}
 #pragma endregion
 
 void CGameInstance::Release_Engine()

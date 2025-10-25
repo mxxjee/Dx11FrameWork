@@ -53,6 +53,8 @@ VS_OUT VS_MAIN(VS_IN In)
 {
     VS_OUT Out;
     vector vPosition = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
+   
+    
     vPosition = mul(vPosition, g_ViewProjMatrix);
     
     
@@ -60,7 +62,8 @@ VS_OUT VS_MAIN(VS_IN In)
     Out.vPosition = vPosition;
     Out.vNormal = mul(vector(In.vNormal, 0.f), g_WorldMatrix);
     Out.vTexcoord = In.vTexcoord;
-    Out.vWorldPos = Out.vPosition;
+    Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
+    
     //sdfsdf
    
     return Out;
@@ -93,8 +96,7 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
     float fSpecular = Compute_Specular(g_vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition);
     
  
-    fDiffuseColor = g_vLightDiffuse * MtrlDiffuseColor
-                      * saturate(fShade + (g_vLightAmbient * g_vMaterialAmbient));
+    fDiffuseColor = g_vLightDiffuse * MtrlDiffuseColor * saturate(fShade + (g_vLightAmbient * g_vMaterialAmbient));
     fAmbientColor = float4(0, 0, 0, 0);
 
     fSpeculrColor = g_vLightSpecular * g_vMaterialSpecular * fSpecular;
@@ -110,13 +112,14 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
         float Distance = length(vLightDirection);
         
         float fShade = Compute_Shade(vLightDirection, Input.vNormal);
-        float fAttenuation = Compute_Attenuation(g_vPL_Range[i], Distance);
-        float fSpecular = Compute_Specular(vLightDirection,Input.vNormal, Input.vWorldPos, g_CamPosition);
+        float fAttenuation =Compute_Attenuation(g_vPL_Range[i], Distance);
+        float fSpecular = Compute_Specular(vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition);
         
         
         ///이거 이상함.
-        fDiffuseColor += g_vPL_Diffuse[i] * MtrlDiffuseColor * fShade * fAttenuation * saturate(fShade + (g_vPL_Ambient[i] * g_vMaterialAmbient));
-        fSpeculrColor += g_vPL_Specular[i] * g_vMaterialSpecular * fSpecular;
+        fDiffuseColor += g_vPL_Diffuse[i] * MtrlDiffuseColor * fShade * fAttenuation;
+        //fAmbientColor +=(g_vPL_Ambient[i] * g_vMaterialAmbient);
+        //fSpeculrColor += g_vPL_Specular[i] * g_vMaterialSpecular * fSpecular;
         
 
     }

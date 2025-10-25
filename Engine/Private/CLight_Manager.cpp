@@ -28,15 +28,31 @@ const LIGHT_DESC* CLight_Manager::Get_LightDesc(_uint iLevelID, _uint iIndex)
 
 }
 
+CLight* CLight_Manager::Get_Light(_uint iLevelID, _uint iIndex)
+{
+    auto iter = m_Lights[iLevelID].begin();
+    for (_uint i = 0; i < iIndex; ++i)
+        ++iter;
+
+
+    return (*iter);
+
+}
+
 HRESULT CLight_Manager::Bind_Lights(CShader* pShader)
 {  
 
     size_t LightSize = m_Lights.size();
     _uint  LevelID = CGameInstance::GetInstance()->Get_CurrentLevelID();
+    const LIGHT_DESC* pDirectional_LightDesc = nullptr;
 
     //전역조명 바인딩.
-    const LIGHT_DESC* pDirectional_LightDesc = m_DirectionalLights[LevelID]->Get_LightDesc();
-    Bind_Directional_Light(pShader, pDirectional_LightDesc);
+    if (m_DirectionalLights[LevelID])
+    {
+        pDirectional_LightDesc = m_DirectionalLights[LevelID]->Get_LightDesc();
+
+        Bind_Directional_Light(pShader, pDirectional_LightDesc);
+    }
 
     //점 조명들 바인딩.
     //현재 씬에있는 조명데이터 싹가져와
@@ -95,7 +111,7 @@ void CLight_Manager::Add_LightValue(const LIGHT_DESC* LightDesc)
  
 }
 
-HRESULT CLight_Manager::Bind_Directional_Light(class CShader* pShader,const LIGHT_DESC* pLightDesc)
+HRESULT CLight_Manager::Bind_Directional_Light(CShader* pShader,const LIGHT_DESC* pLightDesc)
 {
 
     //전역 조명 
@@ -114,27 +130,27 @@ HRESULT CLight_Manager::Bind_Directional_Light(class CShader* pShader,const LIGH
     return S_OK;
 }
 
-HRESULT CLight_Manager::Bind_Point_Light(class CShader* pShader)
+HRESULT CLight_Manager::Bind_Point_Light(CShader* pShader)
 {
 
     //포인트 라이트 조명 
     if (FAILED(pShader->Bind_RawValue("g_PointLightNum", &m_LightValues.m_LightsNum, sizeof(int))))
         return E_FAIL;
 
-    if (FAILED(pShader->Bind_RawValue("g_vPL_Range", &m_LightValues.m_LightRanges, sizeof(_float4) * (_uint)m_LightValues.m_LightRanges.size())))
+    if (FAILED(pShader->Bind_RawValue("g_vPL_Range", m_LightValues.m_LightRanges.data(), sizeof(_float) * (_uint)m_LightValues.m_LightRanges.size())))
         return E_FAIL;
 
 
-    if (FAILED(pShader->Bind_RawValue("g_vPL_Position", &m_LightValues.m_LightPositions.front(), sizeof(_float4)*(_uint)m_LightValues.m_LightPositions.size())))
+    if (FAILED(pShader->Bind_RawValue("g_vPL_Position", m_LightValues.m_LightPositions.data(), sizeof(_float4)*(_uint)m_LightValues.m_LightPositions.size())))
         return E_FAIL;
 
-    if (FAILED(pShader->Bind_RawValue("g_vPL_Diffuse", &m_LightValues.m_LightDiffuses.front(), sizeof(_float4) * (_uint)m_LightValues.m_LightDiffuses.size())))
+    if (FAILED(pShader->Bind_RawValue("g_vPL_Diffuse", m_LightValues.m_LightDiffuses.data(), sizeof(_float4) * (_uint)m_LightValues.m_LightDiffuses.size())))
         return E_FAIL;
 
-    if (FAILED(pShader->Bind_RawValue("g_vPL_Ambient", &m_LightValues.m_LightAmbients.front(), sizeof(_float4) * (_uint)m_LightValues.m_LightAmbients.size())))
+    if (FAILED(pShader->Bind_RawValue("g_vPL_Ambient", m_LightValues.m_LightAmbients.data(), sizeof(_float4) * (_uint)m_LightValues.m_LightAmbients.size())))
         return E_FAIL;
 
-    if (FAILED(pShader->Bind_RawValue("g_vPL_Specular", &m_LightValues.m_LightSpeculars.front(), sizeof(_float4) * (_uint)m_LightValues.m_LightSpeculars.size())))
+    if (FAILED(pShader->Bind_RawValue("g_vPL_Specular", m_LightValues.m_LightSpeculars.data(), sizeof(_float4) * (_uint)m_LightValues.m_LightSpeculars.size())))
         return E_FAIL;
 
     return S_OK;

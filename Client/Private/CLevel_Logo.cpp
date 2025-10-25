@@ -15,6 +15,8 @@
 
 #include "CMinimapCamera.h"
 #include "CMinimapQuad.h"
+#include "CLight.h"
+
 
 #include "CPerspectiveCameraComponent.h"
 #include "COrthographicCameraComponent.h"
@@ -98,7 +100,24 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
     
-   
+   /*점조명테스트*/
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::PageUp))
+    {
+        CLight* pLight = m_pGameInstance->Get_Light(m_iLevelID, 0);
+        LIGHT_DESC LightDesc = (*pLight->Get_LightDesc());
+        LightDesc.vPosition.y += 0.1f;
+        pLight->Set_LightDesc(LightDesc);
+
+    }
+
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::PageDown))
+    {
+        CLight* pLight = m_pGameInstance->Get_Light(m_iLevelID, 0);
+        LIGHT_DESC LightDesc = (*pLight->Get_LightDesc());
+        LightDesc.vPosition.y -= 0.1f;
+        pLight->Set_LightDesc(LightDesc);
+
+    }
 
     /*타겟 바꾸기 테스트*/
   /*  if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Tab))
@@ -205,9 +224,9 @@ HRESULT CLevel_Logo::Ready_Lights()
     LIGHT_DESC       RedLight;
     RedLight.eType = LIGHT::POINT;
 
-    RedLight.vDiffuse = _float4(1.f, 0.f, 0.f, 1.f);//빨간색
-    RedLight.fRange =1.f;
-    RedLight.vPosition = _float4(-64.f,-5.f,-64.f,1.f);
+    RedLight.vDiffuse = _float4(10.f, 0.f, 0.f, 1.f);//빨간색
+    RedLight.fRange =10.f; 
+    RedLight.vPosition = _float4(0.f,3.f,0.f,1.f);
     RedLight.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
     RedLight.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
 
