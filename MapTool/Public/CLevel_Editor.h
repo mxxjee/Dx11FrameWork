@@ -1,6 +1,11 @@
 #pragma once
 #include "CLevel.h"
 
+namespace Engine
+{
+    class CMapObject_Manager;
+}
+
 NS_BEGIN(MapTool)
 class CLevel_Editor :
     public CLevel
@@ -39,6 +44,10 @@ public:
     virtual     void        Free();
 
     int             m_iIdx = 0;
+
+private:
+    CMapObject_Manager* m_pMapObject_Manager = { nullptr };
+
 };
 
 NS_END

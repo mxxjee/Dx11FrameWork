@@ -217,19 +217,7 @@ public:
 	Triangle*				 PickTerrain(const _wstring& Key);
 #pragma endregion
 
-#pragma region MapObject_Manager
-	//생성과 동시에 추가해주는 함수
-	HRESULT						Add_MapObject_To_Layer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag, const _wstring& strLayerTag, void* pArg = nullptr);
 
-	//이미생성한 것을 추가하는 함수
-	HRESULT						Add_MapObject_To_Layer(const _wstring& LayerTag, class CMapObject* pObj);
-	class CMapObject*			Find_MapObject(const _wstring& LayerTag, const _wstring& ObjTag);
-	void						Clear(const _wstring& LayerTag);
-	class						CLayer* Find_MapLayer(const _wstring& LayerTag);
-	const						UMap<_wstring, CLayer*>& Get_Layers();
-	void						Set_SelectObject(CMapObject* pObj);
-	CMapObject*					Get_SelectObject();
-#pragma endregion
 
 #pragma region Light_Manager
 	HRESULT						Add_Light(_uint iLevelID,const LIGHT_DESC& LightDesc);
@@ -264,9 +252,6 @@ public:
 	 class CTexture_Manager* m_pTextureManager = { nullptr };
 	 class CUI_Manager* m_pUIManager = { nullptr };
 	 class CTerrain_Manager* m_pTerrainManager = { nullptr };
-
-	 class CMapObject_Manager* m_pMapObjectManager = { nullptr };
-
 	 class CLight_Manager* m_pLightManager = { nullptr };
 
 private:

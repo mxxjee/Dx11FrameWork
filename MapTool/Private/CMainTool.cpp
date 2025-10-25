@@ -11,6 +11,7 @@
 #include "CObjectInspectorWindow.h"
 
 #include "CGameObject.h"
+#include "CMapObject_Manager.h"
 #include "CCamera_Base.h"
 
 #include "../Public/CLevel_Loading.h"
@@ -69,6 +70,13 @@ HRESULT CMainTool::Initialize_MapTool()
     CreateRasterizerStates();
     CreateDepthStencilStates();
 
+    //MapObjectMAnager만들기
+    pMapObject_Manager = CMapObject_Manager::GetInstance();
+
+    if(FAILED(pMapObject_Manager->Initialize(m_pDevice,m_pContext)))
+        return E_FAIL;
+
+
     //렌더그룹 관련 초기화
     if (FAILED(pGameInstance->Initialize_Renderer(ENUM_TO_UINT(RENDERGROUP::END))))
         return E_FAIL;
@@ -115,22 +123,26 @@ HRESULT CMainTool::Initialize_MapTool()
 void CMainTool::Update_Priority(_float fTimeDelta)
 {
     CInput_Manager::GetInstance()->Update_Input();
+    pMapObject_Manager->Update_Priority(fTimeDelta);
     pGameInstance->Update_Priority_Engine(fTimeDelta);
 }
 
 void CMainTool::Update(_float fTimeDelta)
 {
+    pMapObject_Manager->Update(fTimeDelta);
     pGameInstance->Update_Engine(fTimeDelta);
     pImGui_Manager->Update();
 }
 
 void CMainTool::Update_Late(float fTimeDelta)
 {
+    pMapObject_Manager->Update_Late(fTimeDelta);
     pGameInstance->LateUpdate_Engine(fTimeDelta);
 }
 
 void CMainTool::Update_Render(float fTimeDelta)
 {
+    pMapObject_Manager->Update_Render(fTimeDelta);
     pGameInstance->Update_Render(fTimeDelta);
 }
 
@@ -330,5 +342,9 @@ void CMainTool::Free()
     CInput_Manager::GetInstance()->DestroyInstance();
     pGameInstance->Release_Engine();
 
-   Safe_Release(pGameInstance);
+    Safe_Release(pMapObject_Manager);
+    Safe_Release(pGameInstance);
+
+    CMapObject_Manager::GetInstance()->DestroyInstance();
+
 }

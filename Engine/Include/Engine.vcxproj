@@ -179,8 +179,10 @@
     <ClInclude Include="..\Public\CImGui_Manager.h" />
     <ClInclude Include="..\Public\CLight.h" />
     <ClInclude Include="..\Public\CLight_Manager.h" />
+    <ClInclude Include="..\Public\CMapLayer.h" />
     <ClInclude Include="..\Public\CMapObject.h" />
     <ClInclude Include="..\Public\CMapObject_Manager.h" />
+    <ClInclude Include="..\Public\CMapQuad.h" />
     <ClInclude Include="..\Public\CMinimapCamera.h" />
     <ClInclude Include="..\Public\CMinimapQuad.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
@@ -198,6 +200,7 @@
     <ClInclude Include="..\Public\CScreenShot_Manager.h" />
     <ClInclude Include="..\Public\CShader.h" />
     <ClInclude Include="..\Public\CShader_Manager.h" />
+    <ClInclude Include="..\Public\CSphereColliderComponent.h" />
     <ClInclude Include="..\Public\CTerrain_Base.h" />
     <ClInclude Include="..\Public\CTerrain_Manager.h" />
     <ClInclude Include="..\Public\CTexture.h" />
@@ -266,6 +269,7 @@
     <ClCompile Include="..\Private\CLight_Manager.cpp" />
     <ClCompile Include="..\Private\CMapObject.cpp" />
     <ClCompile Include="..\Private\CMapObject_Manager.cpp" />
+    <ClCompile Include="..\Private\CMapQuad.cpp" />
     <ClCompile Include="..\Private\CMinimapCamera.cpp" />
     <ClCompile Include="..\Private\CMinimapQuad.cpp" />
     <ClCompile Include="..\Private\CObject_Manager.cpp" />
@@ -282,6 +286,7 @@
     <ClCompile Include="..\Private\CScreenShot_Manager.cpp" />
     <ClCompile Include="..\Private\CShader.cpp" />
     <ClCompile Include="..\Private\CShader_Manager.cpp" />
+    <ClCompile Include="..\Private\CSphereColliderComponent.cpp" />
     <ClCompile Include="..\Private\CTerrain_Base.cpp" />
     <ClCompile Include="..\Private\CTerrain_Manager.cpp" />
     <ClCompile Include="..\Private\CTexture.cpp" />
@@ -306,6 +311,7 @@
     <ClCompile Include="..\Private\imgui_tables.cpp" />
     <ClCompile Include="..\Private\imgui_widgets.cpp" />
     <ClCompile Include="..\Public\VertexData.cpp" />
+    <ClCompile Include="CMapLayer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

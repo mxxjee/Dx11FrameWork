@@ -112,7 +112,7 @@ namespace MathUtils
 		return Start + (Target - Start) * t;
 	}
 
-	inline Ray CreateRay(HWND hWnd, ComPtr<ID3D11DeviceContext> m_pContext, CGameObject* pOther,_float4x4& Proj, _float4x4& View)
+	inline Ray CreateRayLocal(HWND hWnd, ComPtr<ID3D11DeviceContext> m_pContext, CGameObject* pOther,_float4x4& Proj, _float4x4& View)
 	{
 		Ray newRay;
 
@@ -172,4 +172,58 @@ namespace MathUtils
 
 
 	}
+
+	inline Ray CreateRayWorld(HWND hWnd, ComPtr<ID3D11DeviceContext> m_pContext, CGameObject* pOther, _float4x4& Proj, _float4x4& View)
+	{
+		Ray newRay;
+
+		CGameInstance* pGameInstance = CGameInstance::GetInstance();
+
+		POINT ptMouse{};
+		GetCursorPos(&ptMouse);
+		ScreenToClient(hWnd, &ptMouse);
+
+		//뷰포트->투영
+		_vector vMousePos = {};
+
+		D3D11_VIEWPORT          ViewportDesc{};
+		_uint           iNumViewports = { 1 };
+		m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
+
+		vMousePos = XMVectorSet(ptMouse.x / (ViewportDesc.Width * 0.5f) - 1.f,
+			ptMouse.y / -(ViewportDesc.Height * 0.5f) + 1.f,
+			0,
+			1.f);
+
+		// 투영 -> 뷰스페이스
+		_matrix	matProj = XMMatrixIdentity();
+		matProj = XMLoadFloat4x4(&Proj);
+		matProj = XMMatrixInverse(nullptr, matProj);
+		vMousePos = XMVector3TransformCoord(vMousePos, matProj);
+
+
+		//뷰스페이스->월드
+		_matrix	matView = {};
+
+
+		matView = XMLoadFloat4x4(&View);
+		matView = XMMatrixInverse(nullptr, matView);
+
+		_vector	vRayPos{ 0.f, 0.f, 0.f };		// 뷰 스페이스
+		_vector	vRayDir = vMousePos - vRayPos;
+
+		vRayPos = XMVector3TransformCoord(vRayPos, matView);
+		vRayDir = XMVector3TransformNormal(vRayDir, matView);
+
+
+		newRay.Dir = XMVector3Normalize(vRayDir);
+		newRay.Origin = vRayPos;
+
+		return newRay;
+
+
+	}
+
+
+
 }

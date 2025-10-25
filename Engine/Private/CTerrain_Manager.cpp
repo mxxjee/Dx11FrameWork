@@ -102,7 +102,7 @@ Triangle* CTerrain_Manager::PickTerrain(const _wstring& Key)
 		_float4x4 View = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
 
 
-		Ray ray = MathUtils::CreateRay(m_EngineDesc.hWnd,m_pDeviceContext,pTerrain, Proj,View);
+		Ray ray = MathUtils::CreateRayLocal(m_EngineDesc.hWnd,m_pDeviceContext,pTerrain, Proj,View);
 
 		_uint TerrainX = pTerrain->Get_VIBufferCom()->Get_NumVerticesX();
 		_uint TerrainZ = pTerrain->Get_VIBufferCom()->Get_NumVerticesZ();

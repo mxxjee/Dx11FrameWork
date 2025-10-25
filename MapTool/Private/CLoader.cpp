@@ -5,10 +5,14 @@
 #include "CMapTerrain.h"
 #include "CTerrain_Highlight.h"
 
+#include "CSphereColliderComponent.h"
+#include "CMapQuad.h"
+
 
 #include "CTransform.h"
 #include "CVIBuffer_CustomTerrain.h"
 #include "CVIBuffer_Triangle.h"
+#include "CVIBuffer_Rect.h"
 
 #include "CShader.h"
 #include "VertexData.h"
@@ -118,12 +122,18 @@ HRESULT CLoader::Loading_MapTool()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Transform"), CTransform::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-   
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_CustomTerrain"), CVIBuffer_CustomTerrain::Create(m_pDevice, m_pDeviceContext,30,30))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Triangle"), CVIBuffer_Triangle::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"SphereColliderComponent"), CSphereColliderComponent::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
 
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
 
@@ -138,6 +148,9 @@ HRESULT CLoader::Loading_MapTool()
 
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Terrain_Highlight"), CTerrain_Highlight::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapQuad"), CMapQuad::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
 

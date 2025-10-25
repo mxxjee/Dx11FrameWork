@@ -4,6 +4,7 @@ namespace Engine
 {
     class CGameInstance;
     class CMapObject;
+    class CMapObject_Manager;
     class CImgui_InputFloat;
 }
 
@@ -48,5 +49,9 @@ private:
     CImgui_InputFloat*      ScaleInput[3] = { nullptr };
     CImgui_InputFloat*      PositionInput[3] = { nullptr };
     CImgui_InputFloat*      RotationInput[3] = { nullptr };
+
+private:
+    CMapObject_Manager* m_pMapObject_Manager = { nullptr };
+
 };
 NS_END

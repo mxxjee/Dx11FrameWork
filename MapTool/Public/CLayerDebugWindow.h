@@ -5,6 +5,7 @@ namespace Engine
 {
     class CGameInstance;
     class CMapObject;
+    class CMapObject_Manager;
 }
 
 NS_BEGIN(MapTool)
@@ -28,6 +29,10 @@ public:
 private:
     CGameInstance* pGameInstance = { nullptr };
     CMapObject* pSelectObject = { nullptr };
+
+private:
+    CMapObject_Manager* m_pMapObject_Manager = { nullptr };
+
 };
 
 NS_END

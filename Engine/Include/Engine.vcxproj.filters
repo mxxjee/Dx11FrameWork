@@ -241,6 +241,18 @@
     <Filter Include="00.System\11.Light\Light">
       <UniqueIdentifier>{2389544e-5517-48f9-9ac8-66999b955d4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\Collision">
+      <UniqueIdentifier>{69f0c809-4605-4e70-9e87-2a1db533212a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="998.MapTool\MapLayer">
+      <UniqueIdentifier>{6cfdc06d-9680-42a4-90dc-b49e7008d34c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="998.MapTool\Object">
+      <UniqueIdentifier>{b6d89b93-528f-4c49-a07b-baa197542b5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="998.MapTool\Object\MapQuad">
+      <UniqueIdentifier>{6bf5f083-61a6-4a38-9333-864a2e9cfac4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -486,7 +498,18 @@
     <ClInclude Include="..\Public\CLight.h">
       <Filter>00.System\11.Light\Light</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CLight_Manager.h" />
+    <ClInclude Include="..\Public\CSphereColliderComponent.h">
+      <Filter>05.Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLight_Manager.h">
+      <Filter>00.System\11.Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapLayer.h">
+      <Filter>998.MapTool\MapLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapQuad.h">
+      <Filter>998.MapTool\Object\MapQuad</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -699,6 +722,17 @@
     <ClCompile Include="..\Private\CLight.cpp">
       <Filter>00.System\11.Light\Light</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CLight_Manager.cpp" />
+    <ClCompile Include="..\Private\CSphereColliderComponent.cpp">
+      <Filter>05.Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLight_Manager.cpp">
+      <Filter>00.System\11.Light</Filter>
+    </ClCompile>
+    <ClCompile Include="CMapLayer.cpp">
+      <Filter>998.MapTool\MapLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapQuad.cpp">
+      <Filter>998.MapTool\Object\MapQuad</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

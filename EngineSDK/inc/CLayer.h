@@ -22,8 +22,6 @@ public:
     const list<CGameObject*>& Get_ObjList() {return m_ObjList; }
     CGameObject* Find_GameObject(const _wstring& Tag);
 
-    bool            Check_Picking(HWND hWnd, ComPtr<ID3D11DeviceContext> m_pContext,_float4x4& Proj, _float4x4& View);
-
 private:
     list<CGameObject*>      m_ObjList;
 

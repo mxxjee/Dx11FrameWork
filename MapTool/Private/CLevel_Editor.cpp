@@ -6,6 +6,9 @@
 #include "CFreeCamera.h"
 #include "CMapTerrain.h"
 
+#include "CMapObject_Manager.h"
+#include "CMapQuad.h"
+
 #include "CImGui_Manager.h"
 #include "CImgui_Base.h"
 #include "CTerrainDebugWindow.h"
@@ -18,8 +21,10 @@
 USING(MapTool)
 
 CLevel_Editor::CLevel_Editor(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
-	:CLevel(_pDevice,_pDeviceContext)
+	:CLevel(_pDevice, _pDeviceContext), m_pMapObject_Manager(CMapObject_Manager::GetInstance())
 {
+	Safe_AddRef(m_pMapObject_Manager);
+
 }
 
 HRESULT CLevel_Editor::Initialize(LevelArgs& args)
@@ -31,6 +36,9 @@ HRESULT CLevel_Editor::Initialize(LevelArgs& args)
 
 
 	if (FAILED(Ready_Layer_Enviroment(L"Enviroment_Layer")))
+		return E_FAIL;
+
+	if (FAILED(Ready_Layer_Player(L"Player_Layer")))
 		return E_FAIL;
 
 	return S_OK;
@@ -97,7 +105,7 @@ HRESULT CLevel_Editor::Create_TerrainHighlight(Triangle* PickingPos)
 
 	if (pTerrain_Highlight)
 	{
-		if (FAILED(m_pGameInstance->Add_MapObject_To_Layer(L"Highlight_Layer", pTerrain_Highlight)))
+		if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(L"Highlight_Layer", pTerrain_Highlight)))
 			return E_FAIL;
 
 		
@@ -180,7 +188,29 @@ HRESULT CLevel_Editor::Ready_Layer_MainCamera(const _wstring& strLayerTag)
 
 HRESULT CLevel_Editor::Ready_Layer_Player(const _wstring& strLayerTag)
 {
-	return E_NOTIMPL;
+	CMapQuad::MAPQUAD_DESC Desc;
+	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
+	Desc.ObjTag = L"Test_Quad";
+	Desc.TextureKey = L"Keroro";
+
+	Desc.ShaderName = L"Default";
+	Desc.passName = "Default";
+	Desc.ObjType = MapObjType::MODEL;
+
+
+
+	CTransform::TRANSFORM_DESC transform;
+	Desc.TransformDesc = &transform;
+	
+	if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapQuad"),
+		strLayerTag, &Desc)))
+		return E_FAIL;
+
+
+
+
+
+	return S_OK;
 }
 
 void CLevel_Editor::OnEnter()

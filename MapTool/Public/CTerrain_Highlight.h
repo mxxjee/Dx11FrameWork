@@ -15,10 +15,7 @@ class CTerrain_Highlight :
 public:
     typedef struct tagHighlightDesc : CMapObject::MapObject_DESC
     {
-        _wstring  ShaderName = L"";
-        string  passName = "";
-        _uint eRenderGroup = 0;
-
+       
         class CGameObject* pOwner = nullptr;
         void* TriangleBuffer = nullptr;
 
@@ -54,9 +51,7 @@ private:
     CVIBuffer_Triangle*     m_pTriangleBuffer=nullptr;
     CShader*                m_pShader = { nullptr };
 private:
-    _uint                   m_eRenderGroup = 0;
-    _wstring            m_ShaderName = L"";
-    string              m_passName = "";
+
 
     Triangle            m_Triangle;
 };

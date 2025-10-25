@@ -112,10 +112,6 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	
 	CheckNullResult(m_pTerrainManager, E_FAIL);
 
-	/*맵툴오브젝트 매니저 */
-	m_pMapObjectManager = CMapObject_Manager::Create(*pDevice, *pContext);
-	CheckNullResult(m_pMapObjectManager, E_FAIL);
-
 
 	/*라이트 매니저*/
 	m_pLightManager = CLight_Manager::Create(EngineDesc.iNumLevels);
@@ -128,9 +124,7 @@ void CGameInstance::Update_Priority_Engine(_float fTimedelta)
 {
 	/*지연삭제 / Scenechange 용*/
 
-	m_pMapObjectManager->Update_Priority(fTimedelta);
 
-	
 	m_pTerrainManager->Update_Priority(fTimedelta);
 	m_pLevelManager->Update_Priority(fTimedelta);
 }
@@ -141,8 +135,6 @@ void CGameInstance::Update_Engine(_float fTimedelta)
 	m_pObjectManager->Update(fTimedelta);
 	m_pObjectManager->Update_Late(fTimedelta);*/
 
-
-	m_pMapObjectManager->Update(fTimedelta);
 
 	m_pTerrainManager->Update(fTimedelta);
 	m_pLevelManager->Update(fTimedelta);
@@ -158,8 +150,7 @@ void CGameInstance::LateUpdate_Engine(float fTimedelta)
 {
 
 
-	m_pMapObjectManager->Update_Late(fTimedelta);
-
+	
 
 	m_pTerrainManager->Update_Late(fTimedelta);
 	m_pLevelManager->Update_Late(fTimedelta);
@@ -171,9 +162,7 @@ void CGameInstance::LateUpdate_Engine(float fTimedelta)
 void CGameInstance::Update_Render(float fTimedelta)
 {
 
-	m_pMapObjectManager->Update_Render(fTimedelta);
-
-
+	
 	m_pTerrainManager->Update_Render(fTimedelta);
 	m_pLevelManager->Update_Render(fTimedelta);
 }
@@ -646,47 +635,6 @@ Triangle* CGameInstance::PickTerrain(const _wstring& Key)
 
 #pragma endregion
 
-#pragma region MapObjectManager
-
-HRESULT CGameInstance::Add_MapObject_To_Layer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag, const _wstring& strLayerTag, void* pArg)
-{
-	CheckNullResult(m_pMapObjectManager, E_FAIL);
-	return m_pMapObjectManager->Add_MapObject_To_Layer(iProtoLevelIndex,strPrototypeTag, strLayerTag, pArg);
-}
-HRESULT CGameInstance::Add_MapObject_To_Layer(const _wstring& LayerTag, CMapObject* pObj)
-{
-	CheckNullResult(m_pMapObjectManager, E_FAIL);
-	return m_pMapObjectManager->Add_MapObject_To_Layer(LayerTag, pObj);
-}
-CMapObject* CGameInstance::Find_MapObject(const _wstring& LayerTag, const _wstring& ObjTag)
-{
-	CheckNullResult(m_pMapObjectManager, nullptr);
-	return m_pMapObjectManager->Find_MapObject(LayerTag, ObjTag);
-}
-void CGameInstance::Clear(const _wstring& LayerTag)
-{
-	return m_pMapObjectManager->Clear(LayerTag);
-}
-CLayer* CGameInstance::Find_MapLayer(const _wstring& LayerTag)
-{
-	CheckNullResult(m_pMapObjectManager, nullptr);
-	return m_pMapObjectManager->Find_Layer(LayerTag);
-}
-const UMap<_wstring, CLayer*>& CGameInstance::Get_Layers()
-{
-	return m_pMapObjectManager->Get_Layers();
-}
-void CGameInstance::Set_SelectObject(CMapObject* pObj)
-{
-	return m_pMapObjectManager->Set_SelectObject(pObj);
-}
-CMapObject* CGameInstance::Get_SelectObject()
-{
-	CheckNullResult(m_pMapObjectManager, nullptr);
-	return m_pMapObjectManager->Get_SelectObject();
-}
-
-#pragma endregion
 
 #pragma region Light_Manager
 HRESULT CGameInstance::Add_Light(_uint iLevelID,const LIGHT_DESC& LightDesc)
@@ -729,7 +677,6 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pTextureManager);
 	Safe_Release(m_pUIManager);
 	Safe_Release(m_pTerrainManager);
-	Safe_Release(m_pMapObjectManager);
 	Safe_Release(m_pLightManager);
 
 

@@ -5,7 +5,11 @@
 
 
 
+/*기본생성 : transform , collider(픽킹),셰이더*/
 NS_BEGIN(Engine)
+class CSphereColliderComponent;
+class CMapObject_Manager;
+
 class ENGINE_DLL CMapObject :
     public CGameObject
 {
@@ -13,6 +17,13 @@ public:
     typedef struct MapObject_DESC : CGameObject::GAMEOBJECT_DESC
     {
         MapObjType              ObjType;
+        _uint                   eRenderGroup = 0;
+        void*                   SphereColliderComponent=nullptr;
+
+
+        _wstring    ShaderName = L"Default";
+        string      passName = "Default";
+
     }MapObject_DESC;
 
 protected:
@@ -33,7 +44,12 @@ public:
 
     virtual HRESULT Render();
 
+public:
+                //픽킹 확인
+    bool            Is_Picked(HWND hWnd, _float4x4& Proj, _float4x4& View,float& Dist);
+
 private:
+    HRESULT     Ready_Component(void* pArg);
     HRESULT     Ready_Resource(void* pArg);
 
 public:
@@ -41,11 +57,23 @@ public:
 public:
     void        Set_Select(bool _bSelect) { m_bSelected = _bSelect; }
     virtual     void    Free() override;
-public:
+
+
+protected:
+    CSphereColliderComponent* pColliderComp = { nullptr };
+    class CShader* m_pShader = nullptr;
+
+protected:
     bool                    m_bSelected = false;        //(픽킹)선택여부
     _uint                   m_eRenderGroup = 0;
     MapObjType              m_eObjType;
 
+    _wstring                m_ShaderName = L"";
+    string                  m_passName = "";
+
+
+private:
+    CMapObject_Manager*         m_pMapObject_Manager = nullptr;
 };
 
 

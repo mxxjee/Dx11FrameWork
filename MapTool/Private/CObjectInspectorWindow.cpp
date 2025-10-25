@@ -6,14 +6,19 @@
 #include "CImgui_InputFloat.h"
 #include "MathUtils.h"
 
+#include "CMapObject_Manager.h"
+
 
 
 USING(MapTool)
 CObjectInspectorWindow::CObjectInspectorWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CImgui_Window(pDevice,pContext),
-    pGameInstance(CGameInstance::GetInstance())
+    pGameInstance(CGameInstance::GetInstance()),
+    m_pMapObject_Manager(CMapObject_Manager::GetInstance())
 {
     Safe_AddRef(pGameInstance);
+    Safe_AddRef(m_pMapObject_Manager);
+
 }
 
 HRESULT CObjectInspectorWindow::Initialize(void* pArg)
@@ -194,13 +199,22 @@ void CObjectInspectorWindow::Free()
     for (int i = 0; i < 3; ++i)
         Safe_Release(ScaleInput[i]);
 
+
+    for (int i = 0; i < 3; ++i)
+        Safe_Release(PositionInput[i]);
+
+    for (int i = 0; i < 3; ++i)
+        Safe_Release(RotationInput[i]);
+
+    Safe_Release(m_pMapObject_Manager);
     Safe_Release(pGameInstance);
 }
 
 void CObjectInspectorWindow::Update_SelectObject()
 {
     /*선택한 오브젝트에 따라서 바인딩값 변경*/
-    pSelectObject = pGameInstance->Get_SelectObject();
+    pSelectObject = m_pMapObject_Manager->Get_SelectObject();
+
     if (pSelectObject)
     {
         CTransform* pTransform = pSelectObject->Get_Transform();

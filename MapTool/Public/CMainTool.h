@@ -7,6 +7,7 @@
 NS_BEGIN(Engine)
 class CImGui_Manager;
 class CGameInstance;
+class CMapObject_Manager;
 NS_END
 
 
@@ -56,6 +57,8 @@ public:
 private:
 	CGameInstance* pGameInstance;
 	CImGui_Manager* pImGui_Manager = { nullptr };
+	CMapObject_Manager* pMapObject_Manager = { nullptr };
+
 	_float4		ClearColor = _float4(0.f, 0.f, 1.f, 1.f);
 	vector<RenderStates>			m_RenderStates;
 

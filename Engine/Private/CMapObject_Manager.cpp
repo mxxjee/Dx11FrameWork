@@ -1,14 +1,35 @@
 #include "CMapObject_Manager.h"
-#include "CLayer.h"
+#include "CMapLayer.h"
 #include "CMapObject.h"
 #include "CGameInstance.h"
+#include "MathUtils.h"
+#include "CInput_Manager.h"
 
+
+IMPLEMENT_SINGLETON(CMapObject_Manager)
+
+CMapObject_Manager::CMapObject_Manager()
+{
+
+}
 CMapObject_Manager::CMapObject_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
     :m_pDevice{ _pDevice },
     m_pContext{ _pContext },
     m_pGameInstance{ CGameInstance::GetInstance() }
 {
     Safe_AddRef(m_pGameInstance);
+}
+
+HRESULT CMapObject_Manager::Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
+{
+    m_pDevice = _pDevice;
+    m_pContext = _pContext;
+    m_pGameInstance = CGameInstance::GetInstance();
+    Safe_AddRef(m_pGameInstance);
+
+    m_EngineDesc = CGameInstance::GetInstance()->Get_EngineDesc();
+
+    return S_OK;
 }
 
 void CMapObject_Manager::Update_Priority(_float fTimeDelta)
@@ -29,10 +50,14 @@ void CMapObject_Manager::Update(_float fTimeDelta)
 
 void CMapObject_Manager::Update_Late(_float fTimeDelta)
 {
+    if(CInput_Manager::GetInstance()->IsMouseButtonPressed(0))
+        Check_Picking();
+
     for (auto& pair : m_Layers)
     {
         pair.second->Update_Late(fTimeDelta);
     }
+    
 }
 
 void CMapObject_Manager::Update_Render(_float fTimeDelta)
@@ -46,38 +71,52 @@ void CMapObject_Manager::Update_Render(_float fTimeDelta)
 
 void CMapObject_Manager::Check_Picking()
 {
- /*   for (auto& i : m_Layers)
+    CheckTrue(m_Layers.empty());
+
+    //레이를 생성한다.
+        //freecam의 view/proj가져오기
+    _float4x4 Proj = CGameInstance::GetInstance()->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+    _float4x4 View = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+
+    float Dist = 0.f;
+
+    for (auto& pair : m_Layers)
     {
-        for(i.second)
-    }*/
+        if (pair.second)
+        {
+            if (pair.second->Check_Picking(m_EngineDesc.hWnd, Proj, View, Dist))
+                return;
+
+        }
+    }
 }
 
-HRESULT CMapObject_Manager::Add_MapObject_To_Layer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag, const _wstring& strLayerTag, void* pArg)
+HRESULT CMapObject_Manager::Add_MapObject_To_MapLayer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag, const _wstring& strLayerTag, void* pArg)
 {
     CGameObject* pCloneObj = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, iProtoLevelIndex, strPrototypeTag, pArg));
     CheckNullResult(pCloneObj, E_FAIL);
 
-    CLayer* pLayer = Find_Layer(strLayerTag);
+    CMapLayer* pLayer = Find_MapLayer(strLayerTag);
     if (!pLayer)
     {
-        pLayer = CLayer::Create();
-        pLayer->Add_GameObject(pCloneObj);
+        pLayer = CMapLayer::Create();
+        pLayer->Add_GameObject(dynamic_cast<CMapObject*>(pCloneObj));
         m_Layers.emplace(strLayerTag, pLayer);
 
     }
 
     else
-        pLayer->Add_GameObject(pCloneObj);
+        pLayer->Add_GameObject(dynamic_cast<CMapObject*>(pCloneObj));
 
     return S_OK;
 }
 
-HRESULT CMapObject_Manager::Add_MapObject_To_Layer(const _wstring& LayerTag, CMapObject* pObj)
+HRESULT CMapObject_Manager::Add_MapObject_To_MapLayer(const _wstring& LayerTag, CMapObject* pObj)
 {
-    CLayer* pLayer = Find_Layer(LayerTag);
+    CMapLayer* pLayer = Find_MapLayer(LayerTag);
     if (!pLayer)
     {
-        pLayer = CLayer::Create();
+        pLayer = CMapLayer::Create();
         pLayer->Add_GameObject(pObj);
         m_Layers.emplace(LayerTag, pLayer);
 
@@ -92,7 +131,7 @@ HRESULT CMapObject_Manager::Add_MapObject_To_Layer(const _wstring& LayerTag, CMa
 CMapObject* CMapObject_Manager::Find_MapObject(const _wstring& LayerTag, const _wstring& ObjTag)
 {
     CheckTrueResult(m_Layers.empty(), nullptr);
-    CLayer* pLayer = Find_Layer(LayerTag);
+    CMapLayer* pLayer = Find_MapLayer(LayerTag);
     if (pLayer)
     {
         return dynamic_cast<CMapObject*>(pLayer->Find_GameObject(ObjTag));
@@ -104,13 +143,13 @@ CMapObject* CMapObject_Manager::Find_MapObject(const _wstring& LayerTag, const _
 void CMapObject_Manager::Clear(const _wstring& LayerTag)
 {
     CheckTrue(m_Layers.empty());
-    CLayer* pLayer = Find_Layer(LayerTag);
+    CMapLayer* pLayer = Find_MapLayer(LayerTag);
 
     Safe_Release(pLayer);
     m_Layers.erase(LayerTag);
 }
 
-CLayer* CMapObject_Manager::Find_Layer(const _wstring& LayerTag)
+CMapLayer* CMapObject_Manager::Find_MapLayer(const _wstring& LayerTag)
 {
     auto iter = m_Layers.find(LayerTag);
     if (iter != m_Layers.end())
