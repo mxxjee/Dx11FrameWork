@@ -33,15 +33,18 @@ HRESULT CAssetListWindow::Initialize(void* pArg)
         return E_FAIL;
 
 
+    if (FAILED(Create_TileImages()))
+        return E_FAIL;
+
+
     return S_OK;
 }
 
 void CAssetListWindow::Update()
 {
     ImGui::Begin(m_WindowTitle.c_str(), &m_bOpen);
-    if (m_pImgui_DataManager->Get_Data()->m_SelectedCategory == "Model")
-        Show_ModelGrid();
 
+    Show_Grid(m_pImgui_DataManager->Get_Data()->m_SelectedCategory);
     ImGui::End();
 }
 
@@ -89,14 +92,44 @@ HRESULT CAssetListWindow::Create_ModelImages()
     }
 }
 
-void CAssetListWindow::Show_ModelGrid()
+HRESULT CAssetListWindow::Create_TileImages()
 {
+    vector<wstring> Tmp = m_pImgui_DataManager->GetImageFiles(L"C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Tile");
+    for (auto& i : Tmp)
+    {
+        AssetInfo info;
+        info.FullPath = i;
+
+        TileImages.push_back(info);
+    }
+
+    for (auto& info : TileImages)
+    {
+        fs::path    Tmp = info.FullPath;
+        info.TexKey = Tmp.stem().wstring();
+
+        CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, info.FullPath.c_str(), 1);
+        if (FAILED(pGameInstance->Register_Texture(info.TexKey, pTexture)))
+            return E_FAIL;
+
+    }
+}
+
+void CAssetListWindow::Show_Grid(const string& Category)
+{
+
     int  columnCount = 10;
     ImVec2 iconSize = ImVec2(64, 64); // 썸네일 크기
     ImGui::Columns(columnCount, 0, false);
+    vector<tagAssetInfo>*        Target;
+    if (Category == "Model")
+        Target = &ModelImages;
+
+    else
+        Target = &TileImages;
 
 
-    for (int i = 0; i < ModelImages.size(); ++i)
+    for (int i = 0; i < Target->size(); ++i)
     {
         ImGui::BeginGroup();
         // 썸네일 이미지
@@ -108,11 +141,11 @@ void CAssetListWindow::Show_ModelGrid()
         ComPtr<ID3D11ShaderResourceView> SRV = pTex->Get_SRV(0);
         ImTextureID tex = (ImTextureID)SRV.Get();
 
-        
-        if (ImGui::ImageButton(WStringToUTF8(info.TexKey).c_str(),tex, iconSize))
+
+        if (ImGui::ImageButton(WStringToUTF8(info.TexKey).c_str(), tex, iconSize))
         {
-           
-           
+
+
         }
 
         if (ImGui::IsItemActivated())
@@ -120,14 +153,24 @@ void CAssetListWindow::Show_ModelGrid()
             // 클릭 시 이벤트 처리
            //just 클릭시 -> 0,0,0에 바로생성
            //click->drag 시 마우스따라가면서 터레인에 생성, release 시 위치고정
-            CImgui_DataManager::PlaceObjectInfo Info;
-            Info.ObjType = MapObjType::MODEL;
-            Info.TexKey = info.TexKey;
 
-            m_pImgui_DataManager->Active_PlacementMode(Info);
+            ///지금해야하는것 : 클릭한애들의 ObjType을 어케지정할거냐..
+            CImgui_DataManager::PlaceObjectInfo PlaceInfo;
+            PlaceInfo.ObjType = m_pImgui_DataManager->Get_ObjType_From_Path(info.FullPath);
+
+            if (PlaceInfo.ObjType == MapObjType::TILE)
+                PlaceInfo.m_resourceType = ResourceType::TEXTURE;
+
+            else
+                PlaceInfo.m_resourceType = ResourceType::MODEL;
+
+
+            PlaceInfo.TexKey = info.TexKey;
+
+            m_pImgui_DataManager->Active_PlacementMode(PlaceInfo);
         }
 
-      
+
 
         // 파일 이름 밑에 표시
         std::string name = WStringToUTF8(info.TexKey);
@@ -139,13 +182,6 @@ void CAssetListWindow::Show_ModelGrid()
         ImGui::NextColumn();
 
     }
-
-}
-
-void CAssetListWindow::Show_TileGrid()
-{
-
-    
 }
 
 void CAssetListWindow::Free()

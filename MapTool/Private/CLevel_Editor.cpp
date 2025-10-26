@@ -209,7 +209,7 @@ HRESULT CLevel_Editor::Ready_Layer_Player(const _wstring& strLayerTag)
 
 	Desc.ShaderName = L"Default";
 	Desc.passName = "Default";
-	Desc.ObjType = MapObjType::MODEL;
+	Desc.ObjType = MapObjType::OBSTACLE;
 	
 
 

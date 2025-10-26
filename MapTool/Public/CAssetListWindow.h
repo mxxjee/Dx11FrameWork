@@ -42,9 +42,11 @@ public:
 
 private:
     HRESULT       Create_ModelImages();
+    HRESULT       Create_TileImages();
+
 private:
-    void        Show_ModelGrid();
-    void        Show_TileGrid();
+    void        Show_Grid(const string& Category);
+
 
 private:
     CGameInstance* pGameInstance = { nullptr };
@@ -54,7 +56,7 @@ private:
 
 private:
     vector<tagAssetInfo>        ModelImages;
-    vector<wstring>         TileImages;
+    vector<tagAssetInfo>         TileImages;
 
 };
 

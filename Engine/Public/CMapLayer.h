@@ -24,6 +24,7 @@ public:
 
     CMapObject*        Check_Picking(_vector Origin, _vector Dir, float& Dist);
 
+    
 public:
     void        Set_AblePicking(bool b) { m_bAblePicking = b; }
 private:

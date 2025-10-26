@@ -224,12 +224,20 @@ void CObjectInspectorWindow::Update_SelectObject()
         string Type = "";
         switch (pSelectObject->Get_ObjType())
         {
+        case MapObjType::OBSTACLE:
+            Type = "OBSTACLE";
+            break;
+
         case MapObjType::TILE:
             Type = "TILE";
             break;
 
-        case MapObjType::MODEL:
-            Type = "MODEL";
+        case MapObjType::POSITION:
+            Type = "POSITION";
+            break;
+
+        case MapObjType::TRIGGER:
+            Type = "TRIGGER";
             break;
 
         default:

@@ -259,6 +259,9 @@
     <Filter Include="05.Component\Collision\Box">
       <UniqueIdentifier>{2df2dce6-55c0-485c-a946-ddc8df6ed6ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="998.MapTool\Object\MapModel">
+      <UniqueIdentifier>{4a11ce14-33cc-49ce-ad6a-22e993ba4f61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">

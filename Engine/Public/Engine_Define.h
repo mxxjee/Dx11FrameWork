@@ -38,6 +38,8 @@ using namespace std;
 
 #include <DirectXCollision.h>
 
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 #ifdef _DEBUG
 #pragma comment(lib,"../../Libraries/Lib/DirectXTex_Debug.lib")

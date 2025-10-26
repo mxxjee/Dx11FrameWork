@@ -9,7 +9,7 @@
 
 CMapObject::CMapObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CGameObject{ pDevice,pContext },
-	m_eObjType{ MapObjType::MODEL },
+	m_eObjType{ MapObjType::OBSTACLE },
 	pColliderComp{ nullptr },
 	m_pMapObject_Manager{ CMapObject_Manager ::GetInstance()}
 {

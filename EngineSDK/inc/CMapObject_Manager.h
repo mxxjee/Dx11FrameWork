@@ -36,8 +36,7 @@ public:
     //이미생성한 것을 추가하는 함수
     HRESULT                 Add_MapObject_To_MapLayer(const _wstring& LayerTag,CMapObject* pObj);
     
-    //원형생성(맵툴 배치용)
-    HRESULT              Add_Model_To_MapLayer(void* pArg);
+
 
 
     CMapObject*             Find_MapObject(const _wstring& LayerTag,const _wstring& ObjTag);
@@ -45,6 +44,9 @@ public:
     CMapLayer*              Find_MapLayer(const _wstring& LayerTag);
     void                    Set_SelectObject(CMapObject* pObj);
 
+public:
+    HRESULT             Save_Data(const wstring& Path);
+    CMapLayer*             Get_Layer_By_MapObjType(MapObjType eType);
 
 public:
     //레이어리스트를 가져온다.

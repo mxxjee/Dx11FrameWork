@@ -144,29 +144,6 @@ HRESULT CMapObject_Manager::Add_MapObject_To_MapLayer(const _wstring& LayerTag, 
     return S_OK;
 }
 
-HRESULT CMapObject_Manager::Add_Model_To_MapLayer(void* pArg)
-{
-    CMapLayer* pLayer = Find_MapLayer(L"Model_Layer");
-
-    CGameObject* pCloneObj = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, 0, PROTO_OBJ_NAME(L"MapQuad"), pArg));
-    CheckNullResult(pCloneObj, E_FAIL);
-
-    CMapObject* pObj = dynamic_cast<CMapObject*>(pCloneObj);
-    CheckNullResult(pObj, E_FAIL);
-
-    if (!pLayer)
-    {
-        pLayer = CMapLayer::Create();
-        pLayer->Add_GameObject(pObj);
-        m_Layers.emplace(L"Model_Layer", pLayer);
-
-    }
-
-    else
-        pLayer->Add_GameObject(pObj);
-
-    return S_OK;
-}
 
 CMapObject* CMapObject_Manager::Find_MapObject(const _wstring& LayerTag, const _wstring& ObjTag)
 {
@@ -205,6 +182,63 @@ void CMapObject_Manager::Set_SelectObject(CMapObject* pObj)
     
     m_pSelectObject = pObj;
     pObj->Set_Select(true);
+
+}
+
+HRESULT CMapObject_Manager::Save_Data(const wstring& Path)
+{
+    json root;
+    //////////
+    json objectArray = json::array();
+    for (auto& pair : m_Layers)
+    {
+        for (pair.second)
+        {
+
+        }
+    }
+    return S_OK;
+}
+
+CMapLayer* CMapObject_Manager::Get_Layer_By_MapObjType(MapObjType eType)
+{
+    wstring LayerTag = L"";
+
+    switch (eType)
+    {
+    case MapObjType::OBSTACLE:
+        LayerTag = L"Obstacle_Layer";
+        break;
+
+    case MapObjType::TILE:
+        LayerTag = L"Tile_Layer";
+        break;
+
+
+    case MapObjType::POSITION:
+        LayerTag = L"Position_Layer";
+        break;
+
+
+    case MapObjType::TRIGGER:
+        LayerTag = L"Trigger_Layer";
+        break;
+
+
+    default:
+        break;
+    }
+
+    CMapLayer* pLayer = Find_MapLayer(LayerTag);
+    if (!pLayer)
+    {
+        pLayer = CMapLayer::Create();
+        m_Layers.emplace(LayerTag, pLayer);
+
+       
+    }
+    
+    return pLayer;
 
 }
 

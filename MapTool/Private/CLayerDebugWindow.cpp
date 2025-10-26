@@ -41,7 +41,7 @@ void CLayerDebugWindow::Update()
             CMapLayer* pLayer = pair.second;
 
             string name = WStringToUTF8(LayerTag);
-            int count = pLayer->Get_ObjList().size();
+            int count = (int)pLayer->Get_ObjList().size();
 
             char label[256];
             sprintf_s(label, "%s   /  count: %d##%s", name.c_str(), count, name.c_str());

@@ -163,12 +163,26 @@ namespace Engine
 		END,
 	};
 
+	//클라이언트에서 파싱할때 나눌 클래스..?
 	enum class MapObjType
 	{
-		TILE,
-		MODEL,
+		OBSTACLE,	//단지 맵에 설치할 조형물들
+		TILE,	//타일관련
+		POSITION, //위치값만 존재(EMPTY, 몬스터스폰위치 등)
+		TRIGGER,
 		END
 	};
+
+	//맵툴에서 설치할때 부를 리소스 타입
+	enum class ResourceType
+	{
+		NONE,
+		MODEL,
+		TEXTURE,
+		END
+	};
+
+
 
 	enum class LIGHT
 	{

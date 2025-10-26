@@ -98,7 +98,7 @@ wstring CImgui_DataManager::Generate_UniqueTag(MapObjType Type, const wstring& b
 	int iIdx = 0;
 	_wstring Result;
 
-	CMapLayer* pMapLayer = Type == MapObjType::MODEL ? m_pMapObject_Manager->Find_MapLayer(L"Model_Layer") : m_pMapObject_Manager->Find_MapLayer(L"Tile_Layer");
+	CMapLayer* pMapLayer = m_pMapObject_Manager->Get_Layer_By_MapObjType(Type);
 	if (pMapLayer)
 	{
 		while (true)
@@ -138,11 +138,49 @@ HRESULT CImgui_DataManager::Create_Model(bool bDrag)
 
 	}
 
-	if (m_PlaceObjInfo.ObjType == MapObjType::MODEL)
-		return m_pMapObject_Manager->Add_Model_To_MapLayer(&Desc);
+	//타입에 맞게 레이어에 넣어주기.
+	wstring LayerTag = L"";
+	wstring ProtoTag = L"";			//L"MapOBstalce" , "MapTile", "MapPosition", "MapTrigger"
 
-	return E_FAIL;
+	switch (m_PlaceObjInfo.ObjType)
+	{
+	case MapObjType::OBSTACLE:
+		LayerTag = L"Obstacle_Layer";
+		ProtoTag = L"MapQuad";
+		break;
 
+	case MapObjType::TILE:
+		LayerTag = L"Tile_Layer";
+
+		break;
+
+	case MapObjType::POSITION:
+		LayerTag = L"Position_Layer";
+		break;
+
+	case MapObjType::TRIGGER:
+		LayerTag = L"Trigger_Layer";
+		break;
+
+	default:
+		break;
+	}
+
+	return m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc);
+
+
+}
+
+MapObjType CImgui_DataManager::Get_ObjType_From_Path(const wstring& path)
+{
+	if (path.find(L"Obstacle"))
+		return MapObjType::OBSTACLE;
+
+
+	if (path.find(L"Tile"))
+		return MapObjType::TILE;
+
+	return MapObjType();
 }
 
 void CImgui_DataManager::Free()
