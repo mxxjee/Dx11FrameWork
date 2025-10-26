@@ -1,9 +1,11 @@
 #include "CMapObject.h"
 #include "CGameInstance.h"
-#include "CSphereColliderComponent.h"
+#include "CBoxColliderComponent.h"
 #include "CMapObject_Manager.h"
 #include "MathUtils.h"
-#include	"CShader.h"
+#include "CShader.h"
+#include "CCollider_Base.h"
+
 
 CMapObject::CMapObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CGameObject{ pDevice,pContext },
@@ -62,8 +64,13 @@ void CMapObject::Update(_float fTimeDelta)
 	CheckNull(pColliderComp);
 		
 	
-	pColliderComp->UpdateCollider(m_pTransformCom);
+	pColliderComp->Update_Collider(m_pTransformCom);
 
+	if (m_bSelected)
+		m_passName = "Select";
+
+	else
+		m_passName = "Default";
 	
 
 }
@@ -92,7 +99,7 @@ bool CMapObject::Is_Picked(_vector Origin, _vector Dir, float& Dist)
 {
 	CheckNullResult(pColliderComp, false);
 
-	bool Result= pColliderComp->Intersects(Origin, Dir, Dist);
+	bool Result= pColliderComp->Intersects_Ray(Origin, Dir, Dist);
 
 
 	return Result;
@@ -104,23 +111,23 @@ HRESULT CMapObject::Ready_Component(void* pArg)
 	MapObject_DESC* pDesc = static_cast<MapObject_DESC*>(pArg);
 
 	//없다면 자동으로 만들어주자.
-	CSphereColliderComponent::BOUNDINGSPHERE_DESC ColDesc;
-	CComponent::COMPONENT_DESC* ColliderDesc = static_cast<CSphereColliderComponent::BOUNDINGSPHERE_DESC*>(pDesc->SphereColliderComponent);
+	CCollider_Base::COLLIDER_DESC ColDesc;
+	CComponent::COMPONENT_DESC* ColliderDesc = static_cast<CCollider_Base::COLLIDER_DESC*>(pDesc->ColliderComponent);
 	if (!ColliderDesc)
 	{
-		ColDesc.Center = _float3(0.f, 0.f, 0.f);
-		ColDesc.Radius = 1.f;
+		ColDesc.vScaleOffSet = { 0.3f,0.3f,0.3f };
 		ColliderDesc = &ColDesc;
-		pDesc->SphereColliderComponent = &ColliderDesc;
-		
+
+		pDesc->ColliderComponent = &ColDesc;
 
 	}
+
 	ColliderDesc->pOwner = this;
 
-	CComponent* pCollider = dynamic_cast<CSphereColliderComponent*>(m_pGameInstance->Clone_Prototype
-	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"SphereColliderComponent"), pDesc->SphereColliderComponent));
+	CComponent* pCollider = dynamic_cast<CBoxColliderComponent*>(m_pGameInstance->Clone_Prototype
+	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"BoxColliderComponent"), pDesc->ColliderComponent));
 
-	if (FAILED(Add_Component(COMPONENT_TYPE::SPHERE_COLLIDER, pCollider, reinterpret_cast<CComponent**>(&pColliderComp))))
+	if (FAILED(Add_Component(COMPONENT_TYPE::BOX_COLLIDER, pCollider, reinterpret_cast<CComponent**>(&pColliderComp))))
 		return E_FAIL;
 
 	return S_OK;

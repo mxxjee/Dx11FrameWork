@@ -1,17 +1,10 @@
 #pragma once
-#include "CComponent.h"
+#include "CCollider_Base.h"
 
 NS_BEGIN(Engine)
 class ENGINE_DLL CSphereColliderComponent :
-    public CComponent
+    public CCollider_Base
 {
-public:
-    typedef struct tagBoundingSphereDesc :CComponent::COMPONENT_DESC
-    {
-        _float3 Center;
-        _float Radius;
-
-    }BOUNDINGSPHERE_DESC;
 
 protected:
     CSphereColliderComponent(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
@@ -23,8 +16,8 @@ public:
     virtual         HRESULT     Initialize_Copytype(void* pArg);
 
 public:
-    HRESULT        UpdateCollider(class CTransform* pTransform);
-    bool            Intersects(_vector origin, _vector rayDir, _float& Dist);
+    virtual HRESULT        Update_Collider(class CTransform* pTransform);
+    bool            Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);
 
 public:
     virtual CSphereColliderComponent* Clone(void* pArg);

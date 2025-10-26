@@ -256,6 +256,9 @@
     <Filter Include="05.Component\Collision\Sphere">
       <UniqueIdentifier>{b85b90e1-9860-48ed-95dc-558a0c99bc7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\Collision\Box">
+      <UniqueIdentifier>{2df2dce6-55c0-485c-a946-ddc8df6ed6ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -516,6 +519,9 @@
     <ClInclude Include="..\Public\CCollider_Base.h">
       <Filter>05.Component\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CBoxColliderComponent.h">
+      <Filter>05.Component\Collision\Box</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -742,6 +748,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CCollider_Base.cpp">
       <Filter>05.Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBoxColliderComponent.cpp">
+      <Filter>05.Component\Collision\Box</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

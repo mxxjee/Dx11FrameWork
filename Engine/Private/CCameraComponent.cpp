@@ -23,6 +23,8 @@ HRESULT CCameraComponent::Initialize_Prototype()
 HRESULT CCameraComponent::Initialize_Copytype(void* pArg)
 {
     if (FAILED(__super::Initialize_Copytype(pArg)))
+        return E_FAIL;
+
 
   /*  CComponent::COMPONENT_DESC* pCompDesc = static_cast<CComponent::COMPONENT_DESC*>(pArg);
 

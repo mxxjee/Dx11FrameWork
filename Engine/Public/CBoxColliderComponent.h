@@ -1,0 +1,34 @@
+#pragma once
+#include "CCollider_Base.h"
+
+
+NS_BEGIN(Engine)
+class ENGINE_DLL CBoxColliderComponent :
+    public CCollider_Base
+{
+protected:
+    CBoxColliderComponent(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+    CBoxColliderComponent(const CBoxColliderComponent& Prototype);
+    virtual ~CBoxColliderComponent() = default;
+
+public:
+    virtual         HRESULT     Initialize_Prototype();
+    virtual         HRESULT     Initialize_Copytype(void* pArg);
+
+public:
+    virtual HRESULT        Update_Collider(class CTransform* pTransform);
+    bool            Intersects_Ray(_vector origin, _vector rayDir, _float & Dist);
+
+public:
+    virtual CBoxColliderComponent* Clone(void* pArg);
+    virtual void Free() override;
+
+public:
+    static CBoxColliderComponent* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+
+private:
+    BoundingBox      m_BoundingBox;
+
+};
+NS_END
+

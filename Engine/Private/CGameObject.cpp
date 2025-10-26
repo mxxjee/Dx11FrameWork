@@ -92,6 +92,8 @@ HRESULT CGameObject::Ready_Components(void* pArg)
         reinterpret_cast<CComponent**>(&m_pTransformCom)
     )))
         return E_FAIL;
+
+    return S_OK;
 }
 
 HRESULT CGameObject::Ready_Resource(void* pArg)

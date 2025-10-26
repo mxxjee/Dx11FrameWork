@@ -19,6 +19,12 @@ struct VS_OUT
     float2 vTexcoord : TEXCOORD0;
 };
 
+struct PS_IN
+{
+    float4 vPosition : SV_POSITION;
+    float2 vTexcoord : TEXCOORD0;
+};
+
 
 
 /*버텍스 셰이더 단계의 함수
@@ -43,7 +49,7 @@ VS_OUT VS_MAIN(VS_IN In)
 }
 
 //이후 RS단계에서 GPU가 내부적으로 w나누기 수행
-float4 PS_MAIN(VS_OUT Input) : SV_Target0
+float4 PS_MAIN(PS_IN Input) : SV_Target0
 {
     float4 color = texture0.Sample(sampler0, Input.vTexcoord);
 
@@ -51,14 +57,14 @@ float4 PS_MAIN(VS_OUT Input) : SV_Target0
     return color;
 }
 
-float4 PS_MINIMAP(VS_OUT Input) : SV_Target0
+float4 PS_MINIMAP(PS_IN Input) : SV_Target0
 {
     float4 color = texture0.Sample(sampler0, Input.vTexcoord);
 
     return color;
 }
 
-float4 PS_BRIGHT(VS_OUT Input) : SV_Target0
+float4 PS_BRIGHT(PS_IN Input) : SV_Target0
 {
     float4 color = texture0.Sample(sampler0, Input.vTexcoord);
     color.rgb *= g_Brightness;
@@ -69,7 +75,7 @@ float4 PS_BRIGHT(VS_OUT Input) : SV_Target0
 
 ///////////////지햄의 여러 쉐이더 응용///////////
 //밝기
-float4 PS_SoftBright(VS_OUT In) : SV_Target0
+float4 PS_SoftBright(PS_IN In) : SV_Target0
 {
     float4 color = texture0.Sample(sampler0, In.vTexcoord);
     float fAv = ( color.r + color.g + color.b) / 4.f;
@@ -83,7 +89,7 @@ float4 PS_SoftBright(VS_OUT In) : SV_Target0
 }
 
 //반전효과
-float4 PS_InvertColor(VS_OUT In) : SV_Target0
+float4 PS_InvertColor(PS_IN In) : SV_Target0
 {
     float4 color = texture0.Sample(sampler0, In.vTexcoord);
     color.rgb = 1 - color.rgb;
@@ -92,7 +98,7 @@ float4 PS_InvertColor(VS_OUT In) : SV_Target0
 }
 
 //거리에 따른 방사형밝기효과
-float4 PS_RadialBright(VS_OUT In) : SV_Target0
+float4 PS_RadialBright(PS_IN In) : SV_Target0
 {
     float4 color = texture0.Sample(sampler0, In.vTexcoord);
     
@@ -105,7 +111,7 @@ float4 PS_RadialBright(VS_OUT In) : SV_Target0
 }
 
 //bloom 효과
-float4 PS_THRESHOLD(VS_OUT In) : SV_Target0
+float4 PS_THRESHOLD(PS_IN In) : SV_Target0
 {
     float4 color = texture0.Sample(sampler0, In.vTexcoord);
     float fAv = (color.r + color.g + color.b) / 4.f;
@@ -121,7 +127,7 @@ float4 PS_THRESHOLD(VS_OUT In) : SV_Target0
 
 
 
-float4 PS_GuasianBlur(VS_OUT In):SV_Target0
+float4 PS_GuasianBlur(PS_IN In) : SV_Target0
 {
     float4 ColorSum = float4(0, 0, 0, 0);
     float WeightSum=0;
@@ -163,6 +169,14 @@ float4 PS_GuasianBlur(VS_OUT In):SV_Target0
  
 }
 
+float4 PS_Selected(PS_IN In) : SV_Target0
+{
+    float4 color = texture0.Sample(sampler0, In.vTexcoord);
+    
+    
+    return color * float4(1.f, 0.f, 0.f, 0.9f);
+    
+}
 
 /*렌더링 방법을 정의한다.*/
 technique11 DefaultTechnique
@@ -228,5 +242,11 @@ technique11 DefaultTechnique
     {
         VertexShader = compile vs_5_0 VS_MAIN();
         PixelShader = compile ps_5_0 PS_GuasianBlur();
+    }
+
+    pass Select
+    {
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_Selected();
     }
 }

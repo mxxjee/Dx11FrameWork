@@ -101,6 +101,7 @@ CMapObject* CMapLayer::Check_Picking(_vector Origin, _vector Dir, float& Dist)
 
 	}
 
+    //젤 작은거리의 픽킹오브젝트 반환
     Dist = fMinDist;
     return pPickedObj;
 }

@@ -72,14 +72,16 @@ void CMapObject_Manager::Update_Render(_float fTimeDelta)
 void CMapObject_Manager::Check_Picking()
 {
     CheckTrue(m_Layers.empty());
-
     //레이를 생성한다.
         //freecam의 view/proj가져오기
     _float4x4 Proj = CGameInstance::GetInstance()->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
     _float4x4 View = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
 
     float Dist = 0.f;
+    float MinDist = FLT_MAX;
+
     CMapObject* pObj = nullptr;
+    CMapObject* pPickObj = nullptr;
 
     Ray ray = MathUtils::CreateRayWorld(m_EngineDesc.hWnd, m_pContext, Proj, View);
     for (auto& pair : m_Layers)
@@ -87,14 +89,22 @@ void CMapObject_Manager::Check_Picking()
         if (pair.second)
         {
             pObj = pair.second->Check_Picking(ray.Origin, ray.Dir, Dist);
+            
             if (pObj)
             {
-                Set_SelectObject(pObj);
-                return;
+                if (Dist < MinDist)
+                {
+                    MinDist = Dist;
+                    pPickObj = pObj;
+                }
+
             }
 
-        }
+       }
     }
+
+    if(pPickObj)
+        Set_SelectObject(pPickObj);
 }
 
 HRESULT CMapObject_Manager::Add_MapObject_To_MapLayer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag, const _wstring& strLayerTag, void* pArg)

@@ -5,7 +5,7 @@
 #include "CMapTerrain.h"
 #include "CTerrain_Highlight.h"
 
-#include "CSphereColliderComponent.h"
+#include "CBoxColliderComponent.h"
 #include "CMapQuad.h"
 
 
@@ -131,17 +131,14 @@ HRESULT CLoader::Loading_MapTool()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Triangle"), CVIBuffer_Triangle::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"SphereColliderComponent"), CSphereColliderComponent::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"BoxColliderComponent"), CBoxColliderComponent::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
-
 
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
 
  
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FreeCamera"), CFreeCamera::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
-
-   
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapTerrain"), CMapTerrain::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;

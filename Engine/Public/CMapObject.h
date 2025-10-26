@@ -7,7 +7,7 @@
 
 /*기본생성 : transform , collider(픽킹),셰이더*/
 NS_BEGIN(Engine)
-class CSphereColliderComponent;
+class CBoxColliderComponent;
 class CMapObject_Manager;
 
 class ENGINE_DLL CMapObject :
@@ -18,7 +18,7 @@ public:
     {
         MapObjType              ObjType;
         _uint                   eRenderGroup = 0;
-        void*                   SphereColliderComponent=nullptr;
+        void*                   ColliderComponent=nullptr;
 
 
         _wstring    ShaderName = L"Default";
@@ -60,7 +60,7 @@ public:
 
 
 protected:
-    CSphereColliderComponent* pColliderComp = { nullptr };
+    CBoxColliderComponent* pColliderComp = { nullptr };
     class CShader* m_pShader = nullptr;
 
 protected:

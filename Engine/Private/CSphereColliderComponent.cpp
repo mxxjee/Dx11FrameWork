@@ -1,12 +1,12 @@
 #include "CSphereColliderComponent.h"
 #include "CTransform.h"
 CSphereColliderComponent::CSphereColliderComponent(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CComponent(pDevice,pContext)
+    :CCollider_Base(pDevice,pContext)
 {
 }
 
 CSphereColliderComponent::CSphereColliderComponent(const CSphereColliderComponent& Prototype)
-    :CComponent(Prototype), m_Sphere(Prototype.m_Sphere)
+    : CCollider_Base(Prototype), m_Sphere(Prototype.m_Sphere)
 {
 }
 
@@ -17,28 +17,33 @@ HRESULT CSphereColliderComponent::Initialize_Prototype()
 
 HRESULT CSphereColliderComponent::Initialize_Copytype(void* pArg)
 {
-    BOUNDINGSPHERE_DESC* pDesc = static_cast<BOUNDINGSPHERE_DESC*>(pArg);
+   if(FAILED(__super::Initialize_Copytype(pArg)))
+       return E_FAIL;
 
-    m_Sphere.Center = pDesc->Center;
-    m_Sphere.Radius = pDesc->Radius;
+   m_eType = COLLIDER_TYPE::SPHERE;
+
 
     return S_OK;
 }
 
-HRESULT CSphereColliderComponent::UpdateCollider(CTransform* pTransform)
+HRESULT CSphereColliderComponent::Update_Collider(CTransform* pTransform)
 {
-    CheckNullResult(pTransform, E_FAIL);
+
+    XMStoreFloat3(&vCenter, pTransform->Get_State(STATE::POSITION));
+    XMStoreFloat3(&m_Sphere.Center, XMLoadFloat3(&vOffset) + XMLoadFloat3(&vCenter));
 
 
-    XMStoreFloat3(&m_Sphere.Center, pTransform->Get_State(STATE::POSITION, TransformScope::WORLD));
-    
     _float3 vScale = pTransform->Get_Scale_ByFloat3();
-    m_Sphere.Radius=max(vScale.x, vScale.y,vScale.z);
+    float Radius= max(vScale.x, vScale.y);
+    Radius = max(Radius, vScale.z);
+
+    m_Sphere.Radius = Radius * vScaleOffSet.x;
+
 
     return S_OK;
 }
 
-bool CSphereColliderComponent::Intersects(_vector origin, _vector rayDir, _float& Dist)
+bool CSphereColliderComponent::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
 {
     return m_Sphere.Intersects(origin, rayDir, Dist);
 }
