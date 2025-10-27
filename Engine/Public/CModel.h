@@ -23,5 +23,7 @@ public:
 private:
     Assimp::Importer        m_Importer = {};        //모델 로드하기 위한 임포터
     const aiScene*          m_pAIScene = { nullptr };            //읽어온 모델의 정보를 aiscene 구조체에 저장하는형태
+
+
 };
 NS_END
