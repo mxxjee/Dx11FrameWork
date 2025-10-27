@@ -49,10 +49,10 @@ using namespace std;
 using json = nlohmann::json;
 
 #ifdef _DEBUG
-#pragma comment(lib,"../../Libraries/Lib/DirectXTex_Debug.lib")
+#pragma comment(lib,"../ThirdPartyLib/DirectXTex_Debug.lib")
 
 #else
-#pragma comment(lib,"../../Libraries/Lib/DirectXTex.lib")
+#pragma comment(lib,"../ThirdPartyLib/DirectXTex.lib")
 
 #endif
 
