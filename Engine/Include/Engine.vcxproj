@@ -78,7 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\Bin\</OutDir>
+    <OutDir>../Bin/</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -120,13 +120,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;ENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);IMGUI_API=__declspec(dllexport)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\Include;../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;Effects11d.lib;DirectXTKd.lib</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;Effects11d.lib;DirectXTKd.lib;assimp-vc142-mtd.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>../ThirdPartyLib/;../../EngineSDK/lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -146,7 +146,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;Effects11.lib;DirectXTK.lib</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;Effects11.lib;DirectXTK.lib;assimp-vc142-mt.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>../ThirdPartyLib/;../../EngineSDK/lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -187,6 +187,8 @@
     <ClInclude Include="..\Public\CMapQuad.h" />
     <ClInclude Include="..\Public\CMinimapCamera.h" />
     <ClInclude Include="..\Public\CMinimapQuad.h" />
+    <ClInclude Include="..\Public\CModel.h" />
+    <ClInclude Include="..\Public\CModelObject.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
     <ClInclude Include="..\Public\CMainCamera.h" />
     <ClInclude Include="..\Public\ColorUtils.h" />
@@ -240,7 +242,6 @@
     <ClInclude Include="..\Public\VertexData.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Libraries\Include\SimpleMath\SimpleMath.cpp" />
     <ClCompile Include="..\Private\CBase.cpp" />
     <ClCompile Include="..\Private\CBoxColliderComponent.cpp" />
     <ClCompile Include="..\Private\CCameraComponent.cpp" />
@@ -276,6 +277,8 @@
     <ClCompile Include="..\Private\CMapQuad.cpp" />
     <ClCompile Include="..\Private\CMinimapCamera.cpp" />
     <ClCompile Include="..\Private\CMinimapQuad.cpp" />
+    <ClCompile Include="..\Private\CModel.cpp" />
+    <ClCompile Include="..\Private\CModelObject.cpp" />
     <ClCompile Include="..\Private\CObject_Manager.cpp" />
     <ClCompile Include="..\Private\CMainCamera.cpp" />
     <ClCompile Include="..\Private\COrthographicCameraComponent.cpp" />

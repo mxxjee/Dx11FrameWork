@@ -22,6 +22,8 @@
 #include "CVIBuffer_Rect.h" 
 #include "CVIBuffer_Terrain.h"
 
+#include "CModel.h"
+
 
 
 
@@ -303,6 +305,9 @@ HRESULT CLoader::Register_Components()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"UI"), CUIComponent::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Zelda_Model"), CModel::Create(m_pDevice, m_pDeviceContext, "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actors/Zelda.fbx"))))
         return E_FAIL;
     return S_OK;
 }

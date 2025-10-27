@@ -182,7 +182,7 @@ HRESULT CScreenShot_Manager::SaveTextureToFile(const _wstring& Key, const _wstri
     //받은 소스를 staging버퍼에 복사
     m_pContext->CopyResource(staging.Get(), pTexture2D.Get());
 
-    //D3D11_MAPPED_SUBRESOURCE mapped{};
+    //D3D11_MAPPED_SUBRESOURCE mapped{};557\4
     //hr = m_pContext->Map(staging.Get(), 0, D3D11_MAP_READ, 0, &mapped);
     //if (SUCCEEDED(hr))
     //{

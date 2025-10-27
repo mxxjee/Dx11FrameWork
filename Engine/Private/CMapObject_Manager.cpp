@@ -187,16 +187,16 @@ void CMapObject_Manager::Set_SelectObject(CMapObject* pObj)
 
 HRESULT CMapObject_Manager::Save_Data(const wstring& Path)
 {
-    json root;
-    //////////
-    json objectArray = json::array();
-    for (auto& pair : m_Layers)
-    {
-        for (pair.second)
-        {
+    //json root;
+    ////////////
+    //json objectArray = json::array();
+    //for (auto& pair : m_Layers)
+    //{
+    //    for (pair.second)
+    //    {
 
-        }
-    }
+    //    }
+    //}
     return S_OK;
 }
 

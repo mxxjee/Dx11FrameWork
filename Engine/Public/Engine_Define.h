@@ -21,6 +21,12 @@ using namespace Microsoft::WRL;
 #include "Fx11/d3dx11effect.h"
 #include "DirectXTK/DDSTextureLoader.h"
 #include "DirectXTK/WICTextureLoader.h"
+#include "DirectXTK/ScreenGrab.h"
+
+#include "assimp/scene.h"
+#include "assimp/Importer.hpp"
+#include "assimp/postprocess.h"
+
 
 #include <wincodec.h>
 
@@ -38,14 +44,15 @@ using namespace std;
 
 #include <DirectXCollision.h>
 
+
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
 #ifdef _DEBUG
-#pragma comment(lib,"../../Libraries/Lib/DirectXTex_Debug.lib")
+#pragma comment(lib,"../ThirdPartyLib/DirectXTex_Debug.lib")
 
 #else
-#pragma comment(lib,"../../Libraries/Lib/DirectXTex.lib")
+#pragma comment(lib,"../ThirdPartyLib/DirectXTex.lib")
 
 #endif
 

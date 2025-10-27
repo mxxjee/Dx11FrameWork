@@ -262,6 +262,12 @@
     <Filter Include="998.MapTool\Object\MapModel">
       <UniqueIdentifier>{4a11ce14-33cc-49ce-ad6a-22e993ba4f61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\Model">
+      <UniqueIdentifier>{1ec397e8-53fd-47ce-b7eb-dcd59ca65954}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\ModelObject">
+      <UniqueIdentifier>{8dbec519-e1cf-41b2-a658-9b76d6a6a11d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -525,6 +531,12 @@
     <ClInclude Include="..\Public\CBoxColliderComponent.h">
       <Filter>05.Component\Collision\Box</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CModel.h">
+      <Filter>05.Component\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CModelObject.h">
+      <Filter>03.GameObject\ModelObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -604,9 +616,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CConstantBuffer.cpp">
       <Filter>01.Utility\99.EtcUtils\ConstantBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Libraries\Include\SimpleMath\SimpleMath.cpp">
-      <Filter>01.Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CTransform.cpp">
       <Filter>05.Component\Transform</Filter>
@@ -754,6 +763,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CBoxColliderComponent.cpp">
       <Filter>05.Component\Collision\Box</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CModel.cpp">
+      <Filter>05.Component\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CModelObject.cpp">
+      <Filter>03.GameObject\ModelObject</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

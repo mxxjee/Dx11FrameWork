@@ -134,6 +134,7 @@ namespace Engine
 		VIBUFFER_TRIANGLE,
 		SPHERE_COLLIDER,
 		BOX_COLLIDER,
+		MODEL,
 		UI};
 
 	enum class D3DTS {VIEW,PROJ,END};

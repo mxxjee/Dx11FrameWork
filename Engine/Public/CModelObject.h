@@ -1,0 +1,50 @@
+#pragma once
+#include "CGameObject.h"
+
+NS_BEGIN(Engine)
+class CModel;
+
+class ENGINE_DLL CModelObject :
+    public CGameObject
+{
+public:
+    typedef struct tagModelObjectDesc
+    {
+        _wstring    modelName;
+
+    }MODELOBJECT_DESC;
+
+protected:
+    CModelObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+    CModelObject(const CModelObject& rhs);
+    virtual ~CModelObject() = default;
+    
+
+public:
+    virtual HRESULT     Initialize_Prototype(); /*원형 객체가 생성될때 부르는 Initialize*/
+    virtual HRESULT     Initialize_Copytype(void* pArg); /*사본 객체가 생성될때 부르는 Initialize*/
+
+    virtual void        Update_Priority(_float fTimeDelta);
+    virtual void        Update(_float fTimeDelta);
+    virtual void        Update_Late(_float fTimeDelta);
+    virtual void        Update_Render(_float fTimeDelta);
+
+
+    virtual HRESULT Render();
+
+
+public:
+    static CModelObject* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
+    virtual CGameObject* Clone(void* pArg) override;
+    virtual void Free() override;
+
+
+protected:
+    CModel* m_pModelComp = nullptr;
+private:
+    HRESULT     Ready_Components(void* pArg);
+    HRESULT     Ready_Resource(void* pArg);
+
+};
+NS_END
+

@@ -21,6 +21,12 @@ using namespace Microsoft::WRL;
 #include "Fx11/d3dx11effect.h"
 #include "DirectXTK/DDSTextureLoader.h"
 #include "DirectXTK/WICTextureLoader.h"
+#include "DirectXTK/ScreenGrab.h"
+
+#include "assimp/scene.h"
+#include "assimp/Importer.hpp"
+#include "assimp/postprocess.h"
+
 
 #include <wincodec.h>
 
@@ -37,6 +43,7 @@ using namespace std;
 #include <ctime>
 
 #include <DirectXCollision.h>
+
 
 #include <nlohmann/json.hpp>
 using json = nlohmann::json;
