@@ -1,5 +1,10 @@
+
+#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+
+
 #ifndef Engine_Define_h__
 #define Engine_Define_h__
+
 
 #include "imgui.h"
 #include "imgui_impl_win32.h"
@@ -38,6 +43,12 @@ using namespace DirectX;
 #include <functional>
 #include <string>
 #include <array>
+#include <fstream>
+#include <filesystem>
+
+#include <experimental\filesystem>
+namespace fs = std::experimental::filesystem;
+
 using namespace std;
 #include <unordered_map>
 #include <ctime>
@@ -49,10 +60,10 @@ using namespace std;
 using json = nlohmann::json;
 
 #ifdef _DEBUG
-#pragma comment(lib,"../ThirdPartyLib/DirectXTex_Debug.lib")
+#pragma comment(lib,"../../EngineSDK/lib/DirectXTex_Debug.lib")
 
 #else
-#pragma comment(lib,"../ThirdPartyLib/DirectXTex.lib")
+#pragma comment(lib,"../../EngineSDK/lib/DirectXTex.lib");
 
 #endif
 

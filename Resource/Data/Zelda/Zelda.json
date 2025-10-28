@@ -1,0 +1,636 @@
+{
+    "MeshNums": 18,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 2304,
+            "MeshIdx": 0,
+            "Name": "MagicRod_magicRodJem_low__MagicRod_MI_magicRod_mesh0000",
+            "ParentIndex": 4294967295,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 674
+        },
+        {
+            "IBPath": "Mesh_1.ib",
+            "IndexCount": 2640,
+            "MeshIdx": 1,
+            "Name": "Ocarina_ocarina_low__Ocarina_MI_ocarina_mesh0001",
+            "ParentIndex": 0,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_1.vb",
+            "VertexCount": 521
+        },
+        {
+            "IBPath": "Mesh_2.ib",
+            "IndexCount": 5376,
+            "MeshIdx": 2,
+            "Name": "Shovel_handle_low__Shovel_MI_shovel_mesh0002",
+            "ParentIndex": 1,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_2.vb",
+            "VertexCount": 1240
+        },
+        {
+            "IBPath": "Mesh_3.ib",
+            "IndexCount": 10383,
+            "MeshIdx": 3,
+            "Name": "body_low__MI_body_mesh0005",
+            "ParentIndex": 2,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_3.vb",
+            "VertexCount": 2456
+        },
+        {
+            "IBPath": "Mesh_4.ib",
+            "IndexCount": 1464,
+            "MeshIdx": 4,
+            "Name": "boots_low__MI_boots_mesh0006",
+            "ParentIndex": 3,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_4.vb",
+            "VertexCount": 343
+        },
+        {
+            "IBPath": "Mesh_5.ib",
+            "IndexCount": 744,
+            "MeshIdx": 5,
+            "Name": "face_low__MI_ear_mesh0007",
+            "ParentIndex": 4,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_5.vb",
+            "VertexCount": 170
+        },
+        {
+            "IBPath": "Mesh_6.ib",
+            "IndexCount": 918,
+            "MeshIdx": 6,
+            "Name": "face_low__MI_eye_mesh0008",
+            "ParentIndex": 5,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_6.vb",
+            "VertexCount": 201
+        },
+        {
+            "IBPath": "Mesh_7.ib",
+            "IndexCount": 1320,
+            "MeshIdx": 7,
+            "Name": "face_low__MI_mouth_mesh0009",
+            "ParentIndex": 6,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_7.vb",
+            "VertexCount": 280
+        },
+        {
+            "IBPath": "Mesh_8.ib",
+            "IndexCount": 4968,
+            "MeshIdx": 8,
+            "Name": "flipperL_low__MI_flippers_mesh0010",
+            "ParentIndex": 7,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_8.vb",
+            "VertexCount": 1120
+        },
+        {
+            "IBPath": "Mesh_9.ib",
+            "IndexCount": 3831,
+            "MeshIdx": 9,
+            "Name": "hair_low__MI_hair_mesh0011",
+            "ParentIndex": 8,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_9.vb",
+            "VertexCount": 770
+        },
+        {
+            "IBPath": "Mesh_10.ib",
+            "IndexCount": 3528,
+            "MeshIdx": 10,
+            "Name": "linkHookShot_handl_low__linkHookShot_MI_hookShot_mesh0012",
+            "ParentIndex": 9,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_10.vb",
+            "VertexCount": 861
+        },
+        {
+            "IBPath": "Mesh_11.ib",
+            "IndexCount": 5574,
+            "MeshIdx": 11,
+            "Name": "linkShieldA_bis_low__linkShieldA_MI_shieldA_mesh0013",
+            "ParentIndex": 10,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_11.vb",
+            "VertexCount": 1471
+        },
+        {
+            "IBPath": "Mesh_12.ib",
+            "IndexCount": 1548,
+            "MeshIdx": 12,
+            "Name": "linkShieldB_bis_low__linkShieldB_MI_shieldB_mesh0014",
+            "ParentIndex": 11,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_12.vb",
+            "VertexCount": 569
+        },
+        {
+            "IBPath": "Mesh_13.ib",
+            "IndexCount": 168,
+            "MeshIdx": 13,
+            "Name": "linkShieldB_bis_low__linkShieldB_MI_shieldBMirror_mesh0015",
+            "ParentIndex": 12,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_13.vb",
+            "VertexCount": 63
+        },
+        {
+            "IBPath": "Mesh_14.ib",
+            "IndexCount": 3078,
+            "MeshIdx": 14,
+            "Name": "linkSwordA_blade_low__linkSwordA_MI_sowrdA_mesh0016",
+            "ParentIndex": 13,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_14.vb",
+            "VertexCount": 746
+        },
+        {
+            "IBPath": "Mesh_15.ib",
+            "IndexCount": 396,
+            "MeshIdx": 15,
+            "Name": "linkSwordA_handle_low__linkSwordA_MI_sowrdAball_mesh0017",
+            "ParentIndex": 14,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_15.vb",
+            "VertexCount": 74
+        },
+        {
+            "IBPath": "Mesh_16.ib",
+            "IndexCount": 2784,
+            "MeshIdx": 16,
+            "Name": "linkSwordB_blade_low__linkSwordB_MI_sowrdB_mesh0018",
+            "ParentIndex": 15,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_16.vb",
+            "VertexCount": 840
+        },
+        {
+            "IBPath": "Mesh_17.ib",
+            "IndexCount": 90,
+            "MeshIdx": 17,
+            "Name": "linkSwordB_handle_low__linkSwordB_MI_sowrdBball_mesh0019",
+            "ParentIndex": 16,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_17.vb",
+            "VertexCount": 88
+        }
+    ],
+    "ModelName": "Zelda"
+}

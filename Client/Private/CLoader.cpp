@@ -23,6 +23,7 @@
 #include "CVIBuffer_Terrain.h"
 
 #include "CModel.h"
+#include "CModelObject.h"
 
 
 
@@ -152,7 +153,9 @@ HRESULT CLoader::Loading_Logo()
 
 
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
-    
+    if (FAILED(Register_Models()))
+        return E_FAIL;
+
 
     lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
 
@@ -167,44 +170,10 @@ HRESULT CLoader::Loading_Logo()
 
 
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"BackGround"), CBackGround::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(Register_GameObjects()))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MainCamera"), CMainCamera::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"UICamera"), CUICamera::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
-    //Freecam Test용
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FreeCamera"), CFreeCamera::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Quad"), CQuad::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), CPanel::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Floor"), CFloor::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Player"), CPlayer::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"ScreenQuad"), CScreenQuad::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MinimapCamera"), CMinimapCamera::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MinimapQuad"), CMinimapQuad::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Terrain"), CTerrain::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
+   
 
     m_isFinished = true;
     return S_OK;
@@ -249,6 +218,11 @@ HRESULT CLoader::Register_Shaders()
     m_pGameInstance->Register_Shader(L"VtxNorTex", pInstance);
 
 
+    pInstance = CShader::Create(m_pDevice,
+        m_pDeviceContext, VTXMESH::desc, L"../../Resource/Shader/Shader_VtxMesh.hlsl",
+        "DefaultTechnique");
+    m_pGameInstance->Register_Shader(L"VtxMesh", pInstance);
+
 
     return S_OK;
 }
@@ -287,6 +261,19 @@ HRESULT CLoader::Register_Textures()
     return S_OK;
 }
 
+HRESULT CLoader::Register_Models()
+{
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Zelda_Model"), CModel::Create(m_pDevice, m_pDeviceContext, "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Zelda/Zelda.json"))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"ForkLift_Model"), CModel::Create(m_pDevice, m_pDeviceContext, "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/ForkLift/ForkLift.json"))))
+        return E_FAIL;
+
+
+    return S_OK;
+}
+
 HRESULT CLoader::Register_Components()
 {
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Transform"), CTransform::Create(m_pDevice, m_pDeviceContext))))
@@ -307,8 +294,51 @@ HRESULT CLoader::Register_Components()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"UI"), CUIComponent::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Zelda_Model"), CModel::Create(m_pDevice, m_pDeviceContext, "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actors/Zelda.fbx"))))
+    return S_OK;
+}
+
+HRESULT CLoader::Register_GameObjects()
+{
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"BackGround"), CBackGround::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MainCamera"), CMainCamera::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"UICamera"), CUICamera::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    //Freecam Test용
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FreeCamera"), CFreeCamera::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Quad"), CQuad::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), CPanel::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Floor"), CFloor::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Player"), CPlayer::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"ScreenQuad"), CScreenQuad::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MinimapCamera"), CMinimapCamera::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MinimapQuad"), CMinimapQuad::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Terrain"), CTerrain::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Model"), CModelObject::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
     return S_OK;
 }
 

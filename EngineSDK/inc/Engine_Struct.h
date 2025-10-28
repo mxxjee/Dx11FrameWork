@@ -80,6 +80,9 @@ namespace Engine
 		_float3 v1 = {};
 		_float3 v2 = {};
 	};
+
+
+	
 }
 
 

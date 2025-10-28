@@ -268,6 +268,15 @@
     <Filter Include="03.GameObject\ModelObject">
       <UniqueIdentifier>{8dbec519-e1cf-41b2-a658-9b76d6a6a11d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\99.EtcUtils\ModelData">
+      <UniqueIdentifier>{0f7fb835-8258-43c7-bd75-12d0c9df318f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\VIBuffer\VIBuffer_Model">
+      <UniqueIdentifier>{1fcb920b-6e4f-42c8-b49e-c2b7259deac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\Mesh">
+      <UniqueIdentifier>{a26f9975-a4cb-41e5-afea-5e42e247eef1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -537,6 +546,15 @@
     <ClInclude Include="..\Public\CModelObject.h">
       <Filter>03.GameObject\ModelObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ModelData.h">
+      <Filter>01.Utility\99.EtcUtils\ModelData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CVIBuffer_Model.h">
+      <Filter>05.Component\VIBuffer\VIBuffer_Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMeshComponent.h">
+      <Filter>05.Component\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -769,6 +787,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CModelObject.cpp">
       <Filter>03.GameObject\ModelObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CVIBuffer_Model.cpp">
+      <Filter>05.Component\VIBuffer\VIBuffer_Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMeshComponent.cpp">
+      <Filter>05.Component\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

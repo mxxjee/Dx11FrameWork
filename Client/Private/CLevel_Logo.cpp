@@ -17,9 +17,8 @@
 #include "CMinimapQuad.h"
 #include "CLight.h"
 
+#include "CModelObject.h"
 
-#include "CPerspectiveCameraComponent.h"
-#include "COrthographicCameraComponent.h"
 
 
 
@@ -52,6 +51,9 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
         return E_FAIL;
 
     if (FAILED(Reday_Layer_Test(L"Test_Layer")))
+        return E_FAIL;
+    
+    if (FAILED(Reday_Layer_Model(L"Model_Layer")))
         return E_FAIL;
 
     
@@ -477,6 +479,24 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
         strLayerTag, &Desc)))
         return E_FAIL;
 
+
+    return S_OK;
+}
+
+HRESULT CLevel_Logo::Reday_Layer_Model(const _wstring& strLayerTag)
+{
+    CModelObject::MODELOBJECT_DESC desc;
+    desc.modelName = L"ForkLift";
+    
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    desc.TransformDesc = &TransDesc;
+
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"Model"),
+        ENUM_TO_UINT(LEVEL_ID::LOGO),
+        strLayerTag, &desc)))
+        return E_FAIL;
 
     return S_OK;
 }

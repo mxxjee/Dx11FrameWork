@@ -121,6 +121,7 @@
       <PreprocessorDefinitions>_DEBUG;ENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);IMGUI_API=__declspec(dllexport)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -185,6 +186,7 @@
     <ClInclude Include="..\Public\CMapObject.h" />
     <ClInclude Include="..\Public\CMapObject_Manager.h" />
     <ClInclude Include="..\Public\CMapQuad.h" />
+    <ClInclude Include="..\Public\CMeshComponent.h" />
     <ClInclude Include="..\Public\CMinimapCamera.h" />
     <ClInclude Include="..\Public\CMinimapQuad.h" />
     <ClInclude Include="..\Public\CModel.h" />
@@ -218,6 +220,7 @@
     <ClInclude Include="..\Public\CUI_Manager.h" />
     <ClInclude Include="..\Public\CVIBuffer.h" />
     <ClInclude Include="..\Public\CVIBuffer_CustomTerrain.h" />
+    <ClInclude Include="..\Public\CVIBuffer_Model.h" />
     <ClInclude Include="..\Public\CVIBuffer_Rect.h" />
     <ClInclude Include="..\Public\CVIBuffer_Terrain.h" />
     <ClInclude Include="..\Public\CVIBuffer_Triangle.h" />
@@ -239,6 +242,7 @@
     <ClInclude Include="..\Public\imstb_textedit.h" />
     <ClInclude Include="..\Public\imstb_truetype.h" />
     <ClInclude Include="..\Public\MathUtils.h" />
+    <ClInclude Include="..\Public\ModelData.h" />
     <ClInclude Include="..\Public\VertexData.h" />
   </ItemGroup>
   <ItemGroup>
@@ -275,6 +279,7 @@
     <ClCompile Include="..\Private\CMapObject.cpp" />
     <ClCompile Include="..\Private\CMapObject_Manager.cpp" />
     <ClCompile Include="..\Private\CMapQuad.cpp" />
+    <ClCompile Include="..\Private\CMeshComponent.cpp" />
     <ClCompile Include="..\Private\CMinimapCamera.cpp" />
     <ClCompile Include="..\Private\CMinimapQuad.cpp" />
     <ClCompile Include="..\Private\CModel.cpp" />
@@ -307,6 +312,7 @@
     <ClCompile Include="..\Private\CUI_Manager.cpp" />
     <ClCompile Include="..\Private\CVIBuffer.cpp" />
     <ClCompile Include="..\Private\CVIBuffer_CustomTerrain.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer_Model.cpp" />
     <ClCompile Include="..\Private\CVIBuffer_Rect.cpp" />
     <ClCompile Include="..\Private\CVIBuffer_Terrain.cpp" />
     <ClCompile Include="..\Private\CVIBuffer_Triangle.cpp" />

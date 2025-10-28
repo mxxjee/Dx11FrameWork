@@ -37,7 +37,10 @@ private:
     /// load resource //
     HRESULT         Register_Shaders();
     HRESULT         Register_Textures();
+    HRESULT         Register_Models();
     HRESULT         Register_Components();
+    HRESULT         Register_GameObjects();
+
 public:
     _bool       IsFinished() const { return m_isFinished; }
 

@@ -146,6 +146,12 @@
     <Filter Include="97.ShaderFiles\Light">
       <UniqueIdentifier>{9bbec705-a9b9-4227-b263-ac22281d130e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\Model">
+      <UniqueIdentifier>{7d40654b-fe42-45be-9e61-308d5f825a85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\Model\Link">
+      <UniqueIdentifier>{add529fd-49de-4012-be19-7d1c916f8280}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -210,6 +216,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\..\Resource\Shader\Shader_VtxPosCor.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\Shader_VtxMesh.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

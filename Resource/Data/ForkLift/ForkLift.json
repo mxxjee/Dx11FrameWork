@@ -1,0 +1,41 @@
+{
+    "MeshNums": 1,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 9489,
+            "MeshIdx": 0,
+            "Name": "RootNode",
+            "ParentIndex": 0,
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    1.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 3431
+        }
+    ],
+    "ModelName": "ForkLift"
+}

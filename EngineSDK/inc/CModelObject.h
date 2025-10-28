@@ -8,10 +8,13 @@ class ENGINE_DLL CModelObject :
     public CGameObject
 {
 public:
-    typedef struct tagModelObjectDesc
+    typedef struct tagModelObjectDesc : CGameObject::GAMEOBJECT_DESC
     {
         _wstring    modelName;
+        _wstring    ShaderName = L"VtxMesh";
+        string      passName = "Default";
 
+        _uint eRenderGroup = 0;
     }MODELOBJECT_DESC;
 
 protected:
@@ -32,6 +35,8 @@ public:
 
     virtual HRESULT Render();
 
+private:
+    HRESULT                     Bind_ShaderResources();
 
 public:
     static CModelObject* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
@@ -41,9 +46,16 @@ public:
 
 protected:
     CModel* m_pModelComp = nullptr;
+    class CShader* m_pShader = nullptr;
 private:
     HRESULT     Ready_Components(void* pArg);
     HRESULT     Ready_Resource(void* pArg);
+
+protected:
+    
+    _uint                   m_eRenderGroup = 0;
+    _wstring                m_ShaderName = L"";
+    string                  m_passName = "";
 
 };
 NS_END

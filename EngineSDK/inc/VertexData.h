@@ -44,4 +44,17 @@ typedef struct ENGINE_DLL  tagVertexPositionNormalTexcoord
 
 }VTXNORTEX;
 
+typedef struct ENGINE_DLL  tagVertexMesh
+{
+	XMFLOAT3		vPosition;
+	XMFLOAT3		vNormal;
+	XMFLOAT3		Tangent;
+	XMFLOAT3		BiNormal;
+	XMFLOAT2		vTexcoord;
+
+	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
+
+}VTXMESH;
+
+
 NS_END
