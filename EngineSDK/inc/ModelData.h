@@ -6,7 +6,6 @@
 struct MeshData
 {
 	wstring Name;
-	_uint ParentIndex = UINT32_MAX;		//부모 노드 인덱스
 	XMFLOAT4X4		Transform;			//변환행렬, 각 파츠당 변환행렬적용
 
 	uint32_t	VertexCount;			//정점개수

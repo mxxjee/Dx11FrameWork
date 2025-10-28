@@ -24,7 +24,8 @@ private:
     HRESULT     LoadModelFromJson(const _char* filepPath);
 
 public:
-    static CModel* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const _char* pFilePath);
+
+    static CModel* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext,const _char* pFilePath);
     virtual CComponent* Clone(void* pArg) override;
     virtual void Free() override;
 

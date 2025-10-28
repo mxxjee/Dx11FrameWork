@@ -63,7 +63,7 @@ using json = nlohmann::json;
 #pragma comment(lib,"../../EngineSDK/lib/DirectXTex_Debug.lib")
 
 #else
-#pragma comment(lib,"../../EngineSDK/lib/DirectXTex.lib");
+#pragma comment(lib,"../../EngineSDK/lib/DirectXTex.lib")
 
 #endif
 

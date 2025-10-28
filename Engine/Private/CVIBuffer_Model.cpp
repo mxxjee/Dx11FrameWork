@@ -10,7 +10,7 @@ CVIBuffer_Model::CVIBuffer_Model(const CVIBuffer_Model& Prototype)
 {
 }
 
-HRESULT CVIBuffer_Model::Initialize_Prototype(vector<VTXMESH>& Vertices, vector<_uint>& Indices)
+HRESULT CVIBuffer_Model::Initialize_Prototype(_float4x4& Matrix, vector<VTXMESH>& Vertices, vector<_uint>& Indices)
 {
 
 #pragma region VertexBuffer
@@ -36,9 +36,18 @@ HRESULT CVIBuffer_Model::Initialize_Prototype(vector<VTXMESH>& Vertices, vector<
 
 	//위치값 기록을 위한 동적배열(따로 멤버 보관)
 	m_pVertexPositions = new _float3[m_iNumVertices];
+	_matrix Mat = XMLoadFloat4x4(&Matrix);
+
 	for (_uint i = 0; i < m_iNumVertices; ++i)
+	{
+		_vector vPosition = XMLoadFloat3(&Vertices[i].vPosition);
+		vPosition=XMVector3TransformCoord(vPosition, Mat);
+		XMStoreFloat3(&Vertices[i].vPosition, vPosition);
+
 		m_pVertexPositions[i] = Vertices[i].vPosition;
 
+	}
+		
 	D3D11_SUBRESOURCE_DATA VertexData;
 	VertexData.pSysMem = Vertices.data();
 	VertexData.SysMemPitch = 0;
@@ -86,10 +95,10 @@ HRESULT CVIBuffer_Model::Initialize_Copytype(void* pArg)
 
 
 
-CVIBuffer_Model* CVIBuffer_Model::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, vector<VTXMESH>& Vertices, vector<_uint>& Indices)
+CVIBuffer_Model* CVIBuffer_Model::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, _float4x4& Matrix, vector<VTXMESH>& Vertices, vector<_uint>& Indices)
 {
 	CVIBuffer_Model* pInstance = new CVIBuffer_Model(pDevice, pContext);
-	if (FAILED(pInstance->Initialize_Prototype(Vertices,Indices)))
+	if (FAILED(pInstance->Initialize_Prototype(Matrix,Vertices,Indices)))
 	{
 		MSG_BOX("Failed to Create : CVIBuffer_Model");
 		Safe_Release(pInstance);

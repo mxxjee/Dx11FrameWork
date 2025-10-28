@@ -16,7 +16,7 @@ protected:
     virtual ~CMeshComponent() = default;
 
 public:
-    virtual HRESULT Initialize_Prototype(const char* BasePath, _uint iIdx);
+    virtual HRESULT Initialize_Prototype(const MeshData& Data, const char* BasePath, _uint iIdx);
     virtual HRESULT Initialize_Copytype(void* pArg) override;
 
 private:
@@ -24,7 +24,7 @@ private:
     bool        LoadBinaryIB(const string& Path);
 
 public:
-    static CMeshComponent* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const char* BasePath, _uint iIdx);
+    static CMeshComponent* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const MeshData& Data,  const char* BasePath, _uint iIdx);
     virtual CComponent* Clone(void* pArg) override;
     virtual void Free() override;
 

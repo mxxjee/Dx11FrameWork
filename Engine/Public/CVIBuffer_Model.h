@@ -13,13 +13,13 @@ protected:
     virtual ~CVIBuffer_Model() = default;
 
 public:
-    virtual         HRESULT     Initialize_Prototype(vector<VTXMESH>& Vertices, vector<_uint>& Indices);
+    virtual         HRESULT     Initialize_Prototype(_float4x4& Matrix, vector<VTXMESH>& Vertices, vector<_uint>& Indices);
     virtual         HRESULT     Initialize_Copytype(void* pArg) override;
 
 
 
 public:
-    static CVIBuffer_Model* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, vector<VTXMESH>& Vertices, vector<_uint>& Indices);
+    static CVIBuffer_Model* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, _float4x4& Matrix,vector<VTXMESH>& Vertices, vector<_uint>& Indices);
     virtual CComponent* Clone(void* pArg);
     virtual void Free() override;
 };

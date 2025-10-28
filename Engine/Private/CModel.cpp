@@ -55,15 +55,37 @@ HRESULT CModel::LoadModelFromJson(const _char* filepPath)
 	model.name = wstring(ModelName.begin(), ModelName.end());
 	for(auto& jMesh: jModel["Meshes"])
 	{
-		string MeshName = jMesh["Name"];
-		int MeshIdx = jMesh["MeshIdx"];
+		//MeshData정보 채워서 넘겨주기.
+		MeshData meshData;
+
+		string MeshName = jMesh["Name"];		//매쉬이름
+		meshData.Name = wstring(MeshName.begin(), MeshName.end());
+
+		json Tmp = jMesh["Transform"];
+		for (int r = 0; r < 4; ++r)
+		{
+			if (Tmp[r].is_array() && Tmp[r].size() == 4)
+			{
+				for (int c = 0; c < 4; ++c)
+				{
+					meshData.Transform.m[r][c] = Tmp[c][r].get<float>();
+				}
+					
+			}
+		
+		}
+		
+		
 		string vbPath = folderpath + string(jMesh["VBPath"]);
 		string ibPath = folderpath + string(jMesh["IBPath"]);
-		
-		CMeshComponent* pMesh = nullptr;
-		pMesh = CMeshComponent::Create(m_pDevice, m_pContext, folderpath.c_str(), MeshIdx);
+		int MeshIdx = jMesh["MeshIdx"];
 
+		CMeshComponent* pMesh = nullptr;
+		pMesh = CMeshComponent::Create(m_pDevice, m_pContext, meshData,folderpath.c_str(), MeshIdx);
 		CheckNullResult(pMesh, E_FAIL);
+
+
+
 		m_Meshs.emplace(wstring(MeshName.begin(), MeshName.end()), pMesh);
 
 	}

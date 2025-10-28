@@ -486,7 +486,7 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
 HRESULT CLevel_Logo::Reday_Layer_Model(const _wstring& strLayerTag)
 {
     CModelObject::MODELOBJECT_DESC desc;
-    desc.modelName = L"ForkLift";
+    desc.modelName = L"Anim";
     
     CTransform::TRANSFORM_DESC TransDesc = {};
     desc.TransformDesc = &TransDesc;

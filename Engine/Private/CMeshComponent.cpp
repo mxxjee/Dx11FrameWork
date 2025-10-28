@@ -15,11 +15,13 @@ CMeshComponent::CMeshComponent(const CMeshComponent& Prototype)
 	Safe_AddRef(m_pVIBuffer);
 }
 
-HRESULT CMeshComponent::Initialize_Prototype(const char* BasePath, _uint iIdx)
+HRESULT CMeshComponent::Initialize_Prototype(const MeshData& Data, const char* BasePath, _uint iIdx)
 {
 	
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
+
+	m_MeshData = Data;
 
 	string VBPath = string(BasePath) + "Mesh_" + to_string(iIdx) + ".vb";
 	string IBPath = string(BasePath) + "Mesh_" + to_string(iIdx) + ".ib";
@@ -30,7 +32,7 @@ HRESULT CMeshComponent::Initialize_Prototype(const char* BasePath, _uint iIdx)
 	if (!LoadBinaryIB(IBPath))
 		return E_FAIL;
 
-	m_pVIBuffer = CVIBuffer_Model::Create(m_pDevice, m_pContext, m_MeshData.Vertices, m_MeshData.Indices);
+	m_pVIBuffer = CVIBuffer_Model::Create(m_pDevice, m_pContext, m_MeshData.Transform,m_MeshData.Vertices, m_MeshData.Indices);
 	CheckNullResult(m_pVIBuffer, E_FAIL);
 
     return S_OK;
@@ -97,11 +99,11 @@ bool CMeshComponent::LoadBinaryIB(const string& Path)
 	return true;
 }
 
-CMeshComponent* CMeshComponent::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const char* BasePath, _uint iIdx)
+CMeshComponent* CMeshComponent::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const MeshData& Data, const char* BasePath, _uint iIdx)
 {
 	CMeshComponent* pInstance = new CMeshComponent(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(BasePath,iIdx)))
+	if (FAILED(pInstance->Initialize_Prototype(Data,BasePath,iIdx)))
 	{
 		MSG_BOX("Failed to Created : CMeshComponent");
 		Safe_Release(pInstance);
