@@ -2,6 +2,26 @@
 #include "Engine_Define.h"
 #include "VertexData.h"
 
+//메테리얼 정보
+
+namespace Engine
+{
+	class CTexture;
+}
+struct MaterialData
+{
+	wstring m_MaterialName=L"";
+
+	//Diffuse,   // Texture(SRV 소유)
+	map<MaterialMapType, CTexture*>      m_Textures;
+
+	MaterialData() {}
+	
+
+};
+
+
+
 //메쉬정보
 struct MeshData
 {
@@ -14,7 +34,7 @@ struct MeshData
 	vector<VTXMESH>		Vertices;
 	vector<uint32_t>		Indices;
 
-
+	MaterialData		m_MaterialData;
 };
 
 

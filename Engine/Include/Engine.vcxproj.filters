@@ -277,6 +277,12 @@
     <Filter Include="05.Component\Mesh">
       <UniqueIdentifier>{a26f9975-a4cb-41e5-afea-5e42e247eef1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\12.Material">
+      <UniqueIdentifier>{92172a84-2b61-4bfb-a532-261afcc2a71f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\12.Material\Material">
+      <UniqueIdentifier>{f958ddb9-8fa2-4484-892a-161b764f85f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -555,6 +561,12 @@
     <ClInclude Include="..\Public\CMeshComponent.h">
       <Filter>05.Component\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CMaterial.h">
+      <Filter>00.System\12.Material\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMaterial_Manager.h">
+      <Filter>00.System\12.Material</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -793,6 +805,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMeshComponent.cpp">
       <Filter>05.Component\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMaterial.cpp">
+      <Filter>00.System\12.Material\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMaterial_Manager.cpp">
+      <Filter>00.System\12.Material</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

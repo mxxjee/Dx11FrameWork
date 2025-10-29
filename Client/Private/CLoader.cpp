@@ -264,14 +264,14 @@ HRESULT CLoader::Register_Textures()
 HRESULT CLoader::Register_Models()
 {
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Zelda_Model"), CModel::Create(m_pDevice, m_pDeviceContext, "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Zelda/Zelda.json"))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Zelda_Model"), CModel::Create(m_pDevice, m_pDeviceContext, "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Zelda/Zelda.json"))))
+    //    return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"ForkLift_Model"), CModel::Create(m_pDevice, m_pDeviceContext, "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/ForkLift/ForkLift.json"))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"ForkLift_Model"), CModel::Create(m_pDevice, m_pDeviceContext, "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/ForkLift/ForkLift.json"))))
+    //    return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Fiona_Model"), CModel::Create(m_pDevice, m_pDeviceContext, "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Fiona/Fiona.json"))))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Fiona_Model"), CModel::Create(m_pDevice, m_pDeviceContext, "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Fiona/Fiona.json"))))
+    //    return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Link2_Model"), CModel::Create(m_pDevice, m_pDeviceContext, "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Link2/Link2.json"))))
         return E_FAIL;

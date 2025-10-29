@@ -5,6 +5,8 @@
 NS_BEGIN(Engine)
 
 class CMeshComponent;
+class CGameInstance;
+
 
 class ENGINE_DLL CModel :
     public CComponent
@@ -22,6 +24,8 @@ public:
 
 private:
     HRESULT     LoadModelFromJson(const _char* filepPath);
+    HRESULT     LoadMaterialFromJSon(const _char* filePath);
+
 
 public:
 
@@ -32,9 +36,13 @@ public:
 
     HRESULT                 Render();
 
+
 private:
     UMap<wstring, CMeshComponent*>      m_Meshs;
     ModelData       m_ModelData;
 
+
+private:
+    CGameInstance* m_pGameInstance = nullptr;
 };
 NS_END

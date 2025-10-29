@@ -3,44 +3,51 @@
 
 namespace Engine
 {
-	enum class WINMODE { FULL, WIN }; 
-	enum class STATE{RIGHT,UP,LOOK,POSITION,END};
-	enum class DIRECTION {FORWARD,RIGHT,UP,BACKWARD,LEFT,DOWN,
+	enum class WINMODE { FULL, WIN };
+	enum class STATE { RIGHT, UP, LOOK, POSITION, END };
+	enum class DIRECTION {
+		FORWARD, RIGHT, UP, BACKWARD, LEFT, DOWN,
 
-						RIGHTUP,RIGHTDOWN,
-						LEFTUP,LEFTDOWN,END};
-	
-	enum class Space : UINT8 
-	{Local=1<<0,
-	WORLD=1<<1,
-	END};
+		RIGHTUP, RIGHTDOWN,
+		LEFTUP, LEFTDOWN, END
+	};
 
-	enum class SRTType {SCALE,ROTATION,TRANSFORM,END};
-	enum class LEVELCHANGETYPE { NONE,REPLACETOP, OVERLAY, PUSH,END};
+	enum class Space : UINT8
+	{
+		Local = 1 << 0,
+		WORLD = 1 << 1,
+		END
+	};
+
+	enum class SRTType { SCALE, ROTATION, TRANSFORM, END };
+	enum class LEVELCHANGETYPE { NONE, REPLACETOP, OVERLAY, PUSH, END };
 	/*REPLACETOP : 이전씬 지우고 TOP교체
 	PUSH - 이전씬 냅두고 그냥 얹기(UPDATE/RENDER 모두 비활성화)
 	OVERLAY - 이전씬 냅두고 얹기(UPDATE비활성화, RENDER 활성화)
 	LOADING - 이번씬은 임시씬이라 이후 무조건지울거에요*/
 
 
-	enum class LEVELSTATE{ACTIVE,PAUSE,HIDDEN,END};
+	enum class LEVELSTATE { ACTIVE, PAUSE, HIDDEN, END };
 	/*ACTIVE : UPDATE/RENDER모두 활성화
 	* PAUSE : UPDATE(X) /RENDER(O)
 	* HIDDEN : UPDATE(X) / RENDER(X)
 	*/
 
-	enum class LEVELFLAG {NORMAL, TRANSIENT};
+	enum class LEVELFLAG { NORMAL, TRANSIENT };
 	/*Nomral : 그냥 일반씬
 	TRANSIENT : 1회 후 바로 삭제되는 씬 (일회용 씬)*/
 
 
 	enum class PROTOTYPE
-	{GAMEOBJECT, COMPONENT};
+	{
+		GAMEOBJECT, COMPONENT
+	};
 
-	enum class TransformScope { 
+	enum class TransformScope {
 		LOCAL, //로컬 기준  ,
-		WORLD ,//부모행렬이 모두 계산된 전역좌표 
-		END};
+		WORLD,//부모행렬이 모두 계산된 전역좌표 
+		END
+	};
 #pragma region KeyCode
 	//KeyCode 입력 처리용 키 코드 열거형
 
@@ -102,12 +109,12 @@ namespace Engine
 	enum class EInputState : UINT32
 	{
 		None = 0,
-		Pressed = 1<<0,
-		Held = 1<<1,
-		Released = 1<<2,
+		Pressed = 1 << 0,
+		Held = 1 << 1,
+		Released = 1 << 2,
 	};
 
-	enum class CAMERA_TYPE 
+	enum class CAMERA_TYPE
 	{
 		TARGET,
 		FREE,
@@ -116,17 +123,18 @@ namespace Engine
 		MINIMAP,
 		POSTPROCESS,
 		UI,	//항상 마지막이여야함.
-		END};
+		END
+	};
 
 
 	enum class CAMERA_FLAG :uint32_t
 	{
-		NONE=0,
-		USE_POSTEFFECT=1<<0, 
+		NONE = 0,
+		USE_POSTEFFECT = 1 << 0,
 		END
 	};
 	ENABLE_BITMASK_OPERATORS(CAMERA_FLAG);
-	
+
 	enum class COMPONENT_TYPE {
 		TRANSFORM,
 		VIBUFFER_RECT,
@@ -135,9 +143,10 @@ namespace Engine
 		SPHERE_COLLIDER,
 		BOX_COLLIDER,
 		MODEL,
-		UI};
+		UI
+	};
 
-	enum class D3DTS {VIEW,PROJ,END};
+	enum class D3DTS { VIEW, PROJ, END };
 
 	//애니메이션 사용여부(조합을 위해 비트마스크)
 	enum class UIAnimFlag : uint8_t
@@ -187,7 +196,16 @@ namespace Engine
 
 	enum class LIGHT
 	{
-		DIRECTIONAL,POINT,END
+		DIRECTIONAL, POINT, END
+	};
+
+	enum class MaterialMapType
+	{
+		DIFFUSE,
+		AMBIENT,
+		NORMAL,
+		SPECULAR,
+		END
 	};
 }
 #endif // Engine_Enum_h__

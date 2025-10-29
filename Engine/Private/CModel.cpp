@@ -1,16 +1,22 @@
 #include "CModel.h"
 #include "CMeshComponent.h"	
+#include "CGameInstance.h"
+#include "CMaterial.h"
 
 CModel::CModel(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-	:CComponent(pDevice,pContext)
+	:CComponent(pDevice,pContext), m_pGameInstance(CGameInstance::GetInstance())
 {
+	Safe_AddRef(m_pGameInstance);
 }
 
 CModel::CModel(const CModel& Prototype)
 	: CComponent(Prototype),
 	m_ModelData(Prototype.m_ModelData),
-	m_Meshs(Prototype.m_Meshs)
+	m_Meshs(Prototype.m_Meshs),
+	m_pGameInstance(Prototype.m_pGameInstance)
 {
+	Safe_AddRef(m_pGameInstance);
+
 	for (auto& pair : m_Meshs)
 	{
 		Safe_AddRef(pair.second);
@@ -23,9 +29,14 @@ HRESULT CModel::Initialize_Prototype(const _char* pModelFilePath)
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
 
-
-	if (FAILED(LoadModelFromJson(pModelFilePath)))
+	if (FAILED(LoadMaterialFromJSon(pModelFilePath)))	//Manager에 메쉬가 사용할 모든 Material들을 등록한다.
 		return E_FAIL;
+
+
+	if (FAILED(LoadModelFromJson(pModelFilePath)))	//파싱하면서 메테리얼이름을 읽어서 Manager에서 찾아서 meshcomp 한테 넘겨준다.
+		return E_FAIL;
+
+	
 
 	return S_OK;
 }
@@ -61,6 +72,9 @@ HRESULT CModel::LoadModelFromJson(const _char* filepPath)
 		string MeshName = jMesh["Name"];		//매쉬이름
 		meshData.Name = wstring(MeshName.begin(), MeshName.end());
 
+
+		meshData.m_MaterialData.m_MaterialName = StringToWString(jMesh["MaterialName"]);
+
 		json Tmp = jMesh["Transform"];
 		for (int r = 0; r < 4; ++r)
 		{
@@ -75,6 +89,7 @@ HRESULT CModel::LoadModelFromJson(const _char* filepPath)
 		
 		}
 		
+
 		
 		string vbPath = folderpath + string(jMesh["VBPath"]);
 		string ibPath = folderpath + string(jMesh["IBPath"]);
@@ -88,6 +103,41 @@ HRESULT CModel::LoadModelFromJson(const _char* filepPath)
 
 		m_Meshs.emplace(wstring(MeshName.begin(), MeshName.end()), pMesh);
 
+	}
+
+	return S_OK;
+}
+
+HRESULT CModel::LoadMaterialFromJSon(const _char* filePath)
+{
+	ModelData model;
+	ifstream	file(filePath);
+
+	json jModel = json::parse(file);
+	for (auto& Material : jModel["Materials"])
+	{
+		map<MaterialMapType, string>  m_TextureDatas;
+
+		string MaterialName = Material["MaterialName"];
+		wstring WMatName = wstring(MaterialName.begin(), MaterialName.end());
+
+		m_TextureDatas.emplace(MaterialMapType::DIFFUSE, Material["Diffuse"]);
+		m_TextureDatas.emplace(MaterialMapType::AMBIENT, Material["Ambient"]);
+		m_TextureDatas.emplace(MaterialMapType::NORMAL, Material["Normal"]);
+		m_TextureDatas.emplace(MaterialMapType::SPECULAR, Material["Specular"]);
+
+		//0x00007ff67e778a40 "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Link2/Link2.json"
+
+		fs::path Tmp = filePath;
+
+		string BasePath = Tmp.parent_path().string() + "\\Materials\\";
+
+		CMaterial* pMaterial = CMaterial::Create(m_pDevice, m_pContext, BasePath.c_str(), m_TextureDatas);
+		if (FAILED(m_pGameInstance->Register_Material(WMatName, pMaterial)))
+			Safe_Release(pMaterial);
+
+
+		
 	}
 
 	return S_OK;
@@ -127,6 +177,8 @@ void CModel::Free()
 			Safe_Release(pair.second);
 
 	}
+
+	Safe_Release(m_pGameInstance);
 }
 
 HRESULT CModel::Render()

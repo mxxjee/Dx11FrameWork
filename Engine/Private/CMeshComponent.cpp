@@ -1,18 +1,23 @@
 #include "CMeshComponent.h"
 #include "CVIBuffer_Model.h"
+#include "CMaterial.h"
+#include "CGameInstance.h"
+
 
 
 CMeshComponent::CMeshComponent(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CComponent(pDevice,pContext)
+    :CComponent(pDevice,pContext),m_pGameInstance(CGameInstance::GetInstance())
 {
 }
 
 CMeshComponent::CMeshComponent(const CMeshComponent& Prototype)
     :CComponent(Prototype),
 	m_MeshData(Prototype.m_MeshData),
-	m_pVIBuffer(Prototype.m_pVIBuffer)
+	m_pVIBuffer(Prototype.m_pVIBuffer),
+	m_pGameInstance(Prototype.m_pGameInstance)
 {
 	Safe_AddRef(m_pVIBuffer);
+	Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CMeshComponent::Initialize_Prototype(const MeshData& Data, const char* BasePath, _uint iIdx)
@@ -30,6 +35,9 @@ HRESULT CMeshComponent::Initialize_Prototype(const MeshData& Data, const char* B
 		return E_FAIL;
 
 	if (!LoadBinaryIB(IBPath))
+		return E_FAIL;
+
+	if (FAILED(Set_Material()))
 		return E_FAIL;
 
 	m_pVIBuffer = CVIBuffer_Model::Create(m_pDevice, m_pContext, m_MeshData.Transform,m_MeshData.Vertices, m_MeshData.Indices);
@@ -99,6 +107,18 @@ bool CMeshComponent::LoadBinaryIB(const string& Path)
 	return true;
 }
 
+HRESULT CMeshComponent::Set_Material()
+{
+	m_pMaterial = m_pGameInstance->Find_Material(m_MeshData.m_MaterialData.m_MaterialName);
+	if (!m_pMaterial)
+		return E_FAIL;
+
+	Safe_AddRef(m_pMaterial);
+	return S_OK;
+}
+
+
+
 CMeshComponent* CMeshComponent::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const MeshData& Data, const char* BasePath, _uint iIdx)
 {
 	CMeshComponent* pInstance = new CMeshComponent(pDevice, pContext);
@@ -139,6 +159,8 @@ HRESULT CMeshComponent::Render()
 	}
 	else
 		return E_FAIL;
+
+	Safe_Release(m_pMaterial);
 
 	return S_OK;
 }

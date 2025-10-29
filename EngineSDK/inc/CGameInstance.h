@@ -231,6 +231,12 @@ public:
 #pragma endregion
 
 
+
+#pragma region MaterialManager
+	HRESULT       Register_Material(const _wstring& Tag, class CMaterial* pInstance);
+	class CMaterial* Find_Material(const _wstring& Tag);
+#pragma endregion
+
  #pragma region Default
 	 const vector<D3D11_VIEWPORT>& Get_Viewports() { return m_ViewPorts; }
 	 const tagEngine_Desc& Get_EngineDesc() const { return m_EngineDesc; }
@@ -255,6 +261,8 @@ public:
 	 class CUI_Manager* m_pUIManager = { nullptr };
 	 class CTerrain_Manager* m_pTerrainManager = { nullptr };
 	 class CLight_Manager* m_pLightManager = { nullptr };
+
+	 class CMaterial_Manager* m_pMaterialManager = { nullptr };
 
 private:
 	vector<D3D11_VIEWPORT>          m_ViewPorts;

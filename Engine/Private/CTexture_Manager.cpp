@@ -16,7 +16,7 @@ HRESULT CTexture_Manager::Register_Texture(const _wstring& Tag, CTexture* pInsta
 	CTexture* pTex = Find_Texture(Tag);
 	if (pTex)
 	{
-		MSG_BOX("Texture is alreday exist");
+		//MSG_BOX("Texture is alreday exist");
 		return E_FAIL;
 	}
 

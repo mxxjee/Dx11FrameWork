@@ -22,6 +22,7 @@
 
 #include "CMapObject_Manager.h"
 #include "CLight_Manager.h"
+#include "CMaterial_Manager.h"
 
 #include "CMapObject.h"
 #include "CLayer.h"
@@ -109,13 +110,17 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 
 	/*Terrain매니저*/
 	m_pTerrainManager = CTerrain_Manager::Create(*pDevice, *pContext);
-	
 	CheckNullResult(m_pTerrainManager, E_FAIL);
 
 
 	/*라이트 매니저*/
 	m_pLightManager = CLight_Manager::Create(EngineDesc.iNumLevels);
 	CheckNullResult(m_pLightManager, E_FAIL);
+
+
+	/*매태리얼 매니저*/
+	m_pMaterialManager = CMaterial_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pMaterialManager,E_FAIL);
 
 	return S_OK;
 }
@@ -664,6 +669,16 @@ CLight* CGameInstance::Get_Light(_uint iLevelID, _uint iIndex)
 
 	return m_pLightManager->Get_Light(iLevelID,iIndex);
 }
+HRESULT CGameInstance::Register_Material(const _wstring& Tag, CMaterial* pInstance)
+{
+	CheckNullResult(m_pMaterialManager,E_FAIL);
+	return m_pMaterialManager->Register_Material(Tag,pInstance);
+}
+CMaterial* CGameInstance::Find_Material(const _wstring& Tag)
+{
+	CheckNullResult(m_pMaterialManager, nullptr);
+	return m_pMaterialManager->Find_Material(Tag);
+}
 #pragma endregion
 
 void CGameInstance::Release_Engine()
@@ -683,7 +698,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pUIManager);
 	Safe_Release(m_pTerrainManager);
 	Safe_Release(m_pLightManager);
-
+	Safe_Release(m_pMaterialManager);
 
 	Safe_Release(m_pGraphicDev);
 

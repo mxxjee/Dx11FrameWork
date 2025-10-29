@@ -63,5 +63,11 @@ namespace Engine
 		WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), (int)wstr.size(), &result[0], size_needed, NULL, NULL);
 		return result;
 	}
+
+	inline std::wstring StringToWString(const string& str)
+	{
+		return wstring(str.begin(), str.end());
+
+	}
 }
 #endif // Engine_Function_h__

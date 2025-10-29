@@ -5,6 +5,9 @@
 
 NS_BEGIN(Engine)
 class CVIBuffer_Model;
+class CMaterial;
+class CGameInstance;
+
 
 class ENGINE_DLL CMeshComponent :
     public CComponent
@@ -22,6 +25,7 @@ public:
 private:
     bool        LoadBinaryVB(const string& Path);
     bool        LoadBinaryIB(const string& Path);
+    HRESULT        Set_Material();
 
 public:
     static CMeshComponent* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const MeshData& Data,  const char* BasePath, _uint iIdx);
@@ -32,9 +36,11 @@ public:
 
 
 private:
-    MeshData            m_MeshData;
-    CVIBuffer_Model*    m_pVIBuffer;
+    MeshData                m_MeshData;
+    CVIBuffer_Model*        m_pVIBuffer;
+    CMaterial*               m_pMaterial = nullptr;
 
+    CGameInstance*      m_pGameInstance = nullptr;
 
 
 };

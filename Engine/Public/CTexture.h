@@ -32,7 +32,7 @@ private:
 
 public:
 	//경로로 읽어오는 create (연속적인 텍스처)
-	static CTexture* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext, const _tchar* pTextureFilePath, _uint iNumTextures);
+	static CTexture* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext, const _tchar* pTextureFilePath, _uint iNumTextures=1);
 	
 
 
