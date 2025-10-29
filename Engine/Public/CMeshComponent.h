@@ -6,6 +6,7 @@
 NS_BEGIN(Engine)
 class CVIBuffer_Model;
 class CMaterial;
+class CShader;
 class CGameInstance;
 
 
@@ -34,11 +35,17 @@ public:
 
     HRESULT                 Render();
 
-
+public:
+    HRESULT         Bind_ShaderResource(CShader*  pShader);
+public:
+    void            Set_PassName(const string& Name) { passName = Name; }
 private:
     MeshData                m_MeshData;
     CVIBuffer_Model*        m_pVIBuffer;
-    CMaterial*               m_pMaterial = nullptr;
+    CMaterial* m_pMaterial = nullptr;
+
+    string              passName = "Default";
+
 
     CGameInstance*      m_pGameInstance = nullptr;
 

@@ -2,20 +2,23 @@
 #include "CGameInstance.h"
 #include "CModel.h"
 #include "CShader.h"
-
+#include "CInput_Manager.h"
 
 CModelObject::CModelObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CGameObject(pDevice,pContext)
+    :CGameObject(pDevice,pContext), m_pInputManager(CInput_Manager::GetInstance())
 {
+    Safe_AddRef(m_pInputManager);
 }
 
 CModelObject::CModelObject(const CModelObject& rhs)
-    :CGameObject(rhs)
+    :CGameObject(rhs), m_pInputManager(rhs.m_pInputManager)
 {
+    Safe_AddRef(m_pInputManager);
 }
 
 HRESULT CModelObject::Initialize_Prototype()
 {
+
     if (FAILED(__super::Initialize_Prototype()))
         return E_FAIL;
 
@@ -36,6 +39,7 @@ HRESULT CModelObject::Initialize_Copytype(void* pArg)
     if (FAILED(Ready_Resource(pArg)))
         return E_FAIL;
 
+ 
     return S_OK;
 
 }
@@ -49,6 +53,8 @@ void CModelObject::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
     CheckNull(m_pTransformCom);
+
+    //Move_Input(fTimeDelta);
 }
 
 void CModelObject::Update_Late(_float fTimeDelta)
@@ -69,12 +75,6 @@ HRESULT CModelObject::Render()
         return E_FAIL;
 
 
-    if (FAILED(m_pShader->Begin(m_passName)))
-        return E_FAIL;
-
-    if (FAILED(m_pModelComp->Render()))
-        return E_FAIL;
-
     return S_OK;
 }
 
@@ -83,10 +83,14 @@ HRESULT CModelObject::Bind_ShaderResources()
     if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
         return E_FAIL;
 
+    if (FAILED(m_pModelComp->Bind_ShaderResource()))
+        return E_FAIL;
 
 
     return S_OK;
 }
+
+
 
 CModelObject* CModelObject::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
@@ -120,8 +124,8 @@ HRESULT CModelObject::Ready_Components(void* pArg)
 {
     CheckNullResult(pArg, E_FAIL);
     MODELOBJECT_DESC* pModelDesc = static_cast<MODELOBJECT_DESC*>(pArg);
-
-    CComponent* pModel = dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(pModelDesc->modelName + L"_Model"), pArg));
+    CComponent* pModel = dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(pModelDesc->modelName + L"_Model"), pModelDesc->modelCompDesc));
+    
     if (FAILED(__super::Add_Component(COMPONENT_TYPE::MODEL, pModel, (CComponent**)&m_pModelComp)))
         return E_FAIL;
 
@@ -134,13 +138,16 @@ HRESULT CModelObject::Ready_Resource(void* pArg)
     MODELOBJECT_DESC* pModel_dsc = static_cast<MODELOBJECT_DESC*>(pArg);
 
     m_eRenderGroup = pModel_dsc->eRenderGroup;
-    m_ShaderName = pModel_dsc->ShaderName;
-    m_passName = pModel_dsc->passName;
 
 
-    m_pShader = m_pGameInstance->Find_Shader(pModel_dsc->ShaderName);
-    Safe_AddRef(m_pShader);
 
+    if (m_pModelComp)
+    {
+        m_pShader = m_pModelComp->Get_Shader();
+        Safe_AddRef(m_pShader);
+
+    }
+    
 
 
     return S_OK;
@@ -149,8 +156,90 @@ HRESULT CModelObject::Ready_Resource(void* pArg)
 void CModelObject::Free()
 {
     __super::Free();
-
+    Safe_Release(m_pInputManager);
     Safe_Release(m_pShader);
     Safe_Release(m_pModelComp);
+
+}
+
+void CModelObject::Move_Input(float fTimeDelta)
+{
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::Q))
+    {
+        m_pTransformCom->AddRotation(_float3(0.f, 10.f, 0.f));
+
+    }
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::E))
+    {
+        m_pTransformCom->AddRotation(_float3(0.f, -10.f, 0.f));
+
+    }
+
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::Z))
+    {
+        m_pTransformCom->AddRotation(_float3(10.f, 0.f, 0.f));
+
+    }
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::C))
+    {
+        m_pTransformCom->AddRotation(_float3(-10.f, 0.f, 0.f));
+
+    }
+
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::RightArrow))
+    {
+        bPressed = true;
+
+        if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+            m_pTransformCom->Rotation(_float3(0.f, -135.f, 0.f));
+
+        else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+            m_pTransformCom->Rotation(_float3(0.f, -45.f, 0.f));
+        else
+            m_pTransformCom->Rotation(_float3(0.f, -90.f, 0.f));
+    }
+
+
+
+    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LeftArrow))
+    {
+        bPressed = true;
+
+        if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+            m_pTransformCom->Rotation(_float3(0.f, 135.f, 0.f));
+
+        else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+            m_pTransformCom->Rotation(_float3(0.f, 45.f, 0.f));
+        else
+            m_pTransformCom->Rotation(_float3(0.f, 90.f, 0.f));
+    }
+
+
+    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::UpArrow))
+    {
+        bPressed = true;
+        m_pTransformCom->Rotation(_float3(0.f, 180.f, 0.f));
+    }
+
+
+    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::DownArrow))
+    {
+        bPressed = true;
+        m_pTransformCom->Rotation(_float3(0.f, 0.f, 0.f));
+    }
+
+
+    if (m_pInputManager->IsKeyReleased(KeyCode::UpArrow) ||
+        m_pInputManager->IsKeyReleased(KeyCode::DownArrow) ||
+        m_pInputManager->IsKeyReleased(KeyCode::LeftArrow) ||
+        m_pInputManager->IsKeyReleased(KeyCode::RightArrow))
+        bPressed = false;
+
+    if (bPressed)
+        m_pTransformCom->Move(DIRECTION::FORWARD, (-1) * fTimeDelta);
+
+
+    if (m_pTarget)
+        m_pTransformCom->Chase(m_pTarget->Get_Transform()->Get_State(STATE::POSITION, TransformScope::WORLD), fTimeDelta, 5);
 
 }

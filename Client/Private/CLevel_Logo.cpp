@@ -18,6 +18,8 @@
 #include "CLight.h"
 
 #include "CModelObject.h"
+#include "CModel.h"
+
 
 
 
@@ -489,7 +491,14 @@ HRESULT CLevel_Logo::Reday_Layer_Model(const _wstring& strLayerTag)
     desc.modelName = L"Link2";
     
     CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.vLocalPosition = { 0.f,0.f,10.f,1.f };
+    TransDesc.fSpeedPerSec = 5.f;
+    TransDesc.fRotationPerSec = 10.f;
+
     desc.TransformDesc = &TransDesc;
+
+    CModel::MODEL_DSC ModelDesc = {};
+    desc.modelCompDesc = &ModelDesc;
 
 
     if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),

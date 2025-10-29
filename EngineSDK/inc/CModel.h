@@ -6,11 +6,21 @@ NS_BEGIN(Engine)
 
 class CMeshComponent;
 class CGameInstance;
+class CShader;
 
+/*모델이 공통적인 셰이더를 가지고....
+각 메쉬는 pass만다르게가진다..? */
 
 class ENGINE_DLL CModel :
     public CComponent
 {
+public:
+    typedef struct tagModelDesc
+    {
+        _wstring ShaderName = L"VtxMesh";
+        string passName = "Default";
+
+    }MODEL_DSC;
 protected:
     CModel(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CModel(const CModel& Prototype);
@@ -26,7 +36,8 @@ private:
     HRESULT     LoadModelFromJson(const _char* filepPath);
     HRESULT     LoadMaterialFromJSon(const _char* filePath);
 
-
+public:
+    HRESULT     Bind_ShaderResource();
 public:
 
     static CModel* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext,const _char* pFilePath);
@@ -37,10 +48,13 @@ public:
     HRESULT                 Render();
 
 
+public:
+    CMeshComponent* Get_Mesh(const wstring& Name);
+    class CShader* Get_Shader() { return m_pShader; }
 private:
     UMap<wstring, CMeshComponent*>      m_Meshs;
     ModelData       m_ModelData;
-
+    CShader* m_pShader = nullptr;
 
 private:
     CGameInstance* m_pGameInstance = nullptr;

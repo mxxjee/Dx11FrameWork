@@ -87,7 +87,7 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
     //float4 MaskColor = g_MaskTexture.Sample(sampler0, Input.vTexcoord);
     
     //Maskmap의 흰색부분 = 풀, 검은색 부분 = 흙
-    float4 MtrlDiffuseColor = 1.f;
+    float4 MtrlDiffuseColor =  g_DiffuseTexture.Sample(sampler0, Input.vTexcoord);
     
     
     //음영값 (diffuse 세기)

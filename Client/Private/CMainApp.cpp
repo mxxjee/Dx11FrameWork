@@ -261,7 +261,7 @@ void CMainApp::Free()
 #endif
 
 
-	//CInput_Manager::GetInstance()->DestroyInstance();
+	CInput_Manager::GetInstance()->DestroyInstance();
 	pGameInstance->Release_Engine();
 
 

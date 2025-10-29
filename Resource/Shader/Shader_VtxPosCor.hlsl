@@ -3,7 +3,7 @@
 /*전역변수 : ID3D11EFFECT객체를 통해 값변경이 가능하지만,
 HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 #include "Default.hlsli"
-
+#include "Shader_Light.hlsli"
 
 struct VS_IN
 {

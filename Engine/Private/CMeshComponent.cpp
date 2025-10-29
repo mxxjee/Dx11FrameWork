@@ -2,6 +2,7 @@
 #include "CVIBuffer_Model.h"
 #include "CMaterial.h"
 #include "CGameInstance.h"
+#include "CShader.h"
 
 
 
@@ -144,11 +145,20 @@ CComponent* CMeshComponent::Clone(void* pArg)
 	return pInstance;
 }
 
-void CMeshComponent::Free()
+HRESULT CMeshComponent::Bind_ShaderResource(CShader* pShader)
 {
-    __super::Free();
-	Safe_Release(m_pVIBuffer);
+	CheckNullResult(m_pMaterial, E_FAIL);
+	m_pMaterial->Bind_ShaderResource(pShader, "g_DiffuseTexture", MaterialMapType::DIFFUSE);
+
+	if (FAILED(pShader->Begin(passName)))
+		return E_FAIL;
+
+	if (FAILED(Render()))
+		return E_FAIL;
+
+	return S_OK;
 }
+
 
 HRESULT CMeshComponent::Render()
 {
@@ -160,7 +170,13 @@ HRESULT CMeshComponent::Render()
 	else
 		return E_FAIL;
 
-	Safe_Release(m_pMaterial);
-
 	return S_OK;
+}
+
+void CMeshComponent::Free()
+{
+	__super::Free();
+
+	Safe_Release(m_pMaterial);
+	Safe_Release(m_pVIBuffer);
 }

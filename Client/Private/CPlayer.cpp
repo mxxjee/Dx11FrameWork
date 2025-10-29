@@ -15,6 +15,7 @@ CPlayer::CPlayer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pCont
 CPlayer::CPlayer(const CPlayer& rhs)
     : CQuad(rhs),m_pInputManager(rhs.m_pInputManager)
 {
+    Safe_AddRef(m_pInputManager);
 }
 
 HRESULT CPlayer::Initialize_Prototype()
@@ -48,7 +49,7 @@ void CPlayer::Update(_float fTimeDelta)
     __super::Update(fTimeDelta);
     CheckNull(m_pTransformCom);
 
-    Move_Input(fTimeDelta);
+   // Move_Input(fTimeDelta);
 
 
 }

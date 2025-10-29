@@ -243,7 +243,8 @@ HRESULT CShader::Bind_Sampler(const string& Variable, ComPtr<ID3D11SamplerState>
 HRESULT CShader::Bind_RawValue(const string& Variable, const void* pData, UINT iSize)
 {
     ComPtr<ID3DX11EffectVariable> pVariable = m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str());
-    CheckNullResult(pVariable, E_FAIL);
+    
+    CheckFalseResult(pVariable->IsValid(), E_FAIL);
 
 
     return pVariable->SetRawValue(pData,0,iSize);

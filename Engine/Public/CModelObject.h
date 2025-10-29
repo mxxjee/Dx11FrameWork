@@ -3,7 +3,7 @@
 
 NS_BEGIN(Engine)
 class CModel;
-
+class CInput_Manager;
 class ENGINE_DLL CModelObject :
     public CGameObject
 {
@@ -11,8 +11,7 @@ public:
     typedef struct tagModelObjectDesc : CGameObject::GAMEOBJECT_DESC
     {
         _wstring    modelName;
-        _wstring    ShaderName = L"VtxMesh";
-        string      passName = "Default";
+        void*       modelCompDesc = nullptr;
 
         _uint eRenderGroup = 0;
     }MODELOBJECT_DESC;
@@ -43,6 +42,8 @@ public:
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
+public:
+    void Move_Input(float fTimeDelta);
 
 protected:
     CModel* m_pModelComp = nullptr;
@@ -51,8 +52,11 @@ private:
     HRESULT     Ready_Components(void* pArg);
     HRESULT     Ready_Resource(void* pArg);
 
+
 protected:
-    
+    bool bPressed = false;
+    CInput_Manager* m_pInputManager = nullptr;
+    ComPtr<ID3D11RasterizerState> m_pWireframeRS = nullptr;
     _uint                   m_eRenderGroup = 0;
     _wstring                m_ShaderName = L"";
     string                  m_passName = "";

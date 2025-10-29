@@ -24,6 +24,8 @@ public:
     static CMaterial* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext,const char* BasePath, map<MaterialMapType, string>& _TextureData);
     virtual void Free() override;
 
+public:
+    HRESULT         Bind_ShaderResource(class CShader* pShader, const string& Variable,MaterialMapType eType);
 private:
     MaterialData            m_MatData;
 

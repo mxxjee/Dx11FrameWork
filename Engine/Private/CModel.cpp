@@ -2,6 +2,8 @@
 #include "CMeshComponent.h"	
 #include "CGameInstance.h"
 #include "CMaterial.h"
+#include "CShader.h"
+
 
 CModel::CModel(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CComponent(pDevice,pContext), m_pGameInstance(CGameInstance::GetInstance())
@@ -13,8 +15,10 @@ CModel::CModel(const CModel& Prototype)
 	: CComponent(Prototype),
 	m_ModelData(Prototype.m_ModelData),
 	m_Meshs(Prototype.m_Meshs),
-	m_pGameInstance(Prototype.m_pGameInstance)
+	m_pGameInstance(Prototype.m_pGameInstance),
+	m_pShader(Prototype.m_pShader)
 {
+	Safe_AddRef(m_pShader);
 	Safe_AddRef(m_pGameInstance);
 
 	for (auto& pair : m_Meshs)
@@ -45,6 +49,20 @@ HRESULT CModel::Initialize_Copytype(void* pArg)
 {
 	if (FAILED(__super::Initialize_Copytype(pArg)))
 		return E_FAIL;
+
+	MODEL_DSC* pDesc = static_cast<MODEL_DSC*>(pArg);
+	if (pDesc)
+	{
+		m_pShader = m_pGameInstance->Find_Shader(pDesc->ShaderName);
+		Safe_AddRef(m_pShader);
+	}
+
+	else
+	{
+		m_pShader = m_pGameInstance->Find_Shader(L"VtxMesh");
+		Safe_AddRef(m_pShader);
+
+	}
 
 	return S_OK;
 }
@@ -126,20 +144,37 @@ HRESULT CModel::LoadMaterialFromJSon(const _char* filePath)
 		m_TextureDatas.emplace(MaterialMapType::NORMAL, Material["Normal"]);
 		m_TextureDatas.emplace(MaterialMapType::SPECULAR, Material["Specular"]);
 
-		//0x00007ff67e778a40 "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Link2/Link2.json"
-
+	
 		fs::path Tmp = filePath;
 
 		string BasePath = Tmp.parent_path().string() + "\\Materials\\";
 
-		CMaterial* pMaterial = CMaterial::Create(m_pDevice, m_pContext, BasePath.c_str(), m_TextureDatas);
-		if (FAILED(m_pGameInstance->Register_Material(WMatName, pMaterial)))
-			Safe_Release(pMaterial);
+		CMaterial* pMaterial = m_pGameInstance->Find_Material(WMatName);
+		if (!pMaterial)
+		{
+			CMaterial* pMaterial = CMaterial::Create(m_pDevice, m_pContext, BasePath.c_str(), m_TextureDatas);
+			if (FAILED(m_pGameInstance->Register_Material(WMatName, pMaterial)))
+			{
+				Safe_Release(pMaterial);
+				continue;
+			}
+		}
+		
 
 
 		
 	}
 
+	return S_OK;
+}
+
+HRESULT CModel::Bind_ShaderResource()
+{
+	for (auto& pair : m_Meshs)
+	{
+		if (pair.second)
+			pair.second->Bind_ShaderResource(m_pShader);
+	}
 	return S_OK;
 }
 
@@ -177,7 +212,7 @@ void CModel::Free()
 			Safe_Release(pair.second);
 
 	}
-
+	Safe_Release(m_pShader);
 	Safe_Release(m_pGameInstance);
 }
 
@@ -188,6 +223,16 @@ HRESULT CModel::Render()
 		if (pair.second)
 			pair.second->Render();
 	}
+	
 
 	return S_OK;
+}
+
+CMeshComponent* CModel::Get_Mesh(const wstring& Name)
+{
+	auto iter = m_Meshs.find(Name);
+	if (iter != m_Meshs.end())
+		return iter->second;
+
+	return nullptr;
 }

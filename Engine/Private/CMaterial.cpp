@@ -2,7 +2,7 @@
 #include "CTexture_Manager.h"
 #include "CTexture.h"
 #include "CGameInstance.h"
-
+#include "CShader.h"
 
 CMaterial::CMaterial(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
 	:m_pDevice(_pDevice),m_pContext(_pContext), m_pGameInstance(CGameInstance::GetInstance())
@@ -38,13 +38,25 @@ HRESULT CMaterial::Register_MaterialTexture(const char* BasePath, map<MaterialMa
 	//경로와 이름을 통해서 텍스처 매니저에 텍스처를 등록한다.
 	for (int i = 0; i < ENUM_TO_UINT(MaterialMapType::END); ++i)
 	{
-		if (_TextureData[(MaterialMapType)i] == "")
+		auto it = _TextureData.find(MaterialMapType(i));
+		if (it == _TextureData.end() || it->second.empty())
 			continue;
 
 		MaterialTexName[i] = wstring(_TextureData[(MaterialMapType)i].begin(), _TextureData[(MaterialMapType)i].end());
-		pTextures[i] = CTexture::Create(m_pDevice, m_pContext, wstring(wBasePath + MaterialTexName[i]).c_str());
-		if (FAILED(m_pGameInstance->Register_Texture(MaterialTexName[i], pTextures[i])))
-			Safe_Release(pTextures[i]);
+		
+		pTextures[i] = m_pGameInstance->Find_Texture(MaterialTexName[i]);
+
+		//못찾앗을때만 . 생성
+		if (!pTextures[i])
+		{
+			pTextures[i] = CTexture::Create(m_pDevice, m_pContext, wstring(wBasePath + MaterialTexName[i]).c_str());
+			if (FAILED(m_pGameInstance->Register_Texture(MaterialTexName[i], pTextures[i])))
+			{
+				Safe_Release(pTextures[i]);
+				continue;
+			}
+		}
+	
 	
 	}
 
@@ -86,5 +98,22 @@ void CMaterial::Free()
 	}
 
 	Safe_Release(m_pGameInstance);
+}
+
+HRESULT CMaterial::Bind_ShaderResource(CShader* pShader, const string& Variable, MaterialMapType eType)
+{
+	CheckNullResult(pShader, E_FAIL);
+	
+	auto it = m_MatData.m_Textures.find(eType);
+	if (it == m_MatData.m_Textures.end())
+		return E_FAIL;
+
+	CTexture* pTex = m_MatData.m_Textures[eType];
+	CheckNullResult(pTex, E_FAIL);
+
+	ComPtr<ID3D11ShaderResourceView> SRV = pTex->Get_SRV(0);
+	CheckNullResult(SRV.Get(), E_FAIL);
+
+	return pShader->Bind_SRV(Variable, SRV);
 }
 
