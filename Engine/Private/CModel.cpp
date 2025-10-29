@@ -33,6 +33,9 @@ HRESULT CModel::Initialize_Prototype(const _char* pModelFilePath)
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
 
+	m_pShader = m_pGameInstance->Find_Shader(L"VtxMesh");
+	Safe_AddRef(m_pShader);
+
 	if (FAILED(LoadMaterialFromJSon(pModelFilePath)))	//Manager에 메쉬가 사용할 모든 Material들을 등록한다.
 		return E_FAIL;
 
@@ -40,7 +43,6 @@ HRESULT CModel::Initialize_Prototype(const _char* pModelFilePath)
 	if (FAILED(LoadModelFromJson(pModelFilePath)))	//파싱하면서 메테리얼이름을 읽어서 Manager에서 찾아서 meshcomp 한테 넘겨준다.
 		return E_FAIL;
 
-	
 
 	return S_OK;
 }
@@ -53,16 +55,14 @@ HRESULT CModel::Initialize_Copytype(void* pArg)
 	MODEL_DSC* pDesc = static_cast<MODEL_DSC*>(pArg);
 	if (pDesc)
 	{
+		if (m_pShader)
+			Safe_Release(m_pShader);
+
 		m_pShader = m_pGameInstance->Find_Shader(pDesc->ShaderName);
 		Safe_AddRef(m_pShader);
 	}
 
-	else
-	{
-		m_pShader = m_pGameInstance->Find_Shader(L"VtxMesh");
-		Safe_AddRef(m_pShader);
 
-	}
 
 	return S_OK;
 }
@@ -113,12 +113,21 @@ HRESULT CModel::LoadModelFromJson(const _char* filepPath)
 		string ibPath = folderpath + string(jMesh["IBPath"]);
 		int MeshIdx = jMesh["MeshIdx"];
 
+		//메쉬 생성, 필요한 정보들은 미리 세팅해서 던져준다.
 		CMeshComponent* pMesh = nullptr;
-		pMesh = CMeshComponent::Create(m_pDevice, m_pContext, meshData,folderpath.c_str(), MeshIdx);
+		pMesh = CMeshComponent::Create(m_pDevice, m_pContext, meshData, folderpath.c_str(), MeshIdx);
 		CheckNullResult(pMesh, E_FAIL);
 
 
+		//pass이름을 따로정의했다면,(메쉬이름과 같이)
 
+
+		if (m_pShader->Check_PassName(MeshName))
+			pMesh->Set_PassName(MeshName);
+		
+		//아니라면 DefaultPass이용.(기본값초기화)
+
+			 
 		m_Meshs.emplace(wstring(MeshName.begin(), MeshName.end()), pMesh);
 
 	}
@@ -159,7 +168,7 @@ HRESULT CModel::LoadMaterialFromJSon(const _char* filePath)
 				continue;
 			}
 		}
-		
+	
 
 
 		
@@ -168,12 +177,22 @@ HRESULT CModel::LoadMaterialFromJSon(const _char* filePath)
 	return S_OK;
 }
 
-HRESULT CModel::Bind_ShaderResource()
+HRESULT CModel::Render()
 {
+	/*모든 메쉬를 순회하면서 바인드한다.
+	각 메쉬들의 위치와 소유한 메테리얼의 이미지 바인딩.
+	이후 메쉬를 그리는 작업*/
 	for (auto& pair : m_Meshs)
 	{
 		if (pair.second)
-			pair.second->Bind_ShaderResource(m_pShader);
+		{
+			if(FAILED(pair.second->Bind_ShaderResource(m_pShader)))
+				return E_FAIL;
+
+			if (FAILED(pair.second->Render()))
+				return E_FAIL;
+
+		}
 	}
 	return S_OK;
 }
@@ -216,17 +235,6 @@ void CModel::Free()
 	Safe_Release(m_pGameInstance);
 }
 
-HRESULT CModel::Render()
-{
-	for (auto& pair : m_Meshs)
-	{
-		if (pair.second)
-			pair.second->Render();
-	}
-	
-
-	return S_OK;
-}
 
 CMeshComponent* CModel::Get_Mesh(const wstring& Name)
 {

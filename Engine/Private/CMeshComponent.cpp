@@ -15,6 +15,7 @@ CMeshComponent::CMeshComponent(const CMeshComponent& Prototype)
     :CComponent(Prototype),
 	m_MeshData(Prototype.m_MeshData),
 	m_pVIBuffer(Prototype.m_pVIBuffer),
+	passName(Prototype.passName),
 	m_pGameInstance(Prototype.m_pGameInstance)
 {
 	Safe_AddRef(m_pVIBuffer);
@@ -147,13 +148,11 @@ CComponent* CMeshComponent::Clone(void* pArg)
 
 HRESULT CMeshComponent::Bind_ShaderResource(CShader* pShader)
 {
+	//소유한 메테리얼이 가지고있는 텍스처를 바인드하자.
 	CheckNullResult(m_pMaterial, E_FAIL);
 	m_pMaterial->Bind_ShaderResource(pShader, "g_DiffuseTexture", MaterialMapType::DIFFUSE);
 
 	if (FAILED(pShader->Begin(passName)))
-		return E_FAIL;
-
-	if (FAILED(Render()))
 		return E_FAIL;
 
 	return S_OK;

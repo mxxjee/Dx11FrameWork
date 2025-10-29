@@ -74,6 +74,8 @@ HRESULT CModelObject::Render()
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
 
+    if (FAILED(m_pModelComp->Render()))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -83,8 +85,7 @@ HRESULT CModelObject::Bind_ShaderResources()
     if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
         return E_FAIL;
 
-    if (FAILED(m_pModelComp->Bind_ShaderResource()))
-        return E_FAIL;
+
 
 
     return S_OK;

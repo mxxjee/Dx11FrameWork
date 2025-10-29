@@ -151,17 +151,18 @@ HRESULT CLoader::Loading_Logo()
     if (FAILED(Register_Textures()))
         return E_FAIL;
 
+    lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
+
+    if (FAILED(Register_Shaders()))
+        return E_FAIL;
+
 
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
     if (FAILED(Register_Models()))
         return E_FAIL;
 
 
-    lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
 
-    if (FAILED(Register_Shaders()))
-        return E_FAIL;
-  
 
   
     lstrcpy(m_szFPS, TEXT("컴포넌트 원형(를) 로딩 중 입니다."));

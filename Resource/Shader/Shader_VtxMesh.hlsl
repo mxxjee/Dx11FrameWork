@@ -88,8 +88,7 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
     
     //Maskmap의 흰색부분 = 풀, 검은색 부분 = 흙
     float4 MtrlDiffuseColor =  g_DiffuseTexture.Sample(sampler0, Input.vTexcoord);
-    
-    
+
     //음영값 (diffuse 세기)
     float fShade = Compute_Shade(g_vLightDirection, Input.vNormal);
     
@@ -134,7 +133,12 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
 }
 
 
+float4 PS_Eye(PS_IN Input) : SV_Target0
+{
+    return float4(1.f, 0.f, 0.f, 1.f);
+    
 
+}
 /*렌더링 방법을 정의한다.*/
 technique11 DefaultTechnique
 {
@@ -148,6 +152,13 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
 
         PixelShader = compile ps_5_0 PS_MAIN();
+
+    }
+
+    pass face_low__MI_eye
+    {
+        VertexShader = compile vs_5_0 VS_MAIN();
+        PixelShader = compile ps_5_0 PS_Eye();
 
     }
 

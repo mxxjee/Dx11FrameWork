@@ -171,6 +171,16 @@ HRESULT CShader::Load_PassesAndCreateInputLayers(const vector<D3D11_INPUT_ELEMEN
     return S_OK;
 }
 
+bool CShader::Check_PassName(const string& Name)
+{
+    auto iter = m_ShaderInfo.m_pPassInfos.find(Name);
+    if (iter != m_ShaderInfo.m_pPassInfos.end())
+        return true;
+
+
+    return false;
+}
+
 HRESULT CShader::Bind_Matrix(const string& Variable, const _float4x4& mat)
 {
     ComPtr<ID3DX11EffectVariable> pVariable = m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str());

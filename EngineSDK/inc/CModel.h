@@ -37,15 +37,14 @@ private:
     HRESULT     LoadMaterialFromJSon(const _char* filePath);
 
 public:
-    HRESULT     Bind_ShaderResource();
+        //모든 메쉬 ,메테리얼바인딩 하나씩 하고 그리기
+    HRESULT     Render();  
 public:
 
     static CModel* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext,const _char* pFilePath);
     virtual CComponent* Clone(void* pArg) override;
     virtual void Free() override;
 
-
-    HRESULT                 Render();
 
 
 public:
