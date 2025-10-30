@@ -27,13 +27,13 @@ protected:
     virtual ~CModel() = default;
 
 public:
-    virtual HRESULT Initialize_Prototype(const _char* pFilePath);
+    virtual HRESULT Initialize_Prototype(_matrix PreTransformMatrix,const _char* pFilePath);
     virtual HRESULT Initialize_Copytype(void* pArg) override;
 
 
 
 private:
-    HRESULT     LoadModelFromJson(const _char* filepPath);
+    HRESULT     LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepPath);
     HRESULT     LoadMaterialFromJSon(const _char* filePath);
 
 public:
@@ -41,7 +41,7 @@ public:
     HRESULT     Render();  
 public:
 
-    static CModel* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext,const _char* pFilePath);
+    static CModel* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext,_matrix PreTransformMatrix,const _char* pFilePath);
     virtual CComponent* Clone(void* pArg) override;
     virtual void Free() override;
 

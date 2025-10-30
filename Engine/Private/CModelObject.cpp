@@ -192,21 +192,6 @@ void CModelObject::Move_Input(float fTimeDelta)
         bPressed = true;
 
         if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
-            m_pTransformCom->Rotation(_float3(0.f, -135.f, 0.f));
-
-        else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
-            m_pTransformCom->Rotation(_float3(0.f, -45.f, 0.f));
-        else
-            m_pTransformCom->Rotation(_float3(0.f, -90.f, 0.f));
-    }
-
-
-
-    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LeftArrow))
-    {
-        bPressed = true;
-
-        if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
             m_pTransformCom->Rotation(_float3(0.f, 135.f, 0.f));
 
         else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
@@ -216,17 +201,32 @@ void CModelObject::Move_Input(float fTimeDelta)
     }
 
 
+
+    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LeftArrow))
+    {
+        bPressed = true;
+
+        if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+            m_pTransformCom->Rotation(_float3(0.f, -135.f, 0.f));
+
+        else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+            m_pTransformCom->Rotation(_float3(0.f, -45.f, 0.f));
+        else
+            m_pTransformCom->Rotation(_float3(0.f, -90.f, 0.f));
+    }
+
+
     else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::UpArrow))
     {
         bPressed = true;
-        m_pTransformCom->Rotation(_float3(0.f, 180.f, 0.f));
+        m_pTransformCom->Rotation(_float3(0.f, 0.f, 0.f));
     }
 
 
     else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::DownArrow))
     {
         bPressed = true;
-        m_pTransformCom->Rotation(_float3(0.f, 0.f, 0.f));
+        m_pTransformCom->Rotation(_float3(0.f, 180.f, 0.f));
     }
 
 
@@ -237,7 +237,7 @@ void CModelObject::Move_Input(float fTimeDelta)
         bPressed = false;
 
     if (bPressed)
-        m_pTransformCom->Move(DIRECTION::FORWARD, (-1) * fTimeDelta);
+        m_pTransformCom->Move(DIRECTION::FORWARD,  fTimeDelta);
 
 
     if (m_pTarget)

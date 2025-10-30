@@ -488,8 +488,9 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
 HRESULT CLevel_Logo::Reday_Layer_Model(const _wstring& strLayerTag)
 {
     CModelObject::MODELOBJECT_DESC desc;
-    desc.modelName = L"Field_03P2";
     
+    desc.modelName = L"Link2";
+    desc.ObjTag = L"Link2";
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.vLocalPosition = { 0.f,0.f,10.f,1.f };
     TransDesc.fSpeedPerSec = 5.f;
@@ -558,8 +559,8 @@ void CLevel_Logo::OnEnter()
         CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
         CheckNull(ppMainCamera);
         ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO),
-            L"Player_Layer",
-            L"Player"), true);
+            L"Model_Layer",
+            L"Link2"), true);
     }
 
 

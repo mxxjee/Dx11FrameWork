@@ -28,7 +28,7 @@ CModel::CModel(const CModel& Prototype)
 	}
 }
 										//"C:\Users\kmj69\Documents\GitHub\ModelConverter\Output\Zelda\Zelda.json"
-HRESULT CModel::Initialize_Prototype(const _char* pModelFilePath)
+HRESULT CModel::Initialize_Prototype(_matrix PreTransformMatrix,const _char* pModelFilePath)
 {
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
@@ -40,7 +40,7 @@ HRESULT CModel::Initialize_Prototype(const _char* pModelFilePath)
 		return E_FAIL;
 
 
-	if (FAILED(LoadModelFromJson(pModelFilePath)))	//파싱하면서 메테리얼이름을 읽어서 Manager에서 찾아서 meshcomp 한테 넘겨준다.
+	if (FAILED(LoadModelFromJson(PreTransformMatrix,pModelFilePath)))	//파싱하면서 메테리얼이름을 읽어서 Manager에서 찾아서 meshcomp 한테 넘겨준다.
 		return E_FAIL;
 
 
@@ -68,7 +68,7 @@ HRESULT CModel::Initialize_Copytype(void* pArg)
 }
 
 									//"C:\Users\kmj69\Documents\GitHub\ModelConverter\Output\Zelda\Zelda.json"
-HRESULT CModel::LoadModelFromJson(const _char* filepPath)
+HRESULT CModel::LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepPath)
 {
 	ModelData model;
 	ifstream	file(filepPath);
@@ -94,8 +94,7 @@ HRESULT CModel::LoadModelFromJson(const _char* filepPath)
 		meshData.m_MaterialData.m_MaterialName = StringToWString(jMesh["MaterialName"]);
 
 
-		XMStoreFloat4x4(&meshData.Transform, XMMatrixIdentity());
-
+		meshData.Transform= PreTransformMatrix;
 	
 		string vbPath = folderpath + string(jMesh["VBPath"]);
 		string ibPath = folderpath + string(jMesh["IBPath"]);
@@ -185,11 +184,11 @@ HRESULT CModel::Render()
 	return S_OK;
 }
 
-CModel* CModel::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const _char* pFilePath)
+CModel* CModel::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, _matrix PreTransformMatrix,const _char* pFilePath)
 {
 	CModel* pInstance = new CModel(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(pFilePath)))
+	if (FAILED(pInstance->Initialize_Prototype(PreTransformMatrix,pFilePath)))
 	{
 		MSG_BOX("Failed to Created : CModel");
 		Safe_Release(pInstance);

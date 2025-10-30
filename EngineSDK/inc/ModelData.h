@@ -26,7 +26,7 @@ struct MaterialData
 struct MeshData
 {
 	wstring Name;
-	XMFLOAT4X4		Transform;			//변환행렬, 각 파츠당 변환행렬적용
+	XMMATRIX		Transform;			//변환행렬, 각 파츠당 변환행렬적용
 
 	uint32_t	VertexCount;			//정점개수
 	uint32_t	IndexCount;				//인덱스카운트

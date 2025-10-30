@@ -10,7 +10,7 @@ CVIBuffer_Model::CVIBuffer_Model(const CVIBuffer_Model& Prototype)
 {
 }
 
-HRESULT CVIBuffer_Model::Initialize_Prototype(_float4x4& Matrix, vector<VTXMESH>& Vertices, vector<_uint>& Indices)
+HRESULT CVIBuffer_Model::Initialize_Prototype(_matrix& Matrix, vector<VTXMESH>& Vertices, vector<_uint>& Indices)
 {
 
 #pragma region VertexBuffer
@@ -36,22 +36,24 @@ HRESULT CVIBuffer_Model::Initialize_Prototype(_float4x4& Matrix, vector<VTXMESH>
 
 	//위치값 기록을 위한 동적배열(따로 멤버 보관)
 	m_pVertexPositions = new _float3[m_iNumVertices];
-	_matrix Mat = XMLoadFloat4x4(&Matrix);
 
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
-		_vector vPosition = XMLoadFloat3(&Vertices[i].vPosition);
-		vPosition=XMVector3TransformCoord(vPosition, Mat);
+		_vector vPosition =XMVector3TransformCoord(XMLoadFloat3(&Vertices[i].vPosition), Matrix);
 		XMStoreFloat3(&Vertices[i].vPosition, vPosition);
-
 		m_pVertexPositions[i] = Vertices[i].vPosition;
 
 		//노말도 돌려줘야함.
+		_vector vNormal = XMVector3TransformCoord(XMLoadFloat3(&Vertices[i].vNormal), Matrix);
+		XMStoreFloat3(&Vertices[i].vNormal, vNormal);
 
 		//tangent
+		_vector vTangent = XMVector3TransformCoord(XMLoadFloat3(&Vertices[i].Tangent), Matrix);
+		XMStoreFloat3(&Vertices[i].Tangent, vTangent);
 
 		//bitangent까지 돌려줘야한다.
-
+		_vector vBiTangent = XMVector3TransformCoord(XMLoadFloat3(&Vertices[i].BiNormal), Matrix);
+		XMStoreFloat3(&Vertices[i].BiNormal, vBiTangent);
 	
 
 	}
@@ -103,7 +105,7 @@ HRESULT CVIBuffer_Model::Initialize_Copytype(void* pArg)
 
 
 
-CVIBuffer_Model* CVIBuffer_Model::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, _float4x4& Matrix, vector<VTXMESH>& Vertices, vector<_uint>& Indices)
+CVIBuffer_Model* CVIBuffer_Model::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, _matrix& Matrix, vector<VTXMESH>& Vertices, vector<_uint>& Indices)
 {
 	CVIBuffer_Model* pInstance = new CVIBuffer_Model(pDevice, pContext);
 	if (FAILED(pInstance->Initialize_Prototype(Matrix,Vertices,Indices)))
