@@ -8,6 +8,43 @@ CTexture_Manager::CTexture_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11D
 
 HRESULT CTexture_Manager::Initialize()
 {
+	//임의의 흰색 texutre를 만들어서 저장하자
+	ComPtr<ID3D11Texture2D> pTexture2D = { nullptr };
+
+	D3D11_TEXTURE2D_DESC	TextureDesc = {};
+	TextureDesc.Width = 256;
+	TextureDesc.Height = 256;
+	TextureDesc.MipLevels = 1;
+	TextureDesc.ArraySize = 1;
+	TextureDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+	TextureDesc.SampleDesc.Quality = 0;
+	TextureDesc.SampleDesc.Count = 1;
+
+	TextureDesc.Usage = D3D11_USAGE_DEFAULT;
+	TextureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+
+
+	TextureDesc.CPUAccessFlags = 0;
+	TextureDesc.MiscFlags = 0;
+
+	_uint* pInitialPixels = new _uint[TextureDesc.Width * TextureDesc.Height];
+	for(int i=0;i< TextureDesc.Width * TextureDesc.Height;++i)
+		pInitialPixels[i]= D3DCOLOR_ARGB(255, 255, 255, 255);
+
+	D3D11_SUBRESOURCE_DATA		InitialData{};
+	InitialData.pSysMem = pInitialPixels;
+	InitialData.SysMemPitch = sizeof(_uint) * TextureDesc.Width;
+
+	if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, &InitialData, &pTexture2D)))
+		return E_FAIL;
+
+
+	CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, pTexture2D);
+	if (pTexture)
+		m_mapTex.emplace(L"Default", pTexture);
+
+	Safe_Delete_Array(pInitialPixels);
 	return S_OK;
 }
 

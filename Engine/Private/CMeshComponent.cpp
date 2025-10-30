@@ -151,6 +151,7 @@ HRESULT CMeshComponent::Bind_ShaderResource(CShader* pShader)
 	//소유한 메테리얼이 가지고있는 텍스처를 바인드하자.
 	CheckNullResult(m_pMaterial, E_FAIL);
 	m_pMaterial->Bind_ShaderResource(pShader, "g_DiffuseTexture", MaterialMapType::DIFFUSE);
+	m_pMaterial->Bind_ShaderResource(pShader, "g_SpecularTexture", MaterialMapType::SPECULAR);
 
 	if (FAILED(pShader->Begin(passName)))
 		return E_FAIL;

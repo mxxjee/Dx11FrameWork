@@ -46,6 +46,14 @@ HRESULT CVIBuffer_Model::Initialize_Prototype(_float4x4& Matrix, vector<VTXMESH>
 
 		m_pVertexPositions[i] = Vertices[i].vPosition;
 
+		//노말도 돌려줘야함.
+
+		//tangent
+
+		//bitangent까지 돌려줘야한다.
+
+	
+
 	}
 		
 	D3D11_SUBRESOURCE_DATA VertexData;

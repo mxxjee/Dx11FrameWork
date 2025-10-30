@@ -225,18 +225,18 @@ HRESULT CLevel_Logo::Ready_Lights()
 
 
     ////////////說除 薄褻貲 纔蝶お//////////
-    LIGHT_DESC       RedLight;
-    RedLight.eType = LIGHT::POINT;
+    //LIGHT_DESC       RedLight;
+    //RedLight.eType = LIGHT::POINT;
 
-    RedLight.vDiffuse = _float4(10.f, 0.f, 0.f, 1.f);//說除儀
-    RedLight.fRange =10.f; 
-    RedLight.vPosition = _float4(0.f,3.f,0.f,1.f);
-    RedLight.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
-    RedLight.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+    //RedLight.vDiffuse = _float4(1.f, 0.f, 0.f, 1.f);//說除儀
+    //RedLight.fRange =10.f; 
+    //RedLight.vPosition = _float4(0.f,3.f,0.f,1.f);
+    //RedLight.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+    //RedLight.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
 
 
-    if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, RedLight)))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, RedLight)))
+    //    return E_FAIL;
 
 
     return S_OK;

@@ -49,7 +49,7 @@ HRESULT CTexture::Add_TextureToSRV(ComPtr<ID3D11Texture2D> pTex)
 	srvDesc.Texture2D.MipLevels = desc.MipLevels;
 
 	ComPtr<ID3D11ShaderResourceView> pSRV = nullptr;
-	HRESULT hr = m_pDevice->CreateShaderResourceView(pTex.Get(), &srvDesc, &pSRV);
+	HRESULT hr = m_pDevice->CreateShaderResourceView(pTex.Get(), &srvDesc, pSRV.GetAddressOf());
 	if (FAILED(hr))
 		return hr;
 

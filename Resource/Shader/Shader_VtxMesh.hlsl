@@ -7,12 +7,16 @@ HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 
 
 vector  g_CamPosition;
-vector g_vMaterialAmbient = vector(0.3f, 0.3f, 0.3f, 1.f);
+vector g_vMaterialAmbient = vector(1.f, 1.f, 1.f, 1.f);
 vector g_vMaterialSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
 
 
 Texture2D g_DiffuseTexture;
+Texture2D g_SpecularTexture;
+Texture2D g_AmbientTexture;
+
+
 Texture2D g_MaskTexture;
 
 
@@ -78,14 +82,6 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
 {
     float4 fDiffuseColor, fAmbientColor, fSpeculrColor;
     
-    //////////////////Direction_Light에 대한 연산///////////////////////////////////
-    //DiffuseColor
-    //float4 TmpColor = g_DiffuseTexture[0].Sample(sampler0, Input.vTexcoord * 5.f);
-    //float4 SrvColor = g_DiffuseTexture[1].Sample(sampler0, Input.vTexcoord*5.f);
-    
-    ////전체영역 사용, 타일X
-    //float4 MaskColor = g_MaskTexture.Sample(sampler0, Input.vTexcoord);
-    
     //Maskmap의 흰색부분 = 풀, 검은색 부분 = 흙
     float4 MtrlDiffuseColor =  g_DiffuseTexture.Sample(sampler0, Input.vTexcoord);
 
@@ -97,10 +93,12 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
     float fSpecular = Compute_Specular(g_vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition);
     
  
-    fDiffuseColor = g_vLightDiffuse * MtrlDiffuseColor * saturate(fShade + (g_vLightAmbient * g_vMaterialAmbient));
-    fAmbientColor = float4(0, 0, 0, 0);
+    fDiffuseColor = g_vLightDiffuse * MtrlDiffuseColor * fShade;
+    fAmbientColor = g_vLightAmbient * g_vMaterialAmbient * (MtrlDiffuseColor * 0.5f);
+    
 
-    fSpeculrColor = g_vLightSpecular * g_vMaterialSpecular * fSpecular;
+    float MtrlSpecularColor = g_SpecularTexture.Sample(sampler0, Input.vTexcoord);
+    fSpeculrColor = g_vLightSpecular * MtrlSpecularColor * fSpecular;
 
     
 
@@ -119,14 +117,14 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
         
         ///이거 이상함.
         fDiffuseColor += g_vPL_Diffuse[i] * MtrlDiffuseColor * fShade * fAttenuation;
-        //fAmbientColor +=(g_vPL_Ambient[i] * g_vMaterialAmbient);
-        //fSpeculrColor += g_vPL_Specular[i] * g_vMaterialSpecular * fSpecular;
+        fAmbientColor += g_vPL_Ambient[i] * g_vMaterialAmbient * fAttenuation;
+        fSpeculrColor += g_vPL_Specular[i] * MtrlSpecularColor * fSpecular;
         
 
     }
   
     
-    
+    fAmbientColor *= 0.15f;
     float4 ResultColor = fDiffuseColor + fAmbientColor + fSpeculrColor;
     return saturate(ResultColor);
 
@@ -155,10 +153,12 @@ technique11 DefaultTechnique
 
     }
 
+
+        //패스값 나눠지는지 테스트용
     pass face_low__MI_eye
     {
         VertexShader = compile vs_5_0 VS_MAIN();
-        PixelShader = compile ps_5_0 PS_Eye();
+        PixelShader = compile ps_5_0 PS_MAIN();
 
     }
 

@@ -106,14 +106,27 @@ HRESULT CMaterial::Bind_ShaderResource(CShader* pShader, const string& Variable,
 	
 	auto it = m_MatData.m_Textures.find(eType);
 	if (it == m_MatData.m_Textures.end())
-		return E_FAIL;
+	{
+		//1.1.1.1 사진 떤져주기
+		CTexture* pDefaulTex = m_pGameInstance->Find_Texture(L"Default");
+		if (pDefaulTex)
+		{
+			ComPtr<ID3D11ShaderResourceView> pSRV = pDefaulTex->Get_SRV(0);
+			return pShader->Bind_SRV(Variable,pSRV );
 
-	CTexture* pTex = m_MatData.m_Textures[eType];
-	CheckNullResult(pTex, E_FAIL);
+		}
+	}
 
-	ComPtr<ID3D11ShaderResourceView> SRV = pTex->Get_SRV(0);
-	CheckNullResult(SRV.Get(), E_FAIL);
+	else
+	{
+		CTexture* pTex = m_MatData.m_Textures[eType];
+		CheckNullResult(pTex, E_FAIL);
 
-	return pShader->Bind_SRV(Variable, SRV);
+		ComPtr<ID3D11ShaderResourceView> SRV = pTex->Get_SRV(0);
+		CheckNullResult(SRV.Get(), E_FAIL);
+
+		return pShader->Bind_SRV(Variable, SRV);
+	}
+	
 }
 

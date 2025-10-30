@@ -54,7 +54,7 @@ void CModelObject::Update(_float fTimeDelta)
     __super::Update(fTimeDelta);
     CheckNull(m_pTransformCom);
 
-    //Move_Input(fTimeDelta);
+    Move_Input(fTimeDelta);
 }
 
 void CModelObject::Update_Late(_float fTimeDelta)

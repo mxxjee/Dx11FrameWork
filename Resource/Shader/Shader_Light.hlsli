@@ -19,7 +19,7 @@ float4 g_vPL_Specular[MAX_POINT_LIGHTS];
 
 float Compute_Shade(float4 LightDirection, float4 Normal)
 {
-    return max(dot(normalize(LightDirection) * (-1.f), normalize(Normal)), 0); //0이하이면 0, 1이상이면 1값으로 보정
+    return max(dot(normalize(g_vLightDirection) * -1.f, normalize(Normal)), 0.f); //0이하이면 0, 1이상이면 1값으로 보정
   
 }
 

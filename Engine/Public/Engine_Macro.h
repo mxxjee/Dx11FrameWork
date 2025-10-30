@@ -3,6 +3,10 @@
 
 #define			ENUM_TO_UINT(ENUM)			static_cast<unsigned int>(ENUM)
 
+#define D3DCOLOR_ARGB(a,r,g,b) \
+    ((D3DCOLOR)((((a)&0xff)<<24)|(((b)&0xff)<<16)|(((g)&0xff)<<8)|((r)&0xff)))
+
+
 #ifndef			MSG_BOX
 #define			MSG_BOX(_message)			MessageBox(nullptr, TEXT(_message), L"System Message", MB_OK)
 #endif
