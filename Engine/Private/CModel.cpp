@@ -93,22 +93,10 @@ HRESULT CModel::LoadModelFromJson(const _char* filepPath)
 
 		meshData.m_MaterialData.m_MaterialName = StringToWString(jMesh["MaterialName"]);
 
-		json Tmp = jMesh["Transform"];
-		for (int r = 0; r < 4; ++r)
-		{
-			if (Tmp[r].is_array() && Tmp[r].size() == 4)
-			{
-				for (int c = 0; c < 4; ++c)
-				{
-					meshData.Transform.m[r][c] = Tmp[c][r].get<float>();
-				}
-					
-			}
-		
-		}
-		
 
-		
+		XMStoreFloat4x4(&meshData.Transform, XMMatrixIdentity());
+
+	
 		string vbPath = folderpath + string(jMesh["VBPath"]);
 		string ibPath = folderpath + string(jMesh["IBPath"]);
 		int MeshIdx = jMesh["MeshIdx"];
