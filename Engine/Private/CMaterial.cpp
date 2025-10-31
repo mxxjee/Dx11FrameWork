@@ -124,5 +124,6 @@ HRESULT CMaterial::Bind_ShaderResource(CShader* pShader, const string& Variable,
 		return pShader->Bind_SRV(Variable, SRV);
 	}
 	
+	return S_OK;
 }
 
