@@ -130,15 +130,16 @@ HRESULT CModel::LoadMaterialFromJSon(const _char* filePath)
 	json jModel = json::parse(file);
 	for (auto& Material : jModel["Materials"])
 	{
-		map<MaterialMapType, string>  m_TextureDatas;
+		map<aiTextureType, string>  m_TextureDatas;
 
 		string MaterialName = Material["MaterialName"];
 		wstring WMatName = wstring(MaterialName.begin(), MaterialName.end());
 
-		m_TextureDatas.emplace(MaterialMapType::DIFFUSE, Material["Diffuse"]);
-		m_TextureDatas.emplace(MaterialMapType::AMBIENT, Material["Ambient"]);
-		m_TextureDatas.emplace(MaterialMapType::NORMAL, Material["Normal"]);
-		m_TextureDatas.emplace(MaterialMapType::SPECULAR, Material["Specular"]);
+		m_TextureDatas.emplace(aiTextureType_DIFFUSE, Material["Diffuse"]);
+		m_TextureDatas.emplace(aiTextureType_AMBIENT, Material["Ambient"]);
+		m_TextureDatas.emplace(aiTextureType_NORMALS, Material["Normal"]);
+		m_TextureDatas.emplace(aiTextureType_SPECULAR, Material["Specular"]);
+		m_TextureDatas.emplace(aiTextureType_METALNESS, Material["METALNESS"]);
 
 	
 		fs::path Tmp = filePath;
@@ -164,24 +165,10 @@ HRESULT CModel::LoadMaterialFromJSon(const _char* filePath)
 	return S_OK;
 }
 
-HRESULT CModel::Render()
+HRESULT CModel::Render(CMeshComponent* pMesh)
 {
-	/*모든 메쉬를 순회하면서 바인드한다.
-	각 메쉬들의 위치와 소유한 메테리얼의 이미지 바인딩.
-	이후 메쉬를 그리는 작업*/
-	for (auto& pair : m_Meshs)
-	{
-		if (pair.second)
-		{
-			if(FAILED(pair.second->Bind_ShaderResource(m_pShader)))
-				return E_FAIL;
-
-			if (FAILED(pair.second->Render()))
-				return E_FAIL;
-
-		}
-	}
-	return S_OK;
+	
+	return pMesh->Render();
 }
 
 CModel* CModel::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, _matrix PreTransformMatrix,const _char* pFilePath)
@@ -220,6 +207,15 @@ void CModel::Free()
 	}
 	Safe_Release(m_pShader);
 	Safe_Release(m_pGameInstance);
+}
+
+HRESULT CModel::Bind_Mateiral(CShader* pShader, const _char* pConstName, CMeshComponent* pMesh, aiTextureType eMaterialType, _uint Textureindex)
+{
+	CheckNullResult(pShader,E_FAIL);
+	CheckNullResult(pMesh, E_FAIL);
+
+
+	return pMesh->Bind_ShaderResource(pShader,pConstName,eMaterialType,Textureindex);
 }
 
 

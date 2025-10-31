@@ -3,6 +3,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_LivelyFlowersFl05_08_01_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_LivelyFlowersFl05_08_01.008",
             "Normal": "",
             "Specular": "MI_LivelyFlowersFl05_08_01_smt.png"
@@ -10,6 +11,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_LivelyFlowersFl05_08_01_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_LivelyFlowersFl05_08_02.009",
             "Normal": "",
             "Specular": "MI_LivelyFlowersFl05_08_01_smt.png"
@@ -17,6 +19,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_Lively_rock_01_01_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_Lively_rock_01_01.001",
             "Normal": "",
             "Specular": "MI_Lively_rock_01_01_smt.png"
@@ -24,6 +27,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_Lively_rock_02_01_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_Lively_rock_02_01.002",
             "Normal": "",
             "Specular": "MI_Lively_rock_02_01_smt.png"
@@ -31,6 +35,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_Tarutaru_wallSide_01_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_Tarutaru_wallSide_01.021",
             "Normal": "",
             "Specular": "MI_Tarutaru_wallSide_01_smt.png"
@@ -38,6 +43,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_Tarutaru_wall_01_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_Tarutaru_wall_01.032",
             "Normal": "",
             "Specular": "MI_Tarutaru_wall_01_smt.png"
@@ -45,6 +51,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_Tarutaru_wallbase_02_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_Tarutaru_wallbase_02.015",
             "Normal": "",
             "Specular": "MI_Tarutaru_wallbase_02_smt.png"
@@ -52,6 +59,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_Tree_01_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_Tree_01.006",
             "Normal": "",
             "Specular": "MI_Tree_01_smt.png"
@@ -59,6 +67,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_Tree_02_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_Tree_02.006",
             "Normal": "",
             "Specular": "MI_Tree_02_smt.png"
@@ -66,6 +75,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_WaterRock_01_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_WaterRock_01.001",
             "Normal": "",
             "Specular": "MI_WaterRock_01_smt.png"
@@ -73,6 +83,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_f_g_grass_a_01__1_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_f_g_grass_a_01__1.017",
             "Normal": "",
             "Specular": "MI_f_g_grass_a_01__1_smt.png"
@@ -80,6 +91,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_f_grass_a_01_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_f_grass_a_01.018",
             "Normal": "",
             "Specular": "MI_f_grass_a_01_smt.png"
@@ -87,6 +99,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_f_grass_a_03_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_f_grass_a_03.016",
             "Normal": "",
             "Specular": "MI_f_grass_a_03_smt.png"
@@ -94,6 +107,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_f_grass_b_01_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_f_grass_b_01.016",
             "Normal": "",
             "Specular": "MI_f_grass_b_01_smt.png"
@@ -101,6 +115,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_f_grass_b_01a_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_f_grass_b_01a.009",
             "Normal": "",
             "Specular": "MI_f_grass_b_01a_smt.png"
@@ -108,6 +123,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_f_sand_a_01_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_f_sand_a_01.027",
             "Normal": "",
             "Specular": "MI_f_sand_a_01_smt.png"
@@ -115,6 +131,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_f_sand_a_01a_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_f_sand_a_01a.004",
             "Normal": "",
             "Specular": "MI_f_sand_a_01a_smt.png"
@@ -122,6 +139,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_f_stair_d_01_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_f_stair_d_01.006",
             "Normal": "",
             "Specular": "MI_f_stair_d_01_smt.png"
@@ -129,6 +147,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_f_wall_a_01_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_f_wall_a_01.018",
             "Normal": "",
             "Specular": "MI_f_wall_a_01_smt.png"
@@ -136,6 +155,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_f_wall_a_01_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_f_wall_a_01_w.009",
             "Normal": "",
             "Specular": "MI_f_wall_a_01_smt.png"
@@ -143,6 +163,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_f_wall_a_01a_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_f_wall_a_01a.019",
             "Normal": "",
             "Specular": "MI_f_wall_a_01a_smt.png"
@@ -150,6 +171,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_f_wall_a_01a_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_f_wall_a_01a_w.011",
             "Normal": "",
             "Specular": "MI_f_wall_a_01a_smt.png"
@@ -157,6 +179,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_f_wall_a_01b_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_f_wall_a_01b.016",
             "Normal": "",
             "Specular": "MI_f_wall_a_01b_smt.png"
@@ -164,6 +187,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_f_water_a_01_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_f_water_a_01.015",
             "Normal": "",
             "Specular": ""
@@ -171,6 +195,7 @@
         {
             "Ambient": "",
             "Diffuse": "",
+            "METALNESS": "",
             "MaterialName": "MI_f_water_b_01.002",
             "Normal": "",
             "Specular": ""

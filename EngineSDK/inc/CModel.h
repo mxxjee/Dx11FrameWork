@@ -37,18 +37,21 @@ private:
     HRESULT     LoadMaterialFromJSon(const _char* filePath);
 
 public:
-        //모든 메쉬 ,메테리얼바인딩 하나씩 하고 그리기
-    HRESULT     Render();  
+        //모든 메쉬 ,메테리얼바인딩 하나씩 한 이후 호출하는 그리기작업 수행함수
+    HRESULT     Render(CMeshComponent*   pMesh);  
 public:
 
     static CModel* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext,_matrix PreTransformMatrix,const _char* pFilePath);
     virtual CComponent* Clone(void* pArg) override;
     virtual void Free() override;
 
+public:
+    HRESULT             Bind_Mateiral(CShader* pShader, const _char* pConstName, CMeshComponent* pMesh, aiTextureType eMaterialType, _uint Textureindex = 0);
 
 
 public:
     CMeshComponent* Get_Mesh(const wstring& Name);
+    const UMap<wstring, CMeshComponent*>& Get_Meshs() { return m_Meshs; }
     class CShader* Get_Shader() { return m_pShader; }
 private:
     UMap<wstring, CMeshComponent*>      m_Meshs;

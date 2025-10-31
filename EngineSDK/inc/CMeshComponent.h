@@ -35,14 +35,16 @@ public:
 
     HRESULT                 Render();
 
+
 public:
-    HRESULT         Bind_ShaderResource(CShader*  pShader);
+    HRESULT         Bind_ShaderResource(CShader*  pShader, const _char* pConstName, aiTextureType eMaterialType, _uint Textureindex=0);
+    const string& Get_PassName() { return passName; }
 public:
     void            Set_PassName(const string& Name) { passName = Name; }
 private:
     MeshData                m_MeshData;
     CVIBuffer_Model*        m_pVIBuffer;
-    CMaterial* m_pMaterial = nullptr;
+    CMaterial*              m_pMaterial = nullptr;
 
     string              passName = "Default";
 

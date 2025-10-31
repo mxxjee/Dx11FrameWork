@@ -3,6 +3,7 @@
         {
             "Ambient": "",
             "Diffuse": "fiona_sword.png",
+            "METALNESS": "",
             "MaterialName": "fiona_sword",
             "Normal": "",
             "Specular": ""
@@ -10,6 +11,7 @@
         {
             "Ambient": "",
             "Diffuse": "cake_D.png",
+            "METALNESS": "",
             "MaterialName": "cake_D",
             "Normal": "",
             "Specular": ""
@@ -17,6 +19,7 @@
         {
             "Ambient": "",
             "Diffuse": "fiona_D.png",
+            "METALNESS": "",
             "MaterialName": "fiona_D",
             "Normal": "",
             "Specular": ""
@@ -24,6 +27,7 @@
         {
             "Ambient": "",
             "Diffuse": "cake_D.png",
+            "METALNESS": "",
             "MaterialName": "cake_D",
             "Normal": "",
             "Specular": ""
@@ -31,6 +35,7 @@
         {
             "Ambient": "",
             "Diffuse": "CharacterShadow_2.png",
+            "METALNESS": "",
             "MaterialName": "CharacterShadow",
             "Normal": "",
             "Specular": ""

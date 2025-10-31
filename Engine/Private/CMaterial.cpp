@@ -17,7 +17,7 @@ CMaterial::CMaterial(const CMaterial& Prototype)
 	Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CMaterial::Initialize_Prototype(const char* BasePath, map<MaterialMapType, string>& _TextureData)
+HRESULT CMaterial::Initialize_Prototype(const char* BasePath, map<aiTextureType, string>& _TextureData)
 {
 
 	if(FAILED(Register_MaterialTexture(BasePath, _TextureData)))	//먼저 mateiral에 쓸 텍스처들을 준비,등록
@@ -27,55 +27,50 @@ HRESULT CMaterial::Initialize_Prototype(const char* BasePath, map<MaterialMapTyp
 	return S_OK;
 }
 
-HRESULT CMaterial::Register_MaterialTexture(const char* BasePath, map<MaterialMapType, string>& _TextureData)
+HRESULT CMaterial::Register_MaterialTexture(const char* BasePath, map<aiTextureType, string>& _TextureData)
 {
 	// 이름에 맞는 texture생성
 	wstring wBasePath = wstring(BasePath, BasePath + strlen(BasePath));
 
-	wstring MaterialTexName[ENUM_TO_UINT(MaterialMapType::END)];
-	CTexture* pTextures[ENUM_TO_UINT(MaterialMapType::END)] = { nullptr };
 
 	//경로와 이름을 통해서 텍스처 매니저에 텍스처를 등록한다.
-	for (int i = 0; i < ENUM_TO_UINT(MaterialMapType::END); ++i)
+	for (int i = 0; i <AI_TEXTURE_TYPE_MAX; ++i)
 	{
-		auto it = _TextureData.find(MaterialMapType(i));
+
+		auto it = _TextureData.find(aiTextureType(i));
 		if (it == _TextureData.end() || it->second.empty())
 			continue;
 
-		MaterialTexName[i] = wstring(_TextureData[(MaterialMapType)i].begin(), _TextureData[(MaterialMapType)i].end());
+
+
+		wstring TexName = wstring(it->second.begin(), it->second.end());
 		
-		pTextures[i] = m_pGameInstance->Find_Texture(MaterialTexName[i]);
+		CTexture* pTex = m_pGameInstance->Find_Texture(TexName);
 
 		//못찾앗을때만 . 생성
-		if (!pTextures[i])
+		if (!pTex)
 		{
-			pTextures[i] = CTexture::Create(m_pDevice, m_pContext, wstring(wBasePath + MaterialTexName[i]).c_str());
-			if (FAILED(m_pGameInstance->Register_Texture(MaterialTexName[i], pTextures[i])))
+			pTex = CTexture::Create(m_pDevice, m_pContext, wstring(wBasePath + TexName).c_str());
+			if (FAILED(m_pGameInstance->Register_Texture(TexName, pTex)))
 			{
-				Safe_Release(pTextures[i]);
+				Safe_Release(pTex);
 				continue;
 			}
 		}
 	
+		m_MatData.m_Textures.emplace(static_cast<aiTextureType>(i), pTex);
+
 	
 	}
 
 
-	///material data에 이를 채워준다.
-	for (int i = 0; i < ENUM_TO_UINT(MaterialMapType::END); ++i)
-	{
-		CTexture* pFindTex = m_pGameInstance->Find_Texture(MaterialTexName[i]);
-		if(pFindTex)
-			m_MatData.m_Textures.emplace(MaterialMapType(i), pFindTex);
-	}
-
-	
+	///레퍼런스관리
 	for (auto& Tex : m_MatData.m_Textures)
 		Safe_AddRef(Tex.second);
 	return S_OK;
 }
 
-CMaterial* CMaterial::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const char* BasePath, map<MaterialMapType, string>& _TextureData)
+CMaterial* CMaterial::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const char* BasePath, map<aiTextureType, string>& _TextureData)
 {
 	CMaterial* pInstance = new CMaterial(pDevice, pContext);
 	if (FAILED(pInstance->Initialize_Prototype(BasePath,_TextureData)))
@@ -100,18 +95,19 @@ void CMaterial::Free()
 	Safe_Release(m_pGameInstance);
 }
 
-HRESULT CMaterial::Bind_ShaderResource(CShader* pShader, const string& Variable, MaterialMapType eType)
+HRESULT CMaterial::Bind_ShaderResource(CShader* pShader, const string& Variable, aiTextureType eType, int idx )
 {
 	CheckNullResult(pShader, E_FAIL);
 	
 	auto it = m_MatData.m_Textures.find(eType);
 	if (it == m_MatData.m_Textures.end())
 	{
+
 		//1.1.1.1 사진 떤져주기
 		CTexture* pDefaulTex = m_pGameInstance->Find_Texture(L"Default");
 		if (pDefaulTex)
 		{
-			ComPtr<ID3D11ShaderResourceView> pSRV = pDefaulTex->Get_SRV(0);
+			ComPtr<ID3D11ShaderResourceView> pSRV = pDefaulTex->Get_SRV(idx);
 			return pShader->Bind_SRV(Variable,pSRV );
 
 		}

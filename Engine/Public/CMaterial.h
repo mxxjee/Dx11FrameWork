@@ -15,17 +15,17 @@ public:
     ~CMaterial() = default;
 
 public:
-    virtual HRESULT Initialize_Prototype(const char* BasePath, map<MaterialMapType, string>& _TextureData);
+    virtual HRESULT Initialize_Prototype(const char* BasePath, map<aiTextureType, string>& _TextureData);
     void            Set_Name(const wstring& pDst) { m_MatData.m_MaterialName = pDst; }
 
 private:
-    HRESULT         Register_MaterialTexture(const char* BasePath, map<MaterialMapType, string>& _TextureData);
+    HRESULT         Register_MaterialTexture(const char* BasePath, map<aiTextureType, string>& _TextureData);
 public:
-    static CMaterial* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext,const char* BasePath, map<MaterialMapType, string>& _TextureData);
+    static CMaterial* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext,const char* BasePath, map<aiTextureType, string>& _TextureData);
     virtual void Free() override;
 
 public:
-    HRESULT         Bind_ShaderResource(class CShader* pShader, const string& Variable,MaterialMapType eType);
+    HRESULT         Bind_ShaderResource(class CShader* pShader, const string& Variable,aiTextureType eType, int idx=0);
 private:
     MaterialData            m_MatData;
 

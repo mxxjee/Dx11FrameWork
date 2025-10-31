@@ -47,7 +47,8 @@ public:
 
 protected:
     CModel* m_pModelComp = nullptr;
-    class CShader* m_pShader = nullptr;
+            //¸ðµ¨ÇÑÅ× ¹ÞÀº ½¦ÀÌ´õ
+    class CShader* m_pShader = nullptr;    
 private:
     HRESULT     Ready_Components(void* pArg);
     HRESULT     Ready_Resource(void* pArg);

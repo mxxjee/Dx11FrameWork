@@ -13,7 +13,7 @@ struct MaterialData
 	wstring m_MaterialName=L"";
 
 	//Diffuse,   // Texture(SRV º“¿Ø)
-	map<MaterialMapType, CTexture*>      m_Textures;
+	map<aiTextureType, CTexture*>      m_Textures;
 
 	MaterialData() {}
 	

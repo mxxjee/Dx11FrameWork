@@ -3,6 +3,7 @@
 #include "CModel.h"
 #include "CShader.h"
 #include "CInput_Manager.h"
+#include "CMeshComponent.h"
 
 CModelObject::CModelObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CGameObject(pDevice,pContext), m_pInputManager(CInput_Manager::GetInstance())
@@ -74,8 +75,32 @@ HRESULT CModelObject::Render()
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
 
-    if (FAILED(m_pModelComp->Render()))
-        return E_FAIL;
+
+    for (auto& Mesh : m_pModelComp->Get_Meshs())
+    {
+        /*모든 메쉬를 순회하면서 바인드한다.
+           각 메쉬들의 위치와 소유한 메테리얼의 이미지 바인딩.
+           이후 메쉬를 그리는 작업*/
+
+        if (Mesh.second)
+        {
+            Mesh.second->Bind_ShaderResource(m_pShader, "g_DiffuseTexture", aiTextureType::aiTextureType_DIFFUSE);
+            Mesh.second->Bind_ShaderResource(m_pShader, "g_SpecularTexture", aiTextureType::aiTextureType_SPECULAR);
+            Mesh.second->Bind_ShaderResource(m_pShader, "g_AmbientTexture", aiTextureType::aiTextureType_AMBIENT);
+        
+            if (FAILED(m_pShader->Begin(Mesh.second->Get_PassName())))
+                return E_FAIL;
+
+            if (FAILED(m_pModelComp->Render(Mesh.second)))
+                return E_FAIL;
+
+        
+        }
+
+
+
+    }
+
 
     return S_OK;
 }
@@ -84,7 +109,6 @@ HRESULT CModelObject::Bind_ShaderResources()
 {
     if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
         return E_FAIL;
-
 
 
 

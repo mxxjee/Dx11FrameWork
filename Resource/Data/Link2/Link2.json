@@ -3,6 +3,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_body_alb.0.png",
+            "METALNESS": "",
             "MaterialName": "MI_body",
             "Normal": "MI_body_nml.png",
             "Specular": "MI_body_smt.png"
@@ -10,6 +11,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_eye_alb.0.png",
+            "METALNESS": "",
             "MaterialName": "MI_eye",
             "Normal": "MI_eye_nml.png",
             "Specular": "MI_eye_smt.0.png"
@@ -17,6 +19,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_hookShot_alb.png",
+            "METALNESS": "",
             "MaterialName": "linkHookShot_MI_hookShot",
             "Normal": "",
             "Specular": ""
@@ -24,6 +27,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_sowrdA_alb.png",
+            "METALNESS": "",
             "MaterialName": "linkSwordA_MI_sowrdA",
             "Normal": "MI_sowrdA_nml.png",
             "Specular": ""
@@ -31,6 +35,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_shovel_alb.png",
+            "METALNESS": "",
             "MaterialName": "Shovel_MI_shovel",
             "Normal": "",
             "Specular": ""
@@ -38,6 +43,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_body_alb.0.png",
+            "METALNESS": "",
             "MaterialName": "MI_boots",
             "Normal": "",
             "Specular": ""
@@ -45,6 +51,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_mouth_alb.0.png",
+            "METALNESS": "",
             "MaterialName": "MI_mouth",
             "Normal": "MI_mouth_nml.png",
             "Specular": "MI_mouth_smt.1.png"
@@ -52,6 +59,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_shieldA_alb.png",
+            "METALNESS": "",
             "MaterialName": "linkShieldA_MI_shieldA",
             "Normal": "MI_shieldA_nml.png",
             "Specular": ""
@@ -59,6 +67,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_sowrdA_alb.png",
+            "METALNESS": "",
             "MaterialName": "linkSwordA_MI_sowrdAball",
             "Normal": "",
             "Specular": ""
@@ -66,6 +75,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_body_alb.0.png",
+            "METALNESS": "",
             "MaterialName": "MI_body",
             "Normal": "MI_body_nml.png",
             "Specular": "MI_body_smt.png"
@@ -73,6 +83,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_ear_alb.0.png",
+            "METALNESS": "",
             "MaterialName": "MI_ear",
             "Normal": "MI_eye_nml.png",
             "Specular": "MI_eye_smt.0.png"
@@ -80,6 +91,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_flippers_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_flippers",
             "Normal": "",
             "Specular": ""
@@ -87,6 +99,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_shieldB_alb.png",
+            "METALNESS": "",
             "MaterialName": "linkShieldB_MI_shieldB",
             "Normal": "MI_shieldB_nml.png",
             "Specular": ""
@@ -94,6 +107,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_sowrdB_alb.png",
+            "METALNESS": "",
             "MaterialName": "linkSwordB_MI_sowrdB",
             "Normal": "MI_sowrdB_nml.png",
             "Specular": ""
@@ -101,6 +115,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_ocarina_alb.png",
+            "METALNESS": "",
             "MaterialName": "Ocarina_MI_ocarina",
             "Normal": "",
             "Specular": ""
@@ -108,6 +123,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_magicRod_alb.png",
+            "METALNESS": "",
             "MaterialName": "MagicRod_MI_magicRod",
             "Normal": "MI_magicRod_nml.png",
             "Specular": ""
@@ -115,6 +131,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_body_alb.0.png",
+            "METALNESS": "",
             "MaterialName": "MI_body",
             "Normal": "MI_body_nml.png",
             "Specular": "MI_body_smt.png"
@@ -122,6 +139,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_hair_alb.png",
+            "METALNESS": "",
             "MaterialName": "MI_hair",
             "Normal": "MI_hair_nml.png",
             "Specular": "MI_hair_smt.png"
@@ -129,6 +147,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_shieldBMirror_alb.png",
+            "METALNESS": "",
             "MaterialName": "linkShieldB_MI_shieldBMirror",
             "Normal": "",
             "Specular": ""
@@ -136,6 +155,7 @@
         {
             "Ambient": "",
             "Diffuse": "MI_sowrdB_alb.png",
+            "METALNESS": "",
             "MaterialName": "linkSwordB_MI_sowrdBball",
             "Normal": "",
             "Specular": ""
