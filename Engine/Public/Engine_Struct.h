@@ -56,7 +56,7 @@ namespace Engine
 
 		XMFLOAT4	vDirection;		//빛의 방향
 		XMFLOAT4	vPosition;		//빛 위치(point light시 사용)
-		float		fRange;			//빛 범위(point light시 사용)
+		XMFLOAT4		fRange;			//빛 범위(point light시 사용)
 	
 	}LIGHT_DESC;
 

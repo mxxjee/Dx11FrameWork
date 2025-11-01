@@ -2,13 +2,15 @@
 #define _COMMON_FX_
 
 
-// 상수버퍼 및 전역 변수
+
 row_major matrix g_WorldMatrix;
-row_major matrix g_ViewProjMatrix;
+
 ////////
 float g_Brightness = 1.0f;
 float g_Alpha = 1.0f;
 
+
+int g_PointLightNum; //점 조명의 개수
 
 // 샘플러 및 공통 텍스처
 Texture2D texture0 : register(t0);

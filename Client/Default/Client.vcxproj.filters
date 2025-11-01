@@ -229,5 +229,8 @@
     <None Include="..\..\Resource\Shader\Shader_Light.hlsli">
       <Filter>97.ShaderFiles\Light</Filter>
     </None>
+    <None Include="..\..\Resource\Shader\GlobalBuffer.hlsli">
+      <Filter>97.ShaderFiles</Filter>
+    </None>
   </ItemGroup>
 </Project>

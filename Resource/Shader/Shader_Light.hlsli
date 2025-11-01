@@ -1,20 +1,6 @@
-#define MAX_POINT_LIGHTS 16
 
-//////임시로 정의해놓은 조명의 값(Directional light)//////////
-vector g_vLightDirection = vector(1.f, -1.f, 1.f, 0.f);
-vector g_vLightDiffuse = vector(1.f, 1.f, 1.f, 1.f);
-vector g_vLightAmbient = vector(1.f, 1.f, 1.f, 1.f);
-vector g_vLightSpecular = vector(1.f, 1.f, 1.f, 1.f);
+#include "GlobalBuffer.hlsli"
 
-
-
-/////////점조명 관련////////////
-int g_PointLightNum; //점 조명의 개수
-float4 g_vPL_Position[MAX_POINT_LIGHTS];
-float g_vPL_Range[MAX_POINT_LIGHTS];
-float4 g_vPL_Diffuse[MAX_POINT_LIGHTS];
-float4 g_vPL_Ambient[MAX_POINT_LIGHTS];
-float4 g_vPL_Specular[MAX_POINT_LIGHTS];
 
 
 float Compute_Shade(float4 LightDirection, float4 Normal)

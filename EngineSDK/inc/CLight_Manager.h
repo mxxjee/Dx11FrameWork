@@ -1,35 +1,13 @@
 #pragma once
 #include "CBase.h"
+#include "ConstantStruct.h"
+
 
 NS_BEGIN(Engine)
 class CLight_Manager :
     public CBase
 {
-private:
-    /*셰이더 바인딩용*/
-    struct LightList
-    {
-        int                     m_LightsNum;
 
-        vector<_float4>         m_LightPositions;
-        vector<_float>         m_LightRanges;
-        
-        vector<_float4>         m_LightDiffuses;
-        vector<_float4>         m_LightAmbients;
-        vector<_float4>         m_LightSpeculars;
-
-        void        clear()
-        {
-            m_LightsNum = 0;
-            m_LightPositions.clear();
-            m_LightRanges.clear();
-            m_LightDiffuses.clear();
-            m_LightAmbients.clear();
-            m_LightSpeculars.clear();
-        }
-
-
-    };
 private:
     CLight_Manager();
     virtual ~CLight_Manager() = default;
@@ -51,7 +29,9 @@ public:
 private:
     HRESULT         Bind_Directional_Light(class CShader* pShader,const LIGHT_DESC* pLightDesc);
     HRESULT         Bind_Point_Light(class CShader* pShader);
-
+    
+public:
+    void        Clear_PointLightBuffer();
 public:
     static CLight_Manager* Create(_uint iLevelNum);
     virtual void Free() override;
@@ -61,10 +41,13 @@ public:
     vector<class CLight*>           m_DirectionalLights;
     vector<list<class CLight*>>     m_Lights;
 
-    LightList               m_LightValues;
+
 
 private:
+    PointLightBuffer               m_LightValues;
+    int                             m_PointLightNum=0;    //활성화 되어있는 조명개수
 
+    DirectionLightBuffer            m_DirectionLightBuffer;
 };
 NS_END
 

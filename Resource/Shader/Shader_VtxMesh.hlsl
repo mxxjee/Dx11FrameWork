@@ -6,7 +6,6 @@ HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 #include "Shader_Light.hlsli"
 
 
-vector  g_CamPosition;
 vector g_vMaterialAmbient = vector(1.f, 1.f, 1.f, 1.f);
 vector g_vMaterialSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
@@ -97,13 +96,13 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
     fAmbientColor = g_vLightAmbient * g_vMaterialAmbient * (MtrlDiffuseColor * 0.5f);
     
 
-    float MtrlSpecularColor = g_SpecularTexture.Sample(sampler0, Input.vTexcoord);
+    float4 MtrlSpecularColor = g_SpecularTexture.Sample(sampler0, Input.vTexcoord);
     fSpeculrColor = g_vLightSpecular * MtrlSpecularColor * fSpecular;
 
     
 
     
-    ////////////////////점 조명에 대한 연산/////////////////////
+    //////////////////점 조명에 대한 연산/////////////////////
     for (int i = 0; i < g_PointLightNum; ++i)
     {
         //1.어디방향으로 빛이오는지 계산하자.
@@ -111,7 +110,7 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
         float Distance = length(vLightDirection);
         
         float fShade = Compute_Shade(vLightDirection, Input.vNormal);
-        float fAttenuation =Compute_Attenuation(g_vPL_Range[i], Distance);
+        float fAttenuation = Compute_Attenuation(g_vPL_Range[i].r, Distance);
         float fSpecular = Compute_Specular(vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition);
         
         

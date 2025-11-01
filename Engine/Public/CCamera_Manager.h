@@ -7,6 +7,7 @@ NS_BEGIN(Engine)
 class CCamera_Base;
 class CGameObject;
 class CShader;
+class CConstantBuffer;
 
 class CCamera_Manager :
     public CBase
@@ -74,6 +75,7 @@ private:
 private:
     ComPtr<ID3D11Device>            m_pDevice;
     ComPtr<ID3D11DeviceContext>     m_pContext;
+
 };
 NS_END
 

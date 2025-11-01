@@ -6,6 +6,7 @@ HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 #include "Shader_Light.hlsli"
 
 
+
 float4 g_TintColor = float4(1.0, 0.871, 0.722, 0.529);
 
 

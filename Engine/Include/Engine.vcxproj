@@ -197,6 +197,7 @@
     <ClInclude Include="..\Public\CObject_Manager.h" />
     <ClInclude Include="..\Public\CMainCamera.h" />
     <ClInclude Include="..\Public\ColorUtils.h" />
+    <ClInclude Include="..\Public\ConstantStruct.h" />
     <ClInclude Include="..\Public\COrthographicCameraComponent.h" />
     <ClInclude Include="..\Public\CPerspectiveCameraComponent.h" />
     <ClInclude Include="..\Public\CPipeLine.h" />

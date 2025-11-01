@@ -2,13 +2,13 @@
 #include "CBase.h"
 
 NS_BEGIN(Engine)
-template <typename T>
+
 class ENGINE_DLL CConstantBuffer :
     public CBase
 {
 public:
     CConstantBuffer(ComPtr<ID3D11Device> device, ComPtr<ID3D11DeviceContext> context)
-        :m_pDevice{ device }, m_pContext{ context }
+        :m_pDevice(device), m_pContext(context)
     {
 
     }
@@ -16,15 +16,16 @@ public:
     ~CConstantBuffer() = default;
 
     ComPtr<ID3D11Buffer>    GetComPtr() { return m_pConstantBuffer; }
-    void Create()       //상수버퍼 만들기
+    void Create(int Slot,_uint iSize)       //상수버퍼 만들기
     {
+        m_iSlot = Slot;
 
         D3D11_BUFFER_DESC desc;
         memset(&desc, 0,sizeof(desc));
 
         desc.Usage = D3D11_USAGE_DYNAMIC;
         desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-        desc.ByteWidth = sizeof(T);
+        desc.ByteWidth = iSize;
         desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
 
@@ -35,17 +36,19 @@ public:
 
     }
 
-    void CopyData(const T& data)
+    void CopyData(const void* pData,_uint iSize)
     {
         D3D11_MAPPED_SUBRESOURCE SubResource;
+
         memset(&SubResource,0, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
+    
 
         //MAP : GPU에게 데이터를 넘겨줄 준비
         //직접 ConstantBuffer을 채우는것이 아닌, Subresource(Map을 통해 CPU가 임시 접근할 수 있는공간)에 복사
         m_pContext->Map(m_pConstantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &SubResource);
 
-        memcpy(SubResource.pData, &data, sizeof(T));
+        memcpy(SubResource.pData, pData, iSize);
 
 
         m_pContext->Unmap(m_pConstantBuffer.Get(), 0);
@@ -53,17 +56,20 @@ public:
 
     }
 
+
 public:
     virtual void Free()
     {
         __super::Free();
     }
 
-
 private:
     ComPtr<ID3D11Device> m_pDevice;
     ComPtr<ID3D11DeviceContext> m_pContext;
     ComPtr<ID3D11Buffer> m_pConstantBuffer;
+
+private:
+    _uint               m_iSlot = 0;    //register(b#)
 
 };
 

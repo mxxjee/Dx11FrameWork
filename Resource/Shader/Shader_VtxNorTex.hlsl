@@ -6,7 +6,7 @@ HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 #include "Shader_Light.hlsli"
 
 
-vector  g_CamPosition;
+
 vector g_vMaterialAmbient = vector(0.3f, 0.3f, 0.3f, 1.f);
 vector g_vMaterialSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
@@ -112,7 +112,7 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
         float Distance = length(vLightDirection);
         
         float fShade = Compute_Shade(vLightDirection, Input.vNormal);
-        float fAttenuation =Compute_Attenuation(g_vPL_Range[i], Distance);
+        float fAttenuation =Compute_Attenuation(g_vPL_Range[i].r, Distance);
         float fSpecular = Compute_Specular(vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition);
         
         

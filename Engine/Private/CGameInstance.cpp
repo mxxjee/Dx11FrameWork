@@ -84,9 +84,6 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	m_pCameraManager = CCamera_Manager::Create(*pDevice,*pContext);
 	CheckNullResult(m_pCameraManager, E_FAIL);
 
-	/*쉐이더 매니져 초기화*/
-	m_pShaderManager = CShader_Manager::Create(*pDevice, *pContext);
-	CheckNullResult(m_pShaderManager, E_FAIL);
 
 	/*텍스쳐 매니저 초기화*/
 	m_pTextureManager = CTexture_Manager::Create(*pDevice, *pContext);
@@ -101,8 +98,12 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	CheckNullResult(m_pRenderStateManager, E_FAIL);
 
 	/*파이프라인*/
-	m_pPipeLine = CPipeLine::Create();
+	m_pPipeLine = CPipeLine::Create(*pDevice, *pContext);
 	CheckNullResult(m_pPipeLine, E_FAIL);
+
+	/*쉐이더 매니져 초기화*/
+	m_pShaderManager = CShader_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pShaderManager, E_FAIL);
 
 	/*UI매니저*/
 	m_pUIManager = CUI_Manager::Create();
@@ -461,11 +462,7 @@ CShader* CGameInstance::Find_Shader(const _wstring& Tag)
 	return m_pShaderManager->Find_Shader(Tag);
 }
 
-HRESULT CGameInstance::Bind_GlobalPipelineData(_uint CameraType)
-{
-	CheckNullResult(m_pShaderManager, E_FAIL);
-	return m_pShaderManager->Bind_GlobalPipelineData(CameraType);
-}
+
 
 HRESULT CGameInstance::Bind_GlobalLightData()
 {
@@ -473,10 +470,18 @@ HRESULT CGameInstance::Bind_GlobalLightData()
 	return m_pShaderManager->Bind_GlobalLightData();
 }
 
+
+
 HRESULT CGameInstance::Bind_SamplerState(_uint iRenderGroup)
 {
 	CheckNullResult(m_pShaderManager, E_FAIL);
 	return m_pShaderManager->Bind_SamplerState(iRenderGroup);
+}
+
+void CGameInstance::CopyData_Buffer(string Key, const void* pData, _uint iSize)
+{
+	CheckNull(m_pShaderManager);
+	return m_pShaderManager->CopyData_Buffer(Key, pData, iSize);
 }
 
 #pragma endregion
@@ -557,10 +562,14 @@ HRESULT CGameInstance::Bind_PipeLineInverseMatrix(CShader* pShader, const _char*
 	return m_pPipeLine->Bind_PipeLineInverseMatrix(pShader, pConstant, iCameraType, eTransformMatrix);
 }
 
-HRESULT CGameInstance::Bind_CamPosition(CShader* pShader, const _char* pConstant, _uint iCameraType)
+HRESULT CGameInstance::Update_CamBuffer(_uint CameraType)
 {
 	CheckNullResult(m_pPipeLine, E_FAIL);
-	return m_pPipeLine->Bind_CamPosition(pShader, pConstant, iCameraType);
+	return m_pPipeLine->Update_CamBuffer(CameraType);
+}
+_matrix CGameInstance::Get_ViewProjMatrix(_uint CameraType)
+{
+	return m_pPipeLine->Get_ViewProjMatrix(CameraType);
 }
 const _float4x4& CGameInstance::Get_ViewMatrix(_uint CameraType)
 {

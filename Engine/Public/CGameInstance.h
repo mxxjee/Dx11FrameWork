@@ -13,6 +13,7 @@
 
 
 NS_BEGIN(Engine)
+class CConstantBuffer;
 
 class ENGINE_DLL CGameInstance final: public CBase
 {
@@ -136,12 +137,15 @@ public:
 	 HRESULT     Register_Shader(const _wstring & Tag, class CShader* pInstance);
 	 class CShader* Find_Shader(const _wstring & Tag);
 
-	 //모든 셰이더파일들에게 전역변수들을 바인딩(카메라 뷰관련,, 수치등)
-	 HRESULT         Bind_GlobalPipelineData(_uint CameraType);
 	 HRESULT		 Bind_GlobalLightData();
 
 	 //모든 셰이더파일들에게 Sampler값 바인딩
 	 HRESULT         Bind_SamplerState(_uint iRenderGroup);
+	 
+
+	 //상수버퍼 갱신용
+	 void            CopyData_Buffer(string Key, const void* pData, _uint iSize);
+
  #pragma endregion
 
 
@@ -176,7 +180,12 @@ public:
 	HRESULT Bind_PipeLineMatrixAll(class CShader* pShader, const _char * pConstant, _uint iCameraType);
 
 	HRESULT Bind_PipeLineInverseMatrix(class CShader* pShader, const _char * pConstant, _uint iCameraType, D3DTS eTransformMatrix);
-	HRESULT Bind_CamPosition(class CShader* pShader, const _char * pConstant, _uint iCameraType);
+	
+	HRESULT Update_CamBuffer(_uint CameraType);
+	HRESULT Bind_CamBuffer();
+
+
+	_matrix					Get_ViewProjMatrix(_uint CameraType);
 
 	public:
 		const _float4x4& Get_ViewMatrix(_uint CameraType);

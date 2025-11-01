@@ -193,9 +193,6 @@
     <Filter Include="01.Utility\99.EtcUtils\VertexData">
       <UniqueIdentifier>{faa96231-47ad-4672-9059-d32ba0a05551}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Utility\99.EtcUtils\ConstantBuffer">
-      <UniqueIdentifier>{87ac1b47-2459-4259-91e6-30bde4ad12b4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="00.System\08.Texture\Texture">
       <UniqueIdentifier>{ac5eb3e9-2f7b-4fd2-bd43-b1f649bad776}</UniqueIdentifier>
     </Filter>
@@ -282,6 +279,12 @@
     </Filter>
     <Filter Include="00.System\12.Material\Material">
       <UniqueIdentifier>{f958ddb9-8fa2-4484-892a-161b764f85f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\05.Shader\ConstantStruct">
+      <UniqueIdentifier>{514f6773-da62-4f2b-8dd1-c20518e8f86e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\05.Shader\ConstantBuffer">
+      <UniqueIdentifier>{87ac1b47-2459-4259-91e6-30bde4ad12b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -385,7 +388,7 @@
       <Filter>05.Component</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CConstantBuffer.h">
-      <Filter>01.Utility\99.EtcUtils\ConstantBuffer</Filter>
+      <Filter>00.System\05.Shader\ConstantBuffer</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CTransform.h">
       <Filter>05.Component\Transform</Filter>
@@ -567,6 +570,9 @@
     <ClInclude Include="..\Public\CMaterial_Manager.h">
       <Filter>00.System\12.Material</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ConstantStruct.h">
+      <Filter>00.System\05.Shader\ConstantStruct</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -645,7 +651,7 @@
       <Filter>05.Component</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CConstantBuffer.cpp">
-      <Filter>01.Utility\99.EtcUtils\ConstantBuffer</Filter>
+      <Filter>00.System\05.Shader\ConstantBuffer</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CTransform.cpp">
       <Filter>05.Component\Transform</Filter>

@@ -29,17 +29,11 @@ public:
 		//technique에 존재하는 모든pass들을 key값으로 모두 저장하기
 		//ShaderPass -> pass,inputlayout묶어놓은것들
 		unordered_map<string, tagShaderPass>		m_pPassInfos;
-
-
 		unsigned int		iPassCnt = 0;
-
 		ComPtr<ID3DBlob>		m_pErrorBlob = { nullptr };
 		
 		
-		ComPtr<ID3DX11EffectMatrixVariable>	m_GlobalViewProj;
-
-		
-
+		UMap <string, ComPtr< ID3DX11EffectVariable>> m_GlobalDatas;		//전역으로 사용할 변수들 미리 로드해서 캐싱.
 
 		tagCShaderInfo() {}
 		tagCShaderInfo(const tagCShaderInfo& Prototype)
@@ -63,7 +57,8 @@ private:
 public:
 	HRESULT     Initialize_Prototype(const vector<D3D11_INPUT_ELEMENT_DESC>& layout, const wstring& filePath, const string& strTechName);
 	HRESULT     Initialize_Copytype(void *pArg);
-
+	
+	
 public:
 	static CShader* Create(ComPtr<ID3D11Device> pDevice,
 		ComPtr<ID3D11DeviceContext> pContext,
@@ -77,6 +72,11 @@ public:
 private:
 	/*초기화 및 설정 함수들*/
 	HRESULT		LoadShaderFromFile(const wstring & path);
+	
+	//미리캐싱함수들(핸들을 미리 얻어놓기)
+	HRESULT		LoadConstantBuffer(const string& Name);
+	HRESULT		LoadGlobalVariable(const string& Name);
+
 	HRESULT		Set_Technique(const string& strTechName);
 
 	//읽어온 Technique에대한 pass들을 모두 저장하고, 이에따른 inputlayout을 만든다.
@@ -96,6 +96,8 @@ public:
 
 
 	HRESULT		Bind_RawValue(const string& Variable, const void* pData, UINT iSize);
+
+	HRESULT		Set_ConstantBuffer(const string& GlobalDataName, ID3D11Buffer* pBuffer);
 public:
 	const SHADER_INFO& Get_ShaderInfo() const { return m_ShaderInfo; }
 

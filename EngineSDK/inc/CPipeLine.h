@@ -1,12 +1,12 @@
 #pragma once
 #include "CBase.h"
+#include "ConstantStruct.h"
 /*카메라의 뷰 투영을 보관해주는기능
 쉐이더에 바인딩 하는기능.
 뷰/투영의 역행렬을 보관 -> (셰이더에서 쓰임)
 카메라 위치를 구해놓는다.*/
 
 NS_BEGIN(Engine)
-
 class CPipeLine final :
     public CBase
 {
@@ -20,7 +20,7 @@ private:
 
 
 private:
-	CPipeLine();
+	CPipeLine(ComPtr<ID3D11Device>	_pDevice, ComPtr<ID3D11DeviceContext>	_pContext);
 	virtual ~CPipeLine() = default;
 
 
@@ -35,22 +35,39 @@ public:
 	HRESULT Bind_PipeLineMatrixAll(class CShader* pShader, const _char* pConstant, _uint iCameraType);
 
 	HRESULT Bind_PipeLineInverseMatrix(class CShader* pShader, const _char* pConstant, _uint iCameraType,D3DTS eTransformMatrix);
-	HRESULT Bind_CamPosition(class CShader* pShader, const _char* pConstant ,_uint iCameraType );
+	
 
+public:
+	/*상수버퍼에 던질 구조체 업데이트*/
+	HRESULT Update_CamBuffer(_uint CameraType);
+	const CameraBuffer& Get_CameraBuffer() { return m_CameraBuffer; }
+
+public:
 	//매프레임마다 역행렬을 구해서 저장한다.
 	void	Update();	
 
 public:
 	const _float4x4&		Get_ViewMatrix(_uint CameraType);
 	const _float4x4&		Get_ProjMatrix(_uint CameraType);
-	const _float4&			Get_CamPosition(_uint CameraType);;
+	_matrix					Get_ViewProjMatrix(_uint CameraType);
+
+	const _float4&			Get_CamPosition(_uint CameraType);
 private:
 	vector<PIPE_DATA>		m_PipeDatas;
 
 
 public:
-	static CPipeLine* Create();
+	static CPipeLine* Create(ComPtr<ID3D11Device>	_pDevice, ComPtr<ID3D11DeviceContext>	_pContext);
 	virtual void Free() override;
+
+
+private:
+	ComPtr<ID3D11Device>			m_pDevice;
+	ComPtr<ID3D11DeviceContext>		m_pContext;
+
+
+private:
+	CameraBuffer				m_CameraBuffer;
 };
 
 

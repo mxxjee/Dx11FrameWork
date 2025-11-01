@@ -229,6 +229,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resource\Shader\Default.hlsli" />
+    <None Include="..\..\Resource\Shader\GlobalBuffer.hlsli" />
     <None Include="..\..\Resource\Shader\Shader_Light.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

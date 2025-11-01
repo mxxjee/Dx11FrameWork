@@ -9,6 +9,8 @@
 #include "GraphicUtil.h"
 
 #include "CShader.h"
+#include "CConstantBuffer.h"
+
 
 
 
@@ -25,7 +27,7 @@ HRESULT CCamera_Manager::Initialize()
 
 	XMStoreFloat4x4(&g_Identityfloat4x4, XMMatrixIdentity());
 	g_IdentityMatrix = XMMatrixIdentity();
-	
+
 	return S_OK;
 }
 
@@ -109,13 +111,14 @@ void CCamera_Manager::Render_Cameras()
 
 		m_pRenderCamera = pCam;
 
+	
 		m_pRenderCamera->Bind_RenderTarget();
 		m_pRenderCamera->Clear_RenderTargetView(&ClearColor);
 		
 
 		//모든셰이더에게 이 카메라의 뷰,투영,카메라위치를 바인딩한다.
-		m_pGameInstance->Bind_GlobalPipelineData(ENUM_TO_UINT(m_pRenderCamera->Get_CameraType()));
-		m_pGameInstance->Bind_CamPosition(m_pGameInstance->Find_Shader(L"VtxNorTex"), "g_CamPosition", ENUM_TO_UINT(m_pRenderCamera->Get_CameraType()));
+		m_pGameInstance->Update_CamBuffer(ENUM_TO_UINT(m_pRenderCamera->Get_CameraType()));
+		//m_pGameInstance->Bind_CamBuffer();		//전역 상수버퍼 바인드
 		m_pGameInstance->Bind_GlobalLightData();
 
 
@@ -160,7 +163,6 @@ void CCamera_Manager::Free()
 		Safe_Release(m_Cameras[i]);
 
 }
-
 
 //const _float4x4& CCamera_Manager::GetViewMatrix(CAMERA_TYPE eType) const
 //{

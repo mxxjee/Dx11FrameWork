@@ -58,7 +58,7 @@ HRESULT CLight_Manager::Bind_Lights(CShader* pShader)
     //현재 씬에있는 조명데이터 싹가져와
     //활성화 되어있는 애들만 셰이더에 보내자.
     
-    m_LightValues.clear();
+    Clear_PointLightBuffer();
 
     for (auto& pLight : m_Lights[LevelID])
     {
@@ -70,11 +70,11 @@ HRESULT CLight_Manager::Bind_Lights(CShader* pShader)
 
         
         Add_LightValue(desc);
-        m_LightValues.m_LightsNum += 1;
+        m_PointLightNum += 1;
 
     }
 
-    if(m_LightValues.m_LightsNum>0)
+    if(m_PointLightNum >0)
         Bind_Point_Light(pShader);
 
     return S_OK;
@@ -104,58 +104,50 @@ HRESULT CLight_Manager::Add_Light(_uint iLevelID, const LIGHT_DESC& LightDesc)
 
 void CLight_Manager::Add_LightValue(const LIGHT_DESC* LightDesc)
 {
-    m_LightValues.m_LightPositions.push_back(LightDesc->vPosition);
-    m_LightValues.m_LightRanges.push_back(LightDesc->fRange);
+    int CurrentIdx = m_PointLightNum;
 
-    m_LightValues.m_LightDiffuses.push_back(LightDesc->vDiffuse);
-    m_LightValues.m_LightAmbients.push_back(LightDesc->vAmbient);
-    m_LightValues.m_LightSpeculars.push_back(LightDesc->vSpecular);
+    m_LightValues.g_vPL_Position[CurrentIdx]=LightDesc->vPosition;
+    m_LightValues.g_vPL_Range[CurrentIdx]=LightDesc->fRange;
+
+    m_LightValues.g_vPL_Diffuse[CurrentIdx]=LightDesc->vDiffuse;
+    m_LightValues.g_vPL_Ambient[CurrentIdx]=LightDesc->vAmbient;
+    m_LightValues.g_vPL_Specular[CurrentIdx]=LightDesc->vSpecular;
  
 }
 
 HRESULT CLight_Manager::Bind_Directional_Light(CShader* pShader,const LIGHT_DESC* pLightDesc)
 {
 
-    //전역 조명 
-    if (FAILED(pShader->Bind_RawValue("g_vLightDirection", &pLightDesc->vDirection, sizeof(_float4))))
-        return E_FAIL;
+    m_DirectionLightBuffer.g_vLightAmbient = pLightDesc->vDirection;
+    m_DirectionLightBuffer.g_vLightDiffuse = pLightDesc->vDiffuse;
+    m_DirectionLightBuffer.g_vLightAmbient = pLightDesc->vAmbient;
+    m_DirectionLightBuffer.g_vLightSpecular = pLightDesc->vSpecular;
+  
+    pShader->Bind_RawValue("g_PointLightNum", &m_PointLightNum, sizeof(int));
 
-    if (FAILED(pShader->Bind_RawValue("g_vLightDiffuse", &pLightDesc->vDiffuse, sizeof(_float4))))
-        return E_FAIL;
-
-    if (FAILED(pShader->Bind_RawValue("g_vLightAmbient", &pLightDesc->vAmbient, sizeof(_float4))))
-        return E_FAIL;
-
-    if (FAILED(pShader->Bind_RawValue("g_vLightSpecular", &pLightDesc->vSpecular, sizeof(_float4))))
-        return E_FAIL;
+    CGameInstance::GetInstance()->CopyData_Buffer("DirectionLightBuffer", &m_DirectionLightBuffer, sizeof(m_DirectionLightBuffer));
 
     return S_OK;
 }
 
 HRESULT CLight_Manager::Bind_Point_Light(CShader* pShader)
 {
+   
+    CGameInstance::GetInstance()->CopyData_Buffer("PointLightBuffer", &m_LightValues, sizeof(m_LightValues));
 
-    //포인트 라이트 조명 
-    if (FAILED(pShader->Bind_RawValue("g_PointLightNum", &m_LightValues.m_LightsNum, sizeof(int))))
-        return E_FAIL;
-
-    if (FAILED(pShader->Bind_RawValue("g_vPL_Range", m_LightValues.m_LightRanges.data(), sizeof(_float) * (_uint)m_LightValues.m_LightRanges.size())))
-        return E_FAIL;
-
-
-    if (FAILED(pShader->Bind_RawValue("g_vPL_Position", m_LightValues.m_LightPositions.data(), sizeof(_float4)*(_uint)m_LightValues.m_LightPositions.size())))
-        return E_FAIL;
-
-    if (FAILED(pShader->Bind_RawValue("g_vPL_Diffuse", m_LightValues.m_LightDiffuses.data(), sizeof(_float4) * (_uint)m_LightValues.m_LightDiffuses.size())))
-        return E_FAIL;
-
-    if (FAILED(pShader->Bind_RawValue("g_vPL_Ambient", m_LightValues.m_LightAmbients.data(), sizeof(_float4) * (_uint)m_LightValues.m_LightAmbients.size())))
-        return E_FAIL;
-
-    if (FAILED(pShader->Bind_RawValue("g_vPL_Specular", m_LightValues.m_LightSpeculars.data(), sizeof(_float4) * (_uint)m_LightValues.m_LightSpeculars.size())))
-        return E_FAIL;
 
     return S_OK;
+}
+
+void CLight_Manager::Clear_PointLightBuffer()
+{
+    m_PointLightNum = 0;
+    ZeroMemory(&m_LightValues.g_vPL_Position, sizeof(_float4)*16);
+    ZeroMemory(&m_LightValues.g_vPL_Range, sizeof(_float4)*16);
+    ZeroMemory(&m_LightValues.g_vPL_Diffuse, sizeof(_float4)*16);
+    ZeroMemory(&m_LightValues.g_vPL_Ambient, sizeof(_float4)*16);
+    ZeroMemory(&m_LightValues.g_vPL_Position, sizeof(_float4)*16);
+
 }
 
 CLight_Manager* CLight_Manager::Create(_uint iLevelNum)

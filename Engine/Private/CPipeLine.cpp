@@ -1,8 +1,12 @@
 #include "CPipeLine.h"
 #include "CShader.h"
+#include "CConstantBuffer.h"
+#include "CGameInstance.h"
 
 
-CPipeLine::CPipeLine()
+
+CPipeLine::CPipeLine(ComPtr<ID3D11Device>	_pDevice, ComPtr<ID3D11DeviceContext>	_pContext)
+	:m_pDevice(_pDevice),m_pContext(_pContext)
 {
 }
 
@@ -36,10 +40,22 @@ HRESULT CPipeLine::Bind_PipeLineInverseMatrix(CShader* pShader, const _char* pCo
 
 }
 
-HRESULT CPipeLine::Bind_CamPosition(CShader* pShader, const _char* pConstant, _uint iCameraType)
+HRESULT CPipeLine::Update_CamBuffer(_uint CameraType)
 {
-	return pShader->Bind_RawValue(pConstant, &m_PipeDatas[ENUM_TO_UINT(iCameraType)].m_vCamPosition,sizeof(_float4));
+	/*상수버퍼갱신*/
+	m_CameraBuffer.g_CamPosition = Get_CamPosition(CameraType);
+	XMStoreFloat4x4(&m_CameraBuffer.g_ViewProjMatrix, Get_ViewProjMatrix(CameraType));
+
+	CGameInstance::GetInstance()->CopyData_Buffer("CameraBuffer", &m_CameraBuffer, sizeof(m_CameraBuffer));
+
+
+
+	return S_OK;
 }
+
+
+
+
 
 void CPipeLine::Update()
 {
@@ -53,7 +69,6 @@ void CPipeLine::Update()
 		}
 
 		memcpy(&Data.m_vCamPosition, &Data.m_TransformMatrices[ENUM_TO_UINT(D3DTS::VIEW)].m[3], sizeof(_float4));
-
 	}
 }
 
@@ -67,16 +82,26 @@ const _float4x4& CPipeLine::Get_ProjMatrix(_uint CameraType)
 	return m_PipeDatas[CameraType].m_TransformMatrices[ENUM_TO_UINT(D3DTS::PROJ)];
 }
 
+_matrix CPipeLine::Get_ViewProjMatrix(_uint CameraType)
+{
+	_matrix ViewProj = XMMatrixMultiply(XMLoadFloat4x4(&m_PipeDatas[ENUM_TO_UINT(CameraType)].m_TransformMatrices[ENUM_TO_UINT(D3DTS::VIEW)]),
+		XMLoadFloat4x4(&m_PipeDatas[ENUM_TO_UINT(CameraType)].m_TransformMatrices[ENUM_TO_UINT(D3DTS::PROJ)]));
+
+	return ViewProj;
+
+
+}
+
 const _float4& CPipeLine::Get_CamPosition(_uint CameraType)
 {
 	return m_PipeDatas[CameraType].m_vCamPosition;
 }
 
-CPipeLine* CPipeLine::Create()
+CPipeLine* CPipeLine::Create(ComPtr<ID3D11Device>	_pDevice, ComPtr<ID3D11DeviceContext>	_pContext)
 {
-	CPipeLine* pInstance = new CPipeLine();
+	CPipeLine* pInstance = new CPipeLine(_pDevice, _pContext);
 	pInstance->m_PipeDatas.resize(ENUM_TO_UINT(CAMERA_TYPE::END));
-
+	
 	return pInstance;
 }
 

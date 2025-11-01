@@ -1,4 +1,6 @@
 #include "CShader.h"
+#include "CGameInstance.h"
+#include "CConstantBuffer.h"
 
 
 CShader::CShader(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -30,8 +32,6 @@ HRESULT CShader::Initialize_Prototype(const vector<D3D11_INPUT_ELEMENT_DESC>& la
         return E_FAIL;
 
 
-
-    m_ShaderInfo.m_GlobalViewProj = m_ShaderInfo.m_pEffect->GetVariableByName("g_ViewProjMatrix")->AsMatrix();
     return S_OK;
 }
 
@@ -117,6 +117,26 @@ HRESULT CShader::LoadShaderFromFile(const wstring& path)
     }*/
 
     return hr;
+}
+
+HRESULT CShader::LoadConstantBuffer(const string& Name)
+{
+    ID3DX11EffectConstantBuffer* pEffectCB = m_ShaderInfo.m_pEffect->GetConstantBufferByName(Name.c_str());
+    CheckNullResult(pEffectCB, E_FAIL);
+
+
+    m_ShaderInfo.m_GlobalDatas.emplace(Name, pEffectCB);
+    return S_OK;
+}
+
+HRESULT CShader::LoadGlobalVariable(const string& Name)
+{
+    ID3DX11EffectVariable* pEffectVariable = m_ShaderInfo.m_pEffect->GetVariableByName(Name.c_str());
+    CheckNullResult(pEffectVariable, E_FAIL);
+
+    m_ShaderInfo.m_GlobalDatas.emplace(Name, pEffectVariable);
+
+    return S_OK;
 }
 
 HRESULT CShader::Set_Technique(const string& strTechName)
@@ -259,6 +279,20 @@ HRESULT CShader::Bind_RawValue(const string& Variable, const void* pData, UINT i
 
     return pVariable->SetRawValue(pData,0,iSize);
 }
+
+HRESULT CShader::Set_ConstantBuffer(const string& GlobalDataName, ID3D11Buffer* pBuffer)
+{
+    LoadConstantBuffer(GlobalDataName);
+    auto it = m_ShaderInfo.m_GlobalDatas.find(GlobalDataName);
+    if (it->second)
+        return it->second->AsConstantBuffer()->SetConstantBuffer(pBuffer);
+
+
+    return E_FAIL;
+
+}
+
+
 
 HRESULT CShader::Begin(const string& _passName)
 {
