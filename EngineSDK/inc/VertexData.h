@@ -56,5 +56,14 @@ typedef struct ENGINE_DLL  tagVertexMesh
 
 }VTXMESH;
 
+typedef struct ENGINE_DLL  tagEditMesh
+{
+	XMFLOAT3		vPosition;
+	XMFLOAT2		vTexcoord;
+
+	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
+
+}EDITMESH;
+
 
 NS_END

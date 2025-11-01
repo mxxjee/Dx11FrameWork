@@ -4,6 +4,8 @@
 #include "CShader.h"
 #include "CInput_Manager.h"
 #include "CMeshComponent.h"
+#include "CModel.h"
+
 
 CModelObject::CModelObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CGameObject(pDevice,pContext), m_pInputManager(CInput_Manager::GetInstance())
@@ -76,7 +78,7 @@ HRESULT CModelObject::Render()
         return E_FAIL;
 
 
-    for (auto& Mesh : m_pModelComp->Get_Meshs())
+    for (auto& Mesh : m_pModel->Get_Meshs())
     {
         /*모든 메쉬를 순회하면서 바인드한다.
            각 메쉬들의 위치와 소유한 메테리얼의 이미지 바인딩.
@@ -91,7 +93,7 @@ HRESULT CModelObject::Render()
             if (FAILED(m_pShader->Begin(Mesh.second->Get_PassName())))
                 return E_FAIL;
 
-            if (FAILED(m_pModelComp->Render(Mesh.second)))
+            if (FAILED(m_pModel->Render(Mesh.second)))
                 return E_FAIL;
 
         
@@ -149,11 +151,15 @@ HRESULT CModelObject::Ready_Components(void* pArg)
 {
     CheckNullResult(pArg, E_FAIL);
     MODELOBJECT_DESC* pModelDesc = static_cast<MODELOBJECT_DESC*>(pArg);
-    CComponent* pModel = dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(pModelDesc->modelName + L"_Model"), pModelDesc->modelCompDesc));
-    
-    if (FAILED(__super::Add_Component(COMPONENT_TYPE::MODEL, pModel, (CComponent**)&m_pModelComp)))
-        return E_FAIL;
-
+    if (pModelDesc)
+    {
+        CModel::MODEL_DSC* ppModelDesc = static_cast<CModel::MODEL_DSC*>(pModelDesc->modelDesc);
+        m_pModel = m_pGameInstance->Clone_Model(pModelDesc->modelName, ppModelDesc);
+        
+        if (!m_pModel)
+            return E_FAIL;
+    }
+   
     return S_OK;
 }
 
@@ -166,9 +172,9 @@ HRESULT CModelObject::Ready_Resource(void* pArg)
 
 
 
-    if (m_pModelComp)
+    if (m_pModel)
     {
-        m_pShader = m_pModelComp->Get_Shader();
+        m_pShader = m_pModel->Get_Shader();
         Safe_AddRef(m_pShader);
 
     }
@@ -183,7 +189,7 @@ void CModelObject::Free()
     __super::Free();
     Safe_Release(m_pInputManager);
     Safe_Release(m_pShader);
-    Safe_Release(m_pModelComp);
+    Safe_Release(m_pModel);
 
 }
 

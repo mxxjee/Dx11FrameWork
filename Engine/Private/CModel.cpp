@@ -3,20 +3,23 @@
 #include "CGameInstance.h"
 #include "CMaterial.h"
 #include "CShader.h"
+#include "CGameInstance.h"
 
 
 CModel::CModel(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-	:CComponent(pDevice,pContext), m_pGameInstance(CGameInstance::GetInstance())
+	:m_pDevice(pDevice),m_pDeviceContext(pContext), m_pGameInstance(CGameInstance::GetInstance())
 {
 	Safe_AddRef(m_pGameInstance);
 }
 
 CModel::CModel(const CModel& Prototype)
-	: CComponent(Prototype),
+	: m_pOwner(Prototype.m_pOwner),
 	m_ModelData(Prototype.m_ModelData),
 	m_Meshs(Prototype.m_Meshs),
 	m_pGameInstance(Prototype.m_pGameInstance),
-	m_pShader(Prototype.m_pShader)
+	m_pShader(Prototype.m_pShader),
+	m_pDevice(Prototype.m_pDevice),
+	m_pDeviceContext(Prototype.m_pDeviceContext)
 {
 	Safe_AddRef(m_pShader);
 	Safe_AddRef(m_pGameInstance);
@@ -30,9 +33,6 @@ CModel::CModel(const CModel& Prototype)
 										//"C:\Users\kmj69\Documents\GitHub\ModelConverter\Output\Zelda\Zelda.json"
 HRESULT CModel::Initialize_Prototype(_matrix PreTransformMatrix,const _char* pModelFilePath)
 {
-	if (FAILED(__super::Initialize_Prototype()))
-		return E_FAIL;
-
 	m_pShader = m_pGameInstance->Find_Shader(L"VtxMesh");
 	Safe_AddRef(m_pShader);
 
@@ -43,14 +43,17 @@ HRESULT CModel::Initialize_Prototype(_matrix PreTransformMatrix,const _char* pMo
 	if (FAILED(LoadModelFromJson(PreTransformMatrix,pModelFilePath)))	//파싱하면서 메테리얼이름을 읽어서 Manager에서 찾아서 meshcomp 한테 넘겨준다.
 		return E_FAIL;
 
+	fs::path	Tmp = pModelFilePath;
+
+	wstring ModelName = Tmp.stem().wstring();
+	CGameInstance::GetInstance()->Register_Model(ModelName, this);
 
 	return S_OK;
 }
 
 HRESULT CModel::Initialize_Copytype(void* pArg)
 {
-	if (FAILED(__super::Initialize_Copytype(pArg)))
-		return E_FAIL;
+
 
 	MODEL_DSC* pDesc = static_cast<MODEL_DSC*>(pArg);
 	if (pDesc)
@@ -60,6 +63,9 @@ HRESULT CModel::Initialize_Copytype(void* pArg)
 
 		m_pShader = m_pGameInstance->Find_Shader(pDesc->ShaderName);
 		Safe_AddRef(m_pShader);
+
+		if (pDesc->pOwner)
+			m_pOwner = pDesc->pOwner;
 	}
 
 
@@ -102,12 +108,12 @@ HRESULT CModel::LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepP
 
 		//메쉬 생성, 필요한 정보들은 미리 세팅해서 던져준다.
 		CMeshComponent* pMesh = nullptr;
-		pMesh = CMeshComponent::Create(m_pDevice, m_pContext, meshData, folderpath.c_str(), MeshIdx);
+		pMesh = CMeshComponent::Create(m_pDevice, m_pDeviceContext, meshData, folderpath.c_str(), MeshIdx);
 		CheckNullResult(pMesh, E_FAIL);
 
 
 		//pass이름을 따로정의했다면,(메쉬이름과 같이)
-
+		m_ModelData.Meshes.push_back(pMesh->Get_MeshData());
 
 		if (m_pShader->Check_PassName(MeshName))
 			pMesh->Set_PassName(MeshName);
@@ -149,7 +155,7 @@ HRESULT CModel::LoadMaterialFromJSon(const _char* filePath)
 		CMaterial* pMaterial = m_pGameInstance->Find_Material(WMatName);
 		if (!pMaterial)
 		{
-			CMaterial* pMaterial = CMaterial::Create(m_pDevice, m_pContext, BasePath.c_str(), m_TextureDatas);
+			CMaterial* pMaterial = CMaterial::Create(m_pDevice, m_pDeviceContext, BasePath.c_str(), m_TextureDatas);
 			if (FAILED(m_pGameInstance->Register_Material(WMatName, pMaterial)))
 			{
 				Safe_Release(pMaterial);
@@ -183,7 +189,7 @@ CModel* CModel::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext>
 	return pInstance;
 }
 
-CComponent* CModel::Clone(void* pArg)
+CModel* CModel::Clone(void* pArg)
 {
 	CModel* pInstance = new CModel(*this);
 

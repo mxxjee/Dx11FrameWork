@@ -1,5 +1,5 @@
 #pragma once
-#include "CComponent.h"
+#include "CBase.h"
 #include "ModelData.h"
 
 NS_BEGIN(Engine)
@@ -12,13 +12,14 @@ class CShader;
 각 메쉬는 pass만다르게가진다..? */
 
 class ENGINE_DLL CModel :
-    public CComponent
+    public CBase
 {
 public:
     typedef struct tagModelDesc
     {
         _wstring ShaderName = L"VtxMesh";
         string passName = "Default";
+        class CGameObject* pOwner = nullptr;
 
     }MODEL_DSC;
 protected:
@@ -27,8 +28,8 @@ protected:
     virtual ~CModel() = default;
 
 public:
-    virtual HRESULT Initialize_Prototype(_matrix PreTransformMatrix,const _char* pFilePath);
-    virtual HRESULT Initialize_Copytype(void* pArg) override;
+    HRESULT Initialize_Prototype(_matrix PreTransformMatrix,const _char* pFilePath);
+    HRESULT Initialize_Copytype(void* pArg);
 
 
 
@@ -42,7 +43,7 @@ public:
 public:
 
     static CModel* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext,_matrix PreTransformMatrix,const _char* pFilePath);
-    virtual CComponent* Clone(void* pArg) override;
+    virtual CModel* Clone(void* pArg);
     virtual void Free() override;
 
 public:
@@ -60,5 +61,10 @@ private:
 
 private:
     CGameInstance* m_pGameInstance = nullptr;
+    ComPtr<ID3D11Device>                m_pDevice;
+    ComPtr<ID3D11DeviceContext>         m_pDeviceContext;
+
+private:
+    class CGameObject*              m_pOwner = nullptr;
 };
 NS_END

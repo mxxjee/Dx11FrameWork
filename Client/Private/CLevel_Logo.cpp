@@ -499,7 +499,7 @@ HRESULT CLevel_Logo::Reday_Layer_Model(const _wstring& strLayerTag)
     desc.TransformDesc = &TransDesc;
 
     CModel::MODEL_DSC ModelDesc = {};
-    desc.modelCompDesc = &ModelDesc;
+    desc.modelDesc = &ModelDesc;
 
 
     if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),

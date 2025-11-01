@@ -39,6 +39,7 @@ public:
 public:
     HRESULT         Bind_ShaderResource(CShader*  pShader, const _char* pConstName, aiTextureType eMaterialType, _uint Textureindex=0);
     const string& Get_PassName() { return passName; }
+    const MeshData& Get_MeshData() { return m_MeshData; }
 public:
     void            Set_PassName(const string& Name) { passName = Name; }
 private:

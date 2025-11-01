@@ -194,6 +194,7 @@
     <ClInclude Include="..\Public\CMinimapQuad.h" />
     <ClInclude Include="..\Public\CModel.h" />
     <ClInclude Include="..\Public\CModelObject.h" />
+    <ClInclude Include="..\Public\CModel_Manager.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
     <ClInclude Include="..\Public\CMainCamera.h" />
     <ClInclude Include="..\Public\ColorUtils.h" />
@@ -290,6 +291,7 @@
     <ClCompile Include="..\Private\CMinimapQuad.cpp" />
     <ClCompile Include="..\Private\CModel.cpp" />
     <ClCompile Include="..\Private\CModelObject.cpp" />
+    <ClCompile Include="..\Private\CModel_Manager.cpp" />
     <ClCompile Include="..\Private\CObject_Manager.cpp" />
     <ClCompile Include="..\Private\CMainCamera.cpp" />
     <ClCompile Include="..\Private\COrthographicCameraComponent.cpp" />

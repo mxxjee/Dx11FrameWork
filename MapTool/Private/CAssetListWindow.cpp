@@ -135,10 +135,14 @@ void CAssetListWindow::Show_Grid(const string& Category)
         // 썸네일 이미지
         AssetInfo info = ModelImages[i];
         CTexture* pTex = pGameInstance->Find_Texture(info.TexKey);
-        CheckNull(pTex);
+        ComPtr<ID3D11ShaderResourceView> SRV = nullptr;
 
+        if (pTex)
+            SRV = pTex->Get_SRV(0);
 
-        ComPtr<ID3D11ShaderResourceView> SRV = pTex->Get_SRV(0);
+        else
+            SRV = pGameInstance->Find_Texture(L"Default");
+
         ImTextureID tex = (ImTextureID)SRV.Get();
 
 

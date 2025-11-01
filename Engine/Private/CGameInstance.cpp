@@ -23,6 +23,7 @@
 #include "CMapObject_Manager.h"
 #include "CLight_Manager.h"
 #include "CMaterial_Manager.h"
+#include "CModel_Manager.h"
 
 #include "CMapObject.h"
 #include "CLayer.h"
@@ -118,11 +119,16 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	m_pLightManager = CLight_Manager::Create(EngineDesc.iNumLevels);
 	CheckNullResult(m_pLightManager, E_FAIL);
 
+	/*모델매니저*/
+	m_pModelManager = CModel_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pModelManager, E_FAIL);
+
 
 	/*매태리얼 매니저*/
 	m_pMaterialManager = CMaterial_Manager::Create(*pDevice, *pContext);
 	CheckNullResult(m_pMaterialManager,E_FAIL);
 
+	
 	return S_OK;
 }
 
@@ -678,6 +684,32 @@ CLight* CGameInstance::Get_Light(_uint iLevelID, _uint iIndex)
 
 	return m_pLightManager->Get_Light(iLevelID,iIndex);
 }
+
+
+#pragma region Model_Manager
+HRESULT CGameInstance::Register_Model(const _wstring& Tag, CModel* pInstance)
+{
+	CheckNullResult(m_pModelManager,E_FAIL);
+	return m_pModelManager->Register_Model(Tag,pInstance);
+}
+CModel* CGameInstance::Find_Model(const _wstring& ProtoModelName)
+{
+	CheckNullResult(m_pModelManager, nullptr);
+	return m_pModelManager->Find_Model(ProtoModelName);
+}
+CModel* CGameInstance::Clone_Model(const _wstring& ProtoModelName, void* pArg)
+{
+	CheckNullResult(m_pModelManager, nullptr);
+	return m_pModelManager->Clone_Model(ProtoModelName, pArg);
+}
+
+HRESULT CGameInstance::Load_All_Models(const string& FilePath)
+{
+	CheckNullResult(m_pModelManager, E_FAIL);
+	return m_pModelManager->Load_All_Models(FilePath);
+}
+
+#pragma endregion
 HRESULT CGameInstance::Register_Material(const _wstring& Tag, CMaterial* pInstance)
 {
 	CheckNullResult(m_pMaterialManager,E_FAIL);
@@ -708,6 +740,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pTerrainManager);
 	Safe_Release(m_pLightManager);
 	Safe_Release(m_pMaterialManager);
+	Safe_Release(m_pModelManager);
+
 
 	Safe_Release(m_pGraphicDev);
 

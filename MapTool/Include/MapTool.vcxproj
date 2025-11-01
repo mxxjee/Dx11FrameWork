@@ -159,9 +159,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_MAPTOOL;_DEBUG;_WINDOWS;%(PreprocessorDefinitions);IMGUI_API=__declspec(dllimport)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\Include/;$(SolutionDir)Client\Public;../Public/;$(SolutionDir)EngineSDK\inc</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../EngineSDK/Inc/;$(SolutionDir)Client\Public;../Public/;$(SolutionDir)EngineSDK\inc</AdditionalIncludeDirectories>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -239,7 +239,17 @@ public:
 
 #pragma endregion
 
+#pragma region Model_Manager
+	HRESULT       Register_Model(const _wstring& Tag, class CModel* pInstance);
+	class CModel*		Find_Model(const _wstring& ProtoModelName);
+	class CModel*		 Clone_Model(const _wstring& ProtoModelName, void* pArg);
 
+public:
+	//모든 모델 로드..(폴더안의 모델 모두로드)
+	HRESULT Load_All_Models(const string& FilePath);
+
+
+#pragma endregion
 
 #pragma region MaterialManager
 	HRESULT       Register_Material(const _wstring& Tag, class CMaterial* pInstance);
@@ -272,6 +282,7 @@ public:
 	 class CLight_Manager* m_pLightManager = { nullptr };
 
 	 class CMaterial_Manager* m_pMaterialManager = { nullptr };
+	 class CModel_Manager* m_pModelManager = { nullptr };
 
 private:
 	vector<D3D11_VIEWPORT>          m_ViewPorts;

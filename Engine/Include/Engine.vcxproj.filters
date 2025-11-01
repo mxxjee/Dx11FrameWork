@@ -259,9 +259,6 @@
     <Filter Include="998.MapTool\Object\MapModel">
       <UniqueIdentifier>{4a11ce14-33cc-49ce-ad6a-22e993ba4f61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05.Component\Model">
-      <UniqueIdentifier>{1ec397e8-53fd-47ce-b7eb-dcd59ca65954}</UniqueIdentifier>
-    </Filter>
     <Filter Include="03.GameObject\ModelObject">
       <UniqueIdentifier>{8dbec519-e1cf-41b2-a658-9b76d6a6a11d}</UniqueIdentifier>
     </Filter>
@@ -285,6 +282,12 @@
     </Filter>
     <Filter Include="00.System\05.Shader\ConstantBuffer">
       <UniqueIdentifier>{87ac1b47-2459-4259-91e6-30bde4ad12b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\13.ModelManager">
+      <UniqueIdentifier>{1a499956-fedd-48ba-90e7-9a332fdf23bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\13.ModelManager\Model">
+      <UniqueIdentifier>{1ec397e8-53fd-47ce-b7eb-dcd59ca65954}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -550,7 +553,7 @@
       <Filter>05.Component\Collision\Box</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CModel.h">
-      <Filter>05.Component\Model</Filter>
+      <Filter>00.System\13.ModelManager\Model</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CModelObject.h">
       <Filter>03.GameObject\ModelObject</Filter>
@@ -572,6 +575,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\ConstantStruct.h">
       <Filter>00.System\05.Shader\ConstantStruct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CModel_Manager.h">
+      <Filter>00.System\13.ModelManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -801,7 +807,7 @@
       <Filter>05.Component\Collision\Box</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CModel.cpp">
-      <Filter>05.Component\Model</Filter>
+      <Filter>00.System\13.ModelManager\Model</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CModelObject.cpp">
       <Filter>03.GameObject\ModelObject</Filter>
@@ -817,6 +823,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMaterial_Manager.cpp">
       <Filter>00.System\12.Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CModel_Manager.cpp">
+      <Filter>00.System\13.ModelManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

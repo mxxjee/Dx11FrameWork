@@ -99,7 +99,7 @@ HRESULT CVIBuffer_Model::Initialize_Prototype(_matrix& Matrix, vector<VTXMESH>& 
 }
 
 HRESULT CVIBuffer_Model::Initialize_Copytype(void* pArg)
-{
+{ 
 	return S_OK;
 }
 
