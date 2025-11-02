@@ -13,12 +13,9 @@ CVIBuffer_CustomTerrain::CVIBuffer_CustomTerrain(const CVIBuffer_CustomTerrain& 
 	, m_iOffSet{Prototype.m_iOffSet}
 	
 {
-	if (Prototype.m_pIndices)
-	{
-		m_pIndices = new _uint[m_iNumIndices];
-		memcpy((_uint*)m_pIndices, (_uint*)Prototype.m_pIndices, sizeof(_uint) * m_iNumIndices);
-
-	}
+	m_pIndices.clear();
+	m_pIndices.resize(Prototype.m_iNumIndices);
+	m_pIndices = Prototype.m_pIndices;
 }
 
 HRESULT CVIBuffer_CustomTerrain::Initialize_Prototype(_uint iNumVerticesX, _uint iNumVerticesZ, _uint Offset)
@@ -81,7 +78,8 @@ HRESULT CVIBuffer_CustomTerrain::ResizeBuffer(_uint fNewVertexCountX, _uint fNew
 		D3D11_BUFFER_DESC IndexDesc{};
 		_uint* pIntIndices = nullptr;
 
-		Safe_Delete_Array(m_pVertexPositions);
+		m_pVertexPositions.clear();
+
 		if (FAILED(CreateVertexBuffer_Begin(m_iNumVerticesX, m_iNumVerticesZ, &pVertice, &VertexDesc)))
 			return E_FAIL;
 		
@@ -130,7 +128,8 @@ HRESULT CVIBuffer_CustomTerrain::CreateVertexBuffer_Begin(_uint VertexCountX, _u
 	m_iVertexStride = sizeof(VTXPOSCOR);
 
 	//위치값 기록을 위한 동적배열(따로 멤버 보관)
-	m_pVertexPositions = new _float3[m_iNumVertices];
+	m_pVertexPositions.clear();
+	m_pVertexPositions.resize(m_iNumVertices);
 
 	
 	pDesc->ByteWidth = m_iVertexStride * m_iNumVertices;		//할당할 크기
@@ -331,7 +330,8 @@ HRESULT CVIBuffer_CustomTerrain::CreateIndexBuffer_Begin(_uint VertexCountX, _ui
 
 
 	*pIndices = new _uint[m_iNumIndices];
-	m_pIndices = new _uint[m_iNumIndices];		//따로멤버에 정의
+	m_pIndices.resize(m_iNumIndices);		//따로멤버에 정의
+
 
 	_uint       iNumIndices = {};
 

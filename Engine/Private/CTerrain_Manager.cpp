@@ -110,8 +110,8 @@ Triangle* CTerrain_Manager::PickTerrain(const _wstring& Key)
 	_uint TerrainX = pTerrain->Get_VIBufferCom()->Get_NumVerticesX();
 	_uint TerrainZ = pTerrain->Get_VIBufferCom()->Get_NumVerticesZ();
 
-	const _uint* m_pIndices = pTerrain->Get_VIBufferCom()->Get_Indices();
-	const _float3* m_pPositions = pTerrain->Get_VIBufferCom()->Get_VertexPositions();
+	const vector<_uint>& m_pIndices = pTerrain->Get_VIBufferCom()->Get_Indices();
+	const vector<_float3>& m_pPositions = pTerrain->Get_VIBufferCom()->Get_VertexPositions();
 
 	_uint IndicesNum = pTerrain->Get_VIBufferCom()->Get_NumIndices();
 

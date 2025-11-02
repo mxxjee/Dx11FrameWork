@@ -75,10 +75,6 @@ HRESULT CVIBuffer::Render()
 void CVIBuffer::Free()
 {
     __super::Free();
-    Safe_Delete_Array(m_pIndices);
-    if (!m_isClone)
-    {
-        Safe_Delete_Array(m_pVertexPositions);
-       
-    }
+
+
 }

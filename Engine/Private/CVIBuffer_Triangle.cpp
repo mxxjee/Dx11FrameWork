@@ -31,7 +31,7 @@ HRESULT CVIBuffer_Triangle::Initialize_Copytype(void* pArg)
 	m_iVertexStride = sizeof(VTXPOSCOR);
 
 	//위치값 기록을 위한 동적배열(따로 멤버 보관)
-	m_pVertexPositions = new _float3[m_iNumVertices];
+	m_pVertexPositions.resize(m_iNumVertices);
 
 	VertexDesc.ByteWidth = m_iVertexStride * m_iNumVertices;		//할당할 크기
 	VertexDesc.Usage = D3D11_USAGE_DEFAULT;					 //cpu/gpu가 어떻게 읽을건지에 대한 플래그 설정
@@ -131,5 +131,5 @@ CComponent* CVIBuffer_Triangle::Clone(void* pArg)
 void CVIBuffer_Triangle::Free()
 {
 	__super::Free(); 
-	Safe_Delete_Array(m_pVertexPositions);
+
 }

@@ -35,7 +35,8 @@ HRESULT CVIBuffer_Model::Initialize_Prototype(_matrix& Matrix, vector<VTXMESH>& 
 	ZeroMemory(pVertices, sizeof(VTXMESH) * m_iNumVertices);
 
 	//위치값 기록을 위한 동적배열(따로 멤버 보관)
-	m_pVertexPositions = new _float3[m_iNumVertices];
+	
+	m_pVertexPositions.resize(m_iNumVertices);
 
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{

@@ -11,12 +11,9 @@ CVIBuffer_Terrain::CVIBuffer_Terrain(const CVIBuffer_Terrain& Prototype)
 	, m_iNumVerticesX{ Prototype.m_iNumVerticesX }
 	, m_iNumVerticesZ{ Prototype.m_iNumVerticesZ }
 {
-	if (Prototype.m_pIndices)
-	{
-		m_pIndices = new _uint[m_iNumIndices];
-		memcpy((_uint*)m_pIndices, (_uint*)Prototype.m_pIndices, sizeof(_uint) * m_iNumIndices);
-
-	}
+	m_pIndices.clear();
+	m_pIndices.resize(Prototype.m_iNumIndices);
+	m_pIndices = Prototype.m_pIndices;
 }
 
 HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath)
@@ -78,8 +75,8 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath
 	ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
 
 	//위치값 기록을 위한 동적배열(따로 멤버 보관)
-	m_pVertexPositions = new _float3[m_iNumVertices];
-	ZeroMemory(m_pVertexPositions, sizeof(_float3)*m_iNumVertices);
+	m_pVertexPositions.resize(m_iNumVertices);
+	m_pVertexPositions.clear();
 
 	for (_uint i = 0; i < m_iNumVerticesZ; ++i)
 	{
@@ -128,7 +125,9 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath
 
 	/*인덱스 정의*/
 	_uint* pIndices = new _uint[m_iNumIndices];
-	m_pIndices = new _uint[m_iNumIndices];		//따로멤버에 정의
+
+	m_pIndices.clear();
+	m_pIndices.resize(m_iNumIndices);		//따로멤버에 정의
 
 
 	_uint       iNumIndices = {};

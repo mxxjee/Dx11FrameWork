@@ -70,10 +70,11 @@ private:
 
 
 private:
-    HRESULT             Create_MapObject(bool bDrag);
-    HRESULT             Create_MapTerrain(bool bDrag);
-    HRESULT             Create_Model(bool bDrag);
+    HRESULT             Create_MapObject();
+    HRESULT             Create_MapTerrain();
+    HRESULT             Create_Model();
 
+    
 public:
     void            Free() override;
 
@@ -81,6 +82,7 @@ public:
 public:
     IMGUI_SHARED_DATA           Data;
     PlaceObjectInfo             m_PlaceObjInfo;
+    CGameObject*                m_pPlaceObject;
 
 private:
     CInput_Manager* m_pInputManager = nullptr;

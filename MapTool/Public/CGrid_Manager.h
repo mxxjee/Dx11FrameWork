@@ -41,9 +41,9 @@ public:
     void       Set_MouseWorldPos();
     _float3     Get_MouseWorldPos() { return MouseWorldPos; }
 public:
-    CMapGrid* Get_MainGrid() { return m_pMainGrid; }
+    CMapGrid*           Get_MainGrid() { return m_pMainGrid; }
     _float3             Get_GridPickingWorldPos() { return PickingWolrdPos; }
-
+    bool                IsCollisionWithGrid() { return m_bPicking; }
 private:
     ComPtr<ID3D11Device>		m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext>	m_pDeviceContext = { nullptr };

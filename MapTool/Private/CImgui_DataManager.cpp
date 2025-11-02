@@ -72,32 +72,55 @@ void CImgui_DataManager::Active_PlacementMode(PlaceObjectInfo Info)
 	Data.m_bPlacementMode = true;
 
 	m_PlaceObjInfo = Info;
+
+	//생성
+	if (FAILED(Create_MapObject()))
+		return;
+
+
 }
 
 void CImgui_DataManager::Update_MouseInput()
 {
 	CheckFalse(Data.m_bPlacementMode);
+	CheckNull(m_pPlaceObject);
 
 	//그냥 클릭->뗐으면,
+
 	if (!m_bDrag&& m_pInputManager->IsMouseButtonReleased(0))
 	{
-		if(FAILED(Create_MapObject(false)))
-			return;
+		//0,0,0에 위치시키기
+		m_pPlaceObject->Get_Transform()->Set_State(STATE::POSITION, _float4(0.f, 0.f, 0.f, 1.f));
+
 
 		Data.m_bPlacementMode = false;
+		m_pPlaceObject = nullptr;
 	}
 
 
 	//드래그중이라면
 	if (m_pInputManager->IsMouseDragging())
+	{
+		//위치따라가기
+		_float3 vTargetPos;
+		if (m_pGrid_Manager->IsCollisionWithGrid())
+			vTargetPos = m_pGrid_Manager->Get_GridPickingWorldPos();
+
+		else
+			vTargetPos = m_pGrid_Manager->Get_MouseWorldPos();
+
+
+		m_pPlaceObject->Get_Transform()->Set_State(STATE::POSITION, _float4(vTargetPos.x, vTargetPos.y, vTargetPos.z, 1.f));
+
 		m_bDrag = true;
+	}
+		
 
 	if (m_bDrag && m_pInputManager->IsMouseButtonReleased(0))
 	{
-		if (FAILED(Create_MapObject(true)))
-			return;
-
+		
 		Data.m_bPlacementMode = false;
+		m_pPlaceObject = nullptr;
 		m_bDrag = false;
 
 	}
@@ -151,38 +174,28 @@ wstring CImgui_DataManager::Generate_UniqueTag(MapObjType Type, const wstring& b
 }
 
 
-HRESULT CImgui_DataManager::Create_MapObject(bool bDrag)
+HRESULT CImgui_DataManager::Create_MapObject()
 {
 	switch (m_PlaceObjInfo.ObjType)
 	{
 	case MapObjType::TERRAIN:
-		return Create_MapTerrain(bDrag);
+		return Create_MapTerrain();
 		break;
 
 
 	default:
-		return Create_Model(bDrag);
+		return Create_Model();
 		break;
 	}
 }
 
-HRESULT CImgui_DataManager::Create_MapTerrain(bool bDrag)
+HRESULT CImgui_DataManager::Create_MapTerrain()
 {
 	CMapTerrain::MAPTERRAIN_DESC Desc;
 	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
 	Desc.ObjTag = Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
 	Desc.modelName = m_PlaceObjInfo.TexKey;
 	Desc.ObjType = m_PlaceObjInfo.ObjType;
-
-	if (bDrag)
-	{
-		_float3 PickingPos = m_pGrid_Manager->Get_GridPickingWorldPos();
-		CTransform::TRANSFORM_DESC	 TransDesc;
-		TransDesc.vLocalPosition = _float4(PickingPos.x, PickingPos.y, PickingPos.z, 1.f);
-		Desc.TransformDesc = &TransDesc;
-
-	}
-
 
 	CModel::MODEL_DSC modelDesc;
 	Desc.modelDesc = &modelDesc;
@@ -197,6 +210,7 @@ HRESULT CImgui_DataManager::Create_MapTerrain(bool bDrag)
 		if (pTerrain)
 		{
 			m_pGameInstance->Register_Terrain(Desc.ObjTag, pTerrain);
+			m_pPlaceObject = pCloneObj;
 			return S_OK;
 		}
 	}
@@ -204,7 +218,7 @@ HRESULT CImgui_DataManager::Create_MapTerrain(bool bDrag)
 	return E_FAIL;
 }
 
-HRESULT CImgui_DataManager::Create_Model(bool bDrag)
+HRESULT CImgui_DataManager::Create_Model()
 {
 	CMapModel::MAPMODEL_DESC Desc;
 	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
@@ -216,15 +230,15 @@ HRESULT CImgui_DataManager::Create_Model(bool bDrag)
 	Desc.modelDesc = &modelDesc;
 
 
-	//드래그생성이라면,위치가 따로존재함
-	if (bDrag)
-	{
-		_float3 PickingPos = m_pGrid_Manager->Get_GridPickingWorldPos();
-		CTransform::TRANSFORM_DESC	 TransDesc;
-		TransDesc.vLocalPosition = _float4(PickingPos.x, PickingPos.y, PickingPos.z, 1.f);
-		Desc.TransformDesc = &TransDesc;
+	////드래그생성이라면,위치가 따로존재함
+	//if (bDrag)
+	//{
+	//	_float3 PickingPos = m_pGrid_Manager->Get_GridPickingWorldPos();
+	//	CTransform::TRANSFORM_DESC	 TransDesc;
+	//	TransDesc.vLocalPosition = _float4(PickingPos.x, PickingPos.y, PickingPos.z, 1.f);
+	//	Desc.TransformDesc = &TransDesc;
 
-	}
+	//}
 
 	//타입에 맞게 레이어에 넣어주기.
 	wstring LayerTag = L"";
@@ -254,9 +268,13 @@ HRESULT CImgui_DataManager::Create_Model(bool bDrag)
 		break;
 	}
 
-	return m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc);
+	if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc)))
+		return E_FAIL;
+
+	m_pPlaceObject = m_pMapObject_Manager->Find_MapObject(LayerTag, Desc.ObjTag);
 
 
+	return S_OK;
 }
 
 MapObjType CImgui_DataManager::Get_ObjType_From_Path(const wstring& path)

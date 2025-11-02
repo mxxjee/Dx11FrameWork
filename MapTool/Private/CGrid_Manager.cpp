@@ -88,8 +88,8 @@ Triangle* CGrid_Manager::PickTerrain()
 	_uint TerrainX = m_pMainGrid->Get_VIBufferCom()->Get_NumVerticesX();
 	_uint TerrainZ = m_pMainGrid->Get_VIBufferCom()->Get_NumVerticesZ();
 
-	const _uint* m_pIndices = m_pMainGrid->Get_VIBufferCom()->Get_Indices();
-	const _float3* m_pPositions = m_pMainGrid->Get_VIBufferCom()->Get_VertexPositions();
+	const vector<_uint>& m_pIndices = m_pMainGrid->Get_VIBufferCom()->Get_Indices();
+	const vector<_float3>& m_pPositions = m_pMainGrid->Get_VIBufferCom()->Get_VertexPositions();
 
 	_uint IndicesNum = m_pMainGrid->Get_VIBufferCom()->Get_NumIndices();
 

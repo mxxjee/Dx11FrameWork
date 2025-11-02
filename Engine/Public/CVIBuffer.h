@@ -32,12 +32,12 @@ public:
     virtual _uint           Get_NumVerticesZ() { return 0; }
     _uint                   Get_NumIndices() { return m_iNumIndices; }
 public:
-    const _float3* Get_VertexPositions() const { return m_pVertexPositions; }
-    const _uint* Get_Indices() const { return m_pIndices; }
+    const vector<_float3>& Get_VertexPositions() { return m_pVertexPositions; }
+    const  vector<_uint>& Get_Indices() const { return m_pIndices; }
 
 protected:
-    _float3*        m_pVertexPositions = { nullptr };       //정점의 위치들만 기록하기 위한 동적배열, 얕은 참조 수행하므로 원본일 때만 메모리반환
-    _uint*          m_pIndices = nullptr;
+    vector<_float3>        m_pVertexPositions;       //정점의 위치들만 기록하기 위한 동적배열, 얕은 참조 수행하므로 원본일 때만 메모리반환
+    vector<_uint>          m_pIndices;
     _uint           m_iNumVertices = {};           //정점 개수
     _uint           m_iVertexStride = {};       //정점 구조체 하나의 크기
 
