@@ -658,6 +658,11 @@ _float3 CGameInstance::Get_PickingWorldPos()
 	return m_pTerrainManager->Get_PickingWorldPos();
 }
 
+const UMap<_wstring, CTerrain_Base*>& CGameInstance::Get_TerrainMap()
+{
+	return m_pTerrainManager->Get_TerrainMap();
+}
+
 #pragma endregion
 
 

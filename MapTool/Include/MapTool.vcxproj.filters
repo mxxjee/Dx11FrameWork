@@ -31,9 +31,6 @@
     <Filter Include="04.GameObject">
       <UniqueIdentifier>{275b3066-83a3-4135-a688-a144a40847c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="04.GameObject\MapTerrain">
-      <UniqueIdentifier>{7119959e-9abc-49ca-b63a-8d3980b12a76}</UniqueIdentifier>
-    </Filter>
     <Filter Include="04.GameObject\TerrainHighlight">
       <UniqueIdentifier>{b41a40e6-6670-4760-a1b7-fb43ebc5e870}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,9 @@
     </Filter>
     <Filter Include="05.Manager\GridManager">
       <UniqueIdentifier>{1ff9ffff-f260-49a1-bb6b-5d68e659192b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.GameObject\MapGrid">
+      <UniqueIdentifier>{7119959e-9abc-49ca-b63a-8d3980b12a76}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -94,7 +94,7 @@
       <Filter>02.ImguiObjects\TerrainDebugWindow</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMapGrid.h">
-      <Filter>04.GameObject\MapTerrain</Filter>
+      <Filter>04.GameObject\MapGrid</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CTerrain_Highlight.h">
       <Filter>04.GameObject\TerrainHighlight</Filter>
@@ -138,7 +138,7 @@
       <Filter>02.ImguiObjects\TerrainDebugWindow</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMapGrid.cpp">
-      <Filter>04.GameObject\MapTerrain</Filter>
+      <Filter>04.GameObject\MapGrid</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CTerrain_Highlight.cpp">
       <Filter>04.GameObject\TerrainHighlight</Filter>

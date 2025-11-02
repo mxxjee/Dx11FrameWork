@@ -225,7 +225,7 @@ public:
 	class CTerrain_Base*		Find_Terrain(const _wstring& Key);
 	Triangle*					PickTerrain(const _wstring& Key);
 	_float3						Get_PickingWorldPos();
-
+	const UMap<_wstring, CTerrain_Base*>& Get_TerrainMap();
 #pragma endregion
 
 

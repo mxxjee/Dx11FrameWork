@@ -68,7 +68,7 @@ CMapField* CMapField::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceC
 		Safe_Release(pInstance);
 
 	}
-
+	 
 
 
 	return pInstance;

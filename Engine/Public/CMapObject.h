@@ -2,6 +2,7 @@
 
 #include "Engine_Define.h"
 #include "CGameObject.h"
+#include "IMapEditable.h"
 
 
 
@@ -11,7 +12,7 @@ class CBoxColliderComponent;
 class CMapObject_Manager;
 
 class ENGINE_DLL CMapObject :
-    public CGameObject
+    public CGameObject,public IMapEditable
 {
 public:
     typedef struct MapObject_DESC : CGameObject::GAMEOBJECT_DESC
@@ -53,7 +54,7 @@ private:
     HRESULT     Ready_Resource(void* pArg);
 
 public:
-    MapObjType Get_ObjType() { return m_eObjType; }
+
 public:
     void        Set_Select(bool _bSelect) { m_bSelected = _bSelect; }
     virtual     void    Free() override;
@@ -64,16 +65,18 @@ protected:
     class CShader* m_pShader = nullptr;
 
 protected:
-    bool                    m_bSelected = false;        //(픽킹)선택여부
     _uint                   m_eRenderGroup = 0;
-    MapObjType              m_eObjType;
-
+  
     _wstring                m_ShaderName = L"";
     string                  m_passName = "";
 
 
 private:
     CMapObject_Manager*         m_pMapObject_Manager = nullptr;
+
+    // IMapEditable을(를) 통해 상속됨
+    virtual void OnSeletected(bool bSelected) override;
+    virtual void Save_To_Json() override;
 };
 
 

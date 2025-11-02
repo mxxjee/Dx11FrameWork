@@ -8,8 +8,12 @@ namespace Engine
     class CInput_Manager;
     class CMapObject_Manager;
     class CGameInstance;
+    class CTerrain_Manager;
 }
 NS_BEGIN(MapTool)
+
+class CGrid_Manager;
+ 
 class CImgui_DataManager :
     public CBase
 {
@@ -66,6 +70,8 @@ private:
 
 
 private:
+    HRESULT             Create_MapObject(bool bDrag);
+    HRESULT             Create_MapTerrain(bool bDrag);
     HRESULT             Create_Model(bool bDrag);
 
 public:
@@ -79,6 +85,7 @@ public:
 private:
     CInput_Manager* m_pInputManager = nullptr;
     CMapObject_Manager* m_pMapObject_Manager = nullptr;
+    CGrid_Manager* m_pGrid_Manager = nullptr;
     CGameInstance* m_pGameInstance = nullptr;
 
     bool                m_bDrag = false;
@@ -87,5 +94,7 @@ private:
 private:
     ComPtr<ID3D11Device> m_pDevice;
     ComPtr<ID3D11DeviceContext> m_pContext;
+
+
 };
 NS_END

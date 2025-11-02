@@ -4,6 +4,8 @@
 #include "CGameInstance.h"
 #include "MathUtils.h"
 #include "CInput_Manager.h"
+#include "IMapEditable.h"
+
 
 
 IMPLEMENT_SINGLETON(CMapObject_Manager)
@@ -103,8 +105,8 @@ void CMapObject_Manager::Check_Picking()
        }
     }
 
-    if(pPickObj)
-        Set_SelectObject(pPickObj);
+    //if(pPickObj)
+    //    Set_SelectObject(pPickObj);
 }
 
 HRESULT CMapObject_Manager::Add_MapObject_To_MapLayer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag, const _wstring& strLayerTag, void* pArg)
@@ -174,16 +176,16 @@ CMapLayer* CMapObject_Manager::Find_MapLayer(const _wstring& LayerTag)
 
     return nullptr;
 }
-
-void CMapObject_Manager::Set_SelectObject(CMapObject* pObj)
-{
-    if (m_pSelectObject)
-        m_pSelectObject->Set_Select(false); 
-    
-    m_pSelectObject = pObj;
-    pObj->Set_Select(true);
-
-}
+//
+//void CMapObject_Manager::Set_SelectObject(CMapObject* pObj)
+//{
+//    if (m_pSelectObject)
+//        m_pSelectObject->Set_Select(false);
+//
+//    m_pSelectObject = pObj;
+//    pObj->Set_Select(true);
+//
+//}
 
 HRESULT CMapObject_Manager::Save_Data(const wstring& Path)
 {
@@ -240,6 +242,22 @@ CMapLayer* CMapObject_Manager::Get_Layer_By_MapObjType(MapObjType eType)
     
     return pLayer;
 
+}
+
+void CMapObject_Manager::Set_SelectObject(IMapEditable* pSelectedObject)
+{
+    CheckNull(pSelectedObject);
+
+
+    //기존껏은 해제한다.
+    if (m_pSelectedObject)
+        m_pSelectedObject->OnSeletected(false);
+
+    /*교체*/
+    m_pSelectedObject = pSelectedObject;
+    m_pSelectedObject->OnSeletected(true);
+
+        
 }
 
 CMapObject_Manager* CMapObject_Manager::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)

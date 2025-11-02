@@ -20,6 +20,7 @@ HRESULT CTerrain_Manager::Register_Terrain(const _wstring& Key, CTerrain_Base* p
 	else
 	{
 		m_TerrainMap.emplace(Key, pTerrain);
+
 	}
 
 
@@ -164,5 +165,7 @@ void CTerrain_Manager::Free()
 		Safe_Release(pair.second);
 
 	}
+
+	m_TerrainMap.clear();
 }
 

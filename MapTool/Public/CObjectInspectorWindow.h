@@ -6,6 +6,8 @@ namespace Engine
     class CMapObject;
     class CMapObject_Manager;
     class CImgui_InputFloat;
+    class IMapEditable;
+
 }
 
 #include "CImgui_Window.h"
@@ -39,7 +41,7 @@ private:
 
 private:
     CGameInstance* pGameInstance = { nullptr };
-    CMapObject* pSelectObject = { nullptr };
+    CGameObject* pSelectObject = { nullptr };
 
 private:
     _float3 vScale = { 1.f,1.f,1.f, };

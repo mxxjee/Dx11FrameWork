@@ -8,11 +8,17 @@
 #include "CImGui_Manager.h"
 #include "CMapObject_Manager.h"
 
+#include "CTerrain_Manager.h"
+#include "IMapEditable.h"
+
+
+
 
 USING(MapTool)
 CLayerDebugWindow::CLayerDebugWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CImgui_Window(pDevice, pContext),
-    pGameInstance(CGameInstance::GetInstance()), m_pMapObject_Manager(CMapObject_Manager::GetInstance())
+    pGameInstance(CGameInstance::GetInstance()), 
+    m_pMapObject_Manager(CMapObject_Manager::GetInstance())
 {
     Safe_AddRef(m_pMapObject_Manager);
     Safe_AddRef(pGameInstance);
@@ -60,6 +66,44 @@ void CLayerDebugWindow::Update()
                 ImGui::TreePop();
             }
         }
+    }
+
+
+    /// <summary>
+    /// 터레인 매니저에서 추가된애들 표시
+    UMap<_wstring, CTerrain_Base*>          TerrainMap = pGameInstance->Get_TerrainMap();
+    char label[256];
+    string name = "TerrainList";
+    int count = TerrainMap.size();
+    sprintf_s(label, "%s   /  count: %d##%s", name.c_str(), count, name.c_str());
+    if (ImGui::TreeNode(label))
+    {
+    for (auto& pair : TerrainMap)
+    {
+       
+        if(pair.second)
+		{
+			IMapEditable* pObj = dynamic_cast<IMapEditable*>(pair.second);
+
+			const _wstring LayerTag = pair.first;
+
+
+
+
+
+			bool bSelected = (pSelectObject == pObj); // 현재 선택된 상태인지
+			if (ImGui::Selectable(WStringToUTF8(pair.second->Get_Tag()).c_str(), bSelected))
+			    {
+				m_pMapObject_Manager->Set_SelectObject(pObj);
+
+			    }
+
+
+			
+		    }
+        
+        }
+    ImGui::TreePop();
     }
     ImGui::End();
 }

@@ -7,6 +7,7 @@ NS_BEGIN(Engine)
 class CMapObject;
 class CMapLayer;
 class CGameInstance;
+class IMapEditable;
 
 class ENGINE_DLL CMapObject_Manager :
     public CBase
@@ -42,8 +43,7 @@ public:
     CMapObject*             Find_MapObject(const _wstring& LayerTag,const _wstring& ObjTag);
     void                    Clear(const _wstring& LayerTag);
     CMapLayer*              Find_MapLayer(const _wstring& LayerTag);
-    void                    Set_SelectObject(CMapObject* pObj);
-
+ 
 public:
     HRESULT             Save_Data(const wstring& Path);
     CMapLayer*             Get_Layer_By_MapObjType(MapObjType eType);
@@ -51,12 +51,11 @@ public:
 public:
     //레이어리스트를 가져온다.
     const UMap<_wstring, CMapLayer*>&    Get_MapLayers() { return m_Layers; }
-    CMapObject* Get_SelectObject() { return m_pSelectObject; }
 
 public:
-   
-public:
-    UMap<_wstring, CMapLayer*> m_Layers;        //월드상에 배치된애들
+    void                    Set_SelectObject(IMapEditable* pSelectedObject);
+    IMapEditable*           Get_SelectObject() { return m_pSelectedObject; }
+    UMap<_wstring, CMapLayer*> m_Layers;        //월드상에 배치된애들(지형제외)
 
 
 private:
@@ -69,14 +68,13 @@ public:
     static CMapObject_Manager* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual void Free();
 
-private:
-    CMapObject*         m_pSelectObject = nullptr;
+
     ENGINE_DESC             m_EngineDesc;
 
 
 protected:
     BoundingSphere      m_Sphere;
-
+    IMapEditable* m_pSelectedObject = { nullptr };
 
 
 };

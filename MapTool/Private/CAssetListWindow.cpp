@@ -95,7 +95,7 @@ HRESULT CAssetListWindow::Create_ModelImages()
             AssetInfo Info;
 
             if (modelData.ResourcePath.find(L"Field") != wstring::npos)
-                Info.ObjType = MapObjType::FILED;
+                Info.ObjType = MapObjType::TERRAIN;
 
             else
                 Info.ObjType = MapObjType::OBSTACLE;

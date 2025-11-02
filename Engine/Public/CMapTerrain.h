@@ -1,0 +1,67 @@
+#pragma once
+
+/*맵툴에서 설치할 FIELD메쉬,
+클라에서 부를떄 생성할 객체타입*/
+
+
+#include "CTerrain_Base.h"
+#include "IMapEditable.h"
+
+NS_BEGIN(Engine)
+class CModel;
+
+class ENGINE_DLL CMapTerrain :
+    public CTerrain_Base, public IMapEditable
+{
+public:
+    typedef struct tagMapTerrain_DESC : CTerrain_Base::tagTerrainDesc
+    {
+        MapObjType              ObjType;
+        _wstring    modelName;
+        void* modelDesc = nullptr;
+
+    }MAPTERRAIN_DESC;
+
+protected:
+    CMapTerrain(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+    CMapTerrain(const CMapTerrain& rhs);
+    virtual ~CMapTerrain() = default;
+
+public:
+    virtual HRESULT     Initialize_Prototype(); /*원형 객체가 생성될때 부르는 Initialize*/
+    virtual HRESULT     Initialize_Copytype(void* pArg); /*사본 객체가 생성될때 부르는 Initialize*/
+
+    virtual void        Update_Priority(_float fTimeDelta);
+    virtual void        Update(_float fTimeDelta);
+    virtual void        Update_Late(_float fTimeDelta);
+    virtual void        Update_Render(_float fTimeDelta) override;
+
+
+    virtual HRESULT Render();
+
+public:
+    HRESULT                     Ready_Components(void* pArg);
+    HRESULT                     Ready_Resources(void* pArg);
+    HRESULT                     Bind_ShaderResources();
+
+public:
+    static CMapTerrain* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
+    virtual CGameObject* Clone(void* pArg) override;
+    virtual void Free() override;
+
+public:
+    // IMapEditable을(를) 통해 상속됨
+    virtual void OnSeletected(bool bSelected) override;
+
+    virtual void Save_To_Json() override;
+
+protected:
+    CModel* m_pModel = nullptr;
+
+private:
+    _uint                       m_iIdx = 0;
+
+};
+
+NS_END
+

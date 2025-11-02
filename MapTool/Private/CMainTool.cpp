@@ -26,6 +26,7 @@
 #include "CGrid_Manager.h"
 
 
+
 USING(MapTool)
 
 CMainTool::CMainTool()
@@ -82,6 +83,9 @@ HRESULT CMainTool::Initialize_MapTool()
 
     //MapObjectMAnager¸¸µé±â
     pMapObject_Manager = CMapObject_Manager::GetInstance();
+
+    if (FAILED(pGrid_Manager->Initialize(m_pDevice,m_pContext)))
+        return E_FAIL;
 
     if(FAILED(pMapObject_Manager->Initialize(m_pDevice,m_pContext)))
         return E_FAIL;

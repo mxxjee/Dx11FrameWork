@@ -67,8 +67,8 @@ void CLevel_Editor::Update(const _float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
 
-	//좌표 잘얻어오는지 테스트.(케로로따라오게하기)quf
-	Triangle* pPickingPos= m_pGameInstance->PickTerrain(L"MapTerrain");
+	//그리드 좌표 픽킹처리
+	Triangle* pPickingPos= m_pGrid_Manager->PickTerrain();
 	/*if (pPickingPos!=nullptr)
 	{
 		CMapLayer* pLayer = CMapObject_Manager::GetInstance()->Find_MapLayer(L"Player_Layer");
@@ -150,6 +150,8 @@ HRESULT CLevel_Editor::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 	CMapGrid::TERRAIN_DESC pDesc;
 	pDesc.TextureKey = L"";
 	pDesc.ObjTag = L"MapGrid";
+
+
 	pDesc.ShaderName = L"Default";
 	pDesc.passName = "Default";
 	pDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);

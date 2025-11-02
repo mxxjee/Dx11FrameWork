@@ -189,6 +189,7 @@
     <ClInclude Include="..\Public\CMapObject.h" />
     <ClInclude Include="..\Public\CMapObject_Manager.h" />
     <ClInclude Include="..\Public\CMapQuad.h" />
+    <ClInclude Include="..\Public\CMapTerrain.h" />
     <ClInclude Include="..\Public\CMaterial.h" />
     <ClInclude Include="..\Public\CMaterial_Manager.h" />
     <ClInclude Include="..\Public\CMeshComponent.h" />
@@ -239,6 +240,7 @@
     <ClInclude Include="..\Public\Engine_Struct.h" />
     <ClInclude Include="..\Public\Engine_Typedef.h" />
     <ClInclude Include="..\Public\GraphicUtil.h" />
+    <ClInclude Include="..\Public\IMapEditable.h" />
     <ClInclude Include="..\Public\imconfig.h" />
     <ClInclude Include="..\Public\imgui.h" />
     <ClInclude Include="..\Public\imgui_impl_dx11.h" />
@@ -288,6 +290,7 @@
     <ClCompile Include="..\Private\CMapObject.cpp" />
     <ClCompile Include="..\Private\CMapObject_Manager.cpp" />
     <ClCompile Include="..\Private\CMapQuad.cpp" />
+    <ClCompile Include="..\Private\CMapTerrain.cpp" />
     <ClCompile Include="..\Private\CMaterial.cpp" />
     <ClCompile Include="..\Private\CMaterial_Manager.cpp" />
     <ClCompile Include="..\Private\CMeshComponent.cpp" />

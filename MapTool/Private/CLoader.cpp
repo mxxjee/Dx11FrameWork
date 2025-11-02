@@ -21,6 +21,7 @@
 #include "CModel.h"
 #include "CMapModel.h"
 #include "CMapField.h"
+#include "CMapTerrain.h"
 
 
 
@@ -158,7 +159,7 @@ HRESULT CLoader::Loading_MapTool()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Model"), CMapModel::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Field"), CMapField::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapTerrain"), CMapTerrain::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
 
@@ -193,6 +194,11 @@ HRESULT CLoader::Register_Shaders()
         m_pDeviceContext, VTXMESH::desc, L"../../Resource/Shader/Shader_VtxMesh.hlsl",
         "DefaultTechnique");
     m_pGameInstance->Register_Shader(L"VtxMesh", pInstance);
+
+    pInstance = CShader::Create(m_pDevice,
+        m_pDeviceContext, VTXMESH::desc, L"../../Resource/Shader/Shader_MapTool.hlsl",
+        "DefaultTechnique");
+    m_pGameInstance->Register_Shader(L"Shader_MapTool", pInstance);
 
     return S_OK;
 }

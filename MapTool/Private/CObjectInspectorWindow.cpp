@@ -7,6 +7,7 @@
 #include "MathUtils.h"
 
 #include "CMapObject_Manager.h"
+#include "IMapEditable.h"
 
 
 
@@ -215,7 +216,9 @@ void CObjectInspectorWindow::Free()
 void CObjectInspectorWindow::Update_SelectObject()
 {
     /*선택한 오브젝트에 따라서 바인딩값 변경*/
-    pSelectObject = m_pMapObject_Manager->Get_SelectObject();
+    CheckNull(m_pMapObject_Manager->Get_SelectObject());
+
+    pSelectObject = dynamic_cast<CGameObject*>(m_pMapObject_Manager->Get_SelectObject());
 
     if (pSelectObject)
     {
@@ -224,7 +227,9 @@ void CObjectInspectorWindow::Update_SelectObject()
         ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "Name : %s", WStringToUTF8(pSelectObject->Get_Tag()).c_str());
 
         string Type = "";
-        switch (pSelectObject->Get_ObjType())
+        IMapEditable* pEditableObj = dynamic_cast<IMapEditable*>(pSelectObject);
+
+        switch (pEditableObj->Get_ObjType())
         {
         case MapObjType::OBSTACLE:
             Type = "OBSTACLE";
@@ -234,6 +239,9 @@ void CObjectInspectorWindow::Update_SelectObject()
             Type = "TILE";
             break;
 
+        case MapObjType::TERRAIN:
+            Type = "TERRAIN";
+            break;
         case MapObjType::POSITION:
             Type = "POSITION";
             break;

@@ -8,8 +8,7 @@
 
 
 CMapObject::CMapObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-	:CGameObject{ pDevice,pContext },
-	m_eObjType{ MapObjType::OBSTACLE },
+	:CGameObject(pDevice,pContext),
 	pColliderComp{ nullptr },
 	m_pMapObject_Manager{ CMapObject_Manager ::GetInstance()}
 {
@@ -19,7 +18,6 @@ CMapObject::CMapObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext>
 
 CMapObject::CMapObject(const CMapObject& rhs)
 	:CGameObject{rhs}
-	,m_bSelected{rhs.m_bSelected}
 	,m_eRenderGroup{rhs.m_eRenderGroup},
 	pColliderComp{nullptr},
 	m_pMapObject_Manager{rhs.m_pMapObject_Manager}
@@ -157,4 +155,13 @@ void CMapObject::Free()
 	Safe_Release(m_pShader);
 	Safe_Release(pColliderComp);
 
+}
+
+void CMapObject::OnSeletected(bool bSelected)
+{
+	m_bSelected = bSelected;
+}
+
+void CMapObject::Save_To_Json()
+{
 }
