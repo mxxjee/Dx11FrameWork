@@ -89,6 +89,8 @@ HRESULT CVIBuffer_Model::Initialize_Prototype(_matrix& Matrix, vector<VTXMESH>& 
 
 	D3D11_SUBRESOURCE_DATA IndexData;
 	IndexData.pSysMem =Indices.data();
+	m_pIndices = Indices;
+
 	if (FAILED(m_pDevice->CreateBuffer(&IndexDesc, &IndexData, m_pIB.GetAddressOf())))
 		return E_FAIL;
 

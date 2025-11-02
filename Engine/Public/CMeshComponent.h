@@ -35,6 +35,8 @@ public:
 
     HRESULT                 Render();
 
+public:
+    bool                Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);
 
 public:
     HRESULT         Bind_ShaderResource(CShader*  pShader, const _char* pConstName, aiTextureType eMaterialType, _uint Textureindex=0);
@@ -49,10 +51,11 @@ private:
 
     string              passName = "Default";
 
-
+private:
     CGameInstance*      m_pGameInstance = nullptr;
 
-
+    vector<_uint>       m_pIndices;
+    vector<_float3>     m_pPositions;
 };
 
 NS_END

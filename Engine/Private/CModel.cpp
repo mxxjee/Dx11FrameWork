@@ -240,6 +240,33 @@ HRESULT CModel::Bind_Mateiral(CShader* pShader, const _char* pConstName, CMeshCo
 	return pMesh->Bind_ShaderResource(pShader,pConstName,eMaterialType,Textureindex);
 }
 
+bool CModel::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
+{
+	bool bHit = false;
+	float minDist = FLT_MAX;
+
+	for (auto& pair : m_Meshs)
+	{
+		float TmpDist = 0.f;
+
+		if (pair.second)
+		{
+			if (pair.second->Intersects_Ray(origin, rayDir, TmpDist))
+			{
+				if (TmpDist < minDist)
+				{
+					minDist = TmpDist;
+					bHit = true;
+				}
+			}
+		}
+	}
+
+	Dist = minDist;
+	return bHit;
+
+}
+
 
 CMeshComponent* CModel::Get_Mesh(const wstring& Name)
 {

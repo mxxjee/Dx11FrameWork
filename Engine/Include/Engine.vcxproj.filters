@@ -298,6 +298,9 @@
     <Filter Include="01.Utility\97.Interface">
       <UniqueIdentifier>{528c53ae-32f9-407e-a565-cbc47eeda1d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\Collision\Mesh">
+      <UniqueIdentifier>{23d21bff-ae69-45ea-aa56-4bcdcecbda95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -600,6 +603,9 @@
     <ClInclude Include="..\Public\IMapEditable.h">
       <Filter>01.Utility\97.Interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CMeshColliderComponent.h">
+      <Filter>05.Component\Collision\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -856,6 +862,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMapTerrain.cpp">
       <Filter>998.MapTool\Object\MapTerrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMeshColliderComponent.cpp">
+      <Filter>05.Component\Collision\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

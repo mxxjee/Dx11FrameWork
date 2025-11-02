@@ -8,6 +8,7 @@
 #include "IMapEditable.h"
 
 NS_BEGIN(Engine)
+class CMeshColliderComponent;
 class CModel;
 
 class ENGINE_DLL CMapTerrain :
@@ -50,6 +51,11 @@ public:
     virtual void Free() override;
 
 public:
+    //픽킹 확인
+    bool            Is_Picked(_vector Origin, _vector Dir, float& Dist);
+
+
+public:
     // IMapEditable을(를) 통해 상속됨
     virtual void OnSeletected(bool bSelected) override;
 
@@ -57,6 +63,7 @@ public:
 
 protected:
     CModel* m_pModel = nullptr;
+    CMeshColliderComponent* m_pMeshCollidercomponent=nullptr;
 
 private:
     _uint                       m_iIdx = 0;

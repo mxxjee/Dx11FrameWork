@@ -30,24 +30,28 @@ public:
     Triangle*                    PickTerrain(const _wstring& Key);
 
 public:
+    CTerrain_Base* Check_Picking();
+    CTerrain_Base* Get_PickTerrain() { return m_pPickTerrain; }
+
+public:
     static CTerrain_Manager* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext);
    virtual void                Free() override;
     _float3             Get_PickingWorldPos() { return PickingWolrdPos; }
     
     const UMap<_wstring, CTerrain_Base*>& Get_TerrainMap() { return m_TerrainMap;}
-    CTerrain_Base* Get_SelectObject() { return m_pSelectObject; }
 private:
     ComPtr<ID3D11Device>		m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext>	m_pDeviceContext = { nullptr };
 
     UMap<_wstring, CTerrain_Base*>      m_TerrainMap;
 
-    CTerrain_Base* m_pSelectObject = nullptr;
 
 private:
     ENGINE_DESC             m_EngineDesc;
     Triangle                 PickLocalTriangle;
     _float3                    PickingWolrdPos;     //terrain픽킹한 월드좌표
+
+    CTerrain_Base*          m_pPickTerrain = nullptr;
 
 };
 

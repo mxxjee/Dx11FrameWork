@@ -6,6 +6,8 @@
 #include "CTerrain_Highlight.h"
 
 #include "CBoxColliderComponent.h"
+#include "CMeshColliderComponent.h"
+
 #include "CMapQuad.h"
 
 
@@ -22,6 +24,7 @@
 #include "CMapModel.h"
 #include "CMapField.h"
 #include "CMapTerrain.h"
+
 
 
 
@@ -135,13 +138,16 @@ HRESULT CLoader::Loading_MapTool()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_CustomTerrain"), CVIBuffer_CustomTerrain::Create(m_pDevice, m_pDeviceContext,30,30))))
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_CustomTerrain"), CVIBuffer_CustomTerrain::Create(m_pDevice, m_pDeviceContext,100,100))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Triangle"), CVIBuffer_Triangle::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"BoxColliderComponent"), CBoxColliderComponent::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"MeshCollider"), CMeshColliderComponent::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));

@@ -49,6 +49,10 @@ public:
 public:
     HRESULT             Bind_Mateiral(CShader* pShader, const _char* pConstName, CMeshComponent* pMesh, aiTextureType eMaterialType, _uint Textureindex = 0);
 
+public:
+    /*레이충돌*/
+    bool        Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);
+
 
 public:
     CMeshComponent* Get_Mesh(const wstring& Name);

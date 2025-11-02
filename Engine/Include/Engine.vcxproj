@@ -192,6 +192,7 @@
     <ClInclude Include="..\Public\CMapTerrain.h" />
     <ClInclude Include="..\Public\CMaterial.h" />
     <ClInclude Include="..\Public\CMaterial_Manager.h" />
+    <ClInclude Include="..\Public\CMeshColliderComponent.h" />
     <ClInclude Include="..\Public\CMeshComponent.h" />
     <ClInclude Include="..\Public\CMinimapCamera.h" />
     <ClInclude Include="..\Public\CMinimapQuad.h" />
@@ -293,6 +294,7 @@
     <ClCompile Include="..\Private\CMapTerrain.cpp" />
     <ClCompile Include="..\Private\CMaterial.cpp" />
     <ClCompile Include="..\Private\CMaterial_Manager.cpp" />
+    <ClCompile Include="..\Private\CMeshColliderComponent.cpp" />
     <ClCompile Include="..\Private\CMeshComponent.cpp" />
     <ClCompile Include="..\Private\CMinimapCamera.cpp" />
     <ClCompile Include="..\Private\CMinimapQuad.cpp" />

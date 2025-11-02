@@ -83,6 +83,17 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
 
 }
 
+float4 PS_Select(PS_IN Input) : SV_Target0
+{
+ 
+    //////////////////Direction_Light에 대한 연산///////////////////////////////////
+    //DiffuseColor
+    float4 fDiffuseColor = g_DiffuseTexture.Sample(sampler0, Input.vTexcoord);
+
+    return float4(1.0f, 0.f, 0.f, 0.5f)*fDiffuseColor;
+
+}
+
 
 
 /*렌더링 방법을 정의한다.*/
@@ -99,6 +110,13 @@ technique11 DefaultTechnique
 
         PixelShader = compile ps_5_0 PS_MAIN();
 
+    }
+
+    pass Select
+    {
+        VertexShader = compile vs_5_0 VS_MAIN();
+
+        PixelShader = compile ps_5_0 PS_Select();
     }
 
     

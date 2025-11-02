@@ -18,6 +18,8 @@
 
 #include "CMapLayer.h"
 #include "CGrid_Manager.h"
+#include "CMapTerrain.h"
+
 
 #include "CImgui_Window.h"
 #include "CImGui_Manager.h"
@@ -71,6 +73,16 @@ void CLevel_Editor::Update(const _float fTimeDelta)
 	Triangle* pPickingPos= m_pGrid_Manager->PickTerrain();
 	m_pGrid_Manager->Set_MouseWorldPos();
 
+	CTerrain_Base* pBase = m_pGameInstance->Get_PickTerrain();
+	if (pBase)
+	{
+		CMapTerrain* ppTerrain = dynamic_cast<CMapTerrain*>(pBase);
+		if (ppTerrain)
+			m_pMapObject_Manager->Set_SelectObject(ppTerrain);
+
+	}
+
+	
 	/*if (pPickingPos!=nullptr)
 	{
 		CMapLayer* pLayer = CMapObject_Manager::GetInstance()->Find_MapLayer(L"Player_Layer");

@@ -2,6 +2,8 @@
 #include "CInput_Manager.h"
 #include "MathUtils.h"
 #include "CVIBuffer.h"
+#include "CMapTerrain.h"
+
 
 CTerrain_Manager::CTerrain_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
 	:m_pDevice{_pDevice},m_pDeviceContext{ _pContext }
@@ -58,6 +60,9 @@ void CTerrain_Manager::Update(_float fTimeDelta)
 
 void CTerrain_Manager::Update_Late(_float fTimeDelta)
 {
+	if (CInput_Manager::GetInstance()->IsMouseButtonPressed(0))
+		m_pPickTerrain=Check_Picking();
+
 	for (auto& pair : m_TerrainMap)
 	{
 		if (pair.second)
@@ -148,6 +153,43 @@ Triangle* CTerrain_Manager::PickTerrain(const _wstring& Key)
 
 
 	return nullptr;
+}
+
+CTerrain_Base* CTerrain_Manager::Check_Picking()
+{
+	CheckTrueResult(m_TerrainMap.empty(),nullptr);
+	_float4x4 Proj = CGameInstance::GetInstance()->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+	_float4x4 View = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+
+	float Dist = 0.f;
+	float MinDist = FLT_MAX;
+
+	CTerrain_Base* pPickObj = nullptr;
+
+
+	for (auto& pair : m_TerrainMap)
+	{
+		if (pair.second)
+		{
+			Ray ray = MathUtils::CreateRayLocal(m_EngineDesc.hWnd, m_pDeviceContext, pair.second, Proj, View);
+			CMapTerrain* pTerrain = dynamic_cast<CMapTerrain*>(pair.second);
+			if (pTerrain)
+			{
+				if (pTerrain->Is_Picked(ray.Origin, ray.Dir, Dist))
+				{
+					if (Dist < MinDist)
+					{
+						MinDist = Dist;
+						pPickObj = pair.second;
+					}
+				}
+			}
+		}
+	}
+
+
+	return pPickObj;
+
 }
 
 CTerrain_Manager* CTerrain_Manager::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)

@@ -1,12 +1,13 @@
 #pragma once
 #include "CGameObject.h"
 
-
 NS_BEGIN(Engine)
 
 class CVIBuffer;
 class CShader;
 class CTexture;
+
+
 
 class ENGINE_DLL CTerrain_Base :
     public CGameObject

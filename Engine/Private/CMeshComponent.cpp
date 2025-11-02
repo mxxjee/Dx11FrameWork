@@ -16,7 +16,9 @@ CMeshComponent::CMeshComponent(const CMeshComponent& Prototype)
 	m_MeshData(Prototype.m_MeshData),
 	m_pVIBuffer(Prototype.m_pVIBuffer),
 	passName(Prototype.passName),
-	m_pGameInstance(Prototype.m_pGameInstance)
+	m_pGameInstance(Prototype.m_pGameInstance),
+	m_pIndices(Prototype.m_pIndices),
+	m_pPositions(Prototype.m_pPositions)
 {
 	Safe_AddRef(m_pVIBuffer);
 	Safe_AddRef(m_pGameInstance);
@@ -44,6 +46,10 @@ HRESULT CMeshComponent::Initialize_Prototype(const MeshData& Data, const char* B
 
 	m_pVIBuffer = CVIBuffer_Model::Create(m_pDevice, m_pContext, m_MeshData.Transform,m_MeshData.Vertices, m_MeshData.Indices);
 	CheckNullResult(m_pVIBuffer, E_FAIL);
+
+
+	m_pIndices = m_pVIBuffer->Get_Indices();
+	m_pPositions = m_pVIBuffer->Get_VertexPositions();
 
     return S_OK;
 }
@@ -158,6 +164,37 @@ HRESULT CMeshComponent::Render()
 		return E_FAIL;
 
 	return S_OK;
+}
+
+bool CMeshComponent::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
+{
+	for (_uint i = 0; i < m_pIndices.size(); i += 3)
+	{
+
+
+		_vector p0 = XMLoadFloat3(&m_pPositions[m_pIndices[i]]);
+		_vector p1 = XMLoadFloat3(&m_pPositions[m_pIndices[i + 1]]);
+		_vector p2 = XMLoadFloat3(&m_pPositions[m_pIndices[i + 2]]);
+
+		float dist = 0.f;
+		if (TriangleTests::Intersects(origin, rayDir, p0, p1, p2, dist))
+		{
+			Dist = dist;
+			if (isnan(dist))
+				return false;
+
+			return true;
+
+		}
+
+
+
+	}
+
+	return false;
+
+
+
 }
 
 HRESULT CMeshComponent::Bind_ShaderResource(CShader* pShader, const _char* pConstName, aiTextureType eMaterialType, _uint Textureindex)

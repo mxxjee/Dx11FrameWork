@@ -246,15 +246,18 @@ CMapLayer* CMapObject_Manager::Get_Layer_By_MapObjType(MapObjType eType)
 
 void CMapObject_Manager::Set_SelectObject(IMapEditable* pSelectedObject)
 {
-    CheckNull(pSelectedObject);
-
+    
 
     //기존껏은 해제한다.
     if (m_pSelectedObject)
         m_pSelectedObject->OnSeletected(false);
 
+
+
     /*교체*/
     m_pSelectedObject = pSelectedObject;
+
+    CheckNull(m_pSelectedObject);
     m_pSelectedObject->OnSeletected(true);
 
         

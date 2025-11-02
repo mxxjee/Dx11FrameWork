@@ -4,6 +4,7 @@
 #include "CMeshComponent.h"
 #include "CGameInstance.h"
 #include "CGameInstance.h"
+#include "CMeshColliderComponent.h"
 
 
 
@@ -45,6 +46,7 @@ HRESULT CMapTerrain::Initialize_Copytype(void* pArg)
     m_eObjType = MapObjType::TERRAIN;
 
 
+    m_passName = "Default";
 
     return S_OK;
 }
@@ -57,6 +59,12 @@ void CMapTerrain::Update_Priority(_float fTimeDelta)
 void CMapTerrain::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
+    CheckNull(m_pTransformCom);
+    CheckNull(m_pMeshCollidercomponent);
+
+    m_pMeshCollidercomponent->Update_Collider(m_pTransformCom);
+
+    
 }
 
 void CMapTerrain::Update_Late(_float fTimeDelta)
@@ -86,7 +94,7 @@ HRESULT CMapTerrain::Render()
             Mesh.second->Bind_ShaderResource(m_pShader, "g_SpecularTexture", aiTextureType::aiTextureType_SPECULAR);
             Mesh.second->Bind_ShaderResource(m_pShader, "g_AmbientTexture", aiTextureType::aiTextureType_AMBIENT);
 
-            if (FAILED(m_pShader->Begin(Mesh.second->Get_PassName())))
+            if (FAILED(m_pShader->Begin(m_passName)))
                 return E_FAIL;
 
             if (FAILED(m_pModel->Render(Mesh.second)))
@@ -114,6 +122,27 @@ HRESULT CMapTerrain::Ready_Components(void* pArg)
         m_pModel = m_pGameInstance->Clone_Model(pTerrainModelDesc->modelName, ppModelDesc);
 
         if (!m_pModel)
+            return E_FAIL;
+
+
+        
+        /*메쉬콜라이더컴포넌트(픽킹검사)*/
+        CMeshColliderComponent::COLLIDER_MESH ColliderDesc;
+        ColliderDesc.pModel = m_pModel;
+        ColliderDesc.pOwner = this;
+        ColliderDesc.vScaleOffSet = _float3(100.f, 100.f, 100.f);
+
+        CComponent* pMeshCollider = dynamic_cast<CMeshColliderComponent*>(m_pGameInstance->Clone_Prototype(
+            PROTOTYPE::COMPONENT,
+            0,
+            PROTO_COMPONENT_NAME(L"MeshCollider"),
+            &ColliderDesc));
+
+        if (FAILED(Add_Component(
+            COMPONENT_TYPE::MESH_COLLIDER,
+            pMeshCollider,
+            reinterpret_cast<CComponent**>(&m_pMeshCollidercomponent)
+        )))
             return E_FAIL;
     }
 
@@ -179,12 +208,30 @@ CGameObject* CMapTerrain::Clone(void* pArg)
 void CMapTerrain::Free()
 {
     __super::Free();
+    Safe_Release(m_pMeshCollidercomponent);
     Safe_Release(m_pModel);
+}
+
+bool CMapTerrain::Is_Picked(_vector Origin, _vector Dir, float& Dist)
+{
+    CheckNullResult(m_pMeshCollidercomponent, false);
+
+    bool Result = m_pMeshCollidercomponent->Intersects_Ray(Origin, Dir, Dist);
+
+
+    return Result;
 }
 
 void CMapTerrain::OnSeletected(bool bSelected)
 {
     m_bSelected = bSelected;
+
+    if (m_bSelected)
+        m_passName = "Select";
+
+    else
+        m_passName = "Default";
+
 }
 
 void CMapTerrain::Save_To_Json()

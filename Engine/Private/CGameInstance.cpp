@@ -658,6 +658,11 @@ _float3 CGameInstance::Get_PickingWorldPos()
 	return m_pTerrainManager->Get_PickingWorldPos();
 }
 
+CTerrain_Base* CGameInstance::Get_PickTerrain()
+{
+	return m_pTerrainManager->Get_PickTerrain();
+}
+
 const UMap<_wstring, CTerrain_Base*>& CGameInstance::Get_TerrainMap()
 {
 	return m_pTerrainManager->Get_TerrainMap();
