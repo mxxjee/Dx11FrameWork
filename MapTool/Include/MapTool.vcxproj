@@ -21,15 +21,16 @@
   <ItemGroup>
     <ClInclude Include="..\Public\CAssetCategoryWindow.h" />
     <ClInclude Include="..\Public\CAssetListWindow.h" />
+    <ClInclude Include="..\Public\CGrid_Manager.h" />
     <ClInclude Include="..\Public\CImgui_DataManager.h" />
     <ClInclude Include="..\Public\CLayerDebugWindow.h" />
     <ClInclude Include="..\Public\CLevel_Editor.h" />
     <ClInclude Include="..\Public\CLevel_Loading.h" />
     <ClInclude Include="..\Public\CLoader.h" />
     <ClInclude Include="..\Public\CMainTool.h" />
-    <ClInclude Include="..\Public\CMapTerrain.h" />
+    <ClInclude Include="..\Public\CMapGrid.h" />
     <ClInclude Include="..\Public\CObjectInspectorWindow.h" />
-    <ClInclude Include="..\Public\CTerrainDebugWindow.h" />
+    <ClInclude Include="..\Public\CGridDebugWindow.h" />
     <ClInclude Include="..\Public\CTerrain_Highlight.h" />
     <ClInclude Include="..\Public\MapTool_Defines.h" />
     <ClInclude Include="framework.h" />
@@ -40,15 +41,16 @@
   <ItemGroup>
     <ClCompile Include="..\Private\CAssetCategoryWindow.cpp" />
     <ClCompile Include="..\Private\CAssetListWindow.cpp" />
+    <ClCompile Include="..\Private\CGrid_Manager.cpp" />
     <ClCompile Include="..\Private\CImgui_DataManager.cpp" />
     <ClCompile Include="..\Private\CLayerDebugWindow.cpp" />
     <ClCompile Include="..\Private\CLevel_Editor.cpp" />
     <ClCompile Include="..\Private\CLevel_Loading.cpp" />
     <ClCompile Include="..\Private\CLoader.cpp" />
     <ClCompile Include="..\Private\CMainTool.cpp" />
-    <ClCompile Include="..\Private\CMapTerrain.cpp" />
+    <ClCompile Include="..\Private\CMapGrid.cpp" />
     <ClCompile Include="..\Private\CObjectInspectorWindow.cpp" />
-    <ClCompile Include="..\Private\CTerrainDebugWindow.cpp" />
+    <ClCompile Include="..\Private\CGridDebugWindow.cpp" />
     <ClCompile Include="..\Private\CTerrain_Highlight.cpp" />
     <ClCompile Include="MapTool.cpp" />
   </ItemGroup>

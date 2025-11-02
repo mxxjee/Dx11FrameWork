@@ -82,7 +82,7 @@ private:
     CGameInstance* m_pGameInstance = nullptr;
 
     bool                m_bDrag = false;
-    bool                m_bSnapMode = true;
+
    
 private:
     ComPtr<ID3D11Device> m_pDevice;

@@ -8,10 +8,12 @@ NS_BEGIN(Engine)
 class CImGui_Manager;
 class CGameInstance;
 class CMapObject_Manager;
+
 NS_END
 
 
 NS_BEGIN(MapTool)
+class CGrid_Manager;
 
 class CMainTool final: public CBase
 {
@@ -40,7 +42,7 @@ private:
 
 
 private:
-	void		CreateTerrainDebugWindow();
+	void		CreateGridDebugWindow();
 	void		CreateLayerDebugWindow();
 	void		CreateObjectInspectorWindow();
 
@@ -61,6 +63,8 @@ private:
 	CGameInstance* pGameInstance;
 	CImGui_Manager* pImGui_Manager = { nullptr };
 	CMapObject_Manager* pMapObject_Manager = { nullptr };
+	CGrid_Manager* pGrid_Manager = { nullptr };
+
 
 	_float4		ClearColor = _float4(0.f, 0.f, 1.f, 1.f);
 	vector<RenderStates>			m_RenderStates;

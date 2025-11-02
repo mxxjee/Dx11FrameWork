@@ -65,7 +65,7 @@ void CMapLayer::Update_Render(_float fTimeDelta)
     }
 }
 
-CMapObject* CMapLayer::Find_GameObject(const wstring& Tag)
+CMapObject* CMapLayer::Find_GameObject(const _wstring& Tag)
 {
     for (auto& i : m_ObjList)
     {

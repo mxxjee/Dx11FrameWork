@@ -7,6 +7,8 @@ namespace Engine
 }
 
 NS_BEGIN(MapTool)
+class CGrid_Manager;
+
 class CLevel_Editor :
     public CLevel
 {
@@ -47,6 +49,8 @@ public:
 
 private:
     CMapObject_Manager* m_pMapObject_Manager = { nullptr };
+    CGrid_Manager* m_pGrid_Manager = { nullptr };
+
 
 };
 

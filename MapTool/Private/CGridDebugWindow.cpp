@@ -1,9 +1,9 @@
-#include "CTerrainDebugWindow.h"
+#include "CGridDebugWindow.h"
 #include "CImgui_Widget.h"
 #include "CImgui_InputInt.h"
 #include "CGameInstance.h"
 
-#include "CMapTerrain.h"
+#include "CMapGrid.h"
 #include "CVIBuffer_CustomTerrain.h"
 
 #include "CImgui_Button.h"
@@ -13,13 +13,13 @@
 
 
 USING(MapTool)
-CTerrainDebugWindow::CTerrainDebugWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
+CGridDebugWindow::CGridDebugWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CImgui_Window(pDevice, pContext)
 {
     Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CTerrainDebugWindow::Initialize(void* pArg)
+HRESULT CGridDebugWindow::Initialize(void* pArg)
 {
     m_InputTexts.resize(2);
 
@@ -32,7 +32,7 @@ HRESULT CTerrainDebugWindow::Initialize(void* pArg)
     return S_OK;
 }
 
-void CTerrainDebugWindow::Update()
+void CGridDebugWindow::Update()
 {
     ImGui::Begin(m_WindowTitle.c_str(), &m_bOpen);
 
@@ -44,19 +44,19 @@ void CTerrainDebugWindow::Update()
     ImGui::End();
 }
 
-void CTerrainDebugWindow::Render()
+void CGridDebugWindow::Render()
 {
 }
 
-void CTerrainDebugWindow::Set_MapTerrain(CGameObject* pObj)
+void CGridDebugWindow::Set_MapTerrain(CGameObject* pObj)
 {
     if (pObj)
     {
-        m_pMapTerrain = dynamic_cast<CMapTerrain*>(pObj);
+        m_MapGrid = dynamic_cast<CMapGrid*>(pObj);
     }
 }
 
-HRESULT CTerrainDebugWindow::Create_Widgets()
+HRESULT CGridDebugWindow::Create_Widgets()
 {
     CImgui_InputInt::IMGUITEXTINPUT_DESC InputIntDesc;
     InputIntDesc.Label = "NumVerticesX";
@@ -84,7 +84,7 @@ HRESULT CTerrainDebugWindow::Create_Widgets()
     ButtonDesc.m_RelativePos = ImVec2(100, 100);
     ButtonDesc.callback = [this]()
     {
-        m_pMapTerrain->Update_Terrain(pNumVerticesX, pNumVerticesZ);
+        m_MapGrid->Update_Terrain(pNumVerticesX, pNumVerticesZ);
     };
 
     if (FAILED(Add_Widgets<CImgui_Button>(&ButtonDesc, reinterpret_cast<CImgui_Widget**>(&m_pButton))))
@@ -93,21 +93,21 @@ HRESULT CTerrainDebugWindow::Create_Widgets()
     return S_OK;
 }
 
-void CTerrainDebugWindow::Init_NumValues()
+void CGridDebugWindow::Init_NumValues()
 {
-    CheckNull(m_pMapTerrain);
-    pNumVerticesX = m_pMapTerrain->Get_CustomVIBuffer()->Get_NumVerticesX();
-    pNumVerticesZ = m_pMapTerrain->Get_CustomVIBuffer()->Get_NumVerticesZ();
+    CheckNull(m_MapGrid);
+    pNumVerticesX = m_MapGrid->Get_CustomVIBuffer()->Get_NumVerticesX();
+    pNumVerticesZ = m_MapGrid->Get_CustomVIBuffer()->Get_NumVerticesZ();
 }
 
-CTerrainDebugWindow* CTerrainDebugWindow::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg)
+CGridDebugWindow* CGridDebugWindow::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg)
 {
-    CTerrainDebugWindow* pInstance = new CTerrainDebugWindow(pDevice, pContext);
+    CGridDebugWindow* pInstance = new CGridDebugWindow(pDevice, pContext);
 
 
     if (FAILED(pInstance->Initialize(pArg)))
     {
-        MSG_BOX("Failed to Create : CTerrainDebugWindow");
+        MSG_BOX("Failed to Create : CGridDebugWindow");
         Safe_Release(pInstance);
     }
 
@@ -115,7 +115,7 @@ CTerrainDebugWindow* CTerrainDebugWindow::Create(ComPtr<ID3D11Device> pDevice, C
     return pInstance;
 }
 
-void CTerrainDebugWindow::Free()
+void CGridDebugWindow::Free()
 {
     __super::Free();
     for (auto& i : m_InputTexts)

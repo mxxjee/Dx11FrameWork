@@ -20,7 +20,7 @@ public:
     void Update_Render(_float fTimeDelta);
 
     const list<CMapObject*>& Get_ObjList() { return m_ObjList; }
-    CMapObject* Find_GameObject(const wstring & Tag);
+    CMapObject* Find_GameObject(const _wstring& Tag);
 
     CMapObject*        Check_Picking(_vector Origin, _vector Dir, float& Dist);
 

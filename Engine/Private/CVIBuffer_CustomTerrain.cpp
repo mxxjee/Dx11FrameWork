@@ -29,7 +29,7 @@ HRESULT CVIBuffer_CustomTerrain::Initialize_Prototype(_uint iNumVerticesX, _uint
 	Offset = Offset;
 
 	D3D11_BUFFER_DESC VertexDesc{};
-	VTXNORTEX* pVertice = nullptr;
+	VTXPOSCOR* pVertice = nullptr;
 
 	D3D11_BUFFER_DESC IndexDesc{};
 	_uint* pIntIndices = nullptr;
@@ -76,7 +76,7 @@ HRESULT CVIBuffer_CustomTerrain::ResizeBuffer(_uint fNewVertexCountX, _uint fNew
 		m_iNumVerticesZ = fNewVertexCountZ;
 
 		D3D11_BUFFER_DESC VertexDesc{};
-		VTXNORTEX* pVertice = nullptr;
+		VTXPOSCOR* pVertice = nullptr;
 
 		D3D11_BUFFER_DESC IndexDesc{};
 		_uint* pIntIndices = nullptr;
@@ -122,12 +122,12 @@ HRESULT CVIBuffer_CustomTerrain::ResizeBuffer(_uint fNewVertexCountX, _uint fNew
 
 
 
-HRESULT CVIBuffer_CustomTerrain::CreateVertexBuffer_Begin(_uint VertexCountX, _uint VertexCountZ, VTXNORTEX** pVertices, D3D11_BUFFER_DESC* pDesc)
+HRESULT CVIBuffer_CustomTerrain::CreateVertexBuffer_Begin(_uint VertexCountX, _uint VertexCountZ, VTXPOSCOR** pVertices, D3D11_BUFFER_DESC* pDesc)
 {
 	//[1. 정점 버퍼를 정의하기 위한 정보]
 
 	m_iNumVertices = VertexCountX * VertexCountZ;
-	m_iVertexStride = sizeof(VTXNORTEX);
+	m_iVertexStride = sizeof(VTXPOSCOR);
 
 	//위치값 기록을 위한 동적배열(따로 멤버 보관)
 	m_pVertexPositions = new _float3[m_iNumVertices];
@@ -141,8 +141,8 @@ HRESULT CVIBuffer_CustomTerrain::CreateVertexBuffer_Begin(_uint VertexCountX, _u
 	pDesc->StructureByteStride = 0;
 
 	//[2. 정점 버퍼를 초기화 하기 위한 정보]
-	*pVertices = new VTXNORTEX[m_iNumVertices];
-	ZeroMemory(*pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
+	*pVertices = new VTXPOSCOR[m_iNumVertices];
+	ZeroMemory(*pVertices, sizeof(VTXPOSCOR) * m_iNumVertices);
 
 	for (_uint i = 0; i < m_iNumVerticesZ; ++i)
 	{
@@ -152,8 +152,6 @@ HRESULT CVIBuffer_CustomTerrain::CreateVertexBuffer_Begin(_uint VertexCountX, _u
 
 
 			(*pVertices)[iIdx].vPosition = _float3(j * (float)m_iOffSet, 0.f, i * (float)m_iOffSet);
-			(*pVertices)[iIdx].vTexcoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
-			(*pVertices)[iIdx].vNormal = _float3(0.f, 0.f, 0.f);
 		
 			m_pVertexPositions[iIdx] = (*pVertices)[iIdx].vPosition;
 
@@ -164,14 +162,8 @@ HRESULT CVIBuffer_CustomTerrain::CreateVertexBuffer_Begin(_uint VertexCountX, _u
 	return S_OK;
 }
 
-HRESULT CVIBuffer_CustomTerrain::CreateVertexBuffer_End(D3D11_BUFFER_DESC& VertexDesc, VTXNORTEX* pVertices)
+HRESULT CVIBuffer_CustomTerrain::CreateVertexBuffer_End(D3D11_BUFFER_DESC& VertexDesc, VTXPOSCOR* pVertices)
 {
-	//법선벡터 정규화
-	for (size_t i = 0; i < m_iNumVertices; ++i)
-	{
-		XMStoreFloat3(&pVertices[i].vNormal,
-			XMVector3Normalize(XMLoadFloat3(&pVertices[i].vNormal)));
-	}
 
 	D3D11_SUBRESOURCE_DATA VertexData;
 	VertexData.pSysMem = pVertices;
@@ -212,7 +204,7 @@ HRESULT CVIBuffer_CustomTerrain::Modify_VertexBuffer(D3D11_MAPPED_SUBRESOURCE* m
 		return E_FAIL;
 
 
-	VTXNORTEX* pVertices = reinterpret_cast<VTXNORTEX*>(mapped->pData);
+	VTXPOSCOR* pVertices = reinterpret_cast<VTXPOSCOR*>(mapped->pData);
 	for (_uint i = 0; i < m_iNumVerticesZ; ++i)
 	{
 		for (_uint j = 0; j < m_iNumVerticesX; ++j)
@@ -221,9 +213,7 @@ HRESULT CVIBuffer_CustomTerrain::Modify_VertexBuffer(D3D11_MAPPED_SUBRESOURCE* m
 
 
 			pVertices[iIdx].vPosition = _float3(j * (float)m_iOffSet, 0.f, i * (float)m_iOffSet);
-			pVertices[iIdx].vTexcoord = _float2(j / (m_iNumVerticesX - 1.f), i / (m_iNumVerticesZ - 1.f));
-			pVertices[iIdx].vNormal = _float3(0.f, 0.f, 0.f);
-
+		
 			m_pVertexPositions[iIdx] = (pVertices)[iIdx].vPosition;
 		}
 	}
@@ -239,7 +229,7 @@ HRESULT CVIBuffer_CustomTerrain::Modify_IndexBuffer(D3D11_MAPPED_SUBRESOURCE* ma
 		return E_FAIL;
 
 
-	VTXNORTEX* pVertices = reinterpret_cast<VTXNORTEX*>(mapped->pData);
+	VTXPOSCOR* pVertices = reinterpret_cast<VTXPOSCOR*>(mapped->pData);
 	_uint* pIndices = reinterpret_cast<_uint*>(Indexmapped.pData);
 	_uint iNumIndices{};
 
@@ -262,50 +252,11 @@ HRESULT CVIBuffer_CustomTerrain::Modify_IndexBuffer(D3D11_MAPPED_SUBRESOURCE* ma
 			pIndices[iNumIndices++] = iIndices[1];
 			pIndices[iNumIndices++] = iIndices[2];
 
-		_vector vSrv, vTmp, vNormal;
-
-
-			vSrv = XMLoadFloat3(&((pVertices)[iIndices[1]].vPosition))
-				- XMLoadFloat3(&((pVertices)[iIndices[0]].vPosition));
-
-			vTmp = XMLoadFloat3(&((pVertices)[iIndices[2]].vPosition))
-				- XMLoadFloat3(&((pVertices)[iIndices[1]].vPosition));
-
-			vNormal = XMVector3Normalize(XMVector3Cross(vSrv, vTmp));
-
-			//Normal값 누적
-			XMStoreFloat3(&(pVertices)[iIndices[0]].vNormal,
-				XMLoadFloat3(&(pVertices)[iIndices[0]].vNormal) + vNormal);
-
-			XMStoreFloat3(&(pVertices)[iIndices[1]].vNormal,
-				XMLoadFloat3(&(pVertices)[iIndices[1]].vNormal) + vNormal);
-
-			XMStoreFloat3(&(pVertices)[iIndices[2]].vNormal,
-				XMLoadFloat3(&(pVertices)[iIndices[2]].vNormal) + vNormal);
 
 
 			pIndices[iNumIndices++] = iIndices[0];
 			pIndices[iNumIndices++] = iIndices[2];
 			pIndices[iNumIndices++] = iIndices[3];
-
-
-			vSrv = XMLoadFloat3(&((pVertices)[iIndices[2]].vPosition))
-				- XMLoadFloat3(&((pVertices)[iIndices[0]].vPosition));
-
-			vTmp = XMLoadFloat3(&((pVertices)[iIndices[3]].vPosition))
-				- XMLoadFloat3(&((pVertices)[iIndices[2]].vPosition));
-			vNormal = XMVector3Normalize(XMVector3Cross(vSrv, vTmp));
-
-			//Normal값 누적
-			XMStoreFloat3(&(pVertices)[iIndices[0]].vNormal,
-				XMLoadFloat3(&(pVertices)[iIndices[0]].vNormal) + vNormal);
-
-			XMStoreFloat3(&(pVertices)[iIndices[2]].vNormal,
-				XMLoadFloat3(&(pVertices)[iIndices[2]].vNormal) + vNormal);
-
-			XMStoreFloat3(&(pVertices)[iIndices[3]].vNormal,
-				XMLoadFloat3(&(pVertices)[iIndices[3]].vNormal) + vNormal);
-
 
 		}
 	}
@@ -317,12 +268,6 @@ HRESULT CVIBuffer_CustomTerrain::Modify_IndexBuffer(D3D11_MAPPED_SUBRESOURCE* ma
 		m_pIndices[i] = pIndices[i];
 	}
 
-	for (_uint i = 0; i < m_iNumVerticesX * m_iNumVerticesZ; ++i)
-	{
-		XMVECTOR n = XMLoadFloat3(&pVertices[i].vNormal);
-		n = XMVector3Normalize(n);
-		XMStoreFloat3(&pVertices[i].vNormal, n);
-	}
 
 	m_pContext->Unmap(m_pIB.Get(), 0);
 	m_pContext->Unmap(m_pVB.Get(), 0);
@@ -365,7 +310,7 @@ void CVIBuffer_CustomTerrain::Free()
 	__super::Free();
 }
 
-HRESULT CVIBuffer_CustomTerrain::CreateIndexBuffer_Begin(_uint VertexCountX, _uint VertexCountZ, VTXNORTEX** pVertices, _uint** pIndices, D3D11_BUFFER_DESC* pDesc)
+HRESULT CVIBuffer_CustomTerrain::CreateIndexBuffer_Begin(_uint VertexCountX, _uint VertexCountZ, VTXPOSCOR** pVertices, _uint** pIndices, D3D11_BUFFER_DESC* pDesc)
 {
 
 	//[1.인덱스 버퍼를 만들기 위한 정보세팅]
@@ -409,49 +354,10 @@ HRESULT CVIBuffer_CustomTerrain::CreateIndexBuffer_Begin(_uint VertexCountX, _ui
 			(*pIndices)[iNumIndices++] = iIndices[1];
 			(*pIndices)[iNumIndices++] = iIndices[2];
 
-			_vector vSrv, vTmp, vNormal;
-
-
-			vSrv = XMLoadFloat3(&((*pVertices)[iIndices[1]].vPosition))
-				- XMLoadFloat3(&((*pVertices)[iIndices[0]].vPosition));
-
-			vTmp = XMLoadFloat3(&((*pVertices)[iIndices[2]].vPosition))
-				- XMLoadFloat3(&((*pVertices)[iIndices[1]].vPosition));
-
-			vNormal = XMVector3Normalize(XMVector3Cross(vSrv, vTmp));
-
-			//Normal값 누적
-			XMStoreFloat3(&(*pVertices)[iIndices[0]].vNormal,
-				XMLoadFloat3(&(*pVertices)[iIndices[0]].vNormal) + vNormal);
-
-			XMStoreFloat3(&(*pVertices)[iIndices[1]].vNormal,
-				XMLoadFloat3(&(*pVertices)[iIndices[1]].vNormal) + vNormal);
-
-			XMStoreFloat3(&(*pVertices)[iIndices[2]].vNormal,
-				XMLoadFloat3(&(*pVertices)[iIndices[2]].vNormal) + vNormal);
-
-
 			(*pIndices)[iNumIndices++] = iIndices[0];
 			(*pIndices)[iNumIndices++] = iIndices[2];
 			(*pIndices)[iNumIndices++] = iIndices[3];
 
-
-			vSrv = XMLoadFloat3(&((*pVertices)[iIndices[2]].vPosition))
-				- XMLoadFloat3(&((*pVertices)[iIndices[0]].vPosition));
-
-			vTmp = XMLoadFloat3(&((*pVertices)[iIndices[3]].vPosition))
-				- XMLoadFloat3(&((*pVertices)[iIndices[2]].vPosition));
-			vNormal = XMVector3Normalize(XMVector3Cross(vSrv, vTmp));
-
-			//Normal값 누적
-			XMStoreFloat3(&(*pVertices)[iIndices[0]].vNormal,
-				XMLoadFloat3(&(*pVertices)[iIndices[0]].vNormal) + vNormal);
-
-			XMStoreFloat3(&(*pVertices)[iIndices[2]].vNormal,
-				XMLoadFloat3(&(*pVertices)[iIndices[2]].vNormal) + vNormal);
-
-			XMStoreFloat3(&(*pVertices)[iIndices[3]].vNormal,
-				XMLoadFloat3(&(*pVertices)[iIndices[3]].vNormal) + vNormal);
 
 
 		}

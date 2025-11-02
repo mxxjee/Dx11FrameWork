@@ -1,4 +1,4 @@
-#include "CMapTerrain.h"
+#include "CMapGrid.h"
 #include "CGameInstance.h"
 
 #include "CVIBuffer_CustomTerrain.h"
@@ -10,17 +10,17 @@
 
 
 USING(MapTool)
-CMapTerrain::CMapTerrain(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
+CMapGrid::CMapGrid(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CTerrain_Base(pDevice,pContext)
 {
 }
 
-CMapTerrain::CMapTerrain(const CMapTerrain& Prototype)
+CMapGrid::CMapGrid(const CMapGrid& Prototype)
     : CTerrain_Base(Prototype)
 {
 }
 
-HRESULT CMapTerrain::Initialize_Prototype()
+HRESULT CMapGrid::Initialize_Prototype()
 {
     if (FAILED(__super::Initialize_Prototype()))
         return E_FAIL;
@@ -29,7 +29,7 @@ HRESULT CMapTerrain::Initialize_Prototype()
     return S_OK;
 }
 
-HRESULT CMapTerrain::Initialize_Copytype(void* pArg)
+HRESULT CMapGrid::Initialize_Copytype(void* pArg)
 {
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
@@ -44,28 +44,28 @@ HRESULT CMapTerrain::Initialize_Copytype(void* pArg)
     return S_OK;
 }
 
-void CMapTerrain::Update_Priority(_float fTimeDelta)
+void CMapGrid::Update_Priority(_float fTimeDelta)
 {
     __super::Update_Priority(fTimeDelta);
 }
 
-void CMapTerrain::Update(_float fTimeDelta)
+void CMapGrid::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
 }
 
-void CMapTerrain::Update_Late(_float fTimeDelta)
+void CMapGrid::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
 }
 
-void CMapTerrain::Update_Render(_float fTimeDelta)
+void CMapGrid::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
 
 }
 
-HRESULT CMapTerrain::Render()
+HRESULT CMapGrid::Render()
 {
     // 기존 상태 저장
     ComPtr<ID3D11RasterizerState> pOldRS = nullptr;
@@ -73,9 +73,18 @@ HRESULT CMapTerrain::Render()
 
     // 와이어프레임 상태로 설정
     m_pContext->RSSetState(m_pWireframeRS.Get());
-
-    if (FAILED(__super::Render()))
+    if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
+
+    if (FAILED(m_pShader->Begin(m_passName)))
+        return E_FAIL;
+
+    if (FAILED(m_pVIBufferCom->Bind_Resource()))
+        return E_FAIL;
+
+    if (FAILED(m_pVIBufferCom->Render()))
+        return E_FAIL;
+
    
 
     m_pContext->RSSetState(pOldRS.Get());
@@ -83,7 +92,7 @@ HRESULT CMapTerrain::Render()
     return S_OK;
 }
 
-HRESULT CMapTerrain::CreateRasterizerState()
+HRESULT CMapGrid::CreateRasterizerState()
 {
 
     D3D11_RASTERIZER_DESC desc{};
@@ -98,41 +107,16 @@ HRESULT CMapTerrain::CreateRasterizerState()
         return E_FAIL;
     }
 
+    return S_OK;
 }
 
-void CMapTerrain::Update_Terrain(_uint NumX, _uint NumZ)
+void CMapGrid::Update_Terrain(_uint NumX, _uint NumZ)
 {
     CheckNull(m_pCustomBuffer);
     if(m_pCustomBuffer)
         m_pCustomBuffer->ResizeBuffer(NumX, NumZ);
 }
-
-void CMapTerrain::Add_TerrainHighlights(CTerrain_Highlight* pObj)
-{
-   Safe_AddRef(pObj); 
-   m_Highlights.push_back(pObj);
-}
-
-bool CMapTerrain::CheckDuplication(Triangle* pTriangle)
-{
-    //중복비교.
-    for (auto& i : m_Highlights)
-    {
- 
-        
-        Triangle triangle = i->Get_Triangle();
-       
-
-        if (XMVector3Equal(XMLoadFloat3(&triangle.v0), XMLoadFloat3(&pTriangle->v0)) &&
-            XMVector3Equal(XMLoadFloat3(&triangle.v1), XMLoadFloat3(&pTriangle->v1)) &&
-            XMVector3Equal(XMLoadFloat3(&triangle.v2), XMLoadFloat3(&pTriangle->v2)))
-            return true;
-
-    }
-    return false;
-}
-
-HRESULT CMapTerrain::Ready_Components(void* pArg)
+HRESULT CMapGrid::Ready_Components(void* pArg)
 {
 
     CComponent* pBuffer_Terrain = dynamic_cast<CVIBuffer_CustomTerrain*>(m_pGameInstance->Clone_Prototype
@@ -150,13 +134,21 @@ HRESULT CMapTerrain::Ready_Components(void* pArg)
     return S_OK;
 }
 
-
-CMapTerrain* CMapTerrain::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
+HRESULT CMapGrid::Bind_ShaderResources()
 {
-    CMapTerrain* pInstance = new CMapTerrain(pDevice, pContext);
+    if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+
+CMapGrid* CMapGrid::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
+{
+    CMapGrid* pInstance = new CMapGrid(pDevice, pContext);
     if (FAILED(pInstance->Initialize_Prototype()))
     {
-        MSG_BOX("Failed to Create :CMapTerrain ");
+        MSG_BOX("Failed to Create :CMapGrid ");
         Safe_Release(pInstance);
 
     }
@@ -166,24 +158,22 @@ CMapTerrain* CMapTerrain::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11Devi
     return pInstance;
 }
 
-CGameObject* CMapTerrain::Clone(void* pArg)
+CGameObject* CMapGrid::Clone(void* pArg)
 {
-    CMapTerrain* pInstance = new CMapTerrain(*this);
+    CMapGrid* pInstance = new CMapGrid(*this);
     if (FAILED(pInstance->Initialize_Copytype(pArg)))
     {
-        MSG_BOX("Failed to Cloned :CMapTerrain ");
+        MSG_BOX("Failed to Cloned :CMapGrid ");
         Safe_Release(pInstance);
 
     }
     return pInstance;
 }
 
-void CMapTerrain::Free()
+void CMapGrid::Free()
 {
     __super::Free();
 
-    for (auto& i : m_Highlights)
-        Safe_Release(i);
 
     Safe_Release(m_pCustomBuffer);
 }

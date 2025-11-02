@@ -19,11 +19,11 @@ public:
 
 
 public:
-    HRESULT         CreateVertexBuffer_Begin(_uint VertexCountX, _uint VertexCountZ, VTXNORTEX** pVertices,D3D11_BUFFER_DESC* pDesc);
-    HRESULT         CreateVertexBuffer_End(D3D11_BUFFER_DESC& VertexDesc, VTXNORTEX* pVertices);
+    HRESULT         CreateVertexBuffer_Begin(_uint VertexCountX, _uint VertexCountZ, VTXPOSCOR** pVertices,D3D11_BUFFER_DESC* pDesc);
+    HRESULT         CreateVertexBuffer_End(D3D11_BUFFER_DESC& VertexDesc, VTXPOSCOR* pVertices);
 
 
-    HRESULT         CreateIndexBuffer_Begin(_uint VertexCountX, _uint VertexCountZ, VTXNORTEX** pVertices, _uint** pIndices, D3D11_BUFFER_DESC* pDesc);
+    HRESULT         CreateIndexBuffer_Begin(_uint VertexCountX, _uint VertexCountZ, VTXPOSCOR** pVertices, _uint** pIndices, D3D11_BUFFER_DESC* pDesc);
     HRESULT         CreateIndexBuffer_End(D3D11_BUFFER_DESC& IndexDesc, _uint* pIndices);
 
   

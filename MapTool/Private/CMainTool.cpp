@@ -6,7 +6,7 @@
 #include "CImgui_Window.h"
 #include "CImgui_Button.h"
 
-#include "CTerrainDebugWindow.h"
+#include "CGridDebugWindow.h"
 #include "CLayerDebugWindow.h"
 #include "CObjectInspectorWindow.h"
 #include "CAssetCategoryWindow.h"
@@ -23,14 +23,18 @@
 #include "CInput_Manager.h"
 #include "CMapObject_Manager.h"
 #include "CImgui_DataManager.h"
+#include "CGrid_Manager.h"
+
 
 USING(MapTool)
 
 CMainTool::CMainTool()
     :pImGui_Manager(CImGui_Manager::GetInstance()),
-    pGameInstance(CGameInstance::GetInstance())
+    pGameInstance(CGameInstance::GetInstance()),
+    pGrid_Manager(CGrid_Manager::GetInstance())
 {
     Safe_AddRef(pGameInstance);
+    Safe_AddRef(pGrid_Manager);
 }
 
 HRESULT CMainTool::Initialize()
@@ -53,7 +57,7 @@ HRESULT CMainTool::Initialize()
     pImGui_Manager->Init(g_hWnd, m_pDevice.Get(), m_pContext.Get());
 
 
-    CreateTerrainDebugWindow();
+    CreateGridDebugWindow();
     CreateLayerDebugWindow();
     CreateObjectInspectorWindow();
     CreateAssetBrowserWindow();
@@ -131,6 +135,7 @@ HRESULT CMainTool::Initialize_MapTool()
 void CMainTool::Update_Priority(_float fTimeDelta)
 {
     CInput_Manager::GetInstance()->Update_Input();
+    pGrid_Manager->Update_Priority(fTimeDelta);
     pMapObject_Manager->Update_Priority(fTimeDelta);
     pGameInstance->Update_Priority_Engine(fTimeDelta);
 
@@ -139,6 +144,7 @@ void CMainTool::Update_Priority(_float fTimeDelta)
 
 void CMainTool::Update(_float fTimeDelta)
 {
+    pGrid_Manager->Update(fTimeDelta);
     pMapObject_Manager->Update(fTimeDelta);
     pGameInstance->Update_Engine(fTimeDelta);
     pImGui_Manager->Update();
@@ -147,12 +153,14 @@ void CMainTool::Update(_float fTimeDelta)
 
 void CMainTool::Update_Late(float fTimeDelta)
 {
+    pGrid_Manager->Update_Late(fTimeDelta);
     pMapObject_Manager->Update_Late(fTimeDelta);
     pGameInstance->LateUpdate_Engine(fTimeDelta);
 }
 
 void CMainTool::Update_Render(float fTimeDelta)
 {
+    pGrid_Manager->Update_Render(fTimeDelta);
     pMapObject_Manager->Update_Render(fTimeDelta);
     pGameInstance->Update_Render(fTimeDelta);
 }
@@ -261,15 +269,15 @@ void CMainTool::CreateDepthStencilStates()
 
 }
 
-void CMainTool::CreateTerrainDebugWindow()
+void CMainTool::CreateGridDebugWindow()
 {
     CImgui_Window::IMGUIWINDOW_DESC Desc;
-    Desc.m_WindowTitle = "TerrainDebugWindow";
+    Desc.m_WindowTitle = "GridDebugWindow";
     Desc.m_WindowPos = ImVec2(100, 100);
     Desc.m_WindowSize = ImVec2(300, 300);
-    Desc.Tag = "TerrainDebugWindow";
+    Desc.Tag = "GridDebugWindow";
 
-    pImGui_Manager->RegisterWindow(CTerrainDebugWindow::Create(m_pDevice, m_pContext, &Desc));
+    pImGui_Manager->RegisterWindow(CGridDebugWindow::Create(m_pDevice, m_pContext, &Desc));
 }
 
 void CMainTool::CreateLayerDebugWindow()
@@ -375,10 +383,12 @@ void CMainTool::Free()
 
     Safe_Release(pMapObject_Manager);
     Safe_Release(pGameInstance);
+    Safe_Release(pGrid_Manager);
+
 
     CImgui_DataManager::GetInstance()->DestroyInstance();
     CMapObject_Manager::GetInstance()->DestroyInstance();
-
+    CGrid_Manager::GetInstance()->DestroyInstance();
 
 
 }

@@ -4,19 +4,20 @@
 #include "CGameInstance.h"
 
 #include "CFreeCamera.h"
-#include "CMapTerrain.h"
+#include "CMapGrid.h"
 
 #include "CMapObject_Manager.h"
 #include "CMapQuad.h"
 
 #include "CImGui_Manager.h"
 #include "CImgui_Base.h"
-#include "CTerrainDebugWindow.h"
+#include "CGridDebugWindow.h"
 
 #include "CVIBuffer_Triangle.h"
 #include "CTerrain_Highlight.h"
 
 #include "CMapLayer.h"
+#include "CGrid_Manager.h"
 
 #include "CImgui_Window.h"
 #include "CImGui_Manager.h"
@@ -36,6 +37,8 @@ CLevel_Editor::CLevel_Editor(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceC
 HRESULT CLevel_Editor::Initialize(LevelArgs& args)
 {
 	__super::Initialize(args);
+
+	m_pGrid_Manager = CGrid_Manager::GetInstance();
 
 	if (FAILED(Ready_Layer_MainCamera(L"Camera_Layer")))
 		return E_FAIL;
@@ -144,10 +147,10 @@ HRESULT CLevel_Editor::Create_TerrainHighlight()
 HRESULT CLevel_Editor::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 {
 	/////////////////////////////////////
-	CMapTerrain::TERRAIN_DESC pDesc;
-	pDesc.TextureKey = L"Terrain";
-	pDesc.ObjTag = L"MapTerrain";
-	pDesc.ShaderName = L"VtxNorTex";
+	CMapGrid::TERRAIN_DESC pDesc;
+	pDesc.TextureKey = L"";
+	pDesc.ObjTag = L"MapGrid";
+	pDesc.ShaderName = L"Default";
 	pDesc.passName = "Default";
 	pDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
 
@@ -162,13 +165,9 @@ HRESULT CLevel_Editor::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
 	pDesc.TransformDesc = &TransDesc;
 
-	CBase* pTerrain = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapTerrain"), &pDesc);
-	if (pTerrain)
-	{
-		CTerrain_Base* ppTerrain = dynamic_cast<CTerrain_Base*>(pTerrain);
-		if (ppTerrain)
-			m_pGameInstance->Register_Terrain(L"MapTerrain", ppTerrain);
-	}
+	CGameObject* pMapGrid =dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapGrid"), &pDesc));
+	if (pMapGrid)
+		m_pGrid_Manager->Set_MainGrid(pMapGrid);
 
 
 
@@ -253,14 +252,21 @@ HRESULT CLevel_Editor::Set_AssetList()
 
 void CLevel_Editor::OnEnter()
 {
-	CImgui_Base* pWindow = CImGui_Manager::GetInstance()->Find_Window("TerrainDebugWindow");
+	CImgui_Base* pWindow = CImGui_Manager::GetInstance()->Find_Window("GridDebugWindow");
 	if (pWindow)
 	{
-		CTerrainDebugWindow* pTerrainDebugWindow = dynamic_cast<CTerrainDebugWindow*>(pWindow);
-		if (pTerrainDebugWindow)
+		CGridDebugWindow* pGridDebugWindow = dynamic_cast<CGridDebugWindow*>(pWindow);
+		if (pGridDebugWindow)
 		{
-			pTerrainDebugWindow->Set_MapTerrain(m_pGameInstance->Find_Terrain(L"MapTerrain"));
-			pTerrainDebugWindow->Init_NumValues();
+
+			CMapGrid* pObj = m_pGrid_Manager->Get_MainGrid();
+			
+			if (pObj)
+			{
+				pGridDebugWindow->Set_MapTerrain(pObj);
+				pGridDebugWindow->Init_NumValues();
+
+			}
 
 		}
 

@@ -11,12 +11,13 @@ namespace Engine
 
 
 NS_BEGIN(MapTool)
-class CTerrainDebugWindow :
+
+class CGridDebugWindow :
     public CImgui_Window
 {
 private:
-    CTerrainDebugWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
-    virtual ~CTerrainDebugWindow() = default;
+    CGridDebugWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+    virtual ~CGridDebugWindow() = default;
 
 
 public:
@@ -33,7 +34,7 @@ private:
 public:
     void        Init_NumValues();
 public:
-    static CTerrainDebugWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
+    static CGridDebugWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
     virtual void Free();
 
 private:
@@ -44,7 +45,7 @@ private:
     class CImgui_Button*                m_pButton;
 
 
-    class CMapTerrain*                  m_pMapTerrain = { nullptr };
+    class CMapGrid*                  m_MapGrid= { nullptr };
 
     int pNumVerticesX=0;
     int pNumVerticesZ=0;
