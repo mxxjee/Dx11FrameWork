@@ -37,9 +37,12 @@ public:
 
     //픽킹한 삼각형의 점리턴 ( 로컬좌표)
     Triangle* PickTerrain();
+
+    void       Set_MouseWorldPos();
+    _float3     Get_MouseWorldPos() { return MouseWorldPos; }
 public:
     CMapGrid* Get_MainGrid() { return m_pMainGrid; }
-    _float3             Get_PickingWorldPos() { return PickingWolrdPos; }
+    _float3             Get_GridPickingWorldPos() { return PickingWolrdPos; }
 
 private:
     ComPtr<ID3D11Device>		m_pDevice = { nullptr };
@@ -52,7 +55,11 @@ private:
 private:
     ENGINE_DESC             m_EngineDesc;
     Triangle                 PickLocalTriangle;
-    _float3                    PickingWolrdPos;     //terrain픽킹한 월드좌표
+    
+    _float3                    PickingWolrdPos;     //픽킹 터레인 마우스 월드좌표
+    _float3                     MouseWorldPos;
+
+    bool                    m_bPicking = false;
 
 };
 NS_END

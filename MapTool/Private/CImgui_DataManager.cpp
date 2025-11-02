@@ -176,7 +176,7 @@ HRESULT CImgui_DataManager::Create_MapTerrain(bool bDrag)
 
 	if (bDrag)
 	{
-		_float3 PickingPos = m_pGrid_Manager->Get_PickingWorldPos();
+		_float3 PickingPos = m_pGrid_Manager->Get_GridPickingWorldPos();
 		CTransform::TRANSFORM_DESC	 TransDesc;
 		TransDesc.vLocalPosition = _float4(PickingPos.x, PickingPos.y, PickingPos.z, 1.f);
 		Desc.TransformDesc = &TransDesc;
@@ -219,7 +219,7 @@ HRESULT CImgui_DataManager::Create_Model(bool bDrag)
 	//드래그생성이라면,위치가 따로존재함
 	if (bDrag)
 	{
-		_float3 PickingPos = CGameInstance::GetInstance()->Get_PickingWorldPos();
+		_float3 PickingPos = m_pGrid_Manager->Get_GridPickingWorldPos();
 		CTransform::TRANSFORM_DESC	 TransDesc;
 		TransDesc.vLocalPosition = _float4(PickingPos.x, PickingPos.y, PickingPos.z, 1.f);
 		Desc.TransformDesc = &TransDesc;

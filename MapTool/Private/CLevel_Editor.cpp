@@ -69,6 +69,8 @@ void CLevel_Editor::Update(const _float fTimeDelta)
 
 	//그리드 좌표 픽킹처리
 	Triangle* pPickingPos= m_pGrid_Manager->PickTerrain();
+	m_pGrid_Manager->Set_MouseWorldPos();
+
 	/*if (pPickingPos!=nullptr)
 	{
 		CMapLayer* pLayer = CMapObject_Manager::GetInstance()->Find_MapLayer(L"Player_Layer");

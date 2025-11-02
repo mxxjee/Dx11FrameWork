@@ -115,6 +115,7 @@ Triangle* CGrid_Manager::PickTerrain()
 
 			XMStoreFloat3(&PickingWolrdPos, ray.Origin + ray.Dir * dist);
 
+			m_bPicking = true;
 			return &PickLocalTriangle;
 
 		}
@@ -124,6 +125,27 @@ Triangle* CGrid_Manager::PickTerrain()
 	}
 
 
-
-	return nullptr;
+	m_bPicking = false;
+	return nullptr;   
 }
+
+void CGrid_Manager::Set_MouseWorldPos()
+{
+	CheckTrue(m_bPicking);
+
+	_float4x4 Proj = CGameInstance::GetInstance()->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+	_float4x4 View = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+
+	_vector planeNormal = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+	float planeD = 0.0f;
+
+	float t = 0.f;
+	Ray ray = MathUtils::CreateRayWorld(m_EngineDesc.hWnd, m_pDeviceContext, Proj, View);
+
+	XMStoreFloat3(&MouseWorldPos, ray.Origin + ray.Dir * 20.f);
+
+	wchar_t szBuf[128];
+	swprintf_s(szBuf, L"x: %.2f, y: %.2f, z: %.2f\n", MouseWorldPos.x, MouseWorldPos.y, MouseWorldPos.z);
+	OutputDebugString(szBuf);
+}
+
