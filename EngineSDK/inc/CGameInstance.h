@@ -243,10 +243,12 @@ public:
 	HRESULT       Register_Model(const _wstring& Tag, class CModel* pInstance);
 	class CModel*		Find_Model(const _wstring& ProtoModelName);
 	class CModel*		 Clone_Model(const _wstring& ProtoModelName, void* pArg);
+	_uint           Get_ModelCount();
 
+	const			UMap<_wstring, class CModel*>& Get_MapModel();
 public:
 	//모든 모델 로드..(폴더안의 모델 모두로드)
-	HRESULT Load_All_Models(const string& FilePath);
+	HRESULT Load_All_Models(const string& FilePath, _matrix PreMatrix);
 
 
 #pragma endregion

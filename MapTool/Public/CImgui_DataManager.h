@@ -7,7 +7,7 @@ namespace Engine
 {
     class CInput_Manager;
     class CMapObject_Manager;
-
+    class CGameInstance;
 }
 NS_BEGIN(MapTool)
 class CImgui_DataManager :
@@ -79,7 +79,10 @@ public:
 private:
     CInput_Manager* m_pInputManager = nullptr;
     CMapObject_Manager* m_pMapObject_Manager = nullptr;
+    CGameInstance* m_pGameInstance = nullptr;
+
     bool                m_bDrag = false;
+    bool                m_bSnapMode = true;
    
 private:
     ComPtr<ID3D11Device> m_pDevice;

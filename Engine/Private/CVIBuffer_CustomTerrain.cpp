@@ -81,6 +81,7 @@ HRESULT CVIBuffer_CustomTerrain::ResizeBuffer(_uint fNewVertexCountX, _uint fNew
 		D3D11_BUFFER_DESC IndexDesc{};
 		_uint* pIntIndices = nullptr;
 
+		Safe_Delete_Array(m_pVertexPositions);
 		if (FAILED(CreateVertexBuffer_Begin(m_iNumVerticesX, m_iNumVerticesZ, &pVertice, &VertexDesc)))
 			return E_FAIL;
 		

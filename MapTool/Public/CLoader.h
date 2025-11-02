@@ -38,6 +38,7 @@ public:
 
     /// load resource //
     HRESULT         Register_Shaders();
+    HRESULT         Register_Models();
     HRESULT         Register_Textures();
     HRESULT         Register_Components();
 private:

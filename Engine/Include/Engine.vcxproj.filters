@@ -289,6 +289,9 @@
     <Filter Include="00.System\13.ModelManager\Model">
       <UniqueIdentifier>{1ec397e8-53fd-47ce-b7eb-dcd59ca65954}</UniqueIdentifier>
     </Filter>
+    <Filter Include="998.MapTool\Object\MapField">
+      <UniqueIdentifier>{cb1862b5-3def-4cb6-b015-bea1f45fb373}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -579,6 +582,12 @@
     <ClInclude Include="..\Public\CModel_Manager.h">
       <Filter>00.System\13.ModelManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CMapModel.h">
+      <Filter>998.MapTool\Object\MapModel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapField.h">
+      <Filter>998.MapTool\Object\MapField</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -826,6 +835,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CModel_Manager.cpp">
       <Filter>00.System\13.ModelManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapModel.cpp">
+      <Filter>998.MapTool\Object\MapModel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapField.cpp">
+      <Filter>998.MapTool\Object\MapField</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

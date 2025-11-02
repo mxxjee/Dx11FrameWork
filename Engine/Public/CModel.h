@@ -54,6 +54,7 @@ public:
     CMeshComponent* Get_Mesh(const wstring& Name);
     const UMap<wstring, CMeshComponent*>& Get_Meshs() { return m_Meshs; }
     class CShader* Get_Shader() { return m_pShader; }
+    const ModelData& Get_ModelData() { return m_ModelData; }
 private:
     UMap<wstring, CMeshComponent*>      m_Meshs;
     ModelData       m_ModelData;

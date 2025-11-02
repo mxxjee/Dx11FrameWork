@@ -11,7 +11,7 @@ public:
         string Label;
         function<void()> callback;
         float* pData;
-        int             Step = 1;
+        float             Step = 1;
 
     }IMGUITEXTFLOAT_DESC;
 
@@ -29,13 +29,14 @@ public:
     void            Set_Callback(function<void()> callBack) { m_Callback = callBack; }
 
 public:
+  
     static CImgui_InputFloat* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
 
 private:
     string m_Label = "";
     function<void()> m_Callback;
     float* m_pData;
-    int m_Step = 0;
+    float m_Step = 0;
 };
 
 NS_END

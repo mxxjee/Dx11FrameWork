@@ -154,6 +154,7 @@ HRESULT CModelObject::Ready_Components(void* pArg)
     if (pModelDesc)
     {
         CModel::MODEL_DSC* ppModelDesc = static_cast<CModel::MODEL_DSC*>(pModelDesc->modelDesc);
+        ppModelDesc->pOwner = this;
         m_pModel = m_pGameInstance->Clone_Model(pModelDesc->modelName, ppModelDesc);
         
         if (!m_pModel)

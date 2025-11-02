@@ -703,10 +703,20 @@ CModel* CGameInstance::Clone_Model(const _wstring& ProtoModelName, void* pArg)
 	return m_pModelManager->Clone_Model(ProtoModelName, pArg);
 }
 
-HRESULT CGameInstance::Load_All_Models(const string& FilePath)
+_uint CGameInstance::Get_ModelCount()
+{
+	return m_pModelManager->Get_ModelCount();
+}
+
+const UMap<_wstring, class CModel*>& CGameInstance::Get_MapModel()
+{
+	return m_pModelManager->Get_MapModel();
+}
+
+HRESULT CGameInstance::Load_All_Models(const string& FilePath, _matrix PreMatrix)
 {
 	CheckNullResult(m_pModelManager, E_FAIL);
-	return m_pModelManager->Load_All_Models(FilePath);
+	return m_pModelManager->Load_All_Models(FilePath, PreMatrix);
 }
 
 #pragma endregion

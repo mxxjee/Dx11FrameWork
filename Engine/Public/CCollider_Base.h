@@ -38,6 +38,8 @@ public:
     virtual      bool   Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)=0;
 
 
+public:
+    void        Set_ScaleOffset(_float3 Offset) { vScaleOffSet = Offset; }
 
 public:
     virtual CComponent* Clone(void* pArg) = 0;

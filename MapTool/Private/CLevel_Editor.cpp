@@ -18,6 +18,11 @@
 
 #include "CMapLayer.h"
 
+#include "CImgui_Window.h"
+#include "CImGui_Manager.h"
+#include "CAssetListWindow.h"
+
+
 
 USING(MapTool)
 
@@ -40,6 +45,11 @@ HRESULT CLevel_Editor::Initialize(LevelArgs& args)
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Player(L"Player_Layer")))
+		return E_FAIL;
+
+
+	/*임구이 에셋리스트윈도우 세팅들어가*/
+	if (FAILED(Set_AssetList()))
 		return E_FAIL;
 
 	return S_OK;
@@ -226,6 +236,18 @@ HRESULT CLevel_Editor::Ready_Layer_Player(const _wstring& strLayerTag)
 
 
 
+	return S_OK;
+}
+
+HRESULT CLevel_Editor::Set_AssetList()
+{
+	CImgui_Window* pWindow=dynamic_cast<CImgui_Window*>(CImGui_Manager::GetInstance()->Find_Window("AssetList"));
+	if (pWindow)
+	{
+		CAssetListWindow* pAssetList = dynamic_cast<CAssetListWindow*>(pWindow);
+		if (pAssetList)
+			pAssetList->Set_AssetList();
+	}
 	return S_OK;
 }
 

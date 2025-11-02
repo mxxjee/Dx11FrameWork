@@ -4,6 +4,10 @@
 #include "CMapObject_Manager.h"
 #include "CMapQuad.h"
 #include "Client_Defines.h"
+#include "CGameInstance.h"
+
+#include "CMapModel.h"
+#include "CModel.h"
 
 #include "CMapLayer.h"
 
@@ -14,9 +18,11 @@ IMPLEMENT_SINGLETON(CImgui_DataManager)
 
 CImgui_DataManager::CImgui_DataManager()
 	:m_pInputManager(CInput_Manager::GetInstance()),
-	m_pMapObject_Manager(CMapObject_Manager::GetInstance())
+	m_pMapObject_Manager(CMapObject_Manager::GetInstance()),
+	m_pGameInstance(CGameInstance::GetInstance())
 {
 	Safe_AddRef(m_pMapObject_Manager);
+	Safe_AddRef(m_pGameInstance);
 	Safe_AddRef(m_pInputManager);
 }
 
@@ -59,6 +65,7 @@ void CImgui_DataManager::Active_PlacementMode(PlaceObjectInfo Info)
 
 	/// //마우스 placement 활성화시키기 -> Update에서 체크
 	Data.m_bPlacementMode = true;
+
 	m_PlaceObjInfo = Info;
 }
 
@@ -122,11 +129,15 @@ wstring CImgui_DataManager::Generate_UniqueTag(MapObjType Type, const wstring& b
 
 HRESULT CImgui_DataManager::Create_Model(bool bDrag)
 {
-	CMapQuad::MAPQUAD_DESC Desc;
-	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
+	CMapModel::MAPMODEL_DESC Desc;
+	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
 	Desc.ObjTag = Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
-	Desc.TextureKey = m_PlaceObjInfo.TexKey;
+	Desc.modelName = m_PlaceObjInfo.TexKey;
 	Desc.ObjType = m_PlaceObjInfo.ObjType;
+
+	CModel::MODEL_DSC modelDesc;
+	Desc.modelDesc = &modelDesc;
+
 
 	//드래그생성이라면,위치가 따로존재함
 	if (bDrag)
@@ -146,9 +157,14 @@ HRESULT CImgui_DataManager::Create_Model(bool bDrag)
 	{
 	case MapObjType::OBSTACLE:
 		LayerTag = L"Obstacle_Layer";
-		ProtoTag = L"MapQuad";
+		ProtoTag = L"Model";
+
 		break;
 
+	case MapObjType::FILED:
+		LayerTag = L"Field_Layer";
+		ProtoTag = L"Field";
+		break;
 	case MapObjType::TILE:
 		LayerTag = L"Tile_Layer";
 
@@ -189,5 +205,7 @@ void CImgui_DataManager::Free()
 
 	Safe_Release(m_pMapObject_Manager);
 	Safe_Release(m_pInputManager);
+	Safe_Release(m_pGameInstance);
+
 
 }

@@ -57,6 +57,8 @@ HRESULT CObjectInspectorWindow::Create_Widgets()
     InputFloatDesc.Tag = InputFloatDesc.Label;
     InputFloatDesc.m_RelativePos = ImVec2(0, fScaleButtonY);
     InputFloatDesc.pData = &vScale.x;
+    InputFloatDesc.Step = 0.1f;
+
 
 
     if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc, reinterpret_cast<CImgui_Widget**>(&ScaleInput[0]))))
@@ -73,7 +75,7 @@ HRESULT CObjectInspectorWindow::Create_Widgets()
     InputFloatDesc.Label = "ScaleZ";
     InputFloatDesc.Tag = InputFloatDesc.Label;
     InputFloatDesc.m_RelativePos = ImVec2(0, fScaleButtonY+40);
-    InputFloatDesc.pData = &vScale.z;
+    InputFloatDesc.pData = &vScale.z;  
     if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc, reinterpret_cast<CImgui_Widget**>(&ScaleInput[2]))))
         return E_FAIL;
 

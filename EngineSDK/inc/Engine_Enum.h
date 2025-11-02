@@ -177,6 +177,7 @@ namespace Engine
 	enum class MapObjType
 	{
 		OBSTACLE,	//단지 맵에 설치할 조형물들
+		FILED,		//지형 관련은 따로처리하자.
 		TILE,	//타일관련
 		POSITION, //위치값만 존재(EMPTY, 몬스터스폰위치 등)
 		TRIGGER,

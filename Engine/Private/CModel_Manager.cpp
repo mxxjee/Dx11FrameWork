@@ -27,6 +27,7 @@ HRESULT CModel_Manager::Register_Model(const _wstring& Tag, CModel* pInstance)
     else
     {
         m_mapModel.emplace(Tag, pInstance);
+        m_iCount += 1;
         
     }
     return S_OK;
@@ -76,26 +77,20 @@ CModel* CModel_Manager::Clone_Model(const _wstring& ProtoModelName,void *pArg)
     return nullptr;
 }
 
-HRESULT CModel_Manager::Load_All_Models(const string& FilePath)
+HRESULT CModel_Manager::Load_All_Models(const string& FilePath,_matrix PreMatrix)
 {
-    for (const auto& entry : fs::directory_iterator(FilePath))
+    for (const auto& entry : fs::recursive_directory_iterator(FilePath))
     {
-        if (fs::is_directory(entry))
+        if (entry.path().extension() == ".json")
         {
-            fs::path Tmp = entry.path();
+            string FullPath = entry.path().string();
+            string Name = entry.path().stem().string();
 
-            string BasePath = Tmp.string();
-            string Name = Tmp.stem().string();
-
-            string FullPath = BasePath + "\\" + Name + ".json";
-            _matrix preMatrix = XMMatrixRotationY(XMConvertToRadians(180.0f));
-
-
-            CModel* pInstance = CModel::Create(m_pDevice, m_pContext, preMatrix, FullPath.c_str());
+            CModel* pInstance = CModel::Create(m_pDevice, m_pContext, PreMatrix, FullPath.c_str());
             if (!pInstance)
                 return E_FAIL;
 
-            m_mapModel.emplace(wstring(Name.begin(),Name.end()), pInstance);
+            m_mapModel.emplace(wstring(Name.begin(), Name.end()), pInstance);
         }
     }
     return S_OK;

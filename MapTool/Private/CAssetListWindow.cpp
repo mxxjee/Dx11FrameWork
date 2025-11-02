@@ -4,6 +4,8 @@
 #include "CImgui_DataManager.h"
 #include "CTexture.h"
 #include "MapTool_Defines.h"
+#include "CModel.h"
+
 
 USING(MapTool)
 CAssetListWindow::CAssetListWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -16,6 +18,7 @@ CAssetListWindow::CAssetListWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11De
     Safe_AddRef(m_pImgui_DataManager);
     Safe_AddRef(m_pMapObject_Manager);
 }
+
 HRESULT CAssetListWindow::Create_Widgets()
 {
     return S_OK;
@@ -28,6 +31,14 @@ HRESULT CAssetListWindow::Initialize(void* pArg)
 
     ModelImages.reserve(50);
 
+    
+
+
+    return S_OK;
+}
+
+HRESULT CAssetListWindow::Set_AssetList()
+{
     //이미지 생성을 위해 경로다읽어오기.
     if (FAILED(Create_ModelImages()))
         return E_FAIL;
@@ -36,7 +47,6 @@ HRESULT CAssetListWindow::Initialize(void* pArg)
     if (FAILED(Create_TileImages()))
         return E_FAIL;
 
-
     return S_OK;
 }
 
@@ -44,7 +54,10 @@ void CAssetListWindow::Update()
 {
     ImGui::Begin(m_WindowTitle.c_str(), &m_bOpen);
 
-    Show_Grid(m_pImgui_DataManager->Get_Data()->m_SelectedCategory);
+    CImgui_DataManager::IMGUI_SHARED_DATA* Data = m_pImgui_DataManager->Get_Data();
+
+    if(Data->m_SelectedCategory!="")
+        Show_Grid(Data->m_SelectedCategory);
     ImGui::End();
 }
 
@@ -71,25 +84,34 @@ CAssetListWindow* CAssetListWindow::Create(ComPtr<ID3D11Device> pDevice, ComPtr<
 
 HRESULT CAssetListWindow::Create_ModelImages()
 {
-    vector<wstring> Tmp = m_pImgui_DataManager->GetImageFiles(L"C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model");
-    for (auto& i : Tmp)
-    {
-        AssetInfo info;
-        info.FullPath = i;
+    const UMap<_wstring, CModel*>       ModelMap = pGameInstance->Get_MapModel();
 
-        ModelImages.push_back(info);
+    for (auto& pair : ModelMap)
+    {
+        if (pair.second)
+        {
+            const ModelData modelData = pair.second->Get_ModelData();
+
+            AssetInfo Info;
+
+            if (modelData.ResourcePath.find(L"Field") != wstring::npos)
+                Info.ObjType = MapObjType::FILED;
+
+            else
+                Info.ObjType = MapObjType::OBSTACLE;
+
+            Info.TexKey = modelData.name;
+
+            Info.FullPath = modelData.ResourcePath;
+            ModelImages.push_back(Info);
+        }
+
+     
     }
 
-    for (auto& info : ModelImages)
-    {
-        fs::path    Tmp = info.FullPath;
-        info.TexKey = Tmp.stem().wstring();
+    return S_OK;
 
-        CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, info.FullPath.c_str(), 1);
-        if (FAILED(pGameInstance->Register_Texture(info.TexKey, pTexture)))
-            return E_FAIL;
-
-    }
+  
 }
 
 HRESULT CAssetListWindow::Create_TileImages()
@@ -135,13 +157,14 @@ void CAssetListWindow::Show_Grid(const string& Category)
         // 썸네일 이미지
         AssetInfo info = ModelImages[i];
         CTexture* pTex = pGameInstance->Find_Texture(info.TexKey);
+
         ComPtr<ID3D11ShaderResourceView> SRV = nullptr;
 
         if (pTex)
             SRV = pTex->Get_SRV(0);
 
         else
-            SRV = pGameInstance->Find_Texture(L"Default");
+            SRV = pGameInstance->Find_Texture(L"Default")->Get_SRV(0);
 
         ImTextureID tex = (ImTextureID)SRV.Get();
 
@@ -170,6 +193,7 @@ void CAssetListWindow::Show_Grid(const string& Category)
 
 
             PlaceInfo.TexKey = info.TexKey;
+            PlaceInfo.ObjType = info.ObjType;
 
             m_pImgui_DataManager->Active_PlacementMode(PlaceInfo);
         }

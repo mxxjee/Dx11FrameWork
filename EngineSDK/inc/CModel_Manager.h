@@ -22,19 +22,22 @@ public:
     virtual void                Free() override;
 
 public:
+    _uint           Get_ModelCount() {return m_iCount;}
+    const UMap<_wstring, CModel*>& Get_MapModel() { return m_mapModel; }
+public:
         //원본을 찾는다.
     CModel* Find_Model(const _wstring& ProtoModelName);
     CModel* Clone_Model(const _wstring& ProtoModelName, void* pArg);
 
 public:
     //모든 모델 로드..(폴더안의 모델 모두로드)
-    HRESULT Load_All_Models(const string& FilePath);
+    HRESULT Load_All_Models(const string& FilePath, _matrix PreMatrix);
 
         //특정 경로의 모델 로드
 
 private:
     UMap<_wstring, CModel*>    m_mapModel;
-
+    _uint                   m_iCount=0;
 private:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };

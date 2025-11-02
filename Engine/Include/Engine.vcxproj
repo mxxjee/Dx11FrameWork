@@ -183,7 +183,9 @@
     <ClInclude Include="..\Public\CImGui_Manager.h" />
     <ClInclude Include="..\Public\CLight.h" />
     <ClInclude Include="..\Public\CLight_Manager.h" />
+    <ClInclude Include="..\Public\CMapField.h" />
     <ClInclude Include="..\Public\CMapLayer.h" />
+    <ClInclude Include="..\Public\CMapModel.h" />
     <ClInclude Include="..\Public\CMapObject.h" />
     <ClInclude Include="..\Public\CMapObject_Manager.h" />
     <ClInclude Include="..\Public\CMapQuad.h" />
@@ -281,6 +283,8 @@
     <ClCompile Include="..\Private\CImGui_Manager.cpp" />
     <ClCompile Include="..\Private\CLight.cpp" />
     <ClCompile Include="..\Private\CLight_Manager.cpp" />
+    <ClCompile Include="..\Private\CMapField.cpp" />
+    <ClCompile Include="..\Private\CMapModel.cpp" />
     <ClCompile Include="..\Private\CMapObject.cpp" />
     <ClCompile Include="..\Private\CMapObject_Manager.cpp" />
     <ClCompile Include="..\Private\CMapQuad.cpp" />

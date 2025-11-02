@@ -18,6 +18,13 @@
 #include "VertexData.h"
 #include "CTexture.h"
 
+#include "CModel.h"
+#include "CMapModel.h"
+#include "CMapField.h"
+
+
+
+
 
 
 
@@ -105,14 +112,16 @@ HRESULT CLoader::Loading_MapTool()
         return E_FAIL;
 
 
-    lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
-
+    
 
     lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
     if (FAILED(Register_Shaders()))
         return E_FAIL;
 
-
+    lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
+    if (FAILED(Register_Models()))
+        return E_FAIL;
+    
 
 
 
@@ -143,11 +152,13 @@ HRESULT CLoader::Loading_MapTool()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapTerrain"), CMapTerrain::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Terrain_Highlight"), CTerrain_Highlight::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapQuad"), CMapQuad::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapQuad"), CMapQuad::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Model"), CMapModel::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Field"), CMapField::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
 
@@ -178,18 +189,35 @@ HRESULT CLoader::Register_Shaders()
         "DefaultTechnique");
     m_pGameInstance->Register_Shader(L"VtxPosCor", pInstance);
 
+    pInstance = CShader::Create(m_pDevice,
+        m_pDeviceContext, VTXMESH::desc, L"../../Resource/Shader/Shader_VtxMesh.hlsl",
+        "DefaultTechnique");
+    m_pGameInstance->Register_Shader(L"VtxMesh", pInstance);
+
+    return S_OK;
+}
+
+HRESULT    CLoader::Register_Models()
+{
+   // m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor");
+
+    _matrix PreMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+    PreMatrix=XMMatrixMultiply(PreMatrix, XMMatrixRotationX(XMConvertToRadians(-180.f)));
+
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle/", PreMatrix);
+
     return S_OK;
 }
 
 HRESULT CLoader::Register_Textures()
 {
-   /* CTexture* pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Keroro.png", 1);
+    CTexture* pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Keroro.png", 1);
     if (FAILED(m_pGameInstance->Register_Texture(L"Keroro", pTexture)))
-        return E_FAIL;*/
+        return E_FAIL;
 
 
 
-    CTexture*  pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Terrain0.png", 1);
+    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Terrain0.png", 1);
     if (FAILED(m_pGameInstance->Register_Texture(L"Terrain", pTexture)))
         return E_FAIL;
 

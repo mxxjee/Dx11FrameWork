@@ -115,6 +115,9 @@ HRESULT CModel::LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepP
 		//pass이름을 따로정의했다면,(메쉬이름과 같이)
 		m_ModelData.Meshes.push_back(pMesh->Get_MeshData());
 
+		string strPath = string(filepPath);
+		m_ModelData.ResourcePath = wstring(strPath.begin(),strPath.end());
+
 		if (m_pShader->Check_PassName(MeshName))
 			pMesh->Set_PassName(MeshName);
 		
@@ -131,9 +134,14 @@ HRESULT CModel::LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepP
 HRESULT CModel::LoadMaterialFromJSon(const _char* filePath)
 {
 	ModelData model;
+	
+
 	ifstream	file(filePath);
 
 	json jModel = json::parse(file);
+	string name = jModel["ModelName"];
+	m_ModelData.name = wstring(name.begin(), name.end());
+
 	for (auto& Material : jModel["Materials"])
 	{
 		map<aiTextureType, string>  m_TextureDatas;
@@ -148,9 +156,17 @@ HRESULT CModel::LoadMaterialFromJSon(const _char* filePath)
 		m_TextureDatas.emplace(aiTextureType_METALNESS, Material["METALNESS"]);
 
 	
-		fs::path Tmp = filePath;
+		
 
-		string BasePath = Tmp.parent_path().string() + "\\Materials\\";
+		string BasePath = "";
+		fs::path Tmp = filePath;
+		string Name = Tmp.parent_path().string();
+
+		if (m_ModelData.name.find(L"Field")!=wstring::npos)
+			BasePath = "..\\..\\Resource\\FieldTexture\\";
+
+		else
+			BasePath = Tmp.parent_path().string() + "\\Materials\\";
 
 		CMaterial* pMaterial = m_pGameInstance->Find_Material(WMatName);
 		if (!pMaterial)

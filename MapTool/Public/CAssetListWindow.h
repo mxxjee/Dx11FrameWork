@@ -18,6 +18,7 @@ class CAssetListWindow :
 public:
     typedef struct tagAssetInfo
     {
+        MapObjType              ObjType;    //설치하려는 오브젝트타입
         wstring TexKey = L"";   //Texmgr에 이미등록해논 키
         wstring FullPath = L""; //전체경로
     }AssetInfo;
@@ -26,6 +27,8 @@ protected:
     CAssetListWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual ~CAssetListWindow() = default;
 
+public:
+    HRESULT      Set_AssetList();
 
 private:
     HRESULT     Create_Widgets();

@@ -50,7 +50,7 @@ protected:
             //모델한테 받은 쉐이더
     class CShader* m_pShader = nullptr;    
 private:
-    HRESULT     Ready_Components(void* pArg);       //모델 메쉬 생성(모델 매니저에서 가져와서 생성)
+    HRESULT     Ready_Components(void* pArg);       
     HRESULT     Ready_Resource(void* pArg);
 
 

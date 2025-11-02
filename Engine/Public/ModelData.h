@@ -40,6 +40,7 @@ struct MeshData
 
 struct ModelData
 {
-	wstring name;
+	wstring name=L"";
+	wstring ResourcePath=L"";
 	vector<MeshData>		Meshes;
 };
