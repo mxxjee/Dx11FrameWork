@@ -228,9 +228,10 @@ public:
 	CTerrain_Base*				Get_PickTerrain();
 
 
-	HRESULT						Save_All_Terrains(const string& path, int iNum);
+	HRESULT						Save_All_Terrains(const string& path, int iNum=-1);
 	HRESULT             Load_Terrains(const string& LoadPath);
 
+	float           Get_PickDist();
 	const UMap<_wstring, CTerrain_Base*>& Get_TerrainMap();
 #pragma endregion
 

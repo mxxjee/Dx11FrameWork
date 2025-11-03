@@ -12,6 +12,7 @@
 #include "CAssetCategoryWindow.h"
 #include "CAssetListWindow.h"
 #include "CSaveWindow.h"
+#include "CMenuBarWindow.h"
 
 #include "CGameObject.h"
 
@@ -21,6 +22,7 @@
 #include "CLevel_Editor.h"
 
 #include "CInput_Manager.h"
+
 #include "CMapObject_Manager.h"
 #include "CImgui_DataManager.h"
 #include "CGrid_Manager.h"
@@ -62,7 +64,8 @@ HRESULT CMainTool::Initialize()
     CreateLayerDebugWindow();
     CreateObjectInspectorWindow();
     CreateAssetBrowserWindow();
-    CreateSaveWindow();
+    //CreateSaveWindow();
+    CreateMenuBar();
 
     Reigster_Levels();
     if (FAILED(Start_Level(Client::LEVEL_ID::MAPTOOL, LEVELCHANGETYPE::REPLACETOP)))
@@ -81,6 +84,7 @@ HRESULT CMainTool::Initialize_MapTool()
     CreateBlendStates();
     CreateRasterizerStates();
     CreateDepthStencilStates();
+  
 
     //MapObjectMAnager¸¸µé±â
     pMapObject_Manager = CMapObject_Manager::GetInstance();
@@ -339,6 +343,19 @@ void CMainTool::CreateSaveWindow()
     Desc.Tag = "SaveWindow";
 
     pImGui_Manager->RegisterWindow(CSaveWindow::Create(m_pDevice, m_pContext, &Desc));
+
+
+}
+
+void CMainTool::CreateMenuBar()
+{
+    CMenuBarWindow::IMGUIWINDOW_DESC Desc;
+    Desc.m_WindowTitle = "MenuBarWindow";
+    Desc.m_WindowPos = ImVec2(100, 100);
+    Desc.m_WindowSize = ImVec2(300, 300);
+    Desc.Tag = "MenuBarWindow";
+
+    pImGui_Manager->RegisterWindow(CMenuBarWindow::Create(m_pDevice, m_pContext, &Desc));
 
 
 }

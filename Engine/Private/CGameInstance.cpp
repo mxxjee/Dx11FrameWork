@@ -673,6 +673,11 @@ HRESULT CGameInstance::Load_Terrains(const string& LoadPath)
 	return m_pTerrainManager->Load_Terrains(LoadPath);
 }
 
+float CGameInstance::Get_PickDist()
+{
+	return m_pTerrainManager->Get_PickDist();
+}
+
 const UMap<_wstring, CTerrain_Base*>& CGameInstance::Get_TerrainMap()
 {
 	return m_pTerrainManager->Get_TerrainMap();

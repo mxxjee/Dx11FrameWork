@@ -140,6 +140,7 @@ void CGrid_Manager::Set_MouseWorldPos()
 	float planeD = 0.0f;
 
 	float t = 0.f;
+
 	Ray ray = MathUtils::CreateRayWorld(m_EngineDesc.hWnd, m_pDeviceContext, Proj, View);
 
 	XMStoreFloat3(&MouseWorldPos, ray.Origin + ray.Dir * 20.f);

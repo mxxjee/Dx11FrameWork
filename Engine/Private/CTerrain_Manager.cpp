@@ -208,7 +208,7 @@ CTerrain_Base* CTerrain_Manager::Check_Picking()
 		}
 	}
 
-
+	m_fPickDist = Dist;
 	return pPickObj;
 
 }
@@ -227,8 +227,11 @@ HRESULT CTerrain_Manager::Save_All_Terrains(const string& path, int iNum)
 	}
 
 
-	fs::create_directories(path);
-	ofstream	file(path + "Terrain"+to_string(iNum)+".json");
+
+	string FinalPath = "";
+	FinalPath = path;
+
+	ofstream	file(FinalPath);
 	file << std::setw(4) << jTerrain;
 
 	file.close();
@@ -248,7 +251,7 @@ HRESULT CTerrain_Manager::Load_Terrains(const string& LoadPath)
 	json jTerrainData = json::parse(file);
 	for (auto& jTerrain : jTerrainData)
 	{
-		
+
 		string ModelName = jTerrain["ModelName"];
 		int TileID = jTerrain["TileID"];
 
@@ -272,15 +275,15 @@ HRESULT CTerrain_Manager::Load_Terrains(const string& LoadPath)
 		CMapTerrain::MAPTERRAIN_DESC desc;
 		desc.eRenderGroup = 0;
 		desc.modelName = StringToWString(ModelName);
-		desc.ObjTag = CMapObject_Manager::GetInstance()->Generate_UniqueTag(MapObjType::TERRAIN,desc.modelName);
+		desc.ObjTag = CMapObject_Manager::GetInstance()->Generate_UniqueTag(MapObjType::TERRAIN, desc.modelName);
 		desc.ObjType = MapObjType::TERRAIN;
 
 		CModel::tagModelDesc modelDesc;
 		desc.modelDesc = &modelDesc;
-		
+
 		CTransform::TRANSFORM_DESC TransDesc;
 		TransDesc.vLocalPosition = _float4(vPos.x, vPos.y, vPos.z, 1.f);
-		TransDesc.vLocalRotation = _float4(vRot.x, vRot.y, vRot.z,1.f);
+		TransDesc.vLocalRotation = _float4(vRot.x, vRot.y, vRot.z, 1.f);
 		TransDesc.vLocalScale = _float4(vScale.x, vScale.y, vScale.z, 1.f);
 
 		desc.TransformDesc = &TransDesc;
@@ -292,11 +295,16 @@ HRESULT CTerrain_Manager::Load_Terrains(const string& LoadPath)
 			if (pTerrain)
 			{
 				m_pGameInstance->Register_Terrain(desc.ObjTag, pTerrain);
-				return S_OK;
+				
 			}
 		}
+		else
+			return E_FAIL;
 
-		return E_FAIL;
+
+		
+
+
 
 
 	}

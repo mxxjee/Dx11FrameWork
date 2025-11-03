@@ -29,6 +29,7 @@ private:
 
 
     void        Show_ListBox();
+
 public:
     static CSaveWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
     virtual void Free();

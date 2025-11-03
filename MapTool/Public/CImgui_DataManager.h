@@ -1,6 +1,6 @@
 #pragma once
 #include "CBase.h"
-
+#include "MapTool_Struct.h"
 //MAPTOOL프로젝트에서만 사용하는 임구이 데이터전달용
 
 namespace Engine
@@ -50,6 +50,7 @@ public:
 public:
     HRESULT     Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext);
 
+#pragma region Placement관련
 public:
                             //폴더를 지정하면 ,폴더안의 목록 중 png/jpg/dds인 파일들의 절대경로 목록을 vector<>에 담아 반환
     vector<wstring>      GetImageFiles(const wstring& folderPath);
@@ -71,15 +72,39 @@ private:
     HRESULT             Create_MapTerrain();
     HRESULT             Create_Model();
 
-    
-public:
-    void            Free() override;
+
 
    
 public:
     IMGUI_SHARED_DATA           Data;
     PlaceObjectInfo             m_PlaceObjInfo;
-    CGameObject*                m_pPlaceObject;
+   class CGameObject* m_pPlaceObject;
+#pragma endregion
+
+
+#pragma region 저장/로드 관련
+
+public:
+    bool            IsLoaded() { return m_LoadFilePath.m_CurrentLoadFilePath != ""; }//로드한적이있냐. 그러면 덮어쓰기가능!
+    const SaveFilePath& Get_SaveFilePath() { return m_SaveFilePath; }
+    const LoadFilePath& Get_LoadFilePath() { return m_LoadFilePath; }
+
+    void            Set_SaveFilePath(const SaveFilePath& pFile) { m_SaveFilePath = pFile; }
+    void            Set_LoadFilePath(const LoadFilePath& pFile) { m_LoadFilePath = pFile; }
+
+
+public:
+    HRESULT       Update_SaveFiles();       //저장된 파일들을 모두 검사하여 경로를벡터에담는다.
+private:
+    SaveFilePath            m_SaveFilePath;
+    LoadFilePath            m_LoadFilePath;
+
+#pragma endregion
+
+
+
+public:
+    void            Free() override;
 
 private:
     CInput_Manager* m_pInputManager = nullptr;

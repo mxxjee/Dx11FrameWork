@@ -34,11 +34,11 @@ public:
 public:
     CTerrain_Base* Check_Picking();
     CTerrain_Base* Get_PickTerrain() { return m_pPickTerrain; }
-
+    float           Get_PickDist() { return m_fPickDist; }
 
 
 public:
-    HRESULT            Save_All_Terrains(const string& path,int iNum);
+    HRESULT            Save_All_Terrains(const string& path,int iNum=-1);
     HRESULT             Load_Terrains(const string& LoadPath);
 
 
@@ -62,7 +62,7 @@ private:
 
     CTerrain_Base*          m_pPickTerrain = nullptr;
 
-    
+    float                   m_fPickDist = 0.f;
 
 };
 

@@ -11,6 +11,8 @@
 #include "CMapModel.h"
 #include "CModel.h"
 
+#include "CGameObject.h"
+
 #include "CMapTerrain.h"
 #include "CMapLayer.h"
 
@@ -39,6 +41,17 @@ HRESULT CImgui_DataManager::Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3
 {
 	m_pDevice = _pDevice;
 	m_pContext = _pContext;
+
+	/*세이브를 위한 경로설정과 불러오기를 위한 파일탐색*/
+	m_SaveFilePath.m_SavePathBase = "../../Resource/Data/Map/";
+	Update_SaveFiles();
+
+
+	int iSize = m_SaveFilePath.m_SaveFiles.size();
+
+	//이제 저장 누르면 이 경로로 저장될거야!
+	m_SaveFilePath.m_CurrentSaveFilePath = m_SaveFilePath.m_SavePathBase + "Terrain" + to_string(iSize) + ".json";
+
 
 	return S_OK;
 }
@@ -243,6 +256,35 @@ MapObjType CImgui_DataManager::Get_ObjType_From_Path(const wstring& path)
 		return MapObjType::TILE;
 
 	return MapObjType();
+}
+
+HRESULT CImgui_DataManager::Update_SaveFiles()
+{
+	m_SaveFilePath.m_SaveFiles.clear();
+	m_SaveFilePath.m_SaveFileNames.clear();
+	m_SaveFilePath.m_SaveFileNamesStr.clear();
+
+
+	for (const auto& entry : fs::recursive_directory_iterator(m_SaveFilePath.m_SavePathBase))
+	{
+		if (entry.path().extension() == ".json")
+		{
+			std::string fullPath = entry.path().string();
+			std::string fileName = entry.path().stem().string() + ".json"; // 이름만 추출
+
+			
+			m_SaveFilePath.m_SaveFiles.push_back(fullPath);    // 경로 저장
+			m_SaveFilePath.m_SaveFileNames.push_back(fileName);
+		}
+
+	}
+
+
+	m_SaveFilePath.m_SaveFileNamesStr.reserve(m_SaveFilePath.m_SaveFileNames.size());
+	for (auto& name : m_SaveFilePath.m_SaveFileNames)
+		m_SaveFilePath.m_SaveFileNamesStr.push_back(name.c_str());
+
+	return S_OK;
 }
 
 void CImgui_DataManager::Free()

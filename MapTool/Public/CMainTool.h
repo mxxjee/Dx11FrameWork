@@ -45,9 +45,12 @@ private:
 	void		CreateGridDebugWindow();
 	void		CreateLayerDebugWindow();
 	void		CreateObjectInspectorWindow();
+	
 
 	void		CreateAssetBrowserWindow();
 	void		CreateSaveWindow();
+	
+	void		CreateMenuBar();
 
 private:
 	void			Reigster_Levels();
