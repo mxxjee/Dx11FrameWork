@@ -49,6 +49,9 @@ public:
     CMapLayer*             Get_Layer_By_MapObjType(MapObjType eType);
 
 public:
+    wstring         Generate_UniqueTag(MapObjType Type, const wstring& baseName);
+
+public:
     //레이어리스트를 가져온다.
     const UMap<_wstring, CMapLayer*>&    Get_MapLayers() { return m_Layers; }
 

@@ -5,7 +5,7 @@
 #include "CGameInstance.h"
 #include "CGameInstance.h"
 #include "CMeshColliderComponent.h"
-
+#include "MathUtils.h"
 
 
 CMapTerrain::CMapTerrain(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -234,6 +234,48 @@ void CMapTerrain::OnSeletected(bool bSelected)
 
 }
 
-void CMapTerrain::Save_To_Json()
+void CMapTerrain::Save_To_Json(json& Json)
 {
+    json Meta;
+    Meta["TileID"] = m_iIdx;
+    wstring name= m_pModel->Get_ModelData().name;
+    Meta["ModelName"] = string(name.begin(), name.end());
+
+
+    json Transform;
+    //TransformÁ¤º¸
+    _float3 s, t;
+    _float4 r;
+
+
+    XMStoreFloat3(&s, m_pTransformCom->Get_SRT(SRTType::SCALE));
+    XMStoreFloat3(&t, m_pTransformCom->Get_SRT(SRTType::TRANSFORM));
+    XMStoreFloat4(&r, m_pTransformCom->Get_SRT(SRTType::ROTATION));
+    _float3 rResult = MathUtils::QuaternionToEuler(XMLoadFloat4(&r));
+
+    json position=json::array();
+    position.push_back(t.x);
+    position.push_back(t.y);
+    position.push_back(t.z);
+    Transform["Position"] = position;
+
+
+
+    json scale = json::array();
+    scale.push_back(s.x);
+    scale.push_back(s.y);
+    scale.push_back(s.z);
+    Transform["Scale"] = scale;
+
+
+
+    json Rotation = json::array();
+    Rotation.push_back(r.x);
+    Rotation.push_back(r.y);
+    Rotation.push_back(r.z);
+    Transform["Rotation"] = Rotation;
+
+    Meta["Transform"]=Transform;
+
+    Json.push_back(Meta);
 }

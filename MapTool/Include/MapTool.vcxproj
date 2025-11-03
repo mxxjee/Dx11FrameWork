@@ -31,6 +31,7 @@
     <ClInclude Include="..\Public\CMapGrid.h" />
     <ClInclude Include="..\Public\CObjectInspectorWindow.h" />
     <ClInclude Include="..\Public\CGridDebugWindow.h" />
+    <ClInclude Include="..\Public\CSaveWindow.h" />
     <ClInclude Include="..\Public\CTerrain_Highlight.h" />
     <ClInclude Include="..\Public\MapTool_Defines.h" />
     <ClInclude Include="framework.h" />
@@ -51,6 +52,7 @@
     <ClCompile Include="..\Private\CMapGrid.cpp" />
     <ClCompile Include="..\Private\CObjectInspectorWindow.cpp" />
     <ClCompile Include="..\Private\CGridDebugWindow.cpp" />
+    <ClCompile Include="..\Private\CSaveWindow.cpp" />
     <ClCompile Include="..\Private\CTerrain_Highlight.cpp" />
     <ClCompile Include="MapTool.cpp" />
   </ItemGroup>

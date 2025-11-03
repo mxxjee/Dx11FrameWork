@@ -226,6 +226,11 @@ public:
 	Triangle*					PickTerrain(const _wstring& Key);
 	_float3						Get_PickingWorldPos();
 	CTerrain_Base*				Get_PickTerrain();
+
+
+	HRESULT						Save_All_Terrains(const string& path, int iNum);
+	HRESULT             Load_Terrains(const string& LoadPath);
+
 	const UMap<_wstring, CTerrain_Base*>& Get_TerrainMap();
 #pragma endregion
 

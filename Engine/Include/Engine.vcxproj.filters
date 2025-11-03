@@ -501,9 +501,6 @@
     <ClInclude Include="..\Public\GraphicUtil.h">
       <Filter>01.Utility\99.EtcUtils\GraphicUtil</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\VertexData.h">
-      <Filter>01.Utility\99.EtcUtils</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CTexture_Manager.h">
       <Filter>00.System\08.Texture</Filter>
     </ClInclude>
@@ -605,6 +602,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CMeshColliderComponent.h">
       <Filter>05.Component\Collision\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\VertexData.h">
+      <Filter>01.Utility\99.EtcUtils\VertexData</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -770,9 +770,6 @@
     <ClCompile Include="..\Private\CVIBuffer_Terrain.cpp">
       <Filter>05.Component\VIBuffer\VIBuffer_Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="..\Public\VertexData.cpp">
-      <Filter>01.Utility\99.EtcUtils</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CTexture_Manager.cpp">
       <Filter>00.System\08.Texture</Filter>
     </ClCompile>
@@ -865,6 +862,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMeshColliderComponent.cpp">
       <Filter>05.Component\Collision\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\VertexData.cpp">
+      <Filter>01.Utility\99.EtcUtils\VertexData</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

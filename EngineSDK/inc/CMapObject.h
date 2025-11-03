@@ -53,7 +53,6 @@ private:
     HRESULT     Ready_Component(void* pArg);
     HRESULT     Ready_Resource(void* pArg);
 
-public:
 
 public:
     void        Set_Select(bool _bSelect) { m_bSelected = _bSelect; }
@@ -76,7 +75,7 @@ private:
 
     // IMapEditable을(를) 통해 상속됨
     virtual void OnSeletected(bool bSelected) override;
-    virtual void Save_To_Json() override;
+    virtual void Save_To_Json(json& Json) override;
 };
 
 

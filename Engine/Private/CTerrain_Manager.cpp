@@ -3,6 +3,10 @@
 #include "MathUtils.h"
 #include "CVIBuffer.h"
 #include "CMapTerrain.h"
+#include "CMapObject_Manager.h"
+#include "CModel.h"
+
+
 
 
 CTerrain_Manager::CTerrain_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
@@ -21,7 +25,12 @@ HRESULT CTerrain_Manager::Register_Terrain(const _wstring& Key, CTerrain_Base* p
 
 	else
 	{
+		CMapTerrain* ppTerrain = dynamic_cast<CMapTerrain*>(pTerrain);
+		if (ppTerrain)
+			ppTerrain->Set_Idx(m_TerrainMap.size());
+
 		m_TerrainMap.emplace(Key, pTerrain);
+	
 
 	}
 
@@ -155,6 +164,18 @@ Triangle* CTerrain_Manager::PickTerrain(const _wstring& Key)
 	return nullptr;
 }
 
+void CTerrain_Manager::Clear_Terrains()
+{
+	for (auto& pair : m_TerrainMap)
+	{
+		if (pair.second)
+			Safe_Release(pair.second);
+	}
+
+
+	m_TerrainMap.clear();
+}
+
 CTerrain_Base* CTerrain_Manager::Check_Picking()
 {
 	CheckTrueResult(m_TerrainMap.empty(),nullptr);
@@ -192,6 +213,94 @@ CTerrain_Base* CTerrain_Manager::Check_Picking()
 
 }
 
+HRESULT CTerrain_Manager::Save_All_Terrains(const string& path, int iNum)
+{
+	json jTerrain;
+	for (auto& Terrain : m_TerrainMap)
+	{
+		if (Terrain.second)
+		{
+			CMapTerrain* pMapTerrain = dynamic_cast<CMapTerrain*>(Terrain.second);
+			if (pMapTerrain)
+				pMapTerrain->Save_To_Json(jTerrain);
+		}
+	}
+
+
+	fs::create_directories(path);
+	ofstream	file(path + "Terrain"+to_string(iNum)+".json");
+	file << std::setw(4) << jTerrain;
+
+	file.close();
+
+	return S_OK;
+
+}
+
+HRESULT CTerrain_Manager::Load_Terrains(const string& LoadPath)
+{
+	CGameInstance* m_pGameInstance=CGameInstance::GetInstance();
+	Clear_Terrains();
+
+	ifstream file(LoadPath);
+	json jTerrainData = json::parse(file);
+	for (auto& jTerrain : jTerrainData)
+	{
+		
+		string ModelName = jTerrain["ModelName"];
+		int TileID = jTerrain["TileID"];
+
+		json TransformData = jTerrain["Transform"];
+
+
+		_float3 vPos, vRot, vScale;
+		vPos.x = TransformData["Position"][0].get<float>();
+		vPos.y = TransformData["Position"][1].get<float>();
+		vPos.z = TransformData["Position"][2].get<float>();
+
+		vRot.x = TransformData["Rotation"][0].get<float>();
+		vRot.y = TransformData["Rotation"][1].get<float>();
+		vRot.z = TransformData["Rotation"][2].get<float>();
+
+		vScale.x = TransformData["Scale"][0].get<float>();
+		vScale.y = TransformData["Scale"][1].get<float>();
+		vScale.z = TransformData["Scale"][2].get<float>();
+
+
+		CMapTerrain::MAPTERRAIN_DESC desc;
+		desc.eRenderGroup = 0;
+		desc.modelName = StringToWString(ModelName);
+		desc.ObjTag = CMapObject_Manager::GetInstance()->Generate_UniqueTag(MapObjType::TERRAIN,desc.modelName);
+		desc.ObjType = MapObjType::TERRAIN;
+
+		CModel::tagModelDesc modelDesc;
+		desc.modelDesc = &modelDesc;
+		
+		CTransform::TRANSFORM_DESC TransDesc;
+		TransDesc.vLocalPosition = _float4(vPos.x, vPos.y, vPos.z, 1.f);
+		TransDesc.vLocalRotation = _float4(vRot.x, vRot.y, vRot.z,1.f);
+		TransDesc.vLocalScale = _float4(vScale.x, vScale.y, vScale.z, 1.f);
+
+		desc.TransformDesc = &TransDesc;
+
+		CGameObject* pCloneObj = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, 0, PROTO_OBJ_NAME(L"MapTerrain"), &desc));
+		if (pCloneObj)
+		{
+			CTerrain_Base* pTerrain = dynamic_cast<CTerrain_Base*>(pCloneObj);
+			if (pTerrain)
+			{
+				m_pGameInstance->Register_Terrain(desc.ObjTag, pTerrain);
+				return S_OK;
+			}
+		}
+
+		return E_FAIL;
+
+
+	}
+	return S_OK;
+}
+
 CTerrain_Manager* CTerrain_Manager::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
 {
 	CTerrain_Manager* pInstance = new CTerrain_Manager(_pDevice, _pContext);
@@ -202,12 +311,7 @@ CTerrain_Manager* CTerrain_Manager::Create(ComPtr<ID3D11Device> _pDevice, ComPtr
 
 void CTerrain_Manager::Free()
 {
-	for (auto& pair : m_TerrainMap)
-	{
-		Safe_Release(pair.second);
-
-	}
-
-	m_TerrainMap.clear();
+	__super::Free();
+	Clear_Terrains();
 }
 

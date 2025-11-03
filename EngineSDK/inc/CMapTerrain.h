@@ -53,13 +53,14 @@ public:
 public:
     //픽킹 확인
     bool            Is_Picked(_vector Origin, _vector Dir, float& Dist);
-
+    void            Set_Idx(int _idx) { m_iIdx = _idx; }
+    int             Get_Idx() { return m_iIdx; }
 
 public:
     // IMapEditable을(를) 통해 상속됨
     virtual void OnSeletected(bool bSelected) override;
 
-    virtual void Save_To_Json() override;
+    virtual void Save_To_Json(json& Json) override;
 
 protected:
     CModel* m_pModel = nullptr;

@@ -65,9 +65,6 @@ public:
     MapObjType      Get_ObjType_From_Path(const wstring& path);     //경로를 통해 objtype을 반환
 
 
-private:
-    wstring         Generate_UniqueTag(MapObjType Type, const wstring& baseName);
-
 
 private:
     HRESULT             Create_MapObject();

@@ -128,50 +128,6 @@ void CImgui_DataManager::Update_MouseInput()
 
 }
 
-wstring CImgui_DataManager::Generate_UniqueTag(MapObjType Type, const wstring& baseName)
-{
-	int iIdx = 0;
-	_wstring Result;
-
-	if (Type != MapObjType::TERRAIN)
-	{
-		CMapLayer* pMapLayer = m_pMapObject_Manager->Get_Layer_By_MapObjType(Type);
-		if (pMapLayer)
-		{
-			while (true)
-			{
-				Result = baseName + L"_" + to_wstring(iIdx);
-				if (pMapLayer->Find_GameObject(Result) == nullptr)
-					break;
-
-
-				++iIdx;
-			}
-		}
-
-		else
-			return baseName + L"_" + to_wstring(iIdx);
-
-	}
-
-	else
-	{
-		while (true)
-		{
-			Result = baseName + L"_" + to_wstring(iIdx);
-			if (m_pGameInstance->Find_Terrain(Result) == nullptr)
-				break;
-
-
-			++iIdx;
-		}
-		
-
-		
-	}
-
-	return Result;
-}
 
 
 HRESULT CImgui_DataManager::Create_MapObject()
@@ -193,7 +149,7 @@ HRESULT CImgui_DataManager::Create_MapTerrain()
 {
 	CMapTerrain::MAPTERRAIN_DESC Desc;
 	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
-	Desc.ObjTag = Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
+	Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
 	Desc.modelName = m_PlaceObjInfo.TexKey;
 	Desc.ObjType = m_PlaceObjInfo.ObjType;
 
@@ -222,7 +178,7 @@ HRESULT CImgui_DataManager::Create_Model()
 {
 	CMapModel::MAPMODEL_DESC Desc;
 	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
-	Desc.ObjTag = Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
+	Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
 	Desc.modelName = m_PlaceObjInfo.TexKey;
 	Desc.ObjType = m_PlaceObjInfo.ObjType;
 

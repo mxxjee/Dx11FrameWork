@@ -47,6 +47,7 @@ private:
 	void		CreateObjectInspectorWindow();
 
 	void		CreateAssetBrowserWindow();
+	void		CreateSaveWindow();
 
 private:
 	void			Reigster_Levels();

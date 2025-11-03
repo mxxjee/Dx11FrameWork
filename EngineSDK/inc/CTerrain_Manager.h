@@ -29,9 +29,18 @@ public:
     //픽킹한 삼각형의 점리턴 ( 로컬좌표)
     Triangle*                    PickTerrain(const _wstring& Key);
 
+    void                        Clear_Terrains();
+
 public:
     CTerrain_Base* Check_Picking();
     CTerrain_Base* Get_PickTerrain() { return m_pPickTerrain; }
+
+
+
+public:
+    HRESULT            Save_All_Terrains(const string& path,int iNum);
+    HRESULT             Load_Terrains(const string& LoadPath);
+
 
 public:
     static CTerrain_Manager* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext);
@@ -52,6 +61,8 @@ private:
     _float3                    PickingWolrdPos;     //terrain픽킹한 월드좌표
 
     CTerrain_Base*          m_pPickTerrain = nullptr;
+
+    
 
 };
 

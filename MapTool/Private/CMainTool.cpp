@@ -11,7 +11,7 @@
 #include "CObjectInspectorWindow.h"
 #include "CAssetCategoryWindow.h"
 #include "CAssetListWindow.h"
-
+#include "CSaveWindow.h"
 
 #include "CGameObject.h"
 
@@ -62,6 +62,7 @@ HRESULT CMainTool::Initialize()
     CreateLayerDebugWindow();
     CreateObjectInspectorWindow();
     CreateAssetBrowserWindow();
+    CreateSaveWindow();
 
     Reigster_Levels();
     if (FAILED(Start_Level(Client::LEVEL_ID::MAPTOOL, LEVELCHANGETYPE::REPLACETOP)))
@@ -327,6 +328,19 @@ void CMainTool::CreateAssetBrowserWindow()
     ListDesc.Tag = "AssetList";
 
     pImGui_Manager->RegisterWindow(CAssetListWindow::Create(m_pDevice, m_pContext, &ListDesc));
+}
+
+void CMainTool::CreateSaveWindow()
+{
+    CSaveWindow::IMGUIWINDOW_DESC Desc;
+    Desc.m_WindowTitle = "SaveWindow";
+    Desc.m_WindowPos = ImVec2(100, 100);
+    Desc.m_WindowSize = ImVec2(300, 300);
+    Desc.Tag = "SaveWindow";
+
+    pImGui_Manager->RegisterWindow(CSaveWindow::Create(m_pDevice, m_pContext, &Desc));
+
+
 }
 
 void CMainTool::Reigster_Levels()

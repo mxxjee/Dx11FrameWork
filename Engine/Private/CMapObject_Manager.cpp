@@ -244,6 +244,51 @@ CMapLayer* CMapObject_Manager::Get_Layer_By_MapObjType(MapObjType eType)
 
 }
 
+wstring CMapObject_Manager::Generate_UniqueTag(MapObjType Type, const wstring& baseName)
+{
+    int iIdx = 0;
+    _wstring Result;
+
+    if (Type != MapObjType::TERRAIN)
+    {
+        CMapLayer* pMapLayer = Get_Layer_By_MapObjType(Type);
+        if (pMapLayer)
+        {
+            while (true)
+            {
+                Result = baseName + L"_" + to_wstring(iIdx);
+                if (pMapLayer->Find_GameObject(Result) == nullptr)
+                    break;
+
+
+                ++iIdx;
+            }
+        }
+
+        else
+            return baseName + L"_" + to_wstring(iIdx);
+
+    }
+
+    else
+    {
+        while (true)
+        {
+            Result = baseName + L"_" + to_wstring(iIdx);
+            if (m_pGameInstance->Find_Terrain(Result) == nullptr)
+                break;
+
+
+            ++iIdx;
+        }
+
+
+
+    }
+
+    return Result;
+}
+
 void CMapObject_Manager::Set_SelectObject(IMapEditable* pSelectedObject)
 {
     

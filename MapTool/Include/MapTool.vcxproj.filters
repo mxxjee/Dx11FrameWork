@@ -61,6 +61,9 @@
     <Filter Include="04.GameObject\MapGrid">
       <UniqueIdentifier>{7119959e-9abc-49ca-b63a-8d3980b12a76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.ImguiObjects\SaveWindow">
+      <UniqueIdentifier>{aaa21816-454d-4925-b3a9-a9cbf79bc56b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CMainTool.h">
@@ -117,6 +120,9 @@
     <ClInclude Include="..\Public\CGrid_Manager.h">
       <Filter>05.Manager\GridManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CSaveWindow.h">
+      <Filter>02.ImguiObjects\SaveWindow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CMainTool.cpp">
@@ -160,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CGrid_Manager.cpp">
       <Filter>05.Manager\GridManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSaveWindow.cpp">
+      <Filter>02.ImguiObjects\SaveWindow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

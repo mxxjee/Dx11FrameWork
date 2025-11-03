@@ -148,6 +148,8 @@ HRESULT CMapObject::Ready_Resource(void* pArg)
 	return S_OK;
 }
 
+
+
 void CMapObject::Free()
 {
 	__super::Free();
@@ -162,6 +164,7 @@ void CMapObject::OnSeletected(bool bSelected)
 	m_bSelected = bSelected;
 }
 
-void CMapObject::Save_To_Json()
+void CMapObject::Save_To_Json(json& Json)
 {
 }
+

@@ -663,6 +663,16 @@ CTerrain_Base* CGameInstance::Get_PickTerrain()
 	return m_pTerrainManager->Get_PickTerrain();
 }
 
+HRESULT CGameInstance::Save_All_Terrains(const string& path, int iNum)
+{
+	return m_pTerrainManager->Save_All_Terrains(path, iNum);
+}
+
+HRESULT CGameInstance::Load_Terrains(const string& LoadPath)
+{
+	return m_pTerrainManager->Load_Terrains(LoadPath);
+}
+
 const UMap<_wstring, CTerrain_Base*>& CGameInstance::Get_TerrainMap()
 {
 	return m_pTerrainManager->Get_TerrainMap();
