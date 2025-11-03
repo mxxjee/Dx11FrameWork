@@ -23,6 +23,9 @@
     <ClInclude Include="..\Public\CAssetListWindow.h" />
     <ClInclude Include="..\Public\CGrid_Manager.h" />
     <ClInclude Include="..\Public\CImgui_DataManager.h" />
+    <ClInclude Include="..\Public\CImgui_MenuBar.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\CLayerDebugWindow.h" />
     <ClInclude Include="..\Public\CLevel_Editor.h" />
     <ClInclude Include="..\Public\CLevel_Loading.h" />
@@ -44,6 +47,9 @@
     <ClCompile Include="..\Private\CAssetListWindow.cpp" />
     <ClCompile Include="..\Private\CGrid_Manager.cpp" />
     <ClCompile Include="..\Private\CImgui_DataManager.cpp" />
+    <ClCompile Include="..\Private\CImgui_MenuBar.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\CLayerDebugWindow.cpp" />
     <ClCompile Include="..\Private\CLevel_Editor.cpp" />
     <ClCompile Include="..\Private\CLevel_Loading.cpp" />

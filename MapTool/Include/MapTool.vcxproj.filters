@@ -64,6 +64,9 @@
     <Filter Include="02.ImguiObjects\SaveWindow">
       <UniqueIdentifier>{aaa21816-454d-4925-b3a9-a9cbf79bc56b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.ImguiObjects\ImguiMenuBar">
+      <UniqueIdentifier>{0bb1a0c3-4c44-4786-9535-5cedf4291266}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CMainTool.h">
@@ -123,6 +126,7 @@
     <ClInclude Include="..\Public\CSaveWindow.h">
       <Filter>02.ImguiObjects\SaveWindow</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CImgui_MenuBar.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CMainTool.cpp">
@@ -170,6 +174,7 @@
     <ClCompile Include="..\Private\CSaveWindow.cpp">
       <Filter>02.ImguiObjects\SaveWindow</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CImgui_MenuBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="MapTool.ico">

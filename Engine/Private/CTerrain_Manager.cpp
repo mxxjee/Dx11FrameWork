@@ -239,6 +239,8 @@ HRESULT CTerrain_Manager::Save_All_Terrains(const string& path, int iNum)
 
 HRESULT CTerrain_Manager::Load_Terrains(const string& LoadPath)
 {
+	m_pPickTerrain = nullptr;
+
 	CGameInstance* m_pGameInstance=CGameInstance::GetInstance();
 	Clear_Terrains();
 

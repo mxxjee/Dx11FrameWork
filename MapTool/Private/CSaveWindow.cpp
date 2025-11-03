@@ -109,8 +109,9 @@ void CSaveWindow::Show_ListBox()
 {
     if (ImGui::ListBox("SaveFileList", &LoadFileIdx, m_SaveFileNamesStr.data(), m_SaveFileNamesStr.size()))
     {
-        pGameInstance->Load_Terrains(m_SaveFiles[LoadFileIdx]);
         pMapObject_Manager->Set_SelectObject(nullptr);
+        pGameInstance->Load_Terrains(m_SaveFiles[LoadFileIdx]);
+        
 
 
     }
