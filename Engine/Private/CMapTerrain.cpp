@@ -239,7 +239,8 @@ void CMapTerrain::Save_To_Json(json& Json)
     json Meta;
     Meta["TileID"] = m_iIdx;
     wstring name= m_pModel->Get_ModelData().name;
-    Meta["ModelName"] = string(name.begin(), name.end());
+ 
+    Meta["ModelName"] = WStringToUTF8(name);
 
 
     json Transform;

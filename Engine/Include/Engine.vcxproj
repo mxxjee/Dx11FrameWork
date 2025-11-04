@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h" />
+    <ClInclude Include="..\Public\CBone.h" />
     <ClInclude Include="..\Public\CBoxColliderComponent.h" />
     <ClInclude Include="..\Public\CCameraComponent.h" />
     <ClInclude Include="..\Public\CCamera_Base.h" />
@@ -257,6 +258,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp" />
+    <ClCompile Include="..\Private\CBone.cpp" />
     <ClCompile Include="..\Private\CBoxColliderComponent.cpp" />
     <ClCompile Include="..\Private\CCameraComponent.cpp" />
     <ClCompile Include="..\Private\CCamera_Base.cpp" />

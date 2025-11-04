@@ -61,7 +61,7 @@ protected:
     _uint                   m_eRenderGroup = 0;
     _wstring                m_ShaderName = L"";
     string                  m_passName = "";
-
+    int                     iHp = 5;
 };
 NS_END
 

@@ -87,13 +87,14 @@ void CLevel_Logo::Update(const _float fTimeDelta)
 {
     __super::Update(fTimeDelta);
 
-    CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Test_Layer", L"Test");
-    CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Player_Layer", L"Player");
+    CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Test_Layer", L"Player_Marker");
+    CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Model_Layer", L"Link2");
 
     if (pTestObject)
     {
         pTestObject->Get_Transform()->Rotation(_float3(90.f, 0.f, 0.f));
-        pTestObject->Get_Transform()->Set_State(STATE::POSITION, pPlayerObject->Get_Transform()->Get_State(STATE::POSITION, TransformScope::WORLD));
+        _vector vPos = pPlayerObject->Get_Transform()->Get_State(STATE::POSITION, TransformScope::WORLD);
+        pTestObject->Get_Transform()->Set_State(STATE::POSITION, vPos);
 
     }
 
@@ -202,6 +203,8 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
 
         }*/
     }
+
+
 }
 
 void CLevel_Logo::Render()
@@ -425,6 +428,7 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
     CCamera_Base* pMinimapCam = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
     if (pMinimapCam)
     {
+        pMinimapCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::NONALPHA), false);
         pMinimapCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::UI), false);
 
     }
@@ -462,7 +466,7 @@ HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
 {
     CQuad::QUAD_DESC        Desc = {};
 
-    Desc.ObjTag = L"Test";
+    Desc.ObjTag = L"Player_Marker";
     Desc.TextureKey = L"Player_Marker";
     Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP);
 
@@ -490,6 +494,7 @@ HRESULT CLevel_Logo::Reday_Layer_Model(const _wstring& strLayerTag)
     CModelObject::MODELOBJECT_DESC desc;
     
     desc.modelName = L"Link2";
+    desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
     desc.ObjTag = L"Link2";
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.vLocalPosition = { 0.f,0.f,10.f,1.f };
@@ -499,6 +504,7 @@ HRESULT CLevel_Logo::Reday_Layer_Model(const _wstring& strLayerTag)
     desc.TransformDesc = &TransDesc;
 
     CModel::MODEL_DSC ModelDesc = {};
+    ModelDesc.ShaderName = L"VtxAnimMesh";
     desc.modelDesc = &ModelDesc;
 
 
@@ -546,8 +552,8 @@ void CLevel_Logo::OnEnter()
     if (pMinimapCamera)
     {
         pMinimapCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO),
-            L"Player_Layer",
-            L"Player"));
+            L"Model_Layer",
+            L"Link2"));
     }
 
 
@@ -612,10 +618,10 @@ void CLevel_Logo::Set_UIPos_ByWorld(_float3 OffSet)
 {
     /*UI를 플레이어 위치 머리위에 띄워보자!!*/
 
-    _vector vOffset = XMLoadFloat3(&OffSet);
+    /*_vector vOffset = XMLoadFloat3(&OffSet);
 
-    CGameObject* pMarkerUI = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"UI_Layer", L"Player_Marker");
-    CGameObject* pPlayer = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");
+    }
+   */
 
 
     //if (pHeartUI && pPlayer)

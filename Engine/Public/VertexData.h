@@ -24,6 +24,7 @@ struct ENGINE_DLL VertexTextureData
 };
 
 //////////////////Vertex Struct////////////////////////
+
 typedef struct ENGINE_DLL  tagVertexPositionTexcoord
 {
 	XMFLOAT3		vPosition;
@@ -70,7 +71,7 @@ typedef struct ENGINE_DLL  tagVertexAnimationMesh
 	static const unsigned int		iNumElements = { 7 };
 	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
 
-}VTXMESH;
+}VTXANIMMESH;
 
 typedef struct ENGINE_DLL  tagEditMesh
 {

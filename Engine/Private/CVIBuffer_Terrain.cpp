@@ -75,9 +75,9 @@ HRESULT CVIBuffer_Terrain::Initialize_Prototype(const _tchar* pHeightFileMapPath
 	ZeroMemory(pVertices, sizeof(VTXNORTEX) * m_iNumVertices);
 
 	//위치값 기록을 위한 동적배열(따로 멤버 보관)
-	m_pVertexPositions.resize(m_iNumVertices);
 	m_pVertexPositions.clear();
-
+	m_pVertexPositions.resize(m_iNumVertices);
+	
 	for (_uint i = 0; i < m_iNumVerticesZ; ++i)
 	{
 		for (_uint j = 0; j < m_iNumVerticesX; ++j)

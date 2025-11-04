@@ -7,6 +7,7 @@ NS_BEGIN(Engine)
 class CMeshComponent;
 class CGameInstance;
 class CShader;
+class CBone;
 
 /*모델이 공통적인 셰이더를 가지고....
 각 메쉬는 pass만다르게가진다..? */
@@ -34,8 +35,11 @@ public:
 
 
 private:
-    HRESULT     LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepPath);
-    HRESULT     LoadMaterialFromJSon(const _char* filePath);
+    HRESULT     LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepPath,json& jModel);
+
+    
+    HRESULT     LoadMaterialFromJSon(const _char* filePath,json& jModel);
+    HRESULT     Load_BonesFromJson(json& jModel);
 
 public:
         //모든 메쉬 ,메테리얼바인딩 하나씩 한 이후 호출하는 그리기작업 수행함수
@@ -61,9 +65,10 @@ public:
     const ModelData& Get_ModelData() { return m_ModelData; }
 private:
     UMap<wstring, CMeshComponent*>      m_Meshs;
+    UMap<wstring, CBone*>               m_Bones;
     ModelData       m_ModelData;
     CShader* m_pShader = nullptr;
-
+    MODEL					m_eModelType = {};
 private:
     CGameInstance* m_pGameInstance = nullptr;
     ComPtr<ID3D11Device>                m_pDevice;

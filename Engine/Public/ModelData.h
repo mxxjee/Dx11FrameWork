@@ -20,9 +20,16 @@ struct MaterialData
 
 };
 
+struct BoneData
+{
+	wstring		BoneName;
+	XMFLOAT4X4	TransformationMatrix;
+	int			BoneIndex = -1;
 
 
-//메쉬정보
+};
+
+
 struct MeshData
 {
 	wstring Name;
@@ -30,17 +37,21 @@ struct MeshData
 
 	uint32_t	VertexCount;			//정점개수
 	uint32_t	IndexCount;				//인덱스카운트
-
-	vector<VTXMESH>		Vertices;
+	vector<VTXMESH>			Vertices;
 	vector<uint32_t>		Indices;
-
 	MaterialData		m_MaterialData;
+	int					m_iNumBones = 0;
 };
-
 
 struct ModelData
 {
-	wstring name=L"";
-	wstring ResourcePath=L"";
+	wstring name = L"";
+	wstring ResourcePath = L"";
 	vector<MeshData>		Meshes;
+	vector<BoneData>		Bones;
 };
+
+
+
+/////////////////////////////Anim///////////////////////////
+

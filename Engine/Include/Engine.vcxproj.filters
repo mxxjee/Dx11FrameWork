@@ -301,6 +301,18 @@
     <Filter Include="05.Component\Collision\Mesh">
       <UniqueIdentifier>{23d21bff-ae69-45ea-aa56-4bcdcecbda95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\Mesh\StaticMeshComponent">
+      <UniqueIdentifier>{fd0eef66-9b10-47d4-a155-986e81f67994}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\Mesh\AnimMeshComponent">
+      <UniqueIdentifier>{44e6f7a8-3344-4771-be68-f0c99cf68701}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\VIBuffer\VIBuffer_Model\Static">
+      <UniqueIdentifier>{f7237f1e-f5ee-4a47-aa51-8d5e9dc0c8d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\VIBuffer\VIBuffer_Model\Anim">
+      <UniqueIdentifier>{a3f70905-b055-4eca-82f0-475b5b61fe0b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -570,9 +582,6 @@
     <ClInclude Include="..\Public\ModelData.h">
       <Filter>01.Utility\99.EtcUtils\ModelData</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CVIBuffer_Model.h">
-      <Filter>05.Component\VIBuffer\VIBuffer_Model</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CMeshComponent.h">
       <Filter>05.Component\Mesh</Filter>
     </ClInclude>
@@ -605,6 +614,10 @@
     </ClInclude>
     <ClInclude Include="..\Public\VertexData.h">
       <Filter>01.Utility\99.EtcUtils\VertexData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBone.h" />
+    <ClInclude Include="..\Public\CVIBuffer_Model.h">
+      <Filter>05.Component\VIBuffer\VIBuffer_Model\Static</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -836,9 +849,6 @@
     <ClCompile Include="..\Private\CModelObject.cpp">
       <Filter>03.GameObject\ModelObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CVIBuffer_Model.cpp">
-      <Filter>05.Component\VIBuffer\VIBuffer_Model</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CMeshComponent.cpp">
       <Filter>05.Component\Mesh</Filter>
     </ClCompile>
@@ -865,6 +875,10 @@
     </ClCompile>
     <ClCompile Include="..\Public\VertexData.cpp">
       <Filter>01.Utility\99.EtcUtils\VertexData</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBone.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer_Model.cpp">
+      <Filter>05.Component\VIBuffer\VIBuffer_Model\Static</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

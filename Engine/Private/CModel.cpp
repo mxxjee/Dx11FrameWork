@@ -4,6 +4,8 @@
 #include "CMaterial.h"
 #include "CShader.h"
 #include "CGameInstance.h"
+#include "CBone.h"
+
 
 
 CModel::CModel(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -16,6 +18,8 @@ CModel::CModel(const CModel& Prototype)
 	: m_pOwner(Prototype.m_pOwner),
 	m_ModelData(Prototype.m_ModelData),
 	m_Meshs(Prototype.m_Meshs),
+	m_Bones(Prototype.m_Bones),
+	m_eModelType(Prototype.m_eModelType),
 	m_pGameInstance(Prototype.m_pGameInstance),
 	m_pShader(Prototype.m_pShader),
 	m_pDevice(Prototype.m_pDevice),
@@ -29,19 +33,48 @@ CModel::CModel(const CModel& Prototype)
 		Safe_AddRef(pair.second);
 
 	}
+
+	for (auto& pair : m_Bones)
+	{
+		Safe_AddRef(pair.second);
+
+	}
 }
 										//"C:\Users\kmj69\Documents\GitHub\ModelConverter\Output\Zelda\Zelda.json"
 HRESULT CModel::Initialize_Prototype(_matrix PreTransformMatrix,const _char* pModelFilePath)
 {
-	m_pShader = m_pGameInstance->Find_Shader(L"VtxMesh");
+
+
+
+
+	ifstream	file(pModelFilePath);
+	json jModel = json::parse(file);
+	bool bHasBone = jModel.contains("Bones");
+
+	m_eModelType=bHasBone ? MODEL::ANIM : MODEL::NONANIM;
+	if (m_eModelType == MODEL::NONANIM)
+		m_pShader = m_pGameInstance->Find_Shader(L"VtxMesh");
+
+	else
+		m_pShader = m_pGameInstance->Find_Shader(L"VtxAnimMesh");
+
 	Safe_AddRef(m_pShader);
-
-	if (FAILED(LoadMaterialFromJSon(pModelFilePath)))	//Manager에 메쉬가 사용할 모든 Material들을 등록한다.
+	
+	if (FAILED(LoadMaterialFromJSon(pModelFilePath, jModel)))	//Manager에 메쉬가 사용할 모든 Material들을 등록한다.
 		return E_FAIL;
 
 
-	if (FAILED(LoadModelFromJson(PreTransformMatrix,pModelFilePath)))	//파싱하면서 메테리얼이름을 읽어서 Manager에서 찾아서 meshcomp 한테 넘겨준다.
+
+	///Bone여부에 따라서 내부적으로 애니메이션메쉬로 로드할건지, 아닌지 판단
+
+	if (FAILED(LoadModelFromJson(PreTransformMatrix,pModelFilePath, jModel)))	//파싱하면서 메테리얼이름을 읽어서 Manager에서 찾아서 meshcomp 한테 넘겨준다.
 		return E_FAIL;
+
+
+	if (bHasBone)
+		if (FAILED(Load_BonesFromJson(jModel)))
+			return E_FAIL;
+
 
 	fs::path	Tmp = pModelFilePath;
 
@@ -74,13 +107,9 @@ HRESULT CModel::Initialize_Copytype(void* pArg)
 }
 
 									//"C:\Users\kmj69\Documents\GitHub\ModelConverter\Output\Zelda\Zelda.json"
-HRESULT CModel::LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepPath)
+HRESULT CModel::LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepPath, json& jModel)
 {
 	ModelData model;
-	ifstream	file(filepPath);
-	
-	json jModel = json::parse(file);
-
 	fs::path fullpath = filepPath;
 								//마지막파일명뺴고 추출
 	string folderpath = fullpath.parent_path().string()+"\\";
@@ -92,23 +121,23 @@ HRESULT CModel::LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepP
 	{
 		//MeshData정보 채워서 넘겨주기.
 		MeshData meshData;
-
+		
 		string MeshName = jMesh["Name"];		//매쉬이름
 		meshData.Name = wstring(MeshName.begin(), MeshName.end());
-
-
 		meshData.m_MaterialData.m_MaterialName = StringToWString(jMesh["MaterialName"]);
-
-
 		meshData.Transform= PreTransformMatrix;
-	
+		if (m_eModelType==MODEL::ANIM)
+			jMesh["NumBones"] = meshData.m_iNumBones;
+
+
+
 		string vbPath = folderpath + string(jMesh["VBPath"]);
 		string ibPath = folderpath + string(jMesh["IBPath"]);
 		int MeshIdx = jMesh["MeshIdx"];
 
 		//메쉬 생성, 필요한 정보들은 미리 세팅해서 던져준다.
 		CMeshComponent* pMesh = nullptr;
-		pMesh = CMeshComponent::Create(m_pDevice, m_pDeviceContext, meshData, folderpath.c_str(), MeshIdx);
+		pMesh = CMeshComponent::Create(m_pDevice, m_pDeviceContext, meshData, folderpath.c_str(), MeshIdx, m_eModelType);
 		CheckNullResult(pMesh, E_FAIL);
 
 
@@ -131,14 +160,11 @@ HRESULT CModel::LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepP
 	return S_OK;
 }
 
-HRESULT CModel::LoadMaterialFromJSon(const _char* filePath)
+
+
+HRESULT CModel::LoadMaterialFromJSon(const _char* filePath, json& jModel)
 {
-	ModelData model;
-	
 
-	ifstream	file(filePath);
-
-	json jModel = json::parse(file);
 	string name = jModel["ModelName"];
 	m_ModelData.name = wstring(name.begin(), name.end());
 
@@ -187,6 +213,43 @@ HRESULT CModel::LoadMaterialFromJSon(const _char* filePath)
 	return S_OK;
 }
 
+HRESULT CModel::Load_BonesFromJson(json& jModel)
+{
+	for (auto& Bone : jModel["Bones"])
+	{
+		BoneData boneData;
+
+		string BoneName= Bone["BoneName"];
+		boneData.BoneName = wstring(BoneName.begin(), BoneName.end());
+		boneData.BoneIndex = Bone["ParentIndex"];
+
+		json Matrix= Bone["PreTransformMatrix"];
+
+
+		if (Matrix.is_array())
+		{
+			for (int i = 0; i < std::min(4, static_cast<int>(Matrix.size())); ++i)
+			{
+				if (Matrix[i].is_array())
+				{
+					for (int j = 0; j < std::min(4, static_cast<int>(Matrix[i].size())); ++j)
+					{
+						boneData.TransformationMatrix.m[i][j] =
+							static_cast<float>(Matrix[i][j].get<double>());
+					}
+				}
+			}
+		}
+
+
+		CBone* pBone = CBone::Create(boneData);
+		m_Bones.emplace(boneData.BoneName, pBone);
+		m_ModelData.Bones.push_back(boneData);
+
+	}
+	return S_OK;
+}
+
 HRESULT CModel::Render(CMeshComponent* pMesh)
 {
 	
@@ -227,6 +290,15 @@ void CModel::Free()
 			Safe_Release(pair.second);
 
 	}
+
+	for (auto& pair : m_Bones)
+	{
+		if (pair.second)
+			Safe_Release(pair.second);
+
+	}
+
+
 	Safe_Release(m_pShader);
 	Safe_Release(m_pGameInstance);
 }

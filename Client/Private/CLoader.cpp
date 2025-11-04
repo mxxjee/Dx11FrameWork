@@ -224,6 +224,11 @@ HRESULT CLoader::Register_Shaders()
         "DefaultTechnique");
     m_pGameInstance->Register_Shader(L"VtxMesh", pInstance);
 
+    pInstance = CShader::Create(m_pDevice,
+        m_pDeviceContext, VTXANIMMESH::desc, L"../../Resource/Shader/Shader_VtxAnimMesh.hlsl",
+        "DefaultTechnique");
+    m_pGameInstance->Register_Shader(L"VtxAnimMesh", pInstance);
+
 
     return S_OK;
 }
@@ -265,8 +270,11 @@ HRESULT CLoader::Register_Textures()
 HRESULT CLoader::Register_Models()
 {
 
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor");
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle");
+    _matrix matrix = XMMatrixRotationY(XMConvertToRadians(180.f));
+
+
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor", matrix);
+   // m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle");
 
    
     //if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Fiona_Model"), CModel::Create(m_pDevice, m_pDeviceContext,XMMatrixIdentity(), "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Fiona/Fiona.json"))))

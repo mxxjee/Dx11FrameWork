@@ -209,5 +209,8 @@ namespace Engine
 		SPECULAR,
 		END
 	};
+
+	enum class MODEL
+	{NONANIM, ANIM};
 }
 #endif // Engine_Enum_h__

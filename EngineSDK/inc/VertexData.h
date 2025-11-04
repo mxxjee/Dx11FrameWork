@@ -24,6 +24,7 @@ struct ENGINE_DLL VertexTextureData
 };
 
 //////////////////Vertex Struct////////////////////////
+
 typedef struct ENGINE_DLL  tagVertexPositionTexcoord
 {
 	XMFLOAT3		vPosition;
@@ -55,6 +56,22 @@ typedef struct ENGINE_DLL  tagVertexMesh
 	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
 
 }VTXMESH;
+
+typedef struct ENGINE_DLL  tagVertexAnimationMesh
+{
+	XMFLOAT3		vPosition;
+	XMFLOAT3		vNormal;
+	XMFLOAT3		Tangent;
+	XMFLOAT3		BiNormal;
+	XMFLOAT2		vTexcoord;
+
+	XMUINT4			vBlendIndex;		//이 정점이 영향을 받고있는 뼈에 대한 인덱스 , 최대 4개까지 지정가능
+	XMFLOAT4		vBlendWeight;		//그 뼈에 대한 가중치(얼마나 영향을받고있는지, BlendIndex와 1:1대응)
+	
+	static const unsigned int		iNumElements = { 7 };
+	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
+
+}VTXANIMMESH;
 
 typedef struct ENGINE_DLL  tagEditMesh
 {

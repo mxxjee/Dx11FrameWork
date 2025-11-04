@@ -9,7 +9,7 @@ HRESULT CBone::Initialize(const BoneData& Data)
     string Name = string(Data.BoneName.begin(), Data.BoneName.end());
 
     strcpy_s(m_szName, MAX_PATH, Name.c_str());
-    m_TransformationMatrix = Data.PreTransformMatrix;
+    m_TransformationMatrix = Data.TransformationMatrix;
     m_iParentBoneIndex = Data.BoneIndex;
 
 

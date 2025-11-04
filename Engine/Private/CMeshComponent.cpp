@@ -24,9 +24,9 @@ CMeshComponent::CMeshComponent(const CMeshComponent& Prototype)
 	Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CMeshComponent::Initialize_Prototype(const MeshData& Data, const char* BasePath, _uint iIdx)
+HRESULT CMeshComponent::Initialize_Prototype(const MeshData& Data, const char* BasePath, _uint iIdx, MODEL eModelType)
 {
-	
+
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
 
@@ -35,16 +35,14 @@ HRESULT CMeshComponent::Initialize_Prototype(const MeshData& Data, const char* B
 	string VBPath = string(BasePath) + "Mesh_" + to_string(iIdx) + ".vb";
 	string IBPath = string(BasePath) + "Mesh_" + to_string(iIdx) + ".ib";
 
-	if (!LoadBinaryVB(VBPath))
-		return E_FAIL;
 
-	if (!LoadBinaryIB(IBPath))
-		return E_FAIL;
 
 	if (FAILED(Set_Material()))
 		return E_FAIL;
 
-	m_pVIBuffer = CVIBuffer_Model::Create(m_pDevice, m_pContext, m_MeshData.Transform,m_MeshData.Vertices, m_MeshData.Indices);
+	_uint iSize = eModelType == MODEL::ANIM ? sizeof(VTXANIMMESH) : sizeof(VTXMESH);
+
+	m_pVIBuffer = CVIBuffer_Model::Create(m_pDevice, m_pContext, m_MeshData.Transform,VBPath,IBPath,eModelType);
 	CheckNullResult(m_pVIBuffer, E_FAIL);
 
 
@@ -59,61 +57,7 @@ HRESULT CMeshComponent::Initialize_Copytype(void* pArg)
     return S_OK;
 }
 
-bool CMeshComponent::LoadBinaryVB(const string& Path)
-{
-	ifstream file(Path, std::ios::binary);
-	if (!file.is_open())
-	{
-		MSG_BOX("Failed to Open VBFile");
-		return false;
-	}
 
-	//파일크기 구하기.
-	file.seekg(0, std::ios::end);
-	std::streamsize size = file.tellg();
-	file.seekg(0, std::ios::beg);
-
-	//정점개수 계산
-	size_t vertexCount = size / sizeof(VTXMESH);
-	m_MeshData.VertexCount = (_uint)vertexCount;
-	m_MeshData.Vertices.resize(vertexCount);
-
-	//읽기
-	if (!file.read(reinterpret_cast<char*>(m_MeshData.Vertices.data()), size))
-	{
-		MSG_BOX("Failed to Read VBFile");
-		return false;
-	}
-	return true;
-}
-
-bool CMeshComponent::LoadBinaryIB(const string& Path)
-{
-	ifstream file(Path, std::ios::binary);
-	if (!file.is_open())
-	{
-		MSG_BOX("Failed to Open IBFile");
-		return false;
-	}
-
-	//파일크기 구하기.
-	file.seekg(0, std::ios::end);
-	std::streamsize size = file.tellg();
-	file.seekg(0, std::ios::beg);
-
-	//정점개수 계산
-	size_t IndexCount = size / sizeof(uint32_t);
-	m_MeshData.IndexCount = (_uint)IndexCount;
-	m_MeshData.Indices.resize(IndexCount);
-
-	//읽기
-	if (!file.read(reinterpret_cast<char*>(m_MeshData.Indices.data()), size))
-	{
-		MSG_BOX("Failed to Read IBFile");
-		return false;
-	}
-	return true;
-}
 
 HRESULT CMeshComponent::Set_Material()
 {
@@ -125,13 +69,23 @@ HRESULT CMeshComponent::Set_Material()
 	return S_OK;
 }
 
+HRESULT CMeshComponent::Ready_For_NonAnimMesh(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, _matrix& Matrix, vector<VTXMESH>& Vertices, vector<_uint>& Indices)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT CMeshComponent::Ready_For_AnimMesh(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, _matrix& Matrix, vector<VTXMESH>& Vertices, vector<_uint>& Indices)
+{
+	return E_NOTIMPL;
+}
 
 
-CMeshComponent* CMeshComponent::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const MeshData& Data, const char* BasePath, _uint iIdx)
+
+CMeshComponent* CMeshComponent::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const MeshData& Data, const char* BasePath, _uint iIdx, MODEL eModelType)
 {
 	CMeshComponent* pInstance = new CMeshComponent(pDevice, pContext);
 
-	if (FAILED(pInstance->Initialize_Prototype(Data,BasePath,iIdx)))
+	if (FAILED(pInstance->Initialize_Prototype(Data,BasePath,iIdx, eModelType)))
 	{
 		MSG_BOX("Failed to Created : CMeshComponent");
 		Safe_Release(pInstance);
