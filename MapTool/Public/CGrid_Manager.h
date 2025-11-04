@@ -60,7 +60,7 @@ private:
     _float3                     MouseWorldPos;
 
     bool                    m_bPicking = false;
-
+    float                   fDist = 0.f;
 };
 NS_END
 

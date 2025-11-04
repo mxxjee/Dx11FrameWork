@@ -107,6 +107,10 @@ void CMenuBarWindow::Show_SaveMenu()
             if (FAILED(CGameInstance::GetInstance()->Save_All_Terrains(m_LoadFilePath.m_CurrentLoadFilePath, -1)))
                 return;
 
+            //다시초기화..
+            m_LoadFilePath.m_CurrentLoadFilePath = "";
+            m_pImgui_DataManager->Set_LoadFilePath(m_LoadFilePath);
+            
         }
 
 
@@ -168,7 +172,7 @@ void CMenuBarWindow::Show_ListBox()
             return;
 
         m_LoadFilePath.m_CurrentLoadFilePath = m_SaveFilePath.m_SaveFiles[m_LoadFilePath.LoadFileIdx];
-
+        m_pImgui_DataManager->Set_LoadFilePath(m_LoadFilePath);
     }
 
     ImGui::End();

@@ -116,6 +116,7 @@ Triangle* CGrid_Manager::PickTerrain()
 			XMStoreFloat3(&PickingWolrdPos, ray.Origin + ray.Dir * dist);
 
 			m_bPicking = true;
+			fDist = dist;
 			return &PickLocalTriangle;
 
 		}
@@ -140,10 +141,16 @@ void CGrid_Manager::Set_MouseWorldPos()
 	float planeD = 0.0f;
 
 	float t = 0.f;
+	float fDistance = 0.f;
+
+	if (fDist == 0)
+		fDistance = 20.f;
+	else
+		fDistance = fDist;
 
 	Ray ray = MathUtils::CreateRayWorld(m_EngineDesc.hWnd, m_pDeviceContext, Proj, View);
 
-	XMStoreFloat3(&MouseWorldPos, ray.Origin + ray.Dir * 20.f);
+	XMStoreFloat3(&MouseWorldPos, ray.Origin + ray.Dir * fDistance);
 
 	wchar_t szBuf[128];
 	swprintf_s(szBuf, L"x: %.2f, y: %.2f, z: %.2f\n", MouseWorldPos.x, MouseWorldPos.y, MouseWorldPos.z);
