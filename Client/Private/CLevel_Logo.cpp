@@ -493,7 +493,7 @@ HRESULT CLevel_Logo::Reday_Layer_Model(const _wstring& strLayerTag)
 {
     CModelObject::MODELOBJECT_DESC desc;
     
-    desc.modelName = L"Link2";
+    desc.modelName = L"Anim";
     desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
     desc.ObjTag = L"Link2";
     CTransform::TRANSFORM_DESC TransDesc = {};

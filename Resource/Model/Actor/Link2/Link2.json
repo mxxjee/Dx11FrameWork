@@ -5610,5 +5610,6 @@
             "VertexCount": 88
         }
     ],
-    "ModelName": "Link2"
+    "ModelName": "Link2",
+    "NumAnimations": 0
 }

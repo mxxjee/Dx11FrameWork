@@ -153,12 +153,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\CAnimation.h" />
     <ClInclude Include="..\Public\CBase.h" />
     <ClInclude Include="..\Public\CBone.h" />
     <ClInclude Include="..\Public\CBoxColliderComponent.h" />
     <ClInclude Include="..\Public\CCameraComponent.h" />
     <ClInclude Include="..\Public\CCamera_Base.h" />
     <ClInclude Include="..\Public\CCamera_Manager.h" />
+    <ClInclude Include="..\Public\CChannel.h" />
     <ClInclude Include="..\Public\CCollider_Base.h" />
     <ClInclude Include="..\Public\CHotKey_Manager.h" />
     <ClInclude Include="..\Public\CImgui_Checkbox.h" />
@@ -258,12 +260,14 @@
     <ClInclude Include="..\Public\VertexData.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\CAnimation.cpp" />
     <ClCompile Include="..\Private\CBase.cpp" />
     <ClCompile Include="..\Private\CBone.cpp" />
     <ClCompile Include="..\Private\CBoxColliderComponent.cpp" />
     <ClCompile Include="..\Private\CCameraComponent.cpp" />
     <ClCompile Include="..\Private\CCamera_Base.cpp" />
     <ClCompile Include="..\Private\CCamera_Manager.cpp" />
+    <ClCompile Include="..\Private\CChannel.cpp" />
     <ClCompile Include="..\Private\CCollider_Base.cpp" />
     <ClCompile Include="..\Private\CHotKey_Manager.cpp" />
     <ClCompile Include="..\Private\CImgui_Checkbox.cpp" />

@@ -319,6 +319,12 @@
     <Filter Include="00.System\13.ModelManager\Bone">
       <UniqueIdentifier>{007376da-a9e1-49b1-ab59-143ba06aa979}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\13.ModelManager\Model\Animations">
+      <UniqueIdentifier>{9ae09c1d-6b1d-42a8-a5aa-0362227e2046}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\13.ModelManager\Model\Animations\Channel">
+      <UniqueIdentifier>{4dff53fd-d368-4fe5-9249-e7ff3902d261}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -630,6 +636,12 @@
     <ClInclude Include="..\Public\CBone.h">
       <Filter>00.System\13.ModelManager\Bone</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CAnimation.h">
+      <Filter>00.System\13.ModelManager\Model\Animations</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CChannel.h">
+      <Filter>00.System\13.ModelManager\Model\Animations\Channel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -895,6 +907,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CBone.cpp">
       <Filter>00.System\13.ModelManager\Bone</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAnimation.cpp">
+      <Filter>00.System\13.ModelManager\Model\Animations</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CChannel.cpp">
+      <Filter>00.System\13.ModelManager\Model\Animations\Channel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

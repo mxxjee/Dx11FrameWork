@@ -20,6 +20,14 @@ struct MaterialData
 
 };
 
+typedef struct tagKeyFrame
+{
+	_float3		vScale;
+	_float4		vRotation;
+	_float3		vTranslation;
+	float		fTrackPosition;
+}KEYFRAME;
+
 struct BoneData
 {
 	wstring		BoneName;
@@ -60,6 +68,8 @@ struct MeshData
 
 
 };
+
+
 
 struct ModelData
 {

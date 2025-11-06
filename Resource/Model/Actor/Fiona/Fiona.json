@@ -3511,5 +3511,6 @@
             "VertexCount": 121
         }
     ],
-    "ModelName": "Fiona"
+    "ModelName": "Fiona",
+    "NumAnimations": 25
 }

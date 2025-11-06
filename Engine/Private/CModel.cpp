@@ -5,6 +5,8 @@
 #include "CShader.h"
 #include "CGameInstance.h"
 #include "CBone.h"
+#include "CAnimation.h"
+
 
 
 
@@ -21,6 +23,7 @@ CModel::CModel(const CModel& Prototype)
 	m_Bones(Prototype.m_Bones),
 	m_eModelType(Prototype.m_eModelType),
 	m_PreTransformMatrix(Prototype.m_PreTransformMatrix),
+	m_Animations{Prototype.m_Animations},
 	m_pGameInstance(Prototype.m_pGameInstance),
 	m_pShader(Prototype.m_pShader),
 	m_pDevice(Prototype.m_pDevice),
@@ -36,6 +39,12 @@ CModel::CModel(const CModel& Prototype)
 	}
 
 	for (auto& Bone : m_Bones)
+	{
+		Safe_AddRef(Bone);
+
+	}
+
+	for (auto& Bone : m_Animations)
 	{
 		Safe_AddRef(Bone);
 
@@ -75,7 +84,12 @@ HRESULT CModel::Initialize_Prototype(_matrix PreTransformMatrix,const _char* pMo
 		return E_FAIL;
 
 
+	if (m_iNumAnimations > 0)
+	{
+		if (FAILED(Load_Animation(pModelFilePath)))
+			return E_FAIL;
 
+	}
 
 	fs::path	Tmp = pModelFilePath;
 
@@ -116,6 +130,7 @@ HRESULT CModel::LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepP
 								//마지막파일명뺴고 추출
 	string folderpath = fullpath.parent_path().string()+"\\";
 	string ModelName = jModel["ModelName"];
+	m_iNumAnimations = jModel["NumAnimations"].get<int>();
 
 
 	model.name = wstring(ModelName.begin(), ModelName.end());
@@ -296,6 +311,27 @@ HRESULT CModel::Load_BonesFromJson(json& jModel)
 	return S_OK;
 }
 
+HRESULT CModel::Load_Animation(const _char* filePath)
+{
+
+
+	fs::path path = filePath;
+	string BasePath = path.parent_path().string();
+
+	
+	string AnimPath = BasePath + "\\" + WStringToUTF8(m_ModelData.name) + "_AnimData.json";
+
+	for (size_t i = 0; i < m_iNumAnimations; i++)
+	{
+		CAnimation* pAnimation = CAnimation::Create(AnimPath.c_str(),i);
+		if (nullptr == pAnimation)
+			return E_FAIL;
+
+		m_Animations.push_back(pAnimation);
+	}
+	return S_OK;
+}
+
 HRESULT CModel::Render(CMeshComponent* pMesh)
 {
 	
@@ -341,6 +377,10 @@ void CModel::Free()
 	{
 		Safe_Release(Bone);
 	}
+
+	for (auto& pAnimation : m_Animations)
+		Safe_Release(pAnimation);
+	m_Animations.clear();
 
 
 	Safe_Release(m_pShader);

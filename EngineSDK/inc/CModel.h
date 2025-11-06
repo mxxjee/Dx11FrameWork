@@ -31,14 +31,13 @@ protected:
 public:
     HRESULT Initialize_Prototype(_matrix PreTransformMatrix,const _char* pFilePath);
     HRESULT Initialize_Copytype(void* pArg);
-
+    
 
 private:
     HRESULT     LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepPath,json& jModel);
-
-    
     HRESULT     LoadMaterialFromJSon(const _char* filePath,json& jModel);
     HRESULT     Load_BonesFromJson(json& jModel);
+    HRESULT     Load_Animation(const _char* filePath);
 
 public:
         //모든 메쉬 ,메테리얼바인딩 하나씩 한 이후 호출하는 그리기작업 수행함수
@@ -78,6 +77,7 @@ private:
 
     _uint                               m_iNumAnimations = {};  //애니메이션 개수
     _uint                               m_iCurrentAnimIndex = {};       //현재 재생되고있는 애니메이션 클립의 인덱스
+    vector<class CAnimation*>           m_Animations;
 
 private:
     CGameInstance* m_pGameInstance = nullptr;

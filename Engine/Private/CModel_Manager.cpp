@@ -85,6 +85,8 @@ HRESULT CModel_Manager::Load_All_Models(const string& FilePath,_matrix PreMatrix
         {
             string FullPath = entry.path().string();
             string Name = entry.path().stem().string();
+            if (Name.find("AnimData") != string::npos)
+                continue;
 
             CModel* pInstance = CModel::Create(m_pDevice, m_pContext, PreMatrix, FullPath.c_str());
             if (!pInstance)
