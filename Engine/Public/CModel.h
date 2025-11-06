@@ -33,7 +33,6 @@ public:
     HRESULT Initialize_Copytype(void* pArg);
 
 
-
 private:
     HRESULT     LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepPath,json& jModel);
 
@@ -52,6 +51,8 @@ public:
 
 public:
     HRESULT             Bind_Mateiral(CShader* pShader, const _char* pConstName, CMeshComponent* pMesh, aiTextureType eMaterialType, _uint Textureindex = 0);
+    HRESULT             Bind_Bones(CShader* pShader, const char* pConstName,CMeshComponent* pMesh);
+    void                Play_Animation(_float fTimeDelta);
 
 public:
     /*레이충돌*/
@@ -64,11 +65,20 @@ public:
     class CShader* Get_Shader() { return m_pShader; }
     const ModelData& Get_ModelData() { return m_ModelData; }
 private:
-    UMap<wstring, CMeshComponent*>      m_Meshs;
-    UMap<wstring, CBone*>               m_Bones;
-    ModelData       m_ModelData;
-    CShader* m_pShader = nullptr;
-    MODEL					m_eModelType = {};
+    UMap<wstring, CMeshComponent*>          m_Meshs;
+    vector<class CBone*>                    m_Bones;
+
+private:
+    ModelData                           m_ModelData;
+    CShader*                            m_pShader = nullptr;
+    MODEL					            m_eModelType = {};
+
+    _float4x4                           m_PreTransformMatrix = {};
+
+
+    _uint                               m_iNumAnimations = {};  //애니메이션 개수
+    _uint                               m_iCurrentAnimIndex = {};       //현재 재생되고있는 애니메이션 클립의 인덱스
+
 private:
     CGameInstance* m_pGameInstance = nullptr;
     ComPtr<ID3D11Device>                m_pDevice;

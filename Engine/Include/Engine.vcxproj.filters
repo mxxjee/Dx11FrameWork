@@ -313,6 +313,12 @@
     <Filter Include="05.Component\VIBuffer\VIBuffer_Model\Anim">
       <UniqueIdentifier>{a3f70905-b055-4eca-82f0-475b5b61fe0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\14.HotKey">
+      <UniqueIdentifier>{125d6ae5-4053-4693-a695-b608f8419cea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\13.ModelManager\Bone">
+      <UniqueIdentifier>{007376da-a9e1-49b1-ab59-143ba06aa979}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -615,9 +621,14 @@
     <ClInclude Include="..\Public\VertexData.h">
       <Filter>01.Utility\99.EtcUtils\VertexData</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CBone.h" />
     <ClInclude Include="..\Public\CVIBuffer_Model.h">
       <Filter>05.Component\VIBuffer\VIBuffer_Model\Static</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CHotKey_Manager.h">
+      <Filter>00.System\14.HotKey</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBone.h">
+      <Filter>00.System\13.ModelManager\Bone</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -876,9 +887,14 @@
     <ClCompile Include="..\Public\VertexData.cpp">
       <Filter>01.Utility\99.EtcUtils\VertexData</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CBone.cpp" />
     <ClCompile Include="..\Private\CVIBuffer_Model.cpp">
       <Filter>05.Component\VIBuffer\VIBuffer_Model\Static</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CHotKey_Manager.cpp">
+      <Filter>00.System\14.HotKey</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBone.cpp">
+      <Filter>00.System\13.ModelManager\Bone</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -269,9 +269,11 @@ HRESULT CLoader::Register_Textures()
 
 HRESULT CLoader::Register_Models()
 {
-
-    _matrix matrix = XMMatrixRotationY(XMConvertToRadians(180.f));
-
+   
+    _matrix matrix = XMMatrixRotationY(XMConvertToRadians(180.f)); //XMMatrixIdentity();
+        ////
+    
+    //
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor", matrix);
    // m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle");

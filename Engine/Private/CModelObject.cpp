@@ -58,6 +58,7 @@ void CModelObject::Update(_float fTimeDelta)
     CheckNull(m_pTransformCom);
 
     Move_Input(fTimeDelta);
+    m_pModel->Play_Animation(fTimeDelta);
 }
 
 void CModelObject::Update_Late(_float fTimeDelta)
@@ -90,6 +91,9 @@ HRESULT CModelObject::Render()
             Mesh.second->Bind_ShaderResource(m_pShader, "g_SpecularTexture", aiTextureType::aiTextureType_SPECULAR);
             Mesh.second->Bind_ShaderResource(m_pShader, "g_AmbientTexture", aiTextureType::aiTextureType_AMBIENT);
         
+            if (FAILED(m_pModel->Bind_Bones(m_pShader, "g_BoneMatrices", Mesh.second)))
+                return E_FAIL;
+
             if (FAILED(m_pShader->Begin(Mesh.second->Get_PassName())))
                 return E_FAIL;
 

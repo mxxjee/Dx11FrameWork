@@ -160,6 +160,7 @@
     <ClInclude Include="..\Public\CCamera_Base.h" />
     <ClInclude Include="..\Public\CCamera_Manager.h" />
     <ClInclude Include="..\Public\CCollider_Base.h" />
+    <ClInclude Include="..\Public\CHotKey_Manager.h" />
     <ClInclude Include="..\Public\CImgui_Checkbox.h" />
     <ClInclude Include="..\Public\CComponent.h" />
     <ClInclude Include="..\Public\CConstantBuffer.h" />
@@ -264,6 +265,7 @@
     <ClCompile Include="..\Private\CCamera_Base.cpp" />
     <ClCompile Include="..\Private\CCamera_Manager.cpp" />
     <ClCompile Include="..\Private\CCollider_Base.cpp" />
+    <ClCompile Include="..\Private\CHotKey_Manager.cpp" />
     <ClCompile Include="..\Private\CImgui_Checkbox.cpp" />
     <ClCompile Include="..\Private\CComponent.cpp" />
     <ClCompile Include="..\Private\CConstantBuffer.cpp" />

@@ -214,6 +214,18 @@ HRESULT CShader::Bind_Matrix(const string& Variable, const _float4x4& mat)
 
 }
 
+HRESULT CShader::Bind_Matrices(const string& Variable, const _float4x4* mat, _uint iNumMatrices)
+{
+    ComPtr<ID3DX11EffectVariable> pVariable = m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str());
+    CheckNullResult(pVariable, E_FAIL);
+
+    ComPtr<ID3DX11EffectMatrixVariable>     pMatrixVariable = pVariable->AsMatrix();
+    CheckNullResult(pMatrixVariable, E_FAIL);
+
+    return pMatrixVariable->SetMatrixArray(reinterpret_cast<const _float*>(mat),0,iNumMatrices);
+}
+
+
 HRESULT CShader::Bind_Vector(const string& Variable, const _float4& vector)
 {
     ComPtr<ID3DX11EffectVariable> pVariable = m_ShaderInfo.m_pEffect->GetVariableByName(Variable.c_str());

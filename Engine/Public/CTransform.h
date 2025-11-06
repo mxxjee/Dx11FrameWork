@@ -15,7 +15,7 @@ public:
         _float fSpeedPerSec = {};
         _float fRotationPerSec = {};
 
-        _float4x4  m_WorldMatrix;
+        _float4x4  m_WorldMatrix = {};
 
     }TRANSFORM_DESC;
 

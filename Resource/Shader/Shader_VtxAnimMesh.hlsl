@@ -54,28 +54,33 @@ struct PS_IN
 
 
 
-
 /*버텍스 셰이더 단계의 함수
     버텍스 쉐이더 = 정점 갖고놀기
     정점과 행렬의 연산을 수 행*/
 VS_OUT VS_MAIN(VS_IN In) 
 {
     VS_OUT Out;
-  
-    //matrix BoneMatrix = g_BoneMatrices[In.vBlendIndex.x] * In.vBlendWeight.x +
-    //g_BoneMatrices[In.vBlendIndex.y] * In.vBlendWeight.y +
-    //g_BoneMatrices[In.vBlendIndex.z] * In.vBlendWeight.z +
-    //g_BoneMatrices[In.vBlendIndex.w] * In.vBlendWeight.w;
     
-    //vector vPosition = mul(vector(In.vPosition, 1.f), BoneMatrix);
+    float fWeightW = 1.f - (In.vBlendWeight.x + In.vBlendWeight.y + In.vBlendWeight.z);
     
-    vector vPosition = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
+    
+    matrix BoneMatrix = g_BoneMatrices[In.vBlendIndex.x] * In.vBlendWeight.x +
+        g_BoneMatrices[In.vBlendIndex.y] * In.vBlendWeight.y +
+        g_BoneMatrices[In.vBlendIndex.z] * In.vBlendWeight.z +
+        g_BoneMatrices[In.vBlendIndex.w] * fWeightW;
+    
+    vector vPosition = mul(vector(In.vPosition, 1.f), BoneMatrix);
+    
+    vPosition = mul(vPosition, g_WorldMatrix);
     vPosition = mul(vPosition, g_ViewProjMatrix);
     
     
     //계산완료된 vPosition(x,y,z,w)중 w는 z값을 보관중이다.
     Out.vPosition = vPosition;
-    Out.vNormal = mul(vector(In.vNormal, 0.f), g_WorldMatrix);
+    
+    Out.vNormal = mul(vector(In.vNormal, 0.f), BoneMatrix); 
+    Out.vNormal = mul(Out.vNormal, g_WorldMatrix);
+    
     Out.vTexcoord = In.vTexcoord;
     Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
     

@@ -26,6 +26,14 @@ struct BoneData
 	XMFLOAT4X4	TransformationMatrix;
 	int			BoneIndex = -1;
 
+	_float4x4	m_OffsetMatrix;
+
+
+	BoneData()
+	{
+		XMStoreFloat4x4(&m_OffsetMatrix, XMMatrixIdentity());
+
+	}
 
 };
 
@@ -40,7 +48,17 @@ struct MeshData
 	vector<VTXMESH>			Vertices;
 	vector<uint32_t>		Indices;
 	MaterialData		m_MaterialData;
+
 	int					m_iNumBones = 0;
+
+	//현재 이 메쉬에게 영향을 주는 본들을 모아놓는다. 모델안에 정의된 전체 본에서 인덱스를 찾아 저장
+	vector<_uint>		m_BoneIndices;
+
+	//저장한 본들의 초기설정을 위한 행렬,,?
+	vector<_float4x4>           m_OffsetMatrices;
+	
+
+
 };
 
 struct ModelData

@@ -89,6 +89,10 @@ using json = nlohmann::json;
 #endif
 #endif
 
+namespace Engine
+{
+	static const unsigned int g_iMaxNumBones = 512;
+}
 #include "Engine_Macro.h"
 #include "Engine_Enum.h"
 #include "Engine_Typedef.h"

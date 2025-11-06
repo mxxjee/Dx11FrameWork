@@ -3,11 +3,13 @@
 #include "CMaterial.h"
 #include "CGameInstance.h"
 #include "CShader.h"
+#include "CBone.h"
+
 
 
 
 CMeshComponent::CMeshComponent(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CComponent(pDevice,pContext),m_pGameInstance(CGameInstance::GetInstance())
+    :CComponent(pDevice,pContext),m_pGameInstance(CGameInstance::GetInstance()),m_pVIBuffer{nullptr}
 {
 }
 
@@ -24,7 +26,7 @@ CMeshComponent::CMeshComponent(const CMeshComponent& Prototype)
 	Safe_AddRef(m_pGameInstance);
 }
 
-HRESULT CMeshComponent::Initialize_Prototype(const MeshData& Data, const char* BasePath, _uint iIdx, MODEL eModelType)
+HRESULT CMeshComponent::Initialize_Prototype(const MeshData& Data, const char* BasePath, _uint iIdx,MODEL eModelType)
 {
 
 	if (FAILED(__super::Initialize_Prototype()))
@@ -37,11 +39,11 @@ HRESULT CMeshComponent::Initialize_Prototype(const MeshData& Data, const char* B
 
 
 
+
 	if (FAILED(Set_Material()))
 		return E_FAIL;
 
 	_uint iSize = eModelType == MODEL::ANIM ? sizeof(VTXANIMMESH) : sizeof(VTXMESH);
-
 	m_pVIBuffer = CVIBuffer_Model::Create(m_pDevice, m_pContext, m_MeshData.Transform,VBPath,IBPath,eModelType);
 	CheckNullResult(m_pVIBuffer, E_FAIL);
 
@@ -69,19 +71,8 @@ HRESULT CMeshComponent::Set_Material()
 	return S_OK;
 }
 
-HRESULT CMeshComponent::Ready_For_NonAnimMesh(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, _matrix& Matrix, vector<VTXMESH>& Vertices, vector<_uint>& Indices)
-{
-	return E_NOTIMPL;
-}
 
-HRESULT CMeshComponent::Ready_For_AnimMesh(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, _matrix& Matrix, vector<VTXMESH>& Vertices, vector<_uint>& Indices)
-{
-	return E_NOTIMPL;
-}
-
-
-
-CMeshComponent* CMeshComponent::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const MeshData& Data, const char* BasePath, _uint iIdx, MODEL eModelType)
+CMeshComponent* CMeshComponent::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const MeshData& Data, const char* BasePath, _uint iIdx,MODEL eModelType)
 {
 	CMeshComponent* pInstance = new CMeshComponent(pDevice, pContext);
 
@@ -156,6 +147,23 @@ HRESULT CMeshComponent::Bind_ShaderResource(CShader* pShader, const _char* pCons
 	CheckNullResult(m_pMaterial,E_FAIL);
 
 	return m_pMaterial->Bind_ShaderResource(pShader,pConstName,eMaterialType,Textureindex);
+}
+
+HRESULT CMeshComponent::Bind_Bones(CShader* pShader, const _char* pConstatName, const vector<CBone*>& Bones)
+{
+	for (size_t i = 0; i < m_MeshData.m_iNumBones; ++i)
+	{
+		
+		/*연산한 뼈의 combined행렬을 벡터에 담는다*/
+		XMStoreFloat4x4(&m_BoneMatrices[i],
+			XMLoadFloat4x4(&m_MeshData.m_OffsetMatrices[i])
+			* Bones[m_MeshData.m_BoneIndices[i]]->Get_CombinedTransformationMatrix());
+    
+		
+	}
+
+	/*한번에 떤진다.*/
+	return pShader->Bind_Matrices(pConstatName, m_BoneMatrices, g_iMaxNumBones);
 }
 
 void CMeshComponent::Free()

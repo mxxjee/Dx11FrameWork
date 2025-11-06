@@ -34,7 +34,7 @@ HRESULT CVIBuffer_Model::Initialize_Prototype(_matrix& Matrix, const string& VBP
 	if (!file.is_open())
 	{
 		MSG_BOX("Failed to Open IBFile");
-		return false;
+		return E_FAIL;
 	}
 
 	//파일크기 구하기.
@@ -142,21 +142,7 @@ HRESULT CVIBuffer_Model::Initialize_AnimMeshVertexBuffer(_matrix& Matrix, const 
 
 	for (_uint i = 0; i < m_iNumVertices; ++i)
 	{
-		_vector vPosition = XMVector3TransformCoord(XMLoadFloat3(&Vertices[i].vPosition), Matrix);
-		XMStoreFloat3(&Vertices[i].vPosition, vPosition);
 		m_pVertexPositions[i] = Vertices[i].vPosition;
-
-		//노말도 돌려줘야함.
-		_vector vNormal = XMVector3TransformCoord(XMLoadFloat3(&Vertices[i].vNormal), Matrix);
-		XMStoreFloat3(&Vertices[i].vNormal, vNormal);
-
-		//tangent
-		_vector vTangent = XMVector3TransformCoord(XMLoadFloat3(&Vertices[i].Tangent), Matrix);
-		XMStoreFloat3(&Vertices[i].Tangent, vTangent);
-
-		//bitangent까지 돌려줘야한다.
-		_vector vBiTangent = XMVector3TransformCoord(XMLoadFloat3(&Vertices[i].BiNormal), Matrix);
-		XMStoreFloat3(&Vertices[i].BiNormal, vBiTangent);
 	}
 
 	D3D11_SUBRESOURCE_DATA VertexData;

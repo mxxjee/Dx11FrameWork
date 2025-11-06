@@ -83,6 +83,7 @@ namespace Engine
 		Backspace = DIK_BACK,
 		Delete = DIK_DELETE,
 		Insert = DIK_INSERT,
+		Alt = DIK_LALT,
 
 		// ÇÔ¼öÅ°
 		F1 = DIK_F1, F2 = DIK_F2, F3 = DIK_F3, F4 = DIK_F4,

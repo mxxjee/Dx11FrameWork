@@ -10,7 +10,8 @@
 
 
 CTerrain_Manager::CTerrain_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
-	:m_pDevice{_pDevice},m_pDeviceContext{ _pContext }
+	:m_pDevice{_pDevice},m_pDeviceContext{ _pContext },
+	PickingWolrdPos{}, m_EngineDesc{}
 {
 }
 
@@ -27,7 +28,7 @@ HRESULT CTerrain_Manager::Register_Terrain(const _wstring& Key, CTerrain_Base* p
 	{
 		CMapTerrain* ppTerrain = dynamic_cast<CMapTerrain*>(pTerrain);
 		if (ppTerrain)
-			ppTerrain->Set_Idx(m_TerrainMap.size());
+			ppTerrain->Set_Idx(CAST_INT(m_TerrainMap.size()));
 
 		m_TerrainMap.emplace(Key, pTerrain);
 	
@@ -236,6 +237,8 @@ HRESULT CTerrain_Manager::Save_All_Terrains(const string& path, int iNum)
 
 	file.close();
 
+
+	MSG_BOX("Save Complete");
 	return S_OK;
 
 }

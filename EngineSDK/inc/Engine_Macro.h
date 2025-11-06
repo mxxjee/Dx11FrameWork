@@ -9,6 +9,7 @@
 
 #ifndef			MSG_BOX
 #define			MSG_BOX(_message)			MessageBox(nullptr, TEXT(_message), L"System Message", MB_OK)
+#define			LMSG_BOX(_message)			MessageBox(nullptr, (_message), L"System Message", MB_OK)
 #endif
 
 #define			NS_BEGIN(NAMESPACE)			namespace NAMESPACE {
@@ -26,6 +27,7 @@
 #define CheckFalseResult(x, y) { if(x == false) return y;}
 #define CheckNullResult(x, y) { if(x == nullptr) return y;}
 
+#define CAST_INT(x)	static_cast<int>(x)
 
 #define PROTO_OBJ_NAME(name) L"Proto_GameObject_" + _wstring(name)
 #define PROTO_COMPONENT_NAME(name) L"Proto_Component_" + _wstring(name)
