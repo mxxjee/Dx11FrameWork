@@ -33,3 +33,12 @@ struct PointLightBuffer :public ConstantBufferStruct
 
 
 };
+
+
+struct BoneBuffer :public ConstantBufferStruct
+{
+
+	_float4x4 g_BoneMatrices[g_iMaxNumBones];
+
+
+};

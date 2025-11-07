@@ -18,8 +18,7 @@ Texture2D g_AmbientTexture;
 
 Texture2D g_MaskTexture;
  
-//메시 한덩어리가 이용하는 뼈들
-matrix g_BoneMatrices[512];
+
 ////////임시로 정해놓은 오브젝트의 메테리얼값, 실제는 텍스처를 읽어서 처리해야함
 
 struct VS_IN

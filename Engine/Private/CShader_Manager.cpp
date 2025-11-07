@@ -161,6 +161,10 @@ HRESULT CShader_Manager::Create_GlobalConstantBuffer()
 	pPointLightBuffer->Create(2,sizeof(PointLightBuffer));
 	m_ConstantBuffers.emplace("PointLightBuffer", pPointLightBuffer);
 
+	CConstantBuffer* pBoneBuffer = new CConstantBuffer(m_pDevice, m_pContext);
+	pBoneBuffer->Create(3, sizeof(BoneBuffer));
+	m_ConstantBuffers.emplace("BoneBuffer", pBoneBuffer);
+
 
 	return S_OK;
 }

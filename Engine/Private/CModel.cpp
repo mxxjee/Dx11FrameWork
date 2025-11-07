@@ -132,6 +132,7 @@ HRESULT CModel::LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepP
 	string ModelName = jModel["ModelName"];
 	m_iNumAnimations = jModel["NumAnimations"].get<int>();
 
+	vector<CMeshComponent*>	m_MeshList;
 
 	model.name = wstring(ModelName.begin(), ModelName.end());
 	for(auto& jMesh: jModel["Meshes"])
@@ -180,7 +181,7 @@ HRESULT CModel::LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepP
 		CMeshComponent* pMesh = nullptr;
 		pMesh = CMeshComponent::Create(m_pDevice, m_pDeviceContext, meshData, folderpath.c_str(), MeshIdx, m_eModelType);
 		CheckNullResult(pMesh, E_FAIL);
-
+		m_MeshList.push_back(pMesh);
 
 		//pass이름을 따로정의했다면,(메쉬이름과 같이)
 		m_ModelData.Meshes.push_back(pMesh->Get_MeshData());
@@ -188,16 +189,19 @@ HRESULT CModel::LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepP
 		string strPath = string(filepPath);
 		m_ModelData.ResourcePath = wstring(strPath.begin(),strPath.end());
 
-		if (m_pShader->Check_PassName(MeshName))
+		bool hasPass = m_pShader->Check_PassName(MeshName);
+		if (hasPass)
 			pMesh->Set_PassName(MeshName);
 		
 		//아니라면 DefaultPass이용.(기본값초기화)
 
-			 
-		m_Meshs.emplace(wstring(MeshName.begin(), MeshName.end()), pMesh);
-
+	
 	}
 
+	for (auto& pMesh : m_MeshList)
+	{
+		m_Meshs.emplace(pMesh->Get_MeshData().Name, pMesh);
+	}
 	return S_OK;
 }
 
@@ -265,43 +269,15 @@ HRESULT CModel::Load_BonesFromJson(json& jModel)
 		boneData.BoneIndex = Bone["ParentIndex"];
 
 		json Matrix= Bone["Transformation"];
-		if (Matrix.is_array())
-		{
-			for (int i = 0; i < 4; ++i)
-			{
-				if (Matrix[i].is_array())
-				{
-					for (int j = 0; j < 4; ++j)
-					{
-						boneData.TransformationMatrix.m[i][j] =
-							static_cast<float>(Matrix[i][j].get<double>());
-					}
-				}
-			}
-
-		}
-
+		auto flat = Matrix.get<vector<float>>();
+		memcpy(&boneData.TransformationMatrix, flat.data(), sizeof(float) * 16);
+		
 
 
 		json OffsetMatrix = Bone["OffsetMatrix"];
-		if (OffsetMatrix.is_array())
-		{
-			for (int i = 0; i < 4; ++i)
-			{
-				if (OffsetMatrix[i].is_array())
-				{
-					for (int j = 0; j < 4; ++j)
-					{
-						boneData.m_OffsetMatrix.m[i][j] =
-							static_cast<float>(OffsetMatrix[i][j].get<double>());
-					}
-				}
-			}
-
-
-		
-		}
-
+		auto Tmp= OffsetMatrix.get<vector<float>>();
+		memcpy(&boneData.m_OffsetMatrix, Tmp.data(), sizeof(float) * 16);
+	
 
 		CBone* pBone = CBone::Create(boneData);
 		m_Bones.emplace_back(pBone);
@@ -321,9 +297,13 @@ HRESULT CModel::Load_Animation(const _char* filePath)
 	
 	string AnimPath = BasePath + "\\" + WStringToUTF8(m_ModelData.name) + "_AnimData.json";
 
+	ifstream	file(AnimPath);
+	json jFile = json::parse(file);
+
+
 	for (size_t i = 0; i < m_iNumAnimations; i++)
 	{
-		CAnimation* pAnimation = CAnimation::Create(this,AnimPath.c_str(),i);
+		CAnimation* pAnimation = CAnimation::Create(this, jFile,AnimPath.c_str(),i);
 		if (nullptr == pAnimation)
 			return E_FAIL;
 

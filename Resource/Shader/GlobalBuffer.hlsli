@@ -32,3 +32,8 @@ cbuffer PointLightBuffer : register(b2)
     
 }
 
+
+cbuffer BoneBuffer : register(b3)
+{
+    row_major matrix g_BoneMatrices[512];
+}

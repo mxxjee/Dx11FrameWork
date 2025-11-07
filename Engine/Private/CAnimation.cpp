@@ -7,12 +7,11 @@ CAnimation::CAnimation()
 {
 }
 
-HRESULT CAnimation::Initialize(CModel* pModel, const char* filePath,_uint idx)
+HRESULT CAnimation::Initialize(CModel* pModel, json& Json, const char* filePath,_uint idx)
 {
-	ifstream	file(filePath);
-	json jFile = json::parse(file);
 	
-	json AnimData = jFile["AnimDatas"][idx];
+	
+	json AnimData = Json["AnimDatas"][idx];
 
 	string AnimName = AnimData["Name"];
 
@@ -30,7 +29,7 @@ HRESULT CAnimation::Initialize(CModel* pModel, const char* filePath,_uint idx)
 	for (size_t i = 0; i < m_iNumChannels; ++i)
 	{
 		//채널이 키프레임을 만들떄 필요한 .anim파일을 넘겨준다.
-		CChannel* pChannel = CChannel::Create(pModel,jFile,animPath.c_str(), idx, i);
+		CChannel* pChannel = CChannel::Create(pModel, Json,animPath.c_str(), idx, i);
 		if (nullptr == pChannel)
 			return E_FAIL;
 
@@ -63,11 +62,11 @@ bool CAnimation::Update_TransformationMatrices(const vector<class CBone*>& Bones
 	return false;
 }
 
-CAnimation* CAnimation::Create(CModel* pModel, const char* filePath, _uint idx)
+CAnimation* CAnimation::Create(CModel* pModel, json& Json, const char* filePath, _uint idx)
 {
 	CAnimation* pInstance = new CAnimation();
 
-	if (FAILED(pInstance->Initialize(pModel,filePath,idx)))
+	if (FAILED(pInstance->Initialize(pModel, Json,filePath,idx)))
 	{
 		MSG_BOX("Failed to Created : CAnimation");
 		Safe_Release(pInstance);
