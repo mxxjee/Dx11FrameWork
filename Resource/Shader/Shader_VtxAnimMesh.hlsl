@@ -111,7 +111,7 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
     
 
     float4 MtrlSpecularColor = g_SpecularTexture.Sample(sampler0, Input.vTexcoord);
-    fSpeculrColor = g_vLightSpecular * MtrlSpecularColor * fSpecular;
+    fSpeculrColor = g_vLightSpecular * MtrlSpecularColor * fSpecular * 0.5f;
 
     
     
@@ -132,7 +132,7 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
         ///이거 이상함.
         fDiffuseColor += g_vPL_Diffuse[i] * MtrlDiffuseColor * fShade * fAttenuation;
         //fAmbientColor += g_vPL_Ambient[i] * g_vMaterialAmbient * fAttenuation;
-        fSpeculrColor += g_vPL_Specular[i] * MtrlSpecularColor * fSpecular;
+       // fSpeculrColor += g_vPL_Specular[i] * MtrlSpecularColor * fSpecular;
         
 
     }

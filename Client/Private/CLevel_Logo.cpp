@@ -85,8 +85,8 @@ void CLevel_Logo::Update(const _float fTimeDelta)
 {
     __super::Update(fTimeDelta);
 
-    CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Test_Layer", L"Player_Marker");
-    CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Model_Layer", L"Link2");
+    CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"UI_Layer", L"Player_Marker");
+    CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Player_Layer", L"Player");
 
     if (pTestObject)
     {
