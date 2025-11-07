@@ -43,6 +43,7 @@ HRESULT CModelObject::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
  
+    m_pModel->Set_Animation(2, true);
     return S_OK;
 
 }

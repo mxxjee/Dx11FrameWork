@@ -271,7 +271,7 @@ HRESULT CLoader::Register_Models()
 {
    
     _matrix matrix = XMMatrixRotationY(XMConvertToRadians(180.f)); //XMMatrixIdentity();
-        ////
+        //// 
     
     //
 

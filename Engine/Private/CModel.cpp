@@ -323,7 +323,7 @@ HRESULT CModel::Load_Animation(const _char* filePath)
 
 	for (size_t i = 0; i < m_iNumAnimations; i++)
 	{
-		CAnimation* pAnimation = CAnimation::Create(AnimPath.c_str(),i);
+		CAnimation* pAnimation = CAnimation::Create(this,AnimPath.c_str(),i);
 		if (nullptr == pAnimation)
 			return E_FAIL;
 
@@ -405,9 +405,11 @@ HRESULT CModel::Bind_Bones(CShader* pShader, const char* pConstName, CMeshCompon
 
 void CModel::Play_Animation(_float fTimeDelta)
 {
+
 	//모든 메쉬들을 순회하며 bone정보를 업데이트한다.
 	//m_iCurrentAnimationIndex에 해당하는 애니메이션 중, 현재 재생시간에 맞는 상태행렬을 실제 뼈에게 전달*/
 	//갱신해준 뼈들의 TransformMatrix를 기반으로 하여 실제 뼈의 상태(CombinedMatrix)행렬을 만든다.
+	m_isAnimFinished=m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta);
 
 	for (auto& Bone : m_Bones)
 	{
@@ -440,6 +442,36 @@ bool CModel::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
 	Dist = minDist;
 	return bHit;
 
+}
+
+void CModel::Set_Animation(_uint iAnimationIndex, _bool isLoop)
+{
+	if (iAnimationIndex >= m_Animations.size())
+		return;
+
+	m_iCurrentAnimIndex = iAnimationIndex;
+	m_Animations[iAnimationIndex]->Set_Loop(isLoop);
+}
+
+int CModel::Get_BoneIndex(const char* pBoneName)
+{
+
+	_int       iIndex = { 0 };
+
+	auto    iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)->_bool
+		{
+			if (pBone->Compare_Name(pBoneName))
+				return true;
+
+			++iIndex;
+
+			return false;
+		});
+
+	if (iter == m_Bones.end())
+		return -1;
+
+	return iIndex;
 }
 
 

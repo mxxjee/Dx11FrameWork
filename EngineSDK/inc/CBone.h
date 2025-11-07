@@ -16,7 +16,9 @@ public:
 
 public:
     _float4x4       Get_OffSetMatrix() { return m_OffsetMatrix; }
-    
+    void Set_TransformationMatrix(const _float4x4& TransformationMatrix) {
+        m_TransformationMatrix = TransformationMatrix;
+    }
 public:
     bool            Compare_Name(const char* pName);
 

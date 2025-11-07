@@ -17,7 +17,7 @@ private:
 
 
 public:
-    HRESULT Initialize(const char* filePath, const char* AnimFilePath,int AnimIdx,int index);
+    HRESULT Initialize(class CModel* pModel, json& Json, const char* AnimFilePath, int AnimIdx, int index);
     void Update_TransformationMatrix(const vector<class CBone*>& Bones, _float fCurrentTrackPosition);
 
 
@@ -25,9 +25,9 @@ private:
     _uint				m_iNumKeyFrames = {};		//이 채널의 전체 키프레임, SRT 변환중 가장 큰 것의 사이즈
     vector<KEYFRAME>	m_KeyFrames;
     _int				m_iBoneIndex = {};			//타겟이되는 본 인덱스
-
+    _uint               m_iCurrentKeyFrameIndex = 0.f;//현재 재생바위치(재생하려는 애니메이션 프레임 중 가장첫프레임에 위치)
 public:
-    static CChannel* Create(const char* filePath, const char* AnimFilePath,int AnimIdx, int index);
+    static CChannel* Create(class CModel* pModel,json& Json, const char* AnimFilePath,int AnimIdx, int index);
     virtual void Free() override;
 };
 

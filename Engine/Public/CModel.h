@@ -56,8 +56,8 @@ public:
 public:
     /*레이충돌*/
     bool        Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);
-
-
+    void        Set_Animation(_uint iAnimationIndex, _bool isLoop);
+    int         Get_BoneIndex(const char* pBoneName);
 public:
     CMeshComponent* Get_Mesh(const wstring& Name);
     const UMap<wstring, CMeshComponent*>& Get_Meshs() { return m_Meshs; }
@@ -78,7 +78,7 @@ private:
     _uint                               m_iNumAnimations = {};  //애니메이션 개수
     _uint                               m_iCurrentAnimIndex = {};       //현재 재생되고있는 애니메이션 클립의 인덱스
     vector<class CAnimation*>           m_Animations;
-
+    bool                                m_isAnimFinished = false;
 private:
     CGameInstance* m_pGameInstance = nullptr;
     ComPtr<ID3D11Device>                m_pDevice;
