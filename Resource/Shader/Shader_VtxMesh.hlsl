@@ -89,7 +89,7 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
     
   
     //specular 세기 = 반사벡터를 구해서  카메라 시야벡터 * (-1)와 내적
-    float fSpecular = Compute_Specular(g_vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition);
+    float fSpecular = Compute_Specular(g_vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition,50);
     
  
     fDiffuseColor = g_vLightDiffuse * MtrlDiffuseColor * fShade;
@@ -111,7 +111,7 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
         
         float fShade = Compute_Shade(vLightDirection, Input.vNormal);
         float fAttenuation = Compute_Attenuation(g_vPL_Range[i].r, Distance);
-        float fSpecular = Compute_Specular(vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition);
+        float fSpecular = Compute_Specular(vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition,50);
         
         
         ///이거 이상함.

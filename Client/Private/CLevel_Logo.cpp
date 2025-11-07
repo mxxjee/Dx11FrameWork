@@ -49,13 +49,11 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_Player(L"Player_Layer")))
         return E_FAIL;
 
-    if (FAILED(Ready_Layer_MainCamera(L"Camera_Layer")))
+    if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
         return E_FAIL;
 
-    if (FAILED(Reday_Layer_Test(L"Test_Layer")))
-        return E_FAIL;
-    
-    if (FAILED(Reday_Layer_Model(L"Model_Layer")))
+
+    if (FAILED(Ready_Layer_MainCamera(L"Camera_Layer")))
         return E_FAIL;
 
     
@@ -383,6 +381,30 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
         return E_FAIL;
 
 
+    /*플레이어 마커 생성*/
+    CQuad::QUAD_DESC        Desc = {};
+
+    Desc.ObjTag = L"Player_Marker";
+    Desc.TextureKey = L"Player_Marker";
+    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP);
+
+
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    TransDesc.vLocalPosition = { 0.f,0.f,0.f,1.f };
+    TransDesc.vLocalScale = { 5.f,5.f,1.f,1.f };
+
+    Desc.TransformDesc = &TransDesc;
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"Quad"),
+        ENUM_TO_UINT(LEVEL_ID::LOGO),
+        strLayerTag, &Desc)))
+        return E_FAIL;
+
+
+    return S_OK;
 
     return S_OK;
 }
@@ -438,64 +460,11 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
 
 HRESULT CLevel_Logo::Ready_Layer_Player(const _wstring& strLayerTag)
 {
-    CQuad::QUAD_DESC        Desc = {};
-
-    Desc.ObjTag = L"Player";
-    Desc.TextureKey = L"Keroro";
-    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
-
-    CTransform::TRANSFORM_DESC TransDesc = {};
-    TransDesc.fRotationPerSec = 10.f;
-    TransDesc.fSpeedPerSec = 5.f;
-    TransDesc.vLocalPosition = { 0.f,0.f,0.f,1.f };
-    TransDesc.vLocalScale = {3.f,3.f,1.f,1.f };
-
-    Desc.TransformDesc = &TransDesc;
-
-    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-        PROTO_OBJ_NAME(L"Player"),
-        ENUM_TO_UINT(LEVEL_ID::LOGO),
-        strLayerTag, &Desc)))
-        return E_FAIL;
-
-
-    return S_OK;
-}
-
-HRESULT CLevel_Logo::Reday_Layer_Test(const _wstring& strLayerTag)
-{
-    CQuad::QUAD_DESC        Desc = {};
-
-    Desc.ObjTag = L"Player_Marker";
-    Desc.TextureKey = L"Player_Marker";
-    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP);
-
-
-    CTransform::TRANSFORM_DESC TransDesc = {};
-    TransDesc.fRotationPerSec = 10.f;
-    TransDesc.fSpeedPerSec = 5.f;
-    TransDesc.vLocalPosition = { 0.f,0.f,0.f,1.f };
-    TransDesc.vLocalScale = { 5.f,5.f,1.f,1.f };
-
-    Desc.TransformDesc = &TransDesc;
-
-    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-        PROTO_OBJ_NAME(L"Quad"),
-        ENUM_TO_UINT(LEVEL_ID::LOGO),
-        strLayerTag, &Desc)))
-        return E_FAIL;
-
-
-    return S_OK;
-}
-
-HRESULT CLevel_Logo::Reday_Layer_Model(const _wstring& strLayerTag)
-{
     CModelObject::MODELOBJECT_DESC desc;
-    
-    desc.modelName = L"Anim";
+
+    desc.modelName = L"LinkAnim";
     desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
-    desc.ObjTag = L"Link2";
+    desc.ObjTag = L"Player";
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.vLocalPosition = { 0.f,0.f,10.f,1.f };
     TransDesc.fSpeedPerSec = 5.f;
@@ -509,13 +478,45 @@ HRESULT CLevel_Logo::Reday_Layer_Model(const _wstring& strLayerTag)
 
 
     if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-        PROTO_OBJ_NAME(L"Model"),
+        PROTO_OBJ_NAME(L"Player"),
         ENUM_TO_UINT(LEVEL_ID::LOGO),
         strLayerTag, &desc)))
         return E_FAIL;
 
     return S_OK;
+
 }
+
+HRESULT CLevel_Logo::Ready_Layer_Monster(const _wstring& strLayerTag)
+{
+    CModelObject::MODELOBJECT_DESC desc;
+
+    desc.modelName = L"MoriblinSword";
+    desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+    desc.ObjTag = L"Monster";
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.vLocalPosition = { 10.f,0.f,10.f,1.f };
+    TransDesc.fSpeedPerSec = 5.f;
+    TransDesc.fRotationPerSec = 10.f;
+
+    desc.TransformDesc = &TransDesc;
+
+    CModel::MODEL_DSC ModelDesc = {};
+    ModelDesc.ShaderName = L"VtxAnimMesh";
+    desc.modelDesc = &ModelDesc;
+
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"Monster"),
+        ENUM_TO_UINT(LEVEL_ID::LOGO),
+        strLayerTag, &desc)))
+        return E_FAIL;
+
+    return S_OK;
+
+}
+
+
 
 void CLevel_Logo::OnEnter()
 {
@@ -552,8 +553,8 @@ void CLevel_Logo::OnEnter()
     if (pMinimapCamera)
     {
         pMinimapCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO),
-            L"Model_Layer",
-            L"Link2"));
+            L"Player_Layer",
+            L"Player"));
     }
 
 
@@ -565,8 +566,8 @@ void CLevel_Logo::OnEnter()
         CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
         CheckNull(ppMainCamera);
         ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO),
-            L"Model_Layer",
-            L"Link2"), true);
+            L"Player_Layer",
+            L"Player"), true);
     }
 
 

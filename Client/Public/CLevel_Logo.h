@@ -27,9 +27,9 @@ public:
     HRESULT                 Ready_Layer_Enviroment(const _wstring& strLayerTag);
     HRESULT                 Ready_Layer_UI(const _wstring& strLayerTag);
     HRESULT                 Ready_Layer_MainCamera(const _wstring& strLayerTag);
+    
     HRESULT                 Ready_Layer_Player(const _wstring& strLayerTag);
-    HRESULT                 Reday_Layer_Test(const _wstring& strLayerTag);
-    HRESULT                 Reday_Layer_Model(const _wstring& strLayerTag);
+    HRESULT                 Ready_Layer_Monster(const _wstring& strLayerTag);
 
 public:
     virtual void        OnEnter() override;           //씬 진입시 매번호출

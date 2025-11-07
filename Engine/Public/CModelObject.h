@@ -42,8 +42,6 @@ public:
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
-public:
-    void Move_Input(float fTimeDelta);
 
 protected:
     CModel* m_pModel = nullptr;
@@ -55,13 +53,10 @@ private:
 
 
 protected:
-    bool bPressed = false;
-    CInput_Manager* m_pInputManager = nullptr;
-    ComPtr<ID3D11RasterizerState> m_pWireframeRS = nullptr;
     _uint                   m_eRenderGroup = 0;
     _wstring                m_ShaderName = L"";
     string                  m_passName = "";
-    int                     iHp = 5;
+
 };
 NS_END
 

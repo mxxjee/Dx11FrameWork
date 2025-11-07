@@ -1,5 +1,5 @@
 #pragma once
-#include "CQuad.h"
+#include "CModelObject.h"
 #include "VertexData.h"
 
 namespace Engine
@@ -10,7 +10,7 @@ NS_BEGIN(Client)
 
 
 class CPlayer :
-    public CQuad
+    public CModelObject
 {
 protected:
     CPlayer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
@@ -41,6 +41,7 @@ private:
     bool bPressed = false;
     CInput_Manager*         m_pInputManager = nullptr;
     int                     iHp = 5;
+    int                     m_iAnimIdx = 0;
 };
 
 NS_END

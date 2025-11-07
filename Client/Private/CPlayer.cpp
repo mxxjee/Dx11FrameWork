@@ -2,18 +2,20 @@
 #include "CGameInstance.h"
 #include "Client_Defines.h"
 #include "CInput_Manager.h"
+#include "CModel.h"
+
 
 
 
 USING(Client)
 CPlayer::CPlayer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CQuad(pDevice,pContext),m_pInputManager(CInput_Manager::GetInstance())
+    :CModelObject(pDevice,pContext),m_pInputManager(CInput_Manager::GetInstance())
 {
     Safe_AddRef(m_pInputManager);
 }
 
 CPlayer::CPlayer(const CPlayer& rhs)
-    : CQuad(rhs),m_pInputManager(rhs.m_pInputManager)
+    : CModelObject(rhs),m_pInputManager(rhs.m_pInputManager)
 {
     Safe_AddRef(m_pInputManager);
 }
@@ -32,9 +34,6 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
  
-    m_eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
-    /*m_pTarget = m_pGameInstance->Find_Camera(L"FreeCam");*/
-
 
     return S_OK;
 }
@@ -47,11 +46,9 @@ void CPlayer::Update_Priority(_float fTimeDelta)
 void CPlayer::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
-    CheckNull(m_pTransformCom);
-
-   // Move_Input(fTimeDelta);
-
-
+    Move_Input(fTimeDelta);
+    m_pModel->Set_Animation(m_iAnimIdx, true);
+   m_pModel->Play_Animation(fTimeDelta);
 }
 
 void CPlayer::Update_Late(_float fTimeDelta)
@@ -138,6 +135,20 @@ void CPlayer::Move_Input(_float fTimeDelta)
 
     if (m_pTarget)
         m_pTransformCom->Chase(m_pTarget->Get_Transform()->Get_State(STATE::POSITION, TransformScope::WORLD), fTimeDelta, 5);
+
+    if (m_pInputManager->IsKeyPressed(KeyCode::Num0))
+        m_iAnimIdx = 0;
+
+    if (m_pInputManager->IsKeyPressed(KeyCode::Num1))
+        m_iAnimIdx = 1;
+
+
+    if (m_pInputManager->IsKeyPressed(KeyCode::Num2))
+        m_iAnimIdx = 2;
+
+
+    if (m_pInputManager->IsKeyPressed(KeyCode::Num3))
+        m_iAnimIdx = 3;
 
    
 }

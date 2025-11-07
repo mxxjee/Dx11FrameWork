@@ -42,16 +42,19 @@ HRESULT CMaterial::Register_MaterialTexture(const char* BasePath, map<aiTextureT
 			continue;
 
 
-
+		fs::path path = BasePath;
+		
 		wstring TexName = wstring(it->second.begin(), it->second.end());
+		wstring TexKey= path.parent_path().parent_path().filename().wstring() + L"/" + TexName;
+		
 		
 		CTexture* pTex = m_pGameInstance->Find_Texture(TexName);
 
 		//못찾앗을때만 . 생성
 		if (!pTex)
 		{
-			pTex = CTexture::Create(m_pDevice, m_pContext, wstring(wBasePath + TexName).c_str());
-			if (FAILED(m_pGameInstance->Register_Texture(TexName, pTex)))
+			pTex = CTexture::Create(m_pDevice, m_pContext, wstring(path .wstring()+TexName).c_str());
+			if (FAILED(m_pGameInstance->Register_Texture(TexKey, pTex)))
 			{
 				Safe_Release(pTex);
 				continue;

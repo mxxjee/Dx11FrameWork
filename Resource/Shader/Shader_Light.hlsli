@@ -9,11 +9,11 @@ float Compute_Shade(float4 LightDirection, float4 Normal)
   
 }
 
-float Compute_Specular(float4 LightDirection, float4 Normal, float4 WorldPos, float4 CamPosition)
+float Compute_Specular(float4 LightDirection, float4 Normal, float4 WorldPos, float4 CamPosition,float Value)
 {
     vector vLook = WorldPos - CamPosition;
     vector Reflect = reflect(normalize(g_vLightDirection), normalize(Normal));
-    float fSpecular = pow(max(dot(Reflect, normalize(vLook) * (-1.f)), 0),50);
+    float fSpecular = pow(max(dot(Reflect, normalize(vLook) * (-1.f)), 0), Value);
     
     return fSpecular;
     

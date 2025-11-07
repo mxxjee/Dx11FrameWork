@@ -23,6 +23,7 @@
 #include "CVIBuffer_Terrain.h"
 
 #include "CModel.h"
+#include "CMonster.h"
 #include "CModelObject.h"
 
 
@@ -270,10 +271,7 @@ HRESULT CLoader::Register_Textures()
 HRESULT CLoader::Register_Models()
 {
    
-    _matrix matrix = XMMatrixRotationY(XMConvertToRadians(180.f)); //XMMatrixIdentity();
-        //// 
-    
-    //
+    _matrix matrix = XMMatrixIdentity();
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor", matrix);
    // m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle");
@@ -354,6 +352,9 @@ HRESULT CLoader::Register_GameObjects()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Model"), CModelObject::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Monster"), CMonster::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     return S_OK;

@@ -44,7 +44,7 @@
       <Filter>999.ImguiObject\ObjectInspectorWindow</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayer.h">
-      <Filter>02.GameObjects\00.WorldObjects\TestPlayer</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CFloor.h">
       <Filter>02.GameObjects\00.WorldObjects\Floor</Filter>
@@ -60,6 +60,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CTerrain.h">
       <Filter>02.GameObjects\00.WorldObjects\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMonster.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -122,9 +125,6 @@
     <Filter Include="02.GameObjects\00.WorldObjects\Floor">
       <UniqueIdentifier>{467ec163-af8f-413a-ade4-db51d15a2b96}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\TestPlayer">
-      <UniqueIdentifier>{0bc6481b-f5a7-4dd4-92ed-61f25bc7866a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\99.UI">
       <UniqueIdentifier>{230ec975-9e33-4301-b2e7-969ef3a3af24}</UniqueIdentifier>
     </Filter>
@@ -151,6 +151,15 @@
     </Filter>
     <Filter Include="02.GameObjects\00.WorldObjects\Model\Link">
       <UniqueIdentifier>{add529fd-49de-4012-be19-7d1c916f8280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models">
+      <UniqueIdentifier>{e3e289ab-529a-49e5-aab4-ae2d29a6bfdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player">
+      <UniqueIdentifier>{0bc6481b-f5a7-4dd4-92ed-61f25bc7866a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster">
+      <UniqueIdentifier>{84f24ddd-dcdc-4617-a248-0b502ed78e54}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -182,7 +191,7 @@
       <Filter>999.ImguiObject\ObjectInspectorWindow</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayer.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\TestPlayer</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CFloor.cpp">
       <Filter>02.GameObjects\00.WorldObjects\Floor</Filter>
@@ -201,6 +210,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CTerrain.cpp">
       <Filter>02.GameObjects\00.WorldObjects\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMonster.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
