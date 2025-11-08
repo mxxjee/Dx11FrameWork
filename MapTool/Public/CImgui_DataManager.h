@@ -41,6 +41,7 @@ public:
         string          m_SelectedCategory;
         string          m_SelectedItemName;
 
+        int             SelectIdx = -1;
         bool            m_bPlacementMode = false;
     
 
@@ -57,6 +58,7 @@ public:
     
                             //AssetCategory어떤거 선택했는지 전송하는 함수
     void            Send_SelectedCategory(const string& Str) { Data.m_SelectedCategory = Str; }
+    void            Send_SelectedIdx(int i) { Data.SelectIdx = i; }
 
     IMGUI_SHARED_DATA* Get_Data() { return &Data; }
 

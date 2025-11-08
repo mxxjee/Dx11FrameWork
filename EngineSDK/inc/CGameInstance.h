@@ -223,7 +223,6 @@ public:
 	HRESULT						Register_Terrain(const _wstring& Key, class CTerrain_Base* pTerrain);
 	HRESULT						UnRegister_Terrain(const _wstring& Key);
 	class CTerrain_Base*		Find_Terrain(const _wstring& Key);
-	Triangle*					PickTerrain(const _wstring& Key);
 	_float3						Get_PickingWorldPos();
 	CTerrain_Base*				Get_PickTerrain();
 
@@ -271,6 +270,10 @@ public:
  #pragma endregion
 
 
+#pragma region HotKey
+	 HRESULT         Register_HotKey(KeyCode eKode, bool bCtrl, bool bShift, bool bAlt, function<void()> Func);
+
+#pragma endregion
  private:
 	 class CLevel_Manager* m_pLevelManager = { nullptr };
 	 class CTimer_Manager* m_pTimerManager = { nullptr };
@@ -292,6 +295,7 @@ public:
 
 	 class CMaterial_Manager* m_pMaterialManager = { nullptr };
 	 class CModel_Manager* m_pModelManager = { nullptr };
+	 class CHotKey_Manager* m_pHotKeyManager = { nullptr };
 
 private:
 	vector<D3D11_VIEWPORT>          m_ViewPorts;

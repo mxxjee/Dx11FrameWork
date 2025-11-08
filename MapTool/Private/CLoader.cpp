@@ -235,8 +235,6 @@ HRESULT CLoader::Register_Textures()
     if (FAILED(m_pGameInstance->Register_Texture(L"Terrain", pTexture)))
         return E_FAIL;
 
-
-
     return S_OK;
 }
 

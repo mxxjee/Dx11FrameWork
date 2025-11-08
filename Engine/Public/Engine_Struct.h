@@ -82,7 +82,12 @@ namespace Engine
 	};
 
 
-	
+	typedef struct tagAssetInfo
+	{
+		MapObjType              ObjType;    //설치하려는 오브젝트타입
+		wstring TexKey = L"";   //Texmgr에 이미등록해논 키
+		wstring FullPath = L""; //전체경로
+	}AssetInfo;
 }
 
 

@@ -4,6 +4,9 @@
 NS_BEGIN(Engine)
 class CInput_Manager;
 
+/*게임상에서 사용되는 단축키를 등록하는 매니저*/
+/*키와 이벤트를 저장*/
+
 class CHotKey_Manager :
     public CBase
 {
@@ -30,6 +33,9 @@ public:
 public:
     HRESULT         Register_HotKey(KeyCode eKode, bool bCtrl, bool bShift, bool bAlt, HotKeyCallback Func);
     bool            CheckHotKeyPressed(const HotKey& Key);
+
+public:
+    static CHotKey_Manager* Create();
 
 public:
     virtual void Free() override;

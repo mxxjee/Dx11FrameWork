@@ -162,6 +162,7 @@
     <ClInclude Include="..\Public\CCamera_Manager.h" />
     <ClInclude Include="..\Public\CChannel.h" />
     <ClInclude Include="..\Public\CCollider_Base.h" />
+    <ClInclude Include="..\Public\CFolder.h" />
     <ClInclude Include="..\Public\CHotKey_Manager.h" />
     <ClInclude Include="..\Public\CImgui_Checkbox.h" />
     <ClInclude Include="..\Public\CComponent.h" />
@@ -269,6 +270,7 @@
     <ClCompile Include="..\Private\CCamera_Manager.cpp" />
     <ClCompile Include="..\Private\CChannel.cpp" />
     <ClCompile Include="..\Private\CCollider_Base.cpp" />
+    <ClCompile Include="..\Private\CFolder.cpp" />
     <ClCompile Include="..\Private\CHotKey_Manager.cpp" />
     <ClCompile Include="..\Private\CImgui_Checkbox.cpp" />
     <ClCompile Include="..\Private\CComponent.cpp" />

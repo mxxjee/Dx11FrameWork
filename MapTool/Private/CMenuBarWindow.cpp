@@ -22,6 +22,22 @@ HRESULT CMenuBarWindow::Initialize(void* pArg)
         return E_FAIL;
 
 
+    pGameInstance->Register_HotKey(KeyCode::S, true, false, false, [&]()
+        {
+			if (FAILED(CGameInstance::GetInstance()->Save_All_Terrains(m_SaveFilePath.m_CurrentSaveFilePath, m_SaveFilePath.m_SaveFiles.size())))
+				return;
+
+            //Refresh SaveFileList
+            if (FAILED(m_pImgui_DataManager->Update_SaveFiles()))
+                return;
+        });
+
+
+    pGameInstance->Register_HotKey(KeyCode::S, true, true, false, [&]()
+        {
+            m_bTextOpen = true;
+        });
+
 	return S_OK;
 }
 
@@ -88,7 +104,7 @@ void CMenuBarWindow::Update_Menu()
     /// 메뉴클릭에따라 활성화/비활성화된다.
     /// </summary>
     Show_ListBox();
-
+    Show_TextBox();
 }
 
 void CMenuBarWindow::Show_SaveMenu()
@@ -134,7 +150,7 @@ void CMenuBarWindow::Show_SaveAsMenu()
     //무조건 다른이름으로 저장
     if(ImGui::MenuItem("Save As", "Ctrl+Shift+S"))
     {
-
+        m_bTextOpen = true;
     }
 }
 
@@ -176,6 +192,26 @@ void CMenuBarWindow::Show_ListBox()
     }
 
     ImGui::End();
+}
+
+void CMenuBarWindow::Show_TextBox()
+{
+    CheckFalse(m_bTextOpen);
+
+    if (ImGui::InputText("Save Name", m_szSaveName, MAX_PATH, ImGuiInputTextFlags_EnterReturnsTrue))
+    {
+        //내가작성한 이름으로 저장할꺼야.
+        m_SaveFilePath.m_CurrentSaveFilePath = m_SaveFilePath.m_SavePathBase + m_szSaveName + ".json";
+
+        if (FAILED(CGameInstance::GetInstance()->Save_All_Terrains(m_SaveFilePath.m_CurrentSaveFilePath, m_SaveFilePath.m_SaveFiles.size())))
+            return;
+
+        //Refresh SaveFileList
+        if (FAILED(m_pImgui_DataManager->Update_SaveFiles()))
+            return;
+
+        m_bTextOpen = false;
+    }
 }
 
 

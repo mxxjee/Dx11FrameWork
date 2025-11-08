@@ -42,6 +42,7 @@ private:
 
     void        Show_LoadMenu();
     void        Show_ListBox();     //불러올목록표시
+    void        Show_TextBox();     //다른이름으로 저장할 이름 적는곳
 
 private:
     CGameInstance* pGameInstance = { nullptr };
@@ -55,7 +56,8 @@ private:
 
 private:
     bool            m_bListOpen = false;
-
+    bool            m_bTextOpen = false;
+    char            m_szSaveName[MAX_PATH]="";
 
 };
 NS_END

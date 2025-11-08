@@ -26,6 +26,7 @@
 #include "CMapObject_Manager.h"
 #include "CImgui_DataManager.h"
 #include "CGrid_Manager.h"
+#include "CTexture.h"
 
 
 
@@ -316,6 +317,13 @@ void CMainTool::CreateObjectInspectorWindow()
 
 void CMainTool::CreateAssetBrowserWindow()
 {
+
+    CTexture* pTexture = CTexture::Create(m_pDevice, m_pContext, L"../../Resource/Folder.png", 1);
+    if (FAILED(pGameInstance->Register_Texture(L"Folder", pTexture)))
+        return;
+
+
+
     CAssetCategoryWindow::IMGUIWINDOW_DESC Desc;
     Desc.m_WindowTitle = "AssetCategory";
     Desc.m_WindowPos = ImVec2(100, 100);

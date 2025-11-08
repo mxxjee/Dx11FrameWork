@@ -287,6 +287,8 @@ void CLevel_Editor::OnEnter()
 		}
 
 	}
+
+	
 }
 
 void CLevel_Editor::OnResume()

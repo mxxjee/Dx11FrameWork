@@ -1,5 +1,6 @@
 #pragma once
 #include "CImgui_Window.h"
+#include "CFolder.h"
 
 namespace Engine
 {
@@ -15,13 +16,7 @@ class CImgui_DataManager;
 class CAssetListWindow :
     public CImgui_Window
 {
-public:
-    typedef struct tagAssetInfo
-    {
-        MapObjType              ObjType;    //설치하려는 오브젝트타입
-        wstring TexKey = L"";   //Texmgr에 이미등록해논 키
-        wstring FullPath = L""; //전체경로
-    }AssetInfo;
+
 
 protected:
     CAssetListWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
@@ -33,6 +28,8 @@ public:
 private:
     HRESULT     Create_Widgets();
 
+public:
+    HRESULT     Create_Folders();       //진입 이후에 불러야함.
 
 public:
     // CImgui_Base을(를) 통해 상속됨
@@ -48,8 +45,8 @@ private:
     HRESULT       Create_TileImages();
 
 private:
-    void        Show_Grid(const string& Category);
-
+    void        Show_Grid(const string& Category, int FieldNum);
+    CFolder*    Get_Folder(const char* FileName);
 
 private:
     CGameInstance* pGameInstance = { nullptr };
@@ -58,8 +55,14 @@ private:
 
 
 private:
+    vector<CFolder*>        m_Folders;
+
     vector<tagAssetInfo>        ModelImages;
     vector<tagAssetInfo>         TileImages;
+
+
+    string             SelectCategory = "";
+    int                 SelectIdx = -1;
 
 };
 

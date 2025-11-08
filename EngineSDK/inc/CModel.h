@@ -34,7 +34,7 @@ public:
     
 
 private:
-    HRESULT     LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepPath,json& jModel);
+    HRESULT     LoadModelFromJson(bool _bHasAnim,_matrix PreTransformMatrix,const _char* filepPath,json& jModel);
     HRESULT     LoadMaterialFromJSon(const _char* filePath,json& jModel);
     HRESULT     Load_BonesFromJson(json& jModel);
     HRESULT     Load_Animation(const _char* filePath);

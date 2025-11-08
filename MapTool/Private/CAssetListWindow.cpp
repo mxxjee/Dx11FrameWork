@@ -5,6 +5,7 @@
 #include "CTexture.h"
 #include "MapTool_Defines.h"
 #include "CModel.h"
+#include "CFolder.h"
 
 
 USING(MapTool)
@@ -24,14 +25,51 @@ HRESULT CAssetListWindow::Create_Widgets()
     return S_OK;
 }
 
+HRESULT CAssetListWindow::Create_Folders()
+{
+    /*폴더생성*/
+    for (int i = 5; i <= 16; ++i)
+    {
+
+        //Field01
+        string Name = "Field_" + to_string(i);
+
+        CFolder::tagFolderDesc Desc;
+        strcpy_s(Desc.Name, MAX_PATH, Name.c_str());
+        Desc.Size = ImVec2(60.f, 60.f);
+        Desc.iIdx = i - 5;
+        Desc.Category = "Model";
+
+
+        CFolder* pInstance = CFolder::Create(m_pDevice, m_pContext, &Desc);
+        if (pInstance)
+        {
+            if (FAILED(pInstance->Initialize(&Desc)))
+                return E_FAIL;
+
+            m_Folders.push_back(pInstance);
+
+        }
+    }
+
+
+    return S_OK;
+
+}
+
 HRESULT CAssetListWindow::Initialize(void* pArg)
 {
     if(FAILED(__super::Initialize(pArg)))
         return E_FAIL;
 
+    if (FAILED(Create_Folders()))
+        return E_FAIL;
+
+    if (FAILED(Set_AssetList()))
+        return E_FAIL;
+
     ModelImages.reserve(50);
 
-    
 
 
     return S_OK;
@@ -54,10 +92,35 @@ void CAssetListWindow::Update()
 {
     ImGui::Begin(m_WindowTitle.c_str(), &m_bOpen);
 
-    CImgui_DataManager::IMGUI_SHARED_DATA* Data = m_pImgui_DataManager->Get_Data();
+    SelectCategory = m_pImgui_DataManager->Get_Data()->m_SelectedCategory;
+    SelectIdx = m_pImgui_DataManager->Get_Data()->SelectIdx;
 
-    if(Data->m_SelectedCategory!="")
-        Show_Grid(Data->m_SelectedCategory);
+
+    ImGui::Columns(10,0, false);
+
+
+    //선택안함 = SelectIdx=-1;
+    if (SelectIdx == -1)
+    {
+        for (auto& p : m_Folders)
+        {
+            if (p->Update())
+            {
+                m_pImgui_DataManager->Send_SelectedIdx(p->Get_Idx());
+            }
+
+            ImGui::TextWrapped(p->Get_Name());
+            ImGui::NextColumn();
+
+
+        }
+
+    }
+  
+    
+    //선택한 카테고리에 따라서 표시
+    Show_Grid(SelectCategory, SelectIdx);
+
     ImGui::End();
 }
 
@@ -94,6 +157,12 @@ HRESULT CAssetListWindow::Create_ModelImages()
 
             AssetInfo Info;
 
+
+            wstring Key = modelData.name.substr(0, modelData.name.size()-1);
+            string Result = WStringToUTF8(Key);
+
+
+            
             if (modelData.ResourcePath.find(L"Field") != wstring::npos)
                 Info.ObjType = MapObjType::TERRAIN;
 
@@ -104,6 +173,10 @@ HRESULT CAssetListWindow::Create_ModelImages()
 
             Info.FullPath = modelData.ResourcePath;
             ModelImages.push_back(Info);
+
+            CFolder* pFolder = Get_Folder(Result.c_str());
+            if (pFolder)
+                pFolder->Add_Info(Info);
         }
 
      
@@ -137,15 +210,20 @@ HRESULT CAssetListWindow::Create_TileImages()
     }
 }
 
-void CAssetListWindow::Show_Grid(const string& Category)
+void CAssetListWindow::Show_Grid(const string& Category,int FieldNum)
 {
+    CheckTrue(Category == "");
+    CheckTrue(FieldNum == -1);
 
     int  columnCount = 10;
     ImVec2 iconSize = ImVec2(64, 64); // 썸네일 크기
     ImGui::Columns(columnCount, 0, false);
     vector<tagAssetInfo>*        Target;
     if (Category == "Model")
-        Target = &ModelImages;
+    {
+        Target = m_Folders[FieldNum]->get_vector();
+    }
+        
 
     else
         Target = &TileImages;
@@ -155,7 +233,7 @@ void CAssetListWindow::Show_Grid(const string& Category)
     {
         ImGui::BeginGroup();
         // 썸네일 이미지
-        AssetInfo info = ModelImages[i];
+        AssetInfo info = Target->at(i);
         CTexture* pTex = pGameInstance->Find_Texture(info.TexKey);
 
         ComPtr<ID3D11ShaderResourceView> SRV = nullptr;
@@ -212,11 +290,26 @@ void CAssetListWindow::Show_Grid(const string& Category)
     }
 }
 
+CFolder* CAssetListWindow::Get_Folder(const char* FileName)
+{
+    for (auto& pFolder : m_Folders)
+    {
+        if (!strcmp(pFolder->Get_Name(), FileName))
+            return pFolder;
+
+    }
+
+    return nullptr;
+}
+
 void CAssetListWindow::Free()
 {
     __super::Free();
+    for (auto& i : m_Folders)
+        Safe_Release(i);
+
     Safe_Release(m_pMapObject_Manager);
     Safe_Release(m_pImgui_DataManager);
     Safe_Release(pGameInstance);
-
+    
 }

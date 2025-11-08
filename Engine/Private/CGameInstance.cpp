@@ -24,6 +24,7 @@
 #include "CLight_Manager.h"
 #include "CMaterial_Manager.h"
 #include "CModel_Manager.h"
+#include "CHotKey_Manager.h"
 
 #include "CMapObject.h"
 #include "CLayer.h"
@@ -128,6 +129,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	m_pMaterialManager = CMaterial_Manager::Create(*pDevice, *pContext);
 	CheckNullResult(m_pMaterialManager,E_FAIL);
 
+	/*Hotkey  매니저*/
+	m_pHotKeyManager = CHotKey_Manager::Create();
+	CheckNullResult(m_pHotKeyManager, E_FAIL);
+
 	
 	return S_OK;
 }
@@ -150,6 +155,7 @@ void CGameInstance::Update_Engine(_float fTimedelta)
 
 	m_pTerrainManager->Update(fTimedelta);
 	m_pLevelManager->Update(fTimedelta);
+	m_pHotKeyManager->Update();
 	Update_Cameras(fTimedelta);
 	
 	//카메라의 이동이모두 끝난 후 계산
@@ -755,6 +761,10 @@ CMaterial* CGameInstance::Find_Material(const _wstring& Tag)
 	CheckNullResult(m_pMaterialManager, nullptr);
 	return m_pMaterialManager->Find_Material(Tag);
 }
+HRESULT CGameInstance::Register_HotKey(KeyCode eKode, bool bCtrl, bool bShift, bool bAlt, function<void()> Func)
+{
+	return m_pHotKeyManager->Register_HotKey(eKode, bCtrl,bShift,bAlt,Func);
+}
 #pragma endregion
 
 void CGameInstance::Release_Engine()
@@ -776,6 +786,7 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pLightManager);
 	Safe_Release(m_pMaterialManager);
 	Safe_Release(m_pModelManager);
+	Safe_Release(m_pHotKeyManager);
 
 
 	Safe_Release(m_pGraphicDev);

@@ -58,6 +58,8 @@ HRESULT CModel::Initialize_Prototype(_matrix PreTransformMatrix,const _char* pMo
 	ifstream	file(pModelFilePath);
 	json jModel = json::parse(file);
 	bool bHasBone = jModel.contains("Bones");
+	bool bHasAnim = jModel.contains("NumAnimations");
+
 
 	m_eModelType=bHasBone ? MODEL::ANIM : MODEL::NONANIM;
 	if (m_eModelType == MODEL::NONANIM)
@@ -80,7 +82,7 @@ HRESULT CModel::Initialize_Prototype(_matrix PreTransformMatrix,const _char* pMo
 
 	///Bone여부에 따라서 내부적으로 애니메이션메쉬로 로드할건지, 아닌지 판단
 
-	if (FAILED(LoadModelFromJson(PreTransformMatrix,pModelFilePath, jModel)))	//파싱하면서 메테리얼이름을 읽어서 Manager에서 찾아서 meshcomp 한테 넘겨준다.
+	if (FAILED(LoadModelFromJson(bHasAnim,PreTransformMatrix,pModelFilePath, jModel)))	//파싱하면서 메테리얼이름을 읽어서 Manager에서 찾아서 meshcomp 한테 넘겨준다.
 		return E_FAIL;
 
 
@@ -123,14 +125,19 @@ HRESULT CModel::Initialize_Copytype(void* pArg)
 
 
 									//"C:\Users\kmj69\Documents\GitHub\ModelConverter\Output\Zelda\Zelda.json"
-HRESULT CModel::LoadModelFromJson(_matrix PreTransformMatrix,const _char* filepPath, json& jModel)
+HRESULT CModel::LoadModelFromJson(bool _bHasAnim, _matrix PreTransformMatrix,const _char* filepPath, json& jModel)
 {
 	ModelData model;
 	fs::path fullpath = filepPath;
 								//마지막파일명뺴고 추출
 	string folderpath = fullpath.parent_path().string()+"\\";
 	string ModelName = jModel["ModelName"];
-	m_iNumAnimations = jModel["NumAnimations"].get<int>();
+
+	if (_bHasAnim)
+		m_iNumAnimations = jModel["NumAnimations"].get<int>();
+
+	else
+		m_iNumAnimations = 0;
 
 	vector<CMeshComponent*>	m_MeshList;
 

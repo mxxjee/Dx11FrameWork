@@ -40,6 +40,7 @@ HRESULT CAssetCategoryWindow::Create_Widgets()
     ModelButtonDesc.callback = [this]()
     {
         m_pImgui_DataManager->Send_SelectedCategory("Model");
+        m_pImgui_DataManager->Send_SelectedIdx(-1);
     };
 
     if (FAILED(Add_Widgets<CImgui_Button>(&ModelButtonDesc)))
