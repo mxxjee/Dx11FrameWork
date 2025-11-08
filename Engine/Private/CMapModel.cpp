@@ -83,7 +83,7 @@ HRESULT CMapModel::Render()
             Mesh.second->Bind_ShaderResource(m_pShader, "g_SpecularTexture", aiTextureType::aiTextureType_SPECULAR);
             Mesh.second->Bind_ShaderResource(m_pShader, "g_AmbientTexture", aiTextureType::aiTextureType_AMBIENT);
 
-            if (FAILED(m_pShader->Begin(Mesh.second->Get_PassName())))
+            if (FAILED(m_pShader->Begin(m_passName)))
                 return E_FAIL;
 
             if (FAILED(m_pModel->Render(Mesh.second)))

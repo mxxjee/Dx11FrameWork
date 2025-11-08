@@ -48,6 +48,8 @@ void CMapObject_Manager::Update(_float fTimeDelta)
     {
         pair.second->Update(fTimeDelta);
     }
+
+    //
 }
 
 void CMapObject_Manager::Update_Late(_float fTimeDelta)
@@ -105,8 +107,8 @@ void CMapObject_Manager::Check_Picking()
        }
     }
 
-    //if(pPickObj)
-    //    Set_SelectObject(pPickObj);
+    if(pPickObj)
+        Set_SelectObject(pPickObj);
 }
 
 HRESULT CMapObject_Manager::Add_MapObject_To_MapLayer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag, const _wstring& strLayerTag, void* pArg)
