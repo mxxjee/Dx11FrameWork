@@ -150,8 +150,6 @@ Triangle* CTerrain_Manager::PickTerrain(const _wstring& Key)
 			PickLocalTriangle.v1 = m_pPositions[m_pIndices[i + 1]];
 			PickLocalTriangle.v2 = m_pPositions[m_pIndices[i + 2]];
 
-			XMStoreFloat3(&PickingWolrdPos, ray.Origin + ray.Dir * dist);
-
 			return &PickLocalTriangle;
 
 		}
@@ -203,6 +201,10 @@ CTerrain_Base* CTerrain_Manager::Check_Picking()
 					{
 						MinDist = Dist;
 						pPickObj = pair.second;
+						XMStoreFloat3(&PickingWolrdPos, ray.Origin + ray.Dir * Dist);
+
+						XMStoreFloat3(&PickingWolrdPos, XMVector3TransformCoord(XMLoadFloat3(&PickingWolrdPos), XMLoadFloat4x4(&pTerrain->Get_Transform()->Get_World(TransformScope::WORLD))));
+						
 					}
 				}
 			}

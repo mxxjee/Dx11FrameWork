@@ -53,9 +53,6 @@ HRESULT CLevel_Editor::Initialize(LevelArgs& args)
 		return E_FAIL;
 
 
-	/*임구이 에셋리스트윈도우 세팅들어가*/
-	if (FAILED(Set_AssetList()))
-		return E_FAIL;
 
 	return S_OK;
 }
@@ -70,7 +67,7 @@ void CLevel_Editor::Update(const _float fTimeDelta)
 	__super::Update(fTimeDelta);
 
 	//그리드 좌표 픽킹처리
-	Triangle* pPickingPos= m_pGrid_Manager->PickTerrain();
+	Triangle* pPickingPos= m_pGrid_Manager->PickGrid();
 	m_pGrid_Manager->Set_MouseWorldPos();
 
 	CTerrain_Base* pBase = m_pGameInstance->Get_PickTerrain();
@@ -254,17 +251,6 @@ HRESULT CLevel_Editor::Ready_Layer_Player(const _wstring& strLayerTag)
 	return S_OK;
 }
 
-HRESULT CLevel_Editor::Set_AssetList()
-{
-	CImgui_Window* pWindow=dynamic_cast<CImgui_Window*>(CImGui_Manager::GetInstance()->Find_Window("AssetList"));
-	if (pWindow)
-	{
-		CAssetListWindow* pAssetList = dynamic_cast<CAssetListWindow*>(pWindow);
-		if (pAssetList)
-			pAssetList->Set_AssetList();
-	}
-	return S_OK;
-}
 
 void CLevel_Editor::OnEnter()
 {
@@ -288,7 +274,19 @@ void CLevel_Editor::OnEnter()
 
 	}
 
-	
+	//
+
+	CImgui_Base* ppWindow = CImGui_Manager::GetInstance()->Find_Window("AssetList");
+	if (ppWindow)
+	{
+		CAssetListWindow* pAssetListWindow = dynamic_cast<CAssetListWindow*>(ppWindow);
+		if (pAssetListWindow)
+		{
+			if (FAILED(pAssetListWindow->Set_AssetList()))
+				return;
+		}
+	}
+
 }
 
 void CLevel_Editor::OnResume()

@@ -669,6 +669,11 @@ CTerrain_Base* CGameInstance::Get_PickTerrain()
 	return m_pTerrainManager->Get_PickTerrain();
 }
 
+CTerrain_Base* CGameInstance::Check_Picking()
+{
+	return m_pTerrainManager->Check_Picking();
+}
+
 HRESULT CGameInstance::Save_All_Terrains(const string& path, int iNum)
 {
 	return m_pTerrainManager->Save_All_Terrains(path, iNum);
@@ -737,6 +742,11 @@ CModel* CGameInstance::Clone_Model(const _wstring& ProtoModelName, void* pArg)
 _uint CGameInstance::Get_ModelCount()
 {
 	return m_pModelManager->Get_ModelCount();
+}
+
+HRESULT CGameInstance::Load_Model(const string& FilePath, _matrix PreMatrix)
+{
+	return m_pModelManager->Load_Model(FilePath,PreMatrix);
 }
 
 const UMap<_wstring, class CModel*>& CGameInstance::Get_MapModel()

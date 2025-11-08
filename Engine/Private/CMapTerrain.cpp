@@ -215,6 +215,7 @@ void CMapTerrain::Free()
 bool CMapTerrain::Is_Picked(_vector Origin, _vector Dir, float& Dist)
 {
     CheckNullResult(m_pMeshCollidercomponent, false);
+    CheckFalseResult(m_bCanPicking, false);
 
     bool Result = m_pMeshCollidercomponent->Intersects_Ray(Origin, Dir, Dist);
 

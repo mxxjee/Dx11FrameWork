@@ -33,6 +33,9 @@ public:
     //모든 모델 로드..(폴더안의 모델 모두로드)
     HRESULT Load_All_Models(const string& FilePath, _matrix PreMatrix);
 
+    //특정 모델 로드..
+    HRESULT Load_Model(const string& FilePath, _matrix PreMatrix);
+
         //특정 경로의 모델 로드
 
 private:

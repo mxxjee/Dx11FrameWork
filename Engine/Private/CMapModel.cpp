@@ -39,6 +39,8 @@ HRESULT CMapModel::Initialize_Copytype(void* pArg)
     if (FAILED(Ready_Resources(pArg)))
         return E_FAIL;
 
+   /* m_pShader = m_pGameInstance->Find_Shader(L"Shader_MapTool");*/
+
     return S_OK;
 }
 
@@ -126,7 +128,7 @@ HRESULT CMapModel::Ready_Resources(void* pArg)
         if (m_pShader)
             Safe_Release(m_pShader);
 
-        m_pShader = m_pModel->Get_Shader();
+        m_pShader = m_pGameInstance->Find_Shader(L"Shader_MapTool");
         Safe_AddRef(m_pShader);
 
     }

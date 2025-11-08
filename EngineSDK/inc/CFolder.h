@@ -10,7 +10,7 @@ class ENGINE_DLL CFolder :
     public CBase
 {
 public:
-    typedef struct tagFolderDesc
+    struct tagFolderDesc
     {
         char  Name[MAX_PATH];
         ImVec2 Size;
@@ -41,7 +41,7 @@ public:
 
     void        Set_InfoVector(const vector<AssetInfo>& Vec) { m_Vec = Vec; }
     void        Add_Info(const tagAssetInfo& Info) { m_Vec.push_back(Info); }
-    void        Show_Folder();      //폴더 안의 것들을 imgui 로 표시한다.
+    void       Show_Folder();      //폴더 안의 것들을 imgui 로 표시한다.
 public:
     static CFolder* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
     virtual void Free();
@@ -62,6 +62,8 @@ private:
     int                         m_iIdx = 0;
     string                     m_Category = "";
 
+
+    bool                    m_bClicked = false;
 };
 
 NS_END

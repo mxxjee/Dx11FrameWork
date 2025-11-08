@@ -36,7 +36,7 @@ public:
 public:
 
     //픽킹한 삼각형의 점리턴 ( 로컬좌표)
-    Triangle* PickTerrain();
+    Triangle* PickGrid();
 
     void       Set_MouseWorldPos();
     _float3     Get_MouseWorldPos() { return MouseWorldPos; }

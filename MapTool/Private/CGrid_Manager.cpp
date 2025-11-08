@@ -69,7 +69,7 @@ HRESULT CGrid_Manager::Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11De
 }
 
 
-Triangle* CGrid_Manager::PickTerrain()
+Triangle* CGrid_Manager::PickGrid()
 {
 	
 	CheckNullResult(m_pMainGrid,nullptr);
@@ -152,8 +152,8 @@ void CGrid_Manager::Set_MouseWorldPos()
 
 	XMStoreFloat3(&MouseWorldPos, ray.Origin + ray.Dir * fDistance);
 
-	wchar_t szBuf[128];
+	/*wchar_t szBuf[128];
 	swprintf_s(szBuf, L"x: %.2f, y: %.2f, z: %.2f\n", MouseWorldPos.x, MouseWorldPos.y, MouseWorldPos.z);
-	OutputDebugString(szBuf);
+	OutputDebugString(szBuf);*/
 }
 

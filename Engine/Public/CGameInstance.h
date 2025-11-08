@@ -225,7 +225,8 @@ public:
 	class CTerrain_Base*		Find_Terrain(const _wstring& Key);
 	_float3						Get_PickingWorldPos();
 	CTerrain_Base*				Get_PickTerrain();
-
+	CTerrain_Base*				Check_Picking();
+	Triangle*					PickTerrain(const _wstring& Key);
 
 	HRESULT						Save_All_Terrains(const string& path, int iNum=-1);
 	HRESULT             Load_Terrains(const string& LoadPath);
@@ -250,7 +251,7 @@ public:
 	class CModel*		Find_Model(const _wstring& ProtoModelName);
 	class CModel*		 Clone_Model(const _wstring& ProtoModelName, void* pArg);
 	_uint           Get_ModelCount();
-
+	HRESULT			Load_Model(const string& FilePath, _matrix PreMatrix);
 	const			UMap<_wstring, class CModel*>& Get_MapModel();
 public:
 	//모든 모델 로드..(폴더안의 모델 모두로드)

@@ -38,7 +38,7 @@ public:
 
     typedef struct tagImguiShared_Data
     {
-        string          m_SelectedCategory;
+        string          m_SelectedCategory="Model";
         string          m_SelectedItemName;
 
         int             SelectIdx = -1;

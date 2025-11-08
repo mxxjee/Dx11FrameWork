@@ -85,7 +85,7 @@ HRESULT CModel_Manager::Load_All_Models(const string& FilePath,_matrix PreMatrix
         {
             string FullPath = entry.path().string();
             string Name = entry.path().stem().string();
-            if (Name.find("AnimData") != string::npos)
+            if (Name.find("AnimData") != string::npos)//animdata.json파일은 따로내부에서읽을것!
                 continue;
 
             CModel* pInstance = CModel::Create(m_pDevice, m_pContext, PreMatrix, FullPath.c_str());
@@ -95,5 +95,18 @@ HRESULT CModel_Manager::Load_All_Models(const string& FilePath,_matrix PreMatrix
             m_mapModel.emplace(wstring(Name.begin(), Name.end()), pInstance);
         }
     }
+    return S_OK;
+}
+
+HRESULT CModel_Manager::Load_Model(const string& FilePath, _matrix PreMatrix)
+{
+    fs::path path = FilePath;
+    string FullPath = path.string();
+    string Name = path.stem().string();
+
+    CModel* pInstance = CModel::Create(m_pDevice, m_pContext, PreMatrix, FilePath.c_str());
+    if (!pInstance)
+        return E_FAIL;
+    m_mapModel.emplace(wstring(Name.begin(), Name.end()), pInstance);
     return S_OK;
 }

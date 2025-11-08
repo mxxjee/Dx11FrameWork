@@ -206,6 +206,12 @@ HRESULT CLoader::Register_Shaders()
         "DefaultTechnique");
     m_pGameInstance->Register_Shader(L"Shader_MapTool", pInstance);
 
+    pInstance = CShader::Create(m_pDevice,
+        m_pDeviceContext, VTXANIMMESH::desc, L"../../Resource/Shader/Shader_VtxAnimMesh.hlsl",
+        "DefaultTechnique");
+    m_pGameInstance->Register_Shader(L"VtxAnimMesh", pInstance);
+
+
     return S_OK;
 }
 
@@ -217,7 +223,10 @@ HRESULT    CLoader::Register_Models()
     PreMatrix=XMMatrixMultiply(PreMatrix, XMMatrixRotationX(XMConvertToRadians(-180.f)));
 
     //_matrix PreMatrix = XMMatrixIdentity();
+    _matrix RotateYMatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
 
+
+    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/LinkAnim/LinkAnim.json", RotateYMatrix);
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle/", PreMatrix);
 
     return S_OK;

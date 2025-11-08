@@ -53,6 +53,22 @@ HRESULT CAssetListWindow::Create_Folders()
     }
 
 
+    //크기배치용 그냥일반모델들 폴더
+    CFolder::tagFolderDesc Desc;
+    strcpy_s(Desc.Name, MAX_PATH,"Models");
+    Desc.Size = ImVec2(60.f, 60.f);
+    Desc.iIdx = m_Folders.size();
+    Desc.Category = "Model";
+    CFolder* pInstance = CFolder::Create(m_pDevice, m_pContext, &Desc);
+    if (pInstance)
+    {
+        if (FAILED(pInstance->Initialize(&Desc)))
+            return E_FAIL;
+
+        m_Folders.push_back(pInstance);
+
+    }
+
     return S_OK;
 
 }
@@ -65,10 +81,6 @@ HRESULT CAssetListWindow::Initialize(void* pArg)
     if (FAILED(Create_Folders()))
         return E_FAIL;
 
-    if (FAILED(Set_AssetList()))
-        return E_FAIL;
-
-    ModelImages.reserve(50);
 
 
 
@@ -78,13 +90,17 @@ HRESULT CAssetListWindow::Initialize(void* pArg)
 HRESULT CAssetListWindow::Set_AssetList()
 {
     //이미지 생성을 위해 경로다읽어오기.
-    if (FAILED(Create_ModelImages()))
+    //지형파일
+    if (FAILED(Create_TerrainFile()))
         return E_FAIL;
 
 
-    if (FAILED(Create_TileImages()))
+    if (FAILED(Create_TileFile()))
         return E_FAIL;
 
+
+    if (FAILED(Create_ModelFile()))
+        return E_FAIL;
     return S_OK;
 }
 
@@ -106,6 +122,7 @@ void CAssetListWindow::Update()
         {
             if (p->Update())
             {
+
                 m_pImgui_DataManager->Send_SelectedIdx(p->Get_Idx());
             }
 
@@ -145,7 +162,7 @@ CAssetListWindow* CAssetListWindow::Create(ComPtr<ID3D11Device> pDevice, ComPtr<
 
 
 
-HRESULT CAssetListWindow::Create_ModelImages()
+HRESULT CAssetListWindow::Create_TerrainFile()
 {
     const UMap<_wstring, CModel*>       ModelMap = pGameInstance->Get_MapModel();
 
@@ -172,7 +189,6 @@ HRESULT CAssetListWindow::Create_ModelImages()
             Info.TexKey = modelData.name;
 
             Info.FullPath = modelData.ResourcePath;
-            ModelImages.push_back(Info);
 
             CFolder* pFolder = Get_Folder(Result.c_str());
             if (pFolder)
@@ -187,7 +203,7 @@ HRESULT CAssetListWindow::Create_ModelImages()
   
 }
 
-HRESULT CAssetListWindow::Create_TileImages()
+HRESULT CAssetListWindow::Create_TileFile()
 {
     vector<wstring> Tmp = m_pImgui_DataManager->GetImageFiles(L"C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Tile");
     for (auto& i : Tmp)
@@ -208,6 +224,31 @@ HRESULT CAssetListWindow::Create_TileImages()
             return E_FAIL;
 
     }
+}
+
+HRESULT CAssetListWindow::Create_ModelFile()
+{
+    CModel* pModel = pGameInstance->Find_Model(L"LinkAnim");
+    if (pModel)
+    {
+        const ModelData modelData = pModel->Get_ModelData();
+        AssetInfo Info;
+
+
+        wstring Key = modelData.name.substr(0, modelData.name.size() - 1);
+        string Result = WStringToUTF8(Key);
+        Info.ObjType = MapObjType::OBSTACLE;
+        Info.TexKey = modelData.name;
+        Info.FullPath = modelData.ResourcePath;
+
+        CFolder* pFolder = Get_Folder("Models");
+        if (pFolder)
+            pFolder->Add_Info(Info);
+
+    }
+   
+
+    return S_OK;
 }
 
 void CAssetListWindow::Show_Grid(const string& Category,int FieldNum)

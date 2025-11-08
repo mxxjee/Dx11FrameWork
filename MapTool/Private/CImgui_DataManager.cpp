@@ -116,15 +116,57 @@ void CImgui_DataManager::Update_MouseInput()
 	{
 		//위치따라가기
 		_float3 vTargetPos;
-		if (m_pGrid_Manager->IsCollisionWithGrid())
-			vTargetPos = m_pGrid_Manager->Get_GridPickingWorldPos();
+		
+		if (m_PlaceObjInfo.ObjType != MapObjType::TERRAIN)
+		{
+			if (CTerrain_Base* pBase = m_pGameInstance->Check_Picking())
+			{
+				vTargetPos = m_pGameInstance->Get_PickingWorldPos();
+				OutputDebugString(L"TerrainPicking\n");
+			}
+
+			else if (m_pGrid_Manager->IsCollisionWithGrid())
+			{
+				vTargetPos = m_pGrid_Manager->Get_GridPickingWorldPos();
+				OutputDebugString(L"GridPicking\n");
+			}
+
+			else
+			{
+				vTargetPos = m_pGrid_Manager->Get_MouseWorldPos();
+				OutputDebugString(L"WorldPicking\n");
+			}
+		}
 
 		else
-			vTargetPos = m_pGrid_Manager->Get_MouseWorldPos();
+		{
+			if (m_pGrid_Manager->IsCollisionWithGrid())
+			{
+				vTargetPos = m_pGrid_Manager->Get_GridPickingWorldPos();
+				OutputDebugString(L"GridPicking\n");
+			}
 
+			else
+			{
+				vTargetPos = m_pGrid_Manager->Get_MouseWorldPos();
+				OutputDebugString(L"WorldPicking\n");
+			}
+		}
+		
+			
 
-		m_pPlaceObject->Get_Transform()->Set_State(STATE::POSITION, _float4(vTargetPos.x, vTargetPos.y, vTargetPos.z, 1.f));
+		if (m_pPlaceObject)
+		{
+			CMapTerrain* pMapTerrain = dynamic_cast<CMapTerrain*>(m_pPlaceObject);
+			if (pMapTerrain)
+			{
+				pMapTerrain->Set_CanPicking(true);
+			}
+			//위치지정
+			m_pPlaceObject->Get_Transform()->Set_State(STATE::POSITION, _float4(vTargetPos.x, vTargetPos.y, vTargetPos.z, 1.f));
 
+		}
+		
 		m_bDrag = true;
 	}
 		
@@ -180,6 +222,10 @@ HRESULT CImgui_DataManager::Create_MapTerrain()
 		{
 			m_pGameInstance->Register_Terrain(Desc.ObjTag, pTerrain);
 			m_pPlaceObject = pCloneObj;
+
+			CMapTerrain* pMapTerrain = dynamic_cast<CMapTerrain*>(pTerrain);
+			if (pMapTerrain)
+				pMapTerrain->Set_CanPicking(false);		//설치하기전까진 픽킹안됨
 			return S_OK;
 		}
 	}

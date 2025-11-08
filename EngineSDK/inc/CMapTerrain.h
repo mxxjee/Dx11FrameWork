@@ -53,6 +53,10 @@ public:
 public:
     //픽킹 확인
     bool            Is_Picked(_vector Origin, _vector Dir, float& Dist);
+
+    void            Set_CanPicking(bool bPicking) { m_bCanPicking = bPicking; }
+    bool            Is_CanPicking() { return m_bCanPicking; }
+
     void            Set_Idx(int _idx) { m_iIdx = _idx; }
     int             Get_Idx() { return m_iIdx; }
 
@@ -68,6 +72,7 @@ protected:
 
 private:
     _uint                       m_iIdx = 0;
+    bool                         m_bCanPicking = true;
 
 };
 

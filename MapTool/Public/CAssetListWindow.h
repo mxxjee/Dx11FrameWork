@@ -25,6 +25,7 @@ protected:
 public:
     HRESULT      Set_AssetList();
 
+
 private:
     HRESULT     Create_Widgets();
 
@@ -41,8 +42,9 @@ public:
     virtual void Free();
 
 private:
-    HRESULT       Create_ModelImages();
-    HRESULT       Create_TileImages();
+    HRESULT       Create_TerrainFile();
+    HRESULT       Create_TileFile();
+    HRESULT       Create_ModelFile();
 
 private:
     void        Show_Grid(const string& Category, int FieldNum);
@@ -57,7 +59,6 @@ private:
 private:
     vector<CFolder*>        m_Folders;
 
-    vector<tagAssetInfo>        ModelImages;
     vector<tagAssetInfo>         TileImages;
 
 
