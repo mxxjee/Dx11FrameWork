@@ -53,6 +53,8 @@ private:
 	void		CreateMenuBar();
 
 private:
+	void		Show_Gizmo();
+private:
 	void			Reigster_Levels();
 	HRESULT			Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType);
 private:
@@ -63,6 +65,7 @@ public:
 	static CMainTool* Create();
 	virtual void Free() override;
 
+	
 private:
 	CGameInstance* pGameInstance;
 	CImGui_Manager* pImGui_Manager = { nullptr };

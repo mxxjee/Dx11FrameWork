@@ -76,6 +76,9 @@ private:
     // IMapEditable을(를) 통해 상속됨
     virtual void OnSeletected(bool bSelected) override;
     virtual void Save_To_Json(json& Json) override;
+
+    // IMapEditable을(를) 통해 상속됨
+    virtual void Show_Gizmo() override;
 };
 
 

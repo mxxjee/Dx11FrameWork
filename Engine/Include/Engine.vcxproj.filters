@@ -328,6 +328,9 @@
     <Filter Include="999.Imgui\Etc.">
       <UniqueIdentifier>{d7aec5a2-ee38-422f-b9fb-768202622b92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="999.Imgui\ImguiDefault\Imguizmo">
+      <UniqueIdentifier>{81bf5204-0d35-41db-b09a-ecb9ef5fac51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -648,6 +651,9 @@
     <ClInclude Include="..\Public\CFolder.h">
       <Filter>999.Imgui\Etc.</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\ImGuizmo.h">
+      <Filter>999.Imgui\ImguiDefault\Imguizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -922,6 +928,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CFolder.cpp">
       <Filter>999.Imgui\Etc.</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ImGuizmo.cpp">
+      <Filter>999.Imgui\ImguiDefault\Imguizmo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

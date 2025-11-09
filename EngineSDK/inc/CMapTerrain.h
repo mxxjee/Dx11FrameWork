@@ -74,6 +74,10 @@ private:
     _uint                       m_iIdx = 0;
     bool                         m_bCanPicking = true;
 
+
+    // IMapEditable을(를) 통해 상속됨
+    virtual void Show_Gizmo() override;
+
 };
 
 NS_END

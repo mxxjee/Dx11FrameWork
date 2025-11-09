@@ -281,3 +281,7 @@ void CMapTerrain::Save_To_Json(json& Json)
 
     Json.push_back(Meta);
 }
+
+void CMapTerrain::Show_Gizmo()
+{
+}

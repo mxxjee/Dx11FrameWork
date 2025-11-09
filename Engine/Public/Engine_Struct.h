@@ -34,6 +34,15 @@ namespace Engine
 		ComPtr<ID3D11BlendState> _BlendState = nullptr;
 		ComPtr<ID3D11DepthStencilState> _DepthStencilState = nullptr;
 
+		RenderStates() {};
+		~RenderStates()
+		{
+			_rasterizerState.Reset();
+			_samplerState.Reset();
+			_BlendState.Reset();
+			_DepthStencilState.Reset();
+
+		}
 	};
 
 

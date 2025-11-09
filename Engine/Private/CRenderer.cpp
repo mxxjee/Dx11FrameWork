@@ -51,7 +51,8 @@ void CRenderer::Draw()
 {
 
 	//Render_Priority();
-	//Render_NonBlend();
+	//Render_Non
+	// ();
 	//Render_Blend();
 	//Render_UI();
 }

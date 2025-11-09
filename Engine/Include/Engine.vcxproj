@@ -127,8 +127,8 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;Effects11d.lib;DirectXTKd.lib;assimp-vc142-mtd.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../ThirdPartyLib/;../../EngineSDK/lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;Effects11d.lib;DirectXTKd.lib;assimp-vc142-mtd.lib;dxguid.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WindowsSdkDir)\lib\$(WindowsTargetPlatformVersion)\um\x64;../ThirdPartyLib/;../../EngineSDK/lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -148,7 +148,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;Effects11.lib;DirectXTK.lib;assimp-vc142-mt.lib</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;Effects11.lib;DirectXTK.lib;assimp-vc142-mt.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>../ThirdPartyLib/;../../EngineSDK/lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -249,6 +249,7 @@
     <ClInclude Include="..\Public\IMapEditable.h" />
     <ClInclude Include="..\Public\imconfig.h" />
     <ClInclude Include="..\Public\imgui.h" />
+    <ClInclude Include="..\Public\ImGuizmo.h" />
     <ClInclude Include="..\Public\imgui_impl_dx11.h" />
     <ClInclude Include="..\Public\imgui_impl_win32.h" />
     <ClInclude Include="..\Public\imgui_internal.h" />
@@ -344,6 +345,7 @@
     <ClCompile Include="..\Private\CVIBuffer_Terrain.cpp" />
     <ClCompile Include="..\Private\CVIBuffer_Triangle.cpp" />
     <ClCompile Include="..\Private\imgui.cpp" />
+    <ClCompile Include="..\Private\ImGuizmo.cpp" />
     <ClCompile Include="..\Private\imgui_demo.cpp" />
     <ClCompile Include="..\Private\imgui_draw.cpp" />
     <ClCompile Include="..\Private\imgui_impl_dx11.cpp" />

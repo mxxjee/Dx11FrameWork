@@ -27,6 +27,10 @@
 #include "CImgui_DataManager.h"
 #include "CGrid_Manager.h"
 #include "CTexture.h"
+#include "IMapEditable.h"
+
+#include "ImGuizmo.h"
+
 
 
 
@@ -158,6 +162,8 @@ void CMainTool::Update(_float fTimeDelta)
     pMapObject_Manager->Update(fTimeDelta);
     pGameInstance->Update_Engine(fTimeDelta);
     pImGui_Manager->Update();
+
+   // Show_Gizmo();
     CImgui_DataManager::GetInstance()->Update_MouseInput();
 }
 
@@ -178,7 +184,44 @@ void CMainTool::Update_Render(float fTimeDelta)
 void CMainTool::Render()
 {
     pGameInstance->Draw_Begin(&ClearColor);
+    
+    IMapEditable* pEditable = pMapObject_Manager->Get_SelectObject();
+    if (pEditable)
+    {
+        ImGuiIO& io = ImGui::GetIO();
+        ImGuizmo::SetDrawlist(ImGui::GetBackgroundDrawList());
+        ImGuizmo::BeginFrame();
+        ImGuizmo::SetRect(0, 0, g_iWinSizeX, g_iWinSizeY);
+
+        _float4x4 view = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+       
+
+
+        _float4x4 proj = CGameInstance::GetInstance()->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+
+        CGameObject* pGameObject = dynamic_cast<CGameObject*>(pEditable);
+        
+        if (pGameObject)
+        {
+            _float4x4 World = pGameObject->Get_Transform()->Get_World();
+
+            static ImGuizmo::OPERATION op = ImGuizmo::TRANSLATE;
+            static ImGuizmo::MODE mode = ImGuizmo::WORLD;
+
+
+            ImGuizmo::Manipulate((float*)&view,
+                (float*)&proj,
+                op, mode,
+                (float*)&World);
+        }
+     
+    }
+    
+
+
     pGameInstance->Draw();
+
+
     pImGui_Manager->Render(m_pContext.Get());
     pGameInstance->Draw_End();
 }
@@ -365,6 +408,15 @@ void CMainTool::CreateMenuBar()
 
     pImGui_Manager->RegisterWindow(CMenuBarWindow::Create(m_pDevice, m_pContext, &Desc));
 
+
+}
+
+void CMainTool::Show_Gizmo()
+{
+  
+   /* IMapEditable* pSelectObj = pMapObject_Manager->Get_SelectObject();
+    if (pSelectObj)
+        pSelectObj->Show_Gizmo();*/
 
 }
 

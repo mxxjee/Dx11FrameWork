@@ -14,6 +14,10 @@
 #include <d3dcompiler.h>
 #include <wrl.h>
 #include <memory>
+#include <dxgi1_3.h>
+#include <dxgidebug.h>
+#pragma comment(lib, "dxguid.lib")
+
 using namespace Microsoft::WRL;
 
 

@@ -61,6 +61,7 @@ public:
     virtual void Free()
     {
         __super::Free();
+        m_pConstantBuffer.Reset();
     }
 
 private:

@@ -49,7 +49,7 @@ void CMapObject_Manager::Update(_float fTimeDelta)
         pair.second->Update(fTimeDelta);
     }
 
-    //
+ 
 }
 
 void CMapObject_Manager::Update_Late(_float fTimeDelta)
@@ -289,6 +289,12 @@ wstring CMapObject_Manager::Generate_UniqueTag(MapObjType Type, const wstring& b
     }
 
     return Result;
+}
+
+void CMapObject_Manager::Show_SelectObject_Gizmo()
+{
+    if (m_pSelectedObject)
+        m_pSelectedObject->Show_Gizmo();
 }
 
 void CMapObject_Manager::Set_SelectObject(IMapEditable* pSelectedObject)

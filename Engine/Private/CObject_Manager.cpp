@@ -200,5 +200,12 @@ void CObject_Manager::Free()
 		m_Layers[i].clear();
 
 	}
+
+	m_Layers.clear();
+
+	m_pDevice = nullptr;
+	m_pContext = nullptr;
+
+
 	Safe_Release(m_pGameInstance);
 }

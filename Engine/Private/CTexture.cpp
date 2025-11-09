@@ -162,6 +162,7 @@ HRESULT CTexture::Load_Texture(const _tchar* pTextureFilePath)
 
 	ComPtr<ID3D11ShaderResourceView> pSRV;
 
+
 	HRESULT hr = {};
 	if (!lstrcmp(szEXT, TEXT(".dds")))
 		hr = CreateDDSTextureFromFile(m_pDevice.Get(), pTextureFilePath, nullptr, pSRV.GetAddressOf());
@@ -178,6 +179,8 @@ HRESULT CTexture::Load_Texture(const _tchar* pTextureFilePath)
 
 	m_Textures.push_back(pSRV);
 	m_Raws.push_back(pSRV.Get());
+
+
 	
 	return S_OK;
 }
@@ -236,5 +239,8 @@ CTexture* CTexture::Clone(void* pArg)
 
 void CTexture::Free()
 {
+
+
+
 	m_Textures.clear();
 }

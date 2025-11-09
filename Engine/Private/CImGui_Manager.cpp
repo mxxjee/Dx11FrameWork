@@ -1,4 +1,7 @@
 #include "CImGui_Manager.h"
+#include "ImGuizmo.h"
+#include "CGameInstance.h"
+
 
 IMPLEMENT_SINGLETON(CImGui_Manager)
 
@@ -55,6 +58,9 @@ void CImGui_Manager::Update()
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
+
+
+
     BeginDockSpace();//도킹기능
     //나중에 외부에서 설정할듯, 일단 테스트.
    // Test();
@@ -72,6 +78,7 @@ void CImGui_Manager::Render(ID3D11DeviceContext* device_context)
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
     // 뷰포트 옵션 켠 경우 추가
     ImGuiIO& io = ImGui::GetIO();
+
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
         // DX11 상태 백업

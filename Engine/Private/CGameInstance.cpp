@@ -786,16 +786,20 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pProtoManager);
 	Safe_Release(m_pObjectManager);
 	Safe_Release(m_pCameraManager);
+
 	Safe_Release(m_pShaderManager);
+	Safe_Release(m_pMaterialManager);
+	Safe_Release(m_pModelManager);
+	Safe_Release(m_pTextureManager);
+	Safe_Release(m_pLightManager);
+
 	Safe_Release(m_pScreenshotManager);
 	Safe_Release(m_pRenderStateManager);
 	Safe_Release(m_pPipeLine);
-	Safe_Release(m_pTextureManager);
 	Safe_Release(m_pUIManager);
 	Safe_Release(m_pTerrainManager);
-	Safe_Release(m_pLightManager);
-	Safe_Release(m_pMaterialManager);
-	Safe_Release(m_pModelManager);
+	
+
 	Safe_Release(m_pHotKeyManager);
 
 

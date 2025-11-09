@@ -8,6 +8,8 @@
 
 #include "CMapObject_Manager.h"
 #include "IMapEditable.h"
+#include "ImGuizmo.h"
+
 
 
 
@@ -35,18 +37,40 @@ HRESULT CObjectInspectorWindow::Initialize(void* pArg)
 
 void CObjectInspectorWindow::Update()
 {
+
+    
+
     ImGui::Begin(m_WindowTitle.c_str(), &m_bOpen);
   
     Update_SelectObject();
 
 
+    if (pSelectObject)
+    {
+        IMapEditable* pMapEditable = dynamic_cast<IMapEditable*>(pSelectObject);
+        if (pMapEditable)
+            pMapEditable->Show_Gizmo(); 
+    }
     ImGui::End();
 
+  
     __super::Update();
+
+   
 }
 
 void CObjectInspectorWindow::Render()
 {
+   /* if (pSelectObject)
+    {
+        IMapEditable* pMapEditable = dynamic_cast<IMapEditable*>(pSelectObject);
+        if (pMapEditable)
+            pMapEditable->Show_Gizmo();
+
+    }*/
+
+
+
 }
 
 HRESULT CObjectInspectorWindow::Create_Widgets()

@@ -1,5 +1,6 @@
 #include "CGraphic_Device.h"
 
+
 CGraphic_Device::CGraphic_Device()
 	: m_pDevice{ nullptr }
 	, m_pDeviceContext{ nullptr }
@@ -258,6 +259,10 @@ CGraphic_Device* CGraphic_Device::Create(HWND hWnd, WINMODE isWindowed,
 
 void CGraphic_Device::Free()
 {
+	// GPU 파이프라인 정리
+	m_pDeviceContext->ClearState();
+	m_pDeviceContext->Flush();
+
 	m_pBackBufferRTV.Reset();
 	m_pDepthStencilView.Reset();
 	m_pSwapChain.Reset();
@@ -284,5 +289,11 @@ void CGraphic_Device::Free()
 	if (d3dDebug != nullptr)            d3dDebug->Release();
 #endif
 
+
+
+
 	m_pDevice.Reset();
+
+
+
 }

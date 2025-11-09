@@ -106,4 +106,5 @@ CGameObject* CFloor::Clone(void* pArg)
 void CFloor::Free()
 {
     __super::Free();
+    RasterizerState.Reset();
 }

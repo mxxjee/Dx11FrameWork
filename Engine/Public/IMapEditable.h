@@ -9,6 +9,8 @@ public:
 	virtual void OnSeletected(bool bSelected) = 0;
 	virtual void Save_To_Json(json& Json) = 0;
 	MapObjType Get_ObjType() { return m_eObjType; }
+	virtual void Show_Gizmo() = 0;
+
 protected:
 	bool			m_bSelected = false;
 	MapObjType              m_eObjType;

@@ -43,4 +43,9 @@ void CInputLayout::Set_InputLayout()
 void CInputLayout::Free()
 {
 	__super::Free();
+
+	m_pDevice = nullptr;
+	m_pContext = nullptr;
+
+	m_pInputLayout.Reset();
 }

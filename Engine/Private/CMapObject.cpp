@@ -5,6 +5,7 @@
 #include "MathUtils.h"
 #include "CShader.h"
 #include "CCollider_Base.h"
+#include "ImGuizmo.h"
 
 
 CMapObject::CMapObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -166,5 +167,33 @@ void CMapObject::OnSeletected(bool bSelected)
 
 void CMapObject::Save_To_Json(json& Json)
 {
+}
+
+void CMapObject::Show_Gizmo()
+{
+	
+	
+
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuizmo::SetDrawlist();
+	ImGuizmo::SetRect(0, 0, 1280,720);
+
+	_float4x4 view = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+	_float4x4 proj = CGameInstance::GetInstance()->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+
+	_float4x4 Wolrd = m_pTransformCom->Get_World(TransformScope::WORLD);
+
+
+	static ImGuizmo::OPERATION op = ImGuizmo::TRANSLATE;
+	static ImGuizmo::MODE mode = ImGuizmo::WORLD;
+
+	//Gizmo »£√‚
+	ImGuizmo::Manipulate((float*)&view,
+		(float*)&proj,
+		op, mode,
+		(float*)&Wolrd);
+
+
+
 }
 

@@ -56,6 +56,9 @@ public:
     const UMap<_wstring, CMapLayer*>&    Get_MapLayers() { return m_Layers; }
 
 public:
+    void        Show_SelectObject_Gizmo();
+
+public:
     void                    Set_SelectObject(IMapEditable* pSelectedObject);
     IMapEditable*           Get_SelectObject() { return m_pSelectedObject; }
     UMap<_wstring, CMapLayer*> m_Layers;        //월드상에 배치된애들(지형제외)
