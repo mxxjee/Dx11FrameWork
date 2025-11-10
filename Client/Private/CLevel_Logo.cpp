@@ -489,29 +489,33 @@ HRESULT CLevel_Logo::Ready_Layer_Player(const _wstring& strLayerTag)
 
 HRESULT CLevel_Logo::Ready_Layer_Monster(const _wstring& strLayerTag)
 {
-    CModelObject::MODELOBJECT_DESC desc;
+    for (int i = 0; i < 20; ++i)
+    {
+        CModelObject::MODELOBJECT_DESC desc;
 
-    desc.modelName = L"MoriblinSword";
-    desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
-    desc.ObjTag = L"Monster";
-    CTransform::TRANSFORM_DESC TransDesc = {};
-    TransDesc.vLocalPosition = { 10.f,0.f,10.f,1.f };
-    TransDesc.fSpeedPerSec = 5.f;
-    TransDesc.fRotationPerSec = 10.f;
+        desc.modelName = L"MoriblinSword";
+        desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+        desc.ObjTag = L"Monster"+to_wstring(i);
+        CTransform::TRANSFORM_DESC TransDesc = {};
+        TransDesc.vLocalPosition = { 10.f,0.f,10.f,1.f };
+        TransDesc.fSpeedPerSec = 5.f;
+        TransDesc.fRotationPerSec = 10.f;
 
-    desc.TransformDesc = &TransDesc;
+        desc.TransformDesc = &TransDesc;
 
-    CModel::MODEL_DSC ModelDesc = {};
-    ModelDesc.ShaderName = L"VtxAnimMesh";
-    desc.modelDesc = &ModelDesc;
+        CModel::MODEL_DSC ModelDesc = {};
+        ModelDesc.ShaderName = L"VtxAnimMesh";
+        desc.modelDesc = &ModelDesc;
 
 
-    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-        PROTO_OBJ_NAME(L"Monster"),
-        ENUM_TO_UINT(LEVEL_ID::LOGO),
-        strLayerTag, &desc)))
-        return E_FAIL;
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+            PROTO_OBJ_NAME(L"Monster"),
+            ENUM_TO_UINT(LEVEL_ID::LOGO),
+            strLayerTag, &desc)))
+            return E_FAIL;
 
+    }
+   
     return S_OK;
 
 }

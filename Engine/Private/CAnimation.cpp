@@ -7,6 +7,22 @@ CAnimation::CAnimation()
 {
 }
 
+CAnimation::CAnimation(const CAnimation& Prototype)
+	:m_iNumChannels{Prototype.m_iNumChannels},
+	m_Channels{Prototype.m_Channels},
+	m_fTickPerSecond{Prototype.m_fTickPerSecond},
+	m_fDuration{Prototype.m_fDuration},
+	m_fCurrentTrackPosition{Prototype.m_fCurrentTrackPosition},
+	m_bLoop{Prototype.m_bLoop},
+	m_CurrentKeyFrameIndices{Prototype.m_CurrentKeyFrameIndices}
+
+{
+	strcpy_s(m_szName, MAX_PATH, Prototype.m_szName);
+
+	for (auto& Channel : m_Channels)
+		Safe_AddRef(Channel);
+}
+
 HRESULT CAnimation::Initialize(CModel* pModel, json& Json, const char* filePath,_uint idx)
 {
 	
@@ -36,6 +52,8 @@ HRESULT CAnimation::Initialize(CModel* pModel, json& Json, const char* filePath,
 		m_Channels.push_back(pChannel);
 	}
 
+	m_CurrentKeyFrameIndices.resize(m_iNumChannels);
+
     return S_OK;
 }
 
@@ -53,10 +71,11 @@ bool CAnimation::Update_TransformationMatrices(const vector<class CBone*>& Bones
 	}
 
 
+	_uint	iIndex = {};
 	/*재생바의 위치에 따라 뼈들의 상태를 갱신시킨다.*/
 	for (auto& pChannel : m_Channels)
 	{
-		pChannel->Update_TransformationMatrix(Bones, m_fCurrentTrackPosition);
+		pChannel->Update_TransformationMatrix(Bones, m_fCurrentTrackPosition, &m_CurrentKeyFrameIndices[iIndex++]);
 	}
 
 	return false;
@@ -72,6 +91,11 @@ CAnimation* CAnimation::Create(CModel* pModel, json& Json, const char* filePath,
 		Safe_Release(pInstance);
 	}
 	return pInstance;
+}
+
+CAnimation* CAnimation::Clone()
+{
+	return new CAnimation(*this);
 }
 
 void CAnimation::Free()

@@ -62,6 +62,11 @@ CBone* CBone::Create(const BoneData& Data)
     return pInstance;
 }
 
+CBone* CBone::Clone()
+{
+    return new CBone(*this);
+}
+
 void CBone::Free()
 {
     __super::Free();

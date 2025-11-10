@@ -20,10 +20,11 @@ CModel::CModel(const CModel& Prototype)
 	: m_pOwner(Prototype.m_pOwner),
 	m_ModelData(Prototype.m_ModelData),
 	m_Meshs(Prototype.m_Meshs),
-	m_Bones(Prototype.m_Bones),
+	//m_Bones(Prototype.m_Bones),
 	m_eModelType(Prototype.m_eModelType),
 	m_PreTransformMatrix(Prototype.m_PreTransformMatrix),
-	m_Animations{Prototype.m_Animations},
+	//m_Animations{Prototype.m_Animations},
+	m_iNumAnimations{Prototype.m_iNumAnimations},
 	m_pGameInstance(Prototype.m_pGameInstance),
 	m_pShader(Prototype.m_pShader),
 	m_pDevice(Prototype.m_pDevice),
@@ -38,17 +39,15 @@ CModel::CModel(const CModel& Prototype)
 
 	}
 
-	for (auto& Bone : m_Bones)
-	{
-		Safe_AddRef(Bone);
+	/*애니메이션을 다 따로 돌리기위해(Bone의 Transform이 다르게 하기위해 깊은복사)*/
+	for (auto& PrototypeBone : Prototype.m_Bones)
+		m_Bones.push_back(PrototypeBone->Clone());
+	
 
-	}
+	/*각자 애니메이션을 일정하게 적용하기위해 깊은복사*/
+	for (auto& Anim : Prototype.m_Animations)
+		m_Animations.push_back(Anim->Clone());
 
-	for (auto& Bone : m_Animations)
-	{
-		Safe_AddRef(Bone);
-
-	}
 }
 										//"C:\Users\kmj69\Documents\GitHub\ModelConverter\Output\Zelda\Zelda.json"
 HRESULT CModel::Initialize_Prototype(_matrix PreTransformMatrix,const _char* pModelFilePath)

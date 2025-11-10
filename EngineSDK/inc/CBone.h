@@ -37,6 +37,7 @@ public:
 
 public:
     static CBone* Create(const BoneData& Data);
+    CBone* Clone();
     virtual void Free() override;
 };
 

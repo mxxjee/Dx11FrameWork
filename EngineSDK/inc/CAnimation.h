@@ -7,6 +7,7 @@ class ENGINE_DLL CAnimation :
 {
 private:
     CAnimation();
+    CAnimation(const CAnimation& Prototype);
     virtual ~CAnimation() = default;
 
 
@@ -23,6 +24,8 @@ public:
 private:
     _uint               m_iNumChannels = {};
     vector<class CChannel*> m_Channels;
+    vector<_uint>           m_CurrentKeyFrameIndices;
+
 
     _char               m_szName[MAX_PATH] = {};
     _float              m_fTickPerSecond = {};
@@ -33,6 +36,7 @@ private:
 
 public:
     static  CAnimation* Create(class CModel* pModel,json& Json,const char* filePath,_uint idx);
+    CAnimation* Clone();
     virtual void Free() override;
 
 };

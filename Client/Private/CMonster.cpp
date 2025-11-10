@@ -1,5 +1,6 @@
 #include "CMonster.h"
 #include "CModel.h"
+#include "CGameInstance.h"
 
 USING(Client)
 CMonster::CMonster(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -30,7 +31,15 @@ HRESULT CMonster::Initialize_Copytype(void* pArg)
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
-    m_pModel->Set_Animation(m_iAnimIdx, true);
+    m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(
+        m_pGameInstance->Random(0.0f, 20.f),
+        3.0f,
+        m_pGameInstance->Random(0.0f, 20.f),
+        1.f
+    ));
+    
+    int Rand = rand() % m_pModel->Get_NumAnim();
+    m_pModel->Set_Animation(Rand, true);
     return S_OK;
 }
 
@@ -42,6 +51,8 @@ void CMonster::Update_Priority(_float fTimeDelta)
 void CMonster::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
+
+
     m_pModel->Play_Animation(fTimeDelta);
 }
 

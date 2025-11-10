@@ -25,6 +25,8 @@ HRESULT CChannel::Initialize(CModel* pModel, json& Json, const char* AnimFilePat
 
 	m_KeyFrames.resize(m_iNumKeyFrames);
 
+	
+
 	ifstream Animfile(AnimFilePath, std::ios::binary);
 	if (Animfile.is_open())
 	{
@@ -46,12 +48,12 @@ HRESULT CChannel::Initialize(CModel* pModel, json& Json, const char* AnimFilePat
     return S_OK;
 }
 
-void CChannel::Update_TransformationMatrix(const vector<class CBone*>& Bones, _float fCurrentTrackPosition)
+void CChannel::Update_TransformationMatrix(const vector<class CBone*>& Bones, _float fCurrentTrackPosition, _uint* pCurrentKeyFrameIdx)
 {
 	
 	/*다시재생했을떄..*/
 	if (0.0f == fCurrentTrackPosition)
-		m_iCurrentKeyFrameIndex = 0;
+		(*pCurrentKeyFrameIdx) = 0;
 
 	/* fCurrentTrackPosition시간에 맞는 현재 뼈의 상태를 만든다.*/
 	_float4x4	TransformationMatrix = {};
@@ -82,22 +84,22 @@ void CChannel::Update_TransformationMatrix(const vector<class CBone*>& Bones, _f
 
 
 
-		if (fCurrentTrackPosition >= m_KeyFrames[(INT64)m_iCurrentKeyFrameIndex + 1].fTrackPosition)
-			++m_iCurrentKeyFrameIndex;
+		while (fCurrentTrackPosition >= m_KeyFrames[(INT64)(*pCurrentKeyFrameIdx) + 1].fTrackPosition)
+			++(*pCurrentKeyFrameIdx);
 
 
-		vLeftScale = XMLoadFloat3(&m_KeyFrames[m_iCurrentKeyFrameIndex].vScale);
-		vRightScale = XMLoadFloat3(&m_KeyFrames[(INT64)m_iCurrentKeyFrameIndex+1].vScale);
+		vLeftScale = XMLoadFloat3(&m_KeyFrames[(*pCurrentKeyFrameIdx)].vScale);
+		vRightScale = XMLoadFloat3(&m_KeyFrames[(INT64)(*pCurrentKeyFrameIdx) +1].vScale);
 
-		vLeftRotation = XMLoadFloat4(&m_KeyFrames[m_iCurrentKeyFrameIndex].vRotation);
-		vRightRotation = XMLoadFloat4(&m_KeyFrames[(INT64)m_iCurrentKeyFrameIndex + 1].vRotation);
-
-
-		vLeftTranslation = XMLoadFloat3(&m_KeyFrames[m_iCurrentKeyFrameIndex].vTranslation);
-		vRightTranslation = XMLoadFloat3(&m_KeyFrames[(INT64)m_iCurrentKeyFrameIndex + 1].vTranslation);
+		vLeftRotation = XMLoadFloat4(&m_KeyFrames[(*pCurrentKeyFrameIdx)].vRotation);
+		vRightRotation = XMLoadFloat4(&m_KeyFrames[(INT64)(*pCurrentKeyFrameIdx) + 1].vRotation);
 
 
-		_float fRatio = (fCurrentTrackPosition - m_KeyFrames[m_iCurrentKeyFrameIndex].fTrackPosition) / (m_KeyFrames[m_iCurrentKeyFrameIndex + 1].fTrackPosition - m_KeyFrames[m_iCurrentKeyFrameIndex].fTrackPosition);
+		vLeftTranslation = XMLoadFloat3(&m_KeyFrames[(*pCurrentKeyFrameIdx)].vTranslation);
+		vRightTranslation = XMLoadFloat3(&m_KeyFrames[(INT64)(*pCurrentKeyFrameIdx) + 1].vTranslation);
+
+
+		_float fRatio = (fCurrentTrackPosition - m_KeyFrames[(*pCurrentKeyFrameIdx)].fTrackPosition) / (m_KeyFrames[(*pCurrentKeyFrameIdx) + 1].fTrackPosition - m_KeyFrames[(*pCurrentKeyFrameIdx)].fTrackPosition);
 
 		XMStoreFloat3(&vScale,XMVectorLerp(vLeftScale, vRightScale, fRatio));
 		XMStoreFloat4(&vRotation, XMQuaternionSlerp(vLeftRotation, vRightRotation, fRatio));

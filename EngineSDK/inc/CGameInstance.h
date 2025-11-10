@@ -37,6 +37,9 @@ public:
 	HRESULT     Draw_End();
 	void        Clear(_uint iLevelID);        /*레벨의 자원 삭제.*/
 
+
+	/*랜덤값 나오는 함수.*/
+	_float		Random(_float fMin, _float fMax);
 	//const ENGINE_DESC& Get_EngineDesc() { return m_EngineDesc; }
 #pragma endregion
 

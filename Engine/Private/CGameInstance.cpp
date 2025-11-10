@@ -225,6 +225,14 @@ void CGameInstance::Clear(_uint iLevelID)
 
 }
 
+_float CGameInstance::Random(_float fMin, _float fMax)
+{
+	//0~1°ª ³ª¿È.
+	_float fRandomNormal = static_cast<float>(rand()) / RAND_MAX;
+
+	return (fMax - fMin) * fRandomNormal + fMin;
+}
+
 #pragma region LevelManager
 HRESULT CGameInstance::Level_Changer(_uint iSceneID, LevelArgs& args)
 {

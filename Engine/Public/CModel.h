@@ -58,6 +58,7 @@ public:
     bool        Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);
     void        Set_Animation(_uint iAnimationIndex, _bool isLoop);
     int         Get_BoneIndex(const char* pBoneName);
+    int         Get_NumAnim() { return m_iNumAnimations; }
 public:
     CMeshComponent* Get_Mesh(const wstring& Name);
     const UMap<wstring, CMeshComponent*>& Get_Meshs() { return m_Meshs; }
