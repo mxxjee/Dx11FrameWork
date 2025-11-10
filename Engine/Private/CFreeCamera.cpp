@@ -39,9 +39,9 @@ HRESULT CFreeCamera::Initialize_Copytype(void* pArg)
     m_fInitSpeed=pTransformDesc->fSpeedPerSec;
 
 
+    XMStoreFloat4x4(&RHProj, XMMatrixPerspectiveFovRH(XMConvertToRadians(m_fFovy), (m_fWidth / m_fHeight), m_fNearZ, m_fFarZ));
 
-
-    return S_OK;
+       return S_OK;
 }
 
 void CFreeCamera::Update_Priority(_float fTimeDelta)
@@ -76,6 +76,7 @@ void CFreeCamera::Update(_float fTimeDelta)
         m_pTransformCom->Move(DIRECTION::BACKWARD, fTimeDelta);
 
     Update_PipeLine();
+    Update_RH();
 }
 
 void CFreeCamera::Update_Late(_float fTimeDelta)
@@ -124,6 +125,16 @@ void CFreeCamera::Mouse_Fix()
     ClientToScreen(m_pGameInstance->Get_EngineDesc().hWnd, &ptMouse);
     SetCursorPos(ptMouse.x, ptMouse.y);
 
+}
+
+void CFreeCamera::Update_RH()
+{
+    /*IMgui에서 사용하기위한 RH*/
+    _vector vPos = m_pTransformCom->Get_State(STATE::POSITION, TransformScope::WORLD);
+    _vector vAt = vPos + XMVector3Normalize(m_pTransformCom->Get_State(STATE::LOOK));
+
+        
+    XMStoreFloat4x4(&RHView, XMMatrixLookAtRH(vPos, vAt, XMVectorSet(0.f, 1.f, 0.f, 0.f)));
 }
 
 CFreeCamera* CFreeCamera::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)

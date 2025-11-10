@@ -30,6 +30,11 @@ public:
 private:
     void    Mouse_Move();
     void    Mouse_Fix();
+
+public:
+    void        Update_RH();
+    _float4x4    Get_RHView() {return RHView;}
+    _float4x4    Get_RHProj() { return RHProj; }
 public:
     static CFreeCamera* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg);
@@ -41,6 +46,10 @@ private:
 
     float                   m_fInitSpeed = {};
 
+private:
+    //ImguiÀü¿ë rh°ª
+    _float4x4   RHView;
+    _float4x4   RHProj;
 
 };
 NS_END

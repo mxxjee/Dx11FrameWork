@@ -29,6 +29,7 @@
 #include "CTexture.h"
 #include "IMapEditable.h"
 
+#include "CFreeCamera.h"
 #include "ImGuizmo.h"
 
 
@@ -188,35 +189,60 @@ void CMainTool::Render()
     IMapEditable* pEditable = pMapObject_Manager->Get_SelectObject();
     if (pEditable)
     {
-        ImGuiIO& io = ImGui::GetIO();
-        ImGuizmo::SetDrawlist(ImGui::GetBackgroundDrawList());
-        ImGuizmo::BeginFrame();
-        ImGuizmo::SetRect(0, 0, g_iWinSizeX, g_iWinSizeY);
 
-        _float4x4 view = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
-       
-
-
-        _float4x4 proj = CGameInstance::GetInstance()->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
-
-        CGameObject* pGameObject = dynamic_cast<CGameObject*>(pEditable);
-        
-        if (pGameObject)
+        CCamera_Base* pCamera = pGameInstance->Find_Camera(CAMERA_TYPE::FREE);
+        if (pCamera)
         {
-            _float4x4 World = pGameObject->Get_Transform()->Get_World();
+            CFreeCamera* pFreecam = dynamic_cast<CFreeCamera*>(pCamera);
 
-            static ImGuizmo::OPERATION op = ImGuizmo::TRANSLATE;
-            static ImGuizmo::MODE mode = ImGuizmo::WORLD;
+            XMMATRIX matFlipZ = XMMatrixScaling(1.f, 1.f, -1.f);
 
+            CGameObject* pGameObject = dynamic_cast<CGameObject*>(pEditable);
 
-            ImGuizmo::Manipulate((float*)&view,
-                (float*)&proj,
-                op, mode,
-                (float*)&World);
+            if (pGameObject)
+            {
+                //LH View / Proj / World 그대로 가져오기
+                _float4x4 viewLH = pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+                _float4x4 projLH = pGameInstance->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+                _float4x4 worldLH = pGameObject->Get_Transform()->Get_World();
+
+                // LH → RH 변환 매트릭스 (Z축 반전)
+                XMMATRIX matFlipZ = XMMatrixScaling(1.f, 1.f, -1.f);
+
+                // RH 행렬 계산
+                
+                XMMATRIX viewRH = XMLoadFloat4x4(&viewLH) * matFlipZ;
+                XMStoreFloat4x4(&viewLH, viewRH);
+
+                XMMATRIX projRH = XMLoadFloat4x4(&projLH) * matFlipZ;
+                XMStoreFloat4x4(&projLH,projRH);
+
+                // ImGuizmo 세팅
+                ImGuizmo::SetOrthographic(false);
+                ImGuizmo::SetDrawlist(ImGui::GetBackgroundDrawList());
+                ImGuizmo::BeginFrame();
+                ImGuizmo::SetRect(0, 0, g_iWinSizeX, g_iWinSizeY);
+
+                static ImGuizmo::OPERATION op = ImGuizmo::TRANSLATE;
+                static ImGuizmo::MODE mode = ImGuizmo::WORLD;
+
+                //Manipulate (column-major 기준)
+                ImGuizmo::Manipulate(
+                    reinterpret_cast<float*>(&viewLH),
+                    reinterpret_cast<float*>(&projLH),
+                    op, mode,
+                    reinterpret_cast<float*>(&worldLH)
+                );
+
+               
+            }
+
+            XMFLOAT4X4 worldOutLH;
+       
         }
-     
-    }
-    
+
+        }
+       
 
 
     pGameInstance->Draw();
