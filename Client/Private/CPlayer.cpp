@@ -34,6 +34,10 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
  
+    for (int i = 0; i < m_pModel->Get_NumAnim(); ++i)
+        m_pModel->Set_Loop(i, true);
+
+    m_pModel->Set_TransitionTime(0.02f);
 
     return S_OK;
 }
@@ -47,7 +51,7 @@ void CPlayer::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
     Move_Input(fTimeDelta);
-    m_pModel->Set_Animation(m_iAnimIdx, true);
+
    m_pModel->Play_Animation(fTimeDelta);
 }
 
@@ -137,19 +141,29 @@ void CPlayer::Move_Input(_float fTimeDelta)
         m_pTransformCom->Chase(m_pTarget->Get_Transform()->Get_State(STATE::POSITION, TransformScope::WORLD), fTimeDelta, 5);
 
     if (m_pInputManager->IsKeyPressed(KeyCode::Num0))
+    {
         m_iAnimIdx = 0;
+        m_pModel->Set_Animation(m_iAnimIdx, true);
+    }
 
     if (m_pInputManager->IsKeyPressed(KeyCode::Num1))
+    {
         m_iAnimIdx = 1;
+        m_pModel->Set_Animation(m_iAnimIdx, true);
+    }
 
 
     if (m_pInputManager->IsKeyPressed(KeyCode::Num2))
+    {
         m_iAnimIdx = 2;
-
+        m_pModel->Set_Animation(m_iAnimIdx, true);
+    }
 
     if (m_pInputManager->IsKeyPressed(KeyCode::Num3))
+    {
         m_iAnimIdx = 3;
-
+        m_pModel->Set_Animation(m_iAnimIdx, true);
+    }
    
 }
 

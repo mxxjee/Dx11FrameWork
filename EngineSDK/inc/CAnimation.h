@@ -2,6 +2,8 @@
 #include "CBase.h"
 
 NS_BEGIN(Engine)
+class CChannel;
+
 class ENGINE_DLL CAnimation :
     public CBase
 {
@@ -16,10 +18,18 @@ public:
     HRESULT     Initialize(class CModel* pModel, json& Json, const char* filePath, _uint idx);
 
     //현재 재생바의 위치에 따라 본의 matrix를 업데이트하도록 시키는 함수, 리턴값:애니메이션끝났는지 여부
-    bool        Update_TransformationMatrices(const vector<class CBone*>& Bones, _float fTimeDelta);
+    bool        Update_TransformationMatrices(const vector<class CBone*>& Bones, _float fTimeDeltal);
+   
+    //전이 시 애니메이션보간
+    bool        Update_BlendAnim(class CModel* pModel,const vector<class CBone*>& Bones, _float TranslationTime, int PreAnimIndex);
+   
     void        Set_Loop(bool b) { m_bLoop = b; }
 
-
+public:
+    int         Get_CurrentTrackPoistion() { return m_fCurrentTrackPosition; }
+    _uint       Get_CurrentKeyFrameIndex(int num) { return m_CurrentKeyFrameIndices[num]; }
+    void        Set_CurrentTrackPosition(_float TrackPos) { m_fCurrentTrackPosition = TrackPos; }
+    CChannel*         Get_Channel_BoneIdx(int BoneNum);
 
 private:
     _uint               m_iNumChannels = {};

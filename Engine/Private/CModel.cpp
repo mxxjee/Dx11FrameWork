@@ -6,6 +6,7 @@
 #include "CGameInstance.h"
 #include "CBone.h"
 #include "CAnimation.h"
+#include "CChannel.h"
 
 
 
@@ -23,9 +24,12 @@ CModel::CModel(const CModel& Prototype)
 	//m_Bones(Prototype.m_Bones),
 	m_eModelType(Prototype.m_eModelType),
 	m_PreTransformMatrix(Prototype.m_PreTransformMatrix),
+	m_iPreAnimIndex(Prototype.m_iPreAnimIndex),
 	//m_Animations{Prototype.m_Animations},
 	m_iNumAnimations{Prototype.m_iNumAnimations},
 	m_pGameInstance(Prototype.m_pGameInstance),
+	m_isTransition(Prototype.m_isTransition),
+	m_fTranslationTime(Prototype.m_fTranslationTime),
 	m_pShader(Prototype.m_pShader),
 	m_pDevice(Prototype.m_pDevice),
 	m_pDeviceContext(Prototype.m_pDeviceContext)
@@ -395,12 +399,77 @@ void CModel::Play_Animation(_float fTimeDelta)
 	//모든 메쉬들을 순회하며 bone정보를 업데이트한다.
 	//m_iCurrentAnimationIndex에 해당하는 애니메이션 중, 현재 재생시간에 맞는 상태행렬을 실제 뼈에게 전달*/
 	//갱신해준 뼈들의 TransformMatrix를 기반으로 하여 실제 뼈의 상태(CombinedMatrix)행렬을 만든다.
-	m_isAnimFinished=m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta);
+
+	
+
+	//전이 수행..
+	if (m_isTransition)
+	{
+		//전이시간, 선형보간 시간값
+		Update_BlendAnim(fTimeDelta);
+	}
+
+	//아니라면 일반선형보간 수행
+	else
+		m_isAnimFinished=m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta);
 
 	for (auto& Bone : m_Bones)
 	{
 		Bone->Update_CombinedTransformMatrix(m_Bones, XMLoadFloat4x4(&m_PreTransformMatrix));
 	}
+
+	//if (m_isTransition)
+	//	m_Animations[m_iPreAnimIndex]->Set_CurrentTrackPosition(0.f);//다음에 실행됐을떄 처음부터 실행하라고..
+
+
+	
+}
+
+void CModel::Update_BlendAnim(_float fTimeDelta)
+{
+	m_fTranslationTime += fTimeDelta;
+	
+	if (m_fTranslationTime < m_fTranslation)
+	{
+		CAnimation* pPreAnim = m_Animations[m_iPreAnimIndex];
+		CAnimation* pCurAnim = m_Animations[m_iCurrentAnimIndex];
+
+		//모든 본에 대해서 수행한다.
+		//만약 전이하는애니메이션과 현재애니메이션에 공통적으로 존재하는 본은 서로 선형보간한다.
+		//현재애니메이션 O, 전이하는 애니메이션 X -> 이전->항등행렬
+		//현재애니메이션X, 전이하는애니메이션O -> 항등에서부터 현재애니메이션까지
+		for (int i = 0; i < m_Bones.size(); ++i)
+		{
+			CChannel* pPreExist = pPreAnim->Get_Channel_BoneIdx(i);
+			CChannel* pbCurExist = pCurAnim->Get_Channel_BoneIdx(i);
+
+			if (pPreExist && pbCurExist)
+				pPreExist->UpdateTransformMatrix_Blned_By_Two(m_Bones, m_BoneTraformMatricies[i], m_fTranslationTime/m_fTranslation);
+
+
+			else if (pPreExist && !pbCurExist)
+			{
+				CChannel* pTarget = pPreExist ? pPreExist : pbCurExist;
+				if (pTarget == pPreExist)
+					pPreExist->UpdateTransformMatrix_To_Identity(m_Bones, m_BoneTraformMatricies[i], m_fTranslationTime / m_fTranslation);
+
+				else
+					pbCurExist->UpdateTransformMatrix_From_Identity(m_Bones, m_fTranslationTime / m_fTranslation);
+			}
+
+			else
+				continue;
+
+		}
+	}
+
+	else
+	{
+		m_isTransition = false;
+		End_Transition();
+	}
+
+
 }
 
 bool CModel::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
@@ -435,7 +504,18 @@ void CModel::Set_Animation(_uint iAnimationIndex, _bool isLoop)
 	if (iAnimationIndex >= m_Animations.size())
 		return;
 
+	m_iPreAnimIndex = m_iCurrentAnimIndex;
 	m_iCurrentAnimIndex = iAnimationIndex;
+
+	if (m_iPreAnimIndex != m_iCurrentAnimIndex)
+	{
+		m_isTransition = true;
+
+		//이전 애니메이션 초기화(다음에 실행시 처음부터 시작)
+		m_Animations[m_iPreAnimIndex]->Set_CurrentTrackPosition(0.f);
+		Start_Transition();
+	}
+
 	m_Animations[iAnimationIndex]->Set_Loop(isLoop);
 }
 
@@ -460,6 +540,13 @@ int CModel::Get_BoneIndex(const char* pBoneName)
 	return iIndex;
 }
 
+void CModel::Set_Loop(int iAnimNum, bool bLoop)
+{
+	if (m_Animations[iAnimNum])
+		m_Animations[iAnimNum]->Set_Loop(bLoop);
+
+}
+
 
 CMeshComponent* CModel::Get_Mesh(const wstring& Name)
 {
@@ -468,4 +555,24 @@ CMeshComponent* CModel::Get_Mesh(const wstring& Name)
 		return iter->second;
 
 	return nullptr;
+}
+
+void CModel::Start_Transition()
+{
+	m_BoneTraformMatricies.resize(m_Bones.size());
+
+	/*첫 값 SRT를 모두다 저장시킨다.*/
+	for (int i = 0; i < m_Bones.size(); ++i)
+	{
+		_float4x4 Matrix = m_Bones[i]->Get_TransformMatrix();
+		m_BoneTraformMatricies[i]=XMLoadFloat4x4(&Matrix);
+
+	}
+
+}
+
+void CModel::End_Transition()
+{
+	m_BoneTraformMatricies.clear();
+	m_fTranslationTime = 0.f;
 }

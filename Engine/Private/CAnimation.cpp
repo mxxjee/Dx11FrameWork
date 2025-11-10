@@ -59,8 +59,9 @@ HRESULT CAnimation::Initialize(CModel* pModel, json& Json, const char* filePath,
 
 bool CAnimation::Update_TransformationMatrices(const vector<class CBone*>& Bones, _float fTimeDelta)
 {
-	//재생바가 있을때, 현재 재생바의 위치, 처음 재생시 m_fCurrentTrackPosition은 0부터 들어가지 않고 바로 timedelta를 곱한 값이 들어감
+
 	m_fCurrentTrackPosition += fTimeDelta * m_fTickPerSecond;
+
 
 	if (m_fCurrentTrackPosition >= m_fDuration)
 	{
@@ -70,15 +71,52 @@ bool CAnimation::Update_TransformationMatrices(const vector<class CBone*>& Bones
 		m_fCurrentTrackPosition = 0.f;//루프일경우 다시 맨처음부터 실행
 	}
 
-
+	//전이상태가 아니라면..특정 뼈들만 상태갱신
+	
 	_uint	iIndex = {};
+
 	/*재생바의 위치에 따라 뼈들의 상태를 갱신시킨다.*/
 	for (auto& pChannel : m_Channels)
 	{
 		pChannel->Update_TransformationMatrix(Bones, m_fCurrentTrackPosition, &m_CurrentKeyFrameIndices[iIndex++]);
 	}
 
-	return false;
+
+}
+
+bool CAnimation::Update_BlendAnim(CModel* pModel, const vector<class CBone*>& Bones, _float TranslationTime, int PreAnimIndex)
+{
+
+	////전이상태일떄 수행하는 함수..
+	//
+	////이전애니메이션의 키프레임값가져오기
+	////이전애니메이션의 위치와 새로실행할 애니메이션의 첫프레임과 보간
+	//CAnimation* pPreAnim = pModel->Get_Animation(PreAnimIndex);
+	//float pPrevAnimPosition = pPreAnim->Get_CurrentTrackPoistion();
+
+	///*모든 본을 검사하며 전이가필요한 것들은 전이를 수행하도록하게 하고, 아닌것들은 */
+	//for (auto& pBon : Bones)
+	//{
+
+	//}
+
+	//for (auto& pChannel : m_Channels)
+	//{
+	//	pChannel->UpdateTransformMatrix_BlendAnim(Bones,pPreAnim, TranslationTime, pPrevAnimPosition);
+	//}
+	return false; 
+}
+
+CChannel* CAnimation::Get_Channel_BoneIdx(int BoneNum)
+{
+	int Num = 0;
+
+	for (auto Channel : m_Channels)
+	{
+		if (Channel->Get_BoneIndex_ByChannel() == BoneNum)
+			return Channel;
+	}
+	return nullptr;
 }
 
 CAnimation* CAnimation::Create(CModel* pModel, json& Json, const char* filePath, _uint idx)

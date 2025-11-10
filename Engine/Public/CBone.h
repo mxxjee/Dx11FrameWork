@@ -19,6 +19,8 @@ public:
     void Set_TransformationMatrix(const _float4x4& TransformationMatrix) {
         m_TransformationMatrix = TransformationMatrix;
     }
+
+    const _float4x4   Get_TransformMatrix() { return m_TransformationMatrix; }
 public:
     bool            Compare_Name(const char* pName);
 

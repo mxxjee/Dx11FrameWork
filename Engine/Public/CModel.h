@@ -52,18 +52,26 @@ public:
     HRESULT             Bind_Mateiral(CShader* pShader, const _char* pConstName, CMeshComponent* pMesh, aiTextureType eMaterialType, _uint Textureindex = 0);
     HRESULT             Bind_Bones(CShader* pShader, const char* pConstName,CMeshComponent* pMesh);
     void                Play_Animation(_float fTimeDelta);
-
+    void                Update_BlendAnim(_float fTimeDelta);
+    void                Set_TransitionTime(_float fTime) { m_fTranslation = fTime; }
 public:
     /*레이충돌*/
     bool        Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);
     void        Set_Animation(_uint iAnimationIndex, _bool isLoop);
     int         Get_BoneIndex(const char* pBoneName);
     int         Get_NumAnim() { return m_iNumAnimations; }
+    void        Set_Loop(int iAnimNum, bool bLoop);
+
 public:
     CMeshComponent* Get_Mesh(const wstring& Name);
     const UMap<wstring, CMeshComponent*>& Get_Meshs() { return m_Meshs; }
     class CShader* Get_Shader() { return m_pShader; }
     const ModelData& Get_ModelData() { return m_ModelData; }
+    class CAnimation* Get_Animation(int num) { return m_Animations[num]; }
+
+public:
+    void            Start_Transition();
+    void            End_Transition();
 private:
     UMap<wstring, CMeshComponent*>          m_Meshs;
     vector<class CBone*>                    m_Bones;
@@ -77,9 +85,20 @@ private:
 
 
     _uint                               m_iNumAnimations = {};  //애니메이션 개수
+    
     _uint                               m_iCurrentAnimIndex = {};       //현재 재생되고있는 애니메이션 클립의 인덱스
+    _uint                               m_iPreAnimIndex = {};
+
+
     vector<class CAnimation*>           m_Animations;
+    vector<_matrix>                   m_BoneTraformMatricies;
+
     bool                                m_isAnimFinished = false;
+    //전이 확인
+    bool                                m_isTransition = false;
+
+    _float                              m_fTranslationTime = 0.f;
+    _float                              m_fTranslation = 2.f;
 private:
     CGameInstance* m_pGameInstance = nullptr;
     ComPtr<ID3D11Device>                m_pDevice;
