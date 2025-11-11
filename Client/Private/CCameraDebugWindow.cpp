@@ -11,7 +11,6 @@
 
 
 
-
 USING(Client)
 CCameraDebugWindow::CCameraDebugWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CImgui_Window(pDevice,pContext), m_pGameInstance(CGameInstance::GetInstance())
