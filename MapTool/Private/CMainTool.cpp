@@ -190,85 +190,85 @@ void CMainTool::Render()
     // ──────────────────────────────────────
     // 선택된 오브젝트가 있을 때만 기즈모 표시
     // ──────────────────────────────────────
-    if (auto pEditable = pMapObject_Manager->Get_SelectObject())
-    {
-        CGameObject* pGameObject = dynamic_cast<CGameObject*>(pEditable);
-        if (pGameObject)
-        {
-            CCamera_Base* pCamera = pGameInstance->Find_Camera(CAMERA_TYPE::FREE);
-            if (pCamera)
-            {
-                _float4x4 viewLH = pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
-                _float4x4 projLH = pGameInstance->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
-                _float4x4 worldLH = pGameObject->Get_Transform()->Get_World();
+    //if (auto pEditable = pMapObject_Manager->Get_SelectObject())
+    //{
+    //    CGameObject* pGameObject = dynamic_cast<CGameObject*>(pEditable);
+    //    if (pGameObject)
+    //    {
+    //        CCamera_Base* pCamera = pGameInstance->Find_Camera(CAMERA_TYPE::FREE);
+    //        if (pCamera)
+    //        {
+    //            _float4x4 viewLH = pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+    //            _float4x4 projLH = pGameInstance->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+    //            _float4x4 worldLH = pGameObject->Get_Transform()->Get_World();
 
-                // Z축 반전 행렬
-                XMMATRIX flipZ = XMMatrixScaling(1.f, 1.f, -1.f);
+    //            // Z축 반전 행렬
+    //            XMMATRIX flipZ = XMMatrixScaling(1.f, 1.f, -1.f);
 
-                // LH → RH 변환 순서 중요
-                // 카메라(View)는 flipZ 먼저 곱하고, World는 flipZ 나중에 곱
-                XMMATRIX viewRH = XMMatrixMultiply(flipZ, XMLoadFloat4x4(&viewLH));
-                XMMATRIX worldRH = XMMatrixMultiply(XMLoadFloat4x4(&worldLH), flipZ);
+    //            // LH → RH 변환 순서 중요
+    //            // 카메라(View)는 flipZ 먼저 곱하고, World는 flipZ 나중에 곱
+    //            XMMATRIX viewRH = XMMatrixMultiply(flipZ, XMLoadFloat4x4(&viewLH));
+    //            XMMATRIX worldRH = XMMatrixMultiply(XMLoadFloat4x4(&worldLH), flipZ);
 
-                //  투영행렬도 RH 기준으로 다시 생성 (DirectX는 LH가 기본)
-                float fFov = XM_PIDIV4;
-                float fAspect = (float)g_iWinSizeX / (float)g_iWinSizeY;
-                float fNear = 0.1f;
-                float fFar = 1000.f;
-                XMMATRIX projRH = XMMatrixPerspectiveFovRH(fFov, fAspect, fNear, fFar);
+    //            //  투영행렬도 RH 기준으로 다시 생성 (DirectX는 LH가 기본)
+    //            float fFov = XM_PIDIV4;
+    //            float fAspect = (float)g_iWinSizeX / (float)g_iWinSizeY;
+    //            float fNear = 0.1f;
+    //            float fFar = 1000.f;
+    //            XMMATRIX projRH = XMMatrixPerspectiveFovRH(fFov, fAspect, fNear, fFar);
 
-                // column-major로 바꿔서 저장
-                XMFLOAT4X4 viewCM, projCM, worldCM;
-                XMStoreFloat4x4(&viewCM, XMMatrixTranspose(viewRH));
-                XMStoreFloat4x4(&projCM, XMMatrixTranspose(projRH));
-                XMStoreFloat4x4(&worldCM, XMMatrixTranspose(worldRH));
-                // ──────────────────────────────────────
-                // ImGuizmo 세팅
-                // ──────────────────────────────────────
-                ImGuizmo::BeginFrame();
-                ImGuiViewport* vp = ImGui::GetMainViewport();
-                ImGuizmo::SetOrthographic(false);
+    //            // column-major로 바꿔서 저장
+    //            XMFLOAT4X4 viewCM, projCM, worldCM;
+    //            XMStoreFloat4x4(&viewCM, XMMatrixTranspose(viewRH));
+    //            XMStoreFloat4x4(&projCM, XMMatrixTranspose(projRH));
+    //            XMStoreFloat4x4(&worldCM, XMMatrixTranspose(worldRH));
+    //            // ──────────────────────────────────────
+    //            // ImGuizmo 세팅
+    //            // ──────────────────────────────────────
+    //            ImGuizmo::BeginFrame();
+    //            ImGuiViewport* vp = ImGui::GetMainViewport();
+    //            ImGuizmo::SetOrthographic(false);
 
-                //반드시 실제 뷰포트 크기와 위치를 사용
-                ImGuizmo::SetRect(vp->Pos.x, vp->Pos.y, vp->Size.x, vp->Size.y);
+    //            //반드시 실제 뷰포트 크기와 위치를 사용
+    //            ImGuizmo::SetRect(vp->Pos.x, vp->Pos.y, vp->Size.x, vp->Size.y);
 
-                // 메인 뷰포트 DrawList로 지정해야 실제 화면에 그림
-                ImGuizmo::SetDrawlist(ImGui::GetForegroundDrawList(vp));
+    //            // 메인 뷰포트 DrawList로 지정해야 실제 화면에 그림
+    //            ImGuizmo::SetDrawlist(ImGui::GetForegroundDrawList(vp));
 
-                // ──────────────────────────────────────
-                // 테스트용: 실제로 뭔가 뜨는지 보려면 DrawGrid 먼저
-                // ──────────────────────────────────────
-                ImGuizmo::DrawGrid(
-                    (float*)&viewCM,
-                    (float*)&projCM,
-                    (float*)&worldCM,
-                    10.0f // 격자 크기
-                );
+    //            // ──────────────────────────────────────
+    //            // 테스트용: 실제로 뭔가 뜨는지 보려면 DrawGrid 먼저
+    //            // ──────────────────────────────────────
+    //            ImGuizmo::DrawGrid(
+    //                (float*)&viewCM,
+    //                (float*)&projCM,
+    //                (float*)&worldCM,
+    //                10.0f // 격자 크기
+    //            );
 
-                static ImGuizmo::OPERATION op = ImGuizmo::TRANSLATE;
-                static ImGuizmo::MODE mode = ImGuizmo::WORLD;
+    //            static ImGuizmo::OPERATION op = ImGuizmo::TRANSLATE;
+    //            static ImGuizmo::MODE mode = ImGuizmo::WORLD;
 
-                ImGuizmo::Manipulate(
-                    (float*)&viewCM,
-                    (float*)&projCM,
-                    op, mode,
-                    (float*)&worldCM
-                );
+    //            ImGuizmo::Manipulate(
+    //                (float*)&viewCM,
+    //                (float*)&projCM,
+    //                op, mode,
+    //                (float*)&worldCM
+    //            );
 
-                // ──────────────────────────────────────
-                // 조작 결과 반영
-                // ──────────────────────────────────────
-                if (ImGuizmo::IsUsing())
-                {
-                    XMMATRIX worldRH_out = XMMatrixTranspose(XMLoadFloat4x4(&worldCM));
-                    XMMATRIX worldLH_out = XMMatrixMultiply(worldRH_out, flipZ);
-                    XMFLOAT4X4 worldLH_outF;
-                    XMStoreFloat4x4(&worldLH_outF, worldLH_out);
-                    //pGameObject->Get_Transform()->Set_World(worldLH_outF);
-                }
-            }
-        }
-    }
+    //            // ──────────────────────────────────────
+    //            // 조작 결과 반영
+    //            // ──────────────────────────────────────
+    //            if (ImGuizmo::IsUsing())
+    //            {
+    //                XMMATRIX worldRH_out = XMMatrixTranspose(XMLoadFloat4x4(&worldCM));
+    //                XMMATRIX worldLH_out = XMMatrixMultiply(worldRH_out, flipZ);
+    //                XMFLOAT4X4 worldLH_outF;
+    //                XMStoreFloat4x4(&worldLH_outF, worldLH_out);
+    //                //pGameObject->Get_Transform()->Set_World(worldLH_outF);
+    //            }
+    //        }
+    //    }
+    //}
 
     // ──────────────────────────────────────
     // ImGui + DockSpace 렌더링

@@ -35,6 +35,8 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     CTransform::TRANSFORM_DESC TransDesc;
 
     TransDesc.fSpeedPerSec = 5.f;
+    TransDesc.vLocalPosition = { 0.f,5.f,0.f,1.f };
+
     desc.TransformDesc = &TransDesc;    
     desc.ObjTag = L"Player";
 
@@ -187,6 +189,23 @@ void CPlayer::Event_Input(_float fTimeDelta)
         {
             pBody->Get_Model()->Set_VisibleMesh(L"flipperL_low__MI_flippers", false);
         }
+    }
+
+    if (m_pInputManager->IsKeyPressed(KeyCode::T))
+    {
+        if (m_iState & CModelObject::IDLE)
+            m_iState ^= IDLE;
+
+        m_iState |= ATTACK;
+    }
+
+
+    if (m_pInputManager->IsKeyReleased(KeyCode::T))
+    {
+        if (m_iState & CModelObject::ATTACK)
+            m_iState ^= ATTACK;
+
+        m_iState |= IDLE;
     }
 }
 

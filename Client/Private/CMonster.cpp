@@ -1,6 +1,9 @@
 #include "CMonster.h"
 #include "CModel.h"
 #include "CGameInstance.h"
+#include "CBody.h"
+#include "Client_Defines.h"
+
 
 USING(Client)
 CMonster::CMonster(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -16,21 +19,34 @@ CMonster::CMonster(const CMonster& rhs)
 }
 
 HRESULT CMonster::Initialize_Prototype()
-{/*
-  /*  if (FAILED(__super::Initialize_Prototype()))
+{
+    if (FAILED(__super::Initialize_Prototype()))
         return E_FAIL;
 
    
 
     return S_OK;
-  */
-    return S_OK;
+  
 }
 
 HRESULT CMonster::Initialize_Copytype(void* pArg)
 {
+    CMonster::MONSTER_DESC* desc=static_cast<CMonster::MONSTER_DESC*>(pArg);
+
     /*부모 컴포넌트 값세팅 */
-  /*  if (FAILED(__super::Initialize_Copytype(pArg)))
+    if (FAILED(__super::Initialize_Copytype(pArg)))
+        return E_FAIL;
+
+    CBody::BODY_DESC* pBodyDesc = static_cast<CBody::BODY_DESC*>(desc->BodyDesc);
+
+    pBodyDesc->pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
+    pBodyDesc->pParentState = &m_iState;
+
+
+    if (FAILED(Ready_PartObjects(pArg)))
+        return E_FAIL;
+
+    if (FAILED(Ready_Resource(&desc)))
         return E_FAIL;
 
     m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(
@@ -38,40 +54,35 @@ HRESULT CMonster::Initialize_Copytype(void* pArg)
         3.0f,
         m_pGameInstance->Random(0.0f, 20.f),
         1.f
-    ));*/
+    ));
     
-    //int Rand = rand() % m_pModel->Get_NumAnim();
-    //m_pModel->Set_Animation(Rand, true);
-
     return S_OK;
 }
 
 void CMonster::Update_Priority(_float fTimeDelta)
 {
-    //__super::Update_Priority(fTimeDelta);
+    __super::Update_Priority(fTimeDelta);
 }
 
 void CMonster::Update(_float fTimeDelta)
 {
-    //__super::Update(fTimeDelta);
+    __super::Update(fTimeDelta);
 
-
-   //m_pModel->Play_Animation(fTimeDelta);
 }
 
 void CMonster::Update_Late(_float fTimeDelta)
 {
-    //__super::Update_Late(fTimeDelta);
+    __super::Update_Late(fTimeDelta);
 }
 
 void CMonster::Update_Render(_float fTimeDelta)
 {
-    //__super::Update_Render(fTimeDelta);
+    __super::Update_Render(fTimeDelta);
 }
 
 HRESULT CMonster::Render()
 {
-   // __super::Render();
+    __super::Render();
 
 
 
@@ -90,6 +101,20 @@ HRESULT CMonster::Ready_Resource(void* pArg)
     iAttack = pMonsterDesc->MaxHp;
 
 
+    return S_OK;
+}
+
+HRESULT CMonster::Ready_PartObjects(void* pArg)
+{
+    CheckNullResult(pArg, E_FAIL);
+    MODELOBJECT_DESC* pModelDesc = static_cast<MODELOBJECT_DESC*>(pArg);
+    if (pModelDesc)
+    {
+        CBody::BODY_DESC* pBodyDesc = static_cast<CBody::BODY_DESC*>(pModelDesc->BodyDesc);
+        if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Monster_Body"), L"Part_Body", pBodyDesc)))
+            return E_FAIL;
+
+    }
     return S_OK;
 }
 
@@ -123,5 +148,5 @@ CGameObject* CMonster::Clone(void* pArg)
 void CMonster::Free()
 {
   
-    //__super::Free();
+    __super::Free();
 }

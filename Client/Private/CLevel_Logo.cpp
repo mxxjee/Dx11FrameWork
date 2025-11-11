@@ -20,7 +20,7 @@
 #include "CModelObject.h"
 #include "CModel.h"
 #include "CBody.h"
-
+#include "CMonster.h"
 
 
 
@@ -479,10 +479,17 @@ HRESULT CLevel_Logo::Ready_Layer_Monster(const _wstring& strLayerTag)
 {
     for (int i = 0; i < 20; ++i)
     {
-        CModelObject::MODELOBJECT_DESC desc;
+        CMonster::MonsterDesc desc;
+        
+        CBody::BODY_DESC bodyDesc;
+        bodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+        bodyDesc.modelName = L"MoriblinSword";
 
-        /*desc.modelName = L"MoriblinSword";
-        desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+        desc.BodyDesc = &bodyDesc;
+        
+        desc.iAttack = 10;
+        desc.MaxHp = 5;
+
         desc.ObjTag = L"Monster"+to_wstring(i);
         CTransform::TRANSFORM_DESC TransDesc = {};
         TransDesc.vLocalPosition = { 10.f,0.f,10.f,1.f };
@@ -491,16 +498,13 @@ HRESULT CLevel_Logo::Ready_Layer_Monster(const _wstring& strLayerTag)
 
         desc.TransformDesc = &TransDesc;
 
-        CModel::MODEL_DSC ModelDesc = {};
-        ModelDesc.ShaderName = L"VtxAnimMesh";
-        desc.modelDesc = &ModelDesc;
-
+   
 
         if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
             PROTO_OBJ_NAME(L"Monster"),
             ENUM_TO_UINT(LEVEL_ID::LOGO),
             strLayerTag, &desc)))
-            return E_FAIL;*/
+            return E_FAIL;
 
     }
    

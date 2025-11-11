@@ -27,6 +27,8 @@
 #include "CModelObject.h"
 #include "CBody.h"
 #include "CPlayer_Body.h"
+#include "CMonster_Body.h"
+
 
 
 
@@ -356,13 +358,17 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Model"), CModelObject::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    //if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Monster"), CMonster::Create(m_pDevice, m_pDeviceContext))))
-    //    return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Monster"), CMonster::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Body"),  CBody::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Player_Body"), CPlayer_Body::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Monster_Body"), CMonster_Body::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     return S_OK;

@@ -161,6 +161,7 @@
     <ClInclude Include="..\Public\CLoader.h" />
     <ClInclude Include="..\Public\CMainApp.h" />
     <ClInclude Include="..\Public\CMonster.h" />
+    <ClInclude Include="..\Public\CMonster_Body.h" />
     <ClInclude Include="..\Public\CObjectDebugWindow.h" />
     <ClInclude Include="..\Public\CPanel.h" />
     <ClInclude Include="..\Public\CPlayer.h" />
@@ -184,6 +185,7 @@
     <ClCompile Include="..\Private\CLoader.cpp" />
     <ClCompile Include="..\Private\CMainApp.cpp" />
     <ClCompile Include="..\Private\CMonster.cpp" />
+    <ClCompile Include="..\Private\CMonster_Body.cpp" />
     <ClCompile Include="..\Private\CObjectDebugWindow.cpp" />
     <ClCompile Include="..\Private\CPanel.cpp" />
     <ClCompile Include="..\Private\CPlayer.cpp" />

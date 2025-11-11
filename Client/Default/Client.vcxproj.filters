@@ -65,6 +65,7 @@
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayer_Body.h" />
+    <ClInclude Include="..\Public\CMonster_Body.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -159,6 +160,9 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_Body">
       <UniqueIdentifier>{48726482-2b17-45b1-a849-c5ee4c22575c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_Body">
+      <UniqueIdentifier>{f6ad8bf3-5193-4418-88f0-eee303566e6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -213,6 +217,7 @@
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayer_Body.cpp" />
+    <ClCompile Include="..\Private\CMonster_Body.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

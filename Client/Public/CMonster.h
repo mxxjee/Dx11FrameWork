@@ -6,7 +6,7 @@ class CMonster :
     public CModelObject
 {
 public:
-    typedef struct MonsterDesc
+    typedef struct MonsterDesc : public CModelObject::MODELOBJECT_DESC
     {
         int MaxHp;
         int iAttack;
@@ -30,6 +30,10 @@ public:
     virtual HRESULT Render();
 private:
     HRESULT     Ready_Resource(void* pArg);
+
+private:
+    virtual   HRESULT     Ready_PartObjects(void* pArg);
+
 public:
     static CMonster* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
