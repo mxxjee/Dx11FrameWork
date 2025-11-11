@@ -27,7 +27,10 @@ public:
 
 public:
     void            Set_Callback(function<void()> callBack) { m_Callback = callBack; }
+    void            Set_BindValue(float* pData) { m_pData = pData; }
 
+
+    float       Get_Bindvalue() { return *m_pData; }
 public:
   
     static CImgui_InputFloat* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);

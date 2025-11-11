@@ -42,6 +42,15 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 	m_pModel->Set_Animation(L"Idle", true);
 	//m_pModel->Set_TransitionTime(0.02f);
 
+	m_pModel->Set_VisibleMesh(L"flipperL_low__MI_flippers", false);
+	m_pModel->Set_VisibleMesh(L"MagicRod_magicRodJem_low__MagicRod_MI_magicRod", false);
+	m_pModel->Set_VisibleMesh(L"Shovel_handle_low__Shovel_MI_shovel", false);
+	m_pModel->Set_VisibleMesh(L"linkHookShot_handl_low__linkHookShot_MI_hookShot", false);
+	m_pModel->Set_VisibleMesh(L"linkShieldB_bis_low__linkShieldB_MI_shieldBMirror", false);
+	m_pModel->Set_VisibleMesh(L"linkShieldB_bis_low__linkShieldB_MI_shieldB", false);
+	m_pModel->Set_VisibleMesh(L"Ocarina_ocarina_low__Ocarina_MI_ocarina", false);
+
+
 
 	return S_OK;
 }

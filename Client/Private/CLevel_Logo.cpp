@@ -659,7 +659,7 @@ void CLevel_Logo::Create_MainCamera()
     Desc.fFovy = 90.f;
     Desc.fNear = 0.1f;
     Desc.vPosition = _float3(0.f, 2.f, -2.f);
-    Desc.vOffset= _float3(0.f, 2.f, -2.f);
+    Desc.vOffset= _float3(0.f, 4.f, -3.f);
     Desc.fFar = 1000.f;
     Desc.pTarget = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Player_Layer", L"Player");
 

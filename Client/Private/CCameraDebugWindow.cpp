@@ -8,6 +8,7 @@
 #include "CCamera_Base.h"
 #include "Client_Defines.h"
 #include "CImgui_Checkbox.h"
+#include "CImgui_InputFloat.h"
 
 
 
@@ -112,6 +113,7 @@ HRESULT CCameraDebugWindow::Create_Widgets()
    
     ///Perspective 디버그용 슬라이더 생성
     m_Sliders.resize(END);
+    m_InuptFloats.resize(3);
 
     //[NearClipPlane 슬라이더]
     CImgui_Slider::IMGUISLIDER_DESC SliderDesc;
@@ -141,16 +143,17 @@ HRESULT CCameraDebugWindow::Create_Widgets()
         return E_FAIL;
     //////////////////////////////////////////////////////
     // 
-    //[OffSetSlider]
+    //[CImgui_InputFloat]
     const char* pLabelNames[3] = { "OffSet_X","OffSet_Y","OffSet_Z" };
     for (int i = OFFSET_X; i <= OFFSET_Z; ++i)
     {
-        SliderDesc.m_LabelName = pLabelNames[i - OFFSET_X];
-        SliderDesc.m_RelativePos = ImVec2(0.f, 330.f + ((i-OFFSET_X)*20));
-        SliderDesc.vMin = -100.f;
-        SliderDesc.vMax = 1000.f;
+        CImgui_InputFloat::ImguiTextFloatDesc   InuptDesc;
 
-        if (FAILED(Add_Widgets<CImgui_Slider>(&SliderDesc, reinterpret_cast<CImgui_Widget**>(&m_Sliders[i]))))
+        InuptDesc.Label = pLabelNames[i - OFFSET_X];
+        InuptDesc.m_RelativePos = ImVec2(0.f, 330.f + ((i-OFFSET_X)*20));
+        InuptDesc.pData = nullptr;
+
+        if (FAILED(Add_Widgets<CImgui_InputFloat>(&InuptDesc, reinterpret_cast<CImgui_Widget**>(&m_InuptFloats[i - OFFSET_X]))))
             return E_FAIL;
 
     }
@@ -346,19 +349,19 @@ void CCameraDebugWindow::ToggleOffSetDebug()
     /*토글설정*/
     if (m_bClickOrtho)
     {
-        m_Sliders[OFFSET_X]->Set_Active(false);
-        m_Sliders[OFFSET_Y]->Set_Active(false);
-        m_Sliders[OFFSET_Z]->Set_Active(false);
+        m_InuptFloats[0]->Set_Active(false);
+        m_InuptFloats[1]->Set_Active(false);
+        m_InuptFloats[2]->Set_Active(false);
 
         m_pDefaultOffSetButton->Set_Active(false);
 
     }
 
     else
-    {
-        m_Sliders[OFFSET_X]->Set_Active(true);
-        m_Sliders[OFFSET_Y]->Set_Active(true);
-        m_Sliders[OFFSET_Z]->Set_Active(true);
+    { 
+        m_InuptFloats[0]->Set_Active(true);
+        m_InuptFloats[1]->Set_Active(true);
+        m_InuptFloats[2]->Set_Active(true);
 
         m_pDefaultOffSetButton->Set_Active(true);
 
@@ -446,14 +449,14 @@ void CCameraDebugWindow::ToggleClickOrtho(bool _b)
             ///////////////////////////////
 
             ///////////////////////////////
-            m_Sliders[OFFSET_X]->Set_BindValue(&(fDebugOffSet.x));
-            m_Sliders[OFFSET_X]->Set_Max(1000.f);
+            m_InuptFloats[0]->Set_BindValue(&(fDebugOffSet.x));
 
-            m_Sliders[OFFSET_Y]->Set_BindValue(&(fDebugOffSet.y));
-            m_Sliders[OFFSET_Y]->Set_Max(1000.f);
 
-            m_Sliders[OFFSET_Z]->Set_BindValue(&(fDebugOffSet.z));
-            m_Sliders[OFFSET_Z]->Set_Max(1000.f);
+            m_InuptFloats[1]->Set_BindValue(&(fDebugOffSet.y));
+
+
+            m_InuptFloats[2]->Set_BindValue(&(fDebugOffSet.z));
+
             ///////////////////////////////
 
 
@@ -472,12 +475,12 @@ void CCameraDebugWindow::ToggleClickOrtho(bool _b)
                     });
             }
 
-            for (int i = OFFSET_X; i < END; ++i)
+            for (int i = 0; i < 3; ++i)
             {
-                m_Sliders[i]->Set_Callback([pTarget,i, this]() {
-                    float fX = m_Sliders[OFFSET_X]->Get_BindValue();
-                    float fY = m_Sliders[OFFSET_Y]->Get_BindValue();
-                    float fZ = m_Sliders[OFFSET_Z]->Get_BindValue();
+                m_InuptFloats[i]->Set_Callback([pTarget,i, this]() {
+                    float fX = m_InuptFloats[0]->Get_Bindvalue();
+                    float fY = m_InuptFloats[1]->Get_Bindvalue();
+                    float fZ = m_InuptFloats[2]->Get_Bindvalue();
 
                     
                     pTarget->Set_Offset(_float3(fX, fY, fZ));

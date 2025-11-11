@@ -8,6 +8,8 @@ namespace Engine
     class CImgui_Checkbox;
     class CGameInstance;
     class CCamera_Base;
+    class CImgui_InputFloat;
+
 }
 
 NS_BEGIN(Client)
@@ -57,6 +59,8 @@ private:
 
     vector<CImgui_Slider*> m_Sliders;
     vector<CImgui_Button*> m_CamButtons;
+    vector<CImgui_InputFloat*> m_InuptFloats;
+
     vector<CImgui_Checkbox*> m_CheckBoxs;
 
 private:
