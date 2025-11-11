@@ -16,19 +16,21 @@ CMonster::CMonster(const CMonster& rhs)
 }
 
 HRESULT CMonster::Initialize_Prototype()
-{
-    if (FAILED(__super::Initialize_Prototype()))
+{/*
+  /*  if (FAILED(__super::Initialize_Prototype()))
         return E_FAIL;
 
    
 
+    return S_OK;
+  */
     return S_OK;
 }
 
 HRESULT CMonster::Initialize_Copytype(void* pArg)
 {
     /*부모 컴포넌트 값세팅 */
-    if (FAILED(__super::Initialize_Copytype(pArg)))
+  /*  if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
     m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(
@@ -36,39 +38,40 @@ HRESULT CMonster::Initialize_Copytype(void* pArg)
         3.0f,
         m_pGameInstance->Random(0.0f, 20.f),
         1.f
-    ));
+    ));*/
     
-    int Rand = rand() % m_pModel->Get_NumAnim();
-    m_pModel->Set_Animation(Rand, true);
+    //int Rand = rand() % m_pModel->Get_NumAnim();
+    //m_pModel->Set_Animation(Rand, true);
+
     return S_OK;
 }
 
 void CMonster::Update_Priority(_float fTimeDelta)
 {
-    __super::Update_Priority(fTimeDelta);
+    //__super::Update_Priority(fTimeDelta);
 }
 
 void CMonster::Update(_float fTimeDelta)
 {
-    __super::Update(fTimeDelta);
+    //__super::Update(fTimeDelta);
 
 
-    m_pModel->Play_Animation(fTimeDelta);
+   //m_pModel->Play_Animation(fTimeDelta);
 }
 
 void CMonster::Update_Late(_float fTimeDelta)
 {
-    __super::Update_Late(fTimeDelta);
+    //__super::Update_Late(fTimeDelta);
 }
 
 void CMonster::Update_Render(_float fTimeDelta)
 {
-    __super::Update_Render(fTimeDelta);
+    //__super::Update_Render(fTimeDelta);
 }
 
 HRESULT CMonster::Render()
 {
-    __super::Render();
+   // __super::Render();
 
 
 
@@ -120,5 +123,5 @@ CGameObject* CMonster::Clone(void* pArg)
 void CMonster::Free()
 {
   
-    __super::Free();
+    //__super::Free();
 }

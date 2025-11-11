@@ -2,6 +2,8 @@
 #include "CModelObject.h"
 #include "VertexData.h"
 
+/*움직임과 상태제어만 한다.
+상태에 따른 애니메이션처리는 Body객체가 한다.*/
 namespace Engine
 {
     class CInput_Manager;
@@ -30,18 +32,26 @@ public:
     virtual HRESULT Render();
 
 private:
+    void        Update_Input(_float fTimeDelta);
+
+    void        Event_Input(_float  fTimeDelta);
+
     void        Move_Input(_float fTimeDelta);
+   
 public:
     static CPlayer* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
+
+public:
+    virtual HRESULT     Ready_PartObjects(void* pArg);
 
 
 private:
     bool bPressed = false;
     CInput_Manager*         m_pInputManager = nullptr;
     int                     iHp = 5;
-    int                     m_iAnimIdx = 0;
+
 };
 
 NS_END

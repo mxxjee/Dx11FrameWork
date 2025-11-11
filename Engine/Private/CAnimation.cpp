@@ -81,6 +81,7 @@ bool CAnimation::Update_TransformationMatrices(const vector<class CBone*>& Bones
 		pChannel->Update_TransformationMatrix(Bones, m_fCurrentTrackPosition, &m_CurrentKeyFrameIndices[iIndex++]);
 	}
 
+	return false;
 
 }
 

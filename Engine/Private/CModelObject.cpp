@@ -5,16 +5,19 @@
 #include "CInput_Manager.h"
 #include "CMeshComponent.h"
 #include "CModel.h"
+#include "CBody.h"
+
 
 
 CModelObject::CModelObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CGameObject(pDevice,pContext)
+    :CContainerObject(pDevice,pContext)
 {
 
 }
 
 CModelObject::CModelObject(const CModelObject& rhs)
-    :CGameObject(rhs)
+    : CContainerObject(rhs)
+
 {
 
 }
@@ -38,10 +41,7 @@ HRESULT CModelObject::Initialize_Copytype(void* pArg)
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
 
-    /*내 컴포넌트 값 세팅*/
-    if (FAILED(Ready_Resource(pArg)))
-        return E_FAIL;
-
+  
  
   
     return S_OK;
@@ -68,54 +68,19 @@ void CModelObject::Update_Late(_float fTimeDelta)
 void CModelObject::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
-   m_pGameInstance->Add_RenderObject(m_eRenderGroup, this);
 
 }
 
 HRESULT CModelObject::Render()
 {
-    if (FAILED(Bind_ShaderResources()))
-        return E_FAIL;
-
-
-    for (auto& Mesh : m_pModel->Get_Meshs())
-    {
-        /*모든 메쉬를 순회하면서 바인드한다.
-           각 메쉬들의 위치와 소유한 메테리얼의 이미지 바인딩.
-           이후 메쉬를 그리는 작업*/
-
-        if (Mesh.second)
-        {
-            Mesh.second->Bind_ShaderResource(m_pShader, "g_DiffuseTexture", aiTextureType::aiTextureType_DIFFUSE);
-            Mesh.second->Bind_ShaderResource(m_pShader, "g_SpecularTexture", aiTextureType::aiTextureType_SPECULAR);
-            Mesh.second->Bind_ShaderResource(m_pShader, "g_AmbientTexture", aiTextureType::aiTextureType_AMBIENT);
-        
-            if (FAILED(m_pModel->Bind_Bones(m_pShader, "g_BoneMatrices", Mesh.second)))
-                return E_FAIL;
-
-            if (FAILED(m_pShader->Begin(Mesh.second->Get_PassName())))
-                return E_FAIL;
-
-            if (FAILED(m_pModel->Render(Mesh.second)))
-                return E_FAIL;
-
-        
-        }
-
-
-
-    }
-
+  
 
     return S_OK;
 }
 
 HRESULT CModelObject::Bind_ShaderResources()
 {
-    if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
-        return E_FAIL;
-
-
+   
 
     return S_OK;
 }
@@ -152,47 +117,28 @@ CGameObject* CModelObject::Clone(void* pArg)
 
 HRESULT CModelObject::Ready_Components(void* pArg)
 {
-    CheckNullResult(pArg, E_FAIL);
-    MODELOBJECT_DESC* pModelDesc = static_cast<MODELOBJECT_DESC*>(pArg);
-    if (pModelDesc)
-    {
-        CModel::MODEL_DSC* ppModelDesc = static_cast<CModel::MODEL_DSC*>(pModelDesc->modelDesc);
-        ppModelDesc->pOwner = this;
-        m_pModel = m_pGameInstance->Clone_Model(pModelDesc->modelName, ppModelDesc);
-        
-        if (!m_pModel)
-            return E_FAIL;
-    }
    
     return S_OK;
 }
 
-HRESULT CModelObject::Ready_Resource(void* pArg)
+
+HRESULT CModelObject::Ready_PartObjects(void* pArg)
 {
     CheckNullResult(pArg, E_FAIL);
-    MODELOBJECT_DESC* pModel_dsc = static_cast<MODELOBJECT_DESC*>(pArg);
-
-    m_eRenderGroup = pModel_dsc->eRenderGroup;
-
-
-
-    if (m_pModel)
+    MODELOBJECT_DESC* pModelDesc = static_cast<MODELOBJECT_DESC*>(pArg);
+    if (pModelDesc)
     {
-        m_pShader = m_pModel->Get_Shader();
-        Safe_AddRef(m_pShader);
+        CBody::BODY_DESC* pBodyDesc = static_cast<CBody::BODY_DESC*>(pModelDesc->BodyDesc);
+        if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Body"), L"Part_Body", pBodyDesc)))
+            return E_FAIL;
 
     }
-    
-
-
     return S_OK;
-}
 
+}
 void CModelObject::Free()
 {
     __super::Free();
-    Safe_Release(m_pShader);
-    Safe_Release(m_pModel);
 
 }
 

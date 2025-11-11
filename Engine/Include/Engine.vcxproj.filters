@@ -337,6 +337,9 @@
     <Filter Include="03.GameObject\ContainerObject">
       <UniqueIdentifier>{6c4a231c-b11a-4a3e-91df-b2d8a7daac61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObject\PartObject\Body">
+      <UniqueIdentifier>{f8765c92-d52a-4ca5-be5a-d369b6868fb9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -664,6 +667,7 @@
       <Filter>03.GameObject\PartObject</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CContainerObject.h" />
+    <ClInclude Include="..\Public\CBody.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -946,5 +950,6 @@
       <Filter>03.GameObject\PartObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CContainerObject.cpp" />
+    <ClCompile Include="..\Private\CBody.cpp" />
   </ItemGroup>
 </Project>

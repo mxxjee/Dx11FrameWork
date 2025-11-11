@@ -1,19 +1,29 @@
 #pragma once
-#include "CGameObject.h"
+#include "CContainerObject.h"
+
 
 NS_BEGIN(Engine)
-class CModel;
-class CInput_Manager;
+
+//Partojbect:Body를 기본적으로 소유하는 오브젝트
+
 class ENGINE_DLL CModelObject :
-    public CGameObject
+    public CContainerObject
 {
+public:
+    /*모델들이 가지는 기본상태값들.. 이거 상속받아서 추가로 세팅*/
+    enum MODEL_STATE : UINT32
+    {
+        NONE,
+        IDLE = 1 << 0,
+        RUN = 1 << 1,
+        ATTACK = 1 << 2,
+    };
 public:
     typedef struct tagModelObjectDesc : CGameObject::GAMEOBJECT_DESC
     {
-        _wstring    modelName;
-        void*       modelDesc = nullptr;
+        void* BodyDesc = nullptr;//BodyDesc정보
+       
 
-        _uint eRenderGroup = 0;
     }MODELOBJECT_DESC;
 
 protected:
@@ -41,21 +51,15 @@ public:
     static CModelObject* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
+   
+public:
+    HRESULT     Ready_Components(void* pArg);     
+    HRESULT     Ready_PartObjects(void* pArg);
 
 
 protected:
-    CModel* m_pModel = nullptr;
-            //모델한테 받은 쉐이더
-    class CShader* m_pShader = nullptr;    
-private:
-    HRESULT     Ready_Components(void* pArg);       
-    HRESULT     Ready_Resource(void* pArg);
+    _uint                   m_iState = {};
 
-
-protected:
-    _uint                   m_eRenderGroup = 0;
-    _wstring                m_ShaderName = L"";
-    string                  m_passName = "";
 
 };
 NS_END

@@ -15,11 +15,10 @@ class CBone;
 class ENGINE_DLL CModel :
     public CBase
 {
+
 public:
     typedef struct tagModelDesc
     {
-        _wstring ShaderName = L"VtxMesh";
-        string passName = "Default";
         class CGameObject* pOwner = nullptr;
 
     }MODEL_DSC;
@@ -68,6 +67,9 @@ public:
     class CShader* Get_Shader() { return m_pShader; }
     const ModelData& Get_ModelData() { return m_ModelData; }
     class CAnimation* Get_Animation(int num) { return m_Animations[num]; }
+
+public:
+    void        Set_VisibleMesh(const _wstring& MeshName,bool bVisible);
 
 public:
     void            Start_Transition();

@@ -12,7 +12,7 @@ class ENGINE_DLL CPartObject :
     public CGameObject
 {
 public:
-    typedef struct tagPartObjectDesc
+    typedef struct tagPartObjectDesc : CGameObject::GAMEOBJECT_DESC
     {
         const _float4x4* pParentMatrix = { nullptr };//포인터참조
     }PARTOBJECT_DESC;

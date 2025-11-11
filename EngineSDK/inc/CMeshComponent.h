@@ -36,6 +36,7 @@ public:
   
 public:
     bool                Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);
+    void                Set_Visible(bool bVisible) { m_bVisible = bVisible; }
 
 public:
     HRESULT         Bind_ShaderResource(CShader*  pShader, const _char* pConstName, aiTextureType eMaterialType, _uint Textureindex=0);
@@ -61,6 +62,8 @@ private:
 
     vector<_uint>       m_pIndices;
     vector<_float3>     m_pPositions;
+
+    bool                m_bVisible = true;
 };
 
 NS_END

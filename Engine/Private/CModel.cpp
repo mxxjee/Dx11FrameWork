@@ -107,22 +107,6 @@ HRESULT CModel::Initialize_Prototype(_matrix PreTransformMatrix,const _char* pMo
 HRESULT CModel::Initialize_Copytype(void* pArg)
 {
 
-
-	MODEL_DSC* pDesc = static_cast<MODEL_DSC*>(pArg);
-	if (pDesc)
-	{
-		if (m_pShader)
-			Safe_Release(m_pShader);
-
-		m_pShader = m_pGameInstance->Find_Shader(pDesc->ShaderName);
-		Safe_AddRef(m_pShader);
-
-		if (pDesc->pOwner)
-			m_pOwner = pDesc->pOwner;
-	}
-
-
-
 	return S_OK;
 }
 
@@ -444,17 +428,17 @@ void CModel::Update_BlendAnim(_float fTimeDelta)
 			CChannel* pbCurExist = pCurAnim->Get_Channel_BoneIdx(i);
 
 			if (pPreExist && pbCurExist)
-				pPreExist->UpdateTransformMatrix_Blned_By_Two(m_Bones, m_BoneTraformMatricies[i], m_fTranslationTime/m_fTranslation);
+				pPreExist->UpdateTransformMatrix_Blned_By_Two(m_Bones, m_BoneTraformMatricies[i], m_fTranslationTime);
 
 
 			else if (pPreExist && !pbCurExist)
 			{
 				CChannel* pTarget = pPreExist ? pPreExist : pbCurExist;
 				if (pTarget == pPreExist)
-					pPreExist->UpdateTransformMatrix_To_Identity(m_Bones, m_BoneTraformMatricies[i], m_fTranslationTime / m_fTranslation);
+					pPreExist->UpdateTransformMatrix_To_Identity(m_Bones, m_BoneTraformMatricies[i], m_fTranslationTime );
 
 				else
-					pbCurExist->UpdateTransformMatrix_From_Identity(m_Bones, m_fTranslationTime / m_fTranslation);
+					pbCurExist->UpdateTransformMatrix_From_Identity(m_Bones, m_fTranslationTime);
 			}
 
 			else
@@ -509,11 +493,11 @@ void CModel::Set_Animation(_uint iAnimationIndex, _bool isLoop)
 
 	if (m_iPreAnimIndex != m_iCurrentAnimIndex)
 	{
-		m_isTransition = true;
+		//m_isTransition = true;
 
-		//이전 애니메이션 초기화(다음에 실행시 처음부터 시작)
-		m_Animations[m_iPreAnimIndex]->Set_CurrentTrackPosition(0.f);
-		Start_Transition();
+		////이전 애니메이션 초기화(다음에 실행시 처음부터 시작)
+		//m_Animations[m_iPreAnimIndex]->Set_CurrentTrackPosition(0.f);
+		//Start_Transition();
 	}
 
 	m_Animations[iAnimationIndex]->Set_Loop(isLoop);
@@ -555,6 +539,17 @@ CMeshComponent* CModel::Get_Mesh(const wstring& Name)
 		return iter->second;
 
 	return nullptr;
+}
+
+void CModel::Set_VisibleMesh(const _wstring& MeshName, bool bVisible)
+{
+	auto iter = m_Meshs.find(MeshName);
+	if (iter != m_Meshs.end())
+		iter->second->Set_Visible(bVisible);
+
+	else
+		return;
+
 }
 
 void CModel::Start_Transition()

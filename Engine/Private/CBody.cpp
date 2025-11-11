@@ -19,7 +19,9 @@ CBody::CBody(const CBody& rhs)
 
 HRESULT CBody::Initialize_Prototype()
 {
-    if(FAILED(__super::Initialize_Prototype()))
+    if (FAILED(__super::Initialize_Prototype()))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -31,7 +33,10 @@ HRESULT CBody::Initialize_Copytype(void* pArg)
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
-    if (Ready_Components(pArg))
+    if (FAILED(Ready_Components(pArg)))
+        return E_FAIL;
+
+    if (FAILED(Ready_Resource(pArg)))
         return E_FAIL;
 
     return S_OK;
@@ -44,6 +49,7 @@ void CBody::Update_Priority(_float fTimeDelta)
 
 void CBody::Update(_float fTimeDelta)
 {
+    m_pModel->Play_Animation(fTimeDelta);
 }
 
 void CBody::Update_Late(_float fTimeDelta)
@@ -52,6 +58,7 @@ void CBody::Update_Late(_float fTimeDelta)
 
 void CBody::Update_Render(_float fTimeDelta)
 {
+    m_pGameInstance->Add_RenderObject(m_eRenderGroup, this);
 }
 
 HRESULT CBody::Render()
@@ -98,12 +105,28 @@ HRESULT CBody::Ready_Components(void* pArg)
     BODY_DESC* pBodyDesc = static_cast<BODY_DESC*>(pArg);
     if (pBodyDesc)
     {
-        CModel::MODEL_DSC* ppModelDesc = static_cast<CModel::MODEL_DSC*>(pBodyDesc->modelDesc);
-        ppModelDesc->pOwner = this;
-        m_pModel = m_pGameInstance->Clone_Model(pBodyDesc->modelName, ppModelDesc);
+        CModel::MODEL_DSC pModelDesc;
+        pModelDesc.pOwner = this;
+        m_pModel = m_pGameInstance->Clone_Model(pBodyDesc->modelName, &pModelDesc);
 
         if (!m_pModel)
             return E_FAIL;
+    }
+
+    return S_OK;
+}
+
+HRESULT CBody::Ready_Resource(void* pArg)
+{
+    CBody::BODY_DESC* pBodyDesc = static_cast<CBody::BODY_DESC*>(pArg);
+    m_eRenderGroup = pBodyDesc->eRenderGroup;
+    m_pParentState = pBodyDesc->pParentState;
+
+    if (m_pModel)
+    {
+        m_pShader = m_pModel->Get_Shader();
+        Safe_AddRef(m_pShader);
+
     }
 
     return S_OK;

@@ -155,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="..\Public\CAnimation.h" />
     <ClInclude Include="..\Public\CBase.h" />
+    <ClInclude Include="..\Public\CBody.h" />
     <ClInclude Include="..\Public\CBone.h" />
     <ClInclude Include="..\Public\CBoxColliderComponent.h" />
     <ClInclude Include="..\Public\CCameraComponent.h" />
@@ -266,6 +267,7 @@
   <ItemGroup>
     <ClCompile Include="..\Private\CAnimation.cpp" />
     <ClCompile Include="..\Private\CBase.cpp" />
+    <ClCompile Include="..\Private\CBody.cpp" />
     <ClCompile Include="..\Private\CBone.cpp" />
     <ClCompile Include="..\Private\CBoxColliderComponent.cpp" />
     <ClCompile Include="..\Private\CCameraComponent.cpp" />

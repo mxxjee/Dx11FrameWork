@@ -48,7 +48,7 @@ HRESULT CMaterial::Register_MaterialTexture(const char* BasePath, map<aiTextureT
 		wstring TexKey= path.parent_path().parent_path().filename().wstring() + L"/" + TexName;
 		
 		
-		CTexture* pTex = m_pGameInstance->Find_Texture(TexName);
+		CTexture* pTex = m_pGameInstance->Find_Texture(TexKey);
 
 		//못찾앗을때만 . 생성
 		if (!pTex)

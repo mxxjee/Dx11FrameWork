@@ -83,6 +83,7 @@ HRESULT CContainerObject::Add_PartObject(_uint iPrototypeLevelIdx, const _wstrin
     CPartObject* pPartObject = dynamic_cast<CPartObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, iPrototypeLevelIdx, strPrototypeTag, pArg));
     CheckNullResult(pPartObject, E_FAIL);
 
+    pPartObject->Set_Tag(strPartObjTag);
     m_PartObjects.emplace(strPartObjTag, pPartObject);
 
     return S_OK;

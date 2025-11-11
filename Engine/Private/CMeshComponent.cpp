@@ -101,6 +101,8 @@ CComponent* CMeshComponent::Clone(void* pArg)
 
 HRESULT CMeshComponent::Render()
 {
+	CheckFalseResult(m_bVisible, S_OK);
+
 	if (m_pVIBuffer)
 	{
 		m_pVIBuffer->Bind_Resource();
