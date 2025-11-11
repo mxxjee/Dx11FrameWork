@@ -49,8 +49,8 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_Player(L"Player_Layer")))
         return E_FAIL;
 
-    //if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
-    //    return E_FAIL;
+    if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
+        return E_FAIL;
 
 
     if (FAILED(Ready_Layer_MainCamera(L"Camera_Layer")))

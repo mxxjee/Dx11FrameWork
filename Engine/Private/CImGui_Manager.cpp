@@ -57,8 +57,7 @@ void CImGui_Manager::Update()
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
-
-
+   
 
 
     BeginDockSpace();//도킹기능
