@@ -951,5 +951,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CContainerObject.cpp" />
     <ClCompile Include="..\Private\CBody.cpp" />
+    <ClCompile Include="..\Public\IMapEditable.cpp" />
   </ItemGroup>
 </Project>

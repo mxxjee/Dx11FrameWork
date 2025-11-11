@@ -163,6 +163,12 @@ void CMapObject::Free()
 void CMapObject::OnSeletected(bool bSelected)
 {
 	m_bSelected = bSelected;
+	if (m_bSelected)
+		m_passName = "Select";
+
+	else
+		m_passName = "Default";
+
 }
 
 void CMapObject::Save_To_Json(json& Json)
@@ -195,5 +201,72 @@ void CMapObject::Show_Gizmo()
 
 
 
+}
+
+CGameObject* CMapObject::Clone(void* pArg)
+{
+	return nullptr;
+}
+
+
+
+void CMapObject::Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation)
+{
+
+	ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "Name : %s", WStringToUTF8(tag).c_str());
+
+	string Type = "";
+	switch (m_eObjType)
+	{
+	case MapObjType::OBSTACLE:
+		Type = "OBSTACLE";
+		break;
+
+	case MapObjType::TILE:
+		Type = "TILE";
+		break;
+
+	case MapObjType::TERRAIN:
+		Type = "TERRAIN";
+		break;
+	case MapObjType::POSITION:
+		Type = "POSITION";
+		break;
+
+	case MapObjType::TRIGGER:
+		Type = "TRIGGER";
+		break;
+
+	default:
+		break;
+	}
+	ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "Type: %s", Type.c_str());
+
+	(*vScale).x = m_pTransformCom->Get_Scale_ByFloat3().x;
+	(*vScale).y = m_pTransformCom->Get_Scale_ByFloat3().y;
+	(*vScale).z = m_pTransformCom->Get_Scale_ByFloat3().z;
+
+	XMStoreFloat3(vPosition, m_pTransformCom->Get_State(STATE::POSITION));
+
+	*vRotation = MathUtils::QuaternionToEuler(m_pTransformCom->Get_SRT(SRTType::ROTATION));
+
+}
+
+void CMapObject::Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta)
+{
+	m_pTransformCom->Set_Speed(fSpeed);
+
+	switch (eDir)
+	{
+	case Engine::DIRECTION::FORWARD:
+	case Engine::DIRECTION::RIGHT:
+	case Engine::DIRECTION::LEFT:
+	case Engine::DIRECTION::BACKWARD:
+		m_pTransformCom->Move(eDir, _fTimeDelta);
+		break;
+
+	default:
+		break;
+	}
 }
 

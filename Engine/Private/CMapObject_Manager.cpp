@@ -5,6 +5,7 @@
 #include "MathUtils.h"
 #include "CInput_Manager.h"
 #include "IMapEditable.h"
+#include "CInput_Manager.h"
 
 
 
@@ -17,8 +18,10 @@ CMapObject_Manager::CMapObject_Manager()
 CMapObject_Manager::CMapObject_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
     :m_pDevice{ _pDevice },
     m_pContext{ _pContext },
-    m_pGameInstance{ CGameInstance::GetInstance() }
+    m_pGameInstance{ CGameInstance::GetInstance() },
+    m_pInputManager{ CInput_Manager::GetInstance()}
 {
+    Safe_AddRef(m_pInputManager);
     Safe_AddRef(m_pGameInstance);
 }
 
@@ -27,6 +30,9 @@ HRESULT CMapObject_Manager::Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3
     m_pDevice = _pDevice;
     m_pContext = _pContext;
     m_pGameInstance = CGameInstance::GetInstance();
+    m_pInputManager = CInput_Manager::GetInstance();
+
+    Safe_AddRef(m_pInputManager);
     Safe_AddRef(m_pGameInstance);
 
     m_EngineDesc = CGameInstance::GetInstance()->Get_EngineDesc();
@@ -49,13 +55,23 @@ void CMapObject_Manager::Update(_float fTimeDelta)
         pair.second->Update(fTimeDelta);
     }
 
- 
+    if (!m_bAblePicking)
+        Set_AblePicking(true);
+
+    if (CInput_Manager::GetInstance()->IsMouseButtonPressed(0))
+        Check_Picking();
+
+    if (m_pSelectedObject)
+        Active_SelectionMode(fTimeDelta);
+
+
+
 }
 
 void CMapObject_Manager::Update_Late(_float fTimeDelta)
 {
-    if(CInput_Manager::GetInstance()->IsMouseButtonPressed(0))
-        Check_Picking();
+   
+
 
     for (auto& pair : m_Layers)
     {
@@ -76,6 +92,8 @@ void CMapObject_Manager::Update_Render(_float fTimeDelta)
 void CMapObject_Manager::Check_Picking()
 {
     CheckTrue(m_Layers.empty());
+    CheckFalse(m_bAblePicking);
+
     //레이를 생성한다.
         //freecam의 view/proj가져오기
     _float4x4 Proj = CGameInstance::GetInstance()->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
@@ -87,18 +105,19 @@ void CMapObject_Manager::Check_Picking()
     CMapObject* pObj = nullptr;
     CMapObject* pPickObj = nullptr;
 
-    Ray ray = MathUtils::CreateRayWorld(m_EngineDesc.hWnd, m_pContext, Proj, View);
+   
     for (auto& pair : m_Layers)
     {
         if (pair.second)
         {
-            pObj = pair.second->Check_Picking(ray.Origin, ray.Dir, Dist);
+            float fDist = 0;
+            pObj = pair.second->Check_Picking(m_EngineDesc.hWnd,m_pContext,Proj,View, fDist);
             
             if (pObj)
             {
-                if (Dist < MinDist)
+                if (fDist < MinDist)
                 {
-                    MinDist = Dist;
+                    MinDist = fDist;
                     pPickObj = pObj;
                 }
 
@@ -107,8 +126,30 @@ void CMapObject_Manager::Check_Picking()
        }
     }
 
-    if(pPickObj)
+    if (pPickObj)
+    {
         Set_SelectObject(pPickObj);
+        Set_AblePicking(false);
+
+    }
+}
+
+void CMapObject_Manager::Active_SelectionMode(_float fTimeDelta)
+{
+ 
+    if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+        m_pSelectedObject->Edit_Move(DIRECTION::FORWARD, m_fMoveSpeed, fTimeDelta);
+    
+    else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+        m_pSelectedObject->Edit_Move(DIRECTION::BACKWARD, m_fMoveSpeed,fTimeDelta);
+
+    else if (m_pInputManager->IsKeyHeld(KeyCode::LeftArrow))
+        m_pSelectedObject->Edit_Move(DIRECTION::LEFT, m_fMoveSpeed,fTimeDelta);
+
+    else if (m_pInputManager->IsKeyHeld(KeyCode::RightArrow))
+        m_pSelectedObject->Edit_Move(DIRECTION::RIGHT, m_fMoveSpeed,fTimeDelta);
+
+
 }
 
 HRESULT CMapObject_Manager::Add_MapObject_To_MapLayer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag, const _wstring& strLayerTag, void* pArg)
@@ -334,6 +375,6 @@ void CMapObject_Manager::Free()
 	}
 
 	
-
+    Safe_Release(m_pInputManager);
     Safe_Release(m_pGameInstance);
 }

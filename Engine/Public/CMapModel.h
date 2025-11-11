@@ -31,10 +31,11 @@ public:
 
     virtual HRESULT Render();
 public:
-    HRESULT                     Ready_Components(void* pArg);
+    virtual HRESULT                     Ready_Component(void* pArg);
     HRESULT                     Ready_Resources(void* pArg);
     HRESULT                     Bind_ShaderResources();
 
+  
 public:
     static CMapModel* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;

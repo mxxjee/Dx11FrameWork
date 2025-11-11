@@ -1,6 +1,7 @@
 
 #include "CMapField.h"
-#include "CBoxColliderComponent.h"
+#include "CMeshColliderComponent.h"
+
 CMapField::CMapField(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CMapModel(pDevice,pContext)
 {

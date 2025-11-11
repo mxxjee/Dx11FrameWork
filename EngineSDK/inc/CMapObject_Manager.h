@@ -8,6 +8,8 @@ class CMapObject;
 class CMapLayer;
 class CGameInstance;
 class IMapEditable;
+class CInput_Manager;
+
 
 class ENGINE_DLL CMapObject_Manager :
     public CBase
@@ -29,6 +31,9 @@ public:
     void Update_Render(_float fTimeDelta);
 
     void    Check_Picking();
+
+private:
+    void        Active_SelectionMode(_float fTimeDelta);
 
 public:
     //생성과 동시에 추가해주는 함수
@@ -64,10 +69,17 @@ public:
     UMap<_wstring, CMapLayer*> m_Layers;        //월드상에 배치된애들(지형제외)
 
 
+public:
+    _float      Get_MoveSpeed() { return m_fMoveSpeed; }
+    void        Set_MoveSpeed(_float Speed) { m_fMoveSpeed = Speed; }
+
+    void        Set_AblePicking(bool Picking) { m_bAblePicking = Picking; }
+
 private:
     ComPtr<ID3D11Device> m_pDevice;
     ComPtr<ID3D11DeviceContext> m_pContext;
     CGameInstance* m_pGameInstance = { nullptr };
+    class CInput_Manager* m_pInputManager = { nullptr };
 
 
 public:
@@ -82,6 +94,9 @@ protected:
     BoundingSphere      m_Sphere;
     IMapEditable* m_pSelectedObject = { nullptr };
 
+private:
+    float           m_fMoveSpeed = 5;
+    bool            m_bAblePicking = true;
 
 };
 

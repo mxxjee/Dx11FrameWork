@@ -76,7 +76,7 @@ CMapObject* CMapLayer::Find_GameObject(const _wstring& Tag)
     return nullptr;
 }
 
-CMapObject* CMapLayer::Check_Picking(_vector Origin, _vector Dir, float& Dist)
+CMapObject* CMapLayer::Check_Picking(HWND g_hWnd, ComPtr<ID3D11DeviceContext> Context, _float4x4& Proj, _float4x4& View, float& Dist)
 {
     CheckTrueResult(m_ObjList.empty(),nullptr);
     CheckFalseResult(m_bAblePicking, nullptr);
@@ -86,8 +86,10 @@ CMapObject* CMapLayer::Check_Picking(_vector Origin, _vector Dir, float& Dist)
 
 	for (auto& obj : m_ObjList)
 	{
+        Ray ray = MathUtils::CreateRayLocal(g_hWnd, Context, obj, Proj, View);
+
         float fDist = 0.f;
-        if (obj->Is_Picked(Origin, Dir, fDist))
+        if (obj->Is_Picked(ray.Origin, ray.Dir, fDist))
         {
             if (fDist < fMinDist)
             {

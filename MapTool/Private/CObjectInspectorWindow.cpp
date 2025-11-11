@@ -43,6 +43,7 @@ void CObjectInspectorWindow::Update()
     ImGui::Begin(m_WindowTitle.c_str(), &m_bOpen);
   
     Update_SelectObject();
+    m_fMoveSpeed = m_pMapObject_Manager->Get_MoveSpeed();
 
 
     if (pSelectObject)
@@ -202,6 +203,27 @@ HRESULT CObjectInspectorWindow::Create_Widgets()
         }
 
     }
+
+    ///이동스피드
+    CImgui_InputFloat::IMGUITEXTFLOAT_DESC InputFloatDesc_Speed;
+    float fSpeedButtonY = fPosButtonY + 200;
+    
+    InputFloatDesc_Speed.Label = "FloatSpeed";
+    InputFloatDesc_Speed.Tag = InputFloatDesc_Speed.Label;
+    InputFloatDesc_Speed.m_RelativePos = ImVec2(0, fSpeedButtonY);
+    InputFloatDesc_Speed.pData = &m_fMoveSpeed;
+    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc_Speed, reinterpret_cast<CImgui_Widget**>(&SpeedButton))))
+        return E_FAIL;
+
+    if (SpeedButton)
+    {
+        SpeedButton->Set_Callback([this]()
+            {
+                m_pMapObject_Manager->Set_MoveSpeed(m_fMoveSpeed);
+
+            });
+    }
+
     return S_OK;
 }
 
@@ -233,6 +255,8 @@ void CObjectInspectorWindow::Free()
     for (int i = 0; i < 3; ++i)
         Safe_Release(RotationInput[i]);
 
+    Safe_Release(SpeedButton);
+
     Safe_Release(m_pMapObject_Manager);
     Safe_Release(pGameInstance);
 }
@@ -242,50 +266,11 @@ void CObjectInspectorWindow::Update_SelectObject()
     /*선택한 오브젝트에 따라서 바인딩값 변경*/
     CheckNull(m_pMapObject_Manager->Get_SelectObject());
 
-    pSelectObject = dynamic_cast<CGameObject*>(m_pMapObject_Manager->Get_SelectObject());
 
-    if (pSelectObject)
+    IMapEditable* ppSelectObject = dynamic_cast<IMapEditable*>(m_pMapObject_Manager->Get_SelectObject());
+    if (ppSelectObject)
     {
-        CTransform* pTransform = pSelectObject->Get_Transform();
-
-        ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "Name : %s", WStringToUTF8(pSelectObject->Get_Tag()).c_str());
-
-        string Type = "";
-        IMapEditable* pEditableObj = dynamic_cast<IMapEditable*>(pSelectObject);
-
-        switch (pEditableObj->Get_ObjType())
-        {
-        case MapObjType::OBSTACLE:
-            Type = "OBSTACLE";
-            break;
-
-        case MapObjType::TILE:
-            Type = "TILE";
-            break;
-
-        case MapObjType::TERRAIN:
-            Type = "TERRAIN";
-            break;
-        case MapObjType::POSITION:
-            Type = "POSITION";
-            break;
-
-        case MapObjType::TRIGGER:
-            Type = "TRIGGER";
-            break;
-
-        default:
-            break;
-        }
-        ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "Type: %s", Type.c_str());
-
-        vScale.x = pTransform->Get_Scale_ByFloat3().x;
-        vScale.y = pTransform->Get_Scale_ByFloat3().y;
-        vScale.z = pTransform->Get_Scale_ByFloat3().z;
-
-        XMStoreFloat3(&vPosition, pTransform->Get_State(STATE::POSITION));
-
-        vRotation = MathUtils::QuaternionToEuler(pTransform->Get_SRT(SRTType::ROTATION));
+        ppSelectObject->Imgui_Render_Properties(&vScale, &vPosition, &vRotation);
 
         for (int i = 0; i < 3; ++i)
         {

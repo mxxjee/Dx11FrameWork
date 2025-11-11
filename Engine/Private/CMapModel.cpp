@@ -4,6 +4,8 @@
 #include "CMeshComponent.h"
 #include "CModelObject.h"
 #include "CGameInstance.h"
+#include "CMeshColliderComponent.h"
+
 
 
 
@@ -31,10 +33,7 @@ HRESULT CMapModel::Initialize_Copytype(void* pArg)
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
          
-    /*내 컴포넌트 값 세팅*/
-    if (FAILED(Ready_Components(pArg)))
-        return E_FAIL;
-
+  
     /*내 컴포넌트 값 세팅*/
     if (FAILED(Ready_Resources(pArg)))
         return E_FAIL;
@@ -100,7 +99,7 @@ HRESULT CMapModel::Render()
     return S_OK;
 }
 
-HRESULT CMapModel::Ready_Components(void* pArg)
+HRESULT CMapModel::Ready_Component(void* pArg)
 {
     CheckNullResult(pArg, E_FAIL);
     MAPMODEL_DESC* pModelDesc = static_cast<MAPMODEL_DESC*>(pArg);
@@ -113,6 +112,24 @@ HRESULT CMapModel::Ready_Components(void* pArg)
         if (!m_pModel)
             return E_FAIL;
     }
+
+    /*메쉬콜라이더컴포넌트(픽킹검사)*/
+    CMeshColliderComponent::COLLIDER_MESH ColliderDesc;
+    ColliderDesc.pModel = m_pModel;
+    ColliderDesc.pOwner = this;
+    ColliderDesc.vScaleOffSet = _float3(50.f, 10.f, 50.f);
+
+    CComponent* pMeshCollider = dynamic_cast<CMeshColliderComponent*>(m_pGameInstance->Clone_Prototype(
+        PROTOTYPE::COMPONENT,
+        0,
+        PROTO_COMPONENT_NAME(L"MeshCollider"),
+        &ColliderDesc));
+
+    if (FAILED(Add_Component(
+        COMPONENT_TYPE::MESH_COLLIDER,
+        pMeshCollider,
+        reinterpret_cast<CComponent**>(&pColliderComp)
+    )))
 
     return S_OK;
 }

@@ -8,7 +8,7 @@
 
 /*기본생성 : transform , collider(픽킹),셰이더*/
 NS_BEGIN(Engine)
-class CBoxColliderComponent;
+class CCollider_Base;
 class CMapObject_Manager;
 
 class ENGINE_DLL CMapObject :
@@ -49,8 +49,8 @@ public:
                 //픽킹 확인
     bool            Is_Picked(_vector Origin, _vector Dir, float& Dist);
 
-private:
-    HRESULT     Ready_Component(void* pArg);
+public:
+    virtual HRESULT     Ready_Component(void* pArg);
     HRESULT     Ready_Resource(void* pArg);
 
 
@@ -60,7 +60,7 @@ public:
 
 
 protected:
-    CBoxColliderComponent* pColliderComp = { nullptr };
+    CCollider_Base* pColliderComp = { nullptr };
     class CShader* m_pShader = nullptr;
 
 protected:
@@ -79,6 +79,14 @@ private:
 
     // IMapEditable을(를) 통해 상속됨
     virtual void Show_Gizmo() override;
+
+    // CGameObject을(를) 통해 상속됨
+    virtual CGameObject* Clone(void* pArg) override;
+
+public:
+    // IMapEditable을(를) 통해 상속됨
+    virtual void Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation) override;
+    virtual void Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta);
 };
 
 

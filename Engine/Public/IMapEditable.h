@@ -9,7 +9,12 @@ public:
 	virtual void OnSeletected(bool bSelected) = 0;
 	virtual void Save_To_Json(json& Json) = 0;
 	MapObjType Get_ObjType() { return m_eObjType; }
+
+
+	virtual void		Imgui_Render_Properties(_float3* vScale,_float3* vPosition,_float3* vRotation)=0;//Imguiâ Inspector Render
 	virtual void Show_Gizmo() = 0;
+
+	virtual void Edit_Move(DIRECTION eDir,float fSpeed,float _fTimeDelta)=0;
 
 protected:
 	bool			m_bSelected = false;

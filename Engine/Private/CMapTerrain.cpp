@@ -130,7 +130,7 @@ HRESULT CMapTerrain::Ready_Components(void* pArg)
         CMeshColliderComponent::COLLIDER_MESH ColliderDesc;
         ColliderDesc.pModel = m_pModel;
         ColliderDesc.pOwner = this;
-        ColliderDesc.vScaleOffSet = _float3(100.f, 100.f, 100.f);
+        ColliderDesc.vScaleOffSet = _float3(50.f,10.f, 50.f);
 
         CComponent* pMeshCollider = dynamic_cast<CMeshColliderComponent*>(m_pGameInstance->Clone_Prototype(
             PROTOTYPE::COMPONENT,
@@ -282,6 +282,65 @@ void CMapTerrain::Save_To_Json(json& Json)
     Json.push_back(Meta);
 }
 
+void CMapTerrain::Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta)
+{
+    m_pTransformCom->Set_Speed(fSpeed);
+
+    switch (eDir)
+    {
+    case Engine::DIRECTION::FORWARD:
+    case Engine::DIRECTION::RIGHT:
+    case Engine::DIRECTION::LEFT:
+    case Engine::DIRECTION::BACKWARD:
+        m_pTransformCom->Move(eDir, _fTimeDelta);
+        break;
+
+    default:
+        break;
+    }
+}
+
 void CMapTerrain::Show_Gizmo()
 {
+}
+
+void CMapTerrain::Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation)
+{
+    ImGui::TextColored(ImVec4(1.f, 0.f, 0.f, 1.f), "Name : %s", WStringToUTF8(tag).c_str());
+
+    string Type = "";
+    switch (m_eObjType)
+    {
+    case MapObjType::OBSTACLE:
+        Type = "OBSTACLE";
+        break;
+
+    case MapObjType::TILE:
+        Type = "TILE";
+        break;
+
+    case MapObjType::TERRAIN:
+        Type = "TERRAIN";
+        break;
+    case MapObjType::POSITION:
+        Type = "POSITION";
+        break;
+
+    case MapObjType::TRIGGER:
+        Type = "TRIGGER";
+        break;
+
+    default:
+        break;
+    }
+    ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "Type: %s", Type.c_str());
+
+    (*vScale).x = m_pTransformCom->Get_Scale_ByFloat3().x;
+    (*vScale).y = m_pTransformCom->Get_Scale_ByFloat3().y;
+    (*vScale).z = m_pTransformCom->Get_Scale_ByFloat3().z;
+
+    XMStoreFloat3(vPosition, m_pTransformCom->Get_State(STATE::POSITION));
+
+    *vRotation = MathUtils::QuaternionToEuler(m_pTransformCom->Get_SRT(SRTType::ROTATION));
+
 }

@@ -52,8 +52,11 @@ private:
     CImgui_InputFloat*      PositionInput[3] = { nullptr };
     CImgui_InputFloat*      RotationInput[3] = { nullptr };
 
+
+    CImgui_InputFloat*      SpeedButton = { nullptr };
 private:
     CMapObject_Manager* m_pMapObject_Manager = { nullptr };
+    _float              m_fMoveSpeed = 0.f;
 
 };
 NS_END

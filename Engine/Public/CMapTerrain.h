@@ -65,7 +65,7 @@ public:
     virtual void OnSeletected(bool bSelected) override;
 
     virtual void Save_To_Json(json& Json) override;
-
+    virtual void Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta);
 protected:
     CModel* m_pModel = nullptr;
     CMeshColliderComponent* m_pMeshCollidercomponent=nullptr;
@@ -77,6 +77,10 @@ private:
 
     // IMapEditable을(를) 통해 상속됨
     virtual void Show_Gizmo() override;
+
+
+    // IMapEditable을(를) 통해 상속됨
+    virtual void Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation) override;
 
 };
 
