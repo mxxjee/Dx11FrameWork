@@ -275,55 +275,55 @@ void CMainTool::Render()
     // ──────────────────────────────────────
 
     ////////이건왜보이냐
-    ImGuizmo::BeginFrame();
+    //ImGuizmo::BeginFrame();
 
-    ImGuiViewport* vp = ImGui::GetMainViewport();
+    //ImGuiViewport* vp = ImGui::GetMainViewport();
 
-    // 혹시라도 잘못된 좌표가 잡히면 로그로 확인
-    ImVec2 vpPos = vp->Pos;
-    ImVec2 vpSize = vp->Size;
+    //// 혹시라도 잘못된 좌표가 잡히면 로그로 확인
+    //ImVec2 vpPos = vp->Pos;
+    //ImVec2 vpSize = vp->Size;
 
-    // 콘솔 확인용 (혹시 vp가 0,0 / 0,0 나오면 DockSpace가 전체 가림)
-    printf("Viewport Pos:(%.1f,%.1f) Size:(%.1f,%.1f)\n", vpPos.x, vpPos.y, vpSize.x, vpSize.y);
+    //// 콘솔 확인용 (혹시 vp가 0,0 / 0,0 나오면 DockSpace가 전체 가림)
+    //printf("Viewport Pos:(%.1f,%.1f) Size:(%.1f,%.1f)\n", vpPos.x, vpPos.y, vpSize.x, vpSize.y);
 
-    ImGuizmo::SetOrthographic(false);
-    ImGuizmo::SetRect(vpPos.x, vpPos.y, vpSize.x, vpSize.y);
-    ImGuizmo::SetDrawlist(ImGui::GetForegroundDrawList(vp));
+    //ImGuizmo::SetOrthographic(false);
+    //ImGuizmo::SetRect(vpPos.x, vpPos.y, vpSize.x, vpSize.y);
+    //ImGuizmo::SetDrawlist(ImGui::GetForegroundDrawList(vp));
 
-    // 테스트용 단위행렬
+    //// 테스트용 단위행렬
 
-    _float4x4 viewLH = pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
-    _float4x4 projLH = pGameInstance->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
-    _float4x4 worldLH = XMLoadFloat4x4(XMMatrixIdentity());
+    //_float4x4 viewLH = pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+    //_float4x4 projLH = pGameInstance->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
+    //_float4x4 worldLH = XMLoadFloat4x4(XMMatrixIdentity());
 
-    // Z축 반전 행렬
-    XMMATRIX flipZ = XMMatrixScaling(1.f, 1.f, -1.f);
+    //// Z축 반전 행렬
+    //XMMATRIX flipZ = XMMatrixScaling(1.f, 1.f, -1.f);
 
-    // LH → RH 변환 순서 중요
-    // 카메라(View)는 flipZ 먼저 곱하고, World는 flipZ 나중에 곱
-    XMMATRIX viewRH = XMMatrixMultiply(flipZ, XMLoadFloat4x4(&viewLH));
-    XMMATRIX worldRH = XMMatrixMultiply(XMLoadFloat4x4(&worldLH), flipZ);
+    //// LH → RH 변환 순서 중요
+    //// 카메라(View)는 flipZ 먼저 곱하고, World는 flipZ 나중에 곱
+    //XMMATRIX viewRH = XMMatrixMultiply(flipZ, XMLoadFloat4x4(&viewLH));
+    //XMMATRIX worldRH = XMMatrixMultiply(XMLoadFloat4x4(&worldLH), flipZ);
 
-    //  투영행렬도 RH 기준으로 다시 생성 (DirectX는 LH가 기본)
-    float fFov = XM_PIDIV4;
-    float fAspect = (float)g_iWinSizeX / (float)g_iWinSizeY;
-    float fNear = 0.1f;
-    float fFar = 1000.f;
-    XMMATRIX projRH = XMMatrixPerspectiveFovRH(fFov, fAspect, fNear, fFar);
+    ////  투영행렬도 RH 기준으로 다시 생성 (DirectX는 LH가 기본)
+    //float fFov = XM_PIDIV4;
+    //float fAspect = (float)g_iWinSizeX / (float)g_iWinSizeY;
+    //float fNear = 0.1f;
+    //float fFar = 1000.f;
+    //XMMATRIX projRH = XMMatrixPerspectiveFovRH(fFov, fAspect, fNear, fFar);
 
-    // column-major로 바꿔서 저장
-    XMFLOAT4X4 viewCM, projCM, worldCM;
-    XMStoreFloat4x4(&viewCM, XMMatrixTranspose(viewRH));
-    XMStoreFloat4x4(&projCM, XMMatrixTranspose(projRH));
-    XMStoreFloat4x4(&worldCM, XMMatrixTranspose(worldRH));
+    //// column-major로 바꿔서 저장
+    //XMFLOAT4X4 viewCM, projCM, worldCM;
+    //XMStoreFloat4x4(&viewCM, XMMatrixTranspose(viewRH));
+    //XMStoreFloat4x4(&projCM, XMMatrixTranspose(projRH));
+    //XMStoreFloat4x4(&worldCM, XMMatrixTranspose(worldRH));
 
-    // 회색 격자 그리기
-    ImGuizmo::DrawGrid(
-        (float*)&viewCM,
-        (float*)&projCM,
-        (float*)&worldCM,
-        10.0f
-    );
+    //// 회색 격자 그리기
+    //ImGuizmo::DrawGrid(
+    //    (float*)&viewCM,
+    //    (float*)&projCM,
+    //    (float*)&worldCM,
+    //    10.0f
+    //);
 
     pImGui_Manager->Render(m_pContext.Get());
     pGameInstance->Draw_End();

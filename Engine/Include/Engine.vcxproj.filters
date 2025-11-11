@@ -331,6 +331,12 @@
     <Filter Include="999.Imgui\ImguiDefault\Imguizmo">
       <UniqueIdentifier>{81bf5204-0d35-41db-b09a-ecb9ef5fac51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObject\PartObject">
+      <UniqueIdentifier>{1822873a-265b-4ae3-a282-28ccffd076e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\ContainerObject">
+      <UniqueIdentifier>{6c4a231c-b11a-4a3e-91df-b2d8a7daac61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -654,6 +660,10 @@
     <ClInclude Include="..\Public\ImGuizmo.h">
       <Filter>999.Imgui\ImguiDefault\Imguizmo</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CPartObject.h">
+      <Filter>03.GameObject\PartObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CContainerObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -932,5 +942,9 @@
     <ClCompile Include="..\Private\ImGuizmo.cpp">
       <Filter>999.Imgui\ImguiDefault\Imguizmo</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CPartObject.cpp">
+      <Filter>03.GameObject\PartObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CContainerObject.cpp" />
   </ItemGroup>
 </Project>

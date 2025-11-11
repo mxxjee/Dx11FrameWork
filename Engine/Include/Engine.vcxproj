@@ -162,6 +162,7 @@
     <ClInclude Include="..\Public\CCamera_Manager.h" />
     <ClInclude Include="..\Public\CChannel.h" />
     <ClInclude Include="..\Public\CCollider_Base.h" />
+    <ClInclude Include="..\Public\CContainerObject.h" />
     <ClInclude Include="..\Public\CFolder.h" />
     <ClInclude Include="..\Public\CHotKey_Manager.h" />
     <ClInclude Include="..\Public\CImgui_Checkbox.h" />
@@ -209,6 +210,7 @@
     <ClInclude Include="..\Public\ColorUtils.h" />
     <ClInclude Include="..\Public\ConstantStruct.h" />
     <ClInclude Include="..\Public\COrthographicCameraComponent.h" />
+    <ClInclude Include="..\Public\CPartObject.h" />
     <ClInclude Include="..\Public\CPerspectiveCameraComponent.h" />
     <ClInclude Include="..\Public\CPipeLine.h" />
     <ClInclude Include="..\Public\CPostProcessCamera.h" />
@@ -271,6 +273,7 @@
     <ClCompile Include="..\Private\CCamera_Manager.cpp" />
     <ClCompile Include="..\Private\CChannel.cpp" />
     <ClCompile Include="..\Private\CCollider_Base.cpp" />
+    <ClCompile Include="..\Private\CContainerObject.cpp" />
     <ClCompile Include="..\Private\CFolder.cpp" />
     <ClCompile Include="..\Private\CHotKey_Manager.cpp" />
     <ClCompile Include="..\Private\CImgui_Checkbox.cpp" />
@@ -315,6 +318,7 @@
     <ClCompile Include="..\Private\CObject_Manager.cpp" />
     <ClCompile Include="..\Private\CMainCamera.cpp" />
     <ClCompile Include="..\Private\COrthographicCameraComponent.cpp" />
+    <ClCompile Include="..\Private\CPartObject.cpp" />
     <ClCompile Include="..\Private\CPerspectiveCameraComponent.cpp" />
     <ClCompile Include="..\Private\CPipeLine.cpp" />
     <ClCompile Include="..\Private\CPostProcessCamera.cpp" />

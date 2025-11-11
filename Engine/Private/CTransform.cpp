@@ -315,6 +315,30 @@ _matrix CTransform::Get_WorldInverse(TransformScope eScope)
 	return XMMatrixInverse(nullptr, XMLoadFloat4x4(&m_LocalWorldMatrix));
 }
 
+const _float4x4* CTransform::Get_WorldMatrixPtr(TransformScope eScope)
+{
+	//부모가있다면, escope를 선택해서 리턴
+	if (m_pParent)
+	{
+		switch (eScope)
+		{
+		case Engine::TransformScope::LOCAL:
+			return &m_LocalWorldMatrix;
+
+		case Engine::TransformScope::WORLD:
+			return &m_WorldMatrix;
+
+		}
+
+	}
+
+	//부모가 지정되지 않았다면, 그냥 localMatrix리턴
+	else
+		return &m_LocalWorldMatrix;
+
+	return &m_LocalWorldMatrix;
+}
+
 _float3 CTransform::Get_Scale_ByFloat3()
 {
 	return _float3(

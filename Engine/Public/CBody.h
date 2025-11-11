@@ -1,0 +1,63 @@
+#pragma once
+#include "CPartObject.h"
+
+/*mesh와 shader를 들고있음.
+부모의 상태에 따라 애니메이션을 제어하는 역할.
+실제 메쉬를 그려주는 역할
+*/
+
+NS_BEGIN(Engine)
+
+class CModel;
+class CShader;
+
+class ENGINE_DLL CBody :
+    public CPartObject
+{
+public:
+    typedef struct tagBodyDesc : public CPartObject::tagPartObjectDesc
+    {
+        wstring    modelName;               //이 body가 사용할 모델이름
+        void* modelDesc = nullptr;      //이 Body가 사용할모델컴포넌트 정보
+
+        const _uint* pParentState = nullptr;//부모의 상태를 통해서 애님제어
+    
+    }BODY_DESC;
+
+
+protected:
+    CBody(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+    CBody(const CBody& rhs);
+    virtual ~CBody() = default;
+
+public:
+    virtual HRESULT     Initialize_Prototype(); /*원형 객체가 생성될때 부르는 Initialize*/
+    virtual HRESULT     Initialize_Copytype(void* pArg); /*사본 객체가 생성될때 부르는 Initialize*/
+
+    virtual void        Update_Priority(_float fTimeDelta);
+    virtual void        Update(_float fTimeDelta);
+    virtual void        Update_Late(_float fTimeDelta);
+    virtual void        Update_Render(_float fTimeDelta);
+
+    virtual HRESULT Render();
+
+protected:
+    const _uint* m_pParentState = { nullptr };
+
+protected:
+    CModel* m_pModel = { nullptr };
+
+            //모델이 사용하는 쉐이더
+    CShader* m_pShader = { nullptr };
+private:
+    HRESULT         Ready_Components(void *pArg);
+    HRESULT         Bind_ShaderResources();
+
+public:
+    static CBody* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
+    virtual CGameObject* Clone(void* pArg) override;
+    virtual void Free() override;
+
+};
+NS_END
+

@@ -62,6 +62,7 @@ public:
 public:
     const _float4x4&        Get_World(TransformScope eScope = TransformScope::LOCAL);
     _matrix                 Get_WorldInverse(TransformScope eScope = TransformScope::LOCAL);
+    const _float4x4*        Get_WorldMatrixPtr(TransformScope eScope = TransformScope::LOCAL);
     
     _float3                 Get_Scale_ByFloat3();           //right.up.forward벡터 길이만 리턴하자.
     _vector                 Get_Scale_ByVector();
