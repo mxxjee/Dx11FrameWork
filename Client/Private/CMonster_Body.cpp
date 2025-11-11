@@ -1,6 +1,7 @@
 #include "CMonster_Body.h"
 #include "CModel.h"
 #include "CModelObject.h"
+#include "CAnimation.h"
 
 USING(Client)
 CMonster_Body::CMonster_Body(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -29,10 +30,27 @@ HRESULT CMonster_Body::Initialize_Copytype(void* pArg)
 		return E_FAIL;
 
 	//葛电局聪皋捞记 loop贸府
-	for (int i = 0; i < m_pModel->Get_NumAnim(); ++i)
-		m_pModel->Set_Loop(i, true);
+	int RandomIdx = rand() % m_pModel->Get_NumAnim();
+	int i = 0;
+	
+	wstring RandomKey = L"";
+	for (auto& pair : m_pModel->Get_Anims())
+	{
+		if (i == RandomIdx && RandomKey == L"")
+			RandomKey = pair.first;
 
-	m_pModel->Set_Animation(rand()%m_pModel->Get_NumAnim(), true);
+
+		else
+			++i;
+
+		if (pair.second)
+			pair.second->Set_Loop(true);
+	
+	
+	}
+
+	m_pModel->Set_Animation(RandomKey ,true);
+
 
 	return S_OK;
 }

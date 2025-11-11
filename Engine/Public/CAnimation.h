@@ -26,6 +26,7 @@ public:
     void        Set_Loop(bool b) { m_bLoop = b; }
 
 public:
+    const char* Get_Name() { return m_szName; }
     int         Get_CurrentTrackPoistion() { return m_fCurrentTrackPosition; }
     _uint       Get_CurrentKeyFrameIndex(int num) { return m_CurrentKeyFrameIndices[num]; }
     void        Set_CurrentTrackPosition(_float TrackPos) { m_fCurrentTrackPosition = TrackPos; }

@@ -46,7 +46,7 @@ namespace Engine
 		{
 			iRefCnt = Instance->Release();
 			if (iRefCnt == 0)
-				Instance = nullptr;
+ 				Instance = nullptr;
 
 		
 		}

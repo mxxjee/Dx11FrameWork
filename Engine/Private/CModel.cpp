@@ -24,7 +24,7 @@ CModel::CModel(const CModel& Prototype)
 	//m_Bones(Prototype.m_Bones),
 	m_eModelType(Prototype.m_eModelType),
 	m_PreTransformMatrix(Prototype.m_PreTransformMatrix),
-	m_iPreAnimIndex(Prototype.m_iPreAnimIndex),
+	m_PreAnimKey(Prototype.m_PreAnimKey),
 	//m_Animations{Prototype.m_Animations},
 	m_iNumAnimations{Prototype.m_iNumAnimations},
 	m_pGameInstance(Prototype.m_pGameInstance),
@@ -50,7 +50,11 @@ CModel::CModel(const CModel& Prototype)
 
 	/*각자 애니메이션을 일정하게 적용하기위해 깊은복사*/
 	for (auto& Anim : Prototype.m_Animations)
-		m_Animations.push_back(Anim->Clone());
+	{
+		m_Animations.emplace(Anim.first, Anim.second->Clone());
+		//m_Animations.push_back();
+	}
+		
 
 }
 										//"C:\Users\kmj69\Documents\GitHub\ModelConverter\Output\Zelda\Zelda.json"
@@ -301,7 +305,10 @@ HRESULT CModel::Load_Animation(const _char* filePath)
 		if (nullptr == pAnimation)
 			return E_FAIL;
 
-		m_Animations.push_back(pAnimation);
+		const char* AnimKey = pAnimation->Get_Name();
+		string strKey = string(AnimKey);
+
+		m_Animations.emplace(wstring(strKey.begin(),strKey.end()),pAnimation);
 	}
 	return S_OK;
 }
@@ -352,8 +359,11 @@ void CModel::Free()
 		Safe_Release(Bone);
 	}
 
-	for (auto& pAnimation : m_Animations)
-		Safe_Release(pAnimation);
+	for (auto& pair : m_Animations)
+	{
+		if (pair.second)
+			Safe_Release(pair.second);
+	}
 	m_Animations.clear();
 
 
@@ -395,8 +405,12 @@ void CModel::Play_Animation(_float fTimeDelta)
 
 	//아니라면 일반선형보간 수행
 	else
-		m_isAnimFinished=m_Animations[m_iCurrentAnimIndex]->Update_TransformationMatrices(m_Bones, fTimeDelta);
-
+	{
+		CAnimation* CurAnim = Find_Animation(m_CurrentAnimKey);
+		if (CurAnim)
+			m_isAnimFinished=CurAnim->Update_TransformationMatrices(m_Bones, fTimeDelta);
+	}
+		
 	for (auto& Bone : m_Bones)
 	{
 		Bone->Update_CombinedTransformMatrix(m_Bones, XMLoadFloat4x4(&m_PreTransformMatrix));
@@ -415,8 +429,8 @@ void CModel::Update_BlendAnim(_float fTimeDelta)
 	
 	if (m_fTranslationTime < m_fTranslation)
 	{
-		CAnimation* pPreAnim = m_Animations[m_iPreAnimIndex];
-		CAnimation* pCurAnim = m_Animations[m_iCurrentAnimIndex];
+		CAnimation* pPreAnim = Find_Animation(m_PreAnimKey);
+		CAnimation* pCurAnim = Find_Animation(m_CurrentAnimKey);
 
 		//모든 본에 대해서 수행한다.
 		//만약 전이하는애니메이션과 현재애니메이션에 공통적으로 존재하는 본은 서로 선형보간한다.
@@ -483,15 +497,15 @@ bool CModel::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
 
 }
 
-void CModel::Set_Animation(_uint iAnimationIndex, _bool isLoop)
+void CModel::Set_Animation(const wstring& AnimKey, _bool isLoop)
 {
-	if (iAnimationIndex >= m_Animations.size())
-		return;
+	CAnimation* pAnim = Find_Animation(AnimKey);
+	CheckNull(pAnim);
 
-	m_iPreAnimIndex = m_iCurrentAnimIndex;
-	m_iCurrentAnimIndex = iAnimationIndex;
+	m_PreAnimKey = m_CurrentAnimKey;
+	m_CurrentAnimKey = AnimKey;
 
-	if (m_iPreAnimIndex != m_iCurrentAnimIndex)
+	if (m_PreAnimKey != m_CurrentAnimKey)
 	{
 		//m_isTransition = true;
 
@@ -500,7 +514,7 @@ void CModel::Set_Animation(_uint iAnimationIndex, _bool isLoop)
 		//Start_Transition();
 	}
 
-	m_Animations[iAnimationIndex]->Set_Loop(isLoop);
+	pAnim->Set_Loop(isLoop);
 }
 
 int CModel::Get_BoneIndex(const char* pBoneName)
@@ -524,10 +538,13 @@ int CModel::Get_BoneIndex(const char* pBoneName)
 	return iIndex;
 }
 
-void CModel::Set_Loop(int iAnimNum, bool bLoop)
+void CModel::Set_Loop(const wstring& AnimKey, bool bLoop)
 {
-	if (m_Animations[iAnimNum])
-		m_Animations[iAnimNum]->Set_Loop(bLoop);
+	CAnimation* pAnim = Find_Animation(AnimKey);
+
+	if (pAnim)
+		pAnim->Set_Loop(bLoop);
+
 
 }
 
@@ -539,6 +556,16 @@ CMeshComponent* CModel::Get_Mesh(const wstring& Name)
 		return iter->second;
 
 	return nullptr;
+}
+
+CAnimation* CModel::Find_Animation(const _wstring& Key)
+{
+	auto iter = m_Animations.find(Key);
+	if (iter == m_Animations.end())
+		return nullptr;
+
+
+	return iter->second;
 }
 
 void CModel::Set_VisibleMesh(const _wstring& MeshName, bool bVisible)

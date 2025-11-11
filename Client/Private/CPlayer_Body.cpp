@@ -1,6 +1,8 @@
 #include "CPlayer_Body.h"
 #include "CModel.h"
 #include "CModelObject.h"
+#include "CAnimation.h"
+
 
 USING(Client)
 CPlayer_Body::CPlayer_Body(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -29,10 +31,15 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 		return E_FAIL;
 
 	//葛电局聪皋捞记 loop贸府
-	for (int i = 0; i < m_pModel->Get_NumAnim(); ++i)
-		m_pModel->Set_Loop(i, true);
+	for (auto& pair : m_pModel->Get_Anims())
+	{
+		if (pair.second)
+			pair.second->Set_Loop(true);
+	}
 
-	m_pModel->Set_Animation(3, true);
+
+
+	m_pModel->Set_Animation(L"Idle", true);
 	//m_pModel->Set_TransitionTime(0.02f);
 
 
@@ -49,17 +56,17 @@ void CPlayer_Body::Update(_float fTimeDelta)
 	__super::Update(fTimeDelta);
 
 	if (*m_pParentState & CModelObject::IDLE)
-		m_pModel->Set_Animation(3, true);
+		m_pModel->Set_Animation(L"Idle", true);
 
 
 	if (*m_pParentState & CModelObject::RUN)
 	{
-		m_pModel->Set_Animation(1, true);
+		m_pModel->Set_Animation(L"run", true);
 	}
 
 	if (*m_pParentState & CModelObject::ATTACK)
 	{
-		m_pModel->Set_Animation(4, true);
+		m_pModel->Set_Animation(L"slash", true);
 	}
 }
 

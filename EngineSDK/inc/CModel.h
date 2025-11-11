@@ -56,17 +56,21 @@ public:
 public:
     /*레이충돌*/
     bool        Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);
-    void        Set_Animation(_uint iAnimationIndex, _bool isLoop);
+    void        Set_Animation(const wstring& AnimKey, _bool isLoop);
     int         Get_BoneIndex(const char* pBoneName);
     int         Get_NumAnim() { return m_iNumAnimations; }
-    void        Set_Loop(int iAnimNum, bool bLoop);
+    void        Set_Loop(const wstring& AnimKey, bool bLoop);
 
 public:
     CMeshComponent* Get_Mesh(const wstring& Name);
+
     const UMap<wstring, CMeshComponent*>& Get_Meshs() { return m_Meshs; }
+    const UMap<wstring, class CAnimation*>& Get_Anims()   { return m_Animations; }
+
+    
     class CShader* Get_Shader() { return m_pShader; }
     const ModelData& Get_ModelData() { return m_ModelData; }
-    class CAnimation* Get_Animation(int num) { return m_Animations[num]; }
+    class CAnimation* Find_Animation(const _wstring& Key);
 
 public:
     void        Set_VisibleMesh(const _wstring& MeshName,bool bVisible);
@@ -88,11 +92,11 @@ private:
 
     _uint                               m_iNumAnimations = {};  //애니메이션 개수
     
-    _uint                               m_iCurrentAnimIndex = {};       //현재 재생되고있는 애니메이션 클립의 인덱스
-    _uint                               m_iPreAnimIndex = {};
+    wstring                               m_CurrentAnimKey = L"";       //현재 재생되고있는 애니메이션 클립의 인덱스
+    wstring                               m_PreAnimKey= L"";
 
 
-    vector<class CAnimation*>           m_Animations;
+    UMap<wstring,class CAnimation*>           m_Animations;
     vector<_matrix>                   m_BoneTraformMatricies;
 
     bool                                m_isAnimFinished = false;
