@@ -232,7 +232,8 @@ public:
 	Triangle*					PickTerrain(const _wstring& Key);
 
 	HRESULT						Save_All_Terrains(const string& path, int iNum=-1);
-	HRESULT             Load_Terrains(const string& LoadPath);
+	HRESULT             Load_Terrains_MapTool(const string& LoadPath);
+	const vector<tagLoadTerrainData>& Load_Terrains_Runtime(const string& LoadPath);
 
 	float           Get_PickDist();
 	const UMap<_wstring, CTerrain_Base*>& Get_TerrainMap();

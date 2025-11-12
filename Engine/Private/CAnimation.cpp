@@ -65,10 +65,16 @@ bool CAnimation::Update_TransformationMatrices(const vector<class CBone*>& Bones
 
 	if (m_fCurrentTrackPosition >= m_fDuration)
 	{
+		
 		if (!m_bLoop)
+		{
+		
 			return true;		//애니메이션 끝남 알림
 
+		}
 		m_fCurrentTrackPosition = 0.f;//루프일경우 다시 맨처음부터 실행
+
+		
 	}
 
 	//전이상태가 아니라면..특정 뼈들만 상태갱신

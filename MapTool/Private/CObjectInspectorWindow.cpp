@@ -264,10 +264,18 @@ void CObjectInspectorWindow::Free()
 void CObjectInspectorWindow::Update_SelectObject()
 {
     /*선택한 오브젝트에 따라서 바인딩값 변경*/
+
+    if (m_pMapObject_Manager->Get_SelectObject())
+        pSelectObject = dynamic_cast<CGameObject*>(m_pMapObject_Manager->Get_SelectObject());
+
+    else
+        pSelectObject = nullptr;
+
     CheckNull(m_pMapObject_Manager->Get_SelectObject());
 
 
-    IMapEditable* ppSelectObject = dynamic_cast<IMapEditable*>(m_pMapObject_Manager->Get_SelectObject());
+   
+    IMapEditable* ppSelectObject = dynamic_cast<IMapEditable*>(pSelectObject);
     if (ppSelectObject)
     {
         ppSelectObject->Imgui_Render_Properties(&vScale, &vPosition, &vRotation);

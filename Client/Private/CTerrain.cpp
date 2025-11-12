@@ -1,7 +1,8 @@
 #include "CTerrain.h"
 #include "CGameInstance.h"
 
-#include "CVIBuffer_Terrain.h"
+#include "CBody.h"
+
 #include "CTexture.h"
 #include "CShader.h"
 
@@ -30,10 +31,13 @@ HRESULT CTerrain::Initialize_Prototype()
 
 HRESULT CTerrain::Initialize_Copytype(void* pArg)
 {
-    if (FAILED(__super::Initialize_Copytype(pArg)))
+    if (FAILED(CGameObject::Initialize_Copytype(pArg)))
         return E_FAIL;
 
     if (FAILED(Ready_Components(pArg)))
+        return E_FAIL;
+
+    if (FAILED(Ready_PartObjects(pArg)))
         return E_FAIL;
 
 
@@ -43,39 +47,32 @@ HRESULT CTerrain::Initialize_Copytype(void* pArg)
 void CTerrain::Update_Priority(_float fTimeDelta)
 {
     __super::Update_Priority(fTimeDelta);
+
+    m_pBody->Update_Priority(fTimeDelta);
 }
 
 void CTerrain::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
+    m_pBody->Update(fTimeDelta);
 }
 
 void CTerrain::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
+    m_pBody->Update_Late(fTimeDelta);
 }
 
 void CTerrain::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta); 
-  
+    m_pBody->Update_Render(fTimeDelta);
 }
 
 HRESULT CTerrain::Render()
 {
 
-    if (FAILED(Bind_ShaderResources()))
-        return E_FAIL;
-
-    if (FAILED(m_pShader->Begin(m_passName)))
-        return E_FAIL;
-
-    if (FAILED(m_pVIBufferCom->Bind_Resource()))
-        return E_FAIL;
-
-    if (FAILED(m_pVIBufferCom->Render()))
-        return E_FAIL;
-
+   
 
     return S_OK;
 }
@@ -83,35 +80,27 @@ HRESULT CTerrain::Render()
 HRESULT CTerrain::Ready_Components(void* pArg)
 {
 
-    CComponent* pBuffer_Terrain = dynamic_cast<CVIBuffer_Terrain*>(m_pGameInstance->Clone_Prototype
-    (PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"VIBuffer_Terrain"), pArg));
-
-
-    if(FAILED(__super::Add_Component(COMPONENT_TYPE::VIBUFFER_TERRAIN,pBuffer_Terrain,(CComponent**)&m_pVIBufferCom)))
-        return E_FAIL;
 
     return S_OK;
 }
 
-HRESULT CTerrain::Bind_ShaderResources()
+HRESULT CTerrain::Ready_PartObjects(void* pArg)
 {
-    if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
-        return E_FAIL;
-
-    if (FAILED(m_pTexture->Bind_ShaderResources(m_pShader, "g_DiffuseTexture")))
-        return E_FAIL;
-
-    //마스크 텍스처 적용
-    CTexture* pMask = m_pGameInstance->Find_Texture(L"Mask");
-    if (pMask)
+    CheckNullResult(pArg, E_FAIL);
+    TERRAINOBJECT_DESC* pTerrainDesc = static_cast<TERRAINOBJECT_DESC*>(pArg);
+    if (pTerrainDesc)
     {
-        if (FAILED(pMask->Bind_ShaderResource(m_pShader, "g_MaskTexture",0)))
-            return E_FAIL;
+        CBody::BODY_DESC* pBodyDesc = static_cast<CBody::BODY_DESC*>(pTerrainDesc->BodyDesc);
+        pBodyDesc->pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
+
+
+        m_pBody = dynamic_cast<CBody*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Body"), pBodyDesc));
+
     }
-
     return S_OK;
-
 }
+
+
 
 
 
@@ -147,5 +136,6 @@ CGameObject* CTerrain::Clone(void* pArg)
 void CTerrain::Free()
 {
     __super::Free();
+    Safe_Release(m_pBody);
  
 }

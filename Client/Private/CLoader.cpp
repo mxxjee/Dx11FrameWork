@@ -95,8 +95,8 @@ HRESULT CLoader::Loading()
         Loading_Logo();
         break;
 
-    case Client::LEVEL_ID::GAMEPLAY:
-        Loading_GamePlay();
+    case Client::LEVEL_ID::TOWN:
+        Loading_Town();
         break;
 
     case LEVEL_ID::UI:
@@ -122,7 +122,7 @@ void CLoader::Output()
     SetWindowText(g_hWnd, m_szFPS);
 }
 
-HRESULT CLoader::Loading_GamePlay()
+HRESULT CLoader::Loading_Town()
 {
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
     for (size_t i = 0; i < 88899999; i++)
@@ -130,10 +130,14 @@ HRESULT CLoader::Loading_GamePlay()
         int a = 10;
     }
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
-    for (size_t i = 0; i < 88889999; i++)
-    {
-        int a = 10;
-    }
+
+    _matrix PreMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+    PreMatrix = XMMatrixMultiply(PreMatrix, XMMatrixRotationX(XMConvertToRadians(-180.f)));
+
+
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle/", PreMatrix);
+
+
     lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
     for (size_t i = 0; i < 88889999; i++)
     {
@@ -275,7 +279,8 @@ HRESULT CLoader::Register_Textures()
 HRESULT CLoader::Register_Models()
 {
    
-    _matrix matrix = XMMatrixIdentity();
+    _matrix matrix = XMMatrixRotationY(XMConvertToRadians(180.f));
+
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor", matrix);
    // m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle");

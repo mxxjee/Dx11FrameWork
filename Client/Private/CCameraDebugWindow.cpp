@@ -520,6 +520,10 @@ void CCameraDebugWindow::Free()
     Safe_Release(m_pOrthoGraphicCamButton);
     Safe_Release(m_pDefaultOffSetButton);
 
+    for (auto& i : m_InuptFloats)
+        Safe_Release(i);
+
+
     for (auto& i : m_Sliders)
         Safe_Release(i);
 

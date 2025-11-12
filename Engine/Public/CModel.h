@@ -104,7 +104,7 @@ private:
     bool                                m_isTransition = false;
 
     _float                              m_fTranslationTime = 0.f;
-    _float                              m_fTranslation = 2.f;
+    _float                              m_fTranslation = 0.2f;
 private:
     CGameInstance* m_pGameInstance = nullptr;
     ComPtr<ID3D11Device>                m_pDevice;

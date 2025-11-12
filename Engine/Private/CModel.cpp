@@ -390,6 +390,7 @@ HRESULT CModel::Bind_Bones(CShader* pShader, const char* pConstName, CMeshCompon
 void CModel::Play_Animation(_float fTimeDelta)
 {
 
+
 	//모든 메쉬들을 순회하며 bone정보를 업데이트한다.
 	//m_iCurrentAnimationIndex에 해당하는 애니메이션 중, 현재 재생시간에 맞는 상태행렬을 실제 뼈에게 전달*/
 	//갱신해준 뼈들의 TransformMatrix를 기반으로 하여 실제 뼈의 상태(CombinedMatrix)행렬을 만든다.
@@ -505,13 +506,17 @@ void CModel::Set_Animation(const wstring& AnimKey, _bool isLoop)
 	m_PreAnimKey = m_CurrentAnimKey;
 	m_CurrentAnimKey = AnimKey;
 
-	if (m_PreAnimKey != m_CurrentAnimKey)
+	if (m_PreAnimKey!=L"" && m_PreAnimKey != m_CurrentAnimKey)
 	{
-		//m_isTransition = true;
+		m_isTransition = true;
 
 		////이전 애니메이션 초기화(다음에 실행시 처음부터 시작)
-		//m_Animations[m_iPreAnimIndex]->Set_CurrentTrackPosition(0.f);
-		//Start_Transition();
+		/*CAnimation* pAnim = Find_Animation(m_PreAnimKey);
+		if (pAnim)
+			pAnim->Set_CurrentTrackPosition(0.l
+		m_Animations[m_PreAnimKey]->Set_CurrentTrackPosition(0.f);*/
+
+		Start_Transition();
 	}
 
 	pAnim->Set_Loop(isLoop);

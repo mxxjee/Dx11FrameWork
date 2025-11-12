@@ -35,7 +35,9 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     CTransform::TRANSFORM_DESC TransDesc;
 
     TransDesc.fSpeedPerSec = 5.f;
-    TransDesc.vLocalPosition = { 0.f,5.f,0.f,1.f };
+    TransDesc.vLocalPosition = { 35.f,10.f,19.f,1.f };
+    TransDesc.vLocalRotation = { 0.f,180.f,0.f,0.f };                                                                                      
+
 
     desc.TransformDesc = &TransDesc;    
     desc.ObjTag = L"Player";
@@ -102,14 +104,15 @@ void CPlayer::Update_Input(_float fTimeDelta)
 
 void CPlayer::Move_Input(_float fTimeDelta)
 {
-    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::RightArrow))
+
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LeftArrow))
     {
         bPressed = true;
 
-        if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+        if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
             m_pTransformCom->Rotation(_float3(0.f, -135.f, 0.f));
 
-        else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+        else if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
             m_pTransformCom->Rotation(_float3(0.f, -45.f, 0.f));
         else
             m_pTransformCom->Rotation(_float3(0.f, -90.f, 0.f));
@@ -118,34 +121,34 @@ void CPlayer::Move_Input(_float fTimeDelta)
 
 
 
-    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LeftArrow))
+    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::RightArrow))
     {
         bPressed = true;
 
-        if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+        if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
             m_pTransformCom->Rotation(_float3(0.f, 135.f, 0.f));
 
-        else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+        else if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
             m_pTransformCom->Rotation(_float3(0.f, 45.f, 0.f));
         else
             m_pTransformCom->Rotation(_float3(0.f, 90.f, 0.f));
     }
 
 
-    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::UpArrow))
+    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::DownArrow))
     {
         bPressed = true;
         m_pTransformCom->Rotation(_float3(0.f, 180.f, 0.f));
     }
 
 
-    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::DownArrow))
-    {
+    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::UpArrow))
+    {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
         bPressed = true;
         m_pTransformCom->Rotation(_float3(0.f, 0.f, 0.f));
     }
 
-    if (m_pInputManager->IsKeyPressed(KeyCode::B))
+    if (m_pInputManager->IsKeyPressed(KeyCode::H))
     {
         iHp--;
         m_pGameInstance->BroadCastEvent(L"OnHeartDamaged",&iHp);
@@ -166,7 +169,7 @@ void CPlayer::Move_Input(_float fTimeDelta)
     }
     if (bPressed)
     {
-        m_pTransformCom->Move(DIRECTION::FORWARD, (-1) * fTimeDelta);
+        m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta);
         if (m_iState & CModelObject::IDLE)
             m_iState ^= IDLE;
 
@@ -182,14 +185,6 @@ void CPlayer::Move_Input(_float fTimeDelta)
 
 void CPlayer::Event_Input(_float fTimeDelta)
 {
-    if (m_pInputManager->IsKeyPressed(KeyCode::C))
-    {
-        CBody* pBody = dynamic_cast<CBody*>(Find_PartObject(L"Part_Body"));
-        if (pBody)
-        {
-            pBody->Get_Model()->Set_VisibleMesh(L"flipperL_low__MI_flippers", false);
-        }
-    }
 
     if (m_pInputManager->IsKeyPressed(KeyCode::T))
     {
@@ -202,6 +197,7 @@ void CPlayer::Event_Input(_float fTimeDelta)
 
     if (m_pInputManager->IsKeyReleased(KeyCode::T))
     {
+
         if (m_iState & CModelObject::ATTACK)
             m_iState ^= ATTACK;
 

@@ -62,8 +62,8 @@ void CLevelDebugWindow::Update()
                     LevelName = "LOADING";
                     break;
 
-                case LEVEL_ID::GAMEPLAY:
-                    LevelName = "GAMEPLAY";
+                case LEVEL_ID::TOWN:
+                    LevelName = "TOWN";
                     break;
 
                 case LEVEL_ID::UI:

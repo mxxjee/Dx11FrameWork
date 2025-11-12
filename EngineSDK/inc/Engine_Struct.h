@@ -25,6 +25,14 @@ namespace Engine
 
 	}ENGINE_DESC;
 
+	typedef struct tagLoadTerrainData
+	{
+		_float4 vPosition;
+		_float4 vScale;
+		_float4 vRotation;
+		string ModelName;
+
+	}LOADTERRAINDATA;
 
 
 	struct RenderStates

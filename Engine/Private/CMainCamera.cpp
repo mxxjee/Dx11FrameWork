@@ -73,7 +73,7 @@ HRESULT CMainCamera::Render()
 
 void CMainCamera::Set_Target(CGameObject* pTarget, bool bInit)
 {
-	CheckNull(m_pTarget);
+	CheckNull(pTarget);
 	m_pTarget = pTarget;
 
 	CheckFalse(bInit);

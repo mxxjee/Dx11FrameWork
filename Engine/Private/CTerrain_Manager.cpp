@@ -245,7 +245,7 @@ HRESULT CTerrain_Manager::Save_All_Terrains(const string& path, int iNum)
 
 }
 
-HRESULT CTerrain_Manager::Load_Terrains(const string& LoadPath)
+HRESULT CTerrain_Manager::Load_Terrains_MapTool(const string& LoadPath)
 {
 	m_pPickTerrain = nullptr;
 
@@ -314,6 +314,49 @@ HRESULT CTerrain_Manager::Load_Terrains(const string& LoadPath)
 
 	}
 	return S_OK;
+}
+
+const vector<LOADTERRAINDATA>& CTerrain_Manager::Load_Terrains_Runtime(const string& LoadPath)
+{
+	CGameInstance* m_pGameInstance = CGameInstance::GetInstance();
+	Clear_Terrains();
+
+	ifstream file(LoadPath);
+	json jTerrainData = json::parse(file);
+	for (auto& jTerrain : jTerrainData)
+	{
+
+		string ModelName = jTerrain["ModelName"];
+		int TileID = jTerrain["TileID"];
+
+		json TransformData = jTerrain["Transform"];
+
+
+		_float3 vPos, vRot, vScale;
+		vPos.x = TransformData["Position"][0].get<float>();
+		vPos.y = TransformData["Position"][1].get<float>();
+		vPos.z = TransformData["Position"][2].get<float>();
+
+		vRot.x = TransformData["Rotation"][0].get<float>();
+		vRot.y = TransformData["Rotation"][1].get<float>();
+		vRot.z = TransformData["Rotation"][2].get<float>();
+
+		vScale.x = TransformData["Scale"][0].get<float>();
+		vScale.y = TransformData["Scale"][1].get<float>();
+		vScale.z = TransformData["Scale"][2].get<float>();
+
+
+		LOADTERRAINDATA Data;
+		Data.ModelName = ModelName;
+		Data.vPosition = _float4(vPos.x, vPos.y, vPos.z, 1.f);
+		Data.vScale = _float4(vScale.x, vScale.y, vScale.z, 1.f);
+		Data.vRotation = _float4(vRot.x, vRot.y, vRot.z, 1.f);
+
+		LoadDatas.push_back(Data);
+
+
+	}
+	return LoadDatas;
 }
 
 CTerrain_Manager* CTerrain_Manager::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)

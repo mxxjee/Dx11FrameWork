@@ -687,9 +687,14 @@ HRESULT CGameInstance::Save_All_Terrains(const string& path, int iNum)
 	return m_pTerrainManager->Save_All_Terrains(path, iNum);
 }
 
-HRESULT CGameInstance::Load_Terrains(const string& LoadPath)
+HRESULT CGameInstance::Load_Terrains_MapTool(const string& LoadPath)
 {
-	return m_pTerrainManager->Load_Terrains(LoadPath);
+	return m_pTerrainManager->Load_Terrains_MapTool(LoadPath);
+}
+
+const vector<tagLoadTerrainData>& CGameInstance::Load_Terrains_Runtime(const string& LoadPath)
+{
+	return m_pTerrainManager->Load_Terrains_Runtime(LoadPath);
 }
 
 float CGameInstance::Get_PickDist()

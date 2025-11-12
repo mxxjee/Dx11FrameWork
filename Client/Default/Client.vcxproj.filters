@@ -22,8 +22,8 @@
     <ClInclude Include="..\Public\CLevel_Loading.h">
       <Filter>01.Levels\Loading</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CLevel_GamePlay.h">
-      <Filter>01.Levels\GamePlay</Filter>
+    <ClInclude Include="..\Public\CLevel_Town.h">
+      <Filter>01.Levels\Town</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLevel_Logo.h">
       <Filter>01.Levels\Logo</Filter>
@@ -87,9 +87,6 @@
     </Filter>
     <Filter Include="01.Levels">
       <UniqueIdentifier>{64c3e4ed-340e-491e-9f2f-592d6a76f174}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Levels\GamePlay">
-      <UniqueIdentifier>{5c22a0cf-3e92-4977-9bf2-9333bd90cfec}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.Levels\Loading">
       <UniqueIdentifier>{6a9807c5-75e3-4431-a49e-11e4d49b5ba5}</UniqueIdentifier>
@@ -163,6 +160,9 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_Body">
       <UniqueIdentifier>{f6ad8bf3-5193-4418-88f0-eee303566e6e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\Town">
+      <UniqueIdentifier>{5c22a0cf-3e92-4977-9bf2-9333bd90cfec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -174,8 +174,8 @@
     <ClCompile Include="..\Private\CLevel_Loading.cpp">
       <Filter>01.Levels\Loading</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CLevel_GamePlay.cpp">
-      <Filter>01.Levels\GamePlay</Filter>
+    <ClCompile Include="..\Private\CLevel_Town.cpp">
+      <Filter>01.Levels\Town</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_Logo.cpp">
       <Filter>01.Levels\Logo</Filter>

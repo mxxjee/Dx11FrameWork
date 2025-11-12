@@ -153,7 +153,7 @@
     <ClInclude Include="..\Public\CCameraDebugWindow.h" />
     <ClInclude Include="..\Public\CFloor.h" />
     <ClInclude Include="..\Public\CLevelDebugWindow.h" />
-    <ClInclude Include="..\Public\CLevel_GamePlay.h" />
+    <ClInclude Include="..\Public\CLevel_Town.h" />
     <ClInclude Include="..\Public\CLevel_Loading.h" />
     <ClInclude Include="..\Public\CLevel_Logo.h" />
     <ClInclude Include="..\Public\CLevel_UI.h" />
@@ -178,7 +178,7 @@
     <ClCompile Include="..\Private\CCameraDebugWindow.cpp" />
     <ClCompile Include="..\Private\CFloor.cpp" />
     <ClCompile Include="..\Private\CLevelDebugWindow.cpp" />
-    <ClCompile Include="..\Private\CLevel_GamePlay.cpp" />
+    <ClCompile Include="..\Private\CLevel_Town.cpp" />
     <ClCompile Include="..\Private\CLevel_Loading.cpp" />
     <ClCompile Include="..\Private\CLevel_Logo.cpp" />
     <ClCompile Include="..\Private\CLevel_UI.cpp" />

@@ -49,6 +49,8 @@ public:
 
 private:
     bool bPressed = false;
+    bool m_bMove = true;
+
     CInput_Manager*         m_pInputManager = nullptr;
     int                     iHp = 5;
 

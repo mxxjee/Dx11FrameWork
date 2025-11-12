@@ -82,9 +82,9 @@ void CLevel_Editor::Update(const _float fTimeDelta)
 
 	}
 	else
-	{
+	{/*
 		if (m_pMapObject_Manager->Get_SelectObject() != nullptr && m_pMapObject_Manager->Get_SelectObject()->Get_ObjType()==MapObjType::TERRAIN)
-			m_pMapObject_Manager->Set_SelectObject(nullptr);
+			m_pMapObject_Manager->Set_SelectObject(nullptr);*/
 	}
 
 	

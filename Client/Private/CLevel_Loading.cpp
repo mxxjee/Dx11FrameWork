@@ -2,7 +2,7 @@
 #include "CLoader.h"
 #include "CGameInstance.h"
 
-#include "CLevel_GamePlay.h"
+#include "CLevel_Town.h"
 #include "CLevel_Logo.h"
 
 #include "CInput_Manager.h"

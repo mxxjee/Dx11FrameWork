@@ -8,7 +8,7 @@
 #include "CCamera_Base.h"
 
 #include "CLevel_Logo.h"
-#include "CLevel_GamePlay.h"
+#include "CLevel_Town.h"
 #include "CLevel_Loading.h"
 #include "CLevel_UI.h"
 
@@ -193,9 +193,9 @@ void CMainApp::Register_Levels()
 			return CLevel_Logo::Create(m_pDevice, m_pContext,args);
 		});
 
-	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::GAMEPLAY), [this](LevelArgs& args)->CLevel*
+	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::TOWN), [this](LevelArgs& args)->CLevel*
 		{
-			return CLevel_GamePlay::Create(m_pDevice, m_pContext, args);
+			return CLevel_Town::Create(m_pDevice, m_pContext, args);
 		});
 
 	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::UI), [this](LevelArgs& args)->CLevel*

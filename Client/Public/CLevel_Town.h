@@ -4,12 +4,12 @@
 #include "Client_Defines.h"
 
 NS_BEGIN(Client)
-class CLevel_GamePlay final :
+class CLevel_Town final :
     public CLevel
 {
 private:
-    explicit CLevel_GamePlay(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
-    virtual ~CLevel_GamePlay() = default;
+    explicit CLevel_Town(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
+    virtual ~CLevel_Town() = default;
 
 
 public:
@@ -23,7 +23,11 @@ public:
     virtual void        Render() override;         //씬의 렌더.
 
 public:
-    HRESULT                 Ready_Layer_Background(const _wstring& strLayerTag);
+    HRESULT                 Ready_Lights();
+    HRESULT                 Ready_Layer_Enviroment(const _wstring& strLayerTag);
+    HRESULT                 Ready_Layer_UI(const _wstring& strLayerTag);
+    HRESULT                 Ready_Layer_Player(const _wstring& strLayerTag);
+    HRESULT                 Ready_Layer_Monster(const _wstring& strLayerTag);
 
 public:
     virtual void        OnEnter() override;           //씬 진입시 매번호출
@@ -31,9 +35,10 @@ public:
     virtual void        OnPause() override;               //pause되었을때 호출
     virtual void        OnExit() override;
 public:
-    static  CLevel_GamePlay* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args);
+    static  CLevel_Town* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args);
     virtual     void        Free();
-
+private:
+    int iTargetIdx = 0;
 
 };
 NS_END

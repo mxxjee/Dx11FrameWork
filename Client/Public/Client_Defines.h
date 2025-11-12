@@ -17,7 +17,7 @@ namespace Client
 	static const unsigned int g_iWinSizeY = 720;
 
 
-	enum class LEVEL_ID {STATIC,LOGO,LOADING,GAMEPLAY,UI,MAPTOOL,END};
+	enum class LEVEL_ID {STATIC,LOGO,LOADING,TOWN,UI,MAPTOOL,END};
 	enum class RENDERGROUP {PRIORITY,NONALPHA,ALPHA, WORLD_UI_MINIMAP,UI,END};
 	//enum class LEV
 }

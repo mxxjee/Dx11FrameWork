@@ -30,7 +30,7 @@ public:
     void            Output();
 
 private:
-    HRESULT        Loading_GamePlay();
+    HRESULT        Loading_Town();
     HRESULT        Loading_Logo();
     HRESULT        Loading_UI();//원래 UI는 로딩이없지만, 테스트용
 
