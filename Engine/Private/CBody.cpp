@@ -30,6 +30,7 @@ HRESULT CBody::Initialize_Copytype(void* pArg)
     BODY_DESC* pDesc = static_cast<BODY_DESC*>(pArg);
     m_pParentState = pDesc->pParentState;
 
+
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
@@ -98,6 +99,17 @@ HRESULT CBody::Render()
 
 
     return S_OK;
+}
+
+bool CBody::Get_IsAnimFinished()
+{
+
+	CheckNullResult(m_pModel, false);
+    CheckTrueResult(m_pModel->Get_NumAnim() == 0, false);
+
+
+	return m_pModel->Get_IsAnimFinished();
+
 }
 
 HRESULT CBody::Ready_Components(void* pArg)

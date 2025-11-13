@@ -20,6 +20,10 @@ public:
     virtual void        Update_Render(_float fTimeDelta);
 
     virtual HRESULT Render();
+
+private:
+    void        Motion_Change();
+
 public:
     static CPlayer_Body* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;

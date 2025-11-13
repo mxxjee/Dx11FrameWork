@@ -40,7 +40,9 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 
 
 	m_pModel->Set_Animation(L"Idle", true);
-	//m_pModel->Set_TransitionTime(0.02f);
+	m_pModel->Set_Loop(L"slash", false);
+
+	m_pModel->Set_TransitionTime(0.2f);
 
 	m_pModel->Set_VisibleMesh(L"flipperL_low__MI_flippers", false);
 	m_pModel->Set_VisibleMesh(L"MagicRod_magicRodJem_low__MagicRod_MI_magicRod", false);
@@ -62,27 +64,26 @@ void CPlayer_Body::Update_Priority(_float fTimeDelta)
 
 void CPlayer_Body::Update(_float fTimeDelta)
 {
-	__super::Update(fTimeDelta);
 
 	if (*m_pParentState & CModelObject::IDLE)
 		m_pModel->Set_Animation(L"Idle", true);
 
 
 	if (*m_pParentState & CModelObject::RUN)
-	{
 		m_pModel->Set_Animation(L"run", true);
-	}
 
 	if (*m_pParentState & CModelObject::ATTACK)
-	{
-		m_pModel->Set_Animation(L"slash", true);
-	}
+		m_pModel->Set_Animation(L"slash", false);
+
+	__super::Update(fTimeDelta);	//Model->PlayAnimtion
+
 }
 
 void CPlayer_Body::Update_Late(_float fTimeDelta)
 {
 	__super::Update_Late(fTimeDelta);
-	m_pModel->Play_Animation(fTimeDelta);
+	
+	Motion_Change();
 }
 
 void CPlayer_Body::Update_Render(_float fTimeDelta)
@@ -96,6 +97,13 @@ HRESULT CPlayer_Body::Render()
 
 	return S_OK;
 }
+
+void CPlayer_Body::Motion_Change()
+{
+
+}
+
+
 
 CPlayer_Body* CPlayer_Body::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {

@@ -42,6 +42,10 @@ public:
 
 protected:
     const _uint* m_pParentState = { nullptr };
+    const _uint* m_pParentPreState = { nullptr };
+
+
+
 
 protected:
     CModel* m_pModel = { nullptr };
@@ -52,6 +56,7 @@ protected:
 public:
     CModel* Get_Model() { return m_pModel; }
     CShader* Get_Shader() { return m_pShader; }
+    bool        Get_IsAnimFinished();
 
 
 protected:

@@ -65,15 +65,15 @@ bool CAnimation::Update_TransformationMatrices(const vector<class CBone*>& Bones
 
 	if (m_fCurrentTrackPosition >= m_fDuration)
 	{
+		Reset_Animtion();//애니메이션 재생바를 0으로 위치시키고, 키프레임을 모두 초기화한다.
 		
+
 		if (!m_bLoop)
 		{
-		
 			return true;		//애니메이션 끝남 알림
 
 		}
-		m_fCurrentTrackPosition = 0.f;//루프일경우 다시 맨처음부터 실행
-
+		
 		
 	}
 
@@ -114,6 +114,14 @@ bool CAnimation::Update_BlendAnim(CModel* pModel, const vector<class CBone*>& Bo
 	return false; 
 }
 
+void CAnimation::Reset_Animtion()
+{
+	m_fCurrentTrackPosition = 0.f;//루프일경우 다시 맨처음부터 실행
+	for (auto& TargetKeyFrame : m_CurrentKeyFrameIndices)
+		TargetKeyFrame = 0;
+
+}
+
 CChannel* CAnimation::Get_Channel_BoneIdx(int BoneNum)
 {
 	int Num = 0;
@@ -124,6 +132,31 @@ CChannel* CAnimation::Get_Channel_BoneIdx(int BoneNum)
 			return Channel;
 	}
 	return nullptr;
+}
+
+_matrix CAnimation::Get_CurrentKeyFrameBonSRT(int BoneIdx)
+{
+	CChannel* pChannel = Get_Channel_BoneIdx(BoneIdx);
+	if (pChannel)
+		return pChannel->Get_CurrentKeyFrameBoneSRT(&m_CurrentKeyFrameIndices[Get_ChannelIdx(BoneIdx)]);
+
+	return _matrix();
+}
+
+int CAnimation::Get_ChannelIdx(int BoneNum)
+{
+	int Num = 0;
+
+	for (auto Channel : m_Channels)
+	{
+		if (Channel->Get_BoneIndex_ByChannel() == BoneNum)
+			break;
+
+		else
+			++Num;
+	}
+
+	return Num;
 }
 
 CAnimation* CAnimation::Create(CModel* pModel, json& Json, const char* filePath, _uint idx)

@@ -17,18 +17,21 @@ private:
 
 public:
     _int            Get_BoneIndex_ByChannel() { return m_iBoneIndex; }
+
 public:
+    _matrix         Get_CurrentKeyFrameBoneSRT(_uint* pCurrentKeyFrameIdx);
+
     HRESULT Initialize(class CModel* pModel, json& Json, const char* AnimFilePath, int AnimIdx, int index);
     void    Update_TransformationMatrix(const vector<class CBone*>& Bones, _float fCurrentTrackPosition,_uint* pCurrentKeyFrameIdx );
 
 
-    //
-    void    UpdateTransformMatrix_Blned_By_Two(const vector<class CBone*>& Bones,_matrix ExistMatrix,_float Ratio);
-    
-    void    UpdateTransformMatrix_To_Identity(const vector<class CBone*>& Bones, _matrix ExistMatrix, _float Ratio);//Idnetity로 가는 보간
-    void    UpdateTransformMatrix_From_Identity(const vector<class CBone*>& Bones, _float Ratio);   //Identity에서 현재값까지 가는 보간
 
-    void    UpdateTransformMatrix_To_Target(const vector<class CBone*>& Bones, _matrix ExistMatrix, _float Ratio);
+            //지금 키프레임값의 SRT와 다음애니메이션보간
+    void    UpdateTransformMatrix_Blned_By_PrevToCurr(const vector<class CBone*>& Bones,_matrix ExistMatrix,_float Ratio);
+
+
+                //현재 본의 SRT와 다음애니메이션 보간
+    void    UpdateTransformMatrix_To_Target(const vector<class CBone*>& Bones,_matrix CurSRT,_float Ratio);
 
 private:
     _uint				m_iNumKeyFrames = {};		//이 채널의 전체 키프레임, SRT 변환중 가장 큰 것의 사이즈

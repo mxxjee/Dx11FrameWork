@@ -417,9 +417,6 @@ void CModel::Play_Animation(_float fTimeDelta)
 		Bone->Update_CombinedTransformMatrix(m_Bones, XMLoadFloat4x4(&m_PreTransformMatrix));
 	}
 
-	//if (m_isTransition)
-	//	m_Animations[m_iPreAnimIndex]->Set_CurrentTrackPosition(0.f);//다음에 실행됐을떄 처음부터 실행하라고..
-
 
 	
 }
@@ -443,17 +440,25 @@ void CModel::Update_BlendAnim(_float fTimeDelta)
 			CChannel* pbCurExist = pCurAnim->Get_Channel_BoneIdx(i);
 
 			if (pPreExist && pbCurExist)
-				pPreExist->UpdateTransformMatrix_Blned_By_Two(m_Bones, m_BoneTraformMatricies[i], m_fTranslationTime);
-
+			{
+				_matrix CurSRT = m_Bones[i]->Get_TransformMatrix_By_XMMatrix();
+				pPreExist->UpdateTransformMatrix_To_Target(m_Bones, CurSRT,m_fTranslationTime);
+				
+			}
+				
 
 			else if (pPreExist && !pbCurExist)
 			{
 				CChannel* pTarget = pPreExist ? pPreExist : pbCurExist;
-				if (pTarget == pPreExist)
-					pPreExist->UpdateTransformMatrix_To_Identity(m_Bones, m_BoneTraformMatricies[i], m_fTranslationTime );
+				if (pTarget == pPreExist)//이전애니메이션에만 존재할경우
+					continue;
 
-				else
-					pbCurExist->UpdateTransformMatrix_From_Identity(m_Bones, m_fTranslationTime);
+				else //현재 애니메이션에만 존재할경우
+				{
+					_matrix mat = pPreAnim->Get_CurrentKeyFrameBonSRT(i);
+					pbCurExist->UpdateTransformMatrix_Blned_By_PrevToCurr(m_Bones, mat,m_fTranslationTime);
+
+				}
 			}
 
 			else
@@ -511,10 +516,10 @@ void CModel::Set_Animation(const wstring& AnimKey, _bool isLoop)
 		m_isTransition = true;
 
 		////이전 애니메이션 초기화(다음에 실행시 처음부터 시작)
-		/*CAnimation* pAnim = Find_Animation(m_PreAnimKey);
-		if (pAnim)
-			pAnim->Set_CurrentTrackPosition(0.l
-		m_Animations[m_PreAnimKey]->Set_CurrentTrackPosition(0.f);*/
+		CAnimation* pPreAnim = Find_Animation(m_PreAnimKey);
+		if (pPreAnim)
+			pPreAnim->Reset_Animtion();
+
 
 		Start_Transition();
 	}
@@ -602,4 +607,9 @@ void CModel::End_Transition()
 {
 	m_BoneTraformMatricies.clear();
 	m_fTranslationTime = 0.f;
+
+	//CAnimation* pPreAnim = Find_Animation(m_PreAnimKey);
+	//if(pPreAnim)
+	//	pPreAnim->Set_CurrentTrackPosition(0.f);//다음에 실행됐을떄 처음부터 실행하라고..
+
 }

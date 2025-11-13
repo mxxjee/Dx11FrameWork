@@ -6,6 +6,7 @@
 상태에 따른 애니메이션처리는 Body객체가 한다.*/
 namespace Engine
 {
+    class CBody;
     class CInput_Manager;
 }
 NS_BEGIN(Client)
@@ -37,6 +38,9 @@ private:
     void        Event_Input(_float  fTimeDelta);
 
     void        Move_Input(_float fTimeDelta);
+
+    void        Motion_Change();
+    void        State_Change();
    
 public:
     static CPlayer* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
@@ -53,6 +57,9 @@ private:
 
     CInput_Manager*         m_pInputManager = nullptr;
     int                     iHp = 5;
+
+private:
+    CBody* m_pBody = { nullptr };
 
 };
 

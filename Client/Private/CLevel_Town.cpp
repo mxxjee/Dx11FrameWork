@@ -35,8 +35,8 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_Player(L"Player_Layer")))
         return E_FAIL;
 
-    if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
-        return E_FAIL;
+    //if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
+    //    return E_FAIL;
 
     if (FAILED(Ready_Layer_UI(L"UI_Layer")))
         return E_FAIL;
@@ -195,11 +195,11 @@ HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
         desc.TransformDesc = &TransDesc;
 
-        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-            PROTO_OBJ_NAME(L"Terrain"),
-            ENUM_TO_UINT(LEVEL_ID::TOWN),
-            strLayerTag, &desc)))
-            return E_FAIL;
+        CTerrain_Base* pTerrain = dynamic_cast<CTerrain_Base*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC),
+            PROTO_OBJ_NAME(L"Terrain"), &desc));
+
+        if (pTerrain)
+            m_pGameInstance->Register_Terrain(pTerrain->Get_Tag(),pTerrain);
     }
 
   

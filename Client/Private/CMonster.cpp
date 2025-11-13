@@ -111,6 +111,8 @@ HRESULT CMonster::Ready_PartObjects(void* pArg)
     if (pModelDesc)
     {
         CBody::BODY_DESC* pBodyDesc = static_cast<CBody::BODY_DESC*>(pModelDesc->BodyDesc);
+        pBodyDesc->ObjTag = tag + L"_Body";
+
         if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Monster_Body"), L"Part_Body", pBodyDesc)))
             return E_FAIL;
 

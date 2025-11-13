@@ -52,6 +52,7 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     BodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
     BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
     BodyDesc.pParentState = &m_iState;
+    BodyDesc.ObjTag = desc.ObjTag + L"_body";
 
     desc.BodyDesc = &BodyDesc;
 
@@ -78,6 +79,8 @@ void CPlayer::Update(_float fTimeDelta)
 void CPlayer::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
+    Motion_Change();
+    State_Change();
 }
 
 void CPlayer::Update_Render(_float fTimeDelta)
@@ -183,6 +186,7 @@ void CPlayer::Move_Input(_float fTimeDelta)
 
 }
 
+
 void CPlayer::Event_Input(_float fTimeDelta)
 {
 
@@ -195,15 +199,44 @@ void CPlayer::Event_Input(_float fTimeDelta)
     }
 
 
-    if (m_pInputManager->IsKeyReleased(KeyCode::T))
+    /*if (m_pInputManager->IsKeyReleased(KeyCode::T))
     {
 
         if (m_iState & CModelObject::ATTACK)
             m_iState ^= ATTACK;
 
         m_iState |= IDLE;
+    }*/
+}
+
+
+void CPlayer::Motion_Change()
+{
+    //이전과 현재상태가 다를떄 진입(애니메이션 진입)
+    if (m_iPreState != m_iState)
+    {
+       
+       
+
+        m_iPreState = m_iState;
+
+    }
+
+
+}
+
+void CPlayer::State_Change()
+{
+    if (m_iState & ATTACK)
+    {
+        if (m_pBody->Get_IsAnimFinished())
+        {
+            m_iState ^= ATTACK;
+            m_iState |= IDLE;
+        }
     }
 }
+
 
 CPlayer* CPlayer::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
@@ -247,6 +280,8 @@ HRESULT CPlayer::Ready_PartObjects(void* pArg)
         CBody::BODY_DESC* pBodyDesc = static_cast<CBody::BODY_DESC*>(pModelDesc->BodyDesc);
         if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Player_Body"), L"Part_Body", pBodyDesc)))
             return E_FAIL;
+
+        m_pBody = dynamic_cast<CBody*>(Find_PartObject(L"Part_Body"));
 
     }
     return S_OK;

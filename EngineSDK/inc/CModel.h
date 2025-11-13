@@ -56,10 +56,13 @@ public:
 public:
     /*레이충돌*/
     bool        Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);
+    
+public:
     void        Set_Animation(const wstring& AnimKey, _bool isLoop);
     int         Get_BoneIndex(const char* pBoneName);
     int         Get_NumAnim() { return m_iNumAnimations; }
     void        Set_Loop(const wstring& AnimKey, bool bLoop);
+    bool        Get_IsAnimFinished() { return m_isAnimFinished; }
 
 public:
     CMeshComponent* Get_Mesh(const wstring& Name);

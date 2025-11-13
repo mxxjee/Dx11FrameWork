@@ -8,6 +8,8 @@ CChannel::CChannel()
 {
 }
 
+
+
 HRESULT CChannel::Initialize(CModel* pModel, json& Json, const char* AnimFilePath,int AnimIdx, int index)
 {
 
@@ -47,6 +49,17 @@ HRESULT CChannel::Initialize(CModel* pModel, json& Json, const char* AnimFilePat
 
 	
     return S_OK;
+}
+
+_matrix CChannel::Get_CurrentKeyFrameBoneSRT(_uint* pCurrentKeyFrameIdx)
+{
+	KEYFRAME TargetKeyFrame = m_KeyFrames[(*pCurrentKeyFrameIdx)];
+
+	_matrix SRT;
+
+	SRT=XMMatrixScaling(TargetKeyFrame.vScale.x, TargetKeyFrame.vScale.y, TargetKeyFrame.vScale.z) * XMMatrixRotationQuaternion(XMVectorSet(TargetKeyFrame.vRotation.x, TargetKeyFrame.vRotation.y, TargetKeyFrame.vRotation.z, TargetKeyFrame.vRotation.w)) * XMMatrixTranslation(TargetKeyFrame.vTranslation.x, TargetKeyFrame.vTranslation.y, TargetKeyFrame.vTranslation.z);
+
+	return SRT;
 }
 
 void CChannel::Update_TransformationMatrix(const vector<class CBone*>& Bones, _float fCurrentTrackPosition, _uint* pCurrentKeyFrameIdx)
@@ -115,9 +128,9 @@ void CChannel::Update_TransformationMatrix(const vector<class CBone*>& Bones, _f
 	Bones[m_iBoneIndex]->Set_TransformationMatrix(TransformationMatrix);
 }
 
-void CChannel::UpdateTransformMatrix_Blned_By_Two(const vector<CBone*>& Bones, _matrix ExistMatrix, _float Ratio)
+void CChannel::UpdateTransformMatrix_Blned_By_PrevToCurr(const vector<CBone*>& Bones, _matrix ExistMatrix, _float Ratio)
 {
-	//인자로 들어온 ExistMAtrix를 분해하여 Identity와 보간하여 적용
+	//인자로 들어온 ExistMAtrix를 분해하여 다음키프레임0과 보간하여 적용
 	_float4x4 TransformationMatrix;
 	
 	_vector vScale, vRotation, vTranslation;
@@ -148,10 +161,12 @@ void CChannel::UpdateTransformMatrix_Blned_By_Two(const vector<CBone*>& Bones, _
 	Bones[m_iBoneIndex]->Set_TransformationMatrix(TransformationMatrix);
 }
 
-void CChannel::UpdateTransformMatrix_To_Identity(const vector<class CBone*>& Bones, _matrix ExistMatrix, _float Ratio)
+
+void CChannel::UpdateTransformMatrix_To_Target(const vector<class CBone*>& Bones, _matrix CurSRT, _float Ratio)
 {
-	//인자로 들어온 ExistMAtrix를 분해하여 현재 키프레임첫프레임과 보간하여 적용
+	//현재 SRT를 분해하여 다음키프레임0과 보간
 	_float4x4 TransformationMatrix;
+
 
 	_vector vScale, vRotation, vTranslation;
 
@@ -159,48 +174,15 @@ void CChannel::UpdateTransformMatrix_To_Identity(const vector<class CBone*>& Bon
 	_vector vRightScale, vRightRot, vRightTrans;
 
 	//SRT분리
-	XMMatrixDecompose(&vLeftScale, &vLeftRot, &vLeftTrans, ExistMatrix);
+	XMMatrixDecompose(&vLeftScale, &vLeftRot, &vLeftTrans, CurSRT);
 
-
-
-		//항등행렬과 보간
-	vRightScale = XMVectorSet(1.f, 1.f, 1.f, 1.f);
-	vRightRot = XMQuaternionIdentity();
-	vRightTrans = XMVectorSet(0.f, 0.f, 0.f, 1.f);
-
-
-
-	vScale = XMVectorLerp(vLeftScale, vRightScale, Ratio);
-	vRotation = XMQuaternionSlerp(vLeftRot, vRightRot, Ratio);
-	vTranslation = XMVectorLerp(vLeftTrans, vRightTrans, Ratio);
-
-
-	XMStoreFloat4x4(&TransformationMatrix,
-		XMMatrixAffineTransformation(vScale, XMVectorZero(), vRotation, vTranslation));
-
-	Bones[m_iBoneIndex]->Set_TransformationMatrix(TransformationMatrix);
-}
-
-void CChannel::UpdateTransformMatrix_From_Identity(const vector<class CBone*>& Bones, _float Ratio)
-{
-	//identity에서부터 현재키프레임0번까지 ..
-
-	_float4x4 TransformationMatrix;
-
-	_vector vScale, vRotation, vTranslation;
-
-	_vector vLeftScale, vLeftRot, vLeftTrans;
-	_vector vRightScale, vRightRot, vRightTrans;
-
-	vLeftScale = XMVectorSet(1.f, 1.f, 1.f, 1.f);
-	vLeftRot = XMQuaternionIdentity();
-	vLeftTrans = XMVectorSet(0.f, 0.f, 0.f, 1.f);
 
 
 	//첫키프레임
 	vRightScale = XMLoadFloat3(&m_KeyFrames[0].vScale);
 	vRightRot = XMLoadFloat4(&m_KeyFrames[0].vRotation);
 	vRightTrans = XMLoadFloat3(&m_KeyFrames[0].vTranslation);
+
 
 
 	vScale = XMVectorLerp(vLeftScale, vRightScale, Ratio);
@@ -212,7 +194,9 @@ void CChannel::UpdateTransformMatrix_From_Identity(const vector<class CBone*>& B
 		XMMatrixAffineTransformation(vScale, XMVectorSet(0.f, 0.f, 0.f, 1.f), vRotation, vTranslation));
 
 	Bones[m_iBoneIndex]->Set_TransformationMatrix(TransformationMatrix);
+
 }
+
 
 
 

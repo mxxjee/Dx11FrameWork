@@ -92,6 +92,7 @@ HRESULT CTerrain::Ready_PartObjects(void* pArg)
     {
         CBody::BODY_DESC* pBodyDesc = static_cast<CBody::BODY_DESC*>(pTerrainDesc->BodyDesc);
         pBodyDesc->pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
+        pBodyDesc->ObjTag = tag + L"_Body";
 
 
         m_pBody = dynamic_cast<CBody*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Body"), pBodyDesc));

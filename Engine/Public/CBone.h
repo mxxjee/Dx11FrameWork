@@ -21,6 +21,7 @@ public:
     }
 
     const _float4x4   Get_TransformMatrix() { return m_TransformationMatrix; }
+    const _matrix   Get_TransformMatrix_By_XMMatrix() { return XMLoadFloat4x4(&m_TransformationMatrix);}
 public:
     bool            Compare_Name(const char* pName);
 
@@ -36,6 +37,7 @@ public:
     {
         return XMLoadFloat4x4(&m_CombinedTransformationMatrix);
     }
+
 
 public:
     static CBone* Create(const BoneData& Data);

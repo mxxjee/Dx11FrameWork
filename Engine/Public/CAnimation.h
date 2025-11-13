@@ -24,13 +24,16 @@ public:
     bool        Update_BlendAnim(class CModel* pModel,const vector<class CBone*>& Bones, _float TranslationTime, int PreAnimIndex);
    
     void        Set_Loop(bool b) { m_bLoop = b; }
-
+    void        Reset_Animtion();
 public:
     const char* Get_Name() { return m_szName; }
     int         Get_CurrentTrackPoistion() { return m_fCurrentTrackPosition; }
     _uint       Get_CurrentKeyFrameIndex(int num) { return m_CurrentKeyFrameIndices[num]; }
     void        Set_CurrentTrackPosition(_float TrackPos) { m_fCurrentTrackPosition = TrackPos; }
+    
     CChannel*         Get_Channel_BoneIdx(int BoneNum);
+    _matrix           Get_CurrentKeyFrameBonSRT(int BoneIdx);
+    int               Get_ChannelIdx(int BoneNum);
 
 private:
     _uint               m_iNumChannels = {};
