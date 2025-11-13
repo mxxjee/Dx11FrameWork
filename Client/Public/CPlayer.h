@@ -39,8 +39,9 @@ private:
 
     void        Move_Input(_float fTimeDelta);
 
-    void        Motion_Change();
-    void        State_Change();
+
+    virtual void        Motion_Change();
+    virtual void        State_Change();
    
 public:
     static CPlayer* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
@@ -49,7 +50,7 @@ public:
 
 public:
     virtual HRESULT     Ready_PartObjects(void* pArg);
-
+   
 
 private:
     bool bPressed = false;
@@ -58,8 +59,7 @@ private:
     CInput_Manager*         m_pInputManager = nullptr;
     int                     iHp = 5;
 
-private:
-    CBody* m_pBody = { nullptr };
+
 
 };
 

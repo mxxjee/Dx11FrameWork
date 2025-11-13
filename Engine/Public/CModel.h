@@ -59,6 +59,10 @@ public:
     
 public:
     void        Set_Animation(const wstring& AnimKey, _bool isLoop);
+    void        Set_Animation_Speed(const wstring& AnimKey, _float TickPerSecond);
+
+    const wstring& Get_CurrentAnimKey() { return m_CurrentAnimKey; }
+
     int         Get_BoneIndex(const char* pBoneName);
     int         Get_NumAnim() { return m_iNumAnimations; }
     void        Set_Loop(const wstring& AnimKey, bool bLoop);
@@ -76,10 +80,7 @@ public:
     class CAnimation* Find_Animation(const _wstring& Key);
 
 public:
-    void        Set_VisibleMesh(const _wstring& MeshName,bool bVisible);
-
-public:
-    void            Start_Transition();
+    void            Set_VisibleMesh(const _wstring& MeshName,bool bVisible);
     void            End_Transition();
 private:
     UMap<wstring, CMeshComponent*>          m_Meshs;
@@ -100,7 +101,6 @@ private:
 
 
     UMap<wstring,class CAnimation*>           m_Animations;
-    vector<_matrix>                   m_BoneTraformMatricies;
 
     bool                                m_isAnimFinished = false;
     //전이 확인

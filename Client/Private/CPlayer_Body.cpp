@@ -39,8 +39,10 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 
 
 
-	m_pModel->Set_Animation(L"Idle", true);
+	m_pModel->Set_Animation(L"wait", true);
 	m_pModel->Set_Loop(L"slash", false);
+	m_pModel->Set_Animation_Speed(L"run", 50.f);
+
 
 	m_pModel->Set_TransitionTime(0.2f);
 
@@ -66,7 +68,7 @@ void CPlayer_Body::Update(_float fTimeDelta)
 {
 
 	if (*m_pParentState & CModelObject::IDLE)
-		m_pModel->Set_Animation(L"Idle", true);
+		m_pModel->Set_Animation(L"wait", true);
 
 
 	if (*m_pParentState & CModelObject::RUN)

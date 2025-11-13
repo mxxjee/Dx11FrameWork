@@ -5,6 +5,7 @@
 NS_BEGIN(Engine)
 
 //Partojbect:Body를 기본적으로 소유하는 오브젝트
+class CBody;
 
 class ENGINE_DLL CModelObject :
     public CContainerObject
@@ -44,6 +45,10 @@ public:
 
     virtual HRESULT Render();
 
+protected:
+    virtual void Set_State(STATE_OP Flag,_uint State);       //스테이트갱신, cur/pre갱신
+    virtual void Motion_Change();       //pre!=cur (애니메이션 진입함수)
+    virtual void State_Change();        //애니메이션 끝남에 따라 상태처리
 private:
     HRESULT                     Bind_ShaderResources();
 
@@ -56,10 +61,18 @@ public:
     HRESULT     Ready_Components(void* pArg);     
     HRESULT     Ready_PartObjects(void* pArg);
 
+public:
+    /*Imgui 디버그용..현재 상태와 애니메이션출력*/
+    virtual void        Render_CurrentState_Animation();
+    string Convert_String_To_Enum(_uint eState);
 
+protected:
+    CBody*           m_pBody = nullptr;
 protected:
     _uint                   m_iState = {};
     _uint                   m_iPreState{};
+
+
 
 
 };

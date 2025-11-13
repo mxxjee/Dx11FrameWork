@@ -126,7 +126,6 @@ float4 PS_THRESHOLD(PS_IN In) : SV_Target0
     return color;
 }
 
-//마우스 좌표에 따른 텍스처 효과
 
 
 
@@ -181,6 +180,31 @@ float4 PS_Selected(PS_IN In) : SV_Target0
     
 }
 
+//타이틀로고->알파값,마스크적용
+float4 PS_Logo(PS_IN In) : SV_Target0
+{
+    float4 color = texture0.Sample(sampler0, In.vTexcoord);
+    float WhiteLevel = saturate((color.r + color.g + color.b) / 3.f);
+    
+    
+    float alpha = 1.f;
+
+    alpha = 1-WhiteLevel;
+    
+    //시간기반 알파값
+    if(color.a>0.2f)
+    {
+        alpha *= g_Alpha;
+        color.a = alpha;
+    }
+
+
+
+    
+    return color;
+    
+}
+
 /*렌더링 방법을 정의한다.*/
 technique11 DefaultTechnique
 {
@@ -195,6 +219,12 @@ technique11 DefaultTechnique
 
         PixelShader = compile ps_5_0 PS_MAIN();
 
+    }
+    pass Logo
+    {
+        VertexShader = compile vs_5_0 VS_MAIN();
+
+        PixelShader = compile ps_5_0 PS_Logo();
     }
 
     pass Brightness
@@ -214,7 +244,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MINIMAP();
 
     }
-
+    
 
 //////////////////
     pass softBright

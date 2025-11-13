@@ -432,8 +432,7 @@ void CModel::Update_BlendAnim(_float fTimeDelta)
 
 		//모든 본에 대해서 수행한다.
 		//만약 전이하는애니메이션과 현재애니메이션에 공통적으로 존재하는 본은 서로 선형보간한다.
-		//현재애니메이션 O, 전이하는 애니메이션 X -> 이전->항등행렬
-		//현재애니메이션X, 전이하는애니메이션O -> 항등에서부터 현재애니메이션까지
+		//현재애니메이션 O, 전이하는 애니메이션 X -> 이전키프레임->다음키프레임
 		for (int i = 0; i < m_Bones.size(); ++i)
 		{
 			CChannel* pPreExist = pPreAnim->Get_Channel_BoneIdx(i);
@@ -519,12 +518,18 @@ void CModel::Set_Animation(const wstring& AnimKey, _bool isLoop)
 		CAnimation* pPreAnim = Find_Animation(m_PreAnimKey);
 		if (pPreAnim)
 			pPreAnim->Reset_Animtion();
-
-
-		Start_Transition();
 	}
 
 	pAnim->Set_Loop(isLoop);
+}
+
+void CModel::Set_Animation_Speed(const wstring& AnimKey, _float TickPerSecond)
+{
+	CAnimation* pAnim = Find_Animation(AnimKey);
+	CheckNull(pAnim);
+
+	return pAnim->Set_TickPerSecond(TickPerSecond);
+
 }
 
 int CModel::Get_BoneIndex(const char* pBoneName)
@@ -589,23 +594,11 @@ void CModel::Set_VisibleMesh(const _wstring& MeshName, bool bVisible)
 
 }
 
-void CModel::Start_Transition()
-{
-	m_BoneTraformMatricies.resize(m_Bones.size());
 
-	/*첫 값 SRT를 모두다 저장시킨다.*/
-	for (int i = 0; i < m_Bones.size(); ++i)
-	{
-		_float4x4 Matrix = m_Bones[i]->Get_TransformMatrix();
-		m_BoneTraformMatricies[i]=XMLoadFloat4x4(&Matrix);
-
-	}
-
-}
 
 void CModel::End_Transition()
 {
-	m_BoneTraformMatricies.clear();
+	
 	m_fTranslationTime = 0.f;
 
 	//CAnimation* pPreAnim = Find_Animation(m_PreAnimKey);

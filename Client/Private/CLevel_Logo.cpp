@@ -17,10 +17,8 @@
 #include "CMinimapQuad.h"
 #include "CLight.h"
 
-#include "CModelObject.h"
-#include "CModel.h"
-#include "CBody.h"
-#include "CMonster.h"
+#include "CUI.h"
+#include "CUIComponent.h"
 
 
 
@@ -175,8 +173,105 @@ void CLevel_Logo::Render()
 
 HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
 {
-   
-    return S_OK;
+    //타이틀 배경사진
+    CUI::tagUIDesc BackGroundDesc = {};
+    CTransform::TRANSFORM_DESC TransDesc;
+    BackGroundDesc.ObjTag = L"Title_Background";
+    BackGroundDesc.TextureKey = L"Title";
+    BackGroundDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+    BackGroundDesc.fSizeX = g_iWinSizeX;
+    BackGroundDesc.fSizeY = g_iWinSizeY;
+
+    BackGroundDesc.fX = g_iWinSizeX >> 1;
+    BackGroundDesc.fY = g_iWinSizeY >> 1;
+
+
+    BackGroundDesc.TransformDesc = &TransDesc;
+
+  
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"Panel"),
+        ENUM_TO_UINT(LEVEL_ID::LOGO),
+        strLayerTag, &BackGroundDesc)))
+        return E_FAIL;
+
+#pragma region 로고생성
+    /////////////////////////////로고 생성//////////////////////////////////
+    UIGroup LogoGroup;
+    LogoGroup.Key = L"LogoGroup";
+
+
+    //////////타이틀그냥 흰색로고
+    CUI::tagUIDesc Title_Desc = {};
+    Title_Desc.ObjTag = L"Title";
+    Title_Desc.TextureKey = L"Logo_White";
+    Title_Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+    Title_Desc.fSizeX = 1092*0.5f;
+    Title_Desc.fSizeY = 546 * 0.5f;
+    Title_Desc.Depth = 0.49f;
+
+    Title_Desc.fX = 300;
+    Title_Desc.fY = 255;
+
+
+    Title_Desc.TransformDesc = &TransDesc;
+    //AlphaAnim등록
+    CUIComponent::UICOMP_DESC UIDesc = {};
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].fStart = _float4(0.f, 0.f, 0.f, 0.f);
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].fTarget = _float4(1.f, 0.f, 0.f, 0.f);
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].m_fSpeed = 2.f;
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bLoop = false;
+    Title_Desc.UICompDesc = &UIDesc;
+
+
+    CBase* pLogoObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &Title_Desc);
+    CGameObject*    pInstance= dynamic_cast<CGameObject*>(pLogoObj);
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO), strLayerTag, pInstance)))
+        return E_FAIL;
+    LogoGroup.Objects.push_back(pInstance);
+
+
+    /////////마스크
+    CUI::tagUIDesc Logo_MaskDesc = {};
+    Logo_MaskDesc.ObjTag = L"Title_LogoMask";
+    Logo_MaskDesc.passName = "Logo";
+    Logo_MaskDesc.TextureKey = L"Logo_Mask";
+    Logo_MaskDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+    Logo_MaskDesc.fSizeX = 1092 * 0.5f;
+    Logo_MaskDesc.fSizeY = 546 * 0.5f;
+
+    Logo_MaskDesc.fX = 300;
+    Logo_MaskDesc.fY = 255;
+
+
+    Logo_MaskDesc.TransformDesc = &TransDesc;
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].m_fSpeed = 0.5f;
+    Logo_MaskDesc.UICompDesc = &UIDesc;
+
+    CBase* pLogoMaskObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &Logo_MaskDesc);
+    CGameObject* pInstance2 = dynamic_cast<CGameObject*>(pLogoMaskObj);
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO), strLayerTag, pInstance2)))
+        return E_FAIL;
+
+    LogoGroup.Objects.push_back(pInstance2);
+    m_pGameInstance->Register_UIGroup(LogoGroup);
+
+    for (auto& i : LogoGroup.Objects)
+    {
+        CUI* pUI = dynamic_cast<CUI*>(i);
+        if (pUI)
+            pUI->Set_ActiveAnim(0,[pUI]()
+                {
+                    pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA);
+                });
+
+        pUI->Set_Active(false);
+
+    }
+#pragma endregion
 }
 
 HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
@@ -226,13 +321,19 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
 
     }
     
+
+
     return S_OK;
 }
 
 void CLevel_Logo::OnEnter()
 {
-    //메인카메라 등록
+    //타겟카메라
     m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
+
+    ///UIGroup활성화(페이드인아웃)
+    m_pGameInstance->SetActiveGroup(L"LogoGroup", true);
+
 
 #pragma region 메인카메라 등록및 transform 부모설정
    

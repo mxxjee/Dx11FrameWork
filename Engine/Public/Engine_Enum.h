@@ -196,6 +196,7 @@ namespace Engine
 	};
 
 
+	enum STATE_OP {ADD,REMOVE,TOGGLE,SET};
 
 	enum class LIGHT
 	{

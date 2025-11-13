@@ -78,6 +78,46 @@ HRESULT CModelObject::Render()
     return S_OK;
 }
 
+void CModelObject::Set_State(STATE_OP Flag, _uint State)
+{
+    //이전 상태 백업
+    const _uint prev = m_iState;
+
+    switch (Flag)
+    {
+    case Engine::ADD:
+        m_iState |= State;
+        break;
+
+    case Engine::REMOVE:
+        m_iState &= ~State;
+        break;
+
+    case Engine::TOGGLE:
+        m_iState ^= State;
+        break;
+
+    case Engine::SET:
+        m_iState = State;
+        break;
+    default:
+        break;
+    }
+
+    if (prev != m_iState)
+
+        m_iPreState = prev;
+ 
+}
+
+void CModelObject::Motion_Change()
+{
+}
+
+void CModelObject::State_Change()
+{
+}
+
 HRESULT CModelObject::Bind_ShaderResources()
 {
    
@@ -135,6 +175,54 @@ HRESULT CModelObject::Ready_PartObjects(void* pArg)
     }
     return S_OK;
 
+}
+void CModelObject::Render_CurrentState_Animation()
+{
+    ImGui::Separator();
+    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 255));
+
+    string pPreState = Convert_String_To_Enum(m_iPreState);
+    string pCurState = Convert_String_To_Enum(m_iState);
+
+    ImGui::BulletText("PreState:%s",
+        pPreState.c_str());
+
+    ImGui::BulletText("CurrentState:%s",
+        pCurState.c_str());
+
+
+
+
+    string CurrentAnimKey = WStringToUTF8(m_pBody->Get_Model()->Get_CurrentAnimKey());
+
+    ImGui::BulletText("NowPlaying:%s",
+        CurrentAnimKey.c_str());
+
+    ImGui::PopStyleColor();
+}
+string CModelObject::Convert_String_To_Enum(_uint eState)
+{
+    string StateDebugStr="";
+
+    if (eState == 0)
+        return "NONE";
+        
+
+    else
+    {
+        if (eState & IDLE)
+            StateDebugStr += "IDLE ";
+
+        if (eState & RUN)
+            StateDebugStr += "Run ";
+
+        if (eState & ATTACK)
+            StateDebugStr += "ATTACK ";
+    }
+   
+
+
+    return StateDebugStr;
 }
 void CModelObject::Free()
 {

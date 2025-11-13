@@ -59,6 +59,10 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
 
     if(FAILED(Ready_PartObjects(&desc)))
         return E_FAIL;
+    
+    m_iPreState = CModelObject::NONE;
+    m_iState = CModelObject::IDLE;
+
     return S_OK;
 }
 
@@ -69,7 +73,7 @@ void CPlayer::Update_Priority(_float fTimeDelta)
 
 void CPlayer::Update(_float fTimeDelta)
 {
-  
+   
     Update_Input(fTimeDelta);
 
     /*컨테이너 업데이트*/
@@ -165,18 +169,12 @@ void CPlayer::Move_Input(_float fTimeDelta)
     {
         bPressed = false;
 
-        if (m_iState & CModelObject::RUN)
-            m_iState ^= RUN;
-
-        m_iState |= IDLE;
+        Set_State(SET, IDLE);
     }
     if (bPressed)
     {
         m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta);
-        if (m_iState & CModelObject::IDLE)
-            m_iState ^= IDLE;
-
-        m_iState |= RUN;
+        Set_State(SET, RUN);
     }
 
 
@@ -190,12 +188,9 @@ void CPlayer::Move_Input(_float fTimeDelta)
 void CPlayer::Event_Input(_float fTimeDelta)
 {
 
-    if (m_pInputManager->IsKeyPressed(KeyCode::T))
+    if (m_pInputManager->IsKeyPressed(KeyCode::B))
     {
-        if (m_iState & CModelObject::IDLE)
-            m_iState ^= IDLE;
-
-        m_iState |= ATTACK;
+        Set_State(SET, ATTACK);
     }
 
 
@@ -210,16 +205,19 @@ void CPlayer::Event_Input(_float fTimeDelta)
 }
 
 
+
 void CPlayer::Motion_Change()
 {
     //이전과 현재상태가 다를떄 진입(애니메이션 진입)
     if (m_iPreState != m_iState)
     {
-       
-       
+        if (m_iState & ATTACK)
+        {
+            //어택에진입했으요..
 
-        m_iPreState = m_iState;
-
+       }
+           
+        
     }
 
 
@@ -227,13 +225,13 @@ void CPlayer::Motion_Change()
 
 void CPlayer::State_Change()
 {
+    //모션이 끝난이후 상태바꾸기
+
     if (m_iState & ATTACK)
     {
         if (m_pBody->Get_IsAnimFinished())
-        {
-            m_iState ^= ATTACK;
-            m_iState |= IDLE;
-        }
+            Set_State(SET, IDLE);
+
     }
 }
 

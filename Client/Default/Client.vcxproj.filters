@@ -28,9 +28,6 @@
     <ClInclude Include="..\Public\CLevel_Logo.h">
       <Filter>01.Levels\Logo</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CBackGround.h">
-      <Filter>02.GameObjects\99.UI\00.Panel\00.Background</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CLoader.h">
       <Filter>01.Levels\Loading\Loader</Filter>
     </ClInclude>
@@ -69,6 +66,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\CMonster_Body.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBackGround.h">
+      <Filter>02.GameObjects\99.UI\00.Panel\00.Title\Logo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -134,17 +134,11 @@
     <Filter Include="02.GameObjects\99.UI\00.Panel">
       <UniqueIdentifier>{6a16a4a4-ce59-4cc9-b5b0-61bac0027779}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\99.UI\00.Panel\00.Background">
-      <UniqueIdentifier>{a8a9cb85-f5d9-42bf-9359-4cdd0223099e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.WorldObjects\Screen">
       <UniqueIdentifier>{bc3d8787-78cc-4ad7-be0d-6a5d27aab420}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\00.WorldObjects\Terrain">
       <UniqueIdentifier>{78c68c6f-24f3-4338-9a15-71e38fd682fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\99.UI\00.Panel\NewFilter1">
-      <UniqueIdentifier>{dfd5dff4-e381-46d8-a534-2e0f43532338}</UniqueIdentifier>
     </Filter>
     <Filter Include="97.ShaderFiles\Light">
       <UniqueIdentifier>{9bbec705-a9b9-4227-b263-ac22281d130e}</UniqueIdentifier>
@@ -167,6 +161,12 @@
     <Filter Include="01.Levels\Town">
       <UniqueIdentifier>{5c22a0cf-3e92-4977-9bf2-9333bd90cfec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.UI\00.Panel\00.Title">
+      <UniqueIdentifier>{a8a9cb85-f5d9-42bf-9359-4cdd0223099e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.UI\00.Panel\00.Title\Logo">
+      <UniqueIdentifier>{116c45d3-4b96-43b7-9b31-44ec38fe0412}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -183,9 +183,6 @@
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_Logo.cpp">
       <Filter>01.Levels\Logo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Private\CBackGround.cpp">
-      <Filter>02.GameObjects\99.UI\00.Panel\00.Background</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLoader.cpp">
       <Filter>01.Levels\Loading\Loader</Filter>
@@ -225,6 +222,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMonster_Body.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBackGround.cpp">
+      <Filter>02.GameObjects\99.UI\00.Panel\00.Title\Logo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
