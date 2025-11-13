@@ -326,6 +326,8 @@ void CMainApp::CreateBlendStates()
 
 	for (int i = ENUM_TO_UINT(RENDERGROUP::ALPHA); i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
 		m_pDevice->CreateBlendState(&desc, m_RenderStates[i]._BlendState.GetAddressOf());
+
+
 }
 
 void CMainApp::CreateRasterizerStates()

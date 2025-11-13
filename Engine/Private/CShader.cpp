@@ -71,10 +71,7 @@ CShader* CShader::Clone(void* pArg)
 void CShader::Free()
 {
     __super::Free();
-    for (auto& pair : m_ShaderInfo.m_pPassInfos)
-    {
-        Safe_Release(pair.second.pInputLayout);
-    }
+  
 
 }
 

@@ -40,11 +40,35 @@ public:
 			:m_pEffect{Prototype.m_pEffect},m_pErrorBlob{Prototype.m_pErrorBlob},m_pTechnique{Prototype.m_pTechnique},
 			m_pPassInfos{Prototype.m_pPassInfos }
 		{
+			for (auto& pair : m_pPassInfos)
+			{
+				Safe_AddRef(pair.second.pInputLayout);
+			}
+
 			m_strTechniqueName = Prototype.m_strTechniqueName;
 			
 		}
 
+		~tagCShaderInfo()
+		{
 
+			for (auto& pair : m_pPassInfos)
+			{
+				Safe_Release(pair.second.pInputLayout);
+			}
+			m_pPassInfos.clear();
+
+			m_pTechnique.Reset();
+			for (auto& pair : m_GlobalDatas)
+			{
+				pair.second.Reset();
+			}
+			m_GlobalDatas.clear();
+			
+			m_pErrorBlob.Reset();
+
+			m_pEffect.Reset();
+		}
 
 
 	}SHADER_INFO;

@@ -64,7 +64,7 @@ HRESULT CPanel::Render()
 
 	__super::Render();
 
-
+	
 
 	return S_OK;
 }
