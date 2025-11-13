@@ -51,19 +51,40 @@ HRESULT CLevel_Logo::Initialize(LevelArgs& args)
 void CLevel_Logo::Update_Priority(_float fTimeDelta)
 {
     __super::Update_Priority(fTimeDelta);
+
+    
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Enter))
     {
-        LevelArgs args;
-        args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);
-        args.changeType = LEVELCHANGETYPE::REPLACETOP;
-        //args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+        
+       
+        if (!m_bPressEnter)
+        {
+            m_bPressEnter = true;
+            CUI* pUI = dynamic_cast<CUI*>(pTitleBackGround);
+            if (pUI)
+                pUI->Set_Texture(L"Title_Blur");
+
+            ///UIGroup비활성화
+            m_pGameInstance->SetActiveGroup(L"LogoGroup", false);
+
+        }
+
+        else
+        {
+            /*씬이동*/
+       //LevelArgs args;
+       //args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);
+       //args.changeType = LEVELCHANGETYPE::REPLACETOP;
+       ////args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+       //args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
 
-        if (FAILED(m_pGameInstance->Level_Changer(
-            ENUM_TO_UINT(LEVEL_ID::LOADING),
-            args)))
-            return;
+       //if (FAILED(m_pGameInstance->Level_Changer(
+       //    ENUM_TO_UINT(LEVEL_ID::LOADING),
+       //    args)))
+       //    return;
+        }
+       
     }
 }
 
@@ -189,12 +210,11 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
 
     BackGroundDesc.TransformDesc = &TransDesc;
 
-  
-    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-        PROTO_OBJ_NAME(L"Panel"),
-        ENUM_TO_UINT(LEVEL_ID::LOGO),
-        strLayerTag, &BackGroundDesc)))
+    CBase* pBackGroundImg = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &BackGroundDesc);
+    pTitleBackGround = dynamic_cast<CGameObject*>(pBackGroundImg);
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO), strLayerTag, pTitleBackGround)))
         return E_FAIL;
+
 
 #pragma region 로고생성
     /////////////////////////////로고 생성//////////////////////////////////
@@ -208,11 +228,11 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     Title_Desc.TextureKey = L"Logo_White";
     Title_Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
 
-    Title_Desc.fSizeX = 1092*0.5f;
-    Title_Desc.fSizeY = 546 * 0.5f;
+    Title_Desc.fSizeX = 1092*0.7f;
+    Title_Desc.fSizeY = 546 * 0.7f;
     Title_Desc.Depth = 0.49f;
 
-    Title_Desc.fX = 300;
+    Title_Desc.fX = 400;
     Title_Desc.fY = 255;
 
 
@@ -240,10 +260,10 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     Logo_MaskDesc.TextureKey = L"Logo_Mask";
     Logo_MaskDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
 
-    Logo_MaskDesc.fSizeX = 1092 * 0.5f;
-    Logo_MaskDesc.fSizeY = 546 * 0.5f;
+    Logo_MaskDesc.fSizeX = 1092 * 0.7f;
+    Logo_MaskDesc.fSizeY = 546 * 0.7f;
 
-    Logo_MaskDesc.fX = 300;
+    Logo_MaskDesc.fX = 400;
     Logo_MaskDesc.fY = 255;
 
 
@@ -359,6 +379,7 @@ void CLevel_Logo::OnEnter()
     //}
 
 #pragma endregion
+
 
     
 

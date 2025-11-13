@@ -45,6 +45,9 @@ private:
     void        Create_MiniMapCamera();
 
 
+private:
+    CGameObject* pTitleBackGround = nullptr;
+    bool            m_bPressEnter = false;
 };
 NS_END
 

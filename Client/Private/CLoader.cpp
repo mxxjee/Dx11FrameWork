@@ -269,19 +269,19 @@ HRESULT CLoader::Register_Textures()
         return E_FAIL;
 
 
-    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/UI/Logo/Title_Blur.png", 1);
+    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/UI/Logo/Title_Blur.dds", 1);
     if (FAILED(m_pGameInstance->Register_Texture(L"Title_Blur", pTexture)))
         return E_FAIL;
 
-    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/UI/Logo/Logo_White.png", 1);
+    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/UI/Logo/Logo_White.dds", 1);
     if (FAILED(m_pGameInstance->Register_Texture(L"Logo_White", pTexture)))
         return E_FAIL;
 
-    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/UI/Logo/Logo_Mask.png", 1);
+    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/UI/Logo/Logo_Mask.dds", 1);
     if (FAILED(m_pGameInstance->Register_Texture(L"Logo_Mask", pTexture)))
         return E_FAIL;
 
-    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/UI/Logo/Title.png", 1);
+    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/UI/Logo/Title.dds", 1);
     if (FAILED(m_pGameInstance->Register_Texture(L"Title", pTexture)))
         return E_FAIL;
 

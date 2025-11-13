@@ -177,3 +177,14 @@ HRESULT CQuad::Bind_ShaderResources()
     return S_OK;
 
 }
+
+void CQuad::Set_Texture(const _wstring& NewTexKey)
+{
+    CTexture* pNewTex = m_pGameInstance->Find_Texture(NewTexKey);
+    if (pNewTex)
+    {
+        Safe_Release(m_pTexture);
+        m_pTexture = pNewTex;
+        Safe_AddRef(m_pTexture);
+    }
+}

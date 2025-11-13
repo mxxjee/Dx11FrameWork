@@ -45,6 +45,7 @@ public:
     HRESULT                     Ready_Resources(void* pArg);
     HRESULT                     Bind_ShaderResources();
 public:
+    void                        Set_Texture(const _wstring& NewTexKey);
     void                        Set_RenderGroup(_uint eGroup) { m_eRenderGroup = eGroup; }
 public:
     static CQuad* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);

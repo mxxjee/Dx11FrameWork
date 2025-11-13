@@ -8,7 +8,7 @@ HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 
 
 float4 g_TintColor = float4(1.0, 0.871, 0.722, 0.529);
-
+float3 fBlueColor = float3(0.2, 0.4, 1.0);
 
 struct VS_IN
 {
@@ -191,10 +191,11 @@ float4 PS_Logo(PS_IN In) : SV_Target0
 
     alpha = 1-WhiteLevel;
     
-    //시간기반 알파값
-    if(color.a>0.2f)
+    //시간기반 알파값(경계부분이 여기들어감)
+    if(color.a>0.1f)
     {
         alpha *= g_Alpha;
+        color.rgb = fBlueColor;
         color.a = alpha;
     }
 
