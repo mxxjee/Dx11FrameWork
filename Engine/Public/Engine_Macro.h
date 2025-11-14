@@ -29,8 +29,11 @@
 
 #define CAST_INT(x)	static_cast<int>(x)
 
+
 #define PROTO_OBJ_NAME(name) L"Proto_GameObject_" + _wstring(name)
 #define PROTO_COMPONENT_NAME(name) L"Proto_Component_" + _wstring(name)
+#define REGISTER_OBJ(x,name,p)  m_pGameInstance->Add_Prototype(x, PROTO_OBJ_NAME(name), p)
+
 
 #define WORLD_UP XMVectorSet(0.f,1.f,0.f,0.f)
 #define WORLD_RIGHT XMVectorSet(1.f,0.f,0.f,0.f)

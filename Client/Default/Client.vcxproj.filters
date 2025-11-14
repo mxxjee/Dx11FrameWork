@@ -70,6 +70,9 @@
     <ClInclude Include="..\Public\CBackGround.h">
       <Filter>02.GameObjects\99.UI\00.Panel\00.Title\Logo</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CFadeScreen.h">
+      <Filter>02.GameObjects\99.UI\00.Panel\01.FadeScreen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -167,6 +170,9 @@
     <Filter Include="02.GameObjects\99.UI\00.Panel\00.Title\Logo">
       <UniqueIdentifier>{116c45d3-4b96-43b7-9b31-44ec38fe0412}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.UI\00.Panel\01.FadeScreen">
+      <UniqueIdentifier>{7952d3a2-4328-4617-af27-046c788ba187}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -225,6 +231,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CBackGround.cpp">
       <Filter>02.GameObjects\99.UI\00.Panel\00.Title\Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CFadeScreen.cpp">
+      <Filter>02.GameObjects\99.UI\00.Panel\01.FadeScreen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

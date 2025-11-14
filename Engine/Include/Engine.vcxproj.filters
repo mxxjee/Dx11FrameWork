@@ -340,6 +340,12 @@
     <Filter Include="03.GameObject\PartObject\Body">
       <UniqueIdentifier>{f8765c92-d52a-4ca5-be5a-d369b6868fb9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\Navigation">
+      <UniqueIdentifier>{a0dd153d-3b06-46ad-9d17-4b141f7529c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\Navigation\Cell">
+      <UniqueIdentifier>{0e0a4ba7-4660-4fb6-a2e0-3e74c33e179c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -668,6 +674,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\CContainerObject.h" />
     <ClInclude Include="..\Public\CBody.h" />
+    <ClInclude Include="..\Public\CNavigation.h">
+      <Filter>05.Component\Navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CCell.h">
+      <Filter>05.Component\Navigation\Cell</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -952,5 +964,11 @@
     <ClCompile Include="..\Private\CContainerObject.cpp" />
     <ClCompile Include="..\Private\CBody.cpp" />
     <ClCompile Include="..\Public\IMapEditable.cpp" />
+    <ClCompile Include="..\Private\CNavigation.cpp">
+      <Filter>05.Component\Navigation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CCell.cpp">
+      <Filter>05.Component\Navigation\Cell</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

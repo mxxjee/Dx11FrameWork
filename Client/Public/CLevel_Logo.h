@@ -4,6 +4,8 @@
 #include "Client_Defines.h"
 
 NS_BEGIN(Client)
+class CFadeScreen;
+
 class CLevel_Logo final :
     public CLevel
 {
@@ -47,6 +49,8 @@ private:
 
 private:
     CGameObject* pTitleBackGround = nullptr;
+    CFadeScreen* pFadeScreen = nullptr;
+
     bool            m_bPressEnter = false;
 };
 NS_END

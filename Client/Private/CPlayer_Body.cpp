@@ -42,7 +42,7 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 	m_pModel->Set_Animation(L"wait", true);
 	m_pModel->Set_Loop(L"slash", false);
 	m_pModel->Set_Animation_Speed(L"run", 50.f);
-
+	m_pModel->Set_Animation_Speed(L"slash",80.f);
 
 	m_pModel->Set_TransitionTime(0.2f);
 

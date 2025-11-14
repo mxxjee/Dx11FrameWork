@@ -19,6 +19,8 @@
 
 #include "CUI.h"
 #include "CUIComponent.h"
+#include "CFadeScreen.h"
+
 
 
 
@@ -67,22 +69,23 @@ void CLevel_Logo::Update_Priority(_float fTimeDelta)
             ///UIGroup비활성화
             m_pGameInstance->SetActiveGroup(L"LogoGroup", false);
 
+            pFadeScreen->PlayFadeIn();
         }
 
         else
         {
             /*씬이동*/
-       //LevelArgs args;
-       //args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);
-       //args.changeType = LEVELCHANGETYPE::REPLACETOP;
-       ////args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-       //args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+        LevelArgs args;
+        args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);
+        args.changeType = LEVELCHANGETYPE::REPLACETOP;
+        //args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
 
-       //if (FAILED(m_pGameInstance->Level_Changer(
-       //    ENUM_TO_UINT(LEVEL_ID::LOADING),
-       //    args)))
-       //    return;
+       if (FAILED(m_pGameInstance->Level_Changer(
+           ENUM_TO_UINT(LEVEL_ID::LOADING),
+           args)))
+           return;
         }
        
     }
@@ -215,6 +218,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO), strLayerTag, pTitleBackGround)))
         return E_FAIL;
 
+    
 
 #pragma region 로고생성
     /////////////////////////////로고 생성//////////////////////////////////
@@ -291,6 +295,78 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
         pUI->Set_Active(false);
 
     }
+#pragma endregion
+
+#pragma region 페이드스크린
+    UIGroup FadeScrcreenGroup;
+    FadeScrcreenGroup.Key = L"FadeScreenGroup";
+
+    CUI::tagUIDesc FadeScreenDesc;
+    FadeScreenDesc.ObjTag = L"FadeScreen";
+    FadeScreenDesc.TextureKey = L"Black";
+    FadeScreenDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+    FadeScreenDesc.fSizeX = g_iWinSizeX;
+    FadeScreenDesc.fSizeY = g_iWinSizeY;
+
+    FadeScreenDesc.fX = g_iWinSizeX >> 1;
+    FadeScreenDesc.fY = g_iWinSizeY >> 1;
+
+
+    FadeScreenDesc.TransformDesc = &TransDesc;
+    CUIComponent::UICOMP_DESC FadeUIComp;
+    FadeScreenDesc.UICompDesc = &FadeUIComp;
+    FadeScreenDesc.Depth = 0.1f;
+
+    CBase* pFadeScreenImg = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FadeScreen"), &FadeScreenDesc);
+    pFadeScreen = dynamic_cast<CFadeScreen*>(pFadeScreenImg);
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO), strLayerTag, pFadeScreen)))
+        return E_FAIL;
+
+   
+    pFadeScreen->Set_AutoTime(1.5f);
+
+   
+    pFadeScreen->Set_Active(false);
+    FadeScrcreenGroup.Objects.push_back(pFadeScreen);
+
+    m_pGameInstance->Register_UIGroup(FadeScrcreenGroup);
+    m_pGameInstance->RegisterEvent(L"PlayFadeIn", [this](void* pData)
+        {
+            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
+            if (pGroup)
+            {
+                for (auto& i : pGroup->Objects)
+                {
+                    i->Set_Active(true);
+                    CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(i);
+                    if (pFadeScreen)
+                    {
+                        pFadeScreen->Set_AutoMode(true);
+                        pFadeScreen->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 8.f, false);
+                    }
+                }
+            }
+        });
+
+    m_pGameInstance->RegisterEvent(L"PlayFadeOut", [this](void* pData)
+        {
+            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
+            if (pGroup)
+            {
+                for (auto& i : pGroup->Objects)
+                {
+                    i->Set_Active(true);
+                    CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(i);
+                    if (pFadeScreen)
+                    {
+                        pFadeScreen->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 8.f, false);
+                        
+                    }
+                }
+            }
+        });
+
 #pragma endregion
 }
 
@@ -403,7 +479,9 @@ void CLevel_Logo::OnPause()
 
 void CLevel_Logo::OnExit()
 {
-    int A = 0;
+    pFadeScreen->PlayFadeIn();
+
+
 }
 
 

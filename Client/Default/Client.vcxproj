@@ -151,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="..\Public\CBackGround.h" />
     <ClInclude Include="..\Public\CCameraDebugWindow.h" />
+    <ClInclude Include="..\Public\CFadeScreen.h" />
     <ClInclude Include="..\Public\CFloor.h" />
     <ClInclude Include="..\Public\CLevelDebugWindow.h" />
     <ClInclude Include="..\Public\CLevel_Town.h" />
@@ -176,6 +177,7 @@
   <ItemGroup>
     <ClCompile Include="..\Private\CBackGround.cpp" />
     <ClCompile Include="..\Private\CCameraDebugWindow.cpp" />
+    <ClCompile Include="..\Private\CFadeScreen.cpp" />
     <ClCompile Include="..\Private\CFloor.cpp" />
     <ClCompile Include="..\Private\CLevelDebugWindow.cpp" />
     <ClCompile Include="..\Private\CLevel_Town.cpp" />

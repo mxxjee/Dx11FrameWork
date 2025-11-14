@@ -176,6 +176,7 @@ void CUIComponent::PlayAnim(UIAnimType _AnimType, _float4 vStart, _float4 vTarge
 	m_AnimInfo[ENUM_TO_UINT(_AnimType)].fStart = vStart;
 	m_AnimInfo[ENUM_TO_UINT(_AnimType)].fTarget = vTarget;
 
+	m_AnimInfo[ENUM_TO_UINT(_AnimType)].m_fSpeed = fSpeed;
 	m_AnimInfo[ENUM_TO_UINT(_AnimType)].bLoop = bLoop;
 
 	/*오너의 애니메이션타입 추가.*/

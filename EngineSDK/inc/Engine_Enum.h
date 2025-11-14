@@ -214,5 +214,8 @@ namespace Engine
 
 	enum class MODEL
 	{NONANIM, ANIM};
+
+	enum class POINTType {A,B,C,END};
+	enum class LINE{AB,BC,CA,END};
 }
 #endif // Engine_Enum_h__

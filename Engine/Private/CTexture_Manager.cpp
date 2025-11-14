@@ -44,6 +44,24 @@ HRESULT CTexture_Manager::Initialize()
 	if (pTexture)
 		m_mapTex.emplace(L"Default", pTexture);
 
+
+
+
+	///페이드스크린 전용 검은색이미지
+	ComPtr<ID3D11Texture2D> pTextureBlack2D = { nullptr };
+	for (int i = 0; i < TextureDesc.Width * TextureDesc.Height; ++i)
+		pInitialPixels[i] = D3DCOLOR_ARGB(255, 0, 0, 0);
+
+	InitialData.pSysMem = pInitialPixels;
+	InitialData.SysMemPitch = sizeof(_uint) * TextureDesc.Width;
+
+	if (FAILED(m_pDevice->CreateTexture2D(&TextureDesc, &InitialData, &pTextureBlack2D)))
+		return E_FAIL;
+
+	pTexture = CTexture::Create(m_pDevice, m_pContext, pTextureBlack2D);
+	if (pTexture)
+		m_mapTex.emplace(L"Black", pTexture);
+
 	Safe_Delete_Array(pInitialPixels);
 	return S_OK;
 }

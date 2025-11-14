@@ -28,6 +28,9 @@
 #include "CBody.h"
 #include "CPlayer_Body.h"
 #include "CMonster_Body.h"
+#include "CFadeScreen.h"
+
+#include "CNavigation.h"
 
 
 
@@ -330,12 +333,17 @@ HRESULT CLoader::Register_Components()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"UI"), CUIComponent::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Navigation"), CNavigation::Create(m_pDevice, m_pDeviceContext, TEXT("../../Resource/Data/Map/Navigation.dat")))))
+        return E_FAIL;
+
     return S_OK;
 }
 
 HRESULT CLoader::Register_GameObjects()
 {
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"BackGround"), CBackGround::Create(m_pDevice, m_pDeviceContext))))
+    
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"BackGround", CBackGround::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MainCamera"), CMainCamera::Create(m_pDevice, m_pDeviceContext))))
@@ -384,9 +392,13 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Player_Body"), CPlayer_Body::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Monster_Body"), CMonster_Body::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FadeScreen"), CFadeScreen::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+
 
     return S_OK;
 }
