@@ -475,6 +475,18 @@ void CModel::Update_BlendAnim(_float fTimeDelta)
 
 }
 
+void CModel::Start_Transition()
+{
+
+	m_BoneLocalMatricies.resize(m_Bones.size());
+	for (int i = 0; i < m_BoneLocalMatricies.size(); ++i)
+	{
+		m_BoneLocalMatricies[i] = m_Bones[i]->Get_TransformMatrix_By_XMMatrix();
+	}
+
+
+}
+
 bool CModel::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
 {
 	bool bHit = false;
@@ -518,6 +530,9 @@ void CModel::Set_Animation(const wstring& AnimKey, _bool isLoop)
 		CAnimation* pPreAnim = Find_Animation(m_PreAnimKey);
 		if (pPreAnim)
 			pPreAnim->Reset_Animtion();
+
+		Start_Transition();
+		  
 	}
 
 	pAnim->Set_Loop(isLoop);

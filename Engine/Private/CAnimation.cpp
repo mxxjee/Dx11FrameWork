@@ -73,7 +73,7 @@ bool CAnimation::Update_TransformationMatrices(const vector<class CBone*>& Bones
 			return true;		//애니메이션 끝남 알림
 
 		}
-		
+		//Reset_Animtion();//애니메이션 재생바를 0으로 위치시키고, 키프레임을 모두 초기화한다.
 		
 	}
 

@@ -52,6 +52,8 @@ public:
     HRESULT             Bind_Bones(CShader* pShader, const char* pConstName,CMeshComponent* pMesh);
     void                Play_Animation(_float fTimeDelta);
     void                Update_BlendAnim(_float fTimeDelta);
+
+    void                Start_Transition();
     void                Set_TransitionTime(_float fTime) { m_fTranslation = fTime; }
 public:
     /*레이충돌*/
@@ -92,6 +94,8 @@ private:
     MODEL					            m_eModelType = {};
 
     _float4x4                           m_PreTransformMatrix = {};
+    vector<_matrix>                   m_BoneLocalMatricies;
+
 
 
     _uint                               m_iNumAnimations = {};  //애니메이션 개수

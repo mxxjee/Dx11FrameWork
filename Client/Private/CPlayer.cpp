@@ -74,7 +74,9 @@ void CPlayer::Update_Priority(_float fTimeDelta)
 void CPlayer::Update(_float fTimeDelta)
 {
    
+  
     Update_Input(fTimeDelta);
+    State_Change();
 
     /*컨테이너 업데이트*/
     __super::Update(fTimeDelta);
@@ -84,7 +86,7 @@ void CPlayer::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
     Motion_Change();
-    State_Change();
+  
 }
 
 void CPlayer::Update_Render(_float fTimeDelta)
