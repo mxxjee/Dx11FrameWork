@@ -198,6 +198,7 @@
     <ClInclude Include="..\Public\CMapObject_Manager.h" />
     <ClInclude Include="..\Public\CMapQuad.h" />
     <ClInclude Include="..\Public\CMapTerrain.h" />
+    <ClInclude Include="..\Public\CMapToolCell.h" />
     <ClInclude Include="..\Public\CMaterial.h" />
     <ClInclude Include="..\Public\CMaterial_Manager.h" />
     <ClInclude Include="..\Public\CMeshColliderComponent.h" />
@@ -207,6 +208,8 @@
     <ClInclude Include="..\Public\CModel.h" />
     <ClInclude Include="..\Public\CModelObject.h" />
     <ClInclude Include="..\Public\CModel_Manager.h" />
+    <ClInclude Include="..\Public\CNavEditPreview.h" />
+    <ClInclude Include="..\Public\CNaveMeshEdit_Manager.h" />
     <ClInclude Include="..\Public\CNavigation.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
     <ClInclude Include="..\Public\CMainCamera.h" />
@@ -311,6 +314,7 @@
     <ClCompile Include="..\Private\CMapObject_Manager.cpp" />
     <ClCompile Include="..\Private\CMapQuad.cpp" />
     <ClCompile Include="..\Private\CMapTerrain.cpp" />
+    <ClCompile Include="..\Private\CMapToolCell.cpp" />
     <ClCompile Include="..\Private\CMaterial.cpp" />
     <ClCompile Include="..\Private\CMaterial_Manager.cpp" />
     <ClCompile Include="..\Private\CMeshColliderComponent.cpp" />
@@ -320,6 +324,8 @@
     <ClCompile Include="..\Private\CModel.cpp" />
     <ClCompile Include="..\Private\CModelObject.cpp" />
     <ClCompile Include="..\Private\CModel_Manager.cpp" />
+    <ClCompile Include="..\Private\CNavEditPreview.cpp" />
+    <ClCompile Include="..\Private\CNaveMeshEdit_Manager.cpp" />
     <ClCompile Include="..\Private\CNavigation.cpp" />
     <ClCompile Include="..\Private\CObject_Manager.cpp" />
     <ClCompile Include="..\Private\CMainCamera.cpp" />

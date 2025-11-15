@@ -11,6 +11,7 @@ CVIBuffer_Triangle::CVIBuffer_Triangle(const CVIBuffer_Triangle& Prototype)
 {
 }
 
+
 HRESULT CVIBuffer_Triangle::Initialize_Prototype()
 {
 
@@ -34,7 +35,7 @@ HRESULT CVIBuffer_Triangle::Initialize_Copytype(void* pArg)
 	m_pVertexPositions.resize(m_iNumVertices);
 
 	VertexDesc.ByteWidth = m_iVertexStride * m_iNumVertices;		//할당할 크기
-	VertexDesc.Usage = D3D11_USAGE_DEFAULT;					 //cpu/gpu가 어떻게 읽을건지에 대한 플래그 설정
+	VertexDesc.Usage = D3D11_USAGE_DYNAMIC;					 //cpu/gpu가 어떻게 읽을건지에 대한 플래그 설정
 	VertexDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;			//바인딩 플래그(사용 용도)
 	VertexDesc.CPUAccessFlags = 0;							//CPU의 접근권한 설정 , 0일 경우 접근불가, 보통 0은 DEFAULT/IMMUTABLE과 함께 사용
 	VertexDesc.MiscFlags = 0;
@@ -101,6 +102,24 @@ HRESULT CVIBuffer_Triangle::Initialize_Copytype(void* pArg)
 }
 
 
+void CVIBuffer_Triangle::UpdatePoints(_float3 p0, _float3 p1, _float3 p2)
+{
+	VTXPOSCOR vertices[3] = {};
+
+
+	vertices[0].vPosition = p0;
+	vertices[1].vPosition = p1;
+	vertices[2].vPosition = p2;
+
+	for (int i = 0; i < 3; ++i)
+		m_pVertexPositions[i] = vertices[i].vPosition;
+
+
+	D3D11_MAPPED_SUBRESOURCE mapped{};
+	m_pContext->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped);
+	memcpy(mapped.pData, vertices, sizeof(vertices));
+	m_pContext->Unmap(m_pVB.Get(), 0);
+}
 
 CVIBuffer_Triangle* CVIBuffer_Triangle::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 {

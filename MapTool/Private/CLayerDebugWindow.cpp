@@ -130,6 +130,6 @@ CLayerDebugWindow* CLayerDebugWindow::Create(ComPtr<ID3D11Device> pDevice, ComPt
 void CLayerDebugWindow::Free()
 {
     __super::Free();
-    Safe_Release(m_pMapObject_Manager);
+
     Safe_Release(pGameInstance);
 }

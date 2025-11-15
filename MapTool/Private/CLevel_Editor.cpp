@@ -30,9 +30,13 @@
 USING(MapTool)
 
 CLevel_Editor::CLevel_Editor(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
-	:CLevel(_pDevice, _pDeviceContext), m_pMapObject_Manager(CMapObject_Manager::GetInstance())
+	:CLevel(_pDevice, _pDeviceContext), 
+	m_pMapObject_Manager(CMapObject_Manager::GetInstance()),
+	m_pImgui_Manager(CImGui_Manager::GetInstance())
+
 {
-	Safe_AddRef(m_pMapObject_Manager);
+	Safe_AddRef(m_pImgui_Manager);
+
 
 }
 
@@ -67,7 +71,9 @@ void CLevel_Editor::Update(const _float fTimeDelta)
 	__super::Update(fTimeDelta);
 
 	//그리드 좌표 픽킹처리
-	Triangle* pPickingPos= m_pGrid_Manager->PickGrid();
+	CheckTrue(m_pImgui_Manager->Get_MapToolMode() == MapToolMode::NAVMESH);
+
+	Triangle* pPickingPos = m_pGrid_Manager->PickGrid();
 	m_pGrid_Manager->Set_MouseWorldPos();
 
 	CTerrain_Base* pBase = m_pGameInstance->Get_PickTerrain();
@@ -87,23 +93,7 @@ void CLevel_Editor::Update(const _float fTimeDelta)
 			m_pMapObject_Manager->Set_SelectObject(nullptr);*/
 	}
 
-	
-	/*if (pPickingPos!=nullptr)
-	{
-		CMapLayer* pLayer = CMapObject_Manager::GetInstance()->Find_MapLayer(L"Player_Layer");
-		if (pLayer)
-		{
-			CMapObject* pObj = pLayer->Find_GameObject(L"Test_Quad");
-			if (pObj)
-			{
-				_float3 vPos = m_pGameInstance->Get_PickingWorldPos();
-				_float4 pos = _float4(vPos.x, vPos.y, vPos.z, 1.f);
 
-				pObj->Get_Transform()->Set_State(STATE::POSITION, pos);
-			}
-		}
-	
-	}*/
 }
 
 void CLevel_Editor::Update_Late(_float fTimeDelta)
@@ -325,4 +315,9 @@ CLevel_Editor* CLevel_Editor::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D1
 void CLevel_Editor::Free()
 {
 	__super::Free();
+	Safe_Release(m_pGrid_Manager);
+	Safe_Release(m_pImgui_Manager);
+	Safe_Release(m_pMapObject_Manager);
+
+
 }

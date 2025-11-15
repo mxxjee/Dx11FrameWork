@@ -18,6 +18,9 @@ private:
     CVIBuffer_Triangle(const CVIBuffer_Triangle& Prototype);
     virtual ~CVIBuffer_Triangle() = default;
 
+public:
+    void            UpdatePoints(_float3 p0, _float3 p1, _float3 p2);
+
 
 public:
     virtual         HRESULT     Initialize_Prototype();

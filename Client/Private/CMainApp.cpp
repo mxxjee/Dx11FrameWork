@@ -61,11 +61,14 @@ HRESULT CMainApp::Initialize()
 	//Imgui 디버그창
 #ifdef _DEBUG
 	pImGui_Manager->Init(g_hWnd, m_pDevice.Get(), m_pContext.Get());
+
 	CreateLevelDebugWindow();
 	CreateObjectDebugWindow();
 	CreateCameraDebugWindow();
 
 #endif
+	pImGui_Manager->Set_MapToolMode(MapToolMode::END);
+
 
 	if (FAILED(Start_Level(LEVEL_ID::LOGO,LEVELCHANGETYPE::REPLACETOP)))
 		return E_FAIL;

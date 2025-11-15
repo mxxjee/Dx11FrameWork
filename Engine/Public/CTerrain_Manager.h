@@ -67,7 +67,7 @@ private:
     CTerrain_Base*          m_pPickTerrain = nullptr;
 
     float                   m_fPickDist = 0.f;
-
+    class                   CImGui_Manager* m_pImguiManager = { nullptr };
 private:
     vector<LOADTERRAINDATA>         LoadDatas;
 };

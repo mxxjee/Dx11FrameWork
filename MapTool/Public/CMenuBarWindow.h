@@ -40,7 +40,10 @@ private:
     void        Show_SaveMenu();        //저장
     void        Show_SaveAsMenu();      //다른이름으로 저장
 
+
     void        Show_LoadMenu();
+    void        Show_ModeMenu();
+
     void        Show_ListBox();     //불러올목록표시
     void        Show_TextBox();     //다른이름으로 저장할 이름 적는곳
 

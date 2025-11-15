@@ -14,7 +14,7 @@ CAssetCategoryWindow::CAssetCategoryWindow(ComPtr<ID3D11Device> pDevice, ComPtr<
 {
     Safe_AddRef(pGameInstance);
     Safe_AddRef(m_pImgui_DataManager);
-    Safe_AddRef(m_pMapObject_Manager);
+
 
 }
 
@@ -92,7 +92,7 @@ void CAssetCategoryWindow::Free()
 {
     __super::Free();
 
-    Safe_Release(m_pMapObject_Manager);
+
     Safe_Release(m_pImgui_DataManager);
     Safe_Release(pGameInstance);
 }

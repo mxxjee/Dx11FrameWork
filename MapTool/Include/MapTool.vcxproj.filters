@@ -120,9 +120,6 @@
     <ClInclude Include="..\Public\CAssetListWindow.h">
       <Filter>02.ImguiObjects\AssetBrowser\AssetListWindow</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CImgui_DataManager.h">
-      <Filter>05.Manager\Imgui_DataManager</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CGrid_Manager.h">
       <Filter>05.Manager\GridManager</Filter>
     </ClInclude>
@@ -134,6 +131,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\MapTool_Struct.h">
       <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CImgui_DataManager.h">
+      <Filter>05.Manager\Imgui_DataManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -173,9 +173,6 @@
     <ClCompile Include="..\Private\CAssetListWindow.cpp">
       <Filter>02.ImguiObjects\AssetBrowser\AssetListWindow</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CImgui_DataManager.cpp">
-      <Filter>05.Manager\Imgui_DataManager</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CGrid_Manager.cpp">
       <Filter>05.Manager\GridManager</Filter>
     </ClCompile>
@@ -184,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMenuBarWindow.cpp">
       <Filter>02.ImguiObjects\MenuBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CImgui_DataManager.cpp">
+      <Filter>05.Manager\Imgui_DataManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -575,18 +575,19 @@ void CMainTool::Free()
 {
     __super::Free();
 
-    Safe_Release(pImGui_Manager);
+  
     CInput_Manager::GetInstance()->DestroyInstance();
-    pGameInstance->Release_Engine();
+
 
     Safe_Release(pMapObject_Manager);
-    Safe_Release(pGameInstance);
     Safe_Release(pGrid_Manager);
-
-
-    CImgui_DataManager::GetInstance()->DestroyInstance();
+   
     CMapObject_Manager::GetInstance()->DestroyInstance();
     CGrid_Manager::GetInstance()->DestroyInstance();
+    CImgui_DataManager::GetInstance()->DestroyInstance();
+    CImGui_Manager::GetInstance()->DestroyInstance();
 
+    Safe_Release(pGameInstance);
+    pGameInstance->Release_Engine();
 
 }

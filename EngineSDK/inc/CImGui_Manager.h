@@ -33,6 +33,12 @@ public:
 
     private:
         unordered_map<string, CImgui_Base*>        m_Windows;
+
+public:
+    void        Set_MapToolMode(MapToolMode Mode) { eMode = Mode; }
+    MapToolMode     Get_MapToolMode() { return eMode; }
+private:
+    MapToolMode         eMode = MapToolMode::EDIT;
 };
 
 NS_END

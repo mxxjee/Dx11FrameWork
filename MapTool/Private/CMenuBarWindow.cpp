@@ -2,6 +2,8 @@
 #include "CGameInstance.h"
 #include "CImgui_DataManager.h"
 #include "CMapObject_Manager.h"
+#include "CImGui_Manager.h"
+
 USING(MapTool)
 
 CMenuBarWindow::CMenuBarWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -11,7 +13,6 @@ CMenuBarWindow::CMenuBarWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11Device
     , m_pImgui_DataManager(CImgui_DataManager::GetInstance())
 {
     Safe_AddRef(pGameInstance);
-    Safe_AddRef(m_pMapObject_Manager);
     Safe_AddRef(m_pImgui_DataManager);
 
 }
@@ -96,6 +97,11 @@ void CMenuBarWindow::Update_Menu()
             ImGui::EndMenu();
         }
 
+        if (ImGui::BeginMenu("Mode"))
+        {
+            Show_ModeMenu();
+            ImGui::EndMenu();
+        }
 
         ImGui::EndMainMenuBar();
     }
@@ -168,6 +174,21 @@ void CMenuBarWindow::Show_LoadMenu()
          
 
 
+    }
+}
+
+void CMenuBarWindow::Show_ModeMenu()
+{
+    if (ImGui::MenuItem("NavMeshMode", "Ctrl+N"))
+    {
+        CImGui_Manager::GetInstance()->Set_MapToolMode(MapToolMode::NAVMESH);
+        CMapObject_Manager::GetInstance()->Set_SelectObject(nullptr);
+    }
+
+    if (ImGui::MenuItem("EditMode", "Ctrl+E"))
+    {
+        CImGui_Manager::GetInstance()->Set_MapToolMode(MapToolMode::EDIT);
+        CMapObject_Manager::GetInstance()->Set_SelectObject(nullptr);
     }
 }
 

@@ -4,6 +4,8 @@
 namespace Engine
 {
     class CMapObject_Manager;
+    class CImGui_Manager;
+
 }
 
 NS_BEGIN(MapTool)
@@ -49,6 +51,8 @@ public:
 private:
     CMapObject_Manager* m_pMapObject_Manager = { nullptr };
     CGrid_Manager* m_pGrid_Manager = { nullptr };
+    CImGui_Manager* m_pImgui_Manager = { nullptr };
+
 
 
 };

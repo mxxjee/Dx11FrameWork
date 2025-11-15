@@ -5,13 +5,16 @@
 #include "CMapTerrain.h"
 #include "CMapObject_Manager.h"
 #include "CModel.h"
+#include "CImGui_Manager.h"
+
 
 
 
 
 CTerrain_Manager::CTerrain_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
 	:m_pDevice{_pDevice},m_pDeviceContext{ _pContext },
-	PickingWolrdPos{}, m_EngineDesc{}
+	PickingWolrdPos{}, m_EngineDesc{},
+	m_pImguiManager{ CImGui_Manager ::GetInstance()}
 {
 }
 
@@ -78,9 +81,15 @@ void CTerrain_Manager::Update(_float fTimeDelta)
 
 void CTerrain_Manager::Update_Late(_float fTimeDelta)
 {
+	
 	if (CInput_Manager::GetInstance()->IsMouseButtonPressed(0))
-		m_pPickTerrain=Check_Picking();
+	{
+		if (m_pImguiManager->Get_MapToolMode() == MapToolMode::EDIT || m_pImguiManager->Get_MapToolMode() == MapToolMode::NAVMESH)
+			m_pPickTerrain = Check_Picking();
 
+	}
+			
+	
 	for (auto& pair : m_TerrainMap)
 	{
 		if (pair.second)
@@ -231,6 +240,7 @@ CTerrain_Base* CTerrain_Manager::Check_Picking()
 			}
 		}
 	}
+
 
 	m_fPickDist = Dist;
 	return pPickObj;
@@ -425,6 +435,7 @@ CTerrain_Manager* CTerrain_Manager::Create(ComPtr<ID3D11Device> _pDevice, ComPtr
 void CTerrain_Manager::Free()
 {
 	__super::Free();
+	
 	Clear_Terrains();
 }
 

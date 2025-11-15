@@ -17,7 +17,7 @@
 #include "CMapLayer.h"
 
 
-USING(MapTool)
+USING(Engine)
 
 IMPLEMENT_SINGLETON(CImgui_DataManager)
 
@@ -27,7 +27,7 @@ CImgui_DataManager::CImgui_DataManager()
 	m_pGameInstance(CGameInstance::GetInstance()),
 	m_pGrid_Manager(CGrid_Manager::GetInstance())
 {
-	Safe_AddRef(m_pMapObject_Manager);
+
 	Safe_AddRef(m_pGameInstance);
 	Safe_AddRef(m_pInputManager);
 	Safe_AddRef(m_pGrid_Manager);

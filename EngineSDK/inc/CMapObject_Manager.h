@@ -81,7 +81,7 @@ private:
     ComPtr<ID3D11DeviceContext> m_pContext;
     CGameInstance* m_pGameInstance = { nullptr };
     class CInput_Manager* m_pInputManager = { nullptr };
-
+    class CImGui_Manager* m_pImguiManager = { nullptr };
 
 public:
     static CMapObject_Manager* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);

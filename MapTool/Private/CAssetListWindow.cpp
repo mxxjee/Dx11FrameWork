@@ -17,7 +17,6 @@ CAssetListWindow::CAssetListWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11De
 {
     Safe_AddRef(pGameInstance);
     Safe_AddRef(m_pImgui_DataManager);
-    Safe_AddRef(m_pMapObject_Manager);
 }
 
 HRESULT CAssetListWindow::Create_Widgets()

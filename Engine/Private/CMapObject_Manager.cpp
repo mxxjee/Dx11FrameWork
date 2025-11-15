@@ -7,6 +7,8 @@
 #include "IMapEditable.h"
 #include "CInput_Manager.h"
 #include "CTerrain_Base.h"
+#include "CImGui_Manager.h"
+
 
 
 
@@ -24,6 +26,7 @@ CMapObject_Manager::CMapObject_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3
     m_pInputManager{ CInput_Manager::GetInstance()}
 {
     Safe_AddRef(m_pInputManager);
+  
     Safe_AddRef(m_pGameInstance);
 }
 
@@ -33,9 +36,11 @@ HRESULT CMapObject_Manager::Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3
     m_pContext = _pContext;
     m_pGameInstance = CGameInstance::GetInstance();
     m_pInputManager = CInput_Manager::GetInstance();
+    m_pImguiManager = CImGui_Manager::GetInstance();
 
     Safe_AddRef(m_pInputManager);
     Safe_AddRef(m_pGameInstance);
+
 
     m_EngineDesc = CGameInstance::GetInstance()->Get_EngineDesc();
 
@@ -138,6 +143,9 @@ void CMapObject_Manager::Check_Picking()
 
 void CMapObject_Manager::Active_SelectionMode(_float fTimeDelta)
 {
+    CheckTrue(m_pImguiManager->Get_MapToolMode() == MapToolMode::NAVMESH);
+
+
     if (m_pInputManager->IsKeyPressed(KeyCode::Delete))
     {
         CTerrain_Base* pTerrain = dynamic_cast<CTerrain_Base*>(m_pSelectedObject);
@@ -412,10 +420,10 @@ void CMapObject_Manager::Free()
     __super::Free();
 	for (auto& pair : m_Layers)
 	{
-		Safe_Release(pair.second);
+        if(pair.second)
+		    Safe_Release(pair.second);
 	}
 
-	
     Safe_Release(m_pInputManager);
     Safe_Release(m_pGameInstance);
 }

@@ -346,6 +346,18 @@
     <Filter Include="05.Component\Navigation\Cell">
       <UniqueIdentifier>{0e0a4ba7-4660-4fb6-a2e0-3e74c33e179c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\99.MapTool%27s">
+      <UniqueIdentifier>{4ce59ac8-3bd3-4fb7-a373-d2055119ac15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\99.MapTool%27s\01.NavMeshEdit">
+      <UniqueIdentifier>{3188ac10-ed24-4d8e-8936-deda649673fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\99.MapTool%27s\01.NavMeshEdit\MapToolCell">
+      <UniqueIdentifier>{85072939-b01c-4998-afa2-3f002fb3f7b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\99.MapTool%27s\01.NavMeshEdit\NavEditPreview">
+      <UniqueIdentifier>{3fc029fb-bd69-4923-aca0-f5221c095d3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -680,6 +692,15 @@
     <ClInclude Include="..\Public\CCell.h">
       <Filter>05.Component\Navigation\Cell</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CNaveMeshEdit_Manager.h">
+      <Filter>00.System\99.MapTool%27s\01.NavMeshEdit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapToolCell.h">
+      <Filter>00.System\99.MapTool%27s\01.NavMeshEdit\MapToolCell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CNavEditPreview.h">
+      <Filter>00.System\99.MapTool%27s\01.NavMeshEdit\NavEditPreview</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -969,6 +990,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\CCell.cpp">
       <Filter>05.Component\Navigation\Cell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CNaveMeshEdit_Manager.cpp">
+      <Filter>00.System\99.MapTool%27s\01.NavMeshEdit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapToolCell.cpp">
+      <Filter>00.System\99.MapTool%27s\01.NavMeshEdit\MapToolCell</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CNavEditPreview.cpp">
+      <Filter>00.System\99.MapTool%27s\01.NavMeshEdit\NavEditPreview</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

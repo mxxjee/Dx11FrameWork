@@ -7,8 +7,11 @@
 
 namespace fs = std::experimental::filesystem;
 
+enum class MODE {EDIT,NAVMESH,END};
 
 extern HWND g_hWnd;
+
+
 extern HINSTANCE g_hInst;
 
 namespace MapTool

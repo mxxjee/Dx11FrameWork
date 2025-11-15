@@ -195,6 +195,7 @@ namespace Engine
 		END
 	};
 
+	enum class MapToolMode { EDIT, NAVMESH, END };
 
 	enum STATE_OP {ADD,REMOVE,TOGGLE,SET};
 
