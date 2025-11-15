@@ -10,7 +10,6 @@ HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 vector g_vMaterialAmbient = vector(0.3f, 0.3f, 0.3f, 1.f);
 vector g_vMaterialSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
-
 Texture2D g_DiffuseTexture;
 Texture2D g_SpecularTexture;
 Texture2D g_AmbientTexture;

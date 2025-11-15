@@ -38,6 +38,10 @@ public:
     HRESULT                 Ready_Layer_Player(const _wstring & strLayerTag);
 
 public:
+    void                Terrain_Picking();
+    void                Terrain_Picking_WorldPos();
+
+public:
     virtual void        OnEnter() override;           //씬 진입시 매번호출
     virtual void        OnResume() override;              //pause되었다가 active되었을때 호출
     virtual void        OnPause() override;               //pause되었을때 호출

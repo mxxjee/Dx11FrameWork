@@ -82,14 +82,20 @@ void CTerrain_Manager::Update(_float fTimeDelta)
 void CTerrain_Manager::Update_Late(_float fTimeDelta)
 {
 	
-	if (CInput_Manager::GetInstance()->IsMouseButtonPressed(0))
+	
+	if (m_pImguiManager->Get_MapToolMode() == MapToolMode::EDIT)
 	{
-		if (m_pImguiManager->Get_MapToolMode() == MapToolMode::EDIT || m_pImguiManager->Get_MapToolMode() == MapToolMode::NAVMESH)
+		if (CInput_Manager::GetInstance()->IsMouseButtonPressed(0))
+		{
 			m_pPickTerrain = Check_Picking();
+		}
 
+		
 	}
 			
-	
+	else if (m_pImguiManager->Get_MapToolMode() == MapToolMode::NAVMESH)
+		m_pPickTerrain = Check_Picking();
+
 	for (auto& pair : m_TerrainMap)
 	{
 		if (pair.second)
@@ -243,6 +249,8 @@ CTerrain_Base* CTerrain_Manager::Check_Picking()
 
 
 	m_fPickDist = Dist;
+
+
 	return pPickObj;
 
 }

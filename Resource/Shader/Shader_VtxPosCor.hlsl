@@ -47,7 +47,7 @@ VS_OUT VS_MAIN(VS_IN In)
 //이후 RS단계에서 GPU가 내부적으로 w나누기 수행
 float4 PS_MAIN(PS_IN Input) : SV_Target0
 {
-    return Input.vColor;
+    return float4(1.f, 0.f, 0.f, 1.f);
 }
 
 

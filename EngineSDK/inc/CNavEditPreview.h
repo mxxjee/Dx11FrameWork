@@ -15,14 +15,16 @@ private:
 
 public:
     HRESULT Initialize();
-    void    UpdatePoints(_float3 p0, _float3 p1, _float3 p2);
+    void    UpdatePoints(deque<PreviewPoint> Points);
     HRESULT     Render();
     HRESULT     Ready_Components();
 public:
     void        Set_Active(bool b) { m_bActive = b; }
 
 
-
+public:
+    void        Set_Shader(class CShader* pShader);
+   
 
 public:                             //생성함수, 각 정점의 위치3개, 인덱스
     static CNavEditPreview* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
@@ -38,6 +40,11 @@ private:
     CVIBuffer_Triangle* m_pVIBufferCom = { nullptr };
     CGameInstance* m_pGameInstance = nullptr;
 
+private:
+    _float4x4   WorldMatrix;
+
+private:
+    ComPtr<ID3D11RasterizerState> m_pWireframeRS = nullptr;
 };
 
 NS_END

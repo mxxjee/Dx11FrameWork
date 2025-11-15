@@ -692,7 +692,7 @@
     <ClInclude Include="..\Public\CCell.h">
       <Filter>05.Component\Navigation\Cell</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CNaveMeshEdit_Manager.h">
+    <ClInclude Include="..\Public\CNavMeshEdit_Manager.h">
       <Filter>00.System\99.MapTool%27s\01.NavMeshEdit</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMapToolCell.h">
@@ -991,7 +991,7 @@
     <ClCompile Include="..\Private\CCell.cpp">
       <Filter>05.Component\Navigation\Cell</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CNaveMeshEdit_Manager.cpp">
+    <ClCompile Include="..\Private\CNavMeshEdit_Manager.cpp">
       <Filter>00.System\99.MapTool%27s\01.NavMeshEdit</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMapToolCell.cpp">

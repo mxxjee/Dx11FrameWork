@@ -8,6 +8,7 @@ NS_BEGIN(Engine)
 class CImGui_Manager;
 class CGameInstance;
 class CMapObject_Manager;
+class CNavMeshEdit_Manager;
 
 NS_END
 
@@ -71,7 +72,7 @@ private:
 	CImGui_Manager* pImGui_Manager = { nullptr };
 	CMapObject_Manager* pMapObject_Manager = { nullptr };
 	CGrid_Manager* pGrid_Manager = { nullptr };
-
+	CNavMeshEdit_Manager* m_pNavMeshEdit_Manager = { nullptr };
 
 	_float4		ClearColor = _float4(0.f, 0.f, 1.f, 1.f);
 	vector<RenderStates>			m_RenderStates;

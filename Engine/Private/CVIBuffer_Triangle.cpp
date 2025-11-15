@@ -23,7 +23,7 @@ HRESULT CVIBuffer_Triangle::Initialize_Copytype(void* pArg)
 	if (FAILED(__super::Initialize_Copytype(pArg)))
 		return E_FAIL;
 
-	TRIANGLEBUFFER_DESC* pDesc = static_cast<TRIANGLEBUFFER_DESC*>(pArg);
+
 
 #pragma region VertexBuffer
 	//[1. 정점 버퍼를 정의하기 위한 정보]
@@ -37,7 +37,7 @@ HRESULT CVIBuffer_Triangle::Initialize_Copytype(void* pArg)
 	VertexDesc.ByteWidth = m_iVertexStride * m_iNumVertices;		//할당할 크기
 	VertexDesc.Usage = D3D11_USAGE_DYNAMIC;					 //cpu/gpu가 어떻게 읽을건지에 대한 플래그 설정
 	VertexDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;			//바인딩 플래그(사용 용도)
-	VertexDesc.CPUAccessFlags = 0;							//CPU의 접근권한 설정 , 0일 경우 접근불가, 보통 0은 DEFAULT/IMMUTABLE과 함께 사용
+	VertexDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;							//CPU의 접근권한 설정 , 0일 경우 접근불가, 보통 0은 DEFAULT/IMMUTABLE과 함께 사용
 	VertexDesc.MiscFlags = 0;
 	VertexDesc.StructureByteStride = m_iVertexStride;
 
@@ -45,13 +45,24 @@ HRESULT CVIBuffer_Triangle::Initialize_Copytype(void* pArg)
 	VTXPOSCOR* pVertices = new VTXPOSCOR[m_iNumVertices];
 	ZeroMemory(pVertices, sizeof(VTXPOSCOR) * m_iNumVertices);
 
-	m_pVertexPositions[0] = pVertices[0].vPosition = pDesc->v0;
+	TRIANGLEBUFFER_DESC* pDesc = static_cast<TRIANGLEBUFFER_DESC*>(pArg);
+	if (pDesc)
+	{
+		m_pVertexPositions[0] = pVertices[0].vPosition=pDesc->v0;
+		m_pVertexPositions[1] = pVertices[1].vPosition = pDesc->v1;
+		m_pVertexPositions[2] = pVertices[2].vPosition = pDesc->v2;
+	}
+
+	else
+	{
+		m_pVertexPositions[0] = pVertices[0].vPosition;
+		m_pVertexPositions[1] = pVertices[1].vPosition;
+		m_pVertexPositions[2] = pVertices[2].vPosition;
+	
+	}
+	
 	pVertices[0].vColor = _float4(1.f, 0.f, 0.f, 1.f);
-
-	m_pVertexPositions[1] = pVertices[1].vPosition = pDesc->v1;
-	pVertices[1].vColor = _float4(0.f,1.f, 0.f, 1.f);
-
-	m_pVertexPositions[2] = pVertices[2].vPosition = pDesc->v2;
+	pVertices[1].vColor = _float4(0.f, 1.f, 0.f, 1.f);
 	pVertices[2].vColor = _float4(0.f, 0.f, 1.f, 1.f);
 
 
@@ -107,17 +118,17 @@ void CVIBuffer_Triangle::UpdatePoints(_float3 p0, _float3 p1, _float3 p2)
 	VTXPOSCOR vertices[3] = {};
 
 
-	vertices[0].vPosition = p0;
-	vertices[1].vPosition = p1;
-	vertices[2].vPosition = p2;
+	D3D11_MAPPED_SUBRESOURCE mapped{};
+	m_pContext->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped);
+	
+	VTXPOSCOR* v = (VTXPOSCOR*)mapped.pData;
+	v[0].vPosition = p0;
+	v[1].vPosition = p1;
+	v[2].vPosition = p2;
 
 	for (int i = 0; i < 3; ++i)
 		m_pVertexPositions[i] = vertices[i].vPosition;
 
-
-	D3D11_MAPPED_SUBRESOURCE mapped{};
-	m_pContext->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped);
-	memcpy(mapped.pData, vertices, sizeof(vertices));
 	m_pContext->Unmap(m_pVB.Get(), 0);
 }
 

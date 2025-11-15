@@ -105,6 +105,13 @@ namespace Engine
 		wstring TexKey = L"";   //Texmgr에 이미등록해논 키
 		wstring FullPath = L""; //전체경로
 	}AssetInfo;
+
+	typedef struct tagPriviewPoint
+	{
+		_float3 vPos=_float3(-999.f,-999.f,-999.f);
+		int		m_iDrawIdx = 0;
+		_bool   vRegister = false;      //true일경우 진짜로 찍은점.
+	}PreviewPoint;
 }
 
 

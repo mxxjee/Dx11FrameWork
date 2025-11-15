@@ -60,9 +60,12 @@ public:
 private:
 	 CGameInstance* pGameInstance;
 	 _float4		ClearColor = COLOR_PINK;
-	CImGui_Manager* pImGui_Manager = { nullptr };
+
 	vector<RenderStates>			m_RenderStates;
 
+
+private:
+	CImGui_Manager* pImGui_Manager = { nullptr };
 };
 
 NS_END

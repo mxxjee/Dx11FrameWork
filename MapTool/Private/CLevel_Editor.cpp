@@ -25,7 +25,12 @@
 #include "CImGui_Manager.h"
 #include "CAssetListWindow.h"
 
+#include "CMapModel.h"
+#include "CInput_Manager.h"
+#include "CModel.h"
 
+#include "CNavMeshEdit_Manager.h"
+#include "CNavEditPreview.h"
 
 USING(MapTool)
 
@@ -70,28 +75,10 @@ void CLevel_Editor::Update(const _float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
 
-	//그리드 좌표 픽킹처리
-	CheckTrue(m_pImgui_Manager->Get_MapToolMode() == MapToolMode::NAVMESH);
 
-	Triangle* pPickingPos = m_pGrid_Manager->PickGrid();
-	m_pGrid_Manager->Set_MouseWorldPos();
 
-	CTerrain_Base* pBase = m_pGameInstance->Get_PickTerrain();
-	if (pBase)
-	{
-		CMapTerrain* ppTerrain = dynamic_cast<CMapTerrain*>(pBase);
-		if (ppTerrain)
-		{
-			m_pMapObject_Manager->Set_SelectObject(ppTerrain);
-			m_pMapObject_Manager->Set_AblePicking(false);
-		}
 
-	}
-	else
-	{/*
-		if (m_pMapObject_Manager->Get_SelectObject() != nullptr && m_pMapObject_Manager->Get_SelectObject()->Get_ObjType()==MapObjType::TERRAIN)
-			m_pMapObject_Manager->Set_SelectObject(nullptr);*/
-	}
+	
 
 
 }
@@ -99,7 +86,17 @@ void CLevel_Editor::Update(const _float fTimeDelta)
 void CLevel_Editor::Update_Late(_float fTimeDelta)
 {
 	__super::Update_Late(fTimeDelta);
-	
+	switch (m_pImgui_Manager->Get_MapToolMode())
+	{
+	case MapToolMode::EDIT:
+		Terrain_Picking();
+		break;
+
+	case MapToolMode::NAVMESH:
+		Terrain_Picking_WorldPos();
+		break;
+
+	}
 }
 
 void CLevel_Editor::Render()
@@ -249,6 +246,55 @@ HRESULT CLevel_Editor::Ready_Layer_Player(const _wstring& strLayerTag)
 	return S_OK;
 }
 
+void CLevel_Editor::Terrain_Picking()
+{
+
+	Triangle* pPickingPos = m_pGrid_Manager->PickGrid();
+	m_pGrid_Manager->Set_MouseWorldPos();
+
+	CTerrain_Base* pBase = m_pGameInstance->Get_PickTerrain();
+	if (pBase)
+	{
+		CMapTerrain* ppTerrain = dynamic_cast<CMapTerrain*>(pBase);
+		if (ppTerrain)
+		{
+			m_pMapObject_Manager->Set_SelectObject(ppTerrain);
+			m_pMapObject_Manager->Set_AblePicking(false);
+		}
+
+	}
+	else
+	{/*
+		if (m_pMapObject_Manager->Get_SelectObject() != nullptr && m_pMapObject_Manager->Get_SelectObject()->Get_ObjType()==MapObjType::TERRAIN)
+			m_pMapObject_Manager->Set_SelectObject(nullptr);*/
+	}
+
+}
+
+void CLevel_Editor::Terrain_Picking_WorldPos()
+{
+
+	CheckTrue(m_pGameInstance->Get_PickTerrain() == nullptr);
+
+	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::LControl))
+		CNavMeshEdit_Manager::GetInstance()->Clear_Points();
+
+
+	else
+	{
+
+		//그냥 이어찍기..
+		_float3 vTerrainPickingPos = m_pGameInstance->Get_PickingWorldPos();
+		vTerrainPickingPos.y += 0.05f;
+		CNavMeshEdit_Manager::GetInstance()->Set_DrawPoint(vTerrainPickingPos, CInput_Manager::GetInstance()->IsMouseButtonPressed(0));
+
+
+	
+		
+	}
+
+}
+
 
 void CLevel_Editor::OnEnter()
 {
@@ -284,6 +330,8 @@ void CLevel_Editor::OnEnter()
 				return;
 		}
 	}
+
+	CNavMeshEdit_Manager::GetInstance()->Initialize(m_pDevice,m_pContext);
 
 }
 

@@ -35,6 +35,8 @@ public:
     const vector<_float3>& Get_VertexPositions() { return m_pVertexPositions; }
     const  vector<_uint>& Get_Indices() const { return m_pIndices; }
 
+public:
+    void        Set_PrimitiveType(D3D11_PRIMITIVE_TOPOLOGY eType) { m_ePrimitiveType = eType; }
 protected:
     vector<_float3>        m_pVertexPositions;       //정점의 위치들만 기록하기 위한 동적배열, 얕은 참조 수행하므로 원본일 때만 메모리반환
     vector<_uint>          m_pIndices;

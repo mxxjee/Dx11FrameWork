@@ -28,6 +28,8 @@
 #include "CGrid_Manager.h"
 #include "CTexture.h"
 #include "IMapEditable.h"
+#include "CNavMeshEdit_Manager.h"
+
 
 #include "CFreeCamera.h"
 #include "ImGuizmo.h"
@@ -40,7 +42,8 @@ USING(MapTool)
 CMainTool::CMainTool()
     :pImGui_Manager(CImGui_Manager::GetInstance()),
     pGameInstance(CGameInstance::GetInstance()),
-    pGrid_Manager(CGrid_Manager::GetInstance())
+    pGrid_Manager(CGrid_Manager::GetInstance()),
+    m_pNavMeshEdit_Manager(CNavMeshEdit_Manager::GetInstance())
 {
     Safe_AddRef(pGameInstance);
     Safe_AddRef(pGrid_Manager);
@@ -78,8 +81,7 @@ HRESULT CMainTool::Initialize()
         return E_FAIL;
 
     CInput_Manager::GetInstance()->Init_Input(g_hInst, g_hWnd);
-
-
+ 
 
     return S_OK;
 }
@@ -162,8 +164,11 @@ void CMainTool::Update(_float fTimeDelta)
     pGrid_Manager->Update(fTimeDelta);
     pMapObject_Manager->Update(fTimeDelta);
     pGameInstance->Update_Engine(fTimeDelta);
-    pImGui_Manager->Update();
+    m_pNavMeshEdit_Manager->Update(fTimeDelta);
 
+
+    pImGui_Manager->Update();
+   
    // Show_Gizmo();
     CImgui_DataManager::GetInstance()->Update_MouseInput();
 }
@@ -187,6 +192,7 @@ void CMainTool::Render()
     pGameInstance->Draw_Begin(&ClearColor);
     pGameInstance->Draw(); // 3D 씬 렌더
 
+#pragma region 기즈모..
     // ──────────────────────────────────────
     // 선택된 오브젝트가 있을 때만 기즈모 표시
     // ──────────────────────────────────────
@@ -324,7 +330,8 @@ void CMainTool::Render()
     //    (float*)&worldCM,
     //    10.0f
     //);
-
+#pragma endregion
+    m_pNavMeshEdit_Manager->Render();
     pImGui_Manager->Render(m_pContext.Get());
     pGameInstance->Draw_End();
 }
@@ -581,6 +588,7 @@ void CMainTool::Free()
 
     Safe_Release(pMapObject_Manager);
     Safe_Release(pGrid_Manager);
+    Safe_Release(m_pNavMeshEdit_Manager);
    
     CMapObject_Manager::GetInstance()->DestroyInstance();
     CGrid_Manager::GetInstance()->DestroyInstance();
