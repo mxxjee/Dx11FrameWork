@@ -163,17 +163,10 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 	Preview.m_iDrawIdx = iDrawIdx;
 
 	//만약 아직클릭하지않았따면, 결정안한것이므로 그냥 기존꺼 변경
-	if (!bRegister)
-	{
-		m_Points[iDrawIdx] = Preview;
-	}
+	m_Points[iDrawIdx] = Preview;
 
-	else
-	{
-		m_Points[iDrawIdx]=Preview;
-		++iDrawIdx;
-
-	}
+	if (bRegister)
+		iDrawIdx = (iDrawIdx + 1) % 3;
 
 	
 	UpdatePoints();
@@ -226,26 +219,29 @@ void CNavMeshEdit_Manager::Update(_float fTimeDelta)
 		if (FAILED(Create_MapToolCell(New)))
 			return;
 
+		m_Points = New;
+
 
 		//나머지 클릭한순서 수정
 		//Set_DrawIdx();
-		
-		PreviewPoint p1 = m_Points[1];
-		PreviewPoint p2 = m_Points[2];
+		//마지막 두점을 사용한다.
+		//int last = (iDrawIdx + 2) % 3;
+		//int prev = (iDrawIdx + 1) % 3;
 
-		m_Points[0] = p1;
-		m_Points[1] = p2;
+		//PreviewPoint lastP = m_Points[last];
+		//PreviewPoint prevP = m_Points[prev];
 
-		// 3) 새 점 받을 자리 초기화
-		m_Points[2].vPos = _float3(-999.f, -999.f, -999.f);
-		m_Points[2].vRegister = false;
-		m_Points[2].m_iDrawIdx = 2;
+		////재구성
+		//m_Points[0] = prevP;
+		//m_Points[1] = lastP;
 
-		// 4) 다음 클릭은 index 2 부터 시작
-		iDrawIdx = 2;
+		//m_Points[2]=PreviewPoint();
 
-		// 미리보기 갱신
-		UpdatePoints();
+		//// 4) 다음 클릭은 index 2 부터 시작
+		iDrawIdx = 0;
+
+		//// 미리보기 갱신
+		//UpdatePoints();
 	}
 
 }
