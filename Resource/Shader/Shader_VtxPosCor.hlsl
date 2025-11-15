@@ -5,6 +5,8 @@ HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 #include "Default.hlsli"
 #include "Shader_Light.hlsli"
 
+float4 g_Color = float4(1.f, 0.f, 0.f, 1.f);
+
 struct VS_IN
 {
     float3 vPosition : POSITION;
@@ -47,7 +49,7 @@ VS_OUT VS_MAIN(VS_IN In)
 //이후 RS단계에서 GPU가 내부적으로 w나누기 수행
 float4 PS_MAIN(PS_IN Input) : SV_Target0
 {
-    return float4(1.f, 0.f, 0.f, 1.f);
+    return g_Color;
 }
 
 

@@ -24,6 +24,7 @@ public:
     //마우스클릭에 따라서 월드좌표를 보내주고 m_points에 저장
     void        Set_DrawPoint(_float3 v, bool bRegister);
     class CNavEditPreview* Get_Preview() { return m_pPreview; }
+    HRESULT     Create_MapToolCell(const deque<PreviewPoint>& New);
 
 public:
     void        Update(_float fTimeDelta);
@@ -54,6 +55,10 @@ private:
     deque<PreviewPoint> m_Points; //현재 삼각형을 이루기위한 3개의 점. 삼각형이 생성되면 clear
     vector<CMapToolCell*>      m_pMapToolCells;
     class CNavEditPreview* m_pPreview=nullptr;                         
+
+private:
+    ComPtr<ID3D11Device> m_pDevice;
+    ComPtr<ID3D11DeviceContext> m_pContext;
 
 };
 

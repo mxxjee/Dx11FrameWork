@@ -2,10 +2,19 @@
 #include "CBase.h"
 
 NS_BEGIN(Engine)
+class CVIBuffer_Triangle;
+class CGameInstance;
 
 class ENGINE_DLL CMapToolCell :
     public CBase
 {
+public:
+    typedef struct tagMapToolCellDesc
+    {
+        void* TriangleCom = nullptr;
+        _uint iIdx = 0;
+
+    }MAPTOOLCELL_DESC;
 private:
     CMapToolCell(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual ~CMapToolCell() = default;
@@ -18,15 +27,29 @@ private:
 
 
 public:
-    HRESULT Initialize_Prototype(const _float3* pPoints, _int iIndex);
+    HRESULT Initialize_Prototype(void* pArg);
+    HRESULT     Ready_Components(void* pArg);
+
+public:
+    HRESULT      Render();
 
 private:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };
 
 public:                             //생성함수, 각 정점의 위치3개, 인덱스
-    static CMapToolCell* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const _float3* pPoints, _int iIndex);
+    static CMapToolCell* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
     virtual void Free() override;
+
+private:
+    CVIBuffer_Triangle* m_pVIBufferCom = { nullptr };
+    _float4x4   WorldMatrix;
+    CGameInstance* m_pGameInstance = nullptr;
+    class CShader* m_pShader = nullptr;
+
+
+private:
+    ComPtr<ID3D11RasterizerState> m_pWireframeRS = nullptr;
 
 };
 

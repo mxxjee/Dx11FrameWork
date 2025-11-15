@@ -93,7 +93,8 @@ HRESULT CNavEditPreview::Render()
     if (m_pShader->Bind_Matrix("g_ViewProjMatrix", ViewProjMatrix))
         return E_FAIL;
 
-
+    if (m_pShader->Bind_Vector("g_Color", _float4(1.f, 0.f, 0.f, 1.f)))
+        return E_FAIL;
 
     if (FAILED(m_pShader->Begin("Default")))
         return E_FAIL;

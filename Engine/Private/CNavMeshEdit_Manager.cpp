@@ -1,6 +1,7 @@
 #include "CNavMeshEdit_Manager.h"
 #include "CNavEditPreview.h"
 #include "CMapToolCell.h"
+#include "CVIBuffer_Triangle.h"
 
 
 IMPLEMENT_SINGLETON(CNavMeshEdit_Manager)
@@ -16,6 +17,9 @@ CNavMeshEdit_Manager::~CNavMeshEdit_Manager()
 
 void CNavMeshEdit_Manager::Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
 {
+	m_pDevice = _pDevice;
+	m_pContext = _pContext;
+
 	m_pPreview = CNavEditPreview::Create(_pDevice, _pContext);
 	Init_Points();
 }
@@ -57,7 +61,7 @@ deque<PreviewPoint> CNavMeshEdit_Manager::Align_CW()
 	XMStoreFloat3(&v0, XMLoadFloat3(&CW[ENUM_TO_UINT(POINTType::B)].vPos) - XMLoadFloat3(&CW[ENUM_TO_UINT(POINTType::A)].vPos));
 	XMStoreFloat3(&v1, XMLoadFloat3(&CW[ENUM_TO_UINT(POINTType::C)].vPos) - XMLoadFloat3(&CW[ENUM_TO_UINT(POINTType::A)].vPos));
 
-	_float vCross = v0.x * v1.z - v0.z - v1.x;
+	_float vCross = (v0.x * v1.z) - (v0.z * v1.x);
 	
 	//음수라면, BC를 스왑한다.
 	if (vCross < 0.f)
@@ -177,6 +181,34 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 	
 }
 
+HRESULT CNavMeshEdit_Manager::Create_MapToolCell(const deque<PreviewPoint>& New)
+{
+	_float3 vPos[3];
+	int Idx = 0;
+
+	for (int i = 0; i < 3; ++i)
+		vPos[i] = New[i].vPos;
+
+
+	CMapToolCell::MAPTOOLCELL_DESC Desc;
+	Desc.iIdx = m_pMapToolCells.size();
+	
+	CVIBuffer_Triangle::TRIANGLEBUFFER_DESC  TriangleDesc;
+	TriangleDesc.v0 = vPos[0];
+	TriangleDesc.v1 = vPos[1];
+	TriangleDesc.v2 = vPos[2];
+
+	Desc.TriangleCom = &TriangleDesc;
+
+	CMapToolCell* pInstance = CMapToolCell::Create(m_pDevice, m_pContext, &Desc);
+	if (!pInstance)
+		return E_FAIL;
+
+	m_pMapToolCells.push_back(pInstance);
+
+	return S_OK;
+}
+
 void CNavMeshEdit_Manager::Update(_float fTimeDelta)
 {
 	//3개의 점이 다 채워졌는지 보고, 삼각형만들기.
@@ -188,23 +220,32 @@ void CNavMeshEdit_Manager::Update(_float fTimeDelta)
 
 	if (RegisterCnt == 3)
 	{
-		int Full = true;
 
 		deque<PreviewPoint> New= Align_CW();
-		//생성..
+		//정렬한 정점으로 생성..
+		if (FAILED(Create_MapToolCell(New)))
+			return;
+
 
 		//나머지 클릭한순서 수정
 		//Set_DrawIdx();
 		
-		if (iDrawIdx == 3)
-			iDrawIdx = 0;
+		PreviewPoint p1 = m_Points[1];
+		PreviewPoint p2 = m_Points[2];
 
-		else
-			iDrawIdx = 2;
-		PreviewPoint Preview;
-		m_Points[iDrawIdx]= Preview;
-		
-		//m_Points.resize(3);
+		m_Points[0] = p1;
+		m_Points[1] = p2;
+
+		// 3) 새 점 받을 자리 초기화
+		m_Points[2].vPos = _float3(-999.f, -999.f, -999.f);
+		m_Points[2].vRegister = false;
+		m_Points[2].m_iDrawIdx = 2;
+
+		// 4) 다음 클릭은 index 2 부터 시작
+		iDrawIdx = 2;
+
+		// 미리보기 갱신
+		UpdatePoints();
 	}
 
 }
@@ -215,8 +256,8 @@ void CNavMeshEdit_Manager::Render()
 	CheckTrue(Check_EmptyPoints());
 
 	m_pPreview->Render();
-	/*for (auto& cell : m_pMapToolCells)
-		cell->Render();*/
+	for (auto& cell : m_pMapToolCells)
+		cell->Render();
 }
 
 void CNavMeshEdit_Manager::Clear_Points()
