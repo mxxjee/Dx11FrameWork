@@ -55,7 +55,11 @@ void CTerrain_Manager::Update_Priority(_float fTimeDelta)
 	for (auto& pair : m_TerrainMap)
 	{
 		if (pair.second)
-			pair.second->Update_Priority(fTimeDelta);
+		{
+			if(pair.second->Is_Active())
+				pair.second->Update_Priority(fTimeDelta);
+		}
+			
 	}
 }
 
@@ -64,7 +68,11 @@ void CTerrain_Manager::Update(_float fTimeDelta)
 	for (auto& pair : m_TerrainMap)
 	{
 		if (pair.second)
-			pair.second->Update(fTimeDelta);
+		{
+			if(pair.second->Is_Active())
+				pair.second->Update(fTimeDelta);
+		}
+			
 	}
 }
 
@@ -76,8 +84,14 @@ void CTerrain_Manager::Update_Late(_float fTimeDelta)
 	for (auto& pair : m_TerrainMap)
 	{
 		if (pair.second)
-			pair.second->Update_Late(fTimeDelta);
+		{
+			if(pair.second->Is_Active())
+				pair.second->Update_Late(fTimeDelta);
+		}
+			
 	}
+
+	ProcessDestroy();
 }
 
 void CTerrain_Manager::Update_Render(_float fTimeDelta)
@@ -85,7 +99,11 @@ void CTerrain_Manager::Update_Render(_float fTimeDelta)
 	for (auto& pair : m_TerrainMap)
 	{
 		if (pair.second)
-			pair.second->Update_Render(fTimeDelta);
+		{
+			if(pair.second->Is_Active())
+				pair.second->Update_Render(fTimeDelta);
+		}
+			
 	}
 }
 
@@ -178,6 +196,9 @@ void CTerrain_Manager::Clear_Terrains()
 CTerrain_Base* CTerrain_Manager::Check_Picking()
 {
 	CheckTrueResult(m_TerrainMap.empty(),nullptr);
+	
+
+	
 	_float4x4 Proj = CGameInstance::GetInstance()->Get_ProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
 	_float4x4 View = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE));
 
@@ -358,6 +379,40 @@ const vector<LOADTERRAINDATA>& CTerrain_Manager::Load_Terrains_Runtime(const str
 	}
 	return LoadDatas;
 }
+
+void CTerrain_Manager::RequestDestroy(CTerrain_Base* pObj)
+{
+	pObj->Set_Active(false);
+	if (pObj == m_pPickTerrain)
+		m_pPickTerrain = nullptr;
+
+	m_DestroyQueue.push(pObj);
+}
+
+void CTerrain_Manager::ProcessDestroy()
+{
+	while (!m_DestroyQueue.empty())
+	{
+		CTerrain_Base* pObj = m_DestroyQueue.front();
+		m_DestroyQueue.pop();
+
+		for (auto it = m_TerrainMap.begin(); it != m_TerrainMap.end();)
+		{
+			if (it->second == pObj)
+				it = m_TerrainMap.erase(it);
+
+			else
+				++it;
+
+		}
+
+
+
+		Safe_Release(pObj);
+	}
+}
+
+
 
 CTerrain_Manager* CTerrain_Manager::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
 {

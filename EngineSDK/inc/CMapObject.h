@@ -83,10 +83,12 @@ private:
     // CGameObject을(를) 통해 상속됨
     virtual CGameObject* Clone(void* pArg) override;
 
+
 public:
     // IMapEditable을(를) 통해 상속됨
     virtual void Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation) override;
     virtual void Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta);
+    virtual void Fix_Y(_float Y);
 };
 
 

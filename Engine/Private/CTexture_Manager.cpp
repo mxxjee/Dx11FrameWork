@@ -84,6 +84,26 @@ HRESULT CTexture_Manager::Register_Texture(const _wstring& Tag, CTexture* pInsta
 	return S_OK;
 }
 
+HRESULT CTexture_Manager::Load_Textures(const _wstring& FolderPath, const _wstring& Extension)
+{
+	for (const auto& entry : fs::recursive_directory_iterator(FolderPath))
+	{
+		if (entry.path().extension() == Extension)
+		{
+			string FullPath = entry.path().string();
+			string Name = entry.path().stem().string();
+
+			CTexture* pInstance = CTexture::Create(m_pDevice, m_pContext, entry.path().wstring().c_str(),1);
+			if (!pInstance)
+				return E_FAIL;
+
+			m_mapTex.emplace(wstring(Name.begin(), Name.end()), pInstance);
+		}
+	}
+	return S_OK;
+
+}
+
 CTexture_Manager* CTexture_Manager::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
 {
 	CTexture_Manager* pInstance = new CTexture_Manager(_pDevice, _pContext);

@@ -45,6 +45,8 @@ public:
     void    Set_Active(bool _b) { m_bActive = _b; }
     void    Set_Target(CGameObject* pObj) { m_pTarget = pObj; }
     void    Set_Tag(const _wstring& Tag) {tag = Tag;}
+
+
 public:
     const _wstring& Get_Tag() { return tag; }
     CComponent* Get_Component(COMPONENT_TYPE eType);
@@ -54,6 +56,7 @@ public:
 
 public:
     CGameObject*    Get_Target() { return m_pTarget; }
+
 
 protected:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };
@@ -67,7 +70,7 @@ protected:
     map<COMPONENT_TYPE, class CComponent*>      m_Components;
     bool                                        m_bActive=true;
     CGameObject*                                m_pTarget = { nullptr };
-           
+
 public:
     virtual CGameObject* Clone(void* pArg)=0;
     virtual void    Free() override;

@@ -119,6 +119,7 @@ void CImgui_DataManager::Update_MouseInput()
 		
 		if (m_PlaceObjInfo.ObjType != MapObjType::TERRAIN)
 		{
+		
 			if (CTerrain_Base* pBase = m_pGameInstance->Check_Picking())
 			{
 				vTargetPos = m_pGameInstance->Get_PickingWorldPos();
@@ -163,7 +164,15 @@ void CImgui_DataManager::Update_MouseInput()
 				pMapTerrain->Set_CanPicking(true);
 			}
 			//위치지정
-			m_pPlaceObject->Get_Transform()->Set_State(STATE::POSITION, _float4(vTargetPos.x, vTargetPos.y, vTargetPos.z, 1.f));
+
+			if (m_pInputManager->IsKeyHeld(KeyCode::LShift))
+			{
+				IMapEditable* pEditable = dynamic_cast<IMapEditable*>(m_pPlaceObject);
+				m_pPlaceObject->Get_Transform()->Set_State(STATE::POSITION, _float4(vTargetPos.x, 0.f, vTargetPos.z, 1.f));
+			}
+			
+			else
+				m_pPlaceObject->Get_Transform()->Set_State(STATE::POSITION, _float4(vTargetPos.x, vTargetPos.y, vTargetPos.z, 1.f));
 
 		}
 		

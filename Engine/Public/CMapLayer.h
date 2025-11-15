@@ -25,11 +25,17 @@ public:
    
     CMapObject*        Check_Picking(HWND g_hWnd, ComPtr<ID3D11DeviceContext> Context, _float4x4& Proj, _float4x4& View,float& Dist);
 
+public:
+    void    RequestDestroy(CMapObject* pObj);//DestroyQue에 추가하라는 작업
+
+    void    ProcessDestroy();       //DestroyQue를 비우는작업
     
 public:
     void        Set_AblePicking(bool b) { m_bAblePicking = b; }
 private:
     list<CMapObject*>      m_ObjList;
+    queue<CMapObject*>      m_DestroyQueue;
+
 
 public:
     static CMapLayer* Create();

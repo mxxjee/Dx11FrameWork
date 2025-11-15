@@ -73,6 +73,7 @@
     <ClInclude Include="..\Public\CFadeScreen.h">
       <Filter>02.GameObjects\99.UI\00.Panel\01.FadeScreen</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CButton.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -173,6 +174,9 @@
     <Filter Include="02.GameObjects\99.UI\00.Panel\01.FadeScreen">
       <UniqueIdentifier>{7952d3a2-4328-4617-af27-046c788ba187}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.UI\00.Panel\02.Button">
+      <UniqueIdentifier>{d0e41572-2694-4809-9950-1ac68e1ca8a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -235,6 +239,7 @@
     <ClCompile Include="..\Private\CFadeScreen.cpp">
       <Filter>02.GameObjects\99.UI\00.Panel\01.FadeScreen</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

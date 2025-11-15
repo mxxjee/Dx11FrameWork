@@ -270,3 +270,7 @@ void CMapObject::Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta)
 	}
 }
 
+void CMapObject::Fix_Y(_float Y)
+{
+}
+

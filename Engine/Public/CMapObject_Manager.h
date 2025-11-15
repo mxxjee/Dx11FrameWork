@@ -48,7 +48,7 @@ public:
     CMapObject*             Find_MapObject(const _wstring& LayerTag,const _wstring& ObjTag);
     void                    Clear(const _wstring& LayerTag);
     CMapLayer*              Find_MapLayer(const _wstring& LayerTag);
- 
+  
 public:
     HRESULT             Save_Data(const wstring& Path);
     CMapLayer*             Get_Layer_By_MapObjType(MapObjType eType);
@@ -74,6 +74,7 @@ public:
     void        Set_MoveSpeed(_float Speed) { m_fMoveSpeed = Speed; }
 
     void        Set_AblePicking(bool Picking) { m_bAblePicking = Picking; }
+    void        Set_Dead(bool b) { m_bDestroy = true; }
 
 private:
     ComPtr<ID3D11Device> m_pDevice;
@@ -90,6 +91,7 @@ public:
     ENGINE_DESC             m_EngineDesc;
 
 
+
 protected:
     BoundingSphere      m_Sphere;
     IMapEditable* m_pSelectedObject = { nullptr };
@@ -97,7 +99,7 @@ protected:
 private:
     float           m_fMoveSpeed = 5;
     bool            m_bAblePicking = true;
-
+    bool            m_bDestroy = false;
 };
 
 

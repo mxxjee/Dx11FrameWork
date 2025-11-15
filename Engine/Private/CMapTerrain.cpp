@@ -292,6 +292,8 @@ void CMapTerrain::Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta)
     case Engine::DIRECTION::RIGHT:
     case Engine::DIRECTION::LEFT:
     case Engine::DIRECTION::BACKWARD:
+    case Engine::DIRECTION::UP:
+    case Engine::DIRECTION::DOWN:
         m_pTransformCom->Move(eDir, _fTimeDelta);
         break;
 
@@ -343,4 +345,15 @@ void CMapTerrain::Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _
 
     *vRotation = MathUtils::QuaternionToEuler(m_pTransformCom->Get_SRT(SRTType::ROTATION));
 
+}
+
+void CMapTerrain::Fix_Y(_float Y)
+{
+    CheckNull(m_pTransformCom);
+
+    _vector vPos = m_pTransformCom->Get_State(STATE::POSITION);
+
+
+    m_pTransformCom->Set_State(STATE::POSITION,
+        XMVectorSetY(vPos, Y));
 }

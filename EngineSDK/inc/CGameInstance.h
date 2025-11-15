@@ -170,6 +170,9 @@ public:
 #pragma region Texture_Manager
 	 HRESULT       Register_Texture(const _wstring & Tag, CTexture * pInstance);
 	 CTexture* Find_Texture(const _wstring & Tag);
+	 //폴더안의 텍스처한장씩 로드해서 각가의 texture객체로만든다.(폴더경로, 확장자)
+	 HRESULT         Load_Textures(const _wstring& FolderPath, const _wstring& Extension);
+
 #pragma endregion
 
 #pragma region Pipeline
@@ -237,6 +240,12 @@ public:
 
 	float           Get_PickDist();
 	const UMap<_wstring, CTerrain_Base*>& Get_TerrainMap();
+
+	
+	void                        RequestDestroy(class CTerrain_Base* pObj);
+
+
+
 #pragma endregion
 
 

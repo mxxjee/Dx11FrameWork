@@ -37,13 +37,18 @@ HRESULT CFadeScreen::Initialize_Copytype(void* pArg)
 
 void CFadeScreen::PlayFadeIn()
 {
+	m_eState = START_FADEIN;
+
 	m_pGameInstance->BroadCastEvent(L"PlayFadeIn", nullptr);
 	m_bEnd = false;//Auto체크를 위한 끝남표시,, m_bEnd가 false여야 auto가 작동된다.
+
 }
 
 void CFadeScreen::PlayFadeOut()
 {
+	m_eState = START_FADEOUT;
 	m_pGameInstance->BroadCastEvent(L"PlayFadeOut", nullptr);
+
 
 }
 
@@ -56,6 +61,54 @@ void CFadeScreen::Update_Priority(_float fTimeDelta)
 
 void CFadeScreen::Update(_float fTimeDelta)
 {
+	switch (m_eState)
+	{
+	case Client::CFadeScreen::START_FADEIN:
+	{	
+		if (Get_UIComp()->Is_AnimEnd(UIAnimType::ALPHA))
+			m_eState = END_FADEIN;
+	}
+		
+		break;
+
+	case Client::CFadeScreen::END_FADEIN:
+	{
+		IfFadeInEnd();
+		if (Get_UIComp()->Is_AnimEnd(UIAnimType::ALPHA))
+			m_eState = WAIT;
+	}
+		break;
+
+	case Client::CFadeScreen::START_FADEOUT:
+	{
+		IfFadeOutEnd();
+		if (Get_UIComp()->Is_AnimEnd(UIAnimType::ALPHA))
+			m_eState = END_FADEOUT;
+	}
+		break;
+
+	case Client::CFadeScreen::END_FADEOUT:
+	{
+		IfFadeOutStart();
+		if (Get_UIComp()->Is_AnimEnd(UIAnimType::ALPHA))
+			m_eState = WAIT;
+	}
+		
+		break;
+
+
+	}
+
+	
+	Change_State();
+	__super::Update(fTimeDelta);
+
+
+}
+
+void CFadeScreen::Update_Late(_float fTimeDelta)
+{
+	__super::Update_Late(fTimeDelta);
 	if (m_bAutoMode && !m_bEnd)
 	{
 		m_fCurTime += fTimeDelta;
@@ -67,15 +120,6 @@ void CFadeScreen::Update(_float fTimeDelta)
 		}
 
 	}
-	__super::Update(fTimeDelta);
-
-
-}
-
-void CFadeScreen::Update_Late(_float fTimeDelta)
-{
-	__super::Update_Late(fTimeDelta);
-	
 
 }
 
@@ -92,6 +136,53 @@ HRESULT CFadeScreen::Render()
 
 	__super::Render();
 	return S_OK;
+}
+
+void CFadeScreen::IfFadeOutEnd()
+{
+	m_pGameInstance->BroadCastEvent(L"FadeOutEnd", nullptr);
+
+}
+
+void CFadeScreen::IfFadeOutStart()
+{
+	m_pGameInstance->BroadCastEvent(L"FadeOutStart", nullptr);
+
+}
+
+void CFadeScreen::IfFadeInEnd()
+{
+	m_pGameInstance->BroadCastEvent(L"FadeInEnd", nullptr);
+}
+
+void CFadeScreen::IfFadeInStart()
+{
+	m_pGameInstance->BroadCastEvent(L"FadeInStart", nullptr);
+}
+
+void CFadeScreen::Change_State()
+{
+	if (m_ePreState != m_eState)
+	{
+		switch (m_eState)
+		{
+		case Client::CFadeScreen::START_FADEIN:
+			IfFadeInStart();
+			break;
+		case Client::CFadeScreen::END_FADEIN:
+			IfFadeInEnd();
+			break;
+		case Client::CFadeScreen::START_FADEOUT:
+			IfFadeOutStart();
+			break;
+		case Client::CFadeScreen::END_FADEOUT:
+			IfFadeOutEnd();
+			break;
+		}
+
+
+		m_ePreState = m_eState;
+	}
 }
 
 CFadeScreen* CFadeScreen::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)

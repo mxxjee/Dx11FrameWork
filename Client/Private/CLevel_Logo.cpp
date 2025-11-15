@@ -20,6 +20,8 @@
 #include "CUI.h"
 #include "CUIComponent.h"
 #include "CFadeScreen.h"
+#include "CButton.h"
+
 
 
 
@@ -72,21 +74,7 @@ void CLevel_Logo::Update_Priority(_float fTimeDelta)
             pFadeScreen->PlayFadeIn();
         }
 
-        else
-        {
-            /*씬이동*/
-        LevelArgs args;
-        args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);
-        args.changeType = LEVELCHANGETYPE::REPLACETOP;
-        //args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
-
-
-       if (FAILED(m_pGameInstance->Level_Changer(
-           ENUM_TO_UINT(LEVEL_ID::LOADING),
-           args)))
-           return;
-        }
+   
        
     }
 }
@@ -94,8 +82,9 @@ void CLevel_Logo::Update_Priority(_float fTimeDelta)
 void CLevel_Logo::Update(const _float fTimeDelta)
 {
     __super::Update(fTimeDelta);
+    
 
-  }
+}
 
 void CLevel_Logo::Update_Late(_float fTimeDelta)
 {
@@ -368,6 +357,67 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
         });
 
 #pragma endregion
+
+
+#pragma region 버튼생성
+    ///////////////////////////////슬롯버튼//////////////////////////////////
+    UIGroup ButtonSlotGroup;
+    ButtonSlotGroup.Key = L"ButtonSlotGroup";
+
+
+    //////////슬롯(버튼)///////
+    for (int i = 0; i < 3; ++i)
+    {
+        CButton::tagButtonDesc Button_Desc = {};
+        Button_Desc.ObjTag = L"Title";
+        Button_Desc.passName = "SaveSlot";
+
+        Button_Desc.TextureKey = L"SaveSlot";
+        Button_Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+        Button_Desc.fSizeX = 800 * 0.9f;
+        Button_Desc.fSizeY = 140 * 0.9f;
+        Button_Desc.Depth = 0.49f;
+
+        Button_Desc.fX = g_iWinSizeX>>1;
+        Button_Desc.fY = 170 + (i*200.f);
+
+        Button_Desc.eKeyCode = KeyCode::Enter;
+        Button_Desc.SelectActionFunc = [&]()
+        {
+            /*씬이동*/
+            LevelArgs args;
+            args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);
+            args.changeType = LEVELCHANGETYPE::REPLACETOP;
+            //args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+            args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
+
+            if (FAILED(m_pGameInstance->Level_Changer(
+                ENUM_TO_UINT(LEVEL_ID::LOADING),
+                args)))
+                return;
+        };
+
+
+        Button_Desc.TransformDesc = &TransDesc;
+        //AlphaAnim등록
+        CUIComponent::UICOMP_DESC UIDesc = {};
+        Button_Desc.UICompDesc = &UIDesc;
+
+
+        CBase* pSlotObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Button"), &Button_Desc);
+        CGameObject* pInstance = dynamic_cast<CGameObject*>(pSlotObj);
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO), strLayerTag, pInstance)))
+            return E_FAIL;
+
+        ButtonSlotGroup.Objects.push_back(pInstance);
+
+    }
+  
+    m_pGameInstance->Register_UIGroup(ButtonSlotGroup);
+
+#pragma endregion
 }
 
 HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
@@ -429,7 +479,21 @@ void CLevel_Logo::OnEnter()
 
     ///UIGroup활성화(페이드인아웃)
     m_pGameInstance->SetActiveGroup(L"LogoGroup", true);
+    m_pGameInstance->SetActiveGroup(L"ButtonSlotGroup", false);
 
+
+    //페이드스크린이벤트 추가설정..
+    m_pGameInstance->RegisterEvent(L"FadeOutEnd", [this](void* pData)
+        {
+            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"ButtonSlotGroup");
+            if (pGroup)
+            {
+                for (auto& i : pGroup->Objects)
+                {
+                    i->Set_Active(true);
+                }
+            }
+        });
 
 #pragma region 메인카메라 등록및 transform 부모설정
    
@@ -455,6 +519,7 @@ void CLevel_Logo::OnEnter()
     //}
 
 #pragma endregion
+
 
 
     

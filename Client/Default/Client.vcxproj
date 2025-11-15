@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBackGround.h" />
+    <ClInclude Include="..\Public\CButton.h" />
     <ClInclude Include="..\Public\CCameraDebugWindow.h" />
     <ClInclude Include="..\Public\CFadeScreen.h" />
     <ClInclude Include="..\Public\CFloor.h" />
@@ -176,6 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBackGround.cpp" />
+    <ClCompile Include="..\Private\CButton.cpp" />
     <ClCompile Include="..\Private\CCameraDebugWindow.cpp" />
     <ClCompile Include="..\Private\CFadeScreen.cpp" />
     <ClCompile Include="..\Private\CFloor.cpp" />

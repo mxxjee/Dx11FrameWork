@@ -60,6 +60,7 @@ public:
     void            Set_Idx(int _idx) { m_iIdx = _idx; }
     int             Get_Idx() { return m_iIdx; }
 
+
 public:
     // IMapEditable을(를) 통해 상속됨
     virtual void OnSeletected(bool bSelected) override;
@@ -81,7 +82,7 @@ private:
 
     // IMapEditable을(를) 통해 상속됨
     virtual void Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation) override;
-
+    virtual void Fix_Y(_float Y);
 };
 
 NS_END

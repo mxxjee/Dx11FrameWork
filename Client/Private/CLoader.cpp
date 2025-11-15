@@ -1,40 +1,36 @@
 #include "CLoader.h"
 #include "CGameInstance.h"
 
+////////////////////UI/////////////////////
+#include "CFadeScreen.h"
+#include "CButton.h"
+#include "CMinimapQuad.h"
+#include "CScreenQuad.h"
+#include "CButton.h"
+
+///////////////Component//////////////////////
+#include "CNavigation.h"
+#include "CTransform.h"
+#include "CVIBuffer_Rect.h" 
+#include "CVIBuffer_Terrain.h"
+#include "CModel.h"
+
+///////////////GameObject//////////////////////
 #include "CBackGround.h"
 #include "CPlayer.h"
 #include "CFloor.h"
 #include "CMainCamera.h"
 #include "CUICamera.h"
 #include "CFreeCamera.h"
-#include "CScreenQuad.h"
 #include "CMinimapCamera.h"
-#include "CMinimapQuad.h"
 #include "CTerrain.h"
-
 #include "CTexture.h"
 #include "CShader.h"
-
-#include "CTransform.h"
-#include "CPerspectiveCameraComponent.h"
-#include "COrthographicCameraComponent.h"
-
-#include "CVIBuffer_Rect.h" 
-#include "CVIBuffer_Terrain.h"
-
-#include "CModel.h"
 #include "CMonster.h"
 #include "CModelObject.h"
 #include "CBody.h"
 #include "CPlayer_Body.h"
 #include "CMonster_Body.h"
-#include "CFadeScreen.h"
-
-#include "CNavigation.h"
-
-
-
-
 
 USING(Client)
 CLoader::CLoader(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -271,22 +267,8 @@ HRESULT CLoader::Register_Textures()
     if (FAILED(m_pGameInstance->Register_Texture(L"Mask", pTexture)))
         return E_FAIL;
 
+    m_pGameInstance->Load_Textures(L"../../Resource/UI/Logo/", L".dds");
 
-    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/UI/Logo/Title_Blur.dds", 1);
-    if (FAILED(m_pGameInstance->Register_Texture(L"Title_Blur", pTexture)))
-        return E_FAIL;
-
-    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/UI/Logo/Logo_White.dds", 1);
-    if (FAILED(m_pGameInstance->Register_Texture(L"Logo_White", pTexture)))
-        return E_FAIL;
-
-    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/UI/Logo/Logo_Mask.dds", 1);
-    if (FAILED(m_pGameInstance->Register_Texture(L"Logo_Mask", pTexture)))
-        return E_FAIL;
-
-    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/UI/Logo/Title.dds", 1);
-    if (FAILED(m_pGameInstance->Register_Texture(L"Title", pTexture)))
-        return E_FAIL;
 
     return S_OK;
 }
@@ -318,12 +300,6 @@ HRESULT CLoader::Register_Components()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Transform"), CTransform::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"PerspectiveCamera"), CPerspectiveCameraComponent::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"OrthographicCamera"), COrthographicCameraComponent::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
-
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
@@ -346,59 +322,60 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"BackGround", CBackGround::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MainCamera"), CMainCamera::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"MainCamera", CMainCamera::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"UICamera"), CUICamera::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"UICamera", CUICamera::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     //Freecam Test¿ë
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FreeCamera"), CFreeCamera::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"FreeCamera", CFreeCamera::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Quad"), CQuad::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Quad", CQuad::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), CPanel::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Panel", CPanel::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Floor"), CFloor::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Floor", CFloor::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Player"), CPlayer::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player", CPlayer::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"ScreenQuad"), CScreenQuad::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"ScreenQuad", CScreenQuad::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MinimapCamera"), CMinimapCamera::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"MinimapCamera", CMinimapCamera::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MinimapQuad"), CMinimapQuad::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"MinimapQuad", CMinimapQuad::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Terrain"), CTerrain::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Terrain", CTerrain::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Model"), CModelObject::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Model", CModelObject::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Monster"), CMonster::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Monster", CMonster::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Body"),  CBody::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Body", CBody::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Player_Body"), CPlayer_Body::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Body", CPlayer_Body::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Monster_Body"), CMonster_Body::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Monster_Body", CMonster_Body::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FadeScreen"), CFadeScreen::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"FadeScreen", CFadeScreen::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Button", CButton::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
     return S_OK;
 }

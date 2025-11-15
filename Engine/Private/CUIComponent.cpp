@@ -203,6 +203,14 @@ void CUIComponent::PlayAnim(UIAnimType _AnimType)
 
 }
 
+bool CUIComponent::Is_AnimEnd(UIAnimType _AnimType)
+{	
+	//해당타입에 애니메이션 클립등록안했으면
+	CheckFalseResult(m_AnimInfo[ENUM_TO_UINT(_AnimType)].m_bRegister,false);
+
+	return m_AnimInfo[ENUM_TO_UINT(_AnimType)].m_bEnd;
+}
+
 void CUIComponent::Apply_StartValue(UIAnimType eType, UIAnimInfo& Info)
 {
 	switch (eType)

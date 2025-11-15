@@ -6,6 +6,8 @@
 #include "CInput_Manager.h"
 #include "IMapEditable.h"
 #include "CInput_Manager.h"
+#include "CTerrain_Base.h"
+
 
 
 
@@ -136,18 +138,56 @@ void CMapObject_Manager::Check_Picking()
 
 void CMapObject_Manager::Active_SelectionMode(_float fTimeDelta)
 {
- 
-    if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
-        m_pSelectedObject->Edit_Move(DIRECTION::FORWARD, m_fMoveSpeed, fTimeDelta);
+    if (m_pInputManager->IsKeyPressed(KeyCode::Delete))
+    {
+        CTerrain_Base* pTerrain = dynamic_cast<CTerrain_Base*>(m_pSelectedObject);
+        if (pTerrain)
+            m_pGameInstance->RequestDestroy(pTerrain);
+
+        else
+        {
+            CMapObject* pMapObject = dynamic_cast<CMapObject*>(m_pSelectedObject);
+            if (pMapObject)
+            {
+                CMapLayer* pTargetLayer = Get_Layer_By_MapObjType(pMapObject->Get_ObjType());
+                if (pTargetLayer)
+                    pTargetLayer->RequestDestroy(pMapObject);
+            }
+           
+        }
+        m_pSelectedObject = nullptr;
+    }
+
+    if (m_pInputManager->IsKeyHeld(KeyCode::LShift))
+    {
+        m_pSelectedObject->Fix_Y(0.f);
+    }
     
-    else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
-        m_pSelectedObject->Edit_Move(DIRECTION::BACKWARD, m_fMoveSpeed,fTimeDelta);
+    else if (m_pInputManager->IsKeyHeld(KeyCode::LControl))
+    {
+        if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+            m_pSelectedObject->Edit_Move(DIRECTION::UP, m_fMoveSpeed, fTimeDelta);
 
-    else if (m_pInputManager->IsKeyHeld(KeyCode::LeftArrow))
-        m_pSelectedObject->Edit_Move(DIRECTION::LEFT, m_fMoveSpeed,fTimeDelta);
+        else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+            m_pSelectedObject->Edit_Move(DIRECTION::DOWN, m_fMoveSpeed, fTimeDelta);
+    }
 
-    else if (m_pInputManager->IsKeyHeld(KeyCode::RightArrow))
-        m_pSelectedObject->Edit_Move(DIRECTION::RIGHT, m_fMoveSpeed,fTimeDelta);
+    else
+    {
+        if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+            m_pSelectedObject->Edit_Move(DIRECTION::FORWARD, m_fMoveSpeed, fTimeDelta);
+
+        else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+            m_pSelectedObject->Edit_Move(DIRECTION::BACKWARD, m_fMoveSpeed, fTimeDelta);
+
+        else if (m_pInputManager->IsKeyHeld(KeyCode::LeftArrow))
+            m_pSelectedObject->Edit_Move(DIRECTION::LEFT, m_fMoveSpeed, fTimeDelta);
+
+        else if (m_pInputManager->IsKeyHeld(KeyCode::RightArrow))
+            m_pSelectedObject->Edit_Move(DIRECTION::RIGHT, m_fMoveSpeed, fTimeDelta);
+
+    }
+  
 
 
 }
@@ -219,6 +259,7 @@ CMapLayer* CMapObject_Manager::Find_MapLayer(const _wstring& LayerTag)
 
     return nullptr;
 }
+
 //
 //void CMapObject_Manager::Set_SelectObject(CMapObject* pObj)
 //{

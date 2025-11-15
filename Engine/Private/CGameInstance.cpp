@@ -556,6 +556,13 @@ CTexture* CGameInstance::Find_Texture(const _wstring& Tag)
 	return m_pTextureManager->Find_Texture(Tag);
 }
 
+HRESULT CGameInstance::Load_Textures(const _wstring& FolderPath, const _wstring& Extension)
+{
+
+	CheckNullResult(m_pTextureManager, E_FAIL);
+	return m_pTextureManager->Load_Textures(FolderPath, Extension);
+}
+
 #pragma region Pipeline
 void CGameInstance::Set_Transform(_uint CameraType, D3DTS eTransformMatrix, _fmatrix TransformMatrix)
 {
@@ -706,6 +713,15 @@ const UMap<_wstring, CTerrain_Base*>& CGameInstance::Get_TerrainMap()
 {
 	return m_pTerrainManager->Get_TerrainMap();
 }
+
+void CGameInstance::RequestDestroy(CTerrain_Base* pObj)
+{
+	return m_pTerrainManager->RequestDestroy(pObj);
+}
+
+
+
+
 
 #pragma endregion
 

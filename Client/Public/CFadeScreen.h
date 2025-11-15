@@ -5,6 +5,11 @@ NS_BEGIN(Client)
 class CFadeScreen :
     public CPanel
 {
+public:
+	enum State
+	{
+		WAIT,START_FADEIN,END_FADEIN,START_FADEOUT,END_FADEOUT,END
+	};
 private:
 	CFadeScreen(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
 	CFadeScreen(const CFadeScreen& rhs);
@@ -28,6 +33,17 @@ public:
 
 	virtual HRESULT Render() override;
 
+
+private:
+	void			IfFadeOutEnd();
+	void			IfFadeOutStart();
+
+	void			IfFadeInEnd();
+	void			IfFadeInStart();
+
+private:
+	void			Change_State();
+
 public:
 	static CFadeScreen* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
 	virtual CGameObject* Clone(void* pArg) override;
@@ -39,6 +55,11 @@ private:
 	float			m_fCurTime = 0.f;
 	float			m_fTime = 0.f;
 	bool			m_bEnd = false;
+
+
+private:
+	State				m_eState = WAIT;
+	State				m_ePreState = END;
 
 
 };

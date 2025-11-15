@@ -57,6 +57,8 @@ public:
                 //이미존재하는 애니메이션을 재생시킨다.
     void        PlayAnim(UIAnimType _AnimType);
 
+    bool         Is_AnimEnd(UIAnimType _AnimType);
+
 
 private:
     void        Apply_StartValue(UIAnimType eType, UIAnimInfo& Info);

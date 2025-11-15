@@ -206,6 +206,21 @@ float4 PS_Logo(PS_IN In) : SV_Target0
     
 }
 
+float4 PS_SaveSlot(PS_IN In) : SV_Target0
+{
+    float4 color = texture0.Sample(sampler0, In.vTexcoord);
+    float WhiteLevel = saturate((color.r + color.g + color.b) / 3.f);
+    
+    
+    if(WhiteLevel<0.05f)
+        color.a = 0.f;
+
+    
+    
+    return color;
+}
+
+
 /*렌더링 방법을 정의한다.*/
 technique11 DefaultTechnique
 {
@@ -221,6 +236,14 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
 
     }
+
+    pass SaveSlot
+    {
+        VertexShader = compile vs_5_0 VS_MAIN();
+
+        PixelShader = compile ps_5_0 PS_SaveSlot();
+    }
+
     pass Logo
     {
         VertexShader = compile vs_5_0 VS_MAIN();

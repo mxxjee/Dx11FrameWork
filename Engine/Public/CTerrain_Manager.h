@@ -42,6 +42,8 @@ public:
     HRESULT             Load_Terrains_MapTool(const string& LoadPath);
     const vector<tagLoadTerrainData>& Load_Terrains_Runtime(const string& LoadPath);
 
+    void                        RequestDestroy(CTerrain_Base* pObj);
+    void                        ProcessDestroy();
 
 public:
     static CTerrain_Manager* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext);
@@ -54,6 +56,7 @@ private:
     ComPtr<ID3D11DeviceContext>	m_pDeviceContext = { nullptr };
 
     UMap<_wstring, CTerrain_Base*>      m_TerrainMap;
+    queue<CTerrain_Base*>                m_DestroyQueue;
 
 
 private:

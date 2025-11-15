@@ -50,6 +50,8 @@ void CMapLayer::Update_Late(_float fTimeDelta)
         }
 
     }
+
+    ProcessDestroy();
 }
 
 void CMapLayer::Update_Render(_float fTimeDelta)
@@ -106,6 +108,34 @@ CMapObject* CMapLayer::Check_Picking(HWND g_hWnd, ComPtr<ID3D11DeviceContext> Co
     //젤 작은거리의 픽킹오브젝트 반환
     Dist = fMinDist;
     return pPickedObj;
+}
+
+void CMapLayer::RequestDestroy(CMapObject* pObj)
+{
+    // m_DestroyQueue에 추가한다.
+    pObj->Set_Active(false);
+    m_DestroyQueue.push(pObj);
+}
+
+void CMapLayer::ProcessDestroy()
+{
+    while (!m_DestroyQueue.empty())
+    {
+        CMapObject* pObj = m_DestroyQueue.front();
+        m_DestroyQueue.pop();
+
+        for (auto it = m_ObjList.begin(); it != m_ObjList.end();)
+        {
+            if (*it == pObj)
+                it = m_ObjList.erase(it);
+
+            else
+                ++it;
+
+        }
+
+        Safe_Release(pObj);
+    }
 }
 
 
