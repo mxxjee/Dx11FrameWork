@@ -24,7 +24,7 @@ public:
     //마우스클릭에 따라서 월드좌표를 보내주고 m_points에 저장
     void        Set_DrawPoint(_float3 v, bool bRegister);
     class CNavEditPreview* Get_Preview() { return m_pPreview; }
-    HRESULT     Create_MapToolCell(const deque<PreviewPoint>& New);
+    HRESULT     Create_MapToolCell(const deque<PreviewPoint>& New, const deque<PreviewPoint>& Origin);
 
 public:
     void        Update(_float fTimeDelta);
@@ -37,14 +37,18 @@ private:
     deque<PreviewPoint>    Align_CW();     //시계방향으로 정렬
 
 
-    bool    Check_EmptyPoints();        //Resize되어있으므로, 전부다 0,0,0이면 의미없는값 판정
-    
-    bool    Check_FullPoints(); //다 채워졌는지 확인한다. (모두 -999가아닌지확인)
+    bool    Check_EmptyPoints(const  deque<PreviewPoint>& Points);        //Resize되어있으므로, 전부다 0,0,0이면 의미없는값 판정
+    bool    Check_FullPoints(const  deque<PreviewPoint>& Points); //다 채워졌는지 확인한다. (모두 -999가아닌지확인)
 
     void    Init_Points();  //초기화값 -999로채운다.
+
+
+private:
+    CMapToolCell* Find_NeareastCell(const _float3& vMousePos);
 public:
     void         Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext);
     vector<_uint>       Get_Edge(const _float3& P, const _float3& A, const _float3& B,const _float3& C);
+    void                Set_Fix(bool b) { m_bFix = b; }
 public:
     void            Free() override;
 
@@ -56,12 +60,16 @@ private:
     vector<CMapToolCell*>      m_pMapToolCells;
     class CNavEditPreview* m_pPreview=nullptr;                         
 
+    deque<PreviewPoint>    m_PrePoints;
+
 private:
     ComPtr<ID3D11Device> m_pDevice;
     ComPtr<ID3D11DeviceContext> m_pContext;
 
 private:
     bool    m_bCheckNextEdge = false;
+    bool    m_bFix = false;
+    CMapToolCell* pTargetCell = nullptr;
 
 };
 

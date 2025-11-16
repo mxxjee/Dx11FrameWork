@@ -11,6 +11,14 @@ CMapToolCell::CMapToolCell(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceCont
     Safe_AddRef(m_pGameInstance);
 }
 
+void CMapToolCell::Set_PreviewPoints(const deque<PreviewPoint>& New)
+{
+    for (int i = 0; i < New.size(); ++i)
+    {
+        m_PreviewPoints[i] = New[i];
+    }
+}
+
 HRESULT CMapToolCell::Initialize_Prototype(void* pArg)
 {
     if (FAILED(Ready_Components(pArg)))
@@ -44,6 +52,17 @@ HRESULT CMapToolCell::Ready_Components(void* pArg)
 
     CComponent* pBuffer = dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"VIBuffer_Triangle"), pDesc->TriangleCom));
     m_pVIBufferCom = dynamic_cast<CVIBuffer_Triangle*>(pBuffer);
+    if (pDesc->TriangleCom)
+    {
+        CVIBuffer_Triangle::TRIANGLEBUFFER_DESC* pTriangleDesc = static_cast<CVIBuffer_Triangle::TRIANGLEBUFFER_DESC*>(pDesc->TriangleCom);
+        
+        m_vPoints[ENUM_TO_UINT(POINTType::A)] = pTriangleDesc->v0;
+        m_vPoints[ENUM_TO_UINT(POINTType::B)] = pTriangleDesc->v1;
+        m_vPoints[ENUM_TO_UINT(POINTType::C)] = pTriangleDesc->v2;
+
+
+    }
+
 
     return S_OK;
 }
