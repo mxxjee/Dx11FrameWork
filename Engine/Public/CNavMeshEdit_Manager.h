@@ -35,7 +35,7 @@ private:
     //Priview의 버퍼 갱신
     void    UpdatePoints();
     deque<PreviewPoint>    Align_CW();     //시계방향으로 정렬
-    void    Set_DrawIdx();  //멤버인 m_iDrawID를 수정한다.
+
 
     bool    Check_EmptyPoints();        //Resize되어있으므로, 전부다 0,0,0이면 의미없는값 판정
     
@@ -44,7 +44,7 @@ private:
     void    Init_Points();  //초기화값 -999로채운다.
 public:
     void         Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext);
-
+    vector<_uint>       Get_Edge(const _float3& P, const _float3& A, const _float3& B,const _float3& C);
 public:
     void            Free() override;
 
@@ -59,6 +59,9 @@ private:
 private:
     ComPtr<ID3D11Device> m_pDevice;
     ComPtr<ID3D11DeviceContext> m_pContext;
+
+private:
+    bool    m_bCheckNextEdge = false;
 
 };
 

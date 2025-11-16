@@ -112,6 +112,14 @@ namespace Engine
 		int		m_iDrawIdx = 0;
 		_bool   vRegister = false;      //true일경우 진짜로 찍은점.
 	}PreviewPoint;
+
+	struct CompareKey
+	{
+		bool operator()(const _float& a, const _float& b) const
+		{
+			return a < b;
+		}
+	};
 }
 
 

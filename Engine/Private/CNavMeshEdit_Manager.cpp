@@ -24,6 +24,35 @@ void CNavMeshEdit_Manager::Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D
 	Init_Points();
 }
 
+vector<_uint> CNavMeshEdit_Manager::Get_Edge(const _float3& P, const _float3& A, const _float3& B, const _float3& C)
+{
+	vector<_uint> Result;
+
+	map<_float,_uint, CompareKey> Distance;
+
+	_vector vP = XMLoadFloat3(&P);
+
+	_vector vA = XMLoadFloat3(&A);//0
+	_vector vB = XMLoadFloat3(&B);//1
+	_vector vC = XMLoadFloat3(&C);//2
+	
+	//마우스방향과 가장 가까운 선분을 살려둔다.
+	_float PA= XMVectorGetX(XMVector3Length(vP - vA));
+	_float PB = XMVectorGetX(XMVector3Length(vP - vB));
+	_float PC = XMVectorGetX(XMVector3Length(vP - vC));
+
+	Distance.emplace(PA,0);
+	Distance.emplace(PB,1);
+	Distance.emplace(PC,2);
+
+
+	for (auto& pair : Distance)
+		Result.push_back(pair.second);
+
+	return Result;
+
+}
+
 void CNavMeshEdit_Manager::Free()
 {
 	Safe_Release(m_pPreview);
@@ -84,31 +113,7 @@ deque<PreviewPoint> CNavMeshEdit_Manager::Align_CW()
 	return CwQue;
 }
 
-void CNavMeshEdit_Manager::Set_DrawIdx()
-{
-	deque<PreviewPoint> vNew = m_Points;
-	vector<PreviewPoint> vNewPoint;
 
-	//drawidx를 기준으로 다시정렬.
-	for (int i = 0; i < 3; ++i)
-	{
-		vNewPoint.push_back(vNew.front());
-		vNew.pop_front();
-	}
-
-	sort(vNewPoint.begin(), vNewPoint.end(),[](const PreviewPoint& A, const PreviewPoint& B)
-		{
-			return A.m_iDrawIdx < B.m_iDrawIdx;
-		});
-
-
-	for (int i = 0; i < 3; ++i)
-		vNew.push_back(vNewPoint[i]);
-
-	m_Points.swap(vNew);
-
-
-}
 
 bool CNavMeshEdit_Manager::Check_EmptyPoints()
 {
@@ -160,13 +165,66 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 
 	Preview.vPos = v;
 	Preview.vRegister = bRegister;
-	Preview.m_iDrawIdx = iDrawIdx;
+
+	
+	
+
 
 	//만약 아직클릭하지않았따면, 결정안한것이므로 그냥 기존꺼 변경
-	m_Points[iDrawIdx] = Preview;
 
-	if (bRegister)
+	if (!bRegister)
+	{
+		if (m_bCheckNextEdge)
+		{
+
+			if (!XMVector3Equal(XMLoadFloat3(&v), XMLoadFloat3(&m_Points[2].vPos)))
+			{
+				vector<_uint> LastIdx = Get_Edge(v, m_Points[0].vPos, m_Points[1].vPos, m_Points[2].vPos);
+
+
+				//마지막 두점을 사용한다.
+				int last = (LastIdx[1]) % 3;
+				int prev = (LastIdx[0]) % 3;
+
+
+				PreviewPoint lastP = m_Points[last];
+				PreviewPoint prevP = m_Points[prev];
+
+				//재구성
+				m_Points[0] = prevP;
+				m_Points[1] = lastP;
+
+				m_Points[0].vRegister = true;
+				m_Points[1].vRegister = true;
+
+				m_Points[2] = Preview;
+
+				//// 4) 다음 클릭은 index 2 부터 시작
+				iDrawIdx = 2;
+				m_bCheckNextEdge = false;
+			}
+
+
+
+		}
+
+		else
+		{
+			m_Points[iDrawIdx] = Preview;
+		}
+			
+	}
+
+
+	else if (bRegister)
+	{
+		
+		m_Points[iDrawIdx] = Preview;
 		iDrawIdx = (iDrawIdx + 1) % 3;
+		
+
+	}
+		
 
 	
 	UpdatePoints();
@@ -219,29 +277,33 @@ void CNavMeshEdit_Manager::Update(_float fTimeDelta)
 		if (FAILED(Create_MapToolCell(New)))
 			return;
 
-		m_Points = New;
 
+		//m_Points = New;
+		m_bCheckNextEdge = true;
+	//	//vector<_uint> LastIdx = Get_Edge(m_Points[2].vPos);
+	//	
 
-		//나머지 클릭한순서 수정
-		//Set_DrawIdx();
-		//마지막 두점을 사용한다.
-		//int last = (iDrawIdx + 2) % 3;
-		//int prev = (iDrawIdx + 1) % 3;
+	//	//마지막 두점을 사용한다.
+	///*	int last = (iDrawIdx + LastIdx[1]) % 3;
+	//	int prev = (iDrawIdx + LastIdx[0]) % 3;*/
 
-		//PreviewPoint lastP = m_Points[last];
-		//PreviewPoint prevP = m_Points[prev];
+	//	int last = (iDrawIdx + 2) % 3;
+	//	int prev = (iDrawIdx + 1) % 3;
 
-		////재구성
-		//m_Points[0] = prevP;
-		//m_Points[1] = lastP;
+	//	PreviewPoint lastP = m_Points[last];
+	//	PreviewPoint prevP = m_Points[prev];
 
-		//m_Points[2]=PreviewPoint();
+	//	//재구성
+	//	m_Points[0] = prevP;
+	//	m_Points[1] = lastP;
 
-		//// 4) 다음 클릭은 index 2 부터 시작
-		iDrawIdx = 0;
+	//	m_Points[2]=PreviewPoint();
 
-		//// 미리보기 갱신
-		//UpdatePoints();
+	//	//// 4) 다음 클릭은 index 2 부터 시작
+	//	iDrawIdx = 2;
+
+	//	//// 미리보기 갱신
+	//	UpdatePoints();
 	}
 
 }
