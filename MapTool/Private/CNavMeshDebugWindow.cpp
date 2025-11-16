@@ -26,6 +26,10 @@ void CNavMeshDebugWindow::Render()
 {
 }
 
+void CNavMeshDebugWindow::UpdatePoints(deque<PreviewPoint> Points)
+{
+}
+
 CNavMeshDebugWindow* CNavMeshDebugWindow::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg)
 {
     CNavMeshDebugWindow* pInstance = new CNavMeshDebugWindow(pDevice, pContext);

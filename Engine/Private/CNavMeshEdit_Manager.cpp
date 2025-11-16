@@ -240,6 +240,7 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 
 	if (!bRegister )
 	{
+		//클리어모드도 아니고, ctrl+z모드도 아닐떄(인덱스 고정하면안됨)
 		if (!m_bClear&&!m_bRestore)
 		{
 			//이어그릴떄 알아서이어그려지게해줌
@@ -307,6 +308,8 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 				}
 
 			}
+
+			//클리어상태나 복구모드일떈 그냥 따른처리없이 그대로붙게ㅏㅎ자.
 			m_Points[iDrawIdx] = Preview;
 		}
 		
@@ -323,7 +326,7 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 			{
 				MapToolCellInfo info = pCell->Get_CellInfo();
 
-				_float3 vPos = Find_NeareastPos(v, 0.5f, info.m_vPoints[ENUM_TO_UINT(POINTType::A)],
+				_float3 vPos = Find_NeareastPos(v, 0.8f, info.m_vPoints[ENUM_TO_UINT(POINTType::A)],
 					info.m_vPoints[ENUM_TO_UINT(POINTType::B)], info.m_vPoints[ENUM_TO_UINT(POINTType::C)]);
 
 				if (!XMVector3Equal(XMLoadFloat3(&vPos), XMVectorSet(-999.f, -999.f, -999.f, 1.f)))

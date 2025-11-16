@@ -240,6 +240,33 @@ void CMapToolCell::Set_Neighbor(LINE eLine, CMapToolCell* pCell)
 
 void CMapToolCell::OnSeletected(bool bSelected)
 {
+    D3D11_RASTERIZER_DESC desc{};
+    if (bSelected)
+    {
+
+        
+        desc.FillMode = D3D11_FILL_SOLID;  // 선 모드
+        desc.CullMode = D3D11_CULL_BACK;       // 뒷면도 그리게
+        desc.FrontCounterClockwise = FALSE;
+        desc.DepthClipEnable = TRUE;           // 보통 TRUE
+
+       
+    }
+
+    else
+    {
+        desc.FillMode = D3D11_FILL_WIREFRAME;  // 선 모드
+        desc.CullMode = D3D11_CULL_BACK;       // 뒷면도 그리게
+        desc.FrontCounterClockwise = FALSE;
+        desc.DepthClipEnable = TRUE;           // 보통 TRUE
+    }
+
+
+    if (FAILED(m_pDevice->CreateRasterizerState(&desc, m_pWireframeRS.GetAddressOf())))
+    {
+        MSG_BOX("Failed to Create Wireframe RasterizerState");
+        return;
+    }
 }
 
 void CMapToolCell::Save_To_Json(json& Json)

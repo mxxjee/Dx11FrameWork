@@ -24,6 +24,7 @@ public:
     virtual void Update() override;
     virtual void Render() override;
 
+    void    UpdatePoints(deque<PreviewPoint> Points);
 
 
 public:
