@@ -175,46 +175,53 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 
 	//만약 아직클릭하지않았따면, 결정안한것이므로 그냥 기존꺼 변경
 
-	if (!bRegister)
+	if (!bRegister )
 	{
-
-
-		if (!XMVector3Equal(XMLoadFloat3(&v), XMLoadFloat3(&m_Points[2].vPos)))
+		if (!m_bClear)
 		{
-			//CheckTrue(Check_EmptyPoints(m_PrePoints));
-
-			if(!m_bFix)
-				pTargetCell = Find_NeareastCell(v);
-			
-			CheckNull(pTargetCell);
-
-			PreviewPoint* PreviewPoints = pTargetCell->Get_PreviewPoints();
-
-			vector<_uint> LastIdx = Get_Edge(v, PreviewPoints[0].vPos, PreviewPoints[1].vPos, PreviewPoints[2].vPos);
+			if (!XMVector3Equal(XMLoadFloat3(&v), XMLoadFloat3(&m_Points[2].vPos)))
+			{
+				if ((!m_bFixCell && !m_bFixEdge) || (!m_bFixCell))
+				{
+					if (!m_bFixEdge)
+						pTargetCell = Find_NeareastCell(v);
+				}
 
 
-			//마지막 두점을 사용한다.
-			int last = (LastIdx[1]) % 3;
-			int prev = (LastIdx[0]) % 3;
+				CheckNull(pTargetCell);
+
+				pTargetPreviewPoints = pTargetCell->Get_PreviewPoints();
+
+				CheckNull(pTargetPreviewPoints);
+
+				if (!m_bFixEdge)
+					LastIdx = Get_Edge(v, pTargetPreviewPoints[0].vPos, pTargetPreviewPoints[1].vPos, pTargetPreviewPoints[2].vPos);
+
+				CheckTrue(LastIdx.empty());
+
+				//마지막 두점을 사용한다.
+				int last = (LastIdx[1]) % 3;
+				int prev = (LastIdx[0]) % 3;
 
 
-			PreviewPoint lastP = PreviewPoints[last];
-			PreviewPoint prevP = PreviewPoints[prev];
+				PreviewPoint lastP = pTargetPreviewPoints[last];
+				PreviewPoint prevP = pTargetPreviewPoints[prev];
 
-			//재구성
-			m_Points[0] = prevP;
-			m_Points[1] = lastP;
+				//재구성
+				m_Points[0] = prevP;
+				m_Points[1] = lastP;
 
-			m_Points[0].vRegister = true;
-			m_Points[1].vRegister = true;
+				m_Points[0].vRegister = true;
+				m_Points[1].vRegister = true;
 
-			m_Points[2] = Preview;
+				m_Points[2] = Preview;
 
-			//// 4) 다음 클릭은 index 2 부터 시작
-			iDrawIdx = 2;
-			m_bCheckNextEdge = false;
+				//// 4) 다음 클릭은 index 2 부터 시작
+				iDrawIdx = 2;
+				m_bCheckNextEdge = false;
+			}
 		}
-
+		
 
 		else
 		{
@@ -223,12 +230,12 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 
 	}
 
-	else if (bRegister)
+	else 
 	{
 		
 		m_Points[iDrawIdx] = Preview;
 		iDrawIdx = (iDrawIdx + 1) % 3;
-		
+	
 
 	}
 		
@@ -318,7 +325,8 @@ void CNavMeshEdit_Manager::Update(_float fTimeDelta)
 
 		//m_Points = New;
 		m_bCheckNextEdge = true;
-
+		if (m_bClear)
+			m_bClear = false;
 	}
 
 }
@@ -339,5 +347,6 @@ void CNavMeshEdit_Manager::Clear_Points()
 	m_Points.clear();
 	Init_Points();
 	m_PrePoints.resize(3);
+	m_bClear = true;
 }
 

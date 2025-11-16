@@ -277,7 +277,8 @@ void CLevel_Editor::Terrain_Picking_WorldPos()
 	CheckTrue(m_pGameInstance->Get_PickTerrain() == nullptr);
 
 	//»ï°¢ÇüFix»óÅÂ
-	CNavMeshEdit_Manager::GetInstance()->Set_Fix(CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LShift));
+	CNavMeshEdit_Manager::GetInstance()->Set_FixCell(CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LShift));
+	CNavMeshEdit_Manager::GetInstance()->Set_FixEdge(CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::Alt));
 
 	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::LControl))
 		CNavMeshEdit_Manager::GetInstance()->Clear_Points();

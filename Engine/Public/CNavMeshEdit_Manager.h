@@ -48,7 +48,10 @@ private:
 public:
     void         Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext);
     vector<_uint>       Get_Edge(const _float3& P, const _float3& A, const _float3& B,const _float3& C);
-    void                Set_Fix(bool b) { m_bFix = b; }
+    
+    void                Set_FixCell(bool b) { m_bFixCell = b; }
+    void                Set_FixEdge(bool b) { m_bFixEdge = b; }
+
 public:
     void            Free() override;
 
@@ -68,9 +71,15 @@ private:
 
 private:
     bool    m_bCheckNextEdge = false;
-    bool    m_bFix = false;
-    CMapToolCell* pTargetCell = nullptr;
 
+    bool    m_bFixCell = false;
+    bool    m_bFixEdge = false;
+    bool    m_bClear = false;
+
+    CMapToolCell* pTargetCell = nullptr;
+    PreviewPoint* pTargetPreviewPoints = nullptr;
+    vector<_uint> LastIdx;
+ 
 };
 
 NS_END
