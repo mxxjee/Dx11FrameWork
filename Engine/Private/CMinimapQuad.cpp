@@ -106,6 +106,8 @@ HRESULT CMinimapQuad::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
 
+    g_Brightness = 0.5f;
+
     CreateBlendState();
 
     return S_OK;

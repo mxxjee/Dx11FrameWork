@@ -63,6 +63,30 @@ void CNavMeshEdit_Manager::Free()
 		Safe_Release(i);
 }
 
+HRESULT CNavMeshEdit_Manager::SetUp_Neighbors()
+{
+	for (auto& pSourCell : m_pMapToolCells)
+	{
+		for (auto& pDestCell : m_pMapToolCells)
+		{
+			if (pSourCell == pDestCell)
+				continue;
+
+			if (true == pDestCell->Compare(pSourCell->Get_vPoint(POINTType::A), pSourCell->Get_vPoint(POINTType::B)))
+				pSourCell->Set_Neighbor(LINE::AB, pDestCell);
+
+			if (true == pDestCell->Compare(pSourCell->Get_vPoint(POINTType::B), pSourCell->Get_vPoint(POINTType::C)))
+				pSourCell->Set_Neighbor(LINE::BC, pDestCell);
+
+
+			if (true == pDestCell->Compare(pSourCell->Get_vPoint(POINTType::C), pSourCell->Get_vPoint(POINTType::A)))
+				pSourCell->Set_Neighbor(LINE::CA, pDestCell);
+
+		}
+	}
+	return S_OK;
+}
+
 
 
 void CNavMeshEdit_Manager::UpdatePoints()
@@ -326,6 +350,9 @@ void CNavMeshEdit_Manager::Update(_float fTimeDelta)
 		m_bCheckNextEdge = true;
 		if (m_bClear)
 			m_bClear = false;
+		
+		m_Points[2].vRegister = false;
+
 	}
 
 }

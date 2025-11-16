@@ -69,7 +69,11 @@ protected:
     _uint                   m_eRenderGroup = 0;
     _wstring                m_ShaderName = L"";
     string                  m_passName = "";
-    _float4                  m_vARGB = { 1.f,1.f,1.f,1.f };   //기본적으로 1,1,1,1(실제 색상이 아닌 비율값)
+
+protected:
+    //셰이더에게 던져줄값들.
+    _float4                     m_vARGB = { 1.f,1.f,1.f,1.f };   //기본적으로 1,1,1,1(실제 색상이 아닌 비율값)
+    _float                      g_Brightness = 1.f;
 };
 
 NS_END

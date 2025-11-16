@@ -279,6 +279,9 @@ void CLevel_Editor::Terrain_Picking_WorldPos()
 	//삼각형Fix상태
 	CNavMeshEdit_Manager::GetInstance()->Set_FixCell(CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LShift));
 	CNavMeshEdit_Manager::GetInstance()->Set_FixEdge(CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::Alt));
+	//Tab.누르면 네이버생성
+	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Tab))
+		CNavMeshEdit_Manager::GetInstance()->SetUp_Neighbors();
 
 	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::LControl))
 		CNavMeshEdit_Manager::GetInstance()->Clear_Points();

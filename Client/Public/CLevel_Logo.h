@@ -52,6 +52,9 @@ private:
     CFadeScreen* pFadeScreen = nullptr;
 
     bool            m_bPressEnter = false;
+
+    _uint             m_ButtonIdx = 0;
+
 };
 NS_END
 

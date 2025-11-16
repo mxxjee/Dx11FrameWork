@@ -25,6 +25,8 @@ public:
     virtual void Update() override;
     virtual void Render() override;
 
+
+
 public:
     static CLayerDebugWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
     virtual void Free();

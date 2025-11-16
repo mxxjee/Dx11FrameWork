@@ -1,12 +1,13 @@
 #pragma once
 #include "CBase.h"
+#include "IMapEditable.h"
 
 NS_BEGIN(Engine)
 class CVIBuffer_Triangle;
 class CGameInstance;
 
 class ENGINE_DLL CMapToolCell :
-    public CBase
+    public CBase, public IMapEditable
 {
 public:
     typedef struct tagMapToolCellDesc
@@ -20,11 +21,7 @@ private:
     virtual ~CMapToolCell() = default;
 
 private:
-    /*이값들은 모두 정렬된 이후를 기준으로.(실제연산에 쓸값들)*/
-    _float3         m_vPoints[ENUM_TO_UINT(POINTType::END)] = {};   //각 정점의 좌표(월드)
-    _float3         m_vNormals[ENUM_TO_UINT(LINE::END)] = {};   //각 선분에 대한 법선벡터
-    _int            m_iNeighbors[ENUM_TO_UINT(LINE::END)] = { -1,-1,-1 };   //각 선분에 대해서 인접한 삼각형의 인덱스(존재하지 않으면 -1로 채움)
-    _uint           m_iIndex;           //현재 이 삼각형이 네브메쉬 배열의 몇번째 인덱스인가요
+    MapToolCellInfo          m_CellInfo;
 
 public:
     /*정렬되기 전 원본의 점 = PreviewPoints*/
@@ -36,12 +33,15 @@ private:
 public:
     HRESULT Initialize_Prototype(void* pArg);
     HRESULT     Ready_Components(void* pArg);
-
+    HRESULT     Ready_Resource(void* pArg);
 public:
     HRESULT      Render();
 
 public:
-    _float3* Get_vPoints() { return m_vPoints;}
+    _float3* Get_vPoints() { return m_CellInfo.m_vPoints;}
+    _vector Get_vPoint(POINTType eType) { return XMLoadFloat3(&m_CellInfo.m_vPoints[ENUM_TO_UINT(eType)]); }
+
+    const MapToolCellInfo& Get_CellInfo() { return m_CellInfo; }
 
 private:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };
@@ -57,10 +57,28 @@ private:
     CGameInstance* m_pGameInstance = nullptr;
     class CShader* m_pShader = nullptr;
 
+public:
+    // IMapEditable을(를) 통해 상속됨
+    virtual void Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation) override;
+    virtual void Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta) {};
+    virtual void Fix_Y(_float Y){};
 
+public:
+    bool        Compare(_vector PointA, _vector PointB);
+    void        Set_Neighbor(LINE eLine, CMapToolCell* pCell);
 private:
     ComPtr<ID3D11RasterizerState> m_pWireframeRS = nullptr;
 
+
+    // IMapEditable을(를) 통해 상속됨
+    virtual void OnSeletected(bool bSelected) override;
+
+    virtual void Save_To_Json(json& Json) override;
+
+    virtual void Show_Gizmo() override;
+
+private:
+    const float EPS = 0.01f;
 };
 
 NS_END

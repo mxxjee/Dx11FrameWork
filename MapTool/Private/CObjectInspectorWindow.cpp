@@ -9,7 +9,8 @@
 #include "CMapObject_Manager.h"
 #include "IMapEditable.h"
 #include "ImGuizmo.h"
-
+#include "CImGui_Manager.h"
+#include "CMapToolCell.h"
 
 
 
@@ -265,39 +266,62 @@ void CObjectInspectorWindow::Update_SelectObject()
 {
     /*선택한 오브젝트에 따라서 바인딩값 변경*/
 
-    if (m_pMapObject_Manager->Get_SelectObject())
-        pSelectObject = dynamic_cast<CGameObject*>(m_pMapObject_Manager->Get_SelectObject());
+    MapToolMode eMode = CImGui_Manager::GetInstance()->Get_MapToolMode();
+    IMapEditable* ppSelectObject = nullptr;
 
-    else
-        pSelectObject = nullptr;
+    if (eMode == MapToolMode::EDIT)
+    {
+        if (m_pMapObject_Manager->Get_SelectObject())
+            pSelectObject = dynamic_cast<CGameObject*>(m_pMapObject_Manager->Get_SelectObject());
+
+        else
+            pSelectObject = nullptr;
+
+        ppSelectObject = dynamic_cast<IMapEditable*>(pSelectObject);
+    }
+   
+
+    else if (eMode == MapToolMode::NAVMESH)
+    {
+        CMapToolCell* pObj = nullptr;
+        if (m_pMapObject_Manager->Get_SelectObject())
+            pObj = dynamic_cast<CMapToolCell*>(m_pMapObject_Manager->Get_SelectObject());
+
+        else
+            pObj = nullptr;
+
+        ppSelectObject = dynamic_cast<IMapEditable*>(pObj);
+    }
 
     CheckNull(m_pMapObject_Manager->Get_SelectObject());
 
 
-   
-    IMapEditable* ppSelectObject = dynamic_cast<IMapEditable*>(pSelectObject);
     if (ppSelectObject)
     {
         ppSelectObject->Imgui_Render_Properties(&vScale, &vPosition, &vRotation);
 
-        for (int i = 0; i < 3; ++i)
+        if (CImGui_Manager::GetInstance()->Get_MapToolMode() != MapToolMode::NAVMESH)
         {
-            if (ScaleInput[i])
-                ScaleInput[i]->Set_Active(true);
-        }
+            for (int i = 0; i < 3; ++i)
+            {
+                if (ScaleInput[i])
+                    ScaleInput[i]->Set_Active(true);
+            }
 
-        for (int i = 0; i < 3; ++i)
-        {
-            if (PositionInput[i])
-                PositionInput[i]->Set_Active(true);
-        }
+            for (int i = 0; i < 3; ++i)
+            {
+                if (PositionInput[i])
+                    PositionInput[i]->Set_Active(true);
+            }
 
-        for (int i = 0; i < 3; ++i)
-        {
-            if (RotationInput[i])
-                RotationInput[i]->Set_Active(true);
-        }
+            for (int i = 0; i < 3; ++i)
+            {
+                if (RotationInput[i])
+                    RotationInput[i]->Set_Active(true);
+            }
 
+        }
+      
     }
 
     else

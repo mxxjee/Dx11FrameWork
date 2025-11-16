@@ -74,6 +74,9 @@
       <Filter>02.GameObjects\99.UI\00.Panel\01.FadeScreen</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CButton.h" />
+    <ClInclude Include="..\Public\CUI_Interactable.h">
+      <Filter>02.GameObjects\99.UI\01.Interatable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -177,6 +180,9 @@
     <Filter Include="02.GameObjects\99.UI\00.Panel\02.Button">
       <UniqueIdentifier>{d0e41572-2694-4809-9950-1ac68e1ca8a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.UI\01.Interatable">
+      <UniqueIdentifier>{a966a2d5-6135-4bbb-a716-e73a97db61be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -240,6 +246,9 @@
       <Filter>02.GameObjects\99.UI\00.Panel\01.FadeScreen</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CButton.cpp" />
+    <ClCompile Include="..\Private\CUI_Interactable.cpp">
+      <Filter>02.GameObjects\99.UI\01.Interatable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

@@ -22,6 +22,8 @@
 #include "CFadeScreen.h"
 #include "CButton.h"
 
+#include "MathUtils.h"
+
 
 
 
@@ -77,12 +79,62 @@ void CLevel_Logo::Update_Priority(_float fTimeDelta)
    
        
     }
+
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::S))
+    {
+        /*¾ÀÀÌµ¿*/
+        LevelArgs args;
+        args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);
+        args.changeType = LEVELCHANGETYPE::REPLACETOP; 
+        //args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
+
+        if (FAILED(m_pGameInstance->Level_Changer(
+            ENUM_TO_UINT(LEVEL_ID::LOADING),
+            args)))
+            return;
+    }
 }
 
 void CLevel_Logo::Update(const _float fTimeDelta)
 {
     __super::Update(fTimeDelta);
     
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::UpArrow))
+        --m_ButtonIdx;
+
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::DownArrow))
+        ++m_ButtonIdx;
+
+    m_ButtonIdx = MathUtils::Clamp<unsigned int>(m_ButtonIdx, 0, 2);
+
+
+
+    UIGroup* pButtonGroup = m_pGameInstance->Get_UIGroup(L"ButtonSlotGroup");
+    if (pButtonGroup)
+    {
+        for (int i = 0; i < pButtonGroup->Objects.size(); ++i)
+        {
+            CGameObject* pTarget = pButtonGroup->Objects[i];
+            if (pTarget)
+            {
+                CButton* pButton = dynamic_cast<CButton*>(pTarget);
+
+                if (pButton)
+                {
+                    if (i == m_ButtonIdx)
+                        pButton->Set_Hover(true);
+
+                    else
+                        pButton->Set_Hover(false);
+                }
+
+            }
+            
+        }
+        
+    }
 
 }
 

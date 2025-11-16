@@ -62,8 +62,14 @@ private:
     deque<PreviewPoint> m_Points; //현재 삼각형을 이루기위한 3개의 점. 삼각형이 생성되면 clear
     vector<CMapToolCell*>      m_pMapToolCells;
     class CNavEditPreview* m_pPreview=nullptr;                         
-
     deque<PreviewPoint>    m_PrePoints;
+
+public:
+    HRESULT     SetUp_Neighbors();
+
+
+public:
+    const vector<CMapToolCell*>& Get_MapToolCells() { return m_pMapToolCells; }
 
 private:
     ComPtr<ID3D11Device> m_pDevice;

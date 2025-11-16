@@ -113,6 +113,16 @@ namespace Engine
 		_bool   vRegister = false;      //true일경우 진짜로 찍은점.
 	}PreviewPoint;
 
+
+	struct MapToolCellInfo
+	{
+		/*이값들은 모두 정렬된 이후를 기준으로.(실제연산에 쓸값들)*/
+		_float3         m_vPoints[ENUM_TO_UINT(POINTType::END)] = {};   //각 정점의 좌표(월드)
+		_float3         m_vNormals[ENUM_TO_UINT(LINE::END)] = {};   //각 선분에 대한 법선벡터
+		_int            m_iNeighbors[ENUM_TO_UINT(LINE::END)] = { -1,-1,-1 };   //각 선분에 대해서 인접한 삼각형의 인덱스(존재하지 않으면 -1로 채움)
+		_uint           m_iIndex;           //현재 이 삼각형이 네브메쉬 배열의 몇번째 인덱스인가요
+
+	};
 	struct CompareKey
 	{
 		bool operator()(const _float& a, const _float& b) const

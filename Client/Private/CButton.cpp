@@ -1,5 +1,8 @@
 #include "CButton.h"
 #include "CInput_Manager.h"
+#include "CShader.h"
+#include "CVIBuffer_Rect.h"
+
 
 USING(Client)
 CButton::CButton(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -70,7 +73,17 @@ void CButton::Update_Render(_float fTimeDelta)
 
 HRESULT CButton::Render()
 {
-    __super::Render();
+    if (FAILED(Bind_ShaderResources()))
+        return E_FAIL;
+
+    if (FAILED(m_pShader->Begin(m_passName)))
+        return E_FAIL;
+
+    if (FAILED(m_pVIBufferCom->Bind_Resource()))
+        return E_FAIL;          //IA´Ü°è
+
+    if (FAILED(m_pVIBufferCom->Render()))
+        return E_FAIL;
 
     return S_OK;
 }

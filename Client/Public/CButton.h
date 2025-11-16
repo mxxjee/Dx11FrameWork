@@ -38,7 +38,9 @@ public:
     static CButton* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
-
+    
+public:
+    void            Set_Hover(bool b) { m_bHover = b; }
 private:
     std::function<void()>       m_OnSelectAction=nullptr;        //클릭 이벤트
 
