@@ -32,7 +32,7 @@ HRESULT CMapToolCell::Initialize_Prototype(void* pArg)
 
     D3D11_RASTERIZER_DESC desc{};
     desc.FillMode = D3D11_FILL_WIREFRAME;  // 선 모드
-    desc.CullMode = D3D11_CULL_NONE;       // 뒷면도 그리게
+    desc.CullMode = D3D11_CULL_BACK;       // 뒷면도 그리게
     desc.FrontCounterClockwise = FALSE;
     desc.DepthClipEnable = TRUE;           // 보통 TRUE
 

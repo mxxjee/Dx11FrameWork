@@ -96,14 +96,13 @@ deque<PreviewPoint> CNavMeshEdit_Manager::Align_CW()
 	_float vCross = (v0.x * v1.z) - (v0.z * v1.x);
 	
 	//음수라면, BC를 스왑한다.
-	if (vCross < 0.f)
+	if (vCross> 0.f)
 	{
 		PreviewPoint B = CW[ENUM_TO_UINT(POINTType::B)];
 		PreviewPoint C = CW[ENUM_TO_UINT(POINTType::C)];
 
-		swap(B, C);
-		CW[ENUM_TO_UINT(POINTType::B)] = B;
-		CW[ENUM_TO_UINT(POINTType::C)] = C;
+		CW[ENUM_TO_UINT(POINTType::B)] = C;
+		CW[ENUM_TO_UINT(POINTType::C)] = B;
 
 		
 
