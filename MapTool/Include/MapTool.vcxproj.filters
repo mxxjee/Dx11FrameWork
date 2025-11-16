@@ -70,6 +70,9 @@
     <Filter Include="02.ImguiObjects\MenuBar">
       <UniqueIdentifier>{e030c689-5a14-45e8-8415-7d39e0524f1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.ImguiObjects\NavMeshDebugWindow">
+      <UniqueIdentifier>{a7eba30b-6bce-4d23-9fc8-aad54d165b66}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CMainTool.h">
@@ -135,6 +138,9 @@
     <ClInclude Include="..\Public\CImgui_DataManager.h">
       <Filter>05.Manager\Imgui_DataManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CNavMeshDebugWindow.h">
+      <Filter>02.ImguiObjects\NavMeshDebugWindow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CMainTool.cpp">
@@ -184,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CImgui_DataManager.cpp">
       <Filter>05.Manager\Imgui_DataManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CNavMeshDebugWindow.cpp">
+      <Filter>02.ImguiObjects\NavMeshDebugWindow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

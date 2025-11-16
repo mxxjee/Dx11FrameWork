@@ -283,10 +283,17 @@ void CLevel_Editor::Terrain_Picking_WorldPos()
 	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Tab))
 		CNavMeshEdit_Manager::GetInstance()->SetUp_Neighbors();
 
-	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::LControl))
-		CNavMeshEdit_Manager::GetInstance()->Clear_Points();
-
 	
+
+	if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LControl))
+	{
+		if(CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Z))
+			CNavMeshEdit_Manager::GetInstance()->Ctrl_Z();
+
+	}
+
+	if(CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::C))
+		CNavMeshEdit_Manager::GetInstance()->Clear_Points();
 	else
 	{
 

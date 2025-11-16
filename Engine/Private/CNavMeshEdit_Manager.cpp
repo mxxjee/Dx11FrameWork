@@ -87,6 +87,44 @@ HRESULT CNavMeshEdit_Manager::SetUp_Neighbors()
 	return S_OK;
 }
 
+HRESULT CNavMeshEdit_Manager::Render_Preview_Imgui_Render()
+{
+	CheckTrueResult(m_Points.empty(), S_OK);
+
+
+	//현재 그리기위한 인덱스출력
+	ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
+	ImGui::BulletText("Current Draw Index:%d\n", iDrawIdx);
+	ImGui::PopStyleColor();
+
+
+	//점3개출력
+	
+	for (int i = 0; i < 3; ++i)
+	{
+
+
+		ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+		string str = "";
+		if (m_Points[i].vRegister)
+			str = "true";
+
+		else
+			str = "false";
+
+		ImGui::BulletText("Position X:%f, Y:%f, Z:%f / Register : %s", m_Points[i].vPos.x,
+			m_Points[i].vPos.y,
+			m_Points[i].vPos.z,
+			str.c_str());
+		ImGui::PopStyleColor();
+	}
+		
+
+
+
+	return S_OK;
+}
+
 
 
 void CNavMeshEdit_Manager::UpdatePoints()
@@ -143,6 +181,8 @@ deque<PreviewPoint> CNavMeshEdit_Manager::Align_CW()
 
 bool CNavMeshEdit_Manager::Check_EmptyPoints(const  deque<PreviewPoint>& Points)
 {
+	CheckTrueResult(Points.empty(), true);
+
 	_vector vPos[3];
 	for (int i = 0; i < 3; ++i)
 	{
@@ -200,8 +240,9 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 
 	if (!bRegister )
 	{
-		if (!m_bClear)
+		if (!m_bClear&&!m_bRestore)
 		{
+			//이어그릴떄 알아서이어그려지게해줌
 			if (!XMVector3Equal(XMLoadFloat3(&v), XMLoadFloat3(&m_Points[2].vPos)))
 			{
 				if ((!m_bFixCell && !m_bFixEdge) || (!m_bFixCell))
@@ -242,20 +283,57 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 				//// 4) 다음 클릭은 index 2 부터 시작
 				iDrawIdx = 2;
 				m_bCheckNextEdge = false;
+
 			}
 		}
 		
 
 		else
 		{
+			if (!m_bRestore&&!m_bClear)
+			{
+				//제일가까운점에 알아서 스냅
+				CMapToolCell* pNearest = Find_NeareastCell(v);
+				if (pNearest)
+				{
+					MapToolCellInfo info = pNearest->Get_CellInfo();
+
+					_float3 vPos = Find_NeareastPos(v, 5.f, info.m_vPoints[ENUM_TO_UINT(POINTType::A)],
+						info.m_vPoints[ENUM_TO_UINT(POINTType::B)], info.m_vPoints[ENUM_TO_UINT(POINTType::C)]);
+
+
+					if (!XMVector3Equal(XMLoadFloat3(&vPos), XMVectorSet(-999.f, -999.f, -999.f, 1.f)))
+						Preview.vPos = vPos;
+				}
+
+			}
 			m_Points[iDrawIdx] = Preview;
 		}
-
+		
 	}
 
 	else 
 	{
-		
+		//제일가까운 꼭짓점가져오기
+
+		if (!m_bRestore)
+		{
+			CMapToolCell* pCell = Find_NeareastCell(v);
+			if (pCell && m_pMapToolCells.size() > 1)
+			{
+				MapToolCellInfo info = pCell->Get_CellInfo();
+
+				_float3 vPos = Find_NeareastPos(v, 0.5f, info.m_vPoints[ENUM_TO_UINT(POINTType::A)],
+					info.m_vPoints[ENUM_TO_UINT(POINTType::B)], info.m_vPoints[ENUM_TO_UINT(POINTType::C)]);
+
+				if (!XMVector3Equal(XMLoadFloat3(&vPos), XMVectorSet(-999.f, -999.f, -999.f, 1.f)))
+					Preview.vPos = vPos;
+
+			}
+		}
+		if (m_bRestore)
+			m_bRestore = false;
+
 		m_Points[iDrawIdx] = Preview;
 		iDrawIdx = (iDrawIdx + 1) % 3;
 	
@@ -299,6 +377,47 @@ CMapToolCell* CNavMeshEdit_Manager::Find_NeareastCell(const _float3& vMousePos)
 	return pResult;
 }
 
+_float3 CNavMeshEdit_Manager::Find_NeareastPos(const _float3 vPos, const _float fRadius,const _float3& A, const _float3& B, const _float3& C)
+{
+	float minDist = FLT_MAX;
+
+	
+	_float VA = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - XMLoadFloat3(&A)));
+	_float VB = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - XMLoadFloat3(&B)));
+	_float VC = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - XMLoadFloat3(&C)));
+
+	_float m = min(VA, VB);
+	m = min(m, VC);
+
+	_float TargetDist = 0;
+
+	if (m == VA)
+	{
+		if (VA < fRadius)
+			return A;
+		else
+			return _float3(-999.f, -999.f, -999.f);
+	}
+	
+	if (m == VB)
+	{
+		if (VB < fRadius)
+			return B;
+		else
+			return _float3(-999.f, -999.f, -999.f);
+	}
+
+
+	if (m == VC)
+	{
+		if (VC < fRadius)
+			return B;
+		else
+			return _float3(-999.f, -999.f, -999.f);
+	}
+	
+}
+
 HRESULT CNavMeshEdit_Manager::Create_MapToolCell(const deque<PreviewPoint>& New, const deque<PreviewPoint>& Origin)
 {
 	_float3 vPos[3];
@@ -326,6 +445,35 @@ HRESULT CNavMeshEdit_Manager::Create_MapToolCell(const deque<PreviewPoint>& New,
 	m_pMapToolCells.push_back(pInstance);
 
 	return S_OK;
+}
+
+void CNavMeshEdit_Manager::Ctrl_Z()
+{
+	//마지막으로 추가된 점 없애기
+	//m_Points가 채워져있는상태라면,,
+	if (!Check_EmptyPoints(m_Points))
+	{
+		auto iter = m_Points.end() - 1;
+		(*iter) = PreviewPoint();
+		
+		if (iDrawIdx != 0)
+			--iDrawIdx;
+
+
+		
+	}
+
+	else
+	{
+		//마지막 삼각형의 점을 수정하자..
+
+	}
+
+	m_bRestore = true;
+	UpdatePoints();
+	
+	
+
 }
 
 void CNavMeshEdit_Manager::Update(_float fTimeDelta)

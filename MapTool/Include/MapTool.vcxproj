@@ -32,6 +32,7 @@
     <ClInclude Include="..\Public\CLoader.h" />
     <ClInclude Include="..\Public\CMainTool.h" />
     <ClInclude Include="..\Public\CMapGrid.h" />
+    <ClInclude Include="..\Public\CNavMeshDebugWindow.h" />
     <ClInclude Include="..\Public\CObjectInspectorWindow.h" />
     <ClInclude Include="..\Public\CGridDebugWindow.h" />
     <ClInclude Include="..\Public\CSaveWindow.h" />
@@ -57,6 +58,7 @@
     <ClCompile Include="..\Private\CLoader.cpp" />
     <ClCompile Include="..\Private\CMainTool.cpp" />
     <ClCompile Include="..\Private\CMapGrid.cpp" />
+    <ClCompile Include="..\Private\CNavMeshDebugWindow.cpp" />
     <ClCompile Include="..\Private\CObjectInspectorWindow.cpp" />
     <ClCompile Include="..\Private\CGridDebugWindow.cpp" />
     <ClCompile Include="..\Private\CSaveWindow.cpp" />

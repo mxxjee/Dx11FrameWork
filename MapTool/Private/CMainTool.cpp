@@ -29,6 +29,7 @@
 #include "CTexture.h"
 #include "IMapEditable.h"
 #include "CNavMeshEdit_Manager.h"
+#include "CNavMeshDebugWindow.h"
 
 
 #include "CFreeCamera.h"
@@ -75,6 +76,7 @@ HRESULT CMainTool::Initialize()
     CreateAssetBrowserWindow();
     //CreateSaveWindow();
     CreateMenuBar();
+    CreateNavMeshDebugWindow();
 
     Reigster_Levels();
     if (FAILED(Start_Level(Client::LEVEL_ID::MAPTOOL, LEVELCHANGETYPE::REPLACETOP)))
@@ -505,6 +507,18 @@ void CMainTool::CreateSaveWindow()
 
     pImGui_Manager->RegisterWindow(CSaveWindow::Create(m_pDevice, m_pContext, &Desc));
 
+
+}
+
+void CMainTool::CreateNavMeshDebugWindow()
+{
+    CNavMeshDebugWindow::IMGUIWINDOW_DESC Desc;
+    Desc.m_WindowTitle = "NavMeshDebug";
+    Desc.m_WindowPos = ImVec2(100, 100);
+    Desc.m_WindowSize = ImVec2(300, 300);
+    Desc.Tag = "NavMeshDebug";
+
+    pImGui_Manager->RegisterWindow(CNavMeshDebugWindow::Create(m_pDevice, m_pContext, &Desc));
 
 }
 

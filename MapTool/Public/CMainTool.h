@@ -50,6 +50,7 @@ private:
 
 	void		CreateAssetBrowserWindow();
 	void		CreateSaveWindow();
+	void		CreateNavMeshDebugWindow();
 	
 	void		CreateMenuBar();
 

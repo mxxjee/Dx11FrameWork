@@ -26,6 +26,7 @@ public:
     class CNavEditPreview* Get_Preview() { return m_pPreview; }
     HRESULT     Create_MapToolCell(const deque<PreviewPoint>& New, const deque<PreviewPoint>& Origin);
 
+    void        Ctrl_Z();
 public:
     void        Update(_float fTimeDelta);
     void        Render();
@@ -45,6 +46,8 @@ private:
 
 private:
     CMapToolCell* Find_NeareastCell(const _float3& vMousePos);
+    _float3       Find_NeareastPos(const _float3 vPos, const _float fRadius, const _float3& A, const _float3& B, const _float3& C);
+
 public:
     void         Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext);
     vector<_uint>       Get_Edge(const _float3& P, const _float3& A, const _float3& B,const _float3& C);
@@ -70,6 +73,7 @@ public:
 
 public:
     const vector<CMapToolCell*>& Get_MapToolCells() { return m_pMapToolCells; }
+    HRESULT     Render_Preview_Imgui_Render();
 
 private:
     ComPtr<ID3D11Device> m_pDevice;
@@ -81,6 +85,7 @@ private:
     bool    m_bFixCell = false;
     bool    m_bFixEdge = false;
     bool    m_bClear = false;
+    bool    m_bRestore = false;
 
     CMapToolCell* pTargetCell = nullptr;
     PreviewPoint* pTargetPreviewPoints = nullptr;
