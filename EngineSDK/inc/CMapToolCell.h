@@ -24,7 +24,7 @@ private:
     MapToolCellInfo          m_CellInfo;
 
 
-private:
+public:
     HRESULT                Set_WireFrameMode();
     HRESULT                Set_SolidMode();
 public:
@@ -93,6 +93,8 @@ private:
 
     virtual void Show_Gizmo() override;
 
+public:
+    void        Set_Color(_float4 color) { g_Color = color; }
 private:
     const float EPS = 0.01f;
     bool            m_bActive = true;

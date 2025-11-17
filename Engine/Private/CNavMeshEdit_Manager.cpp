@@ -65,6 +65,46 @@ void CNavMeshEdit_Manager::Free()
 		Safe_Release(i);
 }
 
+void CNavMeshEdit_Manager::Show_Solo_Cell(bool bToggle)
+{
+
+	if (bToggle)
+	{
+		for (auto& pDestCell : m_pMapToolCells)
+		{
+			MapToolCellInfo info = pDestCell->Get_CellInfo();
+
+			bool bExist = false;
+
+			for (int i = 0; i < 3; ++i)
+			{
+				bExist |= info.m_iNeighbors[i] == -1 ? false : true;
+			}
+
+			if (!bExist)
+			{
+				pDestCell->Set_SolidMode();
+				pDestCell->Set_Color(_float4(1.f, 0.f, 0.f, 1.f));
+			}
+
+
+
+		}
+	}
+
+	else
+	{
+		for (auto& pDestCell : m_pMapToolCells)
+		{
+			pDestCell->Set_WireFrameMode();
+			pDestCell->Set_Color(_float4(0.f, 1.f, 0.f, 1.f));
+
+
+		}
+	}
+	
+}
+
 HRESULT CNavMeshEdit_Manager::SetUp_Neighbors()
 {
 	for (auto& pSourCell : m_pMapToolCells)

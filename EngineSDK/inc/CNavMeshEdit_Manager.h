@@ -61,6 +61,8 @@ public:
 public:
     void            Free() override;
 
+public:
+    void            Show_Solo_Cell(bool bToggle); 
 private:
     int             iDrawIdx = 0;   //클릭한 순서
     int             iRestoreIdx = 1;    //ctrl+z 수행시, 삼각형점ㅈ에서 꺼내올인덱스

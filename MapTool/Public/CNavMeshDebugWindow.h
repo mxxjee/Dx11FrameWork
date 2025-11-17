@@ -30,14 +30,14 @@ public:
 
 private:
     class CImgui_Button* m_pButton;
-
+    class CImgui_Button* m_pShowSoloCell_Button;
 public:
     static CNavMeshDebugWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
     virtual void Free();
 
 private:
     CNavMeshEdit_Manager* m_pNavMeshEdit_Manager = nullptr;
-
+    bool        m_bShowCellToggle = false;
 };
 
 NS_END
