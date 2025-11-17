@@ -148,6 +148,19 @@ HRESULT CMainTool::Initialize_MapTool()
     if (FAILED(pGameInstance->Add_SortFunc(ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP), AlphaSort)))
         return E_FAIL;
 
+
+    /////////단축키등록
+    pGameInstance->Register_HotKey(KeyCode::N, true, false, false,[]()
+        {
+            CImGui_Manager::GetInstance()->Set_MapToolMode(MapToolMode::NAVMESH);
+
+        });
+
+    pGameInstance->Register_HotKey(KeyCode::E, true, false, false, []()
+        {
+            CImGui_Manager::GetInstance()->Set_MapToolMode(MapToolMode::EDIT);
+
+        });
     return S_OK;
 }
 

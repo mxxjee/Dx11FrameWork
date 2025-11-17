@@ -1,6 +1,7 @@
 #include "CNavigation.h"
 #include "CCell.h"
 
+const _float4x4* CNavigation::m_pParentMatrix = {};
 
 CNavigation::CNavigation(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CComponent(pDevice, pContext)
@@ -50,6 +51,22 @@ HRESULT CNavigation::Initialize_Prototype(const _tchar* pNavigationData)
 HRESULT CNavigation::Initialize_Copytype(void* pArg)
 {
 	return S_OK;
+}
+
+_bool CNavigation::isMove(_fvector vResultPos)
+{
+	if (-1 == m_iCurrentCellIndex)
+		return false;
+
+	//Result를 parentmatrix의 역행렬을 곱해 cell space로맞춰준다.
+	_matrix Inverse = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pParentMatrix));
+	_vector InverseResultPos = XMVector3TransformCoord(vResultPos, Inverse);
+
+
+	if (false == m_Cells[m_iCurrentCellIndex]->isIn(InverseResultPos))
+		return false;
+
+	return true;
 }
 
 HRESULT CNavigation::SetUp_Neighbors()

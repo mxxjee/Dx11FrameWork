@@ -48,6 +48,44 @@ HRESULT CMapToolCell::Initialize_Prototype(void* pArg)
     return S_OK;
 }
 
+void CMapToolCell::UpdatePoints(deque<PreviewPoint> Points)
+{
+    _float3 fPoints[3] = {
+       _float3(0.f,0.f,0.f),_float3(0.f,0.f,0.f),_float3(0.f,0.f,0.f) };
+
+    int iIdx = 0;
+
+    while (!Points.empty())
+    {
+        _float3 vPos = Points.front().vPos;
+        fPoints[iIdx] = vPos;
+
+        Points.pop_front();
+
+
+        if (!XMVector3Equal(XMLoadFloat3(&vPos), XMVectorSet(-999.f, -999.f, -999.f, 1.f)))
+            ++iIdx;
+    }
+
+
+
+    if (iIdx == 1)
+        m_pVIBufferCom->Set_PrimitiveType(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+
+    else if (iIdx == 2)
+        m_pVIBufferCom->Set_PrimitiveType(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
+    else if (iIdx == 3)
+        m_pVIBufferCom->Set_PrimitiveType(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+    else
+        m_pVIBufferCom->Set_PrimitiveType(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+    m_pVIBufferCom->UpdatePoints(fPoints[0], fPoints[1], fPoints[2]);
+
+
+}
+
 HRESULT CMapToolCell::Ready_Components(void* pArg)
 {
     CheckNullResult(pArg, E_FAIL);

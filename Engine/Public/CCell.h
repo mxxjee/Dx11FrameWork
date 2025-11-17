@@ -28,6 +28,9 @@ private:
 public:
     HRESULT Initialize_Prototype(const _float3* pPoints, _int iIndex);
 
+public:
+    _bool isIn(_fvector vResultPos);
+
 private:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };

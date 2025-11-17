@@ -35,14 +35,16 @@ public:
 private:
     //Priview의 버퍼 갱신
     void    UpdatePoints();
-    deque<PreviewPoint>    Align_CW();     //시계방향으로 정렬
+    deque<PreviewPoint>    Align_CW(const deque<PreviewPoint>& Origin);     //시계방향으로 정렬
 
 
     bool    Check_EmptyPoints(const  deque<PreviewPoint>& Points);        //Resize되어있으므로, 전부다 0,0,0이면 의미없는값 판정
     bool    Check_FullPoints(const  deque<PreviewPoint>& Points); //다 채워졌는지 확인한다. (모두 -999가아닌지확인)
 
     void    Init_Points();  //초기화값 -999로채운다.
-
+    
+    void    Modify_Triangle();//삼각형수정모드..
+    void    Rebuild_Cell(CMapToolCell* pCell,deque<PreviewPoint>& NewPoints);
 
 private:
     CMapToolCell* Find_NeareastCell(const _float3& vMousePos);
@@ -60,7 +62,7 @@ public:
 
 private:
     int             iDrawIdx = 0;   //클릭한 순서
-
+    int             iRestoreIdx = 1;    //ctrl+z 수행시, 삼각형점ㅈ에서 꺼내올인덱스
 private:
     deque<PreviewPoint> m_Points; //현재 삼각형을 이루기위한 3개의 점. 삼각형이 생성되면 clear
     vector<CMapToolCell*>      m_pMapToolCells;
@@ -86,6 +88,8 @@ private:
     bool    m_bFixEdge = false;
     bool    m_bClear = false;
     bool    m_bRestore = false;
+    bool    m_bRestoreCell = false;
+
 
     CMapToolCell* pTargetCell = nullptr;
     PreviewPoint* pTargetPreviewPoints = nullptr;

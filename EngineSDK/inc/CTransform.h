@@ -72,7 +72,7 @@ public:
 
 #pragma region Translation(모두 로컬기준 이동/회전)
 public:
-    void    Move(DIRECTION eDir, float fTimeDelta,Space space=Space::Local);                                                                  //look벡터 갱신여부
+    void    Move(DIRECTION eDir, float fTimeDelta,Space space=Space::Local,class CNavigation* pNavigation=nullptr);                                                                  //look벡터 갱신여부
   
     void    Rotation(_vector vAxis, _float fRadian);       //즉각회전,vAxis축을 기준으로 fRAdian만큼 회전시킨다. 
     void    Rotation(_float3 fEularDegree);

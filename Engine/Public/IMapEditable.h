@@ -12,11 +12,13 @@ public:
 
 
 	virtual void		Imgui_Render_Properties(_float3* vScale,_float3* vPosition,_float3* vRotation)=0;//Imguiâ Inspector Render
-	virtual void Show_Gizmo() = 0;
+	virtual void		Show_Gizmo() = 0;
 
 
 	virtual void Edit_Move(DIRECTION eDir,float fSpeed,float _fTimeDelta)=0;
 	virtual void Fix_Y(_float Y)=0;
+
+	virtual void Update_SelectMode() {};
 
 
 protected:

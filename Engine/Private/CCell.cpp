@@ -72,6 +72,23 @@ HRESULT CCell::Initialize_Prototype(const _float3* pPoints, _int iIndex)
 
 }
 
+_bool CCell::isIn(_fvector vResultPos)
+{
+    for (int i = 0; i < ENUM_TO_UINT(LINE::END); ++i)
+    {
+
+
+         //시작지점에서부터 현재지점까지의 방향과
+         _vector		vDir = XMVector3Normalize(vResultPos - XMLoadFloat3(&m_vPoints[i]));
+
+         //시작지점의 방향벡터를 내적했을때 양수이면 밖으로나간것임.
+          if (0 < XMVectorGetX(XMVector3Dot(vDir, XMLoadFloat3(&m_vNormals[i]))))
+                return false;
+    }
+
+    return true;
+}
+
 CCell* CCell::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const _float3* pPoints, _int iIndex)
 {
 

@@ -136,11 +136,11 @@ void CNavMeshEdit_Manager::UpdatePoints()
 	
 }
 
-deque<PreviewPoint> CNavMeshEdit_Manager::Align_CW()
+deque<PreviewPoint> CNavMeshEdit_Manager::Align_CW(const deque<PreviewPoint>& Origin)
 {
-	CheckFalseResult(Check_FullPoints(m_Points), deque<PreviewPoint>());
+	//CheckFalseResult(Check_FullPoints(Origin), deque<PreviewPoint>());
 	
-	deque<PreviewPoint> CwQue=m_Points;
+	deque<PreviewPoint> CwQue= Origin;
 
 	vector< PreviewPoint> CW;
 	for (int i = 0; i < 3; ++i)
@@ -225,6 +225,8 @@ void CNavMeshEdit_Manager::Init_Points()
 
 }
 
+
+
 void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 {
 	PreviewPoint Preview;
@@ -232,8 +234,12 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 	Preview.vPos = v;
 	Preview.vRegister = bRegister;
 
-	
-	
+	//if (m_bRestoreCell)
+	//{
+	//	Modify_Triangle();
+	//	return;
+	//}
+	//
 
 
 	//만약 아직클릭하지않았따면, 결정안한것이므로 그냥 기존꺼 변경
@@ -334,8 +340,10 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 
 			}
 		}
+
 		if (m_bRestore)
 			m_bRestore = false;
+
 
 		m_Points[iDrawIdx] = Preview;
 		iDrawIdx = (iDrawIdx + 1) % 3;
@@ -382,7 +390,7 @@ CMapToolCell* CNavMeshEdit_Manager::Find_NeareastCell(const _float3& vMousePos)
 
 _float3 CNavMeshEdit_Manager::Find_NeareastPos(const _float3 vPos, const _float fRadius,const _float3& A, const _float3& B, const _float3& C)
 {
-	float minDist = FLT_MAX;
+	float minDist = FLT_MAX;                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 
 	
 	_float VA = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - XMLoadFloat3(&A)));
@@ -452,25 +460,71 @@ HRESULT CNavMeshEdit_Manager::Create_MapToolCell(const deque<PreviewPoint>& New,
 
 void CNavMeshEdit_Manager::Ctrl_Z()
 {
+	
+
 	//마지막으로 추가된 점 없애기
-	//m_Points가 채워져있는상태라면,,
-	if (!Check_EmptyPoints(m_Points))
+	CheckTrue(iDrawIdx == 0);
+
+
+	auto iter = m_Points.begin() + iDrawIdx;
+	(*iter) = PreviewPoint();
+
+
+
+	/*셀 제거 시작*/
+	if (iDrawIdx == 1)
 	{
-		auto iter = m_Points.end() - 1;
-		(*iter) = PreviewPoint();
-		
-		if (iDrawIdx != 0)
-			--iDrawIdx;
-
-
-		
+		m_Points[1] = PreviewPoint();
 	}
 
-	else
-	{
-		//마지막 삼각형의 점을 수정하자..
+	else if (iDrawIdx != 1)
+		--iDrawIdx;
 
-	}
+
+	
+#pragma region 원래있던 삼각형 수정하는거..포기
+	////포인트가 다 비워졌을때는 삼각형점에서 꺼내온다.
+	//if(m_bRestoreCell)
+	//{
+	//	CheckTrue(m_pMapToolCells.empty());
+	//	//마지막 삼각형의 점을 수정하자..
+
+	//	
+
+	//	auto iter = m_pMapToolCells.end() - 1;
+
+
+	//	//마지막 삼각형 점 가져오기.
+	//	PreviewPoint* prePoints = (*iter)->Get_PreviewPoints();
+
+	//	m_Points[iDrawIdx].vPos = prePoints[iRestoreIdx].vPos;
+
+
+	//	//만약 마지막점을 꺼냈다면, 삭제해라.
+	//	if (iRestoreIdx == 0)
+	//	{
+	//		m_pMapToolCells.erase(iter);
+	//		Safe_Release(*iter);
+	//		m_bRestoreCell = false;
+	//		iRestoreIdx = 1;
+	//	}
+
+	//	//아ㅣ니라면, 점계속다시업데이트해줘라.
+	//	else
+	//	{
+	//		--iRestoreIdx;
+	//		++iDrawIdx;
+	//		deque<PreviewPoint> NewPoints;
+	//		NewPoints.resize(3);
+	//		for (int i = 0; i <= iRestoreIdx+1; ++i)
+	//			NewPoints[i]=prePoints[i];
+
+	//		Rebuild_Cell((*iter),NewPoints);
+	//	}
+	//	
+	//}
+
+#pragma endregion
 
 	m_bRestore = true;
 	UpdatePoints();
@@ -478,6 +532,24 @@ void CNavMeshEdit_Manager::Ctrl_Z()
 	
 
 }
+
+void CNavMeshEdit_Manager::Modify_Triangle()
+{
+	/*auto iter = m_pMapToolCells.end() - 1;
+
+
+	Rebuild_Cell((*iter), NewPoints);*/
+}
+
+void CNavMeshEdit_Manager::Rebuild_Cell(CMapToolCell* pCell, deque<PreviewPoint>& NewPoints)
+{
+	//시계방향정렬하고, 정점재구성
+	deque<PreviewPoint> Allign=Align_CW(NewPoints);
+	pCell->UpdatePoints(Allign);
+
+
+}
+
 
 void CNavMeshEdit_Manager::Update(_float fTimeDelta)
 {
@@ -491,7 +563,7 @@ void CNavMeshEdit_Manager::Update(_float fTimeDelta)
 	if (RegisterCnt == 3)
 	{
 		m_PrePoints = m_Points;
-		deque<PreviewPoint> New= Align_CW();
+		deque<PreviewPoint> New= Align_CW(m_Points);
 		//정렬한 정점으로 생성..
 		if (FAILED(Create_MapToolCell(New, m_PrePoints)))
 			return;

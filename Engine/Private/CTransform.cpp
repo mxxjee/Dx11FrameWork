@@ -1,6 +1,7 @@
 #include "CTransform.h"
 #include "MathUtils.h"
 #include "CShader.h"
+#include "CNavigation.h"
 
 
 CTransform::CTransform(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -115,7 +116,7 @@ _vector CTransform::Get_State(STATE eState, TransformScope eScope)
 
 }
 
-void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space)
+void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space, CNavigation* pNavigation)
 {
 	_vector vPosition = Get_State(STATE::POSITION);
 	bool	m_bCross = false;
@@ -217,7 +218,9 @@ void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space)
 
 
 	vPosition += XMVector3Normalize(vTargetAxis) * fTargetSpeed * fTimeDelta;
-	Set_State(STATE::POSITION, vPosition);
+
+	if(pNavigation==nullptr || pNavigation->isMove(vPosition))
+		Set_State(STATE::POSITION, vPosition);
 
 
 }

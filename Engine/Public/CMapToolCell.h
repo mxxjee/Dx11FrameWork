@@ -32,6 +32,7 @@ private:
 
 public:
     HRESULT Initialize_Prototype(void* pArg);
+    void    UpdatePoints(deque<PreviewPoint> Points);
     HRESULT     Ready_Components(void* pArg);
     HRESULT     Ready_Resource(void* pArg);
 public:
