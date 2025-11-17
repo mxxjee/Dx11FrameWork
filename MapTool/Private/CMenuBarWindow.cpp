@@ -3,6 +3,7 @@
 #include "CImgui_DataManager.h"
 #include "CMapObject_Manager.h"
 #include "CImGui_Manager.h"
+#include "CMapObject_Manager.h"
 
 USING(MapTool)
 
@@ -40,6 +41,25 @@ HRESULT CMenuBarWindow::Initialize(void* pArg)
         });
 
 	return S_OK;
+}
+
+void CMenuBarWindow::Update_Priority()
+{
+    __super::Update_Priority();
+    if (m_bLoad)
+    {
+        CMapObject_Manager::GetInstance()->Set_SelectObject(nullptr);
+
+        //불러오기 및 덮어쓰기를위한 경로갱신
+        if (FAILED(pGameInstance->Load_Terrains_MapTool(m_SaveFilePath.m_SaveFiles[m_LoadFilePath.LoadFileIdx])))
+            return;
+
+        m_LoadFilePath.m_CurrentLoadFilePath = m_SaveFilePath.m_SaveFiles[m_LoadFilePath.LoadFileIdx];
+        m_pImgui_DataManager->Set_LoadFilePath(m_LoadFilePath);
+
+        m_bLoad = false;
+
+    }
 }
 
 void CMenuBarWindow::Update()
@@ -204,13 +224,8 @@ void CMenuBarWindow::Show_ListBox()
     if (ImGui::ListBox("SaveFileList", &m_LoadFilePath.LoadFileIdx, m_SaveFilePath.m_SaveFileNamesStr.data(), m_SaveFilePath.m_SaveFileNamesStr.size()))
     {
         m_pMapObject_Manager->Set_SelectObject(nullptr);
-
-        //불러오기 및 덮어쓰기를위한 경로갱신
-        if (FAILED(pGameInstance->Load_Terrains_MapTool(m_SaveFilePath.m_SaveFiles[m_LoadFilePath.LoadFileIdx])))
-            return;
-
-        m_LoadFilePath.m_CurrentLoadFilePath = m_SaveFilePath.m_SaveFiles[m_LoadFilePath.LoadFileIdx];
-        m_pImgui_DataManager->Set_LoadFilePath(m_LoadFilePath);
+        m_bLoad = true;
+      
     }
 
     ImGui::End();

@@ -273,6 +273,8 @@ void CLevel_Editor::Terrain_Picking()
 
 void CLevel_Editor::Terrain_Picking_WorldPos()
 {
+	ImGuiIO& io = ImGui::GetIO();
+	CheckTrue(io.WantCaptureMouse);
 
 	CheckTrue(m_pGameInstance->Get_PickTerrain() == nullptr);
 

@@ -32,8 +32,6 @@ public:
 
     void    Check_Picking();
 
-private:
-    void        Active_SelectionMode(_float fTimeDelta);
 
 public:
     //생성과 동시에 추가해주는 함수

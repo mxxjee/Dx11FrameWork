@@ -52,15 +52,23 @@ void CImGui_Manager::Init(HWND hWnd, ID3D11Device* device, ID3D11DeviceContext* 
 
 }
 
-void CImGui_Manager::Update()
+void CImGui_Manager::Update_Priority()
 {
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
-   
+
 
 
     BeginDockSpace();//도킹기능
+
+    for (auto& pair : m_Windows)
+        pair.second->Update_Priority();
+}
+
+void CImGui_Manager::Update()
+{
+  
     //나중에 외부에서 설정할듯, 일단 테스트.
    // Test();
 

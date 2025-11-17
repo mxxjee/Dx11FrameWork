@@ -29,7 +29,7 @@ HRESULT CVIBuffer_Triangle::Initialize_Copytype(void* pArg)
 	//[1. 정점 버퍼를 정의하기 위한 정보]
 	D3D11_BUFFER_DESC VertexDesc;
 	m_iNumVertices = 3;
-	m_iVertexStride = sizeof(VTXPOSCOR);
+	m_iVertexStride = sizeof(VTXPOS);
 
 	//위치값 기록을 위한 동적배열(따로 멤버 보관)
 	m_pVertexPositions.resize(m_iNumVertices);
@@ -42,8 +42,8 @@ HRESULT CVIBuffer_Triangle::Initialize_Copytype(void* pArg)
 	VertexDesc.StructureByteStride = m_iVertexStride;
 
 	//[2. 정점 버퍼를 초기화 하기 위한 정보]
-	VTXPOSCOR* pVertices = new VTXPOSCOR[m_iNumVertices];
-	ZeroMemory(pVertices, sizeof(VTXPOSCOR) * m_iNumVertices);
+	VTXPOS* pVertices = new VTXPOS[m_iNumVertices];
+	ZeroMemory(pVertices, sizeof(VTXPOS) * m_iNumVertices);
 
 	TRIANGLEBUFFER_DESC* pDesc = static_cast<TRIANGLEBUFFER_DESC*>(pArg);
 	if (pDesc)
@@ -61,9 +61,7 @@ HRESULT CVIBuffer_Triangle::Initialize_Copytype(void* pArg)
 	
 	}
 	
-	pVertices[0].vColor = _float4(1.f, 0.f, 0.f, 1.f);
-	pVertices[1].vColor = _float4(0.f, 1.f, 0.f, 1.f);
-	pVertices[2].vColor = _float4(0.f, 0.f, 1.f, 1.f);
+
 
 
 	D3D11_SUBRESOURCE_DATA VertexData;
@@ -115,13 +113,13 @@ HRESULT CVIBuffer_Triangle::Initialize_Copytype(void* pArg)
 
 void CVIBuffer_Triangle::UpdatePoints(_float3 p0, _float3 p1, _float3 p2)
 {
-	VTXPOSCOR vertices[3] = {};
+	VTXPOS vertices[3] = {};
 
 
 	D3D11_MAPPED_SUBRESOURCE mapped{};
 	m_pContext->Map(m_pVB.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped);
 	
-	VTXPOSCOR* v = (VTXPOSCOR*)mapped.pData;
+	VTXPOS* v = (VTXPOS*)mapped.pData;
 	v[0].vPosition = p0;
 	v[1].vPosition = p1;
 	v[2].vPosition = p2;

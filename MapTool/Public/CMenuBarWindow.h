@@ -23,6 +23,8 @@ protected:
 public:
     // CImgui_Base을(를) 통해 상속됨
     virtual HRESULT Initialize(void* pArg) override;
+    virtual void Update_Priority() override;
+
     virtual void Update() override;
     virtual void Render() override;
 
@@ -61,7 +63,7 @@ private:
     bool            m_bListOpen = false;
     bool            m_bTextOpen = false;
     char            m_szSaveName[MAX_PATH]="";
-
+    bool            m_bLoad = false;
 };
 NS_END
 

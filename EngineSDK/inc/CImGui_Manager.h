@@ -14,6 +14,7 @@ public CBase
 
     public:
         void            Init(HWND hWnd,ID3D11Device* device, ID3D11DeviceContext* device_context);
+        void	Update_Priority();
         void            Update();
         void            Render(ID3D11DeviceContext* device_context);
 

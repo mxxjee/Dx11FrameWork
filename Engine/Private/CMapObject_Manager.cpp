@@ -69,7 +69,10 @@ void CMapObject_Manager::Update(_float fTimeDelta)
         Check_Picking();
 
     if (m_pSelectedObject)
-        Active_SelectionMode(fTimeDelta);
+        m_pSelectedObject->Update_SelectMode(fTimeDelta);
+        
+    
+    //Active_SelectionMode(fTimeDelta);
 
 
 
@@ -141,64 +144,6 @@ void CMapObject_Manager::Check_Picking()
     }
 }
 
-void CMapObject_Manager::Active_SelectionMode(_float fTimeDelta)
-{
-    CheckTrue(m_pImguiManager->Get_MapToolMode() == MapToolMode::NAVMESH);
-
-
-    if (m_pInputManager->IsKeyPressed(KeyCode::Delete))
-    {
-        CTerrain_Base* pTerrain = dynamic_cast<CTerrain_Base*>(m_pSelectedObject);
-        if (pTerrain)
-            m_pGameInstance->RequestDestroy(pTerrain);
-
-        else
-        {
-            CMapObject* pMapObject = dynamic_cast<CMapObject*>(m_pSelectedObject);
-            if (pMapObject)
-            {
-                CMapLayer* pTargetLayer = Get_Layer_By_MapObjType(pMapObject->Get_ObjType());
-                if (pTargetLayer)
-                    pTargetLayer->RequestDestroy(pMapObject);
-            }
-           
-        }
-        m_pSelectedObject = nullptr;
-    }
-
-    if (m_pInputManager->IsKeyHeld(KeyCode::LShift))
-    {
-        m_pSelectedObject->Fix_Y(0.f);
-    }
-    
-    else if (m_pInputManager->IsKeyHeld(KeyCode::LControl))
-    {
-        if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
-            m_pSelectedObject->Edit_Move(DIRECTION::UP, m_fMoveSpeed, fTimeDelta);
-
-        else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
-            m_pSelectedObject->Edit_Move(DIRECTION::DOWN, m_fMoveSpeed, fTimeDelta);
-    }
-
-    else
-    {
-        if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
-            m_pSelectedObject->Edit_Move(DIRECTION::FORWARD, m_fMoveSpeed, fTimeDelta);
-
-        else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
-            m_pSelectedObject->Edit_Move(DIRECTION::BACKWARD, m_fMoveSpeed, fTimeDelta);
-
-        else if (m_pInputManager->IsKeyHeld(KeyCode::LeftArrow))
-            m_pSelectedObject->Edit_Move(DIRECTION::LEFT, m_fMoveSpeed, fTimeDelta);
-
-        else if (m_pInputManager->IsKeyHeld(KeyCode::RightArrow))
-            m_pSelectedObject->Edit_Move(DIRECTION::RIGHT, m_fMoveSpeed, fTimeDelta);
-
-    }
-  
-
-
-}
 
 HRESULT CMapObject_Manager::Add_MapObject_To_MapLayer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag, const _wstring& strLayerTag, void* pArg)
 {

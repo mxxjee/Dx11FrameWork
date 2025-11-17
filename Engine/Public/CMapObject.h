@@ -89,6 +89,11 @@ public:
     virtual void Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation) override;
     virtual void Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta);
     virtual void Fix_Y(_float Y);
+    virtual void Update_SelectMode(float _fTimeDelta);
+
+private:
+    class CInput_Manager* m_pInputManager = { nullptr };
+
 };
 
 

@@ -18,7 +18,7 @@ public:
 	virtual void Edit_Move(DIRECTION eDir,float fSpeed,float _fTimeDelta)=0;
 	virtual void Fix_Y(_float Y)=0;
 
-	virtual void Update_SelectMode() {};
+	virtual void Update_SelectMode(float _fTimeDelta) {};
 
 
 protected:

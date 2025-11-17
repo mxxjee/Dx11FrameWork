@@ -27,6 +27,10 @@ HRESULT CImgui_Window::Initialize(void* pArg)
     return S_OK;
 }
 
+void CImgui_Window::Update_Priority()
+{
+}
+
 void CImgui_Window::Update()
 {
     if (!m_bOpen || !m_bActive)

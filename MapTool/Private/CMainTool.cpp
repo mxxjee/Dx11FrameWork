@@ -171,6 +171,7 @@ void CMainTool::Update_Priority(_float fTimeDelta)
     pMapObject_Manager->Update_Priority(fTimeDelta);
     pGameInstance->Update_Priority_Engine(fTimeDelta);
 
+    pImGui_Manager->Update_Priority();
 
 }
 
@@ -192,7 +193,10 @@ void CMainTool::Update_Late(float fTimeDelta)
 {
     pGrid_Manager->Update_Late(fTimeDelta);
     pMapObject_Manager->Update_Late(fTimeDelta);
+  
     pGameInstance->LateUpdate_Engine(fTimeDelta);
+    m_pNavMeshEdit_Manager->Update_Late(fTimeDelta);
+
 }
 
 void CMainTool::Update_Render(float fTimeDelta)

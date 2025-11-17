@@ -5,7 +5,7 @@ namespace Engine
 {
     class CNavMeshEdit_Manager;
     class IMapEditable;
-
+    class CImgui_Button;
 }
 
 
@@ -17,6 +17,8 @@ protected:
     CNavMeshDebugWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual ~CNavMeshDebugWindow() = default;
 
+private:
+    HRESULT     Create_Widgets();
 
 public:
     // CImgui_Base을(를) 통해 상속됨
@@ -26,6 +28,8 @@ public:
 
     void    UpdatePoints(deque<PreviewPoint> Points);
 
+private:
+    class CImgui_Button* m_pButton;
 
 public:
     static CNavMeshDebugWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);

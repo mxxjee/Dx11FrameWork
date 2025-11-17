@@ -60,8 +60,8 @@ bool CMeshColliderComponent::Intersects_Ray(_vector origin, _vector rayDir, _flo
     CheckNullResult(m_pOwner,false);
     CheckNullResult(m_pModel,false);
 
-    //if (!m_BoundingBox.Intersects(origin, rayDir, Dist))
-    //    return false;
+    if (!m_BoundingBox.Intersects(origin, rayDir, Dist))
+        return false;
 
     return m_pModel->Intersects_Ray(origin, rayDir, Dist);
     

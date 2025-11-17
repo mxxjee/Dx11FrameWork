@@ -29,6 +29,7 @@ public:
     void        Ctrl_Z();
 public:
     void        Update(_float fTimeDelta);
+    void        Update_Late(_float fTimeDelta);
     void        Render();
     void        Clear_Points();
 
@@ -64,22 +65,29 @@ private:
     int             iDrawIdx = 0;   //클릭한 순서
     int             iRestoreIdx = 1;    //ctrl+z 수행시, 삼각형점ㅈ에서 꺼내올인덱스
 private:
-    deque<PreviewPoint> m_Points; //현재 삼각형을 이루기위한 3개의 점. 삼각형이 생성되면 clear
+    deque<PreviewPoint>         m_Points; //현재 삼각형을 이루기위한 3개의 점. 삼각형이 생성되면 clear
     vector<CMapToolCell*>      m_pMapToolCells;
     class CNavEditPreview* m_pPreview=nullptr;                         
     deque<PreviewPoint>    m_PrePoints;
 
-public:
+public:                                                  
     HRESULT     SetUp_Neighbors();
 
 
 public:
+    void        RequestDestory(CMapToolCell* pObj);
+    void        ProcessDestroy();
+public:
     const vector<CMapToolCell*>& Get_MapToolCells() { return m_pMapToolCells; }
+    CMapToolCell* Get_MapToolCell(_uint idx) { if (idx >= m_pMapToolCells.size() - 1)return nullptr; return m_pMapToolCells[idx]; }
     HRESULT     Render_Preview_Imgui_Render();
 
 private:
     ComPtr<ID3D11Device> m_pDevice;
     ComPtr<ID3D11DeviceContext> m_pContext;
+
+private:
+    queue<CMapToolCell*>    m_DestroyQueue;
 
 private:
     bool    m_bCheckNextEdge = false;

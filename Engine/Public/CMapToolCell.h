@@ -23,6 +23,10 @@ private:
 private:
     MapToolCellInfo          m_CellInfo;
 
+
+private:
+    HRESULT                Set_WireFrameMode();
+    HRESULT                Set_SolidMode();
 public:
     /*정렬되기 전 원본의 점 = PreviewPoints*/
     void                Set_PreviewPoints(const deque<PreviewPoint>& New);
@@ -42,6 +46,7 @@ public:
     _float3* Get_vPoints() { return m_CellInfo.m_vPoints;}
     _vector Get_vPoint(POINTType eType) { return XMLoadFloat3(&m_CellInfo.m_vPoints[ENUM_TO_UINT(eType)]); }
 
+    void                Set_Index(int idx) { m_CellInfo.m_iIndex = idx; }
     const MapToolCellInfo& Get_CellInfo() { return m_CellInfo; }
 
 private:
@@ -52,6 +57,9 @@ public:                             //생성함수, 각 정점의 위치3개, 인덱스
     static CMapToolCell* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
     virtual void Free() override;
 
+private:
+    HRESULT Create_WireFrameRS();
+    HRESULT Create_SolidRS();
 private:
     CVIBuffer_Triangle* m_pVIBufferCom = { nullptr };
     _float4x4   WorldMatrix;
@@ -65,10 +73,17 @@ public:
     virtual void Fix_Y(_float Y){};
 
 public:
+    void        Set_Active(bool b) { m_bActive = b; }
+    bool         Is_Active() { return m_bActive; }
+public:
     bool        Compare(_vector PointA, _vector PointB);
     void        Set_Neighbor(LINE eLine, CMapToolCell* pCell);
+    virtual     void Update_SelectMode(float _fTimeDelta);
+
 private:
+    ComPtr<ID3D11RasterizerState> m_pCurrentRS = nullptr;
     ComPtr<ID3D11RasterizerState> m_pWireframeRS = nullptr;
+    ComPtr<ID3D11RasterizerState> m_pSolidRS = nullptr;
 
 
     // IMapEditable을(를) 통해 상속됨
@@ -80,6 +95,10 @@ private:
 
 private:
     const float EPS = 0.01f;
+    bool            m_bActive = true;
+
+private:
+    _float4     g_Color;
 };
 
 NS_END

@@ -10,6 +10,7 @@
 NS_BEGIN(Engine)
 class CMeshColliderComponent;
 class CModel;
+class CInput_Manager;
 
 class ENGINE_DLL CMapTerrain :
     public CTerrain_Base, public IMapEditable
@@ -67,6 +68,8 @@ public:
 
     virtual void Save_To_Json(json& Json) override;
     virtual void Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta);
+    virtual void Update_SelectMode(float _fTimeDelta);
+
 protected:
     CModel* m_pModel = nullptr;
     CMeshColliderComponent* m_pMeshCollidercomponent=nullptr;
@@ -83,6 +86,9 @@ private:
     // IMapEditable을(를) 통해 상속됨
     virtual void Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation) override;
     virtual void Fix_Y(_float Y);
+
+private:
+    class CInput_Manager* m_pInputManager = nullptr;
 };
 
 NS_END

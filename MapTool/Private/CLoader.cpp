@@ -181,6 +181,12 @@ HRESULT CLoader::Register_Shaders()
 
 
     CShader* pInstance = CShader::Create(m_pDevice,
+        m_pDeviceContext, VTXPOS::desc, L"../../Resource/Shader/Shader_VtxPos.hlsl",
+        "DefaultTechnique");
+    m_pGameInstance->Register_Shader(L"VtxPos", pInstance);
+
+
+    pInstance = CShader::Create(m_pDevice,
         m_pDeviceContext, VTXPOSTEX::desc, L"../../Resource/Shader/Shader_VtxPosTex.hlsl",
         "DefaultTechnique");
     m_pGameInstance->Register_Shader(L"Default", pInstance);

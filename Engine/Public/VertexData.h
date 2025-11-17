@@ -2,6 +2,17 @@
 #include "Engine_Define.h"
 
 NS_BEGIN(Engine)
+
+typedef struct ENGINE_DLL VertexPosData
+{
+	_float3 vPosition = { 0,0,0 };
+
+
+	static vector<D3D11_INPUT_ELEMENT_DESC> desc;
+
+}VTXPOS;
+
+
 typedef struct ENGINE_DLL VertexColorData
 {
 	_float3 vPosition = { 0,0,0 };

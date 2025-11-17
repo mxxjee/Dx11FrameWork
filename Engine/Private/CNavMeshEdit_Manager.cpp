@@ -25,6 +25,8 @@ void CNavMeshEdit_Manager::Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D
 	m_pPreview = CNavEditPreview::Create(_pDevice, _pContext);
 	Init_Points();
 	m_PrePoints.resize(3);
+
+	m_pMapToolCells.reserve(100);
 }
 
 vector<_uint> CNavMeshEdit_Manager::Get_Edge(const _float3& P, const _float3& A, const _float3& B, const _float3& C)
@@ -67,6 +69,10 @@ HRESULT CNavMeshEdit_Manager::SetUp_Neighbors()
 {
 	for (auto& pSourCell : m_pMapToolCells)
 	{
+		pSourCell->Set_Neighbor(LINE::AB, nullptr);
+		pSourCell->Set_Neighbor(LINE::BC, nullptr);
+		pSourCell->Set_Neighbor(LINE::CA, nullptr);
+
 		for (auto& pDestCell : m_pMapToolCells)
 		{
 			if (pSourCell == pDestCell)
@@ -78,13 +84,59 @@ HRESULT CNavMeshEdit_Manager::SetUp_Neighbors()
 			if (true == pDestCell->Compare(pSourCell->Get_vPoint(POINTType::B), pSourCell->Get_vPoint(POINTType::C)))
 				pSourCell->Set_Neighbor(LINE::BC, pDestCell);
 
-
 			if (true == pDestCell->Compare(pSourCell->Get_vPoint(POINTType::C), pSourCell->Get_vPoint(POINTType::A)))
 				pSourCell->Set_Neighbor(LINE::CA, pDestCell);
 
 		}
 	}
 	return S_OK;
+}
+
+void CNavMeshEdit_Manager::RequestDestory(CMapToolCell* pObj)
+{
+	pObj->Set_Active(false);
+	m_DestroyQueue.push(pObj);
+
+	
+
+}
+
+void CNavMeshEdit_Manager::ProcessDestroy()
+{
+	
+	bool bNeedToUpdate = false;
+
+	while (!m_DestroyQueue.empty())
+	{
+		bNeedToUpdate = true;
+
+		CMapToolCell* pObj = m_DestroyQueue.front();
+
+		m_DestroyQueue.pop();
+		
+		m_pMapToolCells.erase(
+			remove_if(m_pMapToolCells.begin(), m_pMapToolCells.end(), 
+				[&](auto* p) {return p == pObj; }),
+			m_pMapToolCells.end());
+
+		Safe_Release(pObj);
+	}
+
+
+	//인덱스 재정렬
+	if (bNeedToUpdate)
+	{
+		for (int i = 0; i < m_pMapToolCells.size(); ++i)
+		{
+			m_pMapToolCells[i]->Set_Index(i);
+
+		}
+
+	}
+
+
+
+
 }
 
 HRESULT CNavMeshEdit_Manager::Render_Preview_Imgui_Render()
@@ -234,14 +286,6 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 	Preview.vPos = v;
 	Preview.vRegister = bRegister;
 
-	//if (m_bRestoreCell)
-	//{
-	//	Modify_Triangle();
-	//	return;
-	//}
-	//
-
-
 	//만약 아직클릭하지않았따면, 결정안한것이므로 그냥 기존꺼 변경
 
 	if (!bRegister )
@@ -305,7 +349,7 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 				{
 					MapToolCellInfo info = pNearest->Get_CellInfo();
 
-					_float3 vPos = Find_NeareastPos(v, 5.f, info.m_vPoints[ENUM_TO_UINT(POINTType::A)],
+					_float3 vPos = Find_NeareastPos(v, 2.f, info.m_vPoints[ENUM_TO_UINT(POINTType::A)],
 						info.m_vPoints[ENUM_TO_UINT(POINTType::B)], info.m_vPoints[ENUM_TO_UINT(POINTType::C)]);
 
 
@@ -392,37 +436,43 @@ _float3 CNavMeshEdit_Manager::Find_NeareastPos(const _float3 vPos, const _float 
 {
 	float minDist = FLT_MAX;                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 
-	
-	_float VA = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - XMLoadFloat3(&A)));
-	_float VB = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - XMLoadFloat3(&B)));
-	_float VC = XMVectorGetX(XMVector3Length(XMLoadFloat3(&vPos) - XMLoadFloat3(&C)));
+	_vector Pos, vA, vB, vC;
+	Pos = XMLoadFloat3(&vPos);
+	vA = XMLoadFloat3(&A);
+	vB = XMLoadFloat3(&B);
+	vC = XMLoadFloat3(&C);
 
-	_float m = min(VA, VB);
-	m = min(m, VC);
+
+	_float PA = XMVectorGetX(XMVector3LengthSq(Pos -vA));
+	_float PB = XMVectorGetX(XMVector3LengthSq(Pos - vB));
+	_float PC = XMVectorGetX(XMVector3LengthSq(Pos - vC));
+
+	_float m = min(PA, PB);
+	m = min(m, PC);
 
 	_float TargetDist = 0;
 
-	if (m == VA)
+	if (m == PA)
 	{
-		if (VA < fRadius)
+		if (PA < fRadius)
 			return A;
 		else
 			return _float3(-999.f, -999.f, -999.f);
 	}
 	
-	if (m == VB)
+	if (m == PB)
 	{
-		if (VB < fRadius)
+		if (PB < fRadius)
 			return B;
 		else
 			return _float3(-999.f, -999.f, -999.f);
 	}
 
 
-	if (m == VC)
+	if (m == PC)
 	{
-		if (VC < fRadius)
-			return B;
+		if (PC < fRadius)
+			return C;
 		else
 			return _float3(-999.f, -999.f, -999.f);
 	}
@@ -580,6 +630,11 @@ void CNavMeshEdit_Manager::Update(_float fTimeDelta)
 
 }
 
+void CNavMeshEdit_Manager::Update_Late(_float fTimeDelta)
+{
+	ProcessDestroy();
+}
+
 void CNavMeshEdit_Manager::Render()
 {
 	CheckNull(m_pPreview);
@@ -587,7 +642,11 @@ void CNavMeshEdit_Manager::Render()
 
 	m_pPreview->Render();
 	for (auto& cell : m_pMapToolCells)
-		cell->Render();
+	{
+		if(cell->Is_Active())
+			cell->Render();
+	}
+		
 }
 
 void CNavMeshEdit_Manager::Clear_Points()

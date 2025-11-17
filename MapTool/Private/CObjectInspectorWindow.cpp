@@ -321,6 +321,30 @@ void CObjectInspectorWindow::Update_SelectObject()
             }
 
         }
+
+        else
+        {
+            //선택된게 없으면 모두비활성화.
+            for (int i = 0; i < 3; ++i)
+            {
+                if (ScaleInput[i])
+                    ScaleInput[i]->Set_Active(false);
+            }
+
+            //선택된게 없으면 모두비활성화.
+            for (int i = 0; i < 3; ++i)
+            {
+                if (PositionInput[i])
+                    PositionInput[i]->Set_Active(false);
+            }
+
+            //선택된게 없으면 모두비활성화.
+            for (int i = 0; i < 3; ++i)
+            {
+                if (RotationInput[i])
+                    RotationInput[i]->Set_Active(false);
+            }
+        }
       
     }
 

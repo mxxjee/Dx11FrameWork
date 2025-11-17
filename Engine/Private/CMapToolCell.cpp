@@ -2,6 +2,9 @@
 #include "CVIBuffer_Triangle.h"
 #include "CGameInstance.h"
 #include "CShader.h"
+#include "CInput_Manager.h"
+#include "CNavMeshEdit_Manager.h"
+#include "CMapObject_Manager.h"
 
 
 
@@ -9,7 +12,9 @@ CMapToolCell::CMapToolCell(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceCont
     :m_pDevice(pDevice), m_pContext(pContext), m_pGameInstance(CGameInstance::GetInstance())
 {
     Safe_AddRef(m_pGameInstance);
+    g_Color = _float4(0.f, 1.f, 0.f, 1.f);
 }
+
 
 void CMapToolCell::Set_PreviewPoints(const deque<PreviewPoint>& New)
 {
@@ -28,22 +33,17 @@ HRESULT CMapToolCell::Initialize_Prototype(void* pArg)
         return E_FAIL;
 
 
-    m_pShader = m_pGameInstance->Find_Shader(L"VtxPosCor");
+    m_pShader = m_pGameInstance->Find_Shader(L"VtxPos");
     Safe_AddRef(m_pShader);
 
     XMStoreFloat4x4(&WorldMatrix, XMMatrixIdentity());
 
-    D3D11_RASTERIZER_DESC desc{};
-    desc.FillMode = D3D11_FILL_WIREFRAME;  // 선 모드
-    desc.CullMode = D3D11_CULL_BACK;       // 뒷면도 그리게
-    desc.FrontCounterClockwise = FALSE;
-    desc.DepthClipEnable = TRUE;           // 보통 TRUE
-
-    if (FAILED(m_pDevice->CreateRasterizerState(&desc, m_pWireframeRS.GetAddressOf())))
-    {
-        MSG_BOX("Failed to Create Wireframe RasterizerState");
+    if (FAILED(Create_WireFrameRS()))
         return E_FAIL;
-    }
+
+    if (FAILED(Create_SolidRS()))
+        return E_FAIL;
+
 
     return S_OK;
 }
@@ -141,7 +141,7 @@ HRESULT CMapToolCell::Render()
     ComPtr<ID3D11RasterizerState> pOldRS = nullptr;
     m_pContext->RSGetState(pOldRS.GetAddressOf());
 
-    m_pContext->RSSetState(m_pWireframeRS.Get());
+    m_pContext->RSSetState(m_pCurrentRS.Get());
 
     if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", WorldMatrix)))
         return E_FAIL;
@@ -152,7 +152,7 @@ HRESULT CMapToolCell::Render()
     if (m_pShader->Bind_Matrix("g_ViewProjMatrix", ViewProjMatrix))
         return E_FAIL;
 
-    if (m_pShader->Bind_Vector("g_Color", _float4(0.f, 1.f, 0.f, 1.f)))
+    if (m_pShader->Bind_Vector("g_Color", g_Color))
         return E_FAIL;
 
     if (FAILED(m_pShader->Begin("Default")))
@@ -190,6 +190,42 @@ void CMapToolCell::Free()
     Safe_Release(m_pGameInstance);
     Safe_Release(m_pVIBufferCom);
 
+}
+
+HRESULT CMapToolCell::Create_WireFrameRS()
+{
+    D3D11_RASTERIZER_DESC desc{};
+    desc.FillMode = D3D11_FILL_WIREFRAME;  // 선 모드
+    desc.CullMode = D3D11_CULL_BACK;       // 뒷면도 그리게
+    desc.FrontCounterClockwise = FALSE;
+    desc.DepthClipEnable = TRUE;           // 보통 TRUE
+
+    if (FAILED(m_pDevice->CreateRasterizerState(&desc, m_pWireframeRS.GetAddressOf())))
+    {
+        MSG_BOX("Failed to Create Wireframe RasterizerState");
+        return E_FAIL;
+    }
+
+    m_pCurrentRS = m_pWireframeRS;
+
+    return S_OK;
+}
+
+HRESULT CMapToolCell::Create_SolidRS()
+{
+    D3D11_RASTERIZER_DESC desc{};
+    desc.FillMode = D3D11_FILL_SOLID;  // 선 모드
+    desc.CullMode = D3D11_CULL_BACK;       // 뒷면도 그리게
+    desc.FrontCounterClockwise = FALSE;
+    desc.DepthClipEnable = TRUE;           // 보통 TRUE
+
+    if (FAILED(m_pDevice->CreateRasterizerState(&desc, m_pSolidRS.GetAddressOf())))
+    {
+        MSG_BOX("Failed to Create Wireframe RasterizerState");
+        return E_FAIL;
+    }
+
+    return S_OK;
 }
 
 void CMapToolCell::Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation)
@@ -273,8 +309,45 @@ bool CMapToolCell::Compare(_vector PointA, _vector PointB)
 
 void CMapToolCell::Set_Neighbor(LINE eLine, CMapToolCell* pCell)
 {
+    //초기화때려주고..
+    
+    m_CellInfo.m_iNeighbors[ENUM_TO_UINT(eLine)] =-1;
+
+    CheckNull(pCell);
     m_CellInfo.m_iNeighbors[ENUM_TO_UINT(eLine)] = pCell->Get_CellInfo().m_iIndex;
 }
+
+void CMapToolCell::Update_SelectMode(float _fTimeDelta)
+{
+  
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Delete))
+    {
+
+        CNavMeshEdit_Manager::GetInstance()->RequestDestory(this);
+        CMapObject_Manager::GetInstance()->Set_SelectObject(nullptr);
+    }
+
+
+  
+ 
+}
+
+HRESULT CMapToolCell::Set_WireFrameMode()
+{
+    m_pCurrentRS = m_pWireframeRS;
+
+
+    return S_OK;
+}
+
+HRESULT CMapToolCell::Set_SolidMode()
+{
+    m_pCurrentRS = m_pSolidRS;
+
+
+    return S_OK;
+}
+
 
 void CMapToolCell::OnSeletected(bool bSelected)
 {
@@ -282,29 +355,48 @@ void CMapToolCell::OnSeletected(bool bSelected)
     if (bSelected)
     {
 
-        
-        desc.FillMode = D3D11_FILL_SOLID;  // 선 모드
-        desc.CullMode = D3D11_CULL_BACK;       // 뒷면도 그리게
-        desc.FrontCounterClockwise = FALSE;
-        desc.DepthClipEnable = TRUE;           // 보통 TRUE
+        Set_SolidMode();
 
-       
+        //이웃에 대해서도..
+        for (int i = 0; i < ENUM_TO_UINT(LINE::END); ++i)
+        {
+            int TargetIdx = m_CellInfo.m_iNeighbors[ENUM_TO_UINT(i)];
+            if (TargetIdx == -1)
+                continue;
+
+            CMapToolCell* pCell = CNavMeshEdit_Manager::GetInstance()->Get_MapToolCell(TargetIdx);
+            if (pCell)
+            {
+                pCell->g_Color = _float4(0.f, 0.f, 1.f, 0.5f);
+                pCell->Set_SolidMode();
+            }
+                
+        }
+
     }
 
     else
     {
-        desc.FillMode = D3D11_FILL_WIREFRAME;  // 선 모드
-        desc.CullMode = D3D11_CULL_BACK;       // 뒷면도 그리게
-        desc.FrontCounterClockwise = FALSE;
-        desc.DepthClipEnable = TRUE;           // 보통 TRUE
+        Set_WireFrameMode();
+        //이웃에 대해서도..
+        for (int i = 0; i < ENUM_TO_UINT(LINE::END); ++i)
+        {
+            int TargetIdx = m_CellInfo.m_iNeighbors[ENUM_TO_UINT(i)];
+            if (TargetIdx == -1)
+                continue;
+
+            CMapToolCell* pCell = CNavMeshEdit_Manager::GetInstance()->Get_MapToolCell(TargetIdx);
+            if (pCell)
+            {
+                pCell->g_Color = _float4(0.f, 1.f, 0.f, 1.f);
+                pCell->Set_WireFrameMode();
+            }
+        }
     }
+       
 
 
-    if (FAILED(m_pDevice->CreateRasterizerState(&desc, m_pWireframeRS.GetAddressOf())))
-    {
-        MSG_BOX("Failed to Create Wireframe RasterizerState");
-        return;
-    }
+  
 }
 
 void CMapToolCell::Save_To_Json(json& Json)

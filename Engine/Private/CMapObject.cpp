@@ -6,12 +6,15 @@
 #include "CShader.h"
 #include "CCollider_Base.h"
 #include "ImGuizmo.h"
+#include "CInput_Manager.h"
+#include "CMapLayer.h"
 
 
 CMapObject::CMapObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CGameObject(pDevice,pContext),
 	pColliderComp{ nullptr },
-	m_pMapObject_Manager{ CMapObject_Manager ::GetInstance()}
+	m_pMapObject_Manager{ CMapObject_Manager ::GetInstance()},
+	m_pInputManager{ CInput_Manager::GetInstance() }
 {
 	
 
@@ -21,7 +24,8 @@ CMapObject::CMapObject(const CMapObject& rhs)
 	:CGameObject{rhs}
 	,m_eRenderGroup{rhs.m_eRenderGroup},
 	pColliderComp{nullptr},
-	m_pMapObject_Manager{rhs.m_pMapObject_Manager}
+	m_pMapObject_Manager{rhs.m_pMapObject_Manager},
+	m_pInputManager{rhs.m_pInputManager}
 {
 	
 }
@@ -272,5 +276,50 @@ void CMapObject::Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta)
 
 void CMapObject::Fix_Y(_float Y)
 {
+}
+
+void CMapObject::Update_SelectMode(float _fTimeDelta)
+{
+	float m_fMoveSpeed = CMapObject_Manager::GetInstance()->Get_MoveSpeed();
+
+	
+	if (m_pInputManager->IsKeyPressed(KeyCode::Delete))
+	{
+		
+		CMapLayer* pTargetLayer = m_pMapObject_Manager->Get_Layer_By_MapObjType(m_eObjType);
+		if (pTargetLayer)
+			pTargetLayer->RequestDestroy(this);
+
+		CMapObject_Manager::GetInstance()->Set_SelectObject(nullptr);
+	}
+
+	if (m_pInputManager->IsKeyHeld(KeyCode::LShift))
+		Fix_Y(0.f);
+
+
+	else if (m_pInputManager->IsKeyHeld(KeyCode::LControl))
+	{
+		if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+			Edit_Move(DIRECTION::UP, m_fMoveSpeed, _fTimeDelta);
+
+		else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+			Edit_Move(DIRECTION::DOWN, m_fMoveSpeed, _fTimeDelta);
+	}
+
+	else
+	{
+		if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+			Edit_Move(DIRECTION::FORWARD, m_fMoveSpeed, _fTimeDelta);
+
+		else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+			Edit_Move(DIRECTION::BACKWARD, m_fMoveSpeed, _fTimeDelta);
+
+		else if (m_pInputManager->IsKeyHeld(KeyCode::LeftArrow))
+			Edit_Move(DIRECTION::LEFT, m_fMoveSpeed, _fTimeDelta);
+
+		else if (m_pInputManager->IsKeyHeld(KeyCode::RightArrow))
+			Edit_Move(DIRECTION::RIGHT, m_fMoveSpeed, _fTimeDelta);
+
+	}
 }
 

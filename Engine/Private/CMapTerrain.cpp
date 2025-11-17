@@ -6,15 +6,19 @@
 #include "CGameInstance.h"
 #include "CMeshColliderComponent.h"
 #include "MathUtils.h"
+#include "CInput_Manager.h"
+#include "CMapObject_Manager.h"
+
 
 
 CMapTerrain::CMapTerrain(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CTerrain_Base(pDevice,pContext)
+    :CTerrain_Base(pDevice,pContext), m_pInputManager(CInput_Manager::GetInstance())
 {
 }
 
 CMapTerrain::CMapTerrain(const CMapTerrain& rhs)
-    :CTerrain_Base(rhs)
+    :CTerrain_Base(rhs),
+    m_pInputManager(rhs.m_pInputManager)
 {
 }
 
@@ -130,7 +134,7 @@ HRESULT CMapTerrain::Ready_Components(void* pArg)
         CMeshColliderComponent::COLLIDER_MESH ColliderDesc;
         ColliderDesc.pModel = m_pModel;
         ColliderDesc.pOwner = this;
-        ColliderDesc.vScaleOffSet = _float3(50.f,10.f, 50.f);
+        ColliderDesc.vScaleOffSet = _float3(70.f,70.f, 70.f);
 
         CComponent* pMeshCollider = dynamic_cast<CMeshColliderComponent*>(m_pGameInstance->Clone_Prototype(
             PROTOTYPE::COMPONENT,
@@ -299,6 +303,45 @@ void CMapTerrain::Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta)
 
     default:
         break;
+    }
+}
+
+void CMapTerrain::Update_SelectMode(float _fTimeDelta)
+{
+    float m_fMoveSpeed = CMapObject_Manager::GetInstance()->Get_MoveSpeed();
+
+    if (m_pInputManager->IsKeyPressed(KeyCode::Delete))
+    {
+        m_pGameInstance->RequestDestroy(this);
+        CMapObject_Manager::GetInstance()->Set_SelectObject(nullptr);
+    }
+
+    if (m_pInputManager->IsKeyHeld(KeyCode::LShift))
+        Fix_Y(0.f);
+
+    else if (m_pInputManager->IsKeyHeld(KeyCode::LControl))
+    {
+        if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+           Edit_Move(DIRECTION::UP, m_fMoveSpeed, _fTimeDelta);
+
+        else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+            Edit_Move(DIRECTION::DOWN, m_fMoveSpeed, _fTimeDelta);
+    }
+
+    else
+    {
+        if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+            Edit_Move(DIRECTION::FORWARD, m_fMoveSpeed, _fTimeDelta);
+
+        else if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+           Edit_Move(DIRECTION::BACKWARD, m_fMoveSpeed, _fTimeDelta);
+
+        else if (m_pInputManager->IsKeyHeld(KeyCode::LeftArrow))
+            Edit_Move(DIRECTION::LEFT, m_fMoveSpeed, _fTimeDelta);
+
+        else if (m_pInputManager->IsKeyHeld(KeyCode::RightArrow))
+            Edit_Move(DIRECTION::RIGHT, m_fMoveSpeed, _fTimeDelta);
+
     }
 }
 

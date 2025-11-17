@@ -18,6 +18,7 @@ protected:
 
 public:
 	virtual		HRESULT Initialize(void* pArg);
+	virtual		void	Update_Priority() {};
 	virtual		void	Update()=0;
 	virtual		void	Render()=0;
 
