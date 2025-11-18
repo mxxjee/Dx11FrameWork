@@ -47,7 +47,7 @@ HRESULT CVIBuffer::Bind_Resource()
     };
 
     _uint		 iOffsets[] = {
-    0
+        0,
     }; //D3D11_INPUT_CLASSIFICATION
 
     m_iNumVertexBuffers = 1;

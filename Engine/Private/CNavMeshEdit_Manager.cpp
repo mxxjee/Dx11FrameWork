@@ -65,6 +65,74 @@ void CNavMeshEdit_Manager::Free()
 		Safe_Release(i);
 }
 
+HRESULT CNavMeshEdit_Manager::Save_NavigationData(const string& filePath)
+{
+	_ulong dwByte = {};
+	HANDLE		hFile = CreateFile(StringToWString(filePath).c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+	if (INVALID_HANDLE_VALUE == hFile)
+		return E_FAIL;
+
+	CheckTrueResult(m_pMapToolCells.empty(), E_FAIL);
+
+	for (auto& cell : m_pMapToolCells)
+	{
+		MapToolCellInfo info = cell->Get_CellInfo();
+		WriteFile(hFile, &info, sizeof(info), &dwByte, nullptr);
+	}
+
+	CloseHandle(hFile);
+
+	return S_OK;
+}
+
+HRESULT CNavMeshEdit_Manager::Load_NavigationData(const string& filePath)
+{
+	for (auto& pCell : m_pMapToolCells)
+		Safe_Release(pCell);
+
+	m_pMapToolCells.clear();
+
+
+	_ulong dwByte = {};
+	HANDLE hFile = CreateFile(StringToWString(filePath).c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+	if (INVALID_HANDLE_VALUE == hFile)
+		return E_FAIL;
+
+	MapToolCellInfo Info = {};
+	while (true)
+	{
+		ReadFile(hFile, &Info, sizeof(MapToolCellInfo), &dwByte, nullptr);
+		if (0 == dwByte)
+			break;
+
+
+		CMapToolCell::MAPTOOLCELL_DESC Desc;
+		Desc.iIdx = Info.m_iIndex;
+
+		CVIBuffer_Triangle::TRIANGLEBUFFER_DESC  TriangleDesc;
+		TriangleDesc.v0 = Info.m_vPoints[0];
+		TriangleDesc.v1 = Info.m_vPoints[1];
+		TriangleDesc.v2 = Info.m_vPoints[2];
+
+		Desc.TriangleCom = &TriangleDesc;
+
+		CMapToolCell* pInstance = CMapToolCell::Create(m_pDevice, m_pContext, &Desc);
+		if (!pInstance)
+			return E_FAIL;
+
+		pInstance->Set_Index(Desc.iIdx);
+		pInstance->Set_Info(Info);
+
+		m_pMapToolCells.push_back(pInstance);
+
+
+	}
+
+	CloseHandle(hFile);
+
+	return S_OK;
+}
+
 void CNavMeshEdit_Manager::Show_Solo_Cell(bool bToggle)
 {
 
@@ -130,6 +198,14 @@ HRESULT CNavMeshEdit_Manager::SetUp_Neighbors()
 		}
 	}
 	return S_OK;
+}
+
+void CNavMeshEdit_Manager::SetUp_Planes()
+{
+	for (auto& pCell : m_pMapToolCells)
+	{
+		pCell->Set_Plane();
+	}
 }
 
 void CNavMeshEdit_Manager::RequestDestory(CMapToolCell* pObj)
@@ -289,6 +365,24 @@ bool CNavMeshEdit_Manager::Check_EmptyPoints(const  deque<PreviewPoint>& Points)
 
 }
 
+bool CNavMeshEdit_Manager::Check_EmptyPoints(PreviewPoint* Points)
+{
+	CheckNullResult(Points, false);
+	_vector vPos[3];
+	for (int i = 0; i < 3; ++i)
+	{
+		vPos[i] = XMLoadFloat3(&Points[i].vPos);
+	}
+
+	bool bResult = XMVector3Equal(vPos[0], XMVectorSet(-999.f, -999.f, -999.f, 1.f));
+	bool bResult2 = XMVector3Equal(vPos[1], XMVectorSet(-999.f, -999.f, -999.f, 1.f));
+	bool bResult3 = XMVector3Equal(vPos[2], XMVectorSet(-999.f, -999.f, -999.f, 1.f));
+
+	return bResult && bResult2 && bResult3;
+
+	return false;
+}
+
 bool CNavMeshEdit_Manager::Check_FullPoints(const  deque<PreviewPoint>& Points)
 {
 	_vector vPos[3];
@@ -347,7 +441,7 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 
 				pTargetPreviewPoints = pTargetCell->Get_PreviewPoints();
 
-				CheckNull(pTargetPreviewPoints);
+				CheckTrue(Check_EmptyPoints(pTargetPreviewPoints));
 
 				if (!m_bFixEdge)
 					LastIdx = Get_Edge(v, pTargetPreviewPoints[0].vPos, pTargetPreviewPoints[1].vPos, pTargetPreviewPoints[2].vPos);
@@ -678,9 +772,10 @@ void CNavMeshEdit_Manager::Update_Late(_float fTimeDelta)
 void CNavMeshEdit_Manager::Render()
 {
 	CheckNull(m_pPreview);
-	CheckTrue(Check_EmptyPoints(m_Points));
 
-	m_pPreview->Render();
+	if(!Check_EmptyPoints(m_Points))
+		m_pPreview->Render();
+
 	for (auto& cell : m_pMapToolCells)
 	{
 		if(cell->Is_Active())
@@ -697,4 +792,5 @@ void CNavMeshEdit_Manager::Clear_Points()
 	m_PrePoints.resize(3);
 	m_bClear = true;
 }
+
 

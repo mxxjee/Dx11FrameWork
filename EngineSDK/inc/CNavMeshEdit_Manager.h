@@ -1,5 +1,6 @@
 #pragma once
 #include "CBase.h"
+#include "CMapToolCell.h"
 
 NS_BEGIN(Engine)
 class CMapToolCell;
@@ -8,9 +9,16 @@ class CNavEditPreview;
 class ENGINE_DLL CNavMeshEdit_Manager :
     public CBase
 {
+public:
+    struct CompareKey
+    {
+        bool operator()(const _float& a, const _float& b) const
+        {
+            return a < b;
+        }
+    };
 
     DECLARE_SINGLETON(CNavMeshEdit_Manager)
-
 
 private:
     explicit CNavMeshEdit_Manager();
@@ -40,6 +48,8 @@ private:
 
 
     bool    Check_EmptyPoints(const  deque<PreviewPoint>& Points);        //Resize되어있으므로, 전부다 0,0,0이면 의미없는값 판정
+    bool    Check_EmptyPoints(PreviewPoint* Points);        //Resize되어있으므로, 전부다 0,0,0이면 의미없는값 판정
+    
     bool    Check_FullPoints(const  deque<PreviewPoint>& Points); //다 채워졌는지 확인한다. (모두 -999가아닌지확인)
 
     void    Init_Points();  //초기화값 -999로채운다.
@@ -60,6 +70,8 @@ public:
 
 public:
     void            Free() override;
+    HRESULT         Save_NavigationData(const string& filePath);
+    HRESULT         Load_NavigationData(const string& filePath);
 
 public:
     void            Show_Solo_Cell(bool bToggle); 
@@ -74,14 +86,14 @@ private:
 
 public:                                                  
     HRESULT     SetUp_Neighbors();
-
+    void        SetUp_Planes();
 
 public:
     void        RequestDestory(CMapToolCell* pObj);
     void        ProcessDestroy();
 public:
     const vector<CMapToolCell*>& Get_MapToolCells() { return m_pMapToolCells; }
-    CMapToolCell* Get_MapToolCell(_uint idx) { if (idx >= m_pMapToolCells.size() - 1)return nullptr; return m_pMapToolCells[idx]; }
+    CMapToolCell* Get_MapToolCell(_uint idx) { if (idx > m_pMapToolCells.size() - 1)return nullptr; return m_pMapToolCells[idx]; }
     HRESULT     Render_Preview_Imgui_Render();
 
 private:

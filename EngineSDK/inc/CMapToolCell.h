@@ -27,10 +27,14 @@ private:
 public:
     HRESULT                Set_WireFrameMode();
     HRESULT                Set_SolidMode();
+    void                    Set_Type(_uint Type) { m_CellInfo.AreaType = Type; }
+    void                    Set_Info(const MapToolCellInfo& Info) { m_CellInfo = Info; }
 public:
     /*정렬되기 전 원본의 점 = PreviewPoints*/
     void                Set_PreviewPoints(const deque<PreviewPoint>& New);
     PreviewPoint*        Get_PreviewPoints() { return m_PreviewPoints; }
+
+
 private:
     PreviewPoint        m_PreviewPoints[ENUM_TO_UINT(POINTType::END)];
 
@@ -39,9 +43,13 @@ public:
     void    UpdatePoints(deque<PreviewPoint> Points);
     HRESULT     Ready_Components(void* pArg);
     HRESULT     Ready_Resource(void* pArg);
+
+
 public:
     HRESULT      Render();
 
+public:
+    void            Set_Plane();
 public:
     _float3* Get_vPoints() { return m_CellInfo.m_vPoints;}
     _vector Get_vPoint(POINTType eType) { return XMLoadFloat3(&m_CellInfo.m_vPoints[ENUM_TO_UINT(eType)]); }

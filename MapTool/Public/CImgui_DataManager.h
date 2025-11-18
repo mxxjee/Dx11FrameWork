@@ -87,7 +87,9 @@ public:
 #pragma region 저장/로드 관련
 
 public:
-    bool            IsLoaded() { return m_LoadFilePath.m_CurrentLoadFilePath != ""; }//로드한적이있냐. 그러면 덮어쓰기가능!
+    bool            IsLoadedTerrain() { return m_LoadFilePath.m_CurrentLoadTerrainFilePath != ""; }//로드한적이있냐. 그러면 덮어쓰기가능!
+    bool            IsLoadedNav() { return m_LoadFilePath.m_CurrentLoadNavFilePath != ""; }
+
     const SaveFilePath& Get_SaveFilePath() { return m_SaveFilePath; }
     const LoadFilePath& Get_LoadFilePath() { return m_LoadFilePath; }
 

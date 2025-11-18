@@ -169,7 +169,9 @@
     <ClInclude Include="..\Public\CPlayer.h" />
     <ClInclude Include="..\Public\CPlayer_Body.h" />
     <ClInclude Include="..\Public\CTerrain.h" />
-    <ClInclude Include="..\Public\CUI_Interactable.h" />
+    <ClInclude Include="..\Public\CUI_Interactable.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="Client.h" />
     <ClInclude Include="CScreenFilter.h" />
     <ClInclude Include="framework.h" />
@@ -196,7 +198,9 @@
     <ClCompile Include="..\Private\CPlayer.cpp" />
     <ClCompile Include="..\Private\CPlayer_Body.cpp" />
     <ClCompile Include="..\Private\CTerrain.cpp" />
-    <ClCompile Include="..\Private\CUI_Interactable.cpp" />
+    <ClCompile Include="..\Private\CUI_Interactable.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="CScreenFilter.cpp" />
   </ItemGroup>

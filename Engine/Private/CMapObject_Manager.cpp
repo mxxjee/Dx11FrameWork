@@ -335,6 +335,7 @@ void CMapObject_Manager::Show_SelectObject_Gizmo()
 void CMapObject_Manager::Set_SelectObject(IMapEditable* pSelectedObject)
 {
     
+ 
 
     //기존껏은 해제한다.
     if (m_pSelectedObject)

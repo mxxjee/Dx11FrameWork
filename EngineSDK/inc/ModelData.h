@@ -39,6 +39,7 @@ struct BoneData
 
 	BoneData()
 	{
+		XMStoreFloat4x4(&TransformationMatrix, XMMatrixIdentity());
 		XMStoreFloat4x4(&m_OffsetMatrix, XMMatrixIdentity());
 
 	}

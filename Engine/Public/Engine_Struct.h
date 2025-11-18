@@ -121,15 +121,12 @@ namespace Engine
 		_float3         m_vNormals[ENUM_TO_UINT(LINE::END)] = {};   //각 선분에 대한 법선벡터
 		_int            m_iNeighbors[ENUM_TO_UINT(LINE::END)] = { -1,-1,-1 };   //각 선분에 대해서 인접한 삼각형의 인덱스(존재하지 않으면 -1로 채움)
 		_uint           m_iIndex;           //현재 이 삼각형이 네브메쉬 배열의 몇번째 인덱스인가요
+		_float4			m_Plane=_float4(0.f,0.f,0.f,0.f);			//현재 이 삼각형의 평면정보(a,b,c,d) // ax+by+cz+d
 
+		_uint			AreaType=0;			//enum(AreaType)
+	
 	};
-	struct CompareKey
-	{
-		bool operator()(const _float& a, const _float& b) const
-		{
-			return a < b;
-		}
-	};
+
 }
 
 

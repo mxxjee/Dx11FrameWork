@@ -170,6 +170,18 @@ HRESULT CMapToolCell::Render()
     return S_OK;
 }
 
+void CMapToolCell::Set_Plane()
+{
+   
+    _vector vPlane = XMPlaneFromPoints(XMLoadFloat3(&m_CellInfo.m_vPoints[ENUM_TO_UINT(POINTType::A)]),
+        XMLoadFloat3(&m_CellInfo.m_vPoints[ENUM_TO_UINT(POINTType::B)]),
+        XMLoadFloat3(&m_CellInfo.m_vPoints[ENUM_TO_UINT(POINTType::C)]));
+
+
+    XMStoreFloat4(&m_CellInfo.m_Plane, vPlane);
+ 
+}
+
 CMapToolCell* CMapToolCell::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg)
 {
     CMapToolCell* pInstnace = new CMapToolCell(pDevice, pContext);
@@ -255,12 +267,23 @@ void CMapToolCell::Imgui_Render_Properties(_float3* vScale, _float3* vPosition, 
     ImGui::PopStyleColor();
 
     //자신 네이버 출력
-    ImGui::Separator();
+
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
     ImGui::BulletText("Neighbor= AB:%d, BC:%d, CA:%d", m_CellInfo.m_iNeighbors[ENUM_TO_UINT(LINE::AB)], 
                                                         m_CellInfo.m_iNeighbors[ENUM_TO_UINT(LINE::BC)],
                                                         m_CellInfo.m_iNeighbors[ENUM_TO_UINT(LINE::CA)]);
     ImGui::PopStyleColor();
+
+
+    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+    auto A = m_CellInfo.m_Plane.x;
+    auto B = m_CellInfo.m_Plane.y;
+    auto C = m_CellInfo.m_Plane.z;
+    auto D = m_CellInfo.m_Plane.w;
+
+    ImGui::Text("Plane: %.3f x %+.3f y %+.3f z %+.3f = 0", A, B, C, D);
+    ImGui::PopStyleColor();
+
 
     //ImGui::Separator();
     //ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 255, 255));

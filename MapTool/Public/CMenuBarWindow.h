@@ -41,12 +41,15 @@ private:
 private:
     void        Show_SaveMenu();        //저장
     void        Show_SaveAsMenu();      //다른이름으로 저장
+    void        Show_SaveAllMenu();     //Terrain,Nav모두 한꺼번에 저장.이 함수를 통해서 Terrain파일이름으로  Nav파일저장가능
 
 
     void        Show_LoadMenu();
     void        Show_ModeMenu();
 
-    void        Show_ListBox();     //불러올목록표시
+    void        Show_TerrainListBox();     //불러올목록표시
+    void        Show_NavListBox();
+
     void        Show_TextBox();     //다른이름으로 저장할 이름 적는곳
 
 private:
@@ -60,7 +63,9 @@ private:
     LoadFilePath            m_LoadFilePath;         //Datamanager로부터 참조
 
 private:
-    bool            m_bListOpen = false;
+    bool            m_bTerrainListOpen = false;
+    bool            m_bNavListOpen = false;
+
     bool            m_bTextOpen = false;
     char            m_szSaveName[MAX_PATH]="";
     bool            m_bLoad = false;

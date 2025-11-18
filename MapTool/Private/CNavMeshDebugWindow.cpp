@@ -39,7 +39,7 @@ HRESULT CNavMeshDebugWindow::Create_Widgets()
 
     ButtonDesc.Tag = "Show SoloCell";
     ButtonDesc.Label = "Show SoloCell";
-    ButtonDesc.m_RelativePos = ImVec2(100, 150);
+    ButtonDesc.m_RelativePos = ImVec2(100, 125);
     ButtonDesc.callback = [this]()
     {
         m_bShowCellToggle = !m_bShowCellToggle;
@@ -48,6 +48,17 @@ HRESULT CNavMeshDebugWindow::Create_Widgets()
     };
 
     if (FAILED(Add_Widgets<CImgui_Button>(&ButtonDesc, reinterpret_cast<CImgui_Widget**>(&m_pShowSoloCell_Button))))
+        return E_FAIL;
+
+    ButtonDesc.Tag = "SetUp_Plane";
+    ButtonDesc.Label = "SetUp_Plane";
+    ButtonDesc.m_RelativePos = ImVec2(100, 150);
+    ButtonDesc.callback = [this]()
+    {
+        CNavMeshEdit_Manager::GetInstance()->SetUp_Planes();
+    };
+
+    if (FAILED(Add_Widgets<CImgui_Button>(&ButtonDesc, reinterpret_cast<CImgui_Widget**>(&m_pSetPlane_Button))))
         return E_FAIL;
 
     return S_OK;
@@ -89,6 +100,7 @@ CNavMeshDebugWindow* CNavMeshDebugWindow::Create(ComPtr<ID3D11Device> pDevice, C
 void CNavMeshDebugWindow::Free()
 {
     __super::Free();
+    Safe_Release(m_pSetPlane_Button);
     Safe_Release(m_pShowSoloCell_Button);
     Safe_Release(m_pButton);
 

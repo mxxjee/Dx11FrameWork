@@ -47,10 +47,15 @@ HRESULT CImgui_DataManager::Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3
 	Update_SaveFiles();
 
 
-	int iSize = m_SaveFilePath.m_SaveFiles.size();
+	int iTerrainSize = m_SaveFilePath.m_TerrainSaveFiles.size();
+	int iNavSize = m_SaveFilePath.m_NavSaveFiles.size();
+
 
 	//이제 저장 누르면 이 경로로 저장될거야!
-	m_SaveFilePath.m_CurrentSaveFilePath = m_SaveFilePath.m_SavePathBase + "Terrain" + to_string(iSize) + ".json";
+	m_SaveFilePath.m_CurrentTerrainSaveFilePath = m_SaveFilePath.m_SavePathBase + "Terrain" + to_string(iTerrainSize) + ".json";
+	
+	
+	m_SaveFilePath.m_CurrentNavSaveFilePath = m_SaveFilePath.m_SavePathBase + "Nav" + to_string(iNavSize) + ".dat";
 
 
 	return S_OK;
@@ -315,9 +320,15 @@ MapObjType CImgui_DataManager::Get_ObjType_From_Path(const wstring& path)
 
 HRESULT CImgui_DataManager::Update_SaveFiles()
 {
-	m_SaveFilePath.m_SaveFiles.clear();
-	m_SaveFilePath.m_SaveFileNames.clear();
-	m_SaveFilePath.m_SaveFileNamesStr.clear();
+	m_SaveFilePath.m_TerrainSaveFiles.clear();
+	m_SaveFilePath.m_NavSaveFiles.clear();
+
+	m_SaveFilePath.m_SaveTerrainFileNames.clear();
+	m_SaveFilePath.m_SaveNavFileNames.clear();
+	
+	m_SaveFilePath.m_TerrainSaveFileNamesStr.clear();
+	m_SaveFilePath.m_NavSaveFileNamesStr.clear();
+
 
 
 	for (const auto& entry : fs::recursive_directory_iterator(m_SaveFilePath.m_SavePathBase))
@@ -328,16 +339,30 @@ HRESULT CImgui_DataManager::Update_SaveFiles()
 			std::string fileName = entry.path().stem().string() + ".json"; // 이름만 추출
 
 			
-			m_SaveFilePath.m_SaveFiles.push_back(fullPath);    // 경로 저장
-			m_SaveFilePath.m_SaveFileNames.push_back(fileName);
+			m_SaveFilePath.m_TerrainSaveFiles.push_back(fullPath);    // 경로 저장
+			m_SaveFilePath.m_SaveTerrainFileNames.push_back(fileName);
+		}
+
+		else if (entry.path().extension() == ".dat")
+		{
+			std::string fullPath = entry.path().string();
+			std::string fileName = entry.path().stem().string() + ".dat"; // 이름만 추출
+
+
+			m_SaveFilePath.m_NavSaveFiles.push_back(fullPath);    // 경로 저장
+			m_SaveFilePath.m_SaveNavFileNames.push_back(fileName);
 		}
 
 	}
 
 
-	m_SaveFilePath.m_SaveFileNamesStr.reserve(m_SaveFilePath.m_SaveFileNames.size());
-	for (auto& name : m_SaveFilePath.m_SaveFileNames)
-		m_SaveFilePath.m_SaveFileNamesStr.push_back(name.c_str());
+	m_SaveFilePath.m_TerrainSaveFileNamesStr.reserve(m_SaveFilePath.m_TerrainSaveFiles.size());
+	for (auto& name : m_SaveFilePath.m_SaveTerrainFileNames)
+		m_SaveFilePath.m_TerrainSaveFileNamesStr.push_back(name.c_str());
+
+	m_SaveFilePath.m_NavSaveFileNamesStr.reserve(m_SaveFilePath.m_NavSaveFiles.size());
+	for (auto& name : m_SaveFilePath.m_SaveNavFileNames)
+		m_SaveFilePath.m_NavSaveFileNamesStr.push_back(name.c_str());
 
 	return S_OK;
 }

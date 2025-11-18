@@ -36,8 +36,6 @@ private:
 	void    CreateRasterizerStates();
 	void    CreateDepthStencilStates();
 
-	HRESULT			Ready_Test();
-
 private:
 	void			Register_Levels();
 	HRESULT			Start_Level(LEVEL_ID iLevelID,LEVELCHANGETYPE eChangeType);
