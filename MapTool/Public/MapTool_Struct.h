@@ -20,6 +20,11 @@ struct SaveFilePath
 	vector<const char*>         m_TerrainSaveFileNamesStr;
 	vector<const char*>			m_NavSaveFileNamesStr;
 
+
+	SaveFilePath()
+	{
+
+	}
 };
 
 struct LoadFilePath

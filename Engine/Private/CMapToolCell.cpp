@@ -285,14 +285,16 @@ void CMapToolCell::Imgui_Render_Properties(_float3* vScale, _float3* vPosition, 
     ImGui::PopStyleColor();
 
 
-    //ImGui::Separator();
-    //ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 255, 255));
-    //ImGui::BulletText("Rotation X:%f, Y:%f, Z:%f",
-    //    rResult.x,
-    //    rResult.y,
-    //    rResult.z);
-    //ImGui::PopStyleColor();
+    ImGui::Separator();
+    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 255, 255));
+    ImGui::BulletText("Type:%s",
+        Convert_String_To_Type(static_cast<CellType>(m_CellInfo.CellType)).c_str());
+    ImGui::PopStyleColor();
 
+    ///라디오버튼..?
+   
+    ImGui::RadioButton("Default", (int*)&m_CellInfo.CellType, (int)CellType::DEFAULT);
+    ImGui::RadioButton("FALL", (int*)&m_CellInfo.CellType, (int)CellType::FALL);
 
 
 }
@@ -353,6 +355,27 @@ void CMapToolCell::Update_SelectMode(float _fTimeDelta)
 
   
  
+}
+
+string CMapToolCell::Convert_String_To_Type(CellType eType)
+{
+
+    string StateDebugStr = "";
+
+    switch (eType)
+    {
+    case CellType::DEFAULT:
+        StateDebugStr = "DEFAULT";
+        break;
+
+    case CellType::FALL:
+        StateDebugStr = "FALL";
+        break;
+    }
+   
+
+
+    return StateDebugStr;
 }
 
 HRESULT CMapToolCell::Set_WireFrameMode()

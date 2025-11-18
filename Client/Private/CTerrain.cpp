@@ -102,11 +102,6 @@ HRESULT CTerrain::Ready_PartObjects(void* pArg)
 }
 
 
-
-
-
-
-
 CTerrain* CTerrain::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 {
     CTerrain* pInstance = new CTerrain(pDevice, pContext);

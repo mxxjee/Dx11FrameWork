@@ -142,7 +142,7 @@ HRESULT CLevel_Town::Ready_Lights()
 {
     LIGHT_DESC      LightDesc{};
     LightDesc.eType = LIGHT::DIRECTIONAL;
-    LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+    LightDesc.vDirection = _float4(1.f, 1.f, 1.f, 0.f);
     LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
     LightDesc.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
     LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
@@ -208,7 +208,7 @@ HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
 
     ///////////////////////Navigation 불러오기
-    m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::TOWN), "../../Resource/Data/Map/Nav3.dat");
+    m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::TOWN), "../../Resource/Data/Map/Nav6.dat");
     m_pGameInstance->Set_NavMeshShader(m_pGameInstance->Find_Shader(L"VtxPos"));
     m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::TOWN));
 

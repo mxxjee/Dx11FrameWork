@@ -27,7 +27,7 @@ private:
 public:
     HRESULT                Set_WireFrameMode();
     HRESULT                Set_SolidMode();
-    void                    Set_Type(_uint Type) { m_CellInfo.AreaType = Type; }
+    void                    Set_Type(_uint Type) { m_CellInfo.CellType = Type; }
     void                    Set_Info(const DefaultCellInfo& Info) { m_CellInfo = Info; }
 public:
     /*정렬되기 전 원본의 점 = PreviewPoints*/
@@ -88,6 +88,8 @@ public:
     void        Set_Neighbor(LINE eLine, CMapToolCell* pCell);
     virtual     void Update_SelectMode(float _fTimeDelta);
 
+private:
+    string Convert_String_To_Type(CellType eType);
 private:
     ComPtr<ID3D11RasterizerState> m_pCurrentRS = nullptr;
     ComPtr<ID3D11RasterizerState> m_pWireframeRS = nullptr;

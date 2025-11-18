@@ -174,11 +174,16 @@ void CMenuBarWindow::Show_SaveMenu()
 #pragma endregion
         if (ImGui::MenuItem("Save_NavMesh","Ctrl+S"))
         {
-           
-            if (FAILED(CNavMeshEdit_Manager::GetInstance()->Save_NavigationData(m_SaveFilePath.m_CurrentNavSaveFilePath)))
+            if (m_pImgui_DataManager->IsLoadedNav())
             {
-                MSG_BOX("Nothing to Save!");
-                return;
+                if (FAILED(CNavMeshEdit_Manager::GetInstance()->Save_NavigationData(m_SaveFilePath.m_CurrentNavSaveFilePath)))
+                {
+                    MSG_BOX("Nothing to Save!");
+                    return;
+                }
+
+                m_LoadFilePath.m_CurrentLoadNavFilePath = "";
+                m_pImgui_DataManager->Set_LoadFilePath(m_LoadFilePath);
             }
 
             //Refresh SaveFileList

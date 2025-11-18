@@ -220,6 +220,6 @@ namespace Engine
 	enum class POINTType {A,B,C,END};
 	enum class LINE{AB,BC,CA,END};
 
-	enum class AreaType {DEFAULT,FALL,END};
+	enum class CellType {DEFAULT,FALL,END};
 }
 #endif // Engine_Enum_h__

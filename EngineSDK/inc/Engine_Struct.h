@@ -123,7 +123,7 @@ namespace Engine
 		_uint           m_iIndex;           //현재 이 삼각형이 네브메쉬 배열의 몇번째 인덱스인가요
 		_float4			m_Plane=_float4(0.f,0.f,0.f,0.f);			//현재 이 삼각형의 평면정보(a,b,c,d) // ax+by+cz+d
 
-		_uint			AreaType=0;			//enum(AreaType)
+		_uint			CellType=0;			//enum(AreaType)
 	
 	};
 
