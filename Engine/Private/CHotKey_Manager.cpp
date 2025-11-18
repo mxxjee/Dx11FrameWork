@@ -39,7 +39,7 @@ HRESULT CHotKey_Manager::Register_HotKey(KeyCode eKode, bool bCtrl, bool bShift,
 
 bool CHotKey_Manager::CheckHotKeyPressed(const HotKey& Key)
 {
-    bool bPressedKey = m_pInputManager->IsKeyHeld(Key.eKeyCode);
+    bool bPressedKey = m_pInputManager->IsKeyPressed(Key.eKeyCode);
     bool bPressedAlt = m_pInputManager->IsKeyHeld(KeyCode::Alt);
     bool bPressedShift = m_pInputManager->IsKeyHeld(KeyCode::LShift);
     bool bCtrl = m_pInputManager->IsKeyHeld(KeyCode::LControl);
