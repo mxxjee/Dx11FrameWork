@@ -5,7 +5,10 @@
 //정점3개 저장한다.
 //내가 몇번인덱스인지 저장한다.
 //인접한 삼각형을 저장한다.
+
 NS_BEGIN(Engine)
+class CVIBuffer_Triangle;
+
 class ENGINE_DLL CCell :
     public CBase
 {
@@ -15,30 +18,40 @@ private:
     virtual ~CCell() = default;
 
 public:
-    _vector     Get_Point(POINTType ePoint) const { return XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(ePoint)]); }
-    bool        Compare(_fvector vTargetPointA, _fvector vTargetPointB);
-    void        Set_Neighbor(LINE eLine, CCell* pCell) { m_iNeighbors[ENUM_TO_UINT(eLine)] = pCell->m_iIndex; }
+    _vector     Get_Point(POINTType ePoint) const { return XMLoadFloat3(&m_CellInfo.m_vPoints[ENUM_TO_UINT(ePoint)]); }
+    int         Get_Idx() { return m_CellInfo.m_iIndex; }
+    _float      Compute_Height(_vector vCellTargetPos);
 
+                //셀 스페이상의 위치가 셀안에있는지 판단, 없으면 더 나아갈 수 잇는지 판단하기 위해 이웃을 리턴.
+    bool        isIn(_fvector vResultPos, _int* pNeighborIndex);
 private:
-    _float3         m_vPoints[ENUM_TO_UINT(POINTType::END)] = {};   //각 정점의 좌표(월드)
-    _float3         m_vNormals[ENUM_TO_UINT(LINE::END)] = {};   //각 선분에 대한 법선벡터
-    _int            m_iNeighbors[ENUM_TO_UINT(LINE::END)] = { -1,-1,-1 };   //각 선분에 대해서 인접한 삼각형의 인덱스(존재하지 않으면 -1로 채움)
-    _uint           m_iIndex;           //현재 이 삼각형이 네브메쉬 배열의 몇번째 인덱스인가요
+    DefaultCellInfo         m_CellInfo;
 
 public:
-    HRESULT Initialize_Prototype(const _float3* pPoints, _int iIndex);
-
-public:
-    _bool isIn(_fvector vResultPos);
+    HRESULT Initialize_Prototype(const DefaultCellInfo& Info);
+    HRESULT Ready_Components();
 
 private:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };
 
-public:                             //생성함수, 각 정점의 위치3개, 인덱스
-    static CCell* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const _float3* pPoints, _int iIndex);
+#ifdef _DEBUG
+public:
+    void    Update_Render();
+    HRESULT Render();
+private:
+    HRESULT Create_WireFrameRS();
+    ComPtr<ID3D11RasterizerState> m_pWireframeRS = nullptr;
+    CVIBuffer_Triangle* m_pVIBufferCom = { nullptr };
+
+#endif
+public:                             //맵툴에서 파싱해온 구조체만 넘겨주기
+    static CCell* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const DefaultCellInfo& Info);
     virtual void Free() override;
 
+private:
+    class CGameInstance* m_pGameInstance = nullptr;
 };
+
 NS_END
 

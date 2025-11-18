@@ -15,6 +15,7 @@ namespace Client
 {
 	static const unsigned int g_iWinSizeX = 1280;
 	static const unsigned int g_iWinSizeY = 720;
+	static		bool		m_bDrawDebug = true;
 
 
 	enum class LEVEL_ID {STATIC,LOGO,LOADING,TOWN,UI,MAPTOOL,END};

@@ -14,6 +14,7 @@
 #include "CVIBuffer_Rect.h" 
 #include "CVIBuffer_Terrain.h"
 #include "CModel.h"
+#include "CVIBuffer_Triangle.h"
 
 ///////////////GameObject//////////////////////
 #include "CBackGround.h"
@@ -216,7 +217,14 @@ HRESULT CLoader::Register_Shaders()
 	GetCurrentDirectory(MAX_PATH, buffer);
 	OutputDebugStringW(buffer);
 
-	CShader* pInstance = CShader::Create(m_pDevice,
+    CShader* pInstance = CShader::Create(m_pDevice,
+        m_pDeviceContext, VTXPOS::desc, L"../../Resource/Shader/Shader_VtxPos.hlsl",
+        "DefaultTechnique");
+    m_pGameInstance->Register_Shader(L"VtxPos", pInstance);
+
+
+
+	pInstance = CShader::Create(m_pDevice,
         m_pDeviceContext, VTXPOSTEX::desc, L"../../Resource/Shader/Shader_VtxPosTex.hlsl",
 		"DefaultTechnique");
     m_pGameInstance->Register_Shader(L"Default", pInstance);
@@ -310,7 +318,10 @@ HRESULT CLoader::Register_Components()
         return E_FAIL;
 
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Navigation"), CNavigation::Create(m_pDevice, m_pDeviceContext, TEXT("../../Resource/Data/Map/Navigation.dat")))))
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Navigation"), CNavigation::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Triangle"), CVIBuffer_Triangle::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     return S_OK;

@@ -174,6 +174,7 @@ HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 {
 
     /////////////////////////////////////
+#pragma region Loading Terrain
     vector<tagLoadTerrainData> LoadDatas=m_pGameInstance->Load_Terrains_Runtime("../../Resource/Data/Map/Stage1.json");
     for (int i = 0; i < LoadDatas.size(); ++i)
     {
@@ -203,6 +204,13 @@ HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
     }
 
   
+#pragma endregion
+
+
+    ///////////////////////Navigation 불러오기
+    m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::TOWN), "../../Resource/Data/Map/Terrain7_Nav.dat");
+    m_pGameInstance->Set_NavMeshShader(m_pGameInstance->Find_Shader(L"VtxPos"));
+    m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::TOWN));
 
     return S_OK;
 }

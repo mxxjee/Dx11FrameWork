@@ -358,6 +358,9 @@
     <Filter Include="00.System\99.MapTool%27s\01.NavMeshEdit\NavEditPreview">
       <UniqueIdentifier>{3fc029fb-bd69-4923-aca0-f5221c095d3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\15.NavMesh">
+      <UniqueIdentifier>{29fc8fd3-096b-4940-a02a-b2267e7ea6b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -701,6 +704,9 @@
     <ClInclude Include="..\Public\CNavEditPreview.h">
       <Filter>00.System\99.MapTool%27s\01.NavMeshEdit\NavEditPreview</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CNavMesh_Manager.h">
+      <Filter>00.System\15.NavMesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -999,6 +1005,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CNavEditPreview.cpp">
       <Filter>00.System\99.MapTool%27s\01.NavMeshEdit\NavEditPreview</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CNavMesh_Manager.cpp">
+      <Filter>00.System\15.NavMesh</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

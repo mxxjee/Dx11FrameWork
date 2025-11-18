@@ -5,11 +5,12 @@
 #include "CMainCamera.h"
 #include "CUICamera.h"
 #include "CCameraComponent.h"
+#include "CNavMesh_Manager.h"
 
 
 
 CRenderer::CRenderer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-	:m_pDevice(pDevice),m_pContext(pContext)
+	:m_pDevice(pDevice),m_pContext(pContext), m_pGameInstance(CGameInstance::GetInstance())
 {
 }
 
@@ -62,6 +63,11 @@ void CRenderer::Render_Group(_uint eType)
 	BindRenderState(eType);
 	SortByDepth(eType);
 	RenderGroupObjects(eType);
+
+#ifdef _DEBUG
+	if(eType==1)
+		m_pGameInstance->Render_NavMeshManager();
+#endif
 }
 
 
@@ -70,7 +76,7 @@ void CRenderer::BindRenderState(_uint eGroup)
 {
 	RenderStates Renderstate = CGameInstance::GetInstance()->Get_RenderStates(eGroup);
 	
-	CGameInstance::GetInstance()->Bind_SamplerState(eGroup);
+	m_pGameInstance->Bind_SamplerState(eGroup);
 	m_pContext->RSSetState(Renderstate._rasterizerState.Get());
 	m_pContext->OMSetBlendState(Renderstate._BlendState.Get(), nullptr, 0xFFFFFFFF);
 	m_pContext->OMSetDepthStencilState(Renderstate._DepthStencilState.Get(), 0);

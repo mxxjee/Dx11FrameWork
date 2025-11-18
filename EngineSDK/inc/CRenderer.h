@@ -44,11 +44,16 @@ public:
     virtual void    Free() override;
 
 private:
-    _matrix         m_MainCameraView;
     int             m_RenderMaxCount = 0;
 
     vector<list<CGameObject*>>   m_RenderGroups;
     vector<function<bool(class CGameObject*, class CGameObject*)>>      m_SortFuncTable;
+
+
+#ifdef _DEBUG
+private:
+    class CGameInstance* m_pGameInstance = { nullptr };
+#endif
 };
 
 NS_END

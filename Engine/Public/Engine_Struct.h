@@ -114,7 +114,7 @@ namespace Engine
 	}PreviewPoint;
 
 
-	struct MapToolCellInfo
+	struct DefaultCellInfo
 	{
 		/*이값들은 모두 정렬된 이후를 기준으로.(실제연산에 쓸값들)*/
 		_float3         m_vPoints[ENUM_TO_UINT(POINTType::END)] = {};   //각 정점의 좌표(월드)
@@ -127,6 +127,7 @@ namespace Engine
 	
 	};
 
+	
 }
 
 

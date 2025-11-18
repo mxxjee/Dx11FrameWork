@@ -4,6 +4,7 @@
 #include "CInput_Manager.h"
 #include "CModel.h"
 #include "CBody.h"
+#include "CNavigation.h"
 
 
 
@@ -56,6 +57,9 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
 
     desc.BodyDesc = &BodyDesc;
 
+    if (FAILED(Ready_Components(&desc)))
+        return E_FAIL;
+
 
     if(FAILED(Ready_PartObjects(&desc)))
         return E_FAIL;
@@ -63,6 +67,9 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     m_iPreState = CModelObject::NONE;
     m_iState = CModelObject::IDLE;
 
+
+    if (m_pNavigationCom)
+        m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
     return S_OK;
 }
 
@@ -92,13 +99,16 @@ void CPlayer::Update_Late(_float fTimeDelta)
 void CPlayer::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
-   
+    m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::NONALPHA), this);
 }
 
 HRESULT CPlayer::Render()
 {
   /*이제 각 파츠들이 rendergroup으로 들어가서 렌더한다.*/
 
+#ifdef _DEBUG
+    m_pNavigationCom->Render();
+#endif
 
     return S_OK;
 } 
@@ -175,7 +185,7 @@ void CPlayer::Move_Input(_float fTimeDelta)
     }
     if (bPressed)
     {
-        m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta);
+        m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta,Space::Local,m_pNavigationCom);
         Set_State(SET, RUN);
     }
 
@@ -183,6 +193,9 @@ void CPlayer::Move_Input(_float fTimeDelta)
     if (m_pTarget)
         m_pTransformCom->Chase(m_pTarget->Get_Transform()->Get_State(STATE::POSITION, TransformScope::WORLD), fTimeDelta, 5);
 
+
+    m_pTransformCom->Set_State(STATE::POSITION,
+        m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
 
 }
 
@@ -268,7 +281,32 @@ CGameObject* CPlayer::Clone(void* pArg)
 void CPlayer::Free()
 {
     Safe_Release(m_pInputManager);
+    Safe_Release(m_pNavigationCom);
+
     __super::Free();
+}
+
+HRESULT CPlayer::Ready_Components(void* pArg)
+{
+    // Transform 생성 및 추가
+    CComponent::COMPONENT_DESC Desc;
+    Desc.pOwner = this;
+
+    CComponent* pNavigation = dynamic_cast<CNavigation*>(m_pGameInstance->Clone_Prototype(
+        PROTOTYPE::COMPONENT,
+        0,
+        PROTO_COMPONENT_NAME(L"Navigation"),
+        &Desc)
+        );
+
+    if (FAILED(Add_Component(
+        COMPONENT_TYPE::NAVIGATION,
+        pNavigation,
+        reinterpret_cast<CComponent**>(&m_pNavigationCom)
+    )))
+        return E_FAIL;
+
+    return S_OK;
 }
 
 HRESULT CPlayer::Ready_PartObjects(void* pArg)

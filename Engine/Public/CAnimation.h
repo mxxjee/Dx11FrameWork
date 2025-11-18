@@ -31,7 +31,7 @@ public:
     void        Reset_Animtion();
 public:
     const char* Get_Name() { return m_szName; }
-    int         Get_CurrentTrackPoistion() { return m_fCurrentTrackPosition; }
+    _float         Get_CurrentTrackPoistion() { return m_fCurrentTrackPosition; }
     _uint       Get_CurrentKeyFrameIndex(int num) { return m_CurrentKeyFrameIndices[num]; }
    
     CChannel*         Get_Channel_BoneIdx(int BoneNum);

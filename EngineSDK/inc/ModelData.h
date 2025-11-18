@@ -52,8 +52,8 @@ struct MeshData
 	wstring Name;
 	XMMATRIX		Transform;			//변환행렬, 각 파츠당 변환행렬적용
 
-	uint32_t	VertexCount;			//정점개수
-	uint32_t	IndexCount;				//인덱스카운트
+	uint32_t	VertexCount=0;			//정점개수
+	uint32_t	IndexCount=0;				//인덱스카운트
 	vector<VTXMESH>			Vertices;
 	vector<uint32_t>		Indices;
 	MaterialData		m_MaterialData;

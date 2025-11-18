@@ -42,15 +42,12 @@ HRESULT CMeshColliderComponent::Initialize_Copytype(void* pArg)
 
 HRESULT CMeshColliderComponent::Update_Collider(CTransform* pTransform)
 {
-    XMStoreFloat3(&vCenter, pTransform->Get_State(STATE::POSITION));
-    XMStoreFloat3(&m_BoundingBox.Center, XMLoadFloat3(&vOffset) + XMLoadFloat3(&vCenter));
 
+   // _float4x4 WorldMatrix = pTransform->Get_World();
 
-    _float3 ObjScale = pTransform->Get_Scale_ByFloat3();
+    m_BoundingBox.Center = _float3(0.f, 0.f, 0.f);
 
-    XMStoreFloat3(&m_BoundingBox.Extents,
-        XMVectorMultiply(XMLoadFloat3(&ObjScale),
-            XMLoadFloat3(&vScaleOffSet)));
+    m_BoundingBox.Extents = vScaleOffSet;
 
     return S_OK;
 }

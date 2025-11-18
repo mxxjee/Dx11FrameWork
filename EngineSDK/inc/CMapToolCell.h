@@ -21,14 +21,14 @@ private:
     virtual ~CMapToolCell() = default;
 
 private:
-    MapToolCellInfo          m_CellInfo;
+    DefaultCellInfo          m_CellInfo;
 
 
 public:
     HRESULT                Set_WireFrameMode();
     HRESULT                Set_SolidMode();
     void                    Set_Type(_uint Type) { m_CellInfo.AreaType = Type; }
-    void                    Set_Info(const MapToolCellInfo& Info) { m_CellInfo = Info; }
+    void                    Set_Info(const DefaultCellInfo& Info) { m_CellInfo = Info; }
 public:
     /*정렬되기 전 원본의 점 = PreviewPoints*/
     void                Set_PreviewPoints(const deque<PreviewPoint>& New);
@@ -55,7 +55,7 @@ public:
     _vector Get_vPoint(POINTType eType) { return XMLoadFloat3(&m_CellInfo.m_vPoints[ENUM_TO_UINT(eType)]); }
 
     void                Set_Index(int idx) { m_CellInfo.m_iIndex = idx; }
-    const MapToolCellInfo& Get_CellInfo() { return m_CellInfo; }
+    const DefaultCellInfo& Get_CellInfo() { return m_CellInfo; }
 
 private:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };

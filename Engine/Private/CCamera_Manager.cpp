@@ -18,6 +18,8 @@
 CCamera_Manager::CCamera_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
 	:m_pDevice(_pDevice),m_pContext(_pContext)
 {
+	XMStoreFloat4x4(&g_Identityfloat4x4, XMMatrixIdentity());
+	g_IdentityMatrix = XMMatrixIdentity();
 }
 
 HRESULT CCamera_Manager::Initialize()
@@ -25,8 +27,7 @@ HRESULT CCamera_Manager::Initialize()
 	for (int i = 0; i < ENUM_TO_UINT(CAMERA_TYPE::END); ++i)
 		m_Cameras[i] = nullptr;
 
-	XMStoreFloat4x4(&g_Identityfloat4x4, XMMatrixIdentity());
-	g_IdentityMatrix = XMMatrixIdentity();
+	
 
 	return S_OK;
 }

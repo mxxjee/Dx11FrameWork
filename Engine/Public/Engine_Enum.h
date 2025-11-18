@@ -145,6 +145,7 @@ namespace Engine
 		BOX_COLLIDER,
 		MESH_COLLIDER,
 		MODEL,
+		NAVIGATION,
 		UI
 	};
 

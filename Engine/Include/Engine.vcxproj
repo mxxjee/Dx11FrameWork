@@ -209,6 +209,7 @@
     <ClInclude Include="..\Public\CModelObject.h" />
     <ClInclude Include="..\Public\CModel_Manager.h" />
     <ClInclude Include="..\Public\CNavEditPreview.h" />
+    <ClInclude Include="..\Public\CNavMesh_Manager.h" />
     <ClInclude Include="..\Public\CNavMeshEdit_Manager.h" />
     <ClInclude Include="..\Public\CNavigation.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
@@ -325,6 +326,7 @@
     <ClCompile Include="..\Private\CModelObject.cpp" />
     <ClCompile Include="..\Private\CModel_Manager.cpp" />
     <ClCompile Include="..\Private\CNavEditPreview.cpp" />
+    <ClCompile Include="..\Private\CNavMesh_Manager.cpp" />
     <ClCompile Include="..\Private\CNavMeshEdit_Manager.cpp" />
     <ClCompile Include="..\Private\CNavigation.cpp" />
     <ClCompile Include="..\Private\CObject_Manager.cpp" />

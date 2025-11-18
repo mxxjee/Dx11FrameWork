@@ -288,6 +288,18 @@ public:
 	 HRESULT         Register_HotKey(KeyCode eKode, bool bCtrl, bool bShift, bool bAlt, function<void()> Func);
 
 #pragma endregion
+
+#pragma region NavMeshManager
+	 HRESULT							Load_NavMesh(_uint iLevelIdx, const string& Filepath);
+	 vector<class CCell*>*				Find_Cells(_uint iLevelIdx);
+	 void								Set_MainCells(_uint LevelID);
+	 vector<class CCell*>*				Get_MainCells();
+	 void								Set_DrawDebug(bool b);
+
+	 void								Set_NavMeshShader(class CShader* pShader);
+	 HRESULT							    Render_NavMeshManager();
+	 _float4x4*								Get_ParentMatrix();
+#pragma endregion
  private:
 	 class CLevel_Manager* m_pLevelManager = { nullptr };
 	 class CTimer_Manager* m_pTimerManager = { nullptr };
@@ -310,6 +322,9 @@ public:
 	 class CMaterial_Manager* m_pMaterialManager = { nullptr };
 	 class CModel_Manager* m_pModelManager = { nullptr };
 	 class CHotKey_Manager* m_pHotKeyManager = { nullptr };
+
+	 class CNavMesh_Manager* m_pNavMeshManager = { nullptr };
+
 
 private:
 	vector<D3D11_VIEWPORT>          m_ViewPorts;

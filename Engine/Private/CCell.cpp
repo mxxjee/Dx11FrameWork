@@ -1,101 +1,120 @@
 #include "CCell.h"
+#include "CVIBuffer_Triangle.h"
+#include "CGameInstance.h"
+
 
 CCell::CCell(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :m_pDevice(pDevice),m_pContext(pContext)
+    :m_pDevice(pDevice),m_pContext(pContext), m_pGameInstance(CGameInstance::GetInstance())
 {
+    Safe_AddRef(m_pGameInstance);
 }
 
-bool CCell::Compare(_fvector vTargetPointA, _fvector vTargetPointB)
+
+_float CCell::Compute_Height(_vector vCellTargetPos)
 {
-    //만약 인자로 들어온 점과 a가같으면 ,다른점이 B와 C랑 같은지비교
-    if (true == XMVector3Equal(vTargetPointA, XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(POINTType::A)])))
-    {
-        if (true == XMVector3Equal(vTargetPointB, XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(POINTType::B)])))
-            return true;
 
+    return (-(m_CellInfo.m_Plane.x) * XMVectorGetX(vCellTargetPos) - (m_CellInfo.m_Plane.z) * XMVectorGetZ(vCellTargetPos) - (m_CellInfo.m_Plane.w)) / (m_CellInfo.m_Plane.y);
 
-        if (true == XMVector3Equal(vTargetPointB, XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(POINTType::C)])))
-            return true;
-
-    }
-
-    //만약 인자로 들어온 점과 B가같으면 ,다른점이 A와 C랑 같은지비교
-    if (true == XMVector3Equal(vTargetPointA, XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(POINTType::B)])))
-    {
-        if (true == XMVector3Equal(vTargetPointB, XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(POINTType::A)])))
-            return true;
-
-
-        if (true == XMVector3Equal(vTargetPointB, XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(POINTType::C)])))
-            return true;
-
-    }
-
-    //만약 인자로 들어온 점과 C가같으면 ,다른점이 A와 B랑 같은지비교
-    if (true == XMVector3Equal(vTargetPointA, XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(POINTType::C)])))
-    {
-        if (true == XMVector3Equal(vTargetPointB, XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(POINTType::A)])))
-            return true;
-
-
-        if (true == XMVector3Equal(vTargetPointB, XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(POINTType::B)])))
-            return true;
-
-    }
-
-
-    return false;
 }
 
-HRESULT CCell::Initialize_Prototype(const _float3* pPoints, _int iIndex)
+
+HRESULT CCell::Initialize_Prototype(const DefaultCellInfo& Info)
 {
-    memcpy(m_vPoints, pPoints, sizeof(_float3) * ENUM_TO_UINT(POINTType::END));
-
-    m_iIndex = iIndex;
-    
-    _vector vLine = {};
+    memcpy(&m_CellInfo, &Info, sizeof(DefaultCellInfo));
 
 
-    
-    //각 세 변에 대한 법선벡터 만들기,XZ평면에 대해서만 수행하므로 y=0 으로 만든 후 법선을 구한다.
-    //xz평면의 법선 -> (a,b) -> (-b,a)
-    vLine= XMVector3Normalize(XMVectorSetY(XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(POINTType::B)]) - XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(POINTType::A)]), 0.f));
-    m_vNormals[ENUM_TO_UINT(LINE::AB)] = _float3(XMVectorGetZ(vLine) * -1.f, 0.f, XMVectorGetX(vLine));
+    if (FAILED(Ready_Components()))
+        return E_FAIL;
 
-    vLine = XMVector3Normalize(XMVectorSetY(XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(POINTType::C)]) - XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(POINTType::B)]), 0.f));
-    m_vNormals[ENUM_TO_UINT(LINE::BC)] = _float3(XMVectorGetZ(vLine) * -1.f, 0.f, XMVectorGetX(vLine));
 
-    vLine = XMVector3Normalize(XMVectorSetY(XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(POINTType::A)]) - XMLoadFloat3(&m_vPoints[ENUM_TO_UINT(POINTType::C)]), 0.f));
-    m_vNormals[ENUM_TO_UINT(LINE::CA)] = _float3(XMVectorGetZ(vLine) * -1.f, 0.f, XMVectorGetX(vLine));
+    if (FAILED(Create_WireFrameRS()))
+        return E_FAIL;
 
     return S_OK;
 
 }
 
-_bool CCell::isIn(_fvector vResultPos)
+HRESULT CCell::Ready_Components()
+{
+    CVIBuffer_Triangle::TRIANGLEBUFFER_DESC TriangleDesc;
+
+    TriangleDesc.v0 = m_CellInfo.m_vPoints[0];
+    TriangleDesc.v1 = m_CellInfo.m_vPoints[1];
+    TriangleDesc.v2 = m_CellInfo.m_vPoints[2];
+
+
+    CComponent* pBuffer = dynamic_cast<CComponent*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"VIBuffer_Triangle"), &TriangleDesc));
+    m_pVIBufferCom = dynamic_cast<CVIBuffer_Triangle*>(pBuffer);
+
+
+    return S_OK;
+}
+
+_bool CCell::isIn(_fvector vResultPos, _int* pNeighborIndex)
 {
     for (int i = 0; i < ENUM_TO_UINT(LINE::END); ++i)
     {
+        //시작지점에서부터 현재지점까지의 방향과
+        _vector		vDir = XMVector3Normalize(vResultPos - XMLoadFloat3(&m_CellInfo.m_vPoints[i]));
 
-
-         //시작지점에서부터 현재지점까지의 방향과
-         _vector		vDir = XMVector3Normalize(vResultPos - XMLoadFloat3(&m_vPoints[i]));
-
-         //시작지점의 방향벡터를 내적했을때 양수이면 밖으로나간것임.
-          if (0 < XMVectorGetX(XMVector3Dot(vDir, XMLoadFloat3(&m_vNormals[i]))))
-                return false;
+        //시작지점의 방향벡터를 내적했을때 양수이면 밖으로나간것임.
+        if (0 < XMVectorGetX(XMVector3Dot(vDir, XMLoadFloat3(&m_CellInfo.m_vNormals[i]))))
+        {
+            *pNeighborIndex = m_CellInfo.m_iNeighbors[i];
+            return false;
+        }
     }
-
     return true;
 }
 
-CCell* CCell::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const _float3* pPoints, _int iIndex)
+void CCell::Update_Render()
 {
+}
 
-    CCell* pInstance = new CCell(pDevice, pContext);
-    if (FAILED(pInstance->Initialize_Prototype(pPoints, iIndex)))
+HRESULT CCell::Render()
+{
+    ComPtr<ID3D11RasterizerState> pOldRS = nullptr;
+    m_pContext->RSGetState(pOldRS.GetAddressOf());
+    m_pContext->RSSetState(m_pWireframeRS.Get());
+
+    if (FAILED(m_pVIBufferCom->Bind_Resource()))
+        return E_FAIL;          //IA단계
+
+    if (FAILED(m_pVIBufferCom->Render()))
+        return E_FAIL;
+
+
+    m_pContext->RSSetState(pOldRS.Get());
+
+
+    return S_OK;
+
+}
+
+HRESULT CCell::Create_WireFrameRS()
+{
+    D3D11_RASTERIZER_DESC desc{};
+    desc.FillMode = D3D11_FILL_WIREFRAME;  // 선 모드
+    desc.CullMode = D3D11_CULL_BACK;       // 뒷면도 그리게
+    desc.FrontCounterClockwise = FALSE;
+    desc.DepthClipEnable = TRUE;           // 보통 TRUE
+
+    if (FAILED(m_pDevice->CreateRasterizerState(&desc, m_pWireframeRS.GetAddressOf())))
     {
-        MSG_BOX("Failed to Create :CCell ");
+        MSG_BOX("Failed to Create Wireframe RasterizerState");
+        return E_FAIL;
+    }
+
+
+    return S_OK;
+}
+
+CCell* CCell::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const DefaultCellInfo& Info)
+{
+    CCell* pInstance = new CCell(pDevice, pContext);
+    if (FAILED(pInstance->Initialize_Prototype(Info)))
+    {
+        MSG_BOX("Failed to Create :CCell");
         Safe_Release(pInstance);
 
     }
@@ -108,4 +127,6 @@ CCell* CCell::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> p
 void CCell::Free()
 {
     __super::Free();
+    Safe_Release(m_pVIBufferCom);
+    Safe_Release(m_pGameInstance);
 }

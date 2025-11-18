@@ -117,7 +117,7 @@ HRESULT CMapModel::Ready_Component(void* pArg)
     CMeshColliderComponent::COLLIDER_MESH ColliderDesc;
     ColliderDesc.pModel = m_pModel;
     ColliderDesc.pOwner = this;
-    ColliderDesc.vScaleOffSet = _float3(50.f, 10.f, 50.f);
+    ColliderDesc.vScaleOffSet = _float3(10.f, 10.f, 10.f);
 
     CComponent* pMeshCollider = dynamic_cast<CMeshColliderComponent*>(m_pGameInstance->Clone_Prototype(
         PROTOTYPE::COMPONENT,

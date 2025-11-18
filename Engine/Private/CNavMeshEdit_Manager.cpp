@@ -76,7 +76,7 @@ HRESULT CNavMeshEdit_Manager::Save_NavigationData(const string& filePath)
 
 	for (auto& cell : m_pMapToolCells)
 	{
-		MapToolCellInfo info = cell->Get_CellInfo();
+		DefaultCellInfo info = cell->Get_CellInfo();
 		WriteFile(hFile, &info, sizeof(info), &dwByte, nullptr);
 	}
 
@@ -98,10 +98,10 @@ HRESULT CNavMeshEdit_Manager::Load_NavigationData(const string& filePath)
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;
 
-	MapToolCellInfo Info = {};
+	DefaultCellInfo Info = {}; 
 	while (true)
 	{
-		ReadFile(hFile, &Info, sizeof(MapToolCellInfo), &dwByte, nullptr);
+		ReadFile(hFile, &Info, sizeof(DefaultCellInfo), &dwByte, nullptr);
 		if (0 == dwByte)
 			break;
 
@@ -140,7 +140,7 @@ void CNavMeshEdit_Manager::Show_Solo_Cell(bool bToggle)
 	{
 		for (auto& pDestCell : m_pMapToolCells)
 		{
-			MapToolCellInfo info = pDestCell->Get_CellInfo();
+			DefaultCellInfo info = pDestCell->Get_CellInfo();
 
 			bool bExist = false;
 
@@ -481,7 +481,7 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 				CMapToolCell* pNearest = Find_NeareastCell(v);
 				if (pNearest)
 				{
-					MapToolCellInfo info = pNearest->Get_CellInfo();
+					DefaultCellInfo info = pNearest->Get_CellInfo();
 
 					_float3 vPos = Find_NeareastPos(v, 2.f, info.m_vPoints[ENUM_TO_UINT(POINTType::A)],
 						info.m_vPoints[ENUM_TO_UINT(POINTType::B)], info.m_vPoints[ENUM_TO_UINT(POINTType::C)]);
@@ -508,7 +508,7 @@ void CNavMeshEdit_Manager::Set_DrawPoint(_float3 v,bool bRegister)
 			CMapToolCell* pCell = Find_NeareastCell(v);
 			if (pCell && m_pMapToolCells.size() > 1)
 			{
-				MapToolCellInfo info = pCell->Get_CellInfo();
+				DefaultCellInfo info = pCell->Get_CellInfo();
 
 				_float3 vPos = Find_NeareastPos(v, 0.8f, info.m_vPoints[ENUM_TO_UINT(POINTType::A)],
 					info.m_vPoints[ENUM_TO_UINT(POINTType::B)], info.m_vPoints[ENUM_TO_UINT(POINTType::C)]);

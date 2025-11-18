@@ -29,6 +29,8 @@
 #include "CMapObject.h"
 #include "CLayer.h"
 
+#include "CNavMesh_Manager.h"
+
 
 
 
@@ -133,6 +135,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	m_pHotKeyManager = CHotKey_Manager::Create();
 	CheckNullResult(m_pHotKeyManager, E_FAIL);
 
+	/*NavMesh¸Å´ÏÀú*/
+	m_pNavMeshManager = CNavMesh_Manager::Create(*pDevice,*pContext);
+	CheckNullResult(m_pNavMeshManager, E_FAIL);
+
 	
 	return S_OK;
 }
@@ -202,8 +208,13 @@ HRESULT CGameInstance::Draw_Begin(const _float4* pClearColor)
 HRESULT CGameInstance::Draw()
 {
 	//m_pRenderer->Draw();
+
 	m_pCameraManager->Render_Cameras();
+
+
 	m_pLevelManager->Render();
+
+
 	return S_OK;
 }
 
@@ -804,6 +815,43 @@ HRESULT CGameInstance::Register_HotKey(KeyCode eKode, bool bCtrl, bool bShift, b
 {
 	return m_pHotKeyManager->Register_HotKey(eKode, bCtrl,bShift,bAlt,Func);
 }
+
+#pragma region NavMesh
+HRESULT CGameInstance::Load_NavMesh(_uint iLevelIdx, const string& Filepath)
+{
+	CheckNullResult(m_pNavMeshManager, E_FAIL);
+	return m_pNavMeshManager->Load_NavMesh(iLevelIdx,Filepath);
+}
+vector<class CCell*>* CGameInstance::Find_Cells(_uint iLevelIdx)
+{
+	CheckNullResult(m_pNavMeshManager, nullptr);
+	return m_pNavMeshManager->Find_Cells(iLevelIdx);
+}
+void CGameInstance::Set_MainCells(_uint LevelID)
+{
+	return m_pNavMeshManager->Set_MainCells(LevelID);
+}
+vector<class CCell*>* CGameInstance::Get_MainCells()
+{
+	return m_pNavMeshManager->Get_MainCells();
+}
+void CGameInstance::Set_DrawDebug(bool b)
+{
+	return m_pNavMeshManager->Set_DrawDebug(b);
+}
+void CGameInstance::Set_NavMeshShader(CShader* pShader)
+{
+	return m_pNavMeshManager->Set_Shader(pShader);
+}
+
+HRESULT CGameInstance::Render_NavMeshManager()
+{
+	return m_pNavMeshManager->Render();
+}
+_float4x4* CGameInstance::Get_ParentMatrix()
+{
+	return m_pNavMeshManager->Get_ParentMatrix();
+}
 #pragma endregion
 
 void CGameInstance::Release_Engine()
@@ -830,7 +878,7 @@ void CGameInstance::Release_Engine()
 	
 
 	Safe_Release(m_pHotKeyManager);
-
+	Safe_Release(m_pNavMeshManager);
 
 	Safe_Release(m_pGraphicDev);
 

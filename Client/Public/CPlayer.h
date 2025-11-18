@@ -8,6 +8,7 @@ namespace Engine
 {
     class CBody;
     class CInput_Manager;
+    class CNavigation;
 }
 NS_BEGIN(Client)
 
@@ -49,8 +50,12 @@ public:
     virtual void Free() override;
 
 public:
+    virtual HRESULT     Ready_Components(void* pArg);
     virtual HRESULT     Ready_PartObjects(void* pArg);
    
+
+private:
+    CNavigation* m_pNavigationCom = { nullptr };
 
 private:
     bool bPressed = false;

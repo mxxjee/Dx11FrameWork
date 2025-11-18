@@ -123,7 +123,7 @@ void CLayerDebugWindow::Update()
              IMapEditable* pObj = dynamic_cast<IMapEditable*>(cell);
 
 
-             MapToolCellInfo Info = cell->Get_CellInfo();
+             DefaultCellInfo Info = cell->Get_CellInfo();
 
              string Tag = to_string(Info.m_iIndex)+"Cell";
              bool bSelected = (pSelectObject == pObj); // 현재 선택된 상태인지

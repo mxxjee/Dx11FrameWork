@@ -18,36 +18,39 @@ private:
 
 
 public:
-    virtual HRESULT Initialize_Prototype(const _tchar* pNavigationData);
+    void        Set_CurrentIdx(_vector vWorldPos);       //현재 위치기반으로 어느셀에있는지 정해준다.
+    virtual HRESULT Initialize_Prototype();
     virtual HRESULT Initialize_Copytype(void* pArg) override;
 
 public:
     _bool isMove(_fvector vResultPos);
-
-private:
-    HRESULT             SetUp_Neighbors();
-
-
-private:
-    vector<class CCell*>        m_Cells;//삼각형 배열
-    _uint               m_iNumCells = {};//
-    _int                m_iCurrentCellIndex;    //현재 오너가 위치한 네브메쉬 셀 중 몇번ㅉ떄?
-
-private:
-    static const                    _float4x4* m_pParentMatrix;   //m_Cells의 worldMatrix
-																//cell의 각 정점은 이미 월드상의 점이다.
-										//만약 지형이 움직이거나 할경우 cell이 이 위치를 따라가야하므로 부모행렬을 정해준다.
-										//이는 static으로 사용하므로 이 클래스를 사용하는 모든 객체가 같은 부모행렬을 적용하게된다.
+    _vector SetUp_OnNavigation(_fvector vWorldPos);     //네브메쉬 평면을 타게함.
 
 #ifdef _DEBUG
+public:
+    HRESULT Render();   //현재 내가 있는 위치의 셀을 표시한다.
 private:
-    class CShader* m_pShader = { nullptr };
+    _float4         g_Color = _float4(1.f, 0.f, 0.f, 1.f);
+    class CShader*  m_pShader = nullptr;
+
 
 #endif
+private:
+    vector<class CCell*>*        m_Cells=nullptr;//삼각형 배열
+    _uint                       m_iNumCells = {};//
+    _int                        m_iCurrentCellIndex=-1;    //현재 오너가 위치한 네브메쉬 셀 중 몇번ㅉ떄?
+
+private:
+    _float4x4* m_pParentMatrix=nullptr;   //m_Cells의 worldMatrix
+																//cell의 각 정점은 이미 월드상의 점이다.
+										//만약 지형이 움직이거나 할경우 cell이 이 위치를 따라가야하므로 부모행렬을 정해준다.
+										
 public:
-    static CNavigation* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const _tchar* pNavigationData);
+    static CNavigation* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual CComponent* Clone(void* pArg) override;
     virtual void Free() override;
+
+
 };
 
 NS_END
