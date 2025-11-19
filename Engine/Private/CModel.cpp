@@ -526,10 +526,6 @@ void CModel::Set_Animation(const wstring& AnimKey, _bool isLoop)
 	{
 		m_isTransition = true;
 
-		////이전 애니메이션 초기화(다음에 실행시 처음부터 시작)
-		CAnimation* pPreAnim = Find_Animation(m_PreAnimKey);
-		if (pPreAnim)
-			pPreAnim->Reset_Animtion();
 
 		Start_Transition();
 		  
@@ -615,9 +611,10 @@ void CModel::End_Transition()
 {
 	
 	m_fTranslationTime = 0.f;
+	////이전 애니메이션 초기화(다음에 실행시 처음부터 시작)
+	CAnimation* pPreAnim = Find_Animation(m_PreAnimKey);
+	if (pPreAnim)
+		pPreAnim->Reset_Animtion();
 
-	//CAnimation* pPreAnim = Find_Animation(m_PreAnimKey);
-	//if(pPreAnim)
-	//	pPreAnim->Set_CurrentTrackPosition(0.f);//다음에 실행됐을떄 처음부터 실행하라고..
 
 }

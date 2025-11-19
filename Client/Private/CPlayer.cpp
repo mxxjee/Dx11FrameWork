@@ -83,9 +83,9 @@ void CPlayer::Update(_float fTimeDelta)
    
   
     Update_Input(fTimeDelta);
-    State_Change();
+    State_Change();     //애니메이션 완료 이후에 어떻게 바꿔줄것인지
 
-    /*컨테이너 업데이트*/
+    /*컨테이너 업데이트 - 바디가 플레이어 상태를 보고 set_Animation을 호출한다.*/
     __super::Update(fTimeDelta);
 }
 
@@ -116,17 +116,31 @@ HRESULT CPlayer::Render()
 
 void CPlayer::Update_Input(_float fTimeDelta)
 {
-    Move_Input(fTimeDelta);
-    Event_Input(fTimeDelta);
+
+    //이벤트 관련 입력은 항상 우선권을 가진다.
+    if (Event_Input(fTimeDelta))
+        m_bActionInput = true;
+
+    else if (Move_Input(fTimeDelta))
+        bPressed = true;
+
+    else
+    {
+        Set_State(SET, IDLE);
+        m_bMove = false;
+    }
+       
+
 }
 
 
-void CPlayer::Move_Input(_float fTimeDelta)
+bool CPlayer::Move_Input(_float fTimeDelta)
 {
+    bool bPress = false;
 
     if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LeftArrow))
     {
-        bPressed = true;
+        bPress = true;
 
         if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
             m_pTransformCom->Rotation(_float3(0.f, -135.f, 0.f));
@@ -142,7 +156,7 @@ void CPlayer::Move_Input(_float fTimeDelta)
 
     else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::RightArrow))
     {
-        bPressed = true;
+        bPress = true;
 
         if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
             m_pTransformCom->Rotation(_float3(0.f, 135.f, 0.f));
@@ -156,39 +170,25 @@ void CPlayer::Move_Input(_float fTimeDelta)
 
     else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::DownArrow))
     {
-        bPressed = true;
+        bPress = true;
         m_pTransformCom->Rotation(_float3(0.f, 180.f, 0.f));
     }
 
 
     else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::UpArrow))
-    {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-        bPressed = true;
+    {
+        bPress = true;
         m_pTransformCom->Rotation(_float3(0.f, 0.f, 0.f));
     }
 
-    if (m_pInputManager->IsKeyPressed(KeyCode::H))
-    {
-        iHp--;
-        m_pGameInstance->BroadCastEvent(L"OnHeartDamaged",&iHp);
 
-    }
-
-    if (m_pInputManager->IsKeyReleased(KeyCode::UpArrow) ||
-        m_pInputManager->IsKeyReleased(KeyCode::DownArrow) ||
-        m_pInputManager->IsKeyReleased(KeyCode::LeftArrow) ||
-        m_pInputManager->IsKeyReleased(KeyCode::RightArrow))
-    {
-        bPressed = false;
-
-        Set_State(SET, IDLE);
-    }
-    if (bPressed)
+    if (bPress)
     {
         m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta,Space::Local,m_pNavigationCom);
         Set_State(SET, RUN);
     }
 
+    
 
     if (m_pTarget)
         m_pTransformCom->Chase(m_pTarget->Get_Transform()->Get_State(STATE::POSITION, TransformScope::WORLD), fTimeDelta, 5);
@@ -197,26 +197,31 @@ void CPlayer::Move_Input(_float fTimeDelta)
     m_pTransformCom->Set_State(STATE::POSITION,
         m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
 
+    return bPress;
 }
 
 
-void CPlayer::Event_Input(_float fTimeDelta)
+bool CPlayer::Event_Input(_float fTimeDelta)
 {
+    bool bResult = false;
 
-    if (m_pInputManager->IsKeyPressed(KeyCode::B))
+    if (bResult=m_pInputManager->IsKeyPressed(KeyCode::B))
     {
         Set_State(SET, ATTACK);
+        return true;
+    }
+
+    if (m_pInputManager->IsKeyPressed(KeyCode::H))
+    {
+        iHp--;
+        m_pGameInstance->BroadCastEvent(L"OnHeartDamaged", &iHp);
+        return true;
     }
 
 
-    /*if (m_pInputManager->IsKeyReleased(KeyCode::T))
-    {
 
-        if (m_iState & CModelObject::ATTACK)
-            m_iState ^= ATTACK;
-
-        m_iState |= IDLE;
-    }*/
+    //새로운입력을 받거나 이미 실행중인 actioninput 리턴
+    return bResult||m_bActionInput;
 }
 
 
@@ -240,13 +245,15 @@ void CPlayer::Motion_Change()
 
 void CPlayer::State_Change()
 {
-    //모션이 끝난이후 상태바꾸기
-
+    //모션에 대한 각각에 대한 전이 처리
     if (m_iState & ATTACK)
     {
         if (m_pBody->Get_IsAnimFinished())
+        {
             Set_State(SET, IDLE);
+            m_bActionInput = false; //리셋
 
+        }
     }
 }
 

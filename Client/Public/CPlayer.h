@@ -36,9 +36,9 @@ public:
 private:
     void        Update_Input(_float fTimeDelta);
 
-    void        Event_Input(_float  fTimeDelta);
+    bool        Event_Input(_float  fTimeDelta);
 
-    void        Move_Input(_float fTimeDelta);
+    bool        Move_Input(_float fTimeDelta);
 
 
     virtual void        Motion_Change();
@@ -60,10 +60,10 @@ private:
 private:
     bool bPressed = false;
     bool m_bMove = true;
+    bool m_bActionInput = false;
 
     CInput_Manager*         m_pInputManager = nullptr;
     int                     iHp = 5;
-
 
 
 };

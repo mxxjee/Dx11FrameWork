@@ -46,7 +46,8 @@ public:
     virtual HRESULT Render();
 
 protected:
-    virtual void Set_State(STATE_OP Flag,_uint State);       //스테이트갱신, cur/pre갱신
+    //스테이트갱신, cur/pre갱신
+    virtual void Set_State(STATE_OP Flag,_uint State);       
     virtual void Motion_Change();       //pre!=cur (애니메이션 진입함수)
     virtual void State_Change();        //애니메이션 끝남에 따라 상태처리
 private:
