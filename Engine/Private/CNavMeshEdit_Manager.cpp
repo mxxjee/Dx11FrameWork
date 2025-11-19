@@ -331,7 +331,7 @@ deque<PreviewPoint> CNavMeshEdit_Manager::Align_CW(const deque<PreviewPoint>& Or
 		PreviewPoint B = CW[ENUM_TO_UINT(POINTType::B)];
 		PreviewPoint C = CW[ENUM_TO_UINT(POINTType::C)];
 
-		CW[ENUM_TO_UINT(POINTType::B)] = C;
+		CW[ENUM_TO_UINT(POINTType::B)] = C;          
 		CW[ENUM_TO_UINT(POINTType::C)] = B;
 
 		

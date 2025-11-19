@@ -52,6 +52,7 @@ HRESULT CCell::Ready_Components()
 
 _bool CCell::isIn(_fvector vResultPos, _int* pNeighborIndex)
 {
+   
     for (int i = 0; i < ENUM_TO_UINT(LINE::END); ++i)
     {
         //시작지점에서부터 현재지점까지의 방향과

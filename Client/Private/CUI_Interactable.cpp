@@ -2,9 +2,11 @@
 
 USING(Client)
 CUI_Interactable::CUI_Interactable(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
-{
-}
 
+{
+
+}
+                                                                                                                      
 CUI_Interactable::CUI_Interactable(const CUI_Interactable& rhs)
 {
 }
