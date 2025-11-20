@@ -205,7 +205,7 @@ bool CPlayer::Event_Input(_float fTimeDelta)
 {
     bool bResult = false;
 
-    if (bResult=m_pInputManager->IsKeyPressed(KeyCode::B))
+    if (m_Input.m_bisAttack=m_pInputManager->IsKeyPressed(KeyCode::B))
     {
         Set_State(SET, ATTACK);
         return true;
@@ -330,6 +330,12 @@ HRESULT CPlayer::Ready_PartObjects(void* pArg)
 
     }
     return S_OK;
+}
+
+void CPlayer::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop)
+{
+    CheckNull(m_pBody);
+    m_pBody->Reserve_Animation(AnimKey, bNextAnimLoop);
 }
 
 

@@ -16,6 +16,14 @@ NS_BEGIN(Client)
 class CPlayer :
     public CModelObject
 {
+private:
+    typedef struct tagPlayerInput
+    {
+        bool m_bisAttack = false;
+        bool m_bisMove = false;
+        bool m_bisShield = false;
+
+    }PLAYER_INPUT;
 protected:
     CPlayer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CPlayer(const CPlayer& rhs);
@@ -52,11 +60,12 @@ public:
 public:
     virtual HRESULT     Ready_Components(void* pArg);
     virtual HRESULT     Ready_PartObjects(void* pArg);
-   
+    void                Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop);
+
 
 private:
     CNavigation* m_pNavigationCom = { nullptr };
-
+    const PLAYER_INPUT* Get_Input() { return &m_Input; }
 private:
     bool bPressed = false;
     bool m_bMove = true;
@@ -65,6 +74,8 @@ private:
     CInput_Manager*         m_pInputManager = nullptr;
     int                     iHp = 5;
 
+private:
+    PLAYER_INPUT        m_Input;
 
 };
 

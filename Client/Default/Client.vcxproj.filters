@@ -77,6 +77,12 @@
     <ClInclude Include="..\Public\CUI_Interactable.h">
       <Filter>02.GameObjects\99.UI\01.Interatable</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CPlayerState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPlayerIdleState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Idle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -183,6 +189,12 @@
     <Filter Include="02.GameObjects\99.UI\01.Interatable">
       <UniqueIdentifier>{a966a2d5-6135-4bbb-a716-e73a97db61be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State">
+      <UniqueIdentifier>{6852ff6c-f108-4f99-ab8d-2c98a4245b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Idle">
+      <UniqueIdentifier>{729c0d6f-20a4-421a-b309-508e819002bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -248,6 +260,12 @@
     <ClCompile Include="..\Private\CButton.cpp" />
     <ClCompile Include="..\Private\CUI_Interactable.cpp">
       <Filter>02.GameObjects\99.UI\01.Interatable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPlayerState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPlayerIdleState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Idle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

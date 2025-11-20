@@ -26,6 +26,11 @@ public:
     _bool isMove(_fvector vResultPos);
     _vector SetUp_OnNavigation(_fvector vWorldPos);     //네브메쉬 평면을 타게함.
 
+public:
+    const list<_vector>* Make_Route(_int iGoalIndex);
+
+    _bool       CanPush(_int iCellIndex);
+
 #ifdef _DEBUG
 public:
     HRESULT Render();   //현재 내가 있는 위치의 셀을 표시한다.
@@ -49,6 +54,15 @@ public:
     static CNavigation* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual CComponent* Clone(void* pArg) override;
     virtual void Free() override;
+
+
+private:
+    /*A-Star 사용시 필요한 변수들*/
+    _int            m_iOldGoalIndex = { -1 };
+    list <_int>     m_OpenList;         //탐색하기 위한 노드를담는다.
+    list<_int>      m_CloseList;        //이미 탐색한 노드들을 담는다.
+
+    list<_int>      m_Route;        //인덱스를 통해 만들어낸 경로.
 
 
 };

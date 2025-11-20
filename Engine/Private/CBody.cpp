@@ -189,3 +189,10 @@ void CBody::Free()
     Safe_Release(m_pShader);
 }
 
+void CBody::Reserve_Animation(_wstring AnimKey, bool bLoop)
+{
+    m_NextAnimKey = AnimKey;
+    m_NextAnimLoop = bLoop;
+
+}
+

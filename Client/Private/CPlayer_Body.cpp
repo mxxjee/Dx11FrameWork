@@ -67,15 +67,9 @@ void CPlayer_Body::Update_Priority(_float fTimeDelta)
 void CPlayer_Body::Update(_float fTimeDelta)
 {
 
-	if (*m_pParentState & CModelObject::IDLE)
-		m_pModel->Set_Animation(L"wait", true);
+	if (m_pModel)
+		m_pModel->Set_Animation(m_NextAnimKey, m_NextAnimLoop);
 
-
-	if (*m_pParentState & CModelObject::RUN)
-		m_pModel->Set_Animation(L"run", true);
-
-	if (*m_pParentState & CModelObject::ATTACK)
-		m_pModel->Set_Animation(L"slash", false);
 
 	__super::Update(fTimeDelta);	//Model->PlayAnimtion
 

@@ -112,6 +112,84 @@ _vector CNavigation::SetUp_OnNavigation(_fvector vWorldPos)
 	return XMVector3TransformCoord(vCellPos, XMLoadFloat4x4(m_pParentMatrix));
 }
 
+const list<_vector>* CNavigation::Make_Route(_int iGoalIndex)
+{
+	if (m_iOldGoalIndex == iGoalIndex)
+		return nullptr;
+
+	_int iStartIndex = m_iCurrentCellIndex;
+	
+	
+	//시작점 설정-현재 나의 위치
+	m_OpenList.push_back(m_iCurrentCellIndex);
+
+
+	//탐색단계
+	while (true)
+	{
+		//휴리스틱비용에 맞는 정렬
+		m_OpenList.sort([&](_int iSourIndex, _int iDestIndex) {
+
+			return (*m_Cells)[iSourIndex]->Compute_Cost(*m_Cells, iGoalIndex) < (*m_Cells)[iDestIndex]->Compute_Cost(*m_Cells, iGoalIndex);
+			});
+
+
+		//가장 앞 셀 꺼내기
+		_int Min = m_OpenList.front();
+		CCell* pMinCell = (*m_Cells)[Min];
+
+
+		_int        iNeighbors[3] = {};
+		pMinCell->Get_Neighbors(iNeighbors);
+
+		//셀과 인접한 노드들 openList에 추가하기
+		for (int i = 0; i < 3; ++i)
+		{
+
+			(*m_Cells)[iNeighbors[i]]->Set_ParentIndex(Min);
+			m_OpenList.push_back(iNeighbors[i]);
+		}
+
+		m_OpenList.pop_front();
+		m_CloseList.push_back(Min);
+	}
+
+
+	m_iOldGoalIndex = iGoalIndex;
+	
+}
+
+_bool CNavigation::CanPush(_int iCellIndex)
+{
+	/* 이 셀이 이동가능하지 않은 셀이라면 */
+  // return false;
+
+	//중복검사
+	auto    iter = find_if(m_OpenList.begin(), m_OpenList.end(), [&](_int iCurrentCellIndex)
+		{
+			if (iCurrentCellIndex == iCellIndex)
+				return true;
+
+			return false;
+		});
+
+	if (iter != m_OpenList.end())
+		return false;
+
+	auto    iter = find_if(m_CloseList.begin(), m_CloseList.end(), [&](_int iCurrentCellIndex)
+		{
+			if (iCurrentCellIndex == iCellIndex)
+				return true;
+
+			return false;
+		});
+
+	if (iter != m_CloseList.end())
+		return false;
+
+	return true;
+}
+
 HRESULT CNavigation::Render()
 {
 	CheckNullResult(m_pShader, E_FAIL);

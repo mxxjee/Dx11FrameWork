@@ -68,6 +68,63 @@ _bool CCell::isIn(_fvector vResultPos, _int* pNeighborIndex)
     return true;
 }
 
+_bool CCell::CanPush(_int iCellIndex)
+{
+    /* 이 셀이 이동가능하지 않은 셀이라면 */
+  // return false;
+
+    //중복검사
+    auto    iter = find_if(m_OpenList.begin(), m_OpenList.end(), [&](_int iCurrentCellIndex)
+        {
+            if (iCurrentCellIndex == iCellIndex)
+                return true;
+
+            return false;
+        });
+
+    if (iter != m_OpenList.end())
+        return false;
+
+    auto    iter = find_if(m_CloseList.begin(), m_CloseList.end(), [&](_int iCurrentCellIndex)
+        {
+            if (iCurrentCellIndex == iCellIndex)
+                return true;
+
+            return false;
+        });
+
+    if (iter != m_CloseList.end())
+        return false;
+
+    return true;
+}
+
+_float CCell::Compute_Cost(const vector<CCell*>& Cells, _int iGoalIndx)
+{
+    _float fPCost = {};
+    if (-1 != m_iParentIndex)
+        fPCost= XMVectorGetX(XMVector3Length(Cells[m_iParentIndex]->Get_CenterPos() - Get_CenterPos()));
+
+
+    _float		fGCost = XMVectorGetX(XMVector3Length(Cells[iGoalIndx]->Get_CenterPos() - Get_CenterPos()));
+
+    m_fTotalCost = fPCost + fGCost;
+
+    return m_fTotalCost;
+}
+
+_vector CCell::Get_CenterPos()
+{
+    _vector		vPosition = {};
+
+    for (size_t i = 0; i < 3; i++)
+    {
+        vPosition += XMLoadFloat3(&m_CellInfo.m_vPoints[i]);
+    }
+
+    return vPosition / 3.f;
+}
+
 void CCell::Update_Render()
 {
 }

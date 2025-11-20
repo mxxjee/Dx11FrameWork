@@ -74,6 +74,9 @@ public:
 public:
     void    Move(DIRECTION eDir, float fTimeDelta,Space space=Space::Local,class CNavigation* pNavigation=nullptr);                                                                  //look벡터 갱신여부
   
+            //NavMEsh를 이용한 에이스타 알고리즘
+    void    Go_Astar(CNavigation* pNavigationo, _int GoalIdx, _float fTimeDelta);
+
     void    Rotation(_vector vAxis, _float fRadian);       //즉각회전,vAxis축을 기준으로 fRAdian만큼 회전시킨다. 
     void    Rotation(_float3 fEularDegree);
     void    AddRotation(_float3 fEularDegree);              //누적회전 , 기존의 회전에 더함
