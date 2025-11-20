@@ -5,7 +5,7 @@
 #include "CModel.h"
 #include "CBody.h"
 #include "CNavigation.h"
-
+#include "PlayerStates.h"
 
 
 
@@ -63,6 +63,10 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
 
     if(FAILED(Ready_PartObjects(&desc)))
         return E_FAIL;
+
+    if (FAILED(Ready_States()))
+        return E_FAIL;
+
     
     m_iPreState = CModelObject::NONE;
     m_iState = CModelObject::IDLE;
@@ -70,6 +74,9 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
 
     if (m_pNavigationCom)
         m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
+    
+    Change_State(IDLE);
+
     return S_OK;
 }
 
@@ -81,9 +88,21 @@ void CPlayer::Update_Priority(_float fTimeDelta)
 void CPlayer::Update(_float fTimeDelta)
 {
    
-  
     Update_Input(fTimeDelta);
-    State_Change();     //애니메이션 완료 이후에 어떻게 바꿔줄것인지
+    Update_Movement(fTimeDelta);
+   //State_Change();     //애니메이션 완료 이후에 어떻게 바꿔줄것인지
+    if (m_pNextState != nullptr)
+    {
+        m_pCurState = m_pNextState;
+        m_pNextState = nullptr;
+      
+    }
+
+
+    if (m_pCurState)
+        m_pCurState->Update(this);
+  
+    
 
     /*컨테이너 업데이트 - 바디가 플레이어 상태를 보고 set_Animation을 호출한다.*/
     __super::Update(fTimeDelta);
@@ -92,7 +111,14 @@ void CPlayer::Update(_float fTimeDelta)
 void CPlayer::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
-    Motion_Change();
+    if (m_pCurState)
+        m_pCurState->Update_Late(this);
+
+
+
+
+
+    //Motion_Change();
   
 }
 
@@ -118,30 +144,24 @@ void CPlayer::Update_Input(_float fTimeDelta)
 {
 
     //이벤트 관련 입력은 항상 우선권을 가진다.
-    if (Event_Input(fTimeDelta))
-        m_bActionInput = true;
+    m_Input.m_bisAttack = m_pInputManager->IsKeyHeld(KeyCode::B) && m_bCanAttack;
 
-    else if (Move_Input(fTimeDelta))
-        bPressed = true;
+    m_Input.m_bisMove = m_pInputManager->IsKeyHeld(KeyCode::UpArrow) || m_pInputManager->IsKeyHeld(KeyCode::DownArrow)
+        || m_pInputManager->IsKeyHeld(KeyCode::LeftArrow) || m_pInputManager->IsKeyHeld(KeyCode::RightArrow) && m_bCanMove;
 
-    else
-    {
-        Set_State(SET, IDLE);
-        m_bMove = false;
-    }
+
+    m_Input.m_bisShield = m_pInputManager->IsKeyHeld(KeyCode::T);
        
 
 }
 
 
-bool CPlayer::Move_Input(_float fTimeDelta)
+void CPlayer::Update_Movement(_float fTimeDelta)
 {
-    bool bPress = false;
+    CheckFalse(m_bCanMove);
 
     if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LeftArrow))
     {
-        bPress = true;
-
         if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
             m_pTransformCom->Rotation(_float3(0.f, -135.f, 0.f));
 
@@ -156,9 +176,8 @@ bool CPlayer::Move_Input(_float fTimeDelta)
 
     else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::RightArrow))
     {
-        bPress = true;
-
         if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+           
             m_pTransformCom->Rotation(_float3(0.f, 135.f, 0.f));
 
         else if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
@@ -169,24 +188,18 @@ bool CPlayer::Move_Input(_float fTimeDelta)
 
 
     else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::DownArrow))
-    {
-        bPress = true;
         m_pTransformCom->Rotation(_float3(0.f, 180.f, 0.f));
-    }
+
 
 
     else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::UpArrow))
-    {
-        bPress = true;
         m_pTransformCom->Rotation(_float3(0.f, 0.f, 0.f));
-    }
 
 
-    if (bPress)
-    {
+
+    if (m_Input.m_bisMove)
         m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta,Space::Local,m_pNavigationCom);
-        Set_State(SET, RUN);
-    }
+     
 
     
 
@@ -197,7 +210,7 @@ bool CPlayer::Move_Input(_float fTimeDelta)
     m_pTransformCom->Set_State(STATE::POSITION,
         m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
 
-    return bPress;
+
 }
 
 
@@ -205,58 +218,44 @@ bool CPlayer::Event_Input(_float fTimeDelta)
 {
     bool bResult = false;
 
-    if (m_Input.m_bisAttack=m_pInputManager->IsKeyPressed(KeyCode::B))
-    {
-        Set_State(SET, ATTACK);
-        return true;
-    }
+    //if (m_Input.m_bisAttack=m_pInputManager->IsKeyPressed(KeyCode::B))
+    //{
 
-    if (m_pInputManager->IsKeyPressed(KeyCode::H))
-    {
-        iHp--;
-        m_pGameInstance->BroadCastEvent(L"OnHeartDamaged", &iHp);
-        return true;
-    }
+    //    return true;
+    //}
+
+    //if (m_pInputManager->IsKeyPressed(KeyCode::H))
+    //{
+    //    iHp--;
+    //    m_pGameInstance->BroadCastEvent(L"OnHeartDamaged", &iHp);
+    //    return true;
+    //}
 
 
 
-    //새로운입력을 받거나 이미 실행중인 actioninput 리턴
+    ////새로운입력을 받거나 이미 실행중인 actioninput 리턴
     return bResult||m_bActionInput;
 }
 
 
-
-void CPlayer::Motion_Change()
+void CPlayer::Change_State(int newState)
 {
-    //이전과 현재상태가 다를떄 진입(애니메이션 진입)
-    if (m_iPreState != m_iState)
-    {
-        if (m_iState & ATTACK)
-        {
-            //어택에진입했으요..
+    if (m_pCurState == m_States[newState])
+        return;
 
-       }
-           
-        
-    }
+    if (m_pCurState && !m_pCurState->CanExit())
+        return;
+
+    if (m_pCurState)
+        m_pCurState->Exit(this);
+
+    m_iPreState = m_iState;
+    m_iState = newState;
 
 
+    m_pNextState = m_States[newState];
+    m_pNextState->Enter(this);
 }
-
-void CPlayer::State_Change()
-{
-    //모션에 대한 각각에 대한 전이 처리
-    if (m_iState & ATTACK)
-    {
-        if (m_pBody->Get_IsAnimFinished())
-        {
-            Set_State(SET, IDLE);
-            m_bActionInput = false; //리셋
-
-        }
-    }
-}
-
 
 CPlayer* CPlayer::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
@@ -289,6 +288,12 @@ void CPlayer::Free()
 {
     Safe_Release(m_pInputManager);
     Safe_Release(m_pNavigationCom);
+
+    for (auto& pair : m_States)
+    {
+        if (pair.second)
+            Safe_Release(pair.second);
+    }
 
     __super::Free();
 }
@@ -329,6 +334,15 @@ HRESULT CPlayer::Ready_PartObjects(void* pArg)
         m_pBody = dynamic_cast<CBody*>(Find_PartObject(L"Part_Body"));
 
     }
+    return S_OK;
+}
+
+HRESULT CPlayer::Ready_States()
+{
+    m_States.emplace(IDLE, CPlayerIdleState::Create());
+    m_States.emplace(RUN, CPlayerRunState::Create());
+    m_States.emplace(ATTACK, CPlayerAttackState::Create());
+
     return S_OK;
 }
 

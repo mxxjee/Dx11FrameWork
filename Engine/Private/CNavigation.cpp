@@ -176,7 +176,7 @@ _bool CNavigation::CanPush(_int iCellIndex)
 	if (iter != m_OpenList.end())
 		return false;
 
-	auto    iter = find_if(m_CloseList.begin(), m_CloseList.end(), [&](_int iCurrentCellIndex)
+	iter = find_if(m_CloseList.begin(), m_CloseList.end(), [&](_int iCurrentCellIndex)
 		{
 			if (iCurrentCellIndex == iCellIndex)
 				return true;

@@ -118,27 +118,27 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
 
     
     ////////////////점 조명에 대한 연산/////////////////////
-    for (int i = 0; i < g_PointLightNum; ++i)
-    {
-        //1.어디방향으로 빛이오는지 계산하자.
-        vector vLightDirection = g_vPL_Position[i] - Input.vWorldPos;
-        float Distance = length(vLightDirection);
+    //for (int i = 0; i < g_PointLightNum; ++i)
+    //{
+    //    //1.어디방향으로 빛이오는지 계산하자.
+    //    vector vLightDirection = g_vPL_Position[i] - Input.vWorldPos;
+    //    float Distance = length(vLightDirection);
         
-        float fShade = Compute_Shade(vLightDirection, Input.vNormal);
-        float fAttenuation = Compute_Attenuation(g_vPL_Range[i].r, Distance);
-        float fSpecular = Compute_Specular(vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition,80);
+    //    float fShade = Compute_Shade(vLightDirection, Input.vNormal);
+    //    float fAttenuation = Compute_Attenuation(g_vPL_Range[i].r, Distance);
+    //    float fSpecular = Compute_Specular(vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition,80);
         
         
-        ///이거 이상함.
-        fDiffuseColor += g_vPL_Diffuse[i] * MtrlDiffuseColor * fShade * fAttenuation;
-        //fAmbientColor += g_vPL_Ambient[i] * g_vMaterialAmbient * fAttenuation;
-       // fSpeculrColor += g_vPL_Specular[i] * MtrlSpecularColor * fSpecular;
+    //    ///이거 이상함.
+    //    fDiffuseColor += g_vPL_Diffuse[i] * MtrlDiffuseColor * fShade * fAttenuation;
+    //    //fAmbientColor += g_vPL_Ambient[i] * g_vMaterialAmbient * fAttenuation;
+    //   // fSpeculrColor += g_vPL_Specular[i] * MtrlSpecularColor * fSpecular;
         
 
-    }
+    //}
   
     
-    fAmbientColor *= 0.8f;
+    //fAmbientColor *= 0.8f;
     float4 ResultColor = fDiffuseColor + fAmbientColor + fSpeculrColor;
     return saturate(ResultColor);
 

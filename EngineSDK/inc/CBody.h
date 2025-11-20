@@ -70,8 +70,17 @@ public:
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
+public:
+    //Body Update 시 Set_Animation할 애니메이션 설정
+    void        Reserve_Animation(_wstring AnimKey, bool bLoop);
 private:
     _uint                   m_eRenderGroup = 0;
+
+
+protected:
+    wstring             m_NextAnimKey = L"";
+    bool                m_NextAnimLoop = false;
+
 };
 NS_END
 

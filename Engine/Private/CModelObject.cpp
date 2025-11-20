@@ -78,44 +78,12 @@ HRESULT CModelObject::Render()
     return S_OK;
 }
 
-void CModelObject::Set_State(STATE_OP Flag, _uint State)
+
+
+bool CModelObject::Is_AnimEnd()
 {
-    //이전 상태 백업
-    const _uint prev = m_iState;
-
-    switch (Flag)
-    {
-    case Engine::ADD:
-        m_iState |= State;
-        break;
-
-    case Engine::REMOVE:
-        m_iState &= ~State;
-        break;
-
-    case Engine::TOGGLE:
-        m_iState ^= State;
-        break;
-
-    case Engine::SET:
-        m_iState = State;
-        break;
-    default:
-        break;
-    }
-
-    if (prev != m_iState)
-
-        m_iPreState = prev;
- 
-}
-
-void CModelObject::Motion_Change()
-{
-}
-
-void CModelObject::State_Change()
-{
+    CheckNullResult(m_pBody, false);
+    return m_pBody->Get_IsAnimFinished();
 }
 
 HRESULT CModelObject::Bind_ShaderResources()

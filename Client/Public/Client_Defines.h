@@ -23,6 +23,14 @@ namespace Client
 	//enum class LEV
 }
 
+typedef struct tagPlayerInput
+{
+	bool m_bisAttack = false;
+	bool m_bisMove = false;
+	bool m_bisShield = false;
+
+}PLAYER_INPUT;
+
 
 using namespace Client;
 using namespace std;

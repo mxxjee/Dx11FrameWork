@@ -3,13 +3,12 @@
 
 NS_BEGIN(Client)
 class CPlayer;
-
-class CPlayerIdleState final:
+class CPlayerAttackState :
     public CPlayerState
 {
 private:
-    CPlayerIdleState();
-    virtual ~CPlayerIdleState();
+    CPlayerAttackState();
+    virtual ~CPlayerAttackState();
 
 
 public:
@@ -19,9 +18,10 @@ public:
     virtual void        Exit(CPlayer* pPlayer)override;
 
 public:
-    static CPlayerIdleState* Create();
-
-
+    static CPlayerAttackState* Create();
+    
+private:
+    bool        m_bChange = false;
 };
-NS_END
 
+NS_END

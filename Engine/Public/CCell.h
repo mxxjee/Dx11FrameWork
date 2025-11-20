@@ -27,8 +27,6 @@ public:
                 //셀 스페이상의 위치가 셀안에있는지 판단, 없으면 더 나아갈 수 잇는지 판단하기 위해 이웃을 리턴.
     bool        isIn(_fvector vResultPos, _int* pNeighborIndex);
     void        Set_ParentIndex(_int iParentIndex) { m_iParentIndex = iParentIndex; }
-
-    _bool       CanPush(_int iCellIndex);
 public:
     /*Using A-Star*/
                 //휴리스틱 비용 구하기

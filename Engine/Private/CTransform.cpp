@@ -227,7 +227,7 @@ void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space, CNavigation
 
 void CTransform::Go_Astar(CNavigation* pNavigation, _int GoalIdx, _float fTimeDelta)
 {
-	const list<_vector>* Rout = pNavigation->Make_Rout(GoalIdx);
+	const list<_vector>* Rout = pNavigation->Make_Route(GoalIdx);
 
 
 

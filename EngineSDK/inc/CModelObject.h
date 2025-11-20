@@ -18,6 +18,7 @@ public:
         IDLE = 1 << 0,
         RUN = 1 << 1,
         ATTACK = 1 << 2,
+        SHIELD
     };
 public:
     typedef struct tagModelObjectDesc : CGameObject::GAMEOBJECT_DESC
@@ -45,11 +46,11 @@ public:
 
     virtual HRESULT Render();
 
-protected:
-    //스테이트갱신, cur/pre갱신
-    virtual void Set_State(STATE_OP Flag,_uint State);       
-    virtual void Motion_Change();       //pre!=cur (애니메이션 진입함수)
-    virtual void State_Change();        //애니메이션 끝남에 따라 상태처리
+
+public:
+                    //상태값, update돌릴 state  클래스 변경
+    virtual void            Change_State(int newState) {};
+    bool                    Is_AnimEnd();
 private:
     HRESULT                     Bind_ShaderResources();
 

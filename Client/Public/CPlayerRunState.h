@@ -4,24 +4,20 @@
 NS_BEGIN(Client)
 class CPlayer;
 
-class CPlayerIdleState final:
+class CPlayerRunState :
     public CPlayerState
 {
 private:
-    CPlayerIdleState();
-    virtual ~CPlayerIdleState();
+    CPlayerRunState();
+    virtual ~CPlayerRunState();
 
 
 public:
     virtual void        Enter(CPlayer* pPlayer)override;
     virtual void        Update(CPlayer* pPlayer)override;
-    virtual void        Update_Late(CPlayer* pPlayer)override;
     virtual void        Exit(CPlayer* pPlayer)override;
 
 public:
-    static CPlayerIdleState* Create();
-
-
+    static CPlayerRunState* Create();
 };
 NS_END
-

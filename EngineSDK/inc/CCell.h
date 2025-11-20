@@ -20,10 +20,19 @@ private:
 public:
     _vector     Get_Point(POINTType ePoint) const { return XMLoadFloat3(&m_CellInfo.m_vPoints[ENUM_TO_UINT(ePoint)]); }
     int         Get_Idx() { return m_CellInfo.m_iIndex; }
+    
+    void        Get_Neighbors(_int* Output) { memcpy(Output, m_CellInfo.m_iNeighbors, sizeof(_int) * 3); }
     _float      Compute_Height(_vector vCellTargetPos);
 
                 //셀 스페이상의 위치가 셀안에있는지 판단, 없으면 더 나아갈 수 잇는지 판단하기 위해 이웃을 리턴.
     bool        isIn(_fvector vResultPos, _int* pNeighborIndex);
+    void        Set_ParentIndex(_int iParentIndex) { m_iParentIndex = iParentIndex; }
+public:
+    /*Using A-Star*/
+                //휴리스틱 비용 구하기
+    _float      Compute_Cost(const vector<CCell*>& Cells, _int iGoalIndx);
+    _vector     Get_CenterPos();
+
 private:
     DefaultCellInfo         m_CellInfo;
 
@@ -51,6 +60,13 @@ public:                             //맵툴에서 파싱해온 구조체만 넘겨주기
 
 private:
     class CGameInstance* m_pGameInstance = nullptr;
+
+
+private:
+    /*A-star알고리즘을 사용하기 위한 변수들*/
+    _float			m_fTotalCost;
+    int             m_iParentIndex = -1;
+
 };
 
 NS_END

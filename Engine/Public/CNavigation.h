@@ -28,7 +28,6 @@ public:
 
 public:
     const list<_vector>* Make_Route(_int iGoalIndex);
-
     _bool       CanPush(_int iCellIndex);
 
 #ifdef _DEBUG

@@ -525,7 +525,7 @@ void CModel::Set_Animation(const wstring& AnimKey, _bool isLoop)
 	if (m_PreAnimKey!=L"" && m_PreAnimKey != m_CurrentAnimKey)
 	{
 		m_isTransition = true;
-
+		m_isAnimFinished = false;
 
 		Start_Transition();
 		  
