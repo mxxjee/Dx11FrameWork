@@ -17,6 +17,9 @@ void CPlayerAttackState::Enter(CPlayer* pPlayer)
     pPlayerInput = pPlayer->Get_Input();
     pPlayer->Reserve_Animation_To_Body(L"slash", false);
 
+
+    pPlayer->Reset_ActionControl();
+
     //중복공격막고..
     pPlayer->Set_CanAttackEnable(false);
     pPlayer->Set_CanMove(false);

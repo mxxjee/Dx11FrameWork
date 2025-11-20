@@ -65,6 +65,12 @@ public:
 
     void            Set_CanMove(bool b) { m_ActionControl.m_bCanMove = b; }
     void            Set_Hold(bool b) { m_ActionControl.m_bHold = b; }
+
+    void            Set_FixDir(bool b) { m_ActionControl.m_bFixDir = b; }
+    bool            Get_FixDir() { return m_ActionControl.m_bFixDir; }
+
+    void            Reset_ActionControl() { m_ActionControl.Reset(); }
+
 public:
     static CPlayer* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;

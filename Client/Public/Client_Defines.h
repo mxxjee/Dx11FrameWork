@@ -37,6 +37,15 @@ typedef struct tagActionControl
 	bool                m_bCanAttack = true;
 	bool                m_bCanMove = true;
 	bool				m_bHold = false;
+	bool				m_bFixDir = false;
+
+	void		Reset()
+	{
+		m_bCanAttack = true;
+		m_bCanMove = true;
+		m_bHold = false;
+		m_bFixDir = false;
+	}
 
 }ACTION_CONTROL;
 

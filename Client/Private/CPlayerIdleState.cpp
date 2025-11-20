@@ -14,6 +14,8 @@ void CPlayerIdleState::Enter(CPlayer* pPlayer)
 {
 	pPlayerInput = pPlayer->Get_Input();
 	pPlayer->Reserve_Animation_To_Body(L"wait", true);
+
+	pPlayer->Reset_ActionControl();
 	pPlayer->Set_CanMove(true);
 
 }
@@ -38,7 +40,9 @@ void CPlayerIdleState::Update(CPlayer* pPlayer)
 
 void CPlayerIdleState::Update_Late(CPlayer* pPlayer)
 {
-	
+	if (pPlayer->Get_FixDir())
+		pPlayer->Set_FixDir(false);
+
 }
 
 void CPlayerIdleState::Exit(CPlayer* pPlayer)

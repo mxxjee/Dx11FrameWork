@@ -16,6 +16,8 @@ void CPlayerRunState::Enter(CPlayer* pPlayer)
 	pPlayerInput = pPlayer->Get_Input();
 	pPlayer->Reserve_Animation_To_Body(L"run", true);
 
+	pPlayer->Reset_ActionControl();
+
 }
 
 void CPlayerRunState::Update(CPlayer* pPlayer)

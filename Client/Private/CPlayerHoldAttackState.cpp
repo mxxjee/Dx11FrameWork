@@ -16,6 +16,8 @@ void CPlayerHoldAttackState::Enter(CPlayer* pPlayer)
     pPlayerInput = pPlayer->Get_Input();
     pPlayer->Reserve_Animation_To_Body(L"slash_hold_st", false);
 
+    pPlayer->Reset_ActionControl();
+
     //중복공격막고..
     pPlayer->Set_CanAttackEnable(true);
     pPlayer->Set_CanMove(false);
@@ -40,6 +42,7 @@ void CPlayerHoldAttackState::Update(CPlayer* pPlayer)
             m_ePhase = Phase::Loop;
             pPlayer->Reserve_Animation_To_Body(L"slash_hold_lp", true);
             m_bChange = false;
+            pPlayer->Set_FixDir(true);
         }
     }
     break;
@@ -53,6 +56,7 @@ void CPlayerHoldAttackState::Update(CPlayer* pPlayer)
             pPlayer->Reserve_Animation_To_Body(L"slash_hold_ed", false);
             m_bChange = false;
             pPlayer->Set_CanMove(false);
+          
             
         }
 
@@ -65,6 +69,7 @@ void CPlayerHoldAttackState::Update(CPlayer* pPlayer)
 
             pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
             pPlayer->Set_CanMove(true);
+            
             m_bChange = false;
             
 
@@ -114,7 +119,7 @@ void CPlayerHoldAttackState::Exit(CPlayer* pPlayer)
 
 void CPlayerHoldAttackState::Hold_Movement(CPlayer* pPlayer)
 {
-    
+    //방향에 따른 애니메이션 적용
     if (pPlayer->Get_Transform())
     {
         wstring dir = L"";

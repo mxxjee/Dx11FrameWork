@@ -35,7 +35,7 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     CModelObject::MODELOBJECT_DESC desc;
     CTransform::TRANSFORM_DESC TransDesc;
 
-    m_fInitSpeed = 5.f;
+    m_fInitSpeed = 4.f;
     TransDesc.fSpeedPerSec = m_fInitSpeed;
     TransDesc.vLocalPosition = { 35.f,10.f,19.f,1.f };
     TransDesc.vLocalRotation = { 0.f,180.f,0.f,0.f };                                                                                      
@@ -186,6 +186,8 @@ void CPlayer::Update_Movement(_float fTimeDelta)
 
 void CPlayer::Normal_Movement(_float fTimeDelta)
 {
+    CheckTrue(m_ActionControl.m_bFixDir);
+
     m_pTransformCom->Set_Speed(m_fInitSpeed);
 
 
@@ -237,7 +239,7 @@ void CPlayer::Normal_Movement(_float fTimeDelta)
 }
 void CPlayer::Hold_Movement(_float fTimeDelta)
 {
-    m_pTransformCom->Set_Speed(m_fInitSpeed / 3.f);
+    m_pTransformCom->Set_Speed(m_fInitSpeed / 2.f);
 
     if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LeftArrow))
     {
