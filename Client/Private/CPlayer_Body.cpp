@@ -41,8 +41,21 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 
 	m_pModel->Set_Animation(L"wait", true);
 	m_pModel->Set_Loop(L"slash", false);
+
+	m_pModel->Set_Animation_Speed(L"wait", 50.f);
 	m_pModel->Set_Animation_Speed(L"run", 50.f);
-	m_pModel->Set_Animation_Speed(L"slash",80.f);
+	m_pModel->Set_Animation_Speed(L"slash",100.f);
+
+	m_pModel->Set_Animation_Speed(L"slash_hold_st", 80.f);
+	m_pModel->Set_Animation_Speed(L"slash_hold_lp", 60.f);
+	m_pModel->Set_Animation_Speed(L"slash_hold_ed", 80.f);
+
+
+	m_pModel->Set_Animation_Speed(L"slash_hold_l", 60.f);
+	m_pModel->Set_Animation_Speed(L"slash_hold_r", 60.f);
+	m_pModel->Set_Animation_Speed(L"slash_hold_b", 60.f);
+	m_pModel->Set_Animation_Speed(L"slash_hold_f", 60.f);
+
 
 	m_pModel->Set_TransitionTime(0.2f);
 

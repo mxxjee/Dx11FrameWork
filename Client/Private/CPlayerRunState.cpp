@@ -20,11 +20,11 @@ void CPlayerRunState::Enter(CPlayer* pPlayer)
 
 void CPlayerRunState::Update(CPlayer* pPlayer)
 {
-	if (pPlayerInput->m_bisAttack )
-		pPlayer->Change_State(CModelObject::ATTACK);
+	if (pPlayerInput->m_bisAttack && pPlayer->Get_CanAttackEnable())
+		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ATTACK));
 
 	else if (!pPlayerInput->m_bisMove)
-		pPlayer->Change_State(CModelObject::IDLE);
+		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
 }
 
 void CPlayerRunState::Exit(CPlayer* pPlayer)

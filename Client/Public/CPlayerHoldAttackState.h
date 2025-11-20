@@ -3,28 +3,29 @@
 
 NS_BEGIN(Client)
 class CPlayer;
-class CPlayerAttackState :
+
+class CPlayerHoldAttackState :
     public CPlayerState
 {
-    enum class NextAnim{NONE,IDLE,HOLD};
+    enum class Phase {None,Start,Loop,End};
+
 private:
-    CPlayerAttackState();
-    virtual ~CPlayerAttackState();
-
-
+    CPlayerHoldAttackState();
+    virtual ~CPlayerHoldAttackState();
 public:
     virtual void        Enter(CPlayer* pPlayer)override;
     virtual void        Update(CPlayer* pPlayer)override;
     virtual void        Update_Late(CPlayer* pPlayer)override;
     virtual void        Exit(CPlayer* pPlayer)override;
 
-public:
-    static CPlayerAttackState* Create();
-    
 private:
-    NextAnim e_NextAnim = NextAnim::NONE;
-    bool        m_bChange = false;
+    void        Hold_Movement(CPlayer* pPlayer);
+public:
+    static CPlayerHoldAttackState* Create();
 
+private:
+    Phase   m_ePhase = Phase::None;
+    bool        m_bChange = false;
 };
 
 NS_END

@@ -69,7 +69,7 @@ public:
 
     _vector                 Get_SRT(SRTType eType);
     CTransform*             Get_Parent() { return m_pParent; }
-
+    _vector                 Get_MoveDir() { return m_vMoveDir; }
 #pragma region Translation(모두 로컬기준 이동/회전)
 public:
     void    Move(DIRECTION eDir, float fTimeDelta,Space space=Space::Local,class CNavigation* pNavigation=nullptr);                                                                  //look벡터 갱신여부
@@ -98,6 +98,8 @@ public:
     void    MoveLerp(_vector vTargetPos, float fLerpSpeed, float fTimeDelta, bool bUpdateLook = true);
     void    ScaleLerp(_vector vTargetScale, float fLerpSpeed, float fTimeDelta);
     void    RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDelta);
+
+
 #pragma endregion
 
 public:
@@ -110,6 +112,7 @@ private:
     //누적회전을 위한 각도
     _float3   m_fEularDegree = { 0.f,0.f,0.f };
 
+    _vector     m_vMoveDir;
 
 private:
     CTransform* m_pParent = { nullptr };

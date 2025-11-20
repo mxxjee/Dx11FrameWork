@@ -28,9 +28,21 @@ void CPlayerAttackState::Update(CPlayer* pPlayer)
 {
     if (m_bChange)
     {
-        pPlayer->Change_State(CModelObject::IDLE);
+        switch (e_NextAnim)
+        {
+        case NextAnim::IDLE:
+            pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
+  
+            break;
+
+        case NextAnim::HOLD:
+            pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_ATTACK));
+
+        break;
+        }
+       
+
         pPlayer->Set_CanAttackEnable(true);
-        pPlayer->Set_CanMove(true);
     }
        
 
@@ -38,10 +50,17 @@ void CPlayerAttackState::Update(CPlayer* pPlayer)
 
 void CPlayerAttackState::Update_Late(CPlayer* pPlayer)
 {
-    if (pPlayer->Is_AnimEnd())
+    if (pPlayer->Is_AnimEnd() && !pPlayerInput->m_bisAttack)
     {
+        e_NextAnim = NextAnim::IDLE;
         m_bChange = true;
        
+    }
+
+    else if (pPlayer->Is_AnimEnd() && pPlayerInput->m_bisAttack)
+    {
+        e_NextAnim = NextAnim::HOLD;
+        m_bChange = true;
     }
 }
 

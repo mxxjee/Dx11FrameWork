@@ -19,6 +19,16 @@ class CPlayerState;
 class CPlayer :
     public CModelObject
 {
+public:
+    enum class PLAYER_STATE
+    {
+        NONE,
+        IDLE,
+        RUN,
+        ATTACK ,
+        HOLD_ATTACK,
+        SHIELD
+    };
 
 protected:
     CPlayer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
@@ -42,16 +52,19 @@ private:
     bool        Event_Input(_float  fTimeDelta);
 
     void        Update_Movement(_float fTimeDelta);
+    void        Normal_Movement(_float fTimeDelta);
+    void        Hold_Movement(_float fTimeDelta);
 
 public:     
     //상태값, update돌릴 state  클래스 변경
     virtual void            Change_State(int newState);
     PLAYER_INPUT* Get_Input() { return &m_Input; }
 
-    void            Set_CanAttackEnable(bool b) { m_bCanAttack = b; }
-    bool            Get_CanAttackEnable() { return m_bCanAttack; }
+    void            Set_CanAttackEnable(bool b) { m_ActionControl.m_bCanAttack = b; }
+    bool            Get_CanAttackEnable() { return m_ActionControl.m_bCanAttack; }
 
-    void            Set_CanMove(bool b) { m_bCanMove = b; }
+    void            Set_CanMove(bool b) { m_ActionControl.m_bCanMove = b; }
+    void            Set_Hold(bool b) { m_ActionControl.m_bHold = b; }
 public:
     static CPlayer* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
@@ -73,17 +86,25 @@ private:
     CInput_Manager*         m_pInputManager = nullptr;
     int                     iHp = 5;
 
+
+public:
+    virtual string Convert_String_To_Enum(_uint eState);
+
+
 private:
     PLAYER_INPUT        m_Input;
+    ACTION_CONTROL      m_ActionControl;
 
-    bool                m_bCanAttack = true;
-    bool                m_bCanMove = true;
+
 
 private:
     UMap<_uint, CPlayerState*>       m_States;
 
     CPlayerState*       m_pCurState=nullptr;
     CPlayerState*       m_pNextState = nullptr;
+
+private:
+    float           m_fInitSpeed = 0.f;
 };
 
 NS_END

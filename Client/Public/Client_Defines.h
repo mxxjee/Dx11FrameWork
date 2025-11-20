@@ -32,6 +32,14 @@ typedef struct tagPlayerInput
 }PLAYER_INPUT;
 
 
+typedef struct tagActionControl
+{
+	bool                m_bCanAttack = true;
+	bool                m_bCanMove = true;
+	bool				m_bHold = false;
+
+}ACTION_CONTROL;
+
 using namespace Client;
 using namespace std;
 

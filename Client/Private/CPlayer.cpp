@@ -35,7 +35,8 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     CModelObject::MODELOBJECT_DESC desc;
     CTransform::TRANSFORM_DESC TransDesc;
 
-    TransDesc.fSpeedPerSec = 5.f;
+    m_fInitSpeed = 5.f;
+    TransDesc.fSpeedPerSec = m_fInitSpeed;
     TransDesc.vLocalPosition = { 35.f,10.f,19.f,1.f };
     TransDesc.vLocalRotation = { 0.f,180.f,0.f,0.f };                                                                                      
 
@@ -144,10 +145,15 @@ void CPlayer::Update_Input(_float fTimeDelta)
 {
 
     //이벤트 관련 입력은 항상 우선권을 가진다.
-    m_Input.m_bisAttack = m_pInputManager->IsKeyHeld(KeyCode::B) && m_bCanAttack;
+    m_ActionControl.m_bHold = m_pInputManager->IsKeyHeld(KeyCode::B) || m_pInputManager->IsKeyHeld(KeyCode::T);
+
+
+
+
+    m_Input.m_bisAttack = m_pInputManager->IsKeyHeld(KeyCode::B);
 
     m_Input.m_bisMove = m_pInputManager->IsKeyHeld(KeyCode::UpArrow) || m_pInputManager->IsKeyHeld(KeyCode::DownArrow)
-        || m_pInputManager->IsKeyHeld(KeyCode::LeftArrow) || m_pInputManager->IsKeyHeld(KeyCode::RightArrow) && m_bCanMove;
+        || m_pInputManager->IsKeyHeld(KeyCode::LeftArrow) || m_pInputManager->IsKeyHeld(KeyCode::RightArrow) && m_ActionControl.m_bCanMove;
 
 
     m_Input.m_bisShield = m_pInputManager->IsKeyHeld(KeyCode::T);
@@ -158,7 +164,30 @@ void CPlayer::Update_Input(_float fTimeDelta)
 
 void CPlayer::Update_Movement(_float fTimeDelta)
 {
-    CheckFalse(m_bCanMove);
+    CheckFalse(m_ActionControl.m_bCanMove);
+
+    if (m_ActionControl.m_bHold)
+        Hold_Movement(fTimeDelta);
+
+        
+    else
+        Normal_Movement(fTimeDelta);
+
+
+    if (m_pTarget)
+        m_pTransformCom->Chase(m_pTarget->Get_Transform()->Get_State(STATE::POSITION, TransformScope::WORLD), fTimeDelta, 5);
+
+
+    m_pTransformCom->Set_State(STATE::POSITION,
+        m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
+
+
+}
+
+void CPlayer::Normal_Movement(_float fTimeDelta)
+{
+    m_pTransformCom->Set_Speed(m_fInitSpeed);
+
 
     if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LeftArrow))
     {
@@ -177,7 +206,7 @@ void CPlayer::Update_Movement(_float fTimeDelta)
     else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::RightArrow))
     {
         if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
-           
+
             m_pTransformCom->Rotation(_float3(0.f, 135.f, 0.f));
 
         else if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
@@ -198,17 +227,59 @@ void CPlayer::Update_Movement(_float fTimeDelta)
 
 
     if (m_Input.m_bisMove)
-        m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta,Space::Local,m_pNavigationCom);
-     
+        m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta, Space::Local, m_pNavigationCom);
+
+
+
+
+
+
+}
+void CPlayer::Hold_Movement(_float fTimeDelta)
+{
+    m_pTransformCom->Set_Speed(m_fInitSpeed / 3.f);
+
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LeftArrow))
+    {
+        if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+            m_pTransformCom->Move(DIRECTION::LEFTDOWN, fTimeDelta, Space::WORLD, m_pNavigationCom);
+
+
+        else if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+            m_pTransformCom->Move(DIRECTION::LEFTUP, fTimeDelta, Space::WORLD, m_pNavigationCom);
+
+
+        else
+            m_pTransformCom->Move(DIRECTION::LEFT, fTimeDelta, Space::WORLD, m_pNavigationCom);
+
+    }
 
     
 
-    if (m_pTarget)
-        m_pTransformCom->Chase(m_pTarget->Get_Transform()->Get_State(STATE::POSITION, TransformScope::WORLD), fTimeDelta, 5);
+    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::RightArrow))
+    {
+        if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+            m_pTransformCom->Move(DIRECTION::RIGHTDOWN,fTimeDelta, Space::WORLD, m_pNavigationCom);
+
+        else if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+            m_pTransformCom->Move(DIRECTION::RIGHTUP, fTimeDelta, Space::WORLD, m_pNavigationCom);
+
+        else
+            m_pTransformCom->Move(DIRECTION::RIGHT, fTimeDelta, Space::WORLD, m_pNavigationCom);
+    }
 
 
-    m_pTransformCom->Set_State(STATE::POSITION,
-        m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
+    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::DownArrow))
+        m_pTransformCom->Move(DIRECTION::BACKWARD, fTimeDelta, Space::WORLD, m_pNavigationCom);
+
+
+    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::UpArrow))
+        m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta, Space::WORLD, m_pNavigationCom);
+
+
+
+
+
 
 
 }
@@ -240,6 +311,7 @@ bool CPlayer::Event_Input(_float fTimeDelta)
 
 void CPlayer::Change_State(int newState)
 {
+    
     if (m_pCurState == m_States[newState])
         return;
 
@@ -298,6 +370,7 @@ void CPlayer::Free()
     __super::Free();
 }
 
+
 HRESULT CPlayer::Ready_Components(void* pArg)
 {
     // Transform 생성 및 추가
@@ -339,9 +412,10 @@ HRESULT CPlayer::Ready_PartObjects(void* pArg)
 
 HRESULT CPlayer::Ready_States()
 {
-    m_States.emplace(IDLE, CPlayerIdleState::Create());
-    m_States.emplace(RUN, CPlayerRunState::Create());
-    m_States.emplace(ATTACK, CPlayerAttackState::Create());
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE), CPlayerIdleState::Create());
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::RUN), CPlayerRunState::Create());
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ATTACK), CPlayerAttackState::Create());
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_ATTACK), CPlayerHoldAttackState::Create());
 
     return S_OK;
 }
@@ -350,6 +424,34 @@ void CPlayer::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop)
 {
     CheckNull(m_pBody);
     m_pBody->Reserve_Animation(AnimKey, bNextAnimLoop);
+}
+
+string CPlayer::Convert_String_To_Enum(_uint eState)
+{
+    string StateDebugStr = "";
+
+    if (eState == 0)
+        return "NONE";
+
+
+    else
+    {
+        if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE))
+            StateDebugStr += "IDLE ";
+
+        if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::RUN))
+            StateDebugStr += "Run ";
+
+        if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::ATTACK))
+            StateDebugStr += "ATTACK ";
+
+        if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_ATTACK))
+            StateDebugStr += "HOLD_ATTACK ";
+    }
+
+
+
+    return StateDebugStr;
 }
 
 

@@ -168,6 +168,7 @@
     <ClInclude Include="..\Public\CPanel.h" />
     <ClInclude Include="..\Public\CPlayer.h" />
     <ClInclude Include="..\Public\CPlayerAttackState.h" />
+    <ClInclude Include="..\Public\CPlayerHoldAttackState.h" />
     <ClInclude Include="..\Public\CPlayerIdleState.h" />
     <ClInclude Include="..\Public\CPlayerRunState.h" />
     <ClInclude Include="..\Public\CPlayerState.h" />
@@ -202,6 +203,7 @@
     <ClCompile Include="..\Private\CPanel.cpp" />
     <ClCompile Include="..\Private\CPlayer.cpp" />
     <ClCompile Include="..\Private\CPlayerAttackState.cpp" />
+    <ClCompile Include="..\Private\CPlayerHoldAttackState.cpp" />
     <ClCompile Include="..\Private\CPlayerIdleState.cpp" />
     <ClCompile Include="..\Private\CPlayerRunState.cpp" />
     <ClCompile Include="..\Private\CPlayerState.cpp" />

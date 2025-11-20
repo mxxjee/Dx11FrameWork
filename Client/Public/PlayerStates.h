@@ -4,3 +4,4 @@
 #include "CPlayerIdleState.h"
 #include "CPlayerRunState.h"
 #include "CPlayerAttackState.h"
+#include "CPlayerHoldAttackState.h"

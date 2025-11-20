@@ -197,12 +197,13 @@ void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space, CNavigation
 		{
 		case Engine::DIRECTION::FORWARD:
 		case Engine::DIRECTION::BACKWARD:
-			vTargetAxis = WORLD_UP;
+			vTargetAxis = WORLD_LOOK;
 			break;
 
 		case Engine::DIRECTION::RIGHT:
 		case Engine::DIRECTION::LEFT:
 			vTargetAxis = WORLD_RIGHT;
+
 			break;
 
 		case Engine::DIRECTION::UP:
@@ -210,14 +211,50 @@ void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space, CNavigation
 			vTargetAxis = WORLD_UP;
 			break;
 
+		case Engine::DIRECTION::RIGHTUP:
+		case Engine::DIRECTION::LEFTDOWN:
+		{
+			m_bCross = true;
+
+			_vector vUp = WORLD_LOOK;
+			_vector vRight = WORLD_RIGHT;
+
+			vTargetAxis = vUp + vRight;
+
+			fTargetSpeed = m_fSpeedPerSec;
+			float fValue = eDir == DIRECTION::RIGHTUP ? 1.f : -1.f;
+
+			fTargetSpeed *= fValue;
+
+		}
+		break;
+
+		case Engine::DIRECTION::LEFTUP:
+		case Engine::DIRECTION::RIGHTDOWN:
+		{
+			m_bCross = true;
+
+			_vector vUp = WORLD_LOOK;
+			_vector vLeft = WORLD_RIGHT * (-1);
+
+			vTargetAxis = vUp + vLeft;
+
+			fTargetSpeed = m_fSpeedPerSec;
+			float fValue = eDir == DIRECTION::LEFTUP ? 1.f : -1.f;
+
+			fTargetSpeed *= fValue;
+
+		}
+		break;
 		default:
 			break;
 		}
 	}
 	
 
-
+	
 	vPosition += XMVector3Normalize(vTargetAxis) * fTargetSpeed * fTimeDelta;
+	m_vMoveDir = XMVectorScale(XMVector3Normalize(vTargetAxis), fTargetSpeed);
 
 	if(pNavigation==nullptr || pNavigation->isMove(vPosition))
 		Set_State(STATE::POSITION, vPosition);
