@@ -6,3 +6,4 @@
 #include "CPlayerAttackState.h"
 #include "CPlayerHoldAttackState.h"
 #include "CPlayerHoldShield.h"
+#include "CPlayerSlashShieldState.h"

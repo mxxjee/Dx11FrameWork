@@ -33,7 +33,8 @@ public:
         RUN,
         ATTACK ,
         HOLD_ATTACK,
-        HOLD_SHIELD
+        HOLD_SHIELD,
+        SLASH_SHIELD
     };
 
 protected:
@@ -57,7 +58,6 @@ private:
     void        Update_Input(_float fTimeDelta);
     void        Update_HoldTime(_float fTimeDelta);
     void        Check_HoldTime(HoldKey Key,KeyCode KeyCode,_float fTimeDelta);
-    bool        Event_Input(_float  fTimeDelta);
 
     void        Update_Movement(_float fTimeDelta);
     void        Normal_Movement(_float fTimeDelta);

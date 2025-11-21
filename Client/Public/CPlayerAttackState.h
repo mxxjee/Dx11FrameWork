@@ -6,7 +6,7 @@ class CPlayer;
 class CPlayerAttackState :
     public CPlayerState
 {
-    enum class NextAnim{NONE,IDLE,HOLD};
+    enum class NextAnim{NONE,IDLE,HOLD,SHIELD,SLASH_SHIELD};
 private:
     CPlayerAttackState();
     virtual ~CPlayerAttackState();

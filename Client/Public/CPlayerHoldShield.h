@@ -7,7 +7,7 @@ class CPlayerHoldShield :
     public CPlayerState
 {
     //전이 될 수 잇는 다음 애니메이션들
-    enum class NextAnim { NONE, IDLE, ATTACK };
+    enum class NextAnim { NONE, IDLE,RUN, ATTACK,SLASH_SHIELD };
 
                 //쉴드내애서의 ST,LP,ED
     enum class Phase { None, Start, Loop, End };
@@ -38,6 +38,6 @@ private:
 
 
     bool        m_bExitState = false;
-    bool        m_bRunMode = false;
+
 };
 NS_END

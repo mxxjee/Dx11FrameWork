@@ -14,7 +14,7 @@ CPlayerHoldShield::~CPlayerHoldShield()
 void CPlayerHoldShield::Enter(CPlayer* pPlayer)
 {
     pPlayerInput = pPlayer->Get_Input();
-    pPlayer->Reserve_Animation_To_Body(L"shield_lp", false);
+    pPlayer->Reserve_Animation_To_Body(L"shield_lp", true);
 
     e_NextAnim = NextAnim::NONE;
     m_ePhase = Phase::Loop;
@@ -52,7 +52,20 @@ void CPlayerHoldShield::Update_Late(CPlayer* pPlayer)
     if (m_bHoldT)
     {
         //if문 추가(B키 같이눌림 들어왓을떄)
-        
+     /*   if (m_bHoldB)
+        {
+            m_bChangeState = true;
+            e_NextAnim = NextAnim::SLASH_SHIELD;
+            return;
+        }*/
+
+        if (pPlayerInput->m_bisAttack)
+        {
+            m_bChangeState = true;
+            e_NextAnim = NextAnim::ATTACK;
+
+            return;
+        }
 
         //쉴드 단일동작들..
         switch (m_ePhase)
@@ -69,11 +82,10 @@ void CPlayerHoldShield::Update_Late(CPlayer* pPlayer)
                     m_bChangeState = true;
 
                 else
-                    m_bChangePhase = false;
+                    m_bChangePhase = true;
                 
             }
 
-                
 
             break;
 
@@ -110,11 +122,12 @@ void CPlayerHoldShield::Update_Late(CPlayer* pPlayer)
                     if (pPlayerInput->m_bisMove)
                     {
                         m_bChangeState = true;
-                        m_bRunMode = true;
+                        e_NextAnim = NextAnim::RUN;
+
                     }
 
                     else
-                        m_bChangePhase = false;
+                        m_bChangePhase = true;
 
                 }
 
@@ -139,18 +152,27 @@ void CPlayerHoldShield::Update_Late(CPlayer* pPlayer)
 
 void CPlayerHoldShield::Change_Other_State(CPlayer* pPlayer)
 {
-    switch (m_ePhase)
+    switch (e_NextAnim)
     {
   
-    case Client::CPlayerHoldShield::Phase::Loop:
-        if(m_bRunMode)
+    case Client::CPlayerHoldShield::NextAnim::RUN:
             pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::RUN));
-
         break;
+
+    case Client::CPlayerHoldShield::NextAnim::SLASH_SHIELD:
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::SLASH_SHIELD));
+        break;
+
+    case Client::CPlayerHoldShield::NextAnim::ATTACK:
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ATTACK));
+        break;
+
 
     default:
         break;
     }
+
+
  
     m_bChangeState = false;
 }

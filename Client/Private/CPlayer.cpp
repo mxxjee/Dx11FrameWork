@@ -321,28 +321,6 @@ void CPlayer::Hold_Movement(_float fTimeDelta)
 }
 
 
-bool CPlayer::Event_Input(_float fTimeDelta)
-{
-    bool bResult = false;
-
-    //if (m_Input.m_bisAttack=m_pInputManager->IsKeyPressed(KeyCode::B))
-    //{
-
-    //    return true;
-    //}
-
-    //if (m_pInputManager->IsKeyPressed(KeyCode::H))
-    //{
-    //    iHp--;
-    //    m_pGameInstance->BroadCastEvent(L"OnHeartDamaged", &iHp);
-    //    return true;
-    //}
-
-
-
-    ////새로운입력을 받거나 이미 실행중인 actioninput 리턴
-    return bResult||m_bActionInput;
-}
 
 
 
@@ -479,6 +457,8 @@ HRESULT CPlayer::Ready_States()
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ATTACK), CPlayerAttackState::Create());
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_ATTACK), CPlayerHoldAttackState::Create());
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_SHIELD), CPlayerHoldShield::Create());
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::SLASH_SHIELD), CPlayerSlashShieldState::Create());
+
 
 
 
@@ -487,7 +467,7 @@ HRESULT CPlayer::Ready_States()
     /// 
     HOLDKEY_DATA    HoldKeyB;
     HoldKeyB.Code = KeyCode::B;
-    HoldKeyB.m_fThresHold = 0.25f;
+    HoldKeyB.m_fThresHold = 0.2f;
 
 
     HOLDKEY_DATA    HoldKeyT;
@@ -531,6 +511,9 @@ string CPlayer::Convert_String_To_Enum(_uint eState)
 
         if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_SHIELD))
             StateDebugStr += "HOLD_SHIELD ";
+
+        if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::SLASH_SHIELD))
+            StateDebugStr += "SLASH_SHIELD ";
     }
 
 

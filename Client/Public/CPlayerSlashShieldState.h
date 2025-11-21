@@ -9,7 +9,7 @@ class CPlayerSlashShieldState :
     //전이 될 수 잇는 다음 애니메이션들
     enum class NextAnim { NONE, ATTACK,SHIELD };
 
-    //쉴드내애서의 ST,LP,ED
+    //ST,LP,ED
     enum class Phase { None, Loop, End };
 
 private:
@@ -28,5 +28,8 @@ private:
 public:
     static CPlayerSlashShieldState* Create();
 
+private:
+    Phase   m_ePhase = Phase::None;
+    NextAnim e_NextAnim = NextAnim::NONE;
 };
 NS_END
