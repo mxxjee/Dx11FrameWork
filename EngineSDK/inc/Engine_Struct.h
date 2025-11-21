@@ -25,6 +25,20 @@ namespace Engine
 
 	}ENGINE_DESC;
 
+	typedef struct HoldKeyData
+	{
+		KeyCode Code;
+		float	m_fTHoldTime = 0.f;		//누른시간
+		float	m_fThresHold = 1.f;		//눌렀다고 판정되는 시간
+		bool	m_bHeld = false;
+
+		void Reset()
+		{
+			m_fTHoldTime = 0.f;
+			m_bHeld = false;
+		}
+	}HOLDKEY_DATA;
+
 	typedef struct tagLoadTerrainData
 	{
 		_float4 vPosition;

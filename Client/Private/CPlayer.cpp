@@ -90,7 +90,7 @@ void CPlayer::Update(_float fTimeDelta)
 {
    
     Update_Input(fTimeDelta);
-    Update_Movement(fTimeDelta);
+
    //State_Change();     //애니메이션 완료 이후에 어떻게 바꿔줄것인지
     if (m_pNextState != nullptr)
     {
@@ -112,6 +112,9 @@ void CPlayer::Update(_float fTimeDelta)
 void CPlayer::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
+
+    Update_Movement(fTimeDelta);
+
     if (m_pCurState)
         m_pCurState->Update_Late(this);
 
@@ -143,14 +146,24 @@ HRESULT CPlayer::Render()
 
 void CPlayer::Update_Input(_float fTimeDelta)
 {
+    if (m_ActionControl.m_bCanAttack)
+        m_Input.m_bisAttack = m_pInputManager->IsKeyHeld(KeyCode::B);
+    else
+        m_Input.m_bisAttack = false;
 
-    //이벤트 관련 입력은 항상 우선권을 가진다.
-    m_ActionControl.m_bHold = m_pInputManager->IsKeyHeld(KeyCode::B) || m_pInputManager->IsKeyHeld(KeyCode::T);
+    
+    //홀드키에 대한 판단
+    Check_HoldTime(fTimeDelta);
+
+   
+
+    ////이벤트 관련 입력은 항상 우선권을 가진다.
+    //m_ActionControl.SetHold(HOLD_B, m_pInputManager->IsKeyHeld(KeyCode::B));
+    //m_ActionControl.SetHold(HOLD_T, m_pInputManager->IsKeyHeld(KeyCode::T));
 
 
 
-
-    m_Input.m_bisAttack = m_pInputManager->IsKeyHeld(KeyCode::B);
+  
 
     m_Input.m_bisMove = m_pInputManager->IsKeyHeld(KeyCode::UpArrow) || m_pInputManager->IsKeyHeld(KeyCode::DownArrow)
         || m_pInputManager->IsKeyHeld(KeyCode::LeftArrow) || m_pInputManager->IsKeyHeld(KeyCode::RightArrow) && m_ActionControl.m_bCanMove;
@@ -166,7 +179,7 @@ void CPlayer::Update_Movement(_float fTimeDelta)
 {
     CheckFalse(m_ActionControl.m_bCanMove);
 
-    if (m_ActionControl.m_bHold)
+    if (m_ActionControl.IsHold(HOLD_B) || m_ActionControl.IsHold(HOLD_T))
         Hold_Movement(fTimeDelta);
 
         
@@ -233,6 +246,25 @@ void CPlayer::Normal_Movement(_float fTimeDelta)
 
 
 
+
+
+
+}
+void CPlayer::Check_HoldTime(_float fTimeDelta)
+{
+
+    //Pressed할 시 초기화
+    if (m_pInputManager->IsKeyReleased(KeyCode::B))
+    {
+        m_ActionControl.m_Holds[HOLD_B].m_fTHoldTime = 0.f;
+        m_ActionControl.m_Holds[HOLD_B].Reset();
+    }
+
+    if(m_pInputManager->IsKeyHeld(KeyCode::B))
+        m_ActionControl.m_Holds[HOLD_B].m_fTHoldTime +=fTimeDelta;
+
+    if (m_ActionControl.m_Holds[HOLD_B].m_fTHoldTime > m_ActionControl.m_Holds[HOLD_B].m_fThresHold)
+        m_ActionControl.SetHold(HOLD_B, true);
 
 
 
@@ -418,6 +450,24 @@ HRESULT CPlayer::Ready_States()
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::RUN), CPlayerRunState::Create());
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ATTACK), CPlayerAttackState::Create());
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_ATTACK), CPlayerHoldAttackState::Create());
+
+
+
+    /// <summary>
+    /// 키 설정
+    /// 
+    HOLDKEY_DATA    HoldKeyB;
+    HoldKeyB.Code = KeyCode::B;
+    HoldKeyB.m_fThresHold = 0.25f;
+
+
+    HOLDKEY_DATA    HoldKeyT;
+    HoldKeyT.Code = KeyCode::T;
+    HoldKeyT.m_fThresHold = 0.25f;
+
+
+    m_ActionControl.m_Holds.push_back(HoldKeyB);
+    m_ActionControl.m_Holds.push_back(HoldKeyT);
 
     return S_OK;
 }

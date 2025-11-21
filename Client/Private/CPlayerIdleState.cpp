@@ -31,17 +31,22 @@ void CPlayerIdleState::Update(CPlayer* pPlayer)
 
 	else
 	{
+		
+
 		if (pPlayerInput->m_bisMove)
+		{
 			pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::RUN));
 
+		}
+			
 	}
 
 }
 
 void CPlayerIdleState::Update_Late(CPlayer* pPlayer)
 {
-	if (pPlayer->Get_FixDir())
-		pPlayer->Set_FixDir(false);
+	//if (pPlayer->Get_FixDir())
+	//	pPlayer->Set_FixDir(false);
 
 }
 

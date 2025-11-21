@@ -21,7 +21,7 @@ void CPlayerHoldAttackState::Enter(CPlayer* pPlayer)
     //중복공격막고..
     pPlayer->Set_CanAttackEnable(true);
     pPlayer->Set_CanMove(false);
-
+    pPlayer->Set_FixDir(true);
     m_ePhase= Phase::Start;
 }
 
@@ -42,7 +42,7 @@ void CPlayerHoldAttackState::Update(CPlayer* pPlayer)
             m_ePhase = Phase::Loop;
             pPlayer->Reserve_Animation_To_Body(L"slash_hold_lp", true);
             m_bChange = false;
-            pPlayer->Set_FixDir(true);
+
         }
     }
     break;
@@ -56,7 +56,7 @@ void CPlayerHoldAttackState::Update(CPlayer* pPlayer)
             pPlayer->Reserve_Animation_To_Body(L"slash_hold_ed", false);
             m_bChange = false;
             pPlayer->Set_CanMove(false);
-          
+
             
         }
 
@@ -69,7 +69,7 @@ void CPlayerHoldAttackState::Update(CPlayer* pPlayer)
 
             pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
             pPlayer->Set_CanMove(true);
-            
+            pPlayer->Set_FixDir(true);
             m_bChange = false;
             
 

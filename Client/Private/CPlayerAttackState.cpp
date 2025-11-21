@@ -18,6 +18,8 @@ void CPlayerAttackState::Enter(CPlayer* pPlayer)
     pPlayer->Reserve_Animation_To_Body(L"slash", false);
 
 
+    e_NextAnim = NextAnim::NONE;
+
     pPlayer->Reset_ActionControl();
 
     //중복공격막고..
@@ -44,8 +46,6 @@ void CPlayerAttackState::Update(CPlayer* pPlayer)
         break;
         }
        
-
-        pPlayer->Set_CanAttackEnable(true);
     }
        
 
@@ -53,18 +53,22 @@ void CPlayerAttackState::Update(CPlayer* pPlayer)
 
 void CPlayerAttackState::Update_Late(CPlayer* pPlayer)
 {
-    if (pPlayer->Is_AnimEnd() && !pPlayerInput->m_bisAttack)
-    {
-        e_NextAnim = NextAnim::IDLE;
-        m_bChange = true;
-       
-    }
+    CheckFalse(e_NextAnim == NextAnim::NONE);
 
-    else if (pPlayer->Is_AnimEnd() && pPlayerInput->m_bisAttack)
+    //홀드왜들어옴..? 
+    if (pPlayer->Is_AnimEnd() && pPlayer->Get_Hold(CPlayer::HOLD_B))
     {
         e_NextAnim = NextAnim::HOLD;
         m_bChange = true;
     }
+
+    else if (pPlayer->Is_AnimEnd() && !pPlayerInput->m_bisAttack )
+    {
+        e_NextAnim = NextAnim::IDLE;
+        m_bChange = true;
+        pPlayer->Set_CanAttackEnable(false);
+    }
+  
 }
 
 void CPlayerAttackState::Exit(CPlayer* pPlayer)

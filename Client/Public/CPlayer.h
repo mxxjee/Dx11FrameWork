@@ -20,6 +20,11 @@ class CPlayer :
     public CModelObject
 {
 public:
+    enum HoldKey
+    {
+        HOLD_B,
+        HOLD_T,
+    };
     enum class PLAYER_STATE
     {
         NONE,
@@ -27,7 +32,7 @@ public:
         RUN,
         ATTACK ,
         HOLD_ATTACK,
-        SHIELD
+        HOLD_SHIELD
     };
 
 protected:
@@ -49,6 +54,7 @@ public:
 
 private:
     void        Update_Input(_float fTimeDelta);
+    void        Check_HoldTime(_float fTimeDelta);
     bool        Event_Input(_float  fTimeDelta);
 
     void        Update_Movement(_float fTimeDelta);
@@ -64,7 +70,8 @@ public:
     bool            Get_CanAttackEnable() { return m_ActionControl.m_bCanAttack; }
 
     void            Set_CanMove(bool b) { m_ActionControl.m_bCanMove = b; }
-    void            Set_Hold(bool b) { m_ActionControl.m_bHold = b; }
+    void            Set_Hold(_int idx, bool b) { m_ActionControl.SetHold(idx, b); }
+    bool            Get_Hold(_int idx) { return m_ActionControl.IsHold(idx); }
 
     void            Set_FixDir(bool b) { m_ActionControl.m_bFixDir = b; }
     bool            Get_FixDir() { return m_ActionControl.m_bFixDir; }

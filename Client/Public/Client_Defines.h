@@ -32,19 +32,40 @@ typedef struct tagPlayerInput
 }PLAYER_INPUT;
 
 
+
+
 typedef struct tagActionControl
 {
 	bool                m_bCanAttack = true;
 	bool                m_bCanMove = true;
-	bool				m_bHold = false;
+	vector<HOLDKEY_DATA>		m_Holds;
 	bool				m_bFixDir = false;
 
 	void		Reset()
 	{
 		m_bCanAttack = true;
 		m_bCanMove = true;
-		m_bHold = false;
+
+		for (size_t i = 0; i < m_Holds.size(); ++i)
+		{
+			m_Holds[i].HOLDKEY_DATA::Reset();
+		}
+		//m_bHolds = { false,false };
 		m_bFixDir = false;
+
+	}
+
+
+
+	bool		IsHold(int idx)
+	{
+		return m_Holds[idx].m_bHeld;
+	}
+
+	void		SetHold(int idx, bool b)
+	{
+		m_Holds[idx].m_bHeld = b;
+
 	}
 
 }ACTION_CONTROL;

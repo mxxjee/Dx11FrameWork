@@ -44,7 +44,7 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 
 	m_pModel->Set_Animation_Speed(L"wait", 60.f);
 	m_pModel->Set_Animation_Speed(L"run", 60.f);
-	m_pModel->Set_Animation_Speed(L"slash",100.f);
+	m_pModel->Set_Animation_Speed(L"slash",90.f);
 
 	m_pModel->Set_Animation_Speed(L"slash_hold_st", 80.f);
 	m_pModel->Set_Animation_Speed(L"slash_hold_lp", 60.f);

@@ -147,7 +147,9 @@ const list<_vector>* CNavigation::Make_Route(_int iGoalIndex)
 		{
 
 			(*m_Cells)[iNeighbors[i]]->Set_ParentIndex(Min);
-			m_OpenList.push_back(iNeighbors[i]);
+
+			if(CanPush(iNeighbors[i]))
+				m_OpenList.push_back(iNeighbors[i]);
 		}
 
 		m_OpenList.pop_front();
