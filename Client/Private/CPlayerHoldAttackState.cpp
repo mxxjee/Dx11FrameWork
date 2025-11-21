@@ -20,9 +20,9 @@ void CPlayerHoldAttackState::Enter(CPlayer* pPlayer)
 
     //중복공격막고..
     pPlayer->Set_CanAttackEnable(true);
-    pPlayer->Set_CanMove(false);
+    pPlayer->Set_CanMove(true);
     pPlayer->Set_FixDir(true);
-    m_ePhase= Phase::Start;
+    m_ePhase= Phase::Loop;
 }
 
 void CPlayerHoldAttackState::Update(CPlayer* pPlayer)
@@ -122,11 +122,24 @@ void CPlayerHoldAttackState::Hold_Movement(CPlayer* pPlayer)
     //방향에 따른 애니메이션 적용
     if (pPlayer->Get_Transform())
     {
-        wstring dir = L"";
-        _vector MoveDir = pPlayer->Get_Transform()->Get_MoveDir();
-        _float4 fMoveDir;
+        CTransform* pTransform = pPlayer->Get_Transform();
 
+        wstring dir = L"";
+        _vector MoveDir = pTransform->Get_MoveDir();
+        
+        _float4 fMoveDir;
         XMStoreFloat4(&fMoveDir, MoveDir);
+
+        _vector vRight = pPlayer->Get_Transform()->Get_State(STATE::RIGHT);
+        _vector look = pPlayer->Get_Transform()->Get_State(STATE::LOOK);
+
+        
+
+        //움직인 축이 현재 내 look,right와 얼마나 일치했는지 판별하기
+       //Input 방향이 플레이어 기준 앞인지?
+        float forwardDot = XMVectorGetX(XMVector3Dot(look, MoveDir));
+        float RightDot = XMVectorGetX(XMVector3Dot(vRight, MoveDir));
+
         switch (m_ePhase)
         {
 
@@ -134,17 +147,21 @@ void CPlayerHoldAttackState::Hold_Movement(CPlayer* pPlayer)
         {
             if (pPlayerInput->m_bisMove)
             {
-                if (fMoveDir.x < 0)
-                    dir = L"l";
+                if (fabs(RightDot) > fabs(forwardDot))
+                {
+                    if (RightDot > 0)
+                        dir = L"r";
+                    else
+                        dir = L"l";
+                }
 
-                else if (fMoveDir.x > 0)
-                    dir = L"r";
-
-                else if (fMoveDir.z > 0)
-                    dir = L"f";
-
-                else if (fMoveDir.z < 0)
-                    dir = L"b";
+                else
+                {
+                    if (forwardDot > 0)
+                        dir = L"f";
+                    else
+                        dir = L"b";
+                }
             }
 
             else

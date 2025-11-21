@@ -29,4 +29,4 @@ public:
     static CPlayerSlashShieldState* Create();
 
 };
-
+NS_END

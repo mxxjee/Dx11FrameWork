@@ -17,7 +17,7 @@ void CPlayerHoldShield::Enter(CPlayer* pPlayer)
     pPlayer->Reserve_Animation_To_Body(L"shield_lp", false);
 
     e_NextAnim = NextAnim::NONE;
-    m_ePhase = Phase::Start;
+    m_ePhase = Phase::Loop;
 
 
     m_bChangePhase = false; 
@@ -30,7 +30,7 @@ void CPlayerHoldShield::Enter(CPlayer* pPlayer)
 
 void CPlayerHoldShield::Update(CPlayer* pPlayer)
 {
-    
+    Hold_Movement(pPlayer);
 
     if (m_bChangePhase)
         Change_Phase(pPlayer);
@@ -43,7 +43,7 @@ void CPlayerHoldShield::Update(CPlayer* pPlayer)
 
 void CPlayerHoldShield::Update_Late(CPlayer* pPlayer)
 {
-    Hold_Movement(pPlayer);
+  
 
     bool m_bHoldT = pPlayer->Get_Hold(CPlayer::HoldKey::HOLD_T);
     bool m_bHoldB = pPlayer->Get_Hold(CPlayer::HoldKey::HOLD_B);
@@ -64,7 +64,17 @@ void CPlayerHoldShield::Update_Late(CPlayer* pPlayer)
 
         case Client::CPlayerHoldShield::Phase::Loop:
             if (pPlayerInput->m_bisShieldRelease)
-                m_bChangePhase = true;
+            {
+                if (pPlayerInput->m_bisMove)
+                    m_bChangeState = true;
+
+                else
+                    m_bChangePhase = false;
+                
+            }
+
+                
+
             break;
 
         case Client::CPlayerHoldShield::Phase::End:
@@ -94,7 +104,22 @@ void CPlayerHoldShield::Update_Late(CPlayer* pPlayer)
                 break;
 
             case Client::CPlayerHoldShield::Phase::Loop:
-                m_bChangePhase = true;
+            {
+                if (pPlayerInput->m_bisShieldRelease)
+                {
+                    if (pPlayerInput->m_bisMove)
+                    {
+                        m_bChangeState = true;
+                        m_bRunMode = true;
+                    }
+
+                    else
+                        m_bChangePhase = false;
+
+                }
+
+
+            }
                 break;
 
             case Client::CPlayerHoldShield::Phase::End:
@@ -114,31 +139,19 @@ void CPlayerHoldShield::Update_Late(CPlayer* pPlayer)
 
 void CPlayerHoldShield::Change_Other_State(CPlayer* pPlayer)
 {
-    
- 
-    bool bHoldB = pPlayer->Get_Hold(CPlayer::HoldKey::HOLD_B);
-
-    //홀드B랑 같이 상태비교
-
-    //B는 누르고 T는똈을경우
-    if (bHoldB)
-        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_ATTACK));
-
-    else
+    switch (m_ePhase)
     {
-        //T만 뗏을경우
-        if (m_ePhase == Phase::Loop)
-        {
-            m_ePhase = Phase::End;
-            pPlayer->Reserve_Animation_To_Body(L"shield_ed", false);
+  
+    case Client::CPlayerHoldShield::Phase::Loop:
+        if(m_bRunMode)
+            pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::RUN));
 
-        }
-           
-        else if (m_ePhase == Phase::End)
-            pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
+        break;
 
+    default:
+        break;
     }
-
+ 
     m_bChangeState = false;
 }
 
@@ -174,68 +187,28 @@ void CPlayerHoldShield::Change_Phase(CPlayer* pPlayer)
 
 void CPlayerHoldShield::Hold_Movement(CPlayer* pPlayer)
 {
-
     //방향에 따른 애니메이션 적용
-    if (pPlayer->Get_Transform())
+
+
+    switch (m_ePhase)
     {
-        wstring dir = L"";
-        
-        _vector MoveDir = pPlayer->Get_Transform()->Get_MoveDir();
 
-        _vector vRight= pPlayer->Get_Transform()->Get_State(STATE::RIGHT);
-        _vector look = pPlayer->Get_Transform()->Get_State(STATE::LOOK);
+    case Client::CPlayerHoldShield::Phase::Loop:
+    {
+        if (pPlayerInput->m_bisMove)
+            pPlayer->Reserve_Animation_To_Body(L"shield_hold_f", true);
+
+        else
+            pPlayer->Reserve_Animation_To_Body(L"shield_lp", true);
+
+    }
 
 
-        
-        _float4 fMoveDir;
-        wstring AnimKey = L"";
+    break;
 
-
-        XMStoreFloat4(&fMoveDir, MoveDir);
-
-  
-        //움직인 축이 현재 내 look,right와 얼마나 일치했는지 판별하기
-        //Input 방향이 플레이어 기준 앞인지?
-        float forwardDot = XMVectorGetX(XMVector3Dot(look, MoveDir));
-        float RightDot = XMVectorGetX(XMVector3Dot(vRight, MoveDir));
-
-        switch (m_ePhase)
-        {
-
-        case Client::CPlayerHoldShield::Phase::Loop:
-        {
-            if (pPlayerInput->m_bisMove)
-            {
-                if (fabs(RightDot) > fabs(forwardDot))
-                {
-                    if (RightDot > 0)
-                        dir = L"r";
-                    else
-                        dir = L"l";
-                }
-
-                else
-                {
-                    if (forwardDot > 0)
-                        dir = L"f";
-                    else
-                        dir = L"b";
-                }
-
-                AnimKey = L"shield_hold_" + dir;
-
-            }
-
-            else
-                AnimKey = L"shield_lp";
-        }
-
-        pPlayer->Reserve_Animation_To_Body(AnimKey, true);
+    default:
         break;
 
-        default:
-            break;
-        }
     }
 }
 

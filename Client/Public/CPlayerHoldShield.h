@@ -38,5 +38,6 @@ private:
 
 
     bool        m_bExitState = false;
+    bool        m_bRunMode = false;
 };
 NS_END

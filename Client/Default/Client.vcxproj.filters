@@ -98,6 +98,9 @@
     <ClInclude Include="..\Public\CPlayerHoldShield.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Shield</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CPlayerSlashShieldState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Slash_Shield</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -222,6 +225,9 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Shield">
       <UniqueIdentifier>{f1021beb-43a2-44fc-a77c-d22ab05ec93a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Slash_Shield">
+      <UniqueIdentifier>{ec12d736-c24f-495d-8dce-1a3791a5a05b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -305,6 +311,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerHoldShield.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPlayerSlashShieldState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Slash_Shield</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

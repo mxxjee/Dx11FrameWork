@@ -113,6 +113,7 @@ void CPlayer::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
 
+
     Update_Movement(fTimeDelta);
 
     if (m_pCurState)
@@ -176,7 +177,7 @@ void CPlayer::Update_Movement(_float fTimeDelta)
 {
     CheckFalse(m_ActionControl.m_bCanMove);
 
-    if (m_ActionControl.IsHold(HOLD_B) || m_ActionControl.IsHold(HOLD_T))
+    if (m_ActionControl.IsHold(HOLD_B))
         Hold_Movement(fTimeDelta);
 
         
@@ -198,7 +199,11 @@ void CPlayer::Normal_Movement(_float fTimeDelta)
 {
     CheckTrue(m_ActionControl.m_bFixDir);
 
-    m_pTransformCom->Set_Speed(m_fInitSpeed);
+    if(m_ActionControl.m_Holds[HoldKey::HOLD_T].m_bHeld)
+        m_pTransformCom->Set_Speed(m_fInitSpeed/1.5f);
+
+    else
+        m_pTransformCom->Set_Speed(m_fInitSpeed);
 
 
     if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LeftArrow))

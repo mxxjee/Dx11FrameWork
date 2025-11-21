@@ -516,8 +516,7 @@ bool CModel::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
 
 void CModel::Set_Animation(const wstring& AnimKey, _bool isLoop)
 {
-	if (m_CurrentAnimKey == AnimKey)
-		return;
+
 
 	CAnimation* pAnim = Find_Animation(AnimKey);
 	CheckNull(pAnim);

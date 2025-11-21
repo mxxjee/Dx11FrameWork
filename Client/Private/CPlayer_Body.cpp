@@ -61,9 +61,6 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 	m_pModel->Set_Animation_Speed(L"shield_lp",100.f);
 	m_pModel->Set_Animation_Speed(L"shield_ed", 150.f);
 
-	m_pModel->Set_Animation_Speed(L"shield_hold_l", 120.f);
-	m_pModel->Set_Animation_Speed(L"shield_hold_r", 120.f);
-	m_pModel->Set_Animation_Speed(L"shield_hold_b", 120.f);
 	m_pModel->Set_Animation_Speed(L"shield_hold_f", 60.f);
 	
 	

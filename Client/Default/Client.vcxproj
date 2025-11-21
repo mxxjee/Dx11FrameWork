@@ -172,6 +172,7 @@
     <ClInclude Include="..\Public\CPlayerHoldShield.h" />
     <ClInclude Include="..\Public\CPlayerIdleState.h" />
     <ClInclude Include="..\Public\CPlayerRunState.h" />
+    <ClInclude Include="..\Public\CPlayerSlashShieldState.h" />
     <ClInclude Include="..\Public\CPlayerState.h" />
     <ClInclude Include="..\Public\CPlayer_Body.h" />
     <ClInclude Include="..\Public\CTerrain.h" />
@@ -208,6 +209,7 @@
     <ClCompile Include="..\Private\CPlayerHoldShield.cpp" />
     <ClCompile Include="..\Private\CPlayerIdleState.cpp" />
     <ClCompile Include="..\Private\CPlayerRunState.cpp" />
+    <ClCompile Include="..\Private\CPlayerSlashShieldState.cpp" />
     <ClCompile Include="..\Private\CPlayerState.cpp" />
     <ClCompile Include="..\Private\CPlayer_Body.cpp" />
     <ClCompile Include="..\Private\CTerrain.cpp" />

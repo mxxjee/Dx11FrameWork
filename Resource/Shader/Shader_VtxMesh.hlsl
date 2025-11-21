@@ -122,8 +122,7 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
 
     }
   
-    
-    fAmbientColor *= 0.15f;
+  
     float4 ResultColor = fDiffuseColor + fAmbientColor + fSpeculrColor;
     return saturate(ResultColor);
 
