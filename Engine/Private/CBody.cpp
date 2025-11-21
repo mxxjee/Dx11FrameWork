@@ -50,12 +50,13 @@ void CBody::Update_Priority(_float fTimeDelta)
 
 void CBody::Update(_float fTimeDelta)
 {
-    if(m_pModel&&m_pModel->Get_NumAnim()>0)
-        m_pModel->Play_Animation(fTimeDelta);
+   
 }
 
 void CBody::Update_Late(_float fTimeDelta)
 {
+    if (m_pModel && m_pModel->Get_NumAnim() > 0)
+        m_pModel->Play_Animation(fTimeDelta);
 }
 
 void CBody::Update_Render(_float fTimeDelta)

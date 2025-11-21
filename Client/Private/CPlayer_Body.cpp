@@ -39,10 +39,10 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 
 
 
-	m_pModel->Set_Animation(L"wait", true);
+	m_pModel->Set_Animation(L"Idle", true);
 	m_pModel->Set_Loop(L"slash", false);
 
-	m_pModel->Set_Animation_Speed(L"wait", 60.f);
+	m_pModel->Set_Animation_Speed(L"Idle", 60.f);
 	m_pModel->Set_Animation_Speed(L"run", 60.f);
 	m_pModel->Set_Animation_Speed(L"slash",90.f);
 
@@ -57,8 +57,19 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 	m_pModel->Set_Animation_Speed(L"slash_hold_f", 60.f);
 
 
+	m_pModel->Set_Animation_Speed(L"shield_st", 100.f);
+	m_pModel->Set_Animation_Speed(L"shield_lp",100.f);
+	m_pModel->Set_Animation_Speed(L"shield_ed", 150.f);
+
+	m_pModel->Set_Animation_Speed(L"shield_hold_l", 120.f);
+	m_pModel->Set_Animation_Speed(L"shield_hold_r", 120.f);
+	m_pModel->Set_Animation_Speed(L"shield_hold_b", 120.f);
+	m_pModel->Set_Animation_Speed(L"shield_hold_f", 60.f);
+	
+	
 	m_pModel->Set_TransitionTime(0.2f);
 
+#pragma region Set Visible Mesh
 	m_pModel->Set_VisibleMesh(L"flipperL_low__MI_flippers", false);
 	m_pModel->Set_VisibleMesh(L"MagicRod_magicRodJem_low__MagicRod_MI_magicRod", false);
 	m_pModel->Set_VisibleMesh(L"Shovel_handle_low__Shovel_MI_shovel", false);
@@ -66,7 +77,7 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 	m_pModel->Set_VisibleMesh(L"linkShieldB_bis_low__linkShieldB_MI_shieldBMirror", false);
 	m_pModel->Set_VisibleMesh(L"linkShieldB_bis_low__linkShieldB_MI_shieldB", false);
 	m_pModel->Set_VisibleMesh(L"Ocarina_ocarina_low__Ocarina_MI_ocarina", false);
-
+#pragma endregion
 
 
 	return S_OK;
@@ -80,19 +91,21 @@ void CPlayer_Body::Update_Priority(_float fTimeDelta)
 void CPlayer_Body::Update(_float fTimeDelta)
 {
 
-	if (m_pModel)
-		m_pModel->Set_Animation(m_NextAnimKey, m_NextAnimLoop);
 
 
 	__super::Update(fTimeDelta);	//Model->PlayAnimtion
-
 }
 
 void CPlayer_Body::Update_Late(_float fTimeDelta)
 {
+	if (m_pModel)
+		m_pModel->Set_Animation(m_NextAnimKey, m_NextAnimLoop);
+
 	__super::Update_Late(fTimeDelta);
 	
-	Motion_Change();
+	
+
+	
 }
 
 void CPlayer_Body::Update_Render(_float fTimeDelta)

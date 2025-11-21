@@ -151,26 +151,23 @@ void CPlayer::Update_Input(_float fTimeDelta)
     else
         m_Input.m_bisAttack = false;
 
-    
-    //홀드키에 대한 판단
-    Check_HoldTime(fTimeDelta);
 
+
+
+    if(m_ActionControl.m_bCanShield)
+        m_Input.m_bisShield = m_pInputManager->IsKeyHeld(KeyCode::T);
+    else
+        m_Input.m_bisShield = false;
+
+    m_Input.m_bisShieldRelease = m_pInputManager->IsKeyReleased(KeyCode::T);
    
-
-    ////이벤트 관련 입력은 항상 우선권을 가진다.
-    //m_ActionControl.SetHold(HOLD_B, m_pInputManager->IsKeyHeld(KeyCode::B));
-    //m_ActionControl.SetHold(HOLD_T, m_pInputManager->IsKeyHeld(KeyCode::T));
-
-
-
+    /*등록한 홀드키에 대해서 모두 홀드키 시간, 여부 검사*/
+    Update_HoldTime(fTimeDelta);
+   
   
-
     m_Input.m_bisMove = m_pInputManager->IsKeyHeld(KeyCode::UpArrow) || m_pInputManager->IsKeyHeld(KeyCode::DownArrow)
         || m_pInputManager->IsKeyHeld(KeyCode::LeftArrow) || m_pInputManager->IsKeyHeld(KeyCode::RightArrow) && m_ActionControl.m_bCanMove;
 
-
-    m_Input.m_bisShield = m_pInputManager->IsKeyHeld(KeyCode::T);
-       
 
 }
 
@@ -250,21 +247,21 @@ void CPlayer::Normal_Movement(_float fTimeDelta)
 
 
 }
-void CPlayer::Check_HoldTime(_float fTimeDelta)
+void CPlayer::Check_HoldTime(HoldKey Key, KeyCode KeyCode, _float fTimeDelta)
 {
 
     //Pressed할 시 초기화
-    if (m_pInputManager->IsKeyReleased(KeyCode::B))
+    if (m_pInputManager->IsKeyReleased(KeyCode))
     {
-        m_ActionControl.m_Holds[HOLD_B].m_fTHoldTime = 0.f;
-        m_ActionControl.m_Holds[HOLD_B].Reset();
+        m_ActionControl.m_Holds[Key].m_fTHoldTime = 0.f;
+        m_ActionControl.m_Holds[Key].Reset();
     }
 
-    if(m_pInputManager->IsKeyHeld(KeyCode::B))
-        m_ActionControl.m_Holds[HOLD_B].m_fTHoldTime +=fTimeDelta;
+    if(m_pInputManager->IsKeyHeld(KeyCode))
+        m_ActionControl.m_Holds[Key].m_fTHoldTime +=fTimeDelta;
 
-    if (m_ActionControl.m_Holds[HOLD_B].m_fTHoldTime > m_ActionControl.m_Holds[HOLD_B].m_fThresHold)
-        m_ActionControl.SetHold(HOLD_B, true);
+    if (m_ActionControl.m_Holds[Key].m_fTHoldTime > m_ActionControl.m_Holds[Key].m_fThresHold)
+        m_ActionControl.SetHold(Key, true);
 
 
 
@@ -342,6 +339,32 @@ bool CPlayer::Event_Input(_float fTimeDelta)
     return bResult||m_bActionInput;
 }
 
+
+
+void CPlayer::Update_HoldTime(_float fTimeDelta)
+{
+
+    //홀드키에 대한 판단
+    for (int i = 0; i < HoldKey_End; ++i)
+    {
+        KeyCode eKeyCode;
+        switch (HoldKey(i))
+        {
+        case Client::CPlayer::HOLD_B:
+            eKeyCode = KeyCode::B;
+            break;
+        case Client::CPlayer::HOLD_T:
+            eKeyCode = KeyCode::T;
+            break;
+        case Client::CPlayer::HoldKey_End:
+            break;
+        default:
+            break;
+        }
+        Check_HoldTime((HoldKey)i, eKeyCode, fTimeDelta);
+
+    }
+}
 
 void CPlayer::Change_State(int newState)
 {
@@ -450,6 +473,7 @@ HRESULT CPlayer::Ready_States()
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::RUN), CPlayerRunState::Create());
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ATTACK), CPlayerAttackState::Create());
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_ATTACK), CPlayerHoldAttackState::Create());
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_SHIELD), CPlayerHoldShield::Create());
 
 
 
@@ -463,7 +487,7 @@ HRESULT CPlayer::Ready_States()
 
     HOLDKEY_DATA    HoldKeyT;
     HoldKeyT.Code = KeyCode::T;
-    HoldKeyT.m_fThresHold = 0.25f;
+    HoldKeyT.m_fThresHold = 0.1f;
 
 
     m_ActionControl.m_Holds.push_back(HoldKeyB);
@@ -499,6 +523,9 @@ string CPlayer::Convert_String_To_Enum(_uint eState)
 
         if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_ATTACK))
             StateDebugStr += "HOLD_ATTACK ";
+
+        if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_SHIELD))
+            StateDebugStr += "HOLD_SHIELD ";
     }
 
 

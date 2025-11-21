@@ -95,7 +95,9 @@
     <ClInclude Include="..\Public\CPlayerHoldAttackState.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Attack\Hold_Attack</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CPlayerHoldShield.h" />
+    <ClInclude Include="..\Public\CPlayerHoldShield.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Shield</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -301,7 +303,9 @@
     <ClCompile Include="..\Private\CPlayerHoldAttackState.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Attack\Hold_Attack</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CPlayerHoldShield.cpp" />
+    <ClCompile Include="..\Private\CPlayerHoldShield.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Shield</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

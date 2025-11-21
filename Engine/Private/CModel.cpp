@@ -516,6 +516,9 @@ bool CModel::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
 
 void CModel::Set_Animation(const wstring& AnimKey, _bool isLoop)
 {
+	if (m_CurrentAnimKey == AnimKey)
+		return;
+
 	CAnimation* pAnim = Find_Animation(AnimKey);
 	CheckNull(pAnim);
 
@@ -526,6 +529,11 @@ void CModel::Set_Animation(const wstring& AnimKey, _bool isLoop)
 	{
 		m_isTransition = true;
 		m_isAnimFinished = false;
+
+		////이전 애니메이션 초기화(다음에 실행시 처음부터 시작)
+		CAnimation* pPreAnim = Find_Animation(m_PreAnimKey);
+		if (pPreAnim)
+			pPreAnim->Reset_Animtion();
 
 		Start_Transition();
 		  

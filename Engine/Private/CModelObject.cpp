@@ -62,6 +62,7 @@ void CModelObject::Update(_float fTimeDelta)
 
 void CModelObject::Update_Late(_float fTimeDelta)
 {
+
     __super::Update_Late(fTimeDelta);
 }
 

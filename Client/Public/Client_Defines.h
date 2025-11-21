@@ -27,6 +27,7 @@ typedef struct tagPlayerInput
 {
 	bool m_bisAttack = false;
 	bool m_bisMove = false;
+	bool m_bisShieldRelease = false;
 	bool m_bisShield = false;
 
 }PLAYER_INPUT;
@@ -37,6 +38,8 @@ typedef struct tagPlayerInput
 typedef struct tagActionControl
 {
 	bool                m_bCanAttack = true;
+	bool				m_bCanShield = true;
+
 	bool                m_bCanMove = true;
 	vector<HOLDKEY_DATA>		m_Holds;
 	bool				m_bFixDir = false;
@@ -52,6 +55,7 @@ typedef struct tagActionControl
 		}
 		//m_bHolds = { false,false };
 		m_bFixDir = false;
+		m_bCanShield = true;
 
 	}
 

@@ -13,7 +13,7 @@ CPlayerIdleState::~CPlayerIdleState()
 void CPlayerIdleState::Enter(CPlayer* pPlayer)
 {
 	pPlayerInput = pPlayer->Get_Input();
-	pPlayer->Reserve_Animation_To_Body(L"wait", true);
+	pPlayer->Reserve_Animation_To_Body(L"Idle", true);
 
 	pPlayer->Reset_ActionControl();
 	pPlayer->Set_CanMove(true);
@@ -25,6 +25,12 @@ void CPlayerIdleState::Update(CPlayer* pPlayer)
 	if (pPlayerInput->m_bisAttack && pPlayer->Get_CanAttackEnable())
 	{
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ATTACK));
+		return;
+	}
+
+	if (pPlayerInput->m_bisShield && pPlayer->Get_CanShieldEnable())
+	{
+		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_SHIELD));
 		return;
 	}
 

@@ -24,6 +24,7 @@ public:
     {
         HOLD_B,
         HOLD_T,
+        HoldKey_End
     };
     enum class PLAYER_STATE
     {
@@ -54,7 +55,8 @@ public:
 
 private:
     void        Update_Input(_float fTimeDelta);
-    void        Check_HoldTime(_float fTimeDelta);
+    void        Update_HoldTime(_float fTimeDelta);
+    void        Check_HoldTime(HoldKey Key,KeyCode KeyCode,_float fTimeDelta);
     bool        Event_Input(_float  fTimeDelta);
 
     void        Update_Movement(_float fTimeDelta);
@@ -68,6 +70,10 @@ public:
 
     void            Set_CanAttackEnable(bool b) { m_ActionControl.m_bCanAttack = b; }
     bool            Get_CanAttackEnable() { return m_ActionControl.m_bCanAttack; }
+ 
+    void            Set_CanShieldEnable(bool b) { m_ActionControl.m_bCanShield = b; }
+    bool            Get_CanShieldEnable() { return m_ActionControl.m_bCanShield; }
+
 
     void            Set_CanMove(bool b) { m_ActionControl.m_bCanMove = b; }
     void            Set_Hold(_int idx, bool b) { m_ActionControl.SetHold(idx, b); }
