@@ -30,7 +30,7 @@ public:
     const list<_vector>* Make_Route(_int iGoalIndex);
     _bool       CanPush(_int iCellIndex);
 
-#ifdef _DEBUG`
+#ifdef _DEBUG
 public:
     HRESULT Render();   //현재 내가 있는 위치의 셀을 표시한다.
 private:

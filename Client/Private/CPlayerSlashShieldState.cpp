@@ -18,16 +18,60 @@ void CPlayerSlashShieldState::Enter(CPlayer* pPlayer)
     
     pPlayer->Reset_ActionControl();
     pPlayer->Set_CanMove(true);
+
+    e_NextAnim = NextAnim::NONE;
+    m_ePhase = Phase::Loop;
+
+
+    m_bChangeState = false; //state바꾸기
+
+
 }
 
 void CPlayerSlashShieldState::Update(CPlayer* pPlayer)
 {
     Hold_Movement(pPlayer);
 
+
+   if (m_bChangeState)
+        Change_Other_State(pPlayer);
+
+
 }
 
 void CPlayerSlashShieldState::Update_Late(CPlayer* pPlayer)
 {
+
+    bool m_bHoldT = pPlayer->Get_Hold(CPlayer::HoldKey::HOLD_T);
+    bool m_bHoldB = pPlayer->Get_Hold(CPlayer::HoldKey::HOLD_B);
+
+    //키를다땟을떄->slash_hold_ed
+    if (!m_bHoldB && !pPlayerInput->m_bisAttack)
+    {
+        e_NextAnim = NextAnim::ATTACK_END;
+        m_bChangeState = true;
+    }
+
+    //b는누르고욌는데 T만 덌을떄
+    else if (m_bHoldB&&!m_bHoldT && !pPlayerInput->m_bisShieldRelease)
+    {
+        e_NextAnim = NextAnim::ATTACK;
+        m_bChangeState = true;
+    }
+
+        
+    switch (e_NextAnim)
+    {
+    case NextAnim::ATTACK_END:
+    {
+        if (pPlayer->Is_AnimEnd())
+            e_NextAnim = NextAnim::IDLE;
+
+        m_bChangeState = true;
+    }
+        break;
+    }
+
 }
 
 void CPlayerSlashShieldState::Exit(CPlayer* pPlayer)
@@ -93,6 +137,37 @@ void CPlayerSlashShieldState::Hold_Movement(CPlayer* pPlayer)
             break;
         }
     }
+}
+
+void CPlayerSlashShieldState::Change_Other_State(CPlayer* pPlayer)
+{
+    switch (e_NextAnim)
+    {
+    case NextAnim::ATTACK_END:
+        pPlayer->Reserve_Animation_To_Body(L"slash_hold_ed", false);
+        break;
+
+
+    case NextAnim::IDLE:
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::IDLE));
+        break;
+
+
+    case NextAnim::SHIELD:
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::SHIELD));
+        break;
+
+
+    case NextAnim::ATTACK:
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::ATTACK));
+        break;
+    }
+
+    m_bChangeState = false;
+}
+
+void CPlayerSlashShieldState::Change_Phase(CPlayer* pPlayer)
+{
 }
 
 CPlayerSlashShieldState* CPlayerSlashShieldState::Create()

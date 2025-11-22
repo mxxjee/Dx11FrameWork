@@ -161,7 +161,8 @@ void CPlayer::Update_Input(_float fTimeDelta)
         m_Input.m_bisShield = false;
 
     m_Input.m_bisShieldRelease = m_pInputManager->IsKeyReleased(KeyCode::T);
-   
+    m_Input.m_bisJump = m_pInputManager->IsKeyPressed(KeyCode::X);
+
     /*등록한 홀드키에 대해서 모두 홀드키 시간, 여부 검사*/
     Update_HoldTime(fTimeDelta);
    
@@ -459,6 +460,7 @@ HRESULT CPlayer::Ready_States()
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_SHIELD), CPlayerHoldShield::Create());
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::SLASH_SHIELD), CPlayerSlashShieldState::Create());
 
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::JUMP, ), CPlayerJumpState::Create());
 
 
 

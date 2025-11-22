@@ -28,8 +28,15 @@ void CPlayerRunState::Update(CPlayer* pPlayer)
 	if (pPlayerInput->m_bisShield && pPlayer->Get_CanShieldEnable())
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_SHIELD));
 
-	else if (!pPlayerInput->m_bisMove)
-		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
+	else
+	{
+		if (pPlayerInput->m_bisJump)
+			pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::JUMP));
+
+		if (!pPlayerInput->m_bisMove)
+			pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
+
+	}
 }
 
 void CPlayerRunState::Exit(CPlayer* pPlayer)

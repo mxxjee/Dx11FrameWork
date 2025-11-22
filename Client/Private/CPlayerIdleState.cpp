@@ -37,6 +37,9 @@ void CPlayerIdleState::Update(CPlayer* pPlayer)
 
 	else
 	{
+		if (pPlayerInput->m_bisJump)
+			pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::JUMP));
+
 		
 		if (pPlayerInput->m_bisMove)
 		{

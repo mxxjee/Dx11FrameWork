@@ -31,6 +31,7 @@ public:
         NONE,
         IDLE,
         RUN,
+        JUMP,
         ATTACK ,
         HOLD_ATTACK,
         HOLD_SHIELD,

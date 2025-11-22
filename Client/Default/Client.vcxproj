@@ -171,6 +171,7 @@
     <ClInclude Include="..\Public\CPlayerHoldAttackState.h" />
     <ClInclude Include="..\Public\CPlayerHoldShield.h" />
     <ClInclude Include="..\Public\CPlayerIdleState.h" />
+    <ClInclude Include="..\Public\CPlayerJumpState.h" />
     <ClInclude Include="..\Public\CPlayerRunState.h" />
     <ClInclude Include="..\Public\CPlayerSlashShieldState.h" />
     <ClInclude Include="..\Public\CPlayerState.h" />
@@ -208,6 +209,7 @@
     <ClCompile Include="..\Private\CPlayerHoldAttackState.cpp" />
     <ClCompile Include="..\Private\CPlayerHoldShield.cpp" />
     <ClCompile Include="..\Private\CPlayerIdleState.cpp" />
+    <ClCompile Include="..\Private\CPlayerJumpState.cpp" />
     <ClCompile Include="..\Private\CPlayerRunState.cpp" />
     <ClCompile Include="..\Private\CPlayerSlashShieldState.cpp" />
     <ClCompile Include="..\Private\CPlayerState.cpp" />

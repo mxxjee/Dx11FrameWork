@@ -23,16 +23,16 @@ namespace Client
 	//enum class LEV
 }
 
+//////////Player Input관련////////////////
 typedef struct tagPlayerInput
 {
 	bool m_bisAttack = false;
 	bool m_bisMove = false;
 	bool m_bisShieldRelease = false;
 	bool m_bisShield = false;
+	bool m_bisJump = false;
 
 }PLAYER_INPUT;
-
-
 
 
 typedef struct tagActionControl
@@ -73,6 +73,21 @@ typedef struct tagActionControl
 	}
 
 }ACTION_CONTROL;
+
+
+//////////Player Input관련////////////////
+
+
+/////////아이템정보/////////
+typedef struct tagItemInfo
+{
+	_wstring	ItemTag=L"";
+	bool		m_bQuick=false;	//퀵슬롯에 장착가능한지.
+	KeyCode		KeyCode=KeyCode::None;		//퀵슬롯에 장착했을경우, 키코드
+
+
+
+}ITMINFO;
 
 using namespace Client;
 using namespace std;

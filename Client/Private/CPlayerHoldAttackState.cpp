@@ -22,7 +22,14 @@ void CPlayerHoldAttackState::Enter(CPlayer* pPlayer)
     pPlayer->Set_CanAttackEnable(true);
     pPlayer->Set_CanMove(true);
     pPlayer->Set_FixDir(true);
+
     m_ePhase= Phase::Loop;
+    m_bChange = false;
+    m_bChangeState = false;
+
+    m_eNextAnim = NextAnim::NONE;
+
+
 }
 
 void CPlayerHoldAttackState::Update(CPlayer* pPlayer)
@@ -30,6 +37,58 @@ void CPlayerHoldAttackState::Update(CPlayer* pPlayer)
 
     //Hold상태일 시 움직이는 애니메이션에 따른 처리
     Hold_Movement(pPlayer);
+
+
+    if (m_bChange)
+        ChangePhase(pPlayer);
+
+
+    else if (m_bChangeState)
+        ChangeState(pPlayer);
+
+}
+
+void CPlayerHoldAttackState::Update_Late(CPlayer* pPlayer)
+{
+
+    //바꾸라는 명령을 줄 타이밍
+	switch (m_ePhase)
+	{
+	case Phase::Start:
+    case Phase::End:
+        if (pPlayer->Is_AnimEnd())
+        {
+            m_bChange = true;
+ 
+        }
+		break;
+
+
+	case Phase::Loop:
+        if (!pPlayerInput->m_bisAttack)
+            m_bChange = true;
+
+
+        else if (pPlayerInput->m_bisShield)
+        {
+            m_bChangeState = true;
+            m_eNextAnim = NextAnim::SLASH_SHIELD;
+        }
+		break;
+
+
+	default:
+		break;
+	}
+
+}
+
+void CPlayerHoldAttackState::Exit(CPlayer* pPlayer)
+{
+}
+
+void CPlayerHoldAttackState::ChangePhase(CPlayer* pPlayer)
+{
 
     switch (m_ePhase)
     {
@@ -46,22 +105,22 @@ void CPlayerHoldAttackState::Update(CPlayer* pPlayer)
         }
     }
     break;
-   
-            //현재상태가 Loop인데, 바꾸라는명령을 받았다.
+
+    //현재상태가 Loop인데, 바꾸라는명령을 받았다.
     case Client::CPlayerHoldAttackState::Phase::Loop:
     {
-         if (m_bChange)  //EndAnim으로바꾸기
+        if (m_bChange)  //EndAnim으로바꾸기
         {
             m_ePhase = Phase::End;
             pPlayer->Reserve_Animation_To_Body(L"slash_hold_ed", false);
             m_bChange = false;
             pPlayer->Set_CanMove(false);
 
-            
+
         }
 
     }
-        break;
+    break;
     case Client::CPlayerHoldAttackState::Phase::End:
     {
         if (m_bChange)
@@ -71,50 +130,25 @@ void CPlayerHoldAttackState::Update(CPlayer* pPlayer)
             pPlayer->Set_CanMove(true);
             pPlayer->Set_FixDir(true);
             m_bChange = false;
-            
+
 
         }
     }
-        break;
+    break;
     default:
         break;
     }
 
 }
 
-void CPlayerHoldAttackState::Update_Late(CPlayer* pPlayer)
+void CPlayerHoldAttackState::ChangeState(CPlayer* pPlayer)
 {
-
-    //바꾸라는 명령을 줄 타이밍
-	switch (m_ePhase)
-	{
-	case Phase::Start:
-    case Phase::End:
-        if (pPlayer->Is_AnimEnd())
-        {
-            m_bChange = true;
- 
-
-        }
-		break;
-
-
-	case Phase::Loop:
-        if (!pPlayerInput->m_bisAttack)
-        {
-            m_bChange = true;
-        }
-		break;
-
-
-	default:
-		break;
-	}
-
-}
-
-void CPlayerHoldAttackState::Exit(CPlayer* pPlayer)
-{
+    switch (m_eNextAnim)
+    {
+    case NextAnim::SLASH_SHIELD:
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::SLASH_SHIELD));
+        break;
+    }
 }
 
 void CPlayerHoldAttackState::Hold_Movement(CPlayer* pPlayer)

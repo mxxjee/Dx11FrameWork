@@ -4,15 +4,14 @@
 NS_BEGIN(Client)
 class CPlayer;
 
-class CPlayerHoldAttackState :
-    public CPlayerState
+class CPlayerJumpState:
+	public CPlayerState
 {
-    enum class NextAnim{NONE,SLASH_SHIELD};
-    enum class Phase {None,Start,Loop,End};
-
+	enum class NextAnim { NONE, IDLE, JUMP_SLASH};
+	enum class Phase { None, Start,  End };
 private:
-    CPlayerHoldAttackState();
-    virtual ~CPlayerHoldAttackState();
+    CPlayerJumpState();
+    virtual ~CPlayerJumpState();
 public:
     virtual void        Enter(CPlayer* pPlayer)override;
     virtual void        Update(CPlayer* pPlayer)override;
@@ -22,10 +21,10 @@ public:
 private:
     void            ChangePhase(CPlayer* pPlayer);      //페이즈만 변경
     void            ChangeState(CPlayer* pPlayer);//아예 다른상태로 전이
-private:
-    void        Hold_Movement(CPlayer* pPlayer);
+
+
 public:
-    static CPlayerHoldAttackState* Create();
+    static CPlayerJumpState* Create();
 
 private:
     Phase   m_ePhase = Phase::None;
@@ -33,6 +32,8 @@ private:
 
     bool        m_bChange = false;
     bool        m_bChangeState = false;
+
+
 };
 
 NS_END
