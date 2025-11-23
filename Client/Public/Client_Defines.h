@@ -105,9 +105,13 @@ typedef struct tagItemInfo
 
 }ITMINFO;
 
+
+/*각 숫자는 우선순위를의미한다*/
 enum InteractionType
 {
-	OBJECT,NPC,END
+	OBJECT=10,
+	NPC=100,
+	END
 };
 
 using namespace Client;

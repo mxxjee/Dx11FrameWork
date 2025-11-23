@@ -1,11 +1,12 @@
 #pragma once
 #include "CModelObject.h"
+#include "CIInteractable.h"
 
 NS_BEGIN(Client)
 class CPlayer;
 
 class CNPC :
-    public CModelObject
+    public CModelObject, public CIInteractable
 {
 public:
     enum class NPC_STATE
@@ -40,27 +41,24 @@ public:
 public:
 
     ///////////범위감지용//////////
-    bool            CanInteractable();      //거리를통해 상호작용가능한지
-    virtual void    EnterInteractRange() {};
-    virtual void    OnInteractRange(_float fTimeDelta) { };       //상호작용가능한 범위에잇을떄 계속호출
-    virtual void    ExitInteractRange() {};      //ㅓ범위나갔을때 호출
+    virtual bool            IsInteratable();      //상호작용조건
+    virtual void        Enter_InteractRange();
+    virtual void        Stay_InteractRange(_float fTimeDelta);       //상호작용가능한 범위에잇을떄 계속호출
+    virtual void        Exit_InteractRange();      //ㅓ범위나갔을때 호출
 
 
-    /// <summary>
     /// ///실제 인터렉션 할때 호출되는함수
-    /// </summary>
-    virtual void    Start_Interaction() {};
-    virtual void    On_Interaction(_float fTimeDelta){};
-    virtual void    Exit_Interaction(){};
 
+    virtual void    Enter_Interaction();
+    virtual void    Stay_Interaction(_float fTimeDelta);
+    virtual void    Exit_Interaction();
+
+    virtual _int	Get_Interaction_Priority() { return InteractionType::NPC; }//우선순위 젤높음
 private:
     HRESULT         Ready_Components(void* pArg);
     virtual HRESULT     Ready_PartObjects(void* pArg);
     HRESULT         Ready_Resource(void* pArg);
 
-private:
-    void        Update_InteractionRange(_float fTimeDelta);      //거리에따라서 여부 업데이트
-    void        Update_Interaction(_float fTimeDelta);               //실제로 말하고있는중인지.
 public:
     static CNPC* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex, void* pArg) {};
     virtual CGameObject* Clone(void* pArg) override;
@@ -74,6 +72,8 @@ protected:
 protected:
     bool        m_bInteractable = false;        //상호작용가능여부
     bool        m_bTalking = false;
+    float       m_fTime = 0.f;//임시로 Exit조건 시간으로두기
+
 };
 
 NS_END

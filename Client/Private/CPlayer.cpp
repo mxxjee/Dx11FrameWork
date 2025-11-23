@@ -10,6 +10,9 @@
 #include "CNPC.h"
 #include "CCell.h"
 
+#include "CInteraction_Manager.h"
+
+
 
 USING(Client)
 CPlayer::CPlayer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -185,21 +188,12 @@ void CPlayer::Update_Input(_float fTimeDelta)
 
 
     //무조건 a키.
-    if (m_pInteractionObj)
-    {
-        m_Input.m_bInteract = m_pInputManager->IsKeyPressed(KeyCode::A);
-        if (m_Input.m_bInteract)
-        {
-            if (m_eType == InteractionType::NPC)
-            {
-                CNPC* pNpc = dynamic_cast<CNPC*>(m_pInteractionObj);
-                pNpc->Start_Interaction();
-                m_ActionControl.m_bTalk = true;
-            }
+    m_Input.m_bInteract = CInteraction_Manager::GetInstance()->OnInteractKeyPresed();
 
-        }
+    //a키 눌려서 타겟이있을대만 갱신
+    if(m_Input.m_bInteract)
+        m_ActionControl.m_bTalk = CInteraction_Manager::GetInstance()->Check_InteractiveType(InteractionType::NPC);
 
-    }
 
 
     
@@ -387,28 +381,6 @@ void CPlayer::Hold_Movement(_float fTimeDelta)
 
 
 }
-
-void CPlayer::Set_Interaction(InteractionType eType, CGameObject* pObj)
-{
-    CheckNull(pObj);
-    m_eType = eType;
-    m_pInteractionObj = pObj;
-
-
-}
-
-void CPlayer::Reset_Interaction()
-{
-    m_eType = InteractionType::END;
-    m_pInteractionObj = nullptr;
-
-    if (m_ActionControl.m_bTalk)
-        m_ActionControl.m_bTalk = false;
-}
-
-
-
-
 
 void CPlayer::Update_HoldTime(_float fTimeDelta)
 {

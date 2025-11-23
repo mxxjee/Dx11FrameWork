@@ -3,6 +3,9 @@
 #include "Client_Defines.h"
 #include "CModel.h"
 #include "CBody.h"
+#include "CCamera_Base.h"
+#include "CInteraction_Manager.h"
+
 
 USING(Client)
 CNPC::CNPC(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -53,11 +56,6 @@ void CNPC::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
 
-    //거리체크를 통해 대화 활성화
-    Update_InteractionRange(fTimeDelta);
-  
-    //
-    Update_Interaction(fTimeDelta);
 }
 
 void CNPC::Update_Late(_float fTimeDelta)
@@ -75,7 +73,7 @@ HRESULT CNPC::Render()
     return S_OK;
 }
 
-bool CNPC::CanInteractable()
+bool CNPC::IsInteratable()
 {
     CheckNullResult(m_pPlayer, false);
 
@@ -91,6 +89,70 @@ bool CNPC::CanInteractable()
         return Distance <= m_NpcDesc.TalkRange;
 
     }
+
+    return false;
+}
+
+void CNPC::Enter_InteractRange()
+{
+    //말걸기 UI 활성화..
+
+}
+
+void CNPC::Stay_InteractRange(_float fTimeDelta)
+{
+    /*플레이어 쳐다보기*/
+    _vector PlayerPos = m_pPlayer->Get_Transform()->Get_State(STATE::POSITION);
+    _vector vUp = XMVector3Normalize(m_pTransformCom->Get_State(STATE::UP));
+
+    m_pTransformCom->LookAtSmooth(PlayerPos, 5.f, fTimeDelta);
+
+
+}
+
+void CNPC::Exit_InteractRange()
+{
+}
+
+void CNPC::Enter_Interaction()
+{
+    m_bTalking = true;
+    m_pBody->Reserve_Animation(L"talk", true);
+
+    CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(m_pGameInstance->Get_MainCamera());
+
+
+    pCameraBase->Set_Target(this);
+    pCameraBase->Set_Offset(_float3(0.f, 3.f, -2.f));
+}
+
+void CNPC::Stay_Interaction(_float fTimeDelta)
+{
+    m_fTime += fTimeDelta;
+
+    m_pPlayer->Get_Transform()->LookAtSmooth(m_pTransformCom->Get_State(STATE::POSITION), 5.f, fTimeDelta);
+
+    if (m_fTime >= 3.f)
+    {
+        Exit_Interaction();
+        m_fTime = 0.f;
+        
+        m_bPrevInteracting = false;
+        m_bPrevRange = false;
+    }
+
+}
+
+void CNPC::Exit_Interaction()
+{
+    m_bTalking = false;
+    m_pPlayer->Get_ActionControl()->m_bTalk = false;
+    m_pBody->Reserve_Animation(L"wait", true);
+    CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(m_pGameInstance->Get_MainCamera());
+
+
+    pCameraBase->Set_Target(m_pPlayer);
+    pCameraBase->Set_Offset(pCameraBase->Get_InitOffset());
 }
 
 HRESULT CNPC::Ready_Components(void* pArg)
@@ -130,41 +192,6 @@ HRESULT CNPC::Ready_Resource(void* pArg)
     return S_OK;
 }
 
-void CNPC::Update_InteractionRange(_float fTimeDelta)
-{
-    if (!m_bTalking)
-    {
-        if (CanInteractable())
-        {
-            if (!m_bInteractable)
-            {
-                m_bInteractable = true;
-                EnterInteractRange();
-            }
-
-            else
-                OnInteractRange(fTimeDelta);
-
-        }
-
-        else
-        {
-            if (m_bInteractable)
-            {
-                ExitInteractRange();
-                m_bInteractable = false;
-            }
-
-        }
-    }
-}
-
-void CNPC::Update_Interaction(_float fTimeDelta)
-{
-    CheckFalse(m_bTalking);
-
-    On_Interaction(fTimeDelta);
-}
 
 
 CGameObject* CNPC::Clone(void* pArg)
@@ -175,4 +202,5 @@ CGameObject* CNPC::Clone(void* pArg)
 void CNPC::Free()
 {
     __super::Free();
+    CInteraction_Manager::GetInstance()->UnRegisterInteractable(this);
 }

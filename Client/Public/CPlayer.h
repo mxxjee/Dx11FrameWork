@@ -75,20 +75,6 @@ private:
     void        Normal_Movement(_float fTimeDelta);
     void        Hold_Movement(_float fTimeDelta);
 
-#pragma region Interaction임시설정
-
-/// <summary>
-/// / 원래는 매니저에게 받아서쓰도록..고치기
-/// </summary>
-public:
-    ////////////Interaction 임시값////////
-    void            Set_Interaction(InteractionType eType, CGameObject* pObj);
-    void            Reset_Interaction();
-private:
-    InteractionType m_eType;
-    CGameObject* m_pInteractionObj = nullptr;
-
-#pragma endregion
 public:     
     //상태값, update돌릴 state  클래스 변경
     virtual void            Change_State(int newState);

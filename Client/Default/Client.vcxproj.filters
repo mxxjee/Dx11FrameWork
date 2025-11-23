@@ -134,6 +134,10 @@
     <ClInclude Include="..\Public\CPlayerFallState.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Fall</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CIInteractable.h">
+      <Filter>96.Managers\InteractionManager\IInteractable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CInteraction_Manager.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -297,6 +301,12 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Fall">
       <UniqueIdentifier>{d7515672-cc63-43f8-92a0-c624e8900066}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96.Managers\InteractionManager">
+      <UniqueIdentifier>{31978036-772b-4334-9de7-5f727757d93e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Managers\InteractionManager\IInteractable">
+      <UniqueIdentifier>{7088a61f-0f74-46e4-a044-2163365114b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -417,6 +427,10 @@
     <ClCompile Include="..\Private\CPlayerFallState.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Fall</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CIInteractable.cpp">
+      <Filter>96.Managers\InteractionManager\IInteractable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CInteraction_Manager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

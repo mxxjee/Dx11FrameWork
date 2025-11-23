@@ -16,11 +16,14 @@
 #include "CImGui_Manager.h"
 #include "CImgui_Button.h"
 #include "CInput_Manager.h"
+#include "CInteraction_Manager.h"
 
 #include "CLevelDebugWindow.h"
 #include "CObjectDebugWindow.h"
 #include "CCameraDebugWindow.h"
 #include "CStateDebugWindow.h"
+
+
 
 
 #include "CTransform.h"
@@ -174,7 +177,7 @@ void CMainApp::Update(_float fTimeDelta)
 	
 	
 	pGameInstance->Update_Engine(fTimeDelta);
-	
+	CInteraction_Manager::GetInstance()->Update(fTimeDelta);
 #ifdef _DEBUG
 	pImGui_Manager->Update();
 #endif
@@ -281,7 +284,7 @@ void CMainApp::Free()
 	Safe_Release(pImGui_Manager);
 #endif
 
-
+	CInteraction_Manager::GetInstance()->DestroyInstance();
 	CInput_Manager::GetInstance()->DestroyInstance();
 	pGameInstance->Release_Engine();
 

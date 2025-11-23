@@ -21,15 +21,6 @@ public:
 
     virtual HRESULT Render();
 
-    virtual void    EnterInteractRange();
-    virtual void    OnInteractRange(_float fTimeDelta);       //상호작용가능한 범위에잇을떄 계속호출
-    virtual void    ExitInteractRange();
-
-
-    virtual void    Start_Interaction();
-    virtual void    On_Interaction(_float fTimeDelta);
-    virtual void    Exit_Interaction();
-
 
 
 public:
@@ -37,8 +28,5 @@ public:
     virtual void Free() override;
 
 
-private:
-
-    float       m_fTime = 0.f;//임시로 Exit조건 시간으로두기
 };
 NS_END

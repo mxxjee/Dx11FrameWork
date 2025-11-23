@@ -16,6 +16,10 @@
 
 #include "MathUtils.h"
 #include "CNPC_Richard.h"
+#include "CIInteractable.h"
+
+#include "CInteraction_Manager.h"
+
 
 
 USING(Client)
@@ -425,6 +429,9 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
         return E_FAIL;
 
     }
+
+    CInteraction_Manager::GetInstance()->RegisterInteractable(dynamic_cast<CIInteractable*>(pNpc_Richard));
+
     return S_OK;
 }
 
