@@ -40,6 +40,10 @@ public:
 
     virtual HRESULT Render();
 
+public:
+    void Set_VisibleMesh(const wstring& MeshName, bool bVisible);
+public:
+    _float3             Get_RootDelta();
 protected:
     const _uint* m_pParentState = { nullptr };
     const _uint* m_pParentPreState = { nullptr };

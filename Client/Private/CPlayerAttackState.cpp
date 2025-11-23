@@ -29,7 +29,7 @@ void CPlayerAttackState::Enter(CPlayer* pPlayer)
 }
 
 
-void CPlayerAttackState::Update(CPlayer* pPlayer)
+void CPlayerAttackState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
     if (m_bChange)
     {
@@ -59,7 +59,7 @@ void CPlayerAttackState::Update(CPlayer* pPlayer)
 
 }
 
-void CPlayerAttackState::Update_Late(CPlayer* pPlayer)
+void CPlayerAttackState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 {
     CheckFalse(e_NextAnim == NextAnim::NONE);
 

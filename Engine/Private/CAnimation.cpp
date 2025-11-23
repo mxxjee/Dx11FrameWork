@@ -1,7 +1,8 @@
 #include "CAnimation.h"
 #include "CChannel.h"
 #include "CModel.h"
-
+#include "CBone.h"
+#include "CBody.h"
 
 CAnimation::CAnimation()
 {
@@ -84,35 +85,17 @@ bool CAnimation::Update_TransformationMatrices(const vector<class CBone*>& Bones
 	/*재생바의 위치에 따라 뼈들의 상태를 갱신시킨다.*/
 	for (auto& pChannel : m_Channels)
 	{
-		pChannel->Update_TransformationMatrix(Bones, m_fCurrentTrackPosition, &m_CurrentKeyFrameIndices[iIndex++]);
+		if (m_bEnableRootMotion)
+			Update_RootMotion(Bones, pChannel);
+
+		pChannel->Update_TransformationMatrix(Bones, m_fCurrentTrackPosition, &m_CurrentKeyFrameIndices[iIndex]);
+		iIndex += 1;
 	}
 
 	return false;
 
 }
 
-bool CAnimation::Update_BlendAnim(CModel* pModel, const vector<class CBone*>& Bones, _float TranslationTime, int PreAnimIndex)
-{
-
-	////전이상태일떄 수행하는 함수..
-	//
-	////이전애니메이션의 키프레임값가져오기
-	////이전애니메이션의 위치와 새로실행할 애니메이션의 첫프레임과 보간
-	//CAnimation* pPreAnim = pModel->Get_Animation(PreAnimIndex);
-	//float pPrevAnimPosition = pPreAnim->Get_CurrentTrackPoistion();
-
-	///*모든 본을 검사하며 전이가필요한 것들은 전이를 수행하도록하게 하고, 아닌것들은 */
-	//for (auto& pBon : Bones)
-	//{
-
-	//}
-
-	//for (auto& pChannel : m_Channels)
-	//{
-	//	pChannel->UpdateTransformMatrix_BlendAnim(Bones,pPreAnim, TranslationTime, pPrevAnimPosition);
-	//}
-	return false; 
-}
 
 void CAnimation::Reset_Animtion()
 {
@@ -157,6 +140,43 @@ int CAnimation::Get_ChannelIdx(int BoneNum)
 	}
 
 	return Num;
+}
+
+void CAnimation::Update_RootMotion(const vector<class CBone*>& Bones, CChannel* pChannel)
+{
+	//루트본이아니라면, 실행X
+	
+	CheckFalse(pChannel->Get_BoneIndex_ByChannel() ==1);
+	RootDelta = _float3(0.f, 0.f, 0.f);
+
+	//현재 프레임의 루트본 위치
+	_uint CurrentIdx=0;
+	CurrentIdx = pChannel->Get_CurrentKeyFrameIndex(m_fCurrentTrackPosition, &CurrentIdx);
+	_matrix RootBone_CurMatrix = pChannel->Get_CurrentKeyFrameBoneSRT(&CurrentIdx);
+	_vector vScale, vRotation, vTranslation;
+	
+
+	//SRT분리
+	XMMatrixDecompose(&vScale, &vRotation, &vTranslation, RootBone_CurMatrix);
+
+	CheckTrue(CurrentIdx == 0);
+	KEYFRAME* keyFrame = (pChannel->Get_KeyFrame(CurrentIdx));
+	//이전프레임 루트본위치
+	CurrentIdx -= 1;
+
+	_matrix RootBone_PreMatrix = pChannel->Get_CurrentKeyFrameBoneSRT(&CurrentIdx);
+	_vector vPreScale, vPreRotation, vPreTranslation;
+	//SRT분리
+	XMMatrixDecompose(&vPreScale, &vPreRotation, &vPreTranslation, RootBone_PreMatrix);
+
+	/// //////////////////////////////////////////////////////////////
+	_float3 vCurPos, vPrePos;
+	XMStoreFloat3(&vCurPos, vTranslation);
+	XMStoreFloat3(&vPrePos, vPreTranslation);
+
+	
+
+	keyFrame->vTranslation.y = 0.f;
 }
 
 CAnimation* CAnimation::Create(CModel* pModel, json& Json, const char* filePath, _uint idx)

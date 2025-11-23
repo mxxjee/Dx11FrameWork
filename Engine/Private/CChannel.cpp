@@ -98,8 +98,10 @@ void CChannel::Update_TransformationMatrix(const vector<class CBone*>& Bones, _f
 
 
 
-		while (fCurrentTrackPosition >= m_KeyFrames[(INT64)(*pCurrentKeyFrameIdx) + 1].fTrackPosition)
-			++(*pCurrentKeyFrameIdx);
+		//현재 위치에맞는 키프레임인덱스 설정하기
+		(*pCurrentKeyFrameIdx)= Get_CurrentKeyFrameIndex(fCurrentTrackPosition, pCurrentKeyFrameIdx);
+	/*	while (fCurrentTrackPosition >= m_KeyFrames[(INT64)(*pCurrentKeyFrameIdx) + 1].fTrackPosition)
+			++(*pCurrentKeyFrameIdx);*/
 
 
 		vLeftScale = XMLoadFloat3(&m_KeyFrames[(*pCurrentKeyFrameIdx)].vScale);
@@ -195,6 +197,15 @@ void CChannel::UpdateTransformMatrix_To_Target(const vector<class CBone*>& Bones
 
 	Bones[m_iBoneIndex]->Set_TransformationMatrix(TransformationMatrix);
 
+}
+
+_uint CChannel::Get_CurrentKeyFrameIndex(_float fCurrentPosition, _uint* pIndex)
+{
+
+	while (fCurrentPosition >= m_KeyFrames[(INT64)(*pIndex) + 1].fTrackPosition)
+		++(*pIndex);
+
+	return *pIndex;
 }
 
 

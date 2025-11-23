@@ -7,6 +7,7 @@
 #include "CNavigation.h"
 #include "PlayerStates.h"
 
+#include "CNPC.h"
 
 
 USING(Client)
@@ -101,7 +102,7 @@ void CPlayer::Update(_float fTimeDelta)
 
 
     if (m_pCurState)
-        m_pCurState->Update(this);
+        m_pCurState->Update(this, fTimeDelta);
   
     
 
@@ -117,9 +118,17 @@ void CPlayer::Update_Late(_float fTimeDelta)
     Update_Movement(fTimeDelta);
 
     if (m_pCurState)
-        m_pCurState->Update_Late(this);
+        m_pCurState->Update_Late(this, fTimeDelta);
+
+    //루트모션 값있으면 적용시키기.
+    if (m_pBody)
+    {
+        _float3 Delta = m_pBody->Get_RootDelta();
+        m_pTransformCom->Set_State(STATE::POSITION,
+            m_pTransformCom->Get_State(STATE::POSITION) + XMLoadFloat3(&Delta));
 
 
+    }
 
 
 
@@ -171,6 +180,23 @@ void CPlayer::Update_Input(_float fTimeDelta)
         || m_pInputManager->IsKeyHeld(KeyCode::LeftArrow) || m_pInputManager->IsKeyHeld(KeyCode::RightArrow) && m_ActionControl.m_bCanMove;
 
 
+    //무조건 a키.
+    if (m_pInteractionObj)
+    {
+        m_Input.m_bInteract = m_pInputManager->IsKeyPressed(KeyCode::A);
+        if (m_Input.m_bInteract)
+        {
+            if (m_eType == NPC)
+            {
+                CNPC* pNpc = dynamic_cast<CNPC*>(m_pInteractionObj);
+                pNpc->Start_Interaction();
+                m_ActionControl.m_bTalk = true;
+            }
+
+        }
+
+    }
+    
 }
 
 
@@ -181,7 +207,9 @@ void CPlayer::Update_Movement(_float fTimeDelta)
     if (m_ActionControl.IsHold(HOLD_B))
         Hold_Movement(fTimeDelta);
 
-        
+    else if (m_ActionControl.m_bLadder)
+        Ladder_Movement(fTimeDelta);
+
     else
         Normal_Movement(fTimeDelta);
 
@@ -196,12 +224,34 @@ void CPlayer::Update_Movement(_float fTimeDelta)
 
 }
 
+void CPlayer::Ladder_Movement(_float fTimeDelta)
+{
+    CheckFalse(m_ActionControl.m_bLadder);
+    m_pTransformCom->Set_Speed(m_fInitSpeed / 1.5f);
+
+   
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::DownArrow))
+        m_pTransformCom->Move(DIRECTION::UP,fTimeDelta,Space::WORLD,nullptr);
+
+    else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::UpArrow))
+        m_pTransformCom->Move(DIRECTION::DOWN, fTimeDelta, Space::WORLD, nullptr);
+
+
+
+
+
+}
+
 void CPlayer::Normal_Movement(_float fTimeDelta)
 {
     CheckTrue(m_ActionControl.m_bFixDir);
 
     if(m_ActionControl.m_Holds[HoldKey::HOLD_T].m_bHeld)
         m_pTransformCom->Set_Speed(m_fInitSpeed/1.5f);
+
+    if(m_ActionControl.m_bPush)
+        m_pTransformCom->Set_Speed(m_fInitSpeed / 4.f);
+
 
     else
         m_pTransformCom->Set_Speed(m_fInitSpeed);
@@ -321,6 +371,24 @@ void CPlayer::Hold_Movement(_float fTimeDelta)
 
 }
 
+void CPlayer::Set_Interaction(InteractionType eType, CGameObject* pObj)
+{
+    CheckNull(pObj);
+    m_eType = eType;
+    m_pInteractionObj = pObj;
+
+
+}
+
+void CPlayer::Reset_Interaction()
+{
+    m_eType = InteractionType::END;
+    m_pInteractionObj = nullptr;
+
+    if (m_ActionControl.m_bTalk)
+        m_ActionControl.m_bTalk = false;
+}
+
 
 
 
@@ -368,6 +436,68 @@ void CPlayer::Change_State(int newState)
 
     m_pNextState = m_States[newState];
     m_pNextState->Enter(this);
+}
+
+void CPlayer::Set_VisibleMesh(const wstring& MeshName, bool bVisible)
+{
+    if (m_pBody)
+        m_pBody->Set_VisibleMesh(MeshName, bVisible);
+}
+
+void CPlayer::Set_HideWeapons()
+{
+    CheckNull(m_pBody);
+
+	m_pBody->Set_VisibleMesh(L"linkHookShot_handl_low__linkHookShot_MI_hookShot", false);
+	m_pBody->Set_VisibleMesh(L"linkShieldA_bis_low__linkShieldA_MI_shieldA", false);
+	m_pBody->Set_VisibleMesh(L"linkShieldB_bis_low__linkShieldB_MI_shieldB", false);
+	m_pBody->Set_VisibleMesh(L"linkShieldB_bis_low__linkShieldB_MI_shieldBMirror", false);
+
+	m_pBody->Set_VisibleMesh(L"linkSwordA_blade_low__linkSwordA_MI_sowrdA", false);
+	m_pBody->Set_VisibleMesh(L"linkSwordA_handle_low__linkSwordA_MI_sowrdAball", false);
+
+	m_pBody->Set_VisibleMesh(L"linkSwordB_blade_low__linkSwordB_MI_sowrdB", false);
+	m_pBody->Set_VisibleMesh(L"linkSwordB_handle_low__linkSwordB_MI_sowrdBball", false);
+
+	m_pBody->Set_VisibleMesh(L"MagicRod_magicRodJem_low__MagicRod_MI_magicRod", false);
+	m_pBody->Set_VisibleMesh(L"Ocarina_ocarina_low__Ocarina_MI_ocarina", false);
+	m_pBody->Set_VisibleMesh(L"Shovel_handle_low__Shovel_MI_shovel", false);
+    
+}
+
+void CPlayer::Show_Weapons()
+{
+    CheckNull(m_pBody);
+
+	m_pBody->Set_VisibleMesh(L"linkShieldA_bis_low__linkShieldA_MI_shieldA", true);
+
+	m_pBody->Set_VisibleMesh(L"linkSwordA_blade_low__linkSwordA_MI_sowrdA", true);
+	m_pBody->Set_VisibleMesh(L"linkSwordA_handle_low__linkSwordA_MI_sowrdAball", true);
+
+	m_pBody->Set_VisibleMesh(L"linkSwordB_blade_low__linkSwordB_MI_sowrdB", true);
+	m_pBody->Set_VisibleMesh(L"linkSwordB_handle_low__linkSwordB_MI_sowrdBball", true);
+
+}
+
+void CPlayer::Set_Default()
+{
+
+    m_pBody->Set_VisibleMesh(L"linkShieldA_bis_low__linkShieldA_MI_shieldA", true);
+
+    m_pBody->Set_VisibleMesh(L"linkSwordA_blade_low__linkSwordA_MI_sowrdA", true);
+    m_pBody->Set_VisibleMesh(L"linkSwordA_handle_low__linkSwordA_MI_sowrdAball", true);
+
+    m_pBody->Set_VisibleMesh(L"linkSwordB_blade_low__linkSwordB_MI_sowrdB", true);
+    m_pBody->Set_VisibleMesh(L"linkSwordB_handle_low__linkSwordB_MI_sowrdBball", true);
+
+
+    m_pBody->Set_VisibleMesh(L"flipperL_low__MI_flippers", false);
+    m_pBody->Set_VisibleMesh(L"MagicRod_magicRodJem_low__MagicRod_MI_magicRod", false);
+    m_pBody->Set_VisibleMesh(L"Shovel_handle_low__Shovel_MI_shovel", false);
+    m_pBody->Set_VisibleMesh(L"linkHookShot_handl_low__linkHookShot_MI_hookShot", false);
+    m_pBody->Set_VisibleMesh(L"linkShieldB_bis_low__linkShieldB_MI_shieldBMirror", false);
+    m_pBody->Set_VisibleMesh(L"linkShieldB_bis_low__linkShieldB_MI_shieldB", false);
+    m_pBody->Set_VisibleMesh(L"Ocarina_ocarina_low__Ocarina_MI_ocarina", false);
 }
 
 CPlayer* CPlayer::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -460,9 +590,14 @@ HRESULT CPlayer::Ready_States()
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_SHIELD), CPlayerHoldShield::Create());
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::SLASH_SHIELD), CPlayerSlashShieldState::Create());
 
-    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::JUMP, ), CPlayerJumpState::Create());
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::JUMP), CPlayerJumpState::Create());
 
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::LADDER), CPlayerLadderState::Create());
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::PUSH), CPlayerPushState::Create());
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ITEMGET), CPlayerStateGetItem::Create());
 
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::CARRY), CPlayerCarryState::Create());
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::TALK), CPlayerTalkState::Create());
 
     /// <summary>
     /// 키 설정
@@ -516,6 +651,19 @@ string CPlayer::Convert_String_To_Enum(_uint eState)
 
         if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::SLASH_SHIELD))
             StateDebugStr += "SLASH_SHIELD ";
+
+        if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::LADDER))
+            StateDebugStr += "LADDER";
+
+        if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::JUMP))
+            StateDebugStr += "JUMP";
+
+
+        if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::PUSH))
+            StateDebugStr += "PUSH";
+
+        if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::ITEMGET))
+            StateDebugStr += "ITEMGET";
     }
 
 

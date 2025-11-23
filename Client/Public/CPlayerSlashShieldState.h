@@ -7,7 +7,7 @@ class CPlayerSlashShieldState :
     public CPlayerState
 {
     //전이 될 수 잇는 다음 애니메이션들
-    enum class NextAnim { NONE, IDLE,ATTACK,SHIELD,ATTACK_END };
+    enum class NextAnim { NONE, IDLE,ATTACK,SHIELD,ATTACK_HOLD,ATTACK_END };
 
     //ST,LP,ED
     enum class Phase { None, Loop, End };
@@ -18,8 +18,8 @@ private:
 
 public:
     virtual void        Enter(CPlayer* pPlayer)override;
-    virtual void        Update(CPlayer* pPlayer)override;
-    virtual void        Update_Late(CPlayer* pPlayer)override;
+    virtual void        Update(CPlayer* pPlayer, _float fTimeDelta)override;
+    virtual void        Update_Late(CPlayer* pPlayer, _float fTimeDelta)override;
     virtual void        Exit(CPlayer* pPlayer)override;
 
 private:

@@ -31,6 +31,7 @@ typedef struct tagPlayerInput
 	bool m_bisShieldRelease = false;
 	bool m_bisShield = false;
 	bool m_bisJump = false;
+	bool m_bInteract = false;
 
 }PLAYER_INPUT;
 
@@ -44,6 +45,13 @@ typedef struct tagActionControl
 	vector<HOLDKEY_DATA>		m_Holds;
 	bool				m_bFixDir = false;
 
+	//////////////////특수한행동들 , 이들은 서로 겹칠 수 없다.//////////
+	bool				m_bLadder = false;
+	bool				m_bPush = false;
+	bool				m_bCarry = false;
+	bool				m_bItemGet = false;
+	bool				m_bTalk = false;
+
 	void		Reset()
 	{
 		m_bCanAttack = true;
@@ -56,7 +64,11 @@ typedef struct tagActionControl
 		//m_bHolds = { false,false };
 		m_bFixDir = false;
 		m_bCanShield = true;
-
+		m_bLadder = false;
+		m_bPush = false;
+		m_bCarry = false;
+		m_bItemGet = false;
+		m_bTalk = false;
 	}
 
 
@@ -71,6 +83,7 @@ typedef struct tagActionControl
 		m_Holds[idx].m_bHeld = b;
 
 	}
+
 
 }ACTION_CONTROL;
 
@@ -88,6 +101,11 @@ typedef struct tagItemInfo
 
 
 }ITMINFO;
+
+enum InteractionType
+{
+	OBJECT,NPC,END
+};
 
 using namespace Client;
 using namespace std;

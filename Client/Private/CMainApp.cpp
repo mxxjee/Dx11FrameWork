@@ -20,6 +20,8 @@
 #include "CLevelDebugWindow.h"
 #include "CObjectDebugWindow.h"
 #include "CCameraDebugWindow.h"
+#include "CStateDebugWindow.h"
+
 
 #include "CTransform.h"
 #include "CCameraComponent.h"
@@ -65,6 +67,7 @@ HRESULT CMainApp::Initialize()
 	CreateLevelDebugWindow();
 	CreateObjectDebugWindow();
 	CreateCameraDebugWindow();
+	CreateStateDebugWindow();
 
 #endif
 	pImGui_Manager->Set_MapToolMode(MapToolMode::END);
@@ -423,6 +426,19 @@ void CMainApp::CreateCameraDebugWindow()
 	Desc.Tag = "CameraDebugWindow";
 
 	pImGui_Manager->RegisterWindow(CCameraDebugWindow::Create(m_pDevice, m_pContext, &Desc));
+
+}
+
+void CMainApp::CreateStateDebugWindow()
+{
+	CImgui_Window::IMGUIWINDOW_DESC Desc;
+	Desc.m_WindowTitle = "StateDebugWindow";
+	Desc.m_WindowPos = ImVec2(g_iWinSizeX, 100);
+	//Desc.m_WindowSize = ImVec2(300, 500);
+	Desc.Tag = "StateDebugWindow";
+
+
+	pImGui_Manager->RegisterWindow(CStateDebugWindow::Create(m_pDevice, m_pContext, &Desc));
 
 }
 

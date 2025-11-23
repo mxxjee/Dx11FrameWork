@@ -18,8 +18,8 @@ protected:
 
 public:
     virtual void        Enter(CPlayer* pPlayer) {};
-    virtual void        Update(CPlayer* pPlayer){};
-    virtual void        Update_Late(CPlayer* pPlayer) {};
+    virtual void        Update(CPlayer* pPlayer,_float fTimeDelta){};
+    virtual void        Update_Late(CPlayer* pPlayer,_float fTimeDelta) {};
     virtual void        Exit(CPlayer* pPlayer){};
 
 
@@ -28,7 +28,8 @@ public:
 
 protected:
     bool        m_bCanExit =true;        //강제 전이 가능여부
-    PLAYER_INPUT* pPlayerInput = nullptr;
+    PLAYER_INPUT*           pPlayerInput = nullptr;
+    ACTION_CONTROL*         pActionControl = nullptr;
 
 };
 

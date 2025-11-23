@@ -104,6 +104,33 @@
     <ClInclude Include="..\Public\CPlayerJumpState.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Jump</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CPlayerLadderState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Ladder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPlayerPushState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Push</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStateDebugWindow.h">
+      <Filter>999.ImguiObject\StateDebugWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPlayerStateGetItem.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\GetItem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPlayerCarryState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Carry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CNPC.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CNPC_Body.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Npc_Body</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CNPC_Richard.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Richard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPlayerTalkState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Talk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -234,6 +261,36 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Jump">
       <UniqueIdentifier>{ff59c47c-5473-466d-8d63-6ec7d4ef8964}</UniqueIdentifier>
     </Filter>
+    <Filter Include="999.ImguiObject\StateDebugWindow">
+      <UniqueIdentifier>{6ab44262-a02c-4247-bb34-497a5487308f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Ladder">
+      <UniqueIdentifier>{3857c3d9-a4f7-4997-b34f-06da772f4d4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Push">
+      <UniqueIdentifier>{68d866b4-7233-4ab5-b063-54192174190b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\GetItem">
+      <UniqueIdentifier>{0be55c6a-e911-4772-b0e4-266c01537c6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Carry">
+      <UniqueIdentifier>{360d42cd-f7de-477e-bbcb-a56fab47421e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Talk">
+      <UniqueIdentifier>{2140fabe-20b1-4c44-aea6-d6ec9c7bf548}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\00.NPC">
+      <UniqueIdentifier>{0d451426-9d6f-4ec6-a7f8-b85d9b209d49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\00.NPC\Richard">
+      <UniqueIdentifier>{64b3cc12-1a03-4bb2-a115-b0692aa62427}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\00.NPC\Npc_Body">
+      <UniqueIdentifier>{91a665fe-93ed-4fe5-8c78-74e37473f9de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Managers">
+      <UniqueIdentifier>{7593bdbe-1406-47e5-82ff-82555a127faf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -323,6 +380,33 @@
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerJumpState.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Jump</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPlayerLadderState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Ladder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPlayerPushState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Push</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStateDebugWindow.cpp">
+      <Filter>999.ImguiObject\StateDebugWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPlayerStateGetItem.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\GetItem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPlayerCarryState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Carry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CNPC.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CNPC_Body.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Npc_Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CNPC_Richard.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Richard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPlayerTalkState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Talk</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

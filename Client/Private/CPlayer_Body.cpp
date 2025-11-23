@@ -68,6 +68,21 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 	m_pModel->Set_Animation_Speed(L"slash_hold_shield_r", 60.f);
 	m_pModel->Set_Animation_Speed(L"slash_hold_shield_l", 60.f);
 
+	m_pModel->Set_Animation_Speed(L"slash_hold_shield_l", 60.f);
+
+
+	m_pModel->Set_Animation_Speed(L"jump", 50.f);
+	m_pModel->Set_Animation_Speed(L"land",80.f);
+
+
+	m_pModel->Set_Animation_Speed(L"item_get_st", 50.f);
+	m_pModel->Set_Animation_Speed(L"item_get_lp", 50.f);
+	m_pModel->Set_Animation_Speed(L"item_get_ed", 50.f);
+
+
+	m_pModel->Set_Animation_Speed(L"carry", 50.f);
+	//m_pModel->Set_EnableRootMotion(L"jump", true);
+
 	m_pModel->Set_TransitionTime(0.2f);
 
 #pragma region Set Visible Mesh

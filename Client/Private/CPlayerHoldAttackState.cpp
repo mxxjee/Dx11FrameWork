@@ -32,7 +32,7 @@ void CPlayerHoldAttackState::Enter(CPlayer* pPlayer)
 
 }
 
-void CPlayerHoldAttackState::Update(CPlayer* pPlayer)
+void CPlayerHoldAttackState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
 
     //Hold상태일 시 움직이는 애니메이션에 따른 처리
@@ -48,7 +48,7 @@ void CPlayerHoldAttackState::Update(CPlayer* pPlayer)
 
 }
 
-void CPlayerHoldAttackState::Update_Late(CPlayer* pPlayer)
+void CPlayerHoldAttackState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 {
 
     //바꾸라는 명령을 줄 타이밍
@@ -80,7 +80,7 @@ void CPlayerHoldAttackState::Update_Late(CPlayer* pPlayer)
 	default:
 		break;
 	}
-
+    
 }
 
 void CPlayerHoldAttackState::Exit(CPlayer* pPlayer)
@@ -138,7 +138,7 @@ void CPlayerHoldAttackState::ChangePhase(CPlayer* pPlayer)
     default:
         break;
     }
-
+    m_bChange = false;
 }
 
 void CPlayerHoldAttackState::ChangeState(CPlayer* pPlayer)
@@ -149,6 +149,8 @@ void CPlayerHoldAttackState::ChangeState(CPlayer* pPlayer)
         pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::SLASH_SHIELD));
         break;
     }
+
+    m_bChangeState = false;
 }
 
 void CPlayerHoldAttackState::Hold_Movement(CPlayer* pPlayer)

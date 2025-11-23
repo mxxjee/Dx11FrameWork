@@ -34,7 +34,7 @@ public:
 
     virtual HRESULT Render();
     
-private:
+public:
     HRESULT     Ready_Components(void* pArg);
     HRESULT     Ready_Resource(void* pArg);
 

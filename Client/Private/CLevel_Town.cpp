@@ -9,8 +9,13 @@
 #include "CBody.h"
 #include "CInput_Manager.h"
 #include "CLight.h"
-#include "MathUtils.h"
 
+#include "CStateDebugWindow.h"
+#include "CImGui_Manager.h"
+#include "CPlayer.h"
+
+#include "MathUtils.h"
+#include "CNPC_Richard.h"
 
 
 USING(Client)
@@ -33,6 +38,9 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
 
 
     if (FAILED(Ready_Layer_Player(L"Player_Layer")))
+        return E_FAIL;
+
+    if (FAILED(Ready_Layer_NPC(L"NPC_Layer")))
         return E_FAIL;
 
     //if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
@@ -398,6 +406,28 @@ HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
 
 }
 
+HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
+{
+    CNPC::NPC_DESC pDesc;
+
+    CTransform::TRANSFORM_DESC pTransDesc;
+    pTransDesc.vLocalPosition= { 40.f,9.5f,19.f,1.f };
+    pDesc.ObjTag = L"NPC_Richard";
+    pDesc.pTarget = nullptr;
+    pDesc.ModelName = L"RichardAnim";
+
+    pDesc.TransformDesc = &pTransDesc;
+
+    CNPC_Richard* pNpc_Richard = CNPC_Richard::Create(m_pDevice, m_pContext, &pDesc);
+    if (pNpc_Richard)
+    {
+        if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, pNpc_Richard)))
+        return E_FAIL;
+
+    }
+    return S_OK;
+}
+
 
 void CLevel_Town::OnEnter()
 {
@@ -423,6 +453,20 @@ void CLevel_Town::OnEnter()
         ppMainCamera->Set_Target(pPlayerObject, true);
     }
 
+
+    CStateDebugWindow* pWindow = dynamic_cast<CStateDebugWindow*>(CImGui_Manager::GetInstance()->Find_Window("StateDebugWindow"));
+    if (pWindow)
+    {
+        CGameObject* pObj = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");
+        if (pObj)
+        {
+            CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
+
+            pWindow->Set_Player(pPlayer);
+        }
+            
+
+    }
 }
 
 void CLevel_Town::OnResume()

@@ -26,28 +26,22 @@ void CPlayerJumpState::Enter(CPlayer* pPlayer)
     m_bChangeState = false;
 }
 
-void CPlayerJumpState::Update(CPlayer* pPlayer)
+void CPlayerJumpState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
-    if (m_bChange)
-        ChangePhase(pPlayer);
+    
+    ChangePhase(pPlayer);
 
 
-    else if (m_bChangeState)
+    if (m_bChangeState)
         ChangeState(pPlayer);
 
 }
 
-void CPlayerJumpState::Update_Late(CPlayer* pPlayer)
+void CPlayerJumpState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 {
     //페이즈 바꾸는 타이밍
     switch (m_ePhase)
     {
-    case Phase::Start:
-        if (pPlayer->Is_AnimEnd())
-            m_bChange = true;
-
-        break;
-
 
     case Phase::End:
         if (pPlayer->Is_AnimEnd())
@@ -70,8 +64,13 @@ void CPlayerJumpState::ChangePhase(CPlayer* pPlayer)
     {
     case Phase::Start:
     {
-        pPlayer->Reserve_Animation_To_Body(L"land",false);
-        m_ePhase = Phase::End;
+        if (pPlayer->Is_AnimEnd())
+        {
+            pPlayer->Reserve_Animation_To_Body(L"land", false);
+            m_ePhase = Phase::End;
+            pPlayer->Set_CanMove(false);
+        }
+      
     }
 
 

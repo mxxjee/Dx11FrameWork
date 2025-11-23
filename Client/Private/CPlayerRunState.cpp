@@ -20,7 +20,7 @@ void CPlayerRunState::Enter(CPlayer* pPlayer)
 
 }
 
-void CPlayerRunState::Update(CPlayer* pPlayer)
+void CPlayerRunState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
 	if (pPlayerInput->m_bisAttack && pPlayer->Get_CanAttackEnable())
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ATTACK));

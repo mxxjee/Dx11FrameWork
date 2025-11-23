@@ -28,7 +28,7 @@ void CPlayerSlashShieldState::Enter(CPlayer* pPlayer)
 
 }
 
-void CPlayerSlashShieldState::Update(CPlayer* pPlayer)
+void CPlayerSlashShieldState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
     Hold_Movement(pPlayer);
 
@@ -39,7 +39,7 @@ void CPlayerSlashShieldState::Update(CPlayer* pPlayer)
 
 }
 
-void CPlayerSlashShieldState::Update_Late(CPlayer* pPlayer)
+void CPlayerSlashShieldState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 {
 
     bool m_bHoldT = pPlayer->Get_Hold(CPlayer::HoldKey::HOLD_T);
@@ -55,7 +55,7 @@ void CPlayerSlashShieldState::Update_Late(CPlayer* pPlayer)
     //b는누르고욌는데 T만 덌을떄
     else if (m_bHoldB&&!m_bHoldT && !pPlayerInput->m_bisShieldRelease)
     {
-        e_NextAnim = NextAnim::ATTACK;
+        e_NextAnim = NextAnim::ATTACK_HOLD;
         m_bChangeState = true;
     }
 
@@ -149,17 +149,21 @@ void CPlayerSlashShieldState::Change_Other_State(CPlayer* pPlayer)
 
 
     case NextAnim::IDLE:
-        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::IDLE));
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
         break;
 
 
     case NextAnim::SHIELD:
-        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::SHIELD));
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_SHIELD));
         break;
 
 
     case NextAnim::ATTACK:
-        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::ATTACK));
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ATTACK));
+        break;
+
+    case NextAnim::ATTACK_HOLD:
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_ATTACK));
         break;
     }
 

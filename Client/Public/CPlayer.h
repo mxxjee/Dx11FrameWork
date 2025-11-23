@@ -35,7 +35,13 @@ public:
         ATTACK ,
         HOLD_ATTACK,
         HOLD_SHIELD,
-        SLASH_SHIELD
+        SLASH_SHIELD,
+        LADDER,
+        PUSH,
+        ITEMGET,
+        CARRY,
+        TALK,
+        END
     };
 
 protected:
@@ -61,13 +67,30 @@ private:
     void        Check_HoldTime(HoldKey Key,KeyCode KeyCode,_float fTimeDelta);
 
     void        Update_Movement(_float fTimeDelta);
+
+    void        Ladder_Movement(_float fTimeDelta);
     void        Normal_Movement(_float fTimeDelta);
     void        Hold_Movement(_float fTimeDelta);
 
+#pragma region Interaction임시설정
+
+/// <summary>
+/// / 원래는 매니저에게 받아서쓰도록..고치기
+/// </summary>
+public:
+    ////////////Interaction 임시값////////
+    void            Set_Interaction(InteractionType eType, CGameObject* pObj);
+    void            Reset_Interaction();
+private:
+    InteractionType m_eType;
+    CGameObject* m_pInteractionObj = nullptr;
+
+#pragma endregion
 public:     
     //상태값, update돌릴 state  클래스 변경
     virtual void            Change_State(int newState);
-    PLAYER_INPUT* Get_Input() { return &m_Input; }
+    PLAYER_INPUT*           Get_Input() { return &m_Input; }
+    ACTION_CONTROL* Get_ActionControl() { return &m_ActionControl; }
 
     void            Set_CanAttackEnable(bool b) { m_ActionControl.m_bCanAttack = b; }
     bool            Get_CanAttackEnable() { return m_ActionControl.m_bCanAttack; }
@@ -84,6 +107,14 @@ public:
     bool            Get_FixDir() { return m_ActionControl.m_bFixDir; }
 
     void            Reset_ActionControl() { m_ActionControl.Reset(); }
+
+
+public:
+    //상태에따른 메쉬 비지블
+    void        Set_VisibleMesh(const wstring& MeshName, bool bVisible);
+    void        Set_HideWeapons();
+    void        Show_Weapons();
+    void        Set_Default();
 
 public:
     static CPlayer* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);

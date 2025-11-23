@@ -20,10 +20,11 @@ public:
 
 public:
     _matrix         Get_CurrentKeyFrameBoneSRT(_uint* pCurrentKeyFrameIdx);
+    
 
     HRESULT Initialize(class CModel* pModel, json& Json, const char* AnimFilePath, int AnimIdx, int index);
     void    Update_TransformationMatrix(const vector<class CBone*>& Bones, _float fCurrentTrackPosition,_uint* pCurrentKeyFrameIdx );
-
+    KEYFRAME*    Get_KeyFrame(int idx) { if (idx >= m_KeyFrames.size())return nullptr;else return &m_KeyFrames[idx]; }
 
 
             //지금 키프레임값의 SRT와 다음애니메이션보간
@@ -33,6 +34,8 @@ public:
                 //현재 본의 SRT와 다음애니메이션 보간
     void    UpdateTransformMatrix_To_Target(const vector<class CBone*>& Bones,_matrix CurSRT,_float Ratio);
 
+
+    _uint       Get_CurrentKeyFrameIndex(_float fCurrentPosition,_uint* pIndex);
 private:
     _uint				m_iNumKeyFrames = {};		//이 채널의 전체 키프레임, SRT 변환중 가장 큰 것의 사이즈
     vector<KEYFRAME>	m_KeyFrames;

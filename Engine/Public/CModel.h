@@ -62,8 +62,11 @@ public:
 public:
     void        Set_Animation(const wstring& AnimKey, _bool isLoop);
     void        Set_Animation_Speed(const wstring& AnimKey, _float TickPerSecond);
+    void        Set_EnableRootMotion(const wstring& AnimKey, _bool bEnableRootMotion);
+
 
     const wstring& Get_CurrentAnimKey() { return m_CurrentAnimKey; }
+    _float3         Get_RootDelta();
 
     int         Get_BoneIndex(const char* pBoneName);
     int         Get_NumAnim() { return m_iNumAnimations; }

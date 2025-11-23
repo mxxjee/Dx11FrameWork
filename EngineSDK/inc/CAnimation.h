@@ -3,6 +3,7 @@
 
 NS_BEGIN(Engine)
 class CChannel;
+class CGameObject;
 
 class ENGINE_DLL CAnimation :
     public CBase
@@ -19,10 +20,7 @@ public:
 
     //현재 재생바의 위치에 따라 본의 matrix를 업데이트하도록 시키는 함수, 리턴값:애니메이션끝났는지 여부
     bool        Update_TransformationMatrices(const vector<class CBone*>& Bones, _float fTimeDeltal);
-   
-    //전이 시 애니메이션보간
-    bool        Update_BlendAnim(class CModel* pModel,const vector<class CBone*>& Bones, _float TranslationTime, int PreAnimIndex);
-   
+      
     void        Set_Loop(bool b) { m_bLoop = b; }
     void        Set_CurrentTrackPosition(_float TrackPos) { m_fCurrentTrackPosition = TrackPos; }  
     void        Set_TickPerSecond(_float fSpeed) { m_fTickPerSecond = fSpeed; }
@@ -38,6 +36,12 @@ public:
     _matrix           Get_CurrentKeyFrameBonSRT(int BoneIdx);
     int               Get_ChannelIdx(int BoneNum);
 
+public:
+    void                Set_RootMotionEnalbe(bool b) {m_bEnableRootMotion = b;}
+    _float3             Get_RootDelta() { return RootDelta; }
+private:
+    void                Update_RootMotion(const vector<class CBone*>& Bones, CChannel* pChannel);
+    
 private:
     _uint               m_iNumChannels = {};
     vector<class CChannel*> m_Channels;
@@ -51,10 +55,18 @@ private:
     bool                m_bLoop = false;
 
 
+    bool                m_bEnableRootMotion = false;
+
 public:
     static  CAnimation* Create(class CModel* pModel,json& Json,const char* filePath,_uint idx);
     CAnimation* Clone();
     virtual void Free() override;
+
+private:
+    _float3         RootDelta = _float3(0.f, 0.f, 0.f);
+
+private:
+    CGameObject* m_pOwner = nullptr;
 
 };
 NS_END

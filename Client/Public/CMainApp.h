@@ -46,6 +46,7 @@ private:
 	void		CreateLevelDebugWindow();
 	void		CreateObjectDebugWindow();
 	void		CreateCameraDebugWindow();
+	void		CreateStateDebugWindow();
 
 private:
 	ComPtr<ID3D11Device> m_pDevice;

@@ -3,6 +3,8 @@
 #include "CMeshComponent.h"
 #include "CShader.h"
 #include "CGameInstance.h"
+#include "CAnimation.h"
+
 
 
 
@@ -100,6 +102,22 @@ HRESULT CBody::Render()
 
 
     return S_OK;
+}
+
+void CBody::Set_VisibleMesh(const wstring& MeshName, bool bVisible)
+{
+    if (m_pModel)
+        m_pModel->Set_VisibleMesh(MeshName, bVisible);
+}
+
+_float3 CBody::Get_RootDelta()
+{
+    _float3         Result = _float3();
+
+    if (m_pModel)
+        Result = m_pModel->Get_RootDelta();
+
+    return Result;
 }
 
 bool CBody::Get_IsAnimFinished()

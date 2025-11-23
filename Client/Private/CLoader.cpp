@@ -32,6 +32,8 @@
 #include "CBody.h"
 #include "CPlayer_Body.h"
 #include "CMonster_Body.h"
+#include "CNPC_Body.h"
+
 
 USING(Client)
 CLoader::CLoader(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -288,8 +290,16 @@ HRESULT CLoader::Register_Models()
     matrix = XMMatrixMultiply(matrix, XMMatrixScaling(1.2f, 1.2f, 1.2f));
 
 
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor", matrix);
-   // m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle");
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/LinkAnim", matrix);
+   
+    _matrix NPCmatrix = XMMatrixIdentity();
+
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC", NPCmatrix);
+
+
+
+    
+    // m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle");
 
    
     //if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Fiona_Model"), CModel::Create(m_pDevice, m_pDeviceContext,XMMatrixIdentity(), "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Fiona/Fiona.json"))))
@@ -382,6 +392,10 @@ HRESULT CLoader::Register_GameObjects()
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Monster_Body", CMonster_Body::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"NPC_Body", CNPC_Body::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"FadeScreen", CFadeScreen::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;

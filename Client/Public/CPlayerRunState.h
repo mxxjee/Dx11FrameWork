@@ -14,7 +14,7 @@ private:
 
 public:
     virtual void        Enter(CPlayer* pPlayer)override;
-    virtual void        Update(CPlayer* pPlayer)override;
+    virtual void        Update(CPlayer* pPlayer, _float fTimeDelta)override;
     virtual void        Exit(CPlayer* pPlayer)override;
 
 public:

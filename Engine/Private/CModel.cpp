@@ -550,6 +550,26 @@ void CModel::Set_Animation_Speed(const wstring& AnimKey, _float TickPerSecond)
 
 }
 
+void CModel::Set_EnableRootMotion(const wstring& AnimKey, _bool bEnableRootMotion)
+{
+	CAnimation* pAnim = Find_Animation(AnimKey);
+	CheckNull(pAnim);
+
+	return pAnim->Set_RootMotionEnalbe(bEnableRootMotion);
+}
+
+_float3 CModel::Get_RootDelta()
+{
+	
+	CAnimation* pAnim = Find_Animation(Get_CurrentAnimKey());
+	if (pAnim)
+		return pAnim->Get_RootDelta();
+	
+
+	return _float3();
+
+}
+
 int CModel::Get_BoneIndex(const char* pBoneName)
 {
 

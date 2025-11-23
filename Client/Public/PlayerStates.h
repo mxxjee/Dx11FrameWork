@@ -8,3 +8,9 @@
 #include "CPlayerHoldShield.h"
 #include "CPlayerSlashShieldState.h"
 #include "CPlayerJumpState.h"
+#include "CPlayerLadderState.h"
+#include "CPlayerPushState.h"
+#include "CPlayerStateGetItem.h"
+#include "CPlayerCarryState.h"
+#include "CPlayerTalkState.h"
+

@@ -15,7 +15,9 @@ HRESULT CBone::Initialize(const BoneData& Data)
 
 
     XMStoreFloat4x4(&m_OffsetMatrix, XMMatrixTranspose(XMLoadFloat4x4(&Data.m_OffsetMatrix)));
+    
     XMStoreFloat4x4(&m_TransformationMatrix, XMMatrixTranspose(XMLoadFloat4x4(&Data.TransformationMatrix)));
+    XMStoreFloat4x4(&m_Pre_TransformationMatrix,XMMatrixIdentity());
 
     //나중에 연산할것임.. 일단 Identity()초기화
     XMStoreFloat4x4(&m_CombinedTransformationMatrix, XMMatrixIdentity());
@@ -28,6 +30,9 @@ void CBone::Update_CombinedTransformMatrix(const vector<CBone*>& Bones, _matrix 
     /*1. 먼저 내 로컬 transform 계산
     2. 이후 부모의 matrix 가져와서 연산
     3. 이후 offset곱하기 */
+
+    m_Pre_TransformationMatrix = m_TransformationMatrix;
+
 
     //만약 parent===-1이라면(까장 최상위노드라면),그냥 루트에 transformation곱하기
     if (m_iParentBoneIndex == -1)
@@ -42,6 +47,8 @@ void CBone::Update_CombinedTransformMatrix(const vector<CBone*>& Bones, _matrix 
         XMStoreFloat4x4(&m_CombinedTransformationMatrix,
             XMLoadFloat4x4(&m_TransformationMatrix) * XMLoadFloat4x4(&Bones[m_iParentBoneIndex]->m_CombinedTransformationMatrix));
     }
+
+
 
 }
 
