@@ -25,6 +25,8 @@ void CPlayerIdleState::Enter(CPlayer* pPlayer)
 
 void CPlayerIdleState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
+	__super::Update(pPlayer, fTimeDelta);
+
 	if (pPlayerInput->m_bisAttack && pPlayer->Get_CanAttackEnable())
 	{
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ATTACK));
@@ -37,44 +39,7 @@ void CPlayerIdleState::Update(CPlayer* pPlayer, _float fTimeDelta)
 		return;
 	}
 
-	if (pActionControl->m_bLadder )
-	{
-		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::LADDER));
-		return;
-	}
-
-	if (pActionControl->m_bPush)
-	{
-		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::PUSH));
-		return;
-	}
-
-	if (pActionControl->m_bItemGet)
-	{
-		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ITEMGET));
-		return;
-	}
-
-
-	if (pActionControl->m_bCarry)
-	{ 
-		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::CARRY));
-		return;
-	}
-
-
-
-	if (pActionControl->m_bTalk)
-	{
-		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::TALK));
-		return;
-	}
-
-	if (pActionControl->m_bFall)
-	{
-		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::FALL));
-		return;
-	}
+	
 
 	else
 	{

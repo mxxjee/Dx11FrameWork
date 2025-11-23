@@ -14,6 +14,8 @@ CPlayerRunState::~CPlayerRunState()
 void CPlayerRunState::Enter(CPlayer* pPlayer)
 {
 	pPlayerInput = pPlayer->Get_Input();
+	pActionControl = pPlayer->Get_ActionControl();
+
 	pPlayer->Reserve_Animation_To_Body(L"run", true);
 
 	pPlayer->Reset_ActionControl();
@@ -22,6 +24,9 @@ void CPlayerRunState::Enter(CPlayer* pPlayer)
 
 void CPlayerRunState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
+	__super::Update(pPlayer, fTimeDelta);
+
+
 	if (pPlayerInput->m_bisAttack && pPlayer->Get_CanAttackEnable())
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ATTACK));
 

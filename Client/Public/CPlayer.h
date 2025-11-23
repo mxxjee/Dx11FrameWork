@@ -70,6 +70,7 @@ private:
     void        Check_HoldTime(HoldKey Key,KeyCode KeyCode,_float fTimeDelta);
 
     void        Update_Movement(_float fTimeDelta);
+         //항상 우선순위를 갖는 스테이트들 먼저 체크
 
     void        Ladder_Movement(_float fTimeDelta);
     void        Normal_Movement(_float fTimeDelta);

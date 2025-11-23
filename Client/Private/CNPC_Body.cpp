@@ -41,6 +41,9 @@ HRESULT CNPC_Body::Initialize_Copytype(void* pArg)
 	m_NextAnimKey = L"wait";
 	m_NextAnimLoop = true;
 
+	m_pModel->Set_Animation_Speed(L"wait", 50.f);
+	m_pModel->Set_Animation_Speed(L"talk", 50.f);
+
 	return S_OK;
 }
 

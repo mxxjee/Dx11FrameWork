@@ -121,6 +121,7 @@ void CPlayer::Update_Late(_float fTimeDelta)
 
     Update_Movement(fTimeDelta);
 
+
     if (m_pCurState)
         m_pCurState->Update_Late(this, fTimeDelta);
 

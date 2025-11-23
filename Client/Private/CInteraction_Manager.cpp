@@ -83,7 +83,10 @@ bool CInteraction_Manager::OnInteractKeyPresed()
 		{
 			m_pCurrentTarget->Enter_Interaction();
 			m_pCurrentTarget->m_bPrevInteracting = true;
+			return true;
 		}
+
+
 	}
 	
 	return false;
