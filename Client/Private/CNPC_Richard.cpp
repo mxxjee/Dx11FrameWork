@@ -1,5 +1,7 @@
 #include "CNPC_Richard.h"
 #include    "CPlayer.h"
+#include "CBody.h"
+#include "CCamera_Base.h"
 
 
 USING(Client)
@@ -63,9 +65,10 @@ void CNPC_Richard::OnInteractRange(_float fTimeDelta)
     _vector PlayerPos = m_pPlayer->Get_Transform()->Get_State(STATE::POSITION);
     //m_pTransformCom->LookAt(WORLD_UP, PlayerPos, fTimeDelta, 10.f);
 
-    _vector vUp = XMVector3Normalize(m_pTransformCom->Get_State(STATE::UP));
+   _vector vUp = XMVector3Normalize(m_pTransformCom->Get_State(STATE::UP));
 
-    m_pTransformCom->LookAt(PlayerPos);
+    m_pTransformCom->LookAtSmooth(PlayerPos,5.f,fTimeDelta);
+
 
 }
 
@@ -80,7 +83,13 @@ void CNPC_Richard::ExitInteractRange()
 void CNPC_Richard::Start_Interaction()
 {
     m_bTalking = true;
+    m_pBody->Reserve_Animation(L"talk", true);
 
+    CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(m_pGameInstance->Get_MainCamera());
+
+
+    pCameraBase->Set_Target(this);
+    pCameraBase->Set_Offset(_float3(0.f, 3.f, -2.f));
 
 }
 
@@ -89,7 +98,7 @@ void CNPC_Richard::On_Interaction(_float fTimeDelta)
    
     m_fTime += fTimeDelta;
 
-   
+    m_pPlayer->Get_Transform()->LookAtSmooth(m_pTransformCom->Get_State(STATE::POSITION), 5.f, fTimeDelta);
 
     if (m_fTime >= 3.f)
     {
@@ -102,7 +111,12 @@ void CNPC_Richard::Exit_Interaction()
 {
     m_bTalking = false;
     m_pPlayer->Get_ActionControl()->m_bTalk = false;
+    m_pBody->Reserve_Animation(L"wait", true);
+    CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(m_pGameInstance->Get_MainCamera());
 
+
+    pCameraBase->Set_Target(m_pPlayer);
+    pCameraBase->Set_Offset(pCameraBase->Get_InitOffset());
 }
 
 CNPC_Richard* CNPC_Richard::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex, void* pArg)

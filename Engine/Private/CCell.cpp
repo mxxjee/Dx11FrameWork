@@ -96,6 +96,7 @@ _vector CCell::Get_CenterPos()
     return vPosition / 3.f;
 }
 
+
 void CCell::Update_Render()
 {
 }

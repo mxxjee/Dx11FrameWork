@@ -70,6 +70,12 @@ void CPlayerIdleState::Update(CPlayer* pPlayer, _float fTimeDelta)
 		return;
 	}
 
+	if (pActionControl->m_bFall)
+	{
+		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::FALL));
+		return;
+	}
+
 	else
 	{
 		if (pPlayerInput->m_bisJump)

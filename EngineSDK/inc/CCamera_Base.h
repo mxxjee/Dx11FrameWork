@@ -99,6 +99,7 @@ public:
     const RENDER_TARGET& Get_RenderTarget() const { return m_tRenderTarget; }
     
     const _float3& Get_Offset() { return m_vOffset; }
+    const _float3& Get_InitOffset() { return m_vInitOffset; }
     const _float    Get_Fovy() { return m_fFovy; }
     const _float    Get_Near() { return m_fNearZ; }
     const _float    Get_Far() { return m_fFarZ; }
@@ -124,6 +125,7 @@ protected:
 
     _float			m_fNearZ{}, m_fFarZ{};
     _float3         m_vOffset;
+    _float3         m_vInitOffset;
 
     bool            m_bPerspective = true;
 };

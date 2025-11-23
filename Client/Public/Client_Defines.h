@@ -52,6 +52,9 @@ typedef struct tagActionControl
 	bool				m_bItemGet = false;
 	bool				m_bTalk = false;
 
+
+	bool				m_bFall = false;
+
 	void		Reset()
 	{
 		m_bCanAttack = true;

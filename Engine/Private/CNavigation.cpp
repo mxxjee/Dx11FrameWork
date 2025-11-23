@@ -41,6 +41,7 @@ void CNavigation::Set_CurrentIdx(_vector vWorldPos)
 			return;
 		}
 	}
+
 }
 
 HRESULT CNavigation::Initialize_Prototype()
@@ -110,6 +111,12 @@ _vector CNavigation::SetUp_OnNavigation(_fvector vWorldPos)
 	vCellPos = XMVectorSetY(vCellPos, (*m_Cells)[m_iCurrentCellIndex]->Compute_Height(vCellPos));
 
 	return XMVector3TransformCoord(vCellPos, XMLoadFloat4x4(m_pParentMatrix));
+}
+
+_uint CNavigation::Get_CurrentCellType()
+{
+
+	return ENUM_TO_UINT((*m_Cells)[m_iCurrentCellIndex]->Get_CurrentCellType());
 }
 
 const list<_vector>* CNavigation::Make_Route(_int iGoalIndex)

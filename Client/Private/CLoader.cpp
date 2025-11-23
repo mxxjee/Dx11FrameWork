@@ -292,7 +292,7 @@ HRESULT CLoader::Register_Models()
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/LinkAnim", matrix);
    
-    _matrix NPCmatrix = XMMatrixIdentity();
+    _matrix NPCmatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC", NPCmatrix);
 

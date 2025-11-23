@@ -20,6 +20,7 @@ private:
 public:
     _vector     Get_Point(POINTType ePoint) const { return XMLoadFloat3(&m_CellInfo.m_vPoints[ENUM_TO_UINT(ePoint)]); }
     int         Get_Idx() { return m_CellInfo.m_iIndex; }
+
     
     void        Get_Neighbors(_int* Output) { memcpy(Output, m_CellInfo.m_iNeighbors, sizeof(_int) * 3); }
     _float      Compute_Height(_vector vCellTargetPos);
@@ -32,6 +33,8 @@ public:
                 //ÈÞ¸®½ºÆ½ ºñ¿ë ±¸ÇÏ±â
     _float      Compute_Cost(const vector<CCell*>& Cells, _int iGoalIndx);
     _vector     Get_CenterPos();
+
+    _uint      Get_CurrentCellType() { return m_CellInfo.CellType; }
 
 private:
     DefaultCellInfo         m_CellInfo;

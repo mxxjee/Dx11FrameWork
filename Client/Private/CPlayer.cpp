@@ -8,6 +8,7 @@
 #include "PlayerStates.h"
 
 #include "CNPC.h"
+#include "CCell.h"
 
 
 USING(Client)
@@ -108,7 +109,7 @@ void CPlayer::Update(_float fTimeDelta)
 
     /*컨테이너 업데이트 - 바디가 플레이어 상태를 보고 set_Animation을 호출한다.*/
     __super::Update(fTimeDelta);
-}
+ }
 
 void CPlayer::Update_Late(_float fTimeDelta)
 {
@@ -122,7 +123,7 @@ void CPlayer::Update_Late(_float fTimeDelta)
 
     //루트모션 값있으면 적용시키기.
     if (m_pBody)
-    {
+    {   
         _float3 Delta = m_pBody->Get_RootDelta();
         m_pTransformCom->Set_State(STATE::POSITION,
             m_pTransformCom->Get_State(STATE::POSITION) + XMLoadFloat3(&Delta));
@@ -176,6 +177,9 @@ void CPlayer::Update_Input(_float fTimeDelta)
     Update_HoldTime(fTimeDelta);
    
   
+    /*떨어졌는지 셀타입에 따라 검사*/
+    Update_Fall(fTimeDelta);
+
     m_Input.m_bisMove = m_pInputManager->IsKeyHeld(KeyCode::UpArrow) || m_pInputManager->IsKeyHeld(KeyCode::DownArrow)
         || m_pInputManager->IsKeyHeld(KeyCode::LeftArrow) || m_pInputManager->IsKeyHeld(KeyCode::RightArrow) && m_ActionControl.m_bCanMove;
 
@@ -186,7 +190,7 @@ void CPlayer::Update_Input(_float fTimeDelta)
         m_Input.m_bInteract = m_pInputManager->IsKeyPressed(KeyCode::A);
         if (m_Input.m_bInteract)
         {
-            if (m_eType == NPC)
+            if (m_eType == InteractionType::NPC)
             {
                 CNPC* pNpc = dynamic_cast<CNPC*>(m_pInteractionObj);
                 pNpc->Start_Interaction();
@@ -196,7 +200,20 @@ void CPlayer::Update_Input(_float fTimeDelta)
         }
 
     }
+
+
     
+}
+
+void CPlayer::Update_Fall(_float fTimeDelta)
+{
+    CheckNull(m_pNavigationCom);
+    CheckTrue(m_ActionControl.m_bFall);
+
+
+    _uint CellType = m_pNavigationCom->Get_CurrentCellType();
+    if (ENUM_TO_UINT(CellType::FALL) == CellType)
+        m_ActionControl.m_bFall = true;
 }
 
 
@@ -249,7 +266,7 @@ void CPlayer::Normal_Movement(_float fTimeDelta)
     if(m_ActionControl.m_Holds[HoldKey::HOLD_T].m_bHeld)
         m_pTransformCom->Set_Speed(m_fInitSpeed/1.5f);
 
-    if(m_ActionControl.m_bPush)
+    if(m_ActionControl.m_bPush || m_ActionControl.m_bCarry)
         m_pTransformCom->Set_Speed(m_fInitSpeed / 4.f);
 
 
@@ -500,6 +517,41 @@ void CPlayer::Set_Default()
     m_pBody->Set_VisibleMesh(L"Ocarina_ocarina_low__Ocarina_MI_ocarina", false);
 }
 
+void CPlayer::Respawn()
+{
+    CheckNull(m_pNavigationCom);
+
+    /*떨어진 경우 랜덤으로 인접한 셀들근처에서 리스폰*/
+    CCell* pCell = m_pNavigationCom->Get_CurrentCell();
+
+    int Rand = rand() % 3;
+    int Neighbor[3];
+
+    pCell->Get_Neighbors(Neighbor);
+    _uint TargetIdx = Neighbor[Rand];
+
+    if (TargetIdx == -1)
+    {
+        int i = 0;
+        //찾을떄까지 반복.
+        while (true)
+        {
+            TargetIdx = Neighbor[i];
+            if (TargetIdx != -1)
+                break;
+        }
+    }
+
+
+    vector<CCell*>* MainCell = m_pGameInstance->Get_MainCells();
+    if (MainCell)
+    {
+        m_pTransformCom->Set_State(STATE::POSITION, (*MainCell)[TargetIdx]->Get_CenterPos());
+        m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
+
+    }
+}
+
 CPlayer* CPlayer::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
     CPlayer* pInstance = new CPlayer(_pDevice, _pDeviceContext);
@@ -598,6 +650,8 @@ HRESULT CPlayer::Ready_States()
 
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::CARRY), CPlayerCarryState::Create());
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::TALK), CPlayerTalkState::Create());
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::FALL), CPlayerFallState::Create());
+
 
     /// <summary>
     /// 키 설정
@@ -664,6 +718,9 @@ string CPlayer::Convert_String_To_Enum(_uint eState)
 
         if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::ITEMGET))
             StateDebugStr += "ITEMGET";
+
+        if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::TALK))
+            StateDebugStr += "TALK";
     }
 
 

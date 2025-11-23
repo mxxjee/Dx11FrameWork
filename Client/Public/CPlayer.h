@@ -41,6 +41,7 @@ public:
         ITEMGET,
         CARRY,
         TALK,
+        FALL,
         END
     };
 
@@ -63,6 +64,8 @@ public:
 
 private:
     void        Update_Input(_float fTimeDelta);
+    void        Update_Fall(_float fTimeDelta);     //¼¿Å¸ÀÔ¿¡ µû¶ó¼­ ¶³¾îÁü Ã¼Å©
+
     void        Update_HoldTime(_float fTimeDelta);
     void        Check_HoldTime(HoldKey Key,KeyCode KeyCode,_float fTimeDelta);
 
@@ -116,6 +119,8 @@ public:
     void        Show_Weapons();
     void        Set_Default();
 
+public:
+    void        Respawn();
 public:
     static CPlayer* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;

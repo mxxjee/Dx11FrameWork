@@ -21,6 +21,7 @@ public:
     virtual void        Exit(CPlayer* pPlayer)override;
 
 private:
+    void        Hold_Movement(CPlayer* pPlayer);
     void            ChangePhase(CPlayer* pPlayer);      //페이즈만 변경
     void            ChangeState(CPlayer* pPlayer);//아예 다른상태로 전이
 

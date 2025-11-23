@@ -131,6 +131,9 @@
     <ClInclude Include="..\Public\CPlayerTalkState.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Talk</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CPlayerFallState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Fall</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -291,6 +294,9 @@
     <Filter Include="96.Managers">
       <UniqueIdentifier>{7593bdbe-1406-47e5-82ff-82555a127faf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Fall">
+      <UniqueIdentifier>{d7515672-cc63-43f8-92a0-c624e8900066}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -407,6 +413,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerTalkState.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Talk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPlayerFallState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Fall</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

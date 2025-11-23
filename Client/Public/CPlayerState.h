@@ -30,7 +30,7 @@ protected:
     bool        m_bCanExit =true;        //강제 전이 가능여부
     PLAYER_INPUT*           pPlayerInput = nullptr;
     ACTION_CONTROL*         pActionControl = nullptr;
-
+;
 };
 
 NS_END

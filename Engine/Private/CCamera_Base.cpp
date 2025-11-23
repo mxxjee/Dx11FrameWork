@@ -169,6 +169,7 @@ HRESULT CCamera_Base::Ready_Resource(void* pArg)
     m_fFarZ = pDesc->fFar;
     m_vOffset = pDesc->vOffset;
 
+    m_vInitOffset = m_vOffset;
 
 
     m_bUseNewRenderTarget = pDesc->m_bCreateNewRenderTarget;

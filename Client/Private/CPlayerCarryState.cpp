@@ -37,6 +37,8 @@ void CPlayerCarryState::Update(CPlayer* pPlayer, _float fTimeDelta)
 
 void CPlayerCarryState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 {
+    Hold_Movement(pPlayer);
+
     //페이즈 바꾸는 타이밍
     switch (m_ePhase)
     {
@@ -70,6 +72,30 @@ void CPlayerCarryState::Exit(CPlayer* pPlayer)
 {
     pPlayer->Set_Default();
 
+}
+
+void CPlayerCarryState::Hold_Movement(CPlayer* pPlayer)
+{
+
+	switch (m_ePhase)
+	{
+
+	case Client::CPlayerCarryState::Phase::Loop:
+	{
+		if (pPlayerInput->m_bisMove)
+            pPlayer->Reserve_Animation_To_Body(L"jump_carry", true);
+
+		else
+            pPlayer->Reserve_Animation_To_Body(L"idle_carry", true);
+
+	}
+
+	break;
+
+	default:
+		break;
+	}
+    
 }
 
 void CPlayerCarryState::ChangePhase(CPlayer* pPlayer)

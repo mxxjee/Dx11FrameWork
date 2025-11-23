@@ -23,9 +23,11 @@ public:
     virtual HRESULT Initialize_Copytype(void* pArg) override;
 
 public:
+    class CCell* Get_CurrentCell() { return (*m_Cells)[m_iCurrentCellIndex]; }
+public:
     _bool isMove(_fvector vResultPos);
     _vector SetUp_OnNavigation(_fvector vWorldPos);     //네브메쉬 평면을 타게함.
-
+    _uint    Get_CurrentCellType();
 public:
     const list<_vector>* Make_Route(_int iGoalIndex);
     _bool       CanPush(_int iCellIndex);

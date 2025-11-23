@@ -81,6 +81,7 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 
 
 	m_pModel->Set_Animation_Speed(L"carry", 50.f);
+	m_pModel->Set_Animation_Speed(L"jump_carry", 70.f);
 	//m_pModel->Set_EnableRootMotion(L"jump", true);
 
 	m_pModel->Set_TransitionTime(0.2f);
