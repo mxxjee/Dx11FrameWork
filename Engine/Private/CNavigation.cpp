@@ -37,6 +37,7 @@ void CNavigation::Set_CurrentIdx(_vector vWorldPos)
 				if (-1 == NeighborIdx)
 					break;
 			}
+			m_iPreCellIdx = m_iCurrentCellIndex;
 			m_iCurrentCellIndex = NeighborIdx;
 			return;
 		}
@@ -96,6 +97,7 @@ _bool CNavigation::isMove(_fvector vResultPos)
 					return false;
 			}
 
+			m_iPreCellIdx = m_iCurrentCellIndex;
 			m_iCurrentCellIndex = iNeighborIndex;
 			return true;
 		}

@@ -493,32 +493,31 @@ void CPlayer::Respawn()
 {
     CheckNull(m_pNavigationCom);
 
-    /*떨어진 경우 랜덤으로 인접한 셀들근처에서 리스폰*/
-    CCell* pCell = m_pNavigationCom->Get_CurrentCell();
-
-    int Rand = rand() % 3;
-    int Neighbor[3];
-
-    pCell->Get_Neighbors(Neighbor);
-    _uint TargetIdx = Neighbor[Rand];
-
-    if (TargetIdx == -1)
-    {
-        int i = 0;
-        //찾을떄까지 반복.
-        while (true)
-        {
-            TargetIdx = Neighbor[i];
-            if (TargetIdx != -1)
-                break;
-        }
-    }
-
+    /*이전 셀에서 리스폰*/ 
 
     vector<CCell*>* MainCell = m_pGameInstance->Get_MainCells();
     if (MainCell)
     {
-        m_pTransformCom->Set_State(STATE::POSITION, (*MainCell)[TargetIdx]->Get_CenterPos());
+        _uint PreCellIdx = m_pNavigationCom->Get_PreCellIdx();
+        CCell* pCell = (*MainCell)[PreCellIdx];
+
+        while (pCell->Get_CurrentCellType() == ENUM_TO_UINT(CellType::FALL))
+        {
+            //만약 고른게 또 fall 타입이라면,, 
+            int Neighbors[3];
+            pCell->Get_Neighbors(Neighbors);
+            for (int i = 0; i < 3; ++i)
+            {
+                PreCellIdx = Neighbors[i];
+                pCell = (*MainCell)[PreCellIdx];
+
+                if (pCell->Get_CurrentCellType() != ENUM_TO_UINT(CellType::FALL))
+                    break;
+            }
+
+             
+        }
+        m_pTransformCom->Set_State(STATE::POSITION, (*MainCell)[PreCellIdx]->Get_CenterPos());
         m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
 
     }

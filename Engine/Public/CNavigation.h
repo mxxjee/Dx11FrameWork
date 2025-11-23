@@ -24,6 +24,7 @@ public:
 
 public:
     class CCell* Get_CurrentCell() { return (*m_Cells)[m_iCurrentCellIndex]; }
+    _uint       Get_PreCellIdx() { return m_iPreCellIdx; }
 public:
     _bool isMove(_fvector vResultPos);
     _vector SetUp_OnNavigation(_fvector vWorldPos);     //네브메쉬 평면을 타게함.
@@ -56,6 +57,9 @@ public:
     virtual CComponent* Clone(void* pArg) override;
     virtual void Free() override;
 
+
+private:
+    _int            m_iPreCellIdx=-1;
 
 private:
     /*A-Star 사용시 필요한 변수들*/

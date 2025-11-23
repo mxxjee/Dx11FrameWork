@@ -40,7 +40,7 @@ void CPlayerFallState::Update(CPlayer* pPlayer, _float fTimeDelta)
 
 	/// 5초동안 떨어져라..
 
-	if (m_fTime <= 5.f)
+	if (m_fTime <= 2.f)
 	{
 		_vector vPos = pPlayer->Get_Transform()->Get_State(STATE::POSITION);
 		vPos = XMVectorSetY(vPos, XMVectorGetY(vPos) - (fTimeDelta * 10.f));
