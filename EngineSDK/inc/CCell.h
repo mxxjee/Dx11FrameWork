@@ -54,7 +54,7 @@ public:
 private:
     HRESULT Create_WireFrameRS();
     ComPtr<ID3D11RasterizerState> m_pWireframeRS = nullptr;
-    CVIBuffer_Triangle* m_pVIBufferCom = { nullptr };
+
 
 #endif
 public:                             //맵툴에서 파싱해온 구조체만 넘겨주기
@@ -70,6 +70,8 @@ private:
     _float			m_fTotalCost;
     int             m_iParentIndex = -1;
 
+private:
+    CVIBuffer_Triangle* m_pVIBufferCom = { nullptr };
 };
 
 NS_END

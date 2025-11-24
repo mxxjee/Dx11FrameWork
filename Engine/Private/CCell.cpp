@@ -26,10 +26,10 @@ HRESULT CCell::Initialize_Prototype(const DefaultCellInfo& Info)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
-
+#ifdef _DEBUG
     if (FAILED(Create_WireFrameRS()))
         return E_FAIL;
-
+#endif
     return S_OK;
 
 }
@@ -96,7 +96,7 @@ _vector CCell::Get_CenterPos()
     return vPosition / 3.f;
 }
 
-
+#ifdef _DEBUG
 void CCell::Update_Render()
 {
 }
@@ -138,7 +138,7 @@ HRESULT CCell::Create_WireFrameRS()
 
     return S_OK;
 }
-
+#endif
 CCell* CCell::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const DefaultCellInfo& Info)
 {
     CCell* pInstance = new CCell(pDevice, pContext);

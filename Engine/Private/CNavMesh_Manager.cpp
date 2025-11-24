@@ -114,7 +114,7 @@ HRESULT CNavMesh_Manager::Render()
 	return S_OK;
 }
 
-#endif
+
 
 void CNavMesh_Manager::Set_Shader(CShader* pShader)
 {
@@ -122,9 +122,12 @@ void CNavMesh_Manager::Set_Shader(CShader* pShader)
 	if (m_pShader)
 		Safe_AddRef(m_pShader);
 }
+#endif
 void CNavMesh_Manager::Free()
 {
+#ifdef _DEBUG
 	Safe_Release(m_pShader);
+#endif
 	for(auto& pair: m_LevelCells)
 	{
 

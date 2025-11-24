@@ -295,9 +295,11 @@ public:
 	 void								Set_MainCells(_uint LevelID);
 	 vector<class CCell*>*				Get_MainCells();
 	 void								Set_DrawDebug(bool b);
-
+#ifdef _DEBUG
 	 void								Set_NavMeshShader(class CShader* pShader);
 	 HRESULT							    Render_NavMeshManager();
+#endif
+	 
 	 _float4x4*								Get_ParentMatrix();
 #pragma endregion
  private:

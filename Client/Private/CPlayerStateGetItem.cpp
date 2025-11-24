@@ -90,6 +90,8 @@ void CPlayerStateGetItem::ChangePhase(CPlayer* pPlayer)
     {
     case CPlayerStateGetItem::Phase::Start:
         pPlayer->Reserve_Animation_To_Body(L"item_get_lp", true);
+        //카메라 줌인
+        
         m_ePhase = Phase::Loop;
         break;
 

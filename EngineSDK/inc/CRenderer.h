@@ -50,10 +50,10 @@ private:
     vector<function<bool(class CGameObject*, class CGameObject*)>>      m_SortFuncTable;
 
 
-#ifdef _DEBUG
+
 private:
     class CGameInstance* m_pGameInstance = { nullptr };
-#endif
+
 };
 
 NS_END

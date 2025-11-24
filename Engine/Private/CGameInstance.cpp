@@ -839,6 +839,7 @@ void CGameInstance::Set_DrawDebug(bool b)
 {
 	return m_pNavMeshManager->Set_DrawDebug(b);
 }
+#ifdef _DEBUG
 void CGameInstance::Set_NavMeshShader(CShader* pShader)
 {
 	return m_pNavMeshManager->Set_Shader(pShader);
@@ -848,6 +849,7 @@ HRESULT CGameInstance::Render_NavMeshManager()
 {
 	return m_pNavMeshManager->Render();
 }
+#endif
 _float4x4* CGameInstance::Get_ParentMatrix()
 {
 	return m_pNavMeshManager->Get_ParentMatrix();

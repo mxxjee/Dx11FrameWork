@@ -119,6 +119,8 @@ CIInteractable* CInteraction_Manager::Find_Object(const CIInteractable* pObj)
 
 void CInteraction_Manager::Free()
 {
+	__super::Free();
+
 	m_InteractableObjects.clear();
 }
 

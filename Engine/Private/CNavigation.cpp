@@ -12,7 +12,7 @@ CNavigation::CNavigation(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContex
 }
 
 CNavigation::CNavigation(const CNavigation& Prototype)
-	: CComponent(Prototype), g_Color(Prototype.g_Color)
+	: CComponent(Prototype)
 {
 }
 
@@ -61,9 +61,12 @@ HRESULT CNavigation::Initialize_Copytype(void* pArg)
 	m_Cells=m_pGameInstance->Get_MainCells();
 	m_pParentMatrix = m_pGameInstance->Get_ParentMatrix();
 
+#ifdef _DEBUG
 	m_pShader = m_pGameInstance->Find_Shader(L"VtxPos");
 	if (m_pShader) 
 		Safe_AddRef(m_pShader);
+#endif
+
 	return S_OK;
 }
 
@@ -201,6 +204,7 @@ _bool CNavigation::CanPush(_int iCellIndex)
 	return true;
 }
 
+#ifdef _DEBUG
 HRESULT CNavigation::Render()
 {
 	CheckNullResult(m_pShader, E_FAIL);
@@ -220,7 +224,7 @@ HRESULT CNavigation::Render()
 
 	return E_NOTIMPL;
 }
-
+#endif
 
 CNavigation* CNavigation::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 {
@@ -249,6 +253,7 @@ CComponent* CNavigation::Clone(void* pArg)
 void CNavigation::Free()
 {
 	__super::Free();
+#ifdef _DEBUG
 	Safe_Release(m_pShader);
-
+#endif
 }
