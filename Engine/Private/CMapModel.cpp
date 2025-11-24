@@ -130,6 +130,8 @@ HRESULT CMapModel::Ready_Component(void* pArg)
         pMeshCollider,
         reinterpret_cast<CComponent**>(&pColliderComp)
     )))
+        return E_FAIL;
+
 
     return S_OK;
 }

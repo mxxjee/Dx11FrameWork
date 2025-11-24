@@ -469,6 +469,8 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
   
     m_pGameInstance->Register_UIGroup(ButtonSlotGroup);
 
+
+    return S_OK;
 #pragma endregion
 }
 

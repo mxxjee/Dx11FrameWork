@@ -142,6 +142,26 @@ namespace Engine
 	};
 
 	
+	//게임이벤트 구조체에 담길 부가 데이터, 이벤트 전달시 이용할 데이터들
+	struct EventPayload
+	{
+		UMap<string, float>		Floats;
+		UMap<string, int>		Ints;
+		UMap<string, void*>		Ptrs;
+
+	};
+
+
+	//실제 이벤트 버스에 등록할 이벤트타입
+	struct GameEvent
+	{
+		string	Name = "";
+		EventPayload	Payload;		//부가데이터( 타겟지정, float값들 등)
+
+	};
+
+	using EventCallBack = function<void(const GameEvent&)>;
+
 }
 
 

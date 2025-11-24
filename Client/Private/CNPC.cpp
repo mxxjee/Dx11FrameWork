@@ -42,8 +42,11 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
     if (FAILED(Ready_Resource(pArg)))
         return E_FAIL;
 
+
     m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player"));
 
+    Ready_Events();
+  
     return S_OK;
 }
 
@@ -119,11 +122,12 @@ void CNPC::Enter_Interaction()
     m_bTalking = true;
     m_pBody->Reserve_Animation(L"talk", true);
 
-    CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(m_pGameInstance->Get_MainCamera());
+    m_pGameInstance->Emit(Enter_Interaction_Event);
+    /*CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(m_pGameInstance->Get_MainCamera());
 
 
     pCameraBase->Set_Target(this);
-    pCameraBase->Set_Offset(_float3(0.f, 3.f, -2.f));
+    pCameraBase->Set_Offset(_float3(0.f, 3.f, -2.f));*/
 }
 
 void CNPC::Stay_Interaction(_float fTimeDelta)
@@ -148,11 +152,14 @@ void CNPC::Exit_Interaction()
     m_bTalking = false;
     m_pPlayer->Get_ActionControl()->m_bTalk = false;
     m_pBody->Reserve_Animation(L"wait", true);
-    CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(m_pGameInstance->Get_MainCamera());
+
+    m_pGameInstance->Emit(Exit_Interaction_Event);
+
+    //CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(m_pGameInstance->Get_MainCamera());
 
 
-    pCameraBase->Set_Target(m_pPlayer);
-    pCameraBase->Set_Offset(pCameraBase->Get_InitOffset());
+    //pCameraBase->Set_Target(m_pPlayer);
+    //pCameraBase->Set_Offset(pCameraBase->Get_InitOffset());
 }
 
 HRESULT CNPC::Ready_Components(void* pArg)
@@ -192,6 +199,30 @@ HRESULT CNPC::Ready_Resource(void* pArg)
     return S_OK;
 }
 
+void CNPC::Ready_Events()
+{
+    Enter_Interaction_Event.Name = "Enter_Interaction_NPC";
+    EventPayload Payload;
+
+    //_float3(0.f, 3.f, -2.f)
+    Payload.Floats["Float_X"] = 0.f;
+    Payload.Floats["Float_Y"] = 3.f;
+    Payload.Floats["Float_Z"] = -2.f;
+    Payload.Ptrs["NPC"] = this;
+
+    Enter_Interaction_Event.Payload = Payload;
+
+
+
+    Exit_Interaction_Event.Name = "Exit_Interaction_NPC";
+    EventPayload ExitPayload;
+
+    //_float3(0.f, 3.f, -2.f)
+    ExitPayload.Ptrs["Player"] = m_pPlayer;
+
+    Exit_Interaction_Event.Payload = ExitPayload;
+}
+
 
 
 CGameObject* CNPC::Clone(void* pArg)
@@ -201,6 +232,7 @@ CGameObject* CNPC::Clone(void* pArg)
 
 void CNPC::Free()
 {
-    __super::Free();
     CInteraction_Manager::GetInstance()->UnRegisterInteractable(this);
+    __super::Free();
+   
 }

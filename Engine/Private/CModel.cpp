@@ -301,7 +301,7 @@ HRESULT CModel::Load_Animation(const _char* filePath)
 
 	for (size_t i = 0; i < m_iNumAnimations; i++)
 	{
-		CAnimation* pAnimation = CAnimation::Create(this, jFile,AnimPath.c_str(),i);
+		CAnimation* pAnimation = CAnimation::Create(this, jFile,AnimPath.c_str(),(_uint)i);
 		if (nullptr == pAnimation)
 			return E_FAIL;
 

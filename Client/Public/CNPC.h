@@ -29,7 +29,7 @@ protected:
 
 public:
     HRESULT     Initialize_Prototype(void *pArg); /*NPC는 clone으로 생성하지않는다.*/
-
+    
     virtual void        Update_Priority(_float fTimeDelta);
     virtual void        Update(_float fTimeDelta);
     virtual void        Update_Late(_float fTimeDelta);
@@ -54,10 +54,14 @@ public:
     virtual void    Exit_Interaction();
 
     virtual _int	Get_Interaction_Priority() { return InteractionType::NPC; }//우선순위 젤높음
+
 private:
     HRESULT         Ready_Components(void* pArg);
     virtual HRESULT     Ready_PartObjects(void* pArg);
     HRESULT         Ready_Resource(void* pArg);
+
+                    //interaction이벤트 호출됐을떄 이벤트등록
+    void            Ready_Events();
 
 public:
     static CNPC* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex, void* pArg) {};
@@ -73,6 +77,10 @@ protected:
     bool        m_bInteractable = false;        //상호작용가능여부
     bool        m_bTalking = false;
     float       m_fTime = 0.f;//임시로 Exit조건 시간으로두기
+
+private:
+    GameEvent       Enter_Interaction_Event;
+    GameEvent       Exit_Interaction_Event;
 
 };
 

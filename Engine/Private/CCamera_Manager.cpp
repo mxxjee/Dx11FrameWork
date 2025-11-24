@@ -13,13 +13,12 @@
 
 
 
-
-
 CCamera_Manager::CCamera_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
 	:m_pDevice(_pDevice),m_pContext(_pContext)
 {
 	XMStoreFloat4x4(&g_Identityfloat4x4, XMMatrixIdentity());
 	g_IdentityMatrix = XMMatrixIdentity();
+	m_pGameInstance = CGameInstance::GetInstance();
 }
 
 HRESULT CCamera_Manager::Initialize()
@@ -28,7 +27,30 @@ HRESULT CCamera_Manager::Initialize()
 		m_Cameras[i] = nullptr;
 
 	
+	//이벤트등록
+	//NPC 이벤트 시작시 필요한 콜백 등록(카메라 역할)
+	m_pGameInstance->RegisterListners("Enter_Interaction_NPC", [this](const GameEvent& evt)
+		{
+			CGameObject* pNpc = static_cast<CGameObject*>(evt.Payload.Ptrs.at("NPC"));
+			CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(Get_MainCamera());
 
+			pCameraBase->Set_Target(pNpc);
+			pCameraBase->Set_Offset(_float3(
+				evt.Payload.Floats.at("Float_X"),
+				evt.Payload.Floats.at("Float_Y"),
+				evt.Payload.Floats.at("Float_Z")));
+
+		});
+
+	m_pGameInstance->RegisterListners("Exit_Interaction_NPC", [this](const GameEvent& evt)
+		{
+			CGameObject* pPlayer = static_cast<CGameObject*>(evt.Payload.Ptrs.at("Player"));
+			CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(Get_MainCamera());
+			
+			pCameraBase->Set_Target(pPlayer);
+			pCameraBase->Set_Offset(pCameraBase->Get_InitOffset());
+
+		});
 	return S_OK;
 }
 

@@ -361,6 +361,9 @@
     <Filter Include="00.System\15.NavMesh">
       <UniqueIdentifier>{29fc8fd3-096b-4940-a02a-b2267e7ea6b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\16.EventBus">
+      <UniqueIdentifier>{8b911375-c08a-47b5-930e-e47e3ee83463}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -687,8 +690,6 @@
     <ClInclude Include="..\Public\CPartObject.h">
       <Filter>03.GameObject\PartObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CContainerObject.h" />
-    <ClInclude Include="..\Public\CBody.h" />
     <ClInclude Include="..\Public\CNavigation.h">
       <Filter>05.Component\Navigation</Filter>
     </ClInclude>
@@ -706,6 +707,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\CNavMesh_Manager.h">
       <Filter>00.System\15.NavMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CEventBus_Manager.h">
+      <Filter>00.System\16.EventBus</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CContainerObject.h">
+      <Filter>03.GameObject\ContainerObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBody.h">
+      <Filter>03.GameObject\PartObject\Body</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -988,8 +998,6 @@
     <ClCompile Include="..\Private\CPartObject.cpp">
       <Filter>03.GameObject\PartObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CContainerObject.cpp" />
-    <ClCompile Include="..\Private\CBody.cpp" />
     <ClCompile Include="..\Public\IMapEditable.cpp" />
     <ClCompile Include="..\Private\CNavigation.cpp">
       <Filter>05.Component\Navigation</Filter>
@@ -1008,6 +1016,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\CNavMesh_Manager.cpp">
       <Filter>00.System\15.NavMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CEventBus_Manager.cpp">
+      <Filter>00.System\16.EventBus</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CContainerObject.cpp">
+      <Filter>03.GameObject\ContainerObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBody.cpp">
+      <Filter>03.GameObject\PartObject\Body</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

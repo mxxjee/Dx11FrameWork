@@ -610,6 +610,8 @@ _float3 CNavMeshEdit_Manager::Find_NeareastPos(const _float3 vPos, const _float 
 		else
 			return _float3(-999.f, -999.f, -999.f);
 	}
+
+	return _float3(-999.f, -999.f, -999.f);
 	
 }
 
@@ -623,7 +625,7 @@ HRESULT CNavMeshEdit_Manager::Create_MapToolCell(const deque<PreviewPoint>& New,
 
 
 	CMapToolCell::MAPTOOLCELL_DESC Desc;
-	Desc.iIdx = m_pMapToolCells.size();
+	Desc.iIdx = (_uint)m_pMapToolCells.size();
 	
 	CVIBuffer_Triangle::TRIANGLEBUFFER_DESC  TriangleDesc;
 	TriangleDesc.v0 = vPos[0];
@@ -738,7 +740,7 @@ void CNavMeshEdit_Manager::Rebuild_Cell(CMapToolCell* pCell, deque<PreviewPoint>
 void CNavMeshEdit_Manager::Update(_float fTimeDelta)
 {
 	//3개의 점이 다 채워졌는지 보고, 삼각형만들기.
-	int RegisterCnt = count_if(m_Points.begin(), m_Points.end(), [](const PreviewPoint & A)
+	int RegisterCnt = (int)count_if(m_Points.begin(), m_Points.end(), [](const PreviewPoint & A)
 		{
 			return A.vRegister == true;
 		});

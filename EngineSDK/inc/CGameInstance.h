@@ -302,6 +302,14 @@ public:
 	 
 	 _float4x4*								Get_ParentMatrix();
 #pragma endregion
+
+
+
+#pragma region EventBusManager
+	 void Emit(const GameEvent& Event);
+	 void RegisterListners(const string& CBName, EventCallBack Callback);
+
+#pragma endregion
  private:
 	 class CLevel_Manager* m_pLevelManager = { nullptr };
 	 class CTimer_Manager* m_pTimerManager = { nullptr };
@@ -326,6 +334,7 @@ public:
 	 class CHotKey_Manager* m_pHotKeyManager = { nullptr };
 
 	 class CNavMesh_Manager* m_pNavMeshManager = { nullptr };
+	 class CEventBus_Manager* m_pEventBusManager = { nullptr };
 
 
 private:

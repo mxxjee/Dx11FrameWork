@@ -29,7 +29,7 @@ HRESULT CTexture_Manager::Initialize()
 	TextureDesc.MiscFlags = 0;
 
 	_uint* pInitialPixels = new _uint[TextureDesc.Width * TextureDesc.Height];
-	for(int i=0;i< TextureDesc.Width * TextureDesc.Height;++i)
+	for(_uint i=0;i< TextureDesc.Width * TextureDesc.Height;++i)
 		pInitialPixels[i]= D3DCOLOR_ARGB(255, 255, 255, 255);
 
 	D3D11_SUBRESOURCE_DATA		InitialData{};
@@ -49,7 +49,7 @@ HRESULT CTexture_Manager::Initialize()
 
 	///페이드스크린 전용 검은색이미지
 	ComPtr<ID3D11Texture2D> pTextureBlack2D = { nullptr };
-	for (int i = 0; i < TextureDesc.Width * TextureDesc.Height; ++i)
+	for (_uint i = 0; i < TextureDesc.Width * TextureDesc.Height; ++i)
 		pInitialPixels[i] = D3DCOLOR_ARGB(255, 0, 0, 0);
 
 	InitialData.pSysMem = pInitialPixels;

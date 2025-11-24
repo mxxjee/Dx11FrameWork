@@ -170,7 +170,7 @@ HRESULT CShader::Load_PassesAndCreateInputLayers(const vector<D3D11_INPUT_ELEMEN
         pPass->GetDesc(&PassDesc);
 
         CInputLayout* pInputLayout = CInputLayout::Create(m_pDevice, m_pDeviceContext,
-            layout, layout.size(),
+            layout, (_uint)layout.size(),
             PassDesc.pIAInputSignature, PassDesc.IAInputSignatureSize);
 
         CheckNullResult(pInputLayout, E_FAIL);

@@ -119,9 +119,12 @@ CIInteractable* CInteraction_Manager::Find_Object(const CIInteractable* pObj)
 
 void CInteraction_Manager::Free()
 {
-	__super::Free();
-
+	
+	
+	m_pCurrentTarget = nullptr;
 	m_InteractableObjects.clear();
+
+	__super::Free();
 }
 
 

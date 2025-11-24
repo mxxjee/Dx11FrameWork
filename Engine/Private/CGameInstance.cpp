@@ -1,5 +1,6 @@
 #include "CGameInstance.h"
 
+////////////////////Managers/////////////////////
 #include "CTimer_Manager.h"
 #include "CGraphic_Device.h"
 #include "CLevel_Manager.h"
@@ -14,22 +15,22 @@
 #include "CRenderState_Manager.h"
 #include "CTexture_Manager.h"
 #include "CUI_Manager.h"
-#include "CShader.h"
-#include "CPipeLine.h"
-
+#include "CNavMesh_Manager.h"
+#include "CEventBus_Manager.h"
 #include "CTerrain_Manager.h"
-#include "CTerrain_Base.h"
-
 #include "CMapObject_Manager.h"
 #include "CLight_Manager.h"
 #include "CMaterial_Manager.h"
 #include "CModel_Manager.h"
 #include "CHotKey_Manager.h"
 
+
+////////////////Add-Ons////////////////
+#include "CShader.h"
+#include "CPipeLine.h"
+#include "CTerrain_Base.h"
 #include "CMapObject.h"
 #include "CLayer.h"
-
-#include "CNavMesh_Manager.h"
 
 
 
@@ -63,6 +64,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	m_pLevelFactory = CLevelFactroy::Create();
 	CheckNullResult(m_pLevelFactory, E_FAIL);
 
+
+	/*EventBus매니저*/
+	m_pEventBusManager = CEventBus_Manager::Create();
+	CheckNullResult(m_pEventBusManager, E_FAIL);
 
 	/* 사운드  디바이스 초기화 */
 
@@ -140,6 +145,8 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	CheckNullResult(m_pNavMeshManager, E_FAIL);
 
 	
+
+
 	return S_OK;
 }
 
@@ -179,6 +186,7 @@ void CGameInstance::LateUpdate_Engine(float fTimedelta)
 	m_pTerrainManager->Update_Late(fTimedelta);
 	m_pLevelManager->Update_Late(fTimedelta);
 	LateUpdate_Cameras(fTimedelta);
+	m_pEventBusManager->DisPatch(fTimedelta);
 
 
 }
@@ -854,6 +862,19 @@ _float4x4* CGameInstance::Get_ParentMatrix()
 {
 	return m_pNavMeshManager->Get_ParentMatrix();
 }
+void CGameInstance::Emit(const GameEvent& Event)
+{
+	CheckNull(m_pEventBusManager);
+	return m_pEventBusManager->Emit(Event);
+
+}
+void CGameInstance::RegisterListners(const string& CBName, EventCallBack Callback)
+{
+	CheckNull(m_pEventBusManager);
+	return m_pEventBusManager->RegisterListners(CBName,Callback);
+
+}
+
 #pragma endregion
 
 void CGameInstance::Release_Engine()
@@ -881,6 +902,7 @@ void CGameInstance::Release_Engine()
 
 	Safe_Release(m_pHotKeyManager);
 	Safe_Release(m_pNavMeshManager);
+	Safe_Release(m_pEventBusManager);
 
 	Safe_Release(m_pGraphicDev);
 

@@ -284,7 +284,7 @@ void CMainApp::Free()
 	Safe_Release(pImGui_Manager);
 #endif
 
-	CInteraction_Manager::GetInstance()->DestroyInstance();
+	
 	CInput_Manager::GetInstance()->DestroyInstance();
 	pGameInstance->Release_Engine();
 
@@ -294,7 +294,7 @@ void CMainApp::Free()
 	//자신의 리소스정리
 
 	Safe_Release(pGameInstance);
-
+	CInteraction_Manager::GetInstance()->DestroyInstance();
 }
 
 void CMainApp::CreateSamplerStates()

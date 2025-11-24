@@ -42,7 +42,7 @@ void CLevelDebugWindow::Update()
     {
         
         //스택 순회(아래->위)
-        for (int i = stack->size()-1; i >=0; --i)
+        for (size_t i = stack->size()-1; i >=0; --i)
         {
             CLevel* pLevel = (*stack)[i];
             if (pLevel)
