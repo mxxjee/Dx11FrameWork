@@ -164,8 +164,17 @@
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\CLoader.h" />
     <ClInclude Include="..\Public\CMainApp.h" />
+    <ClInclude Include="..\Public\CMGreenZolHideState.h" />
+    <ClInclude Include="..\Public\CMGreenZolIntroState.h" />
+    <ClInclude Include="..\Public\CMGreenZolJumpAttackState.h" />
     <ClInclude Include="..\Public\CMonster.h" />
+    <ClInclude Include="..\Public\CMonsterDeadState.h" />
+    <ClInclude Include="..\Public\CMonsterIdleState.h" />
+    <ClInclude Include="..\Public\CMonsterIntroState.h" />
+    <ClInclude Include="..\Public\CMonsterState.h" />
+    <ClInclude Include="..\Public\CMonsterWalkState.h" />
     <ClInclude Include="..\Public\CMonster_Body.h" />
+    <ClInclude Include="..\Public\CM_GreenZol.h" />
     <ClInclude Include="..\Public\CNPC.h" />
     <ClInclude Include="..\Public\CNPC_Body.h" />
     <ClInclude Include="..\Public\CNPC_Richard.h" />
@@ -193,6 +202,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\GlobalGameEvent.h" />
+    <ClInclude Include="..\Public\MonsterStates.h" />
     <ClInclude Include="..\Public\PlayerStates.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="CScreenFilter.h" />
@@ -215,8 +226,17 @@
     <ClCompile Include="..\Private\CLevel_UI.cpp" />
     <ClCompile Include="..\Private\CLoader.cpp" />
     <ClCompile Include="..\Private\CMainApp.cpp" />
+    <ClCompile Include="..\Private\CMGreenZolHideState.cpp" />
+    <ClCompile Include="..\Private\CMGreenZolIntroState.cpp" />
+    <ClCompile Include="..\Private\CMGreenZolJumpAttackState.cpp" />
     <ClCompile Include="..\Private\CMonster.cpp" />
+    <ClCompile Include="..\Private\CMonsterDeadState.cpp" />
+    <ClCompile Include="..\Private\CMonsterIdleState.cpp" />
+    <ClCompile Include="..\Private\CMonsterIntroState.cpp" />
+    <ClCompile Include="..\Private\CMonsterState.cpp" />
+    <ClCompile Include="..\Private\CMonsterWalkState.cpp" />
     <ClCompile Include="..\Private\CMonster_Body.cpp" />
+    <ClCompile Include="..\Private\CM_GreenZol.cpp" />
     <ClCompile Include="..\Private\CNPC.cpp" />
     <ClCompile Include="..\Private\CNPC_Body.cpp" />
     <ClCompile Include="..\Private\CNPC_Richard.cpp" />

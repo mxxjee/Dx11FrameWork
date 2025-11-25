@@ -51,6 +51,24 @@ HRESULT CCamera_Manager::Initialize()
 			pCameraBase->Set_Offset(pCameraBase->Get_InitOffset());
 
 		});
+
+	m_pGameInstance->RegisterListners("Fix_Camera", [this](const GameEvent& evt)
+		{
+			CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(Get_MainCamera());
+			pCameraBase->Set_Target(nullptr);
+			
+
+		});
+
+	m_pGameInstance->RegisterListners("Init_Camera", [this](const GameEvent& evt)
+		{
+			CGameObject* pPlayer = static_cast<CGameObject*>(evt.Payload.Ptrs.at("Player"));
+			CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(Get_MainCamera());
+
+			pCameraBase->Set_Target(pPlayer);
+			pCameraBase->Set_Offset(pCameraBase->Get_InitOffset());
+
+		});
 	return S_OK;
 }
 

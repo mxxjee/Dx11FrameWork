@@ -67,7 +67,7 @@ public:
     /*Imgui 디버그용..현재 상태와 애니메이션출력*/
     virtual void        Render_CurrentState_Animation();
     virtual string Convert_String_To_Enum(_uint eState);
-
+    virtual void        Render_StateDebug(int* pArg) {};
 protected:
     CBody*           m_pBody = nullptr;
 protected:

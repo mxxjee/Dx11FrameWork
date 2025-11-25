@@ -91,6 +91,34 @@ typedef struct tagActionControl
 }ACTION_CONTROL;
 
 
+typedef struct tagMonsterActionControl
+{
+	bool	m_bIntroEnd = false;
+
+	//////////////////////
+	bool	m_bDamage = false;
+	bool	m_bMove = false;		//true라면 walk, false람녀 idle/ range&&move라면 attack가능
+	
+	bool	m_bAttack = false;
+
+	bool	m_bRange = false;		//범위내에있는지
+	bool	m_bDead = false;			//죽음처리됐는지( 애니메이션 호출용)
+
+
+	void Reset()
+	{
+		m_bIntroEnd = false;
+		m_bDamage = false;
+		m_bMove = false;
+
+		m_bAttack = false;
+
+		m_bRange = false;
+		m_bDead = false;
+	}
+
+}MONSTER_ACTION_CONTORL;
+
 //////////Player Input관련////////////////
 
 
@@ -104,6 +132,7 @@ typedef struct tagItemInfo
 
 
 }ITMINFO;
+
 
 
 /*각 숫자는 우선순위를의미한다*/

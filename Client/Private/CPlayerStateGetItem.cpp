@@ -1,5 +1,7 @@
 #include "CPlayerStateGetItem.h"
 #include "CPlayer.h"
+#include "CCamera_Base.h"
+#include "GlobalGameEvent.h"
 
 USING(Client)
 CPlayerStateGetItem::CPlayerStateGetItem()
@@ -25,8 +27,12 @@ void CPlayerStateGetItem::Enter(CPlayer* pPlayer)
 
 
     pPlayer->Set_HideWeapons();
-
     pPlayer->Set_CanMove(false);
+
+    CCamera_Base* pCameraBase = m_pGameInstance->Get_MainCamera();
+    pCameraBase->Set_Offset(_float3(0.f, 2.5f, -1.5f));
+
+
 
     m_fTime = 0.f;
 
@@ -82,6 +88,7 @@ void CPlayerStateGetItem::Exit(CPlayer* pPlayer)
 
     pActionControl->m_bItemGet = false;
     
+
 }
 
 void CPlayerStateGetItem::ChangePhase(CPlayer* pPlayer)
@@ -96,8 +103,17 @@ void CPlayerStateGetItem::ChangePhase(CPlayer* pPlayer)
         break;
 
     case CPlayerStateGetItem::Phase::Loop:
-        pPlayer->Reserve_Animation_To_Body(L"item_get_ed", false);
-         m_ePhase = Phase::End;
+    {   pPlayer->Reserve_Animation_To_Body(L"item_get_ed", false);
+        m_ePhase = Phase::End;
+
+        GameEvent	InitCameraEvent = MakeEvent("Init_Camera");
+        EventPayload  Paylaod;
+        Paylaod.Ptrs["Player"] = pPlayer;
+        InitCameraEvent.Payload = Paylaod;
+        m_pGameInstance->Emit(InitCameraEvent);
+
+
+    }
         break;
       
      

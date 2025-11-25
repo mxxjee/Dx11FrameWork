@@ -30,28 +30,14 @@ HRESULT CMonster_Body::Initialize_Copytype(void* pArg)
 		return E_FAIL;
 
 	//葛电局聪皋捞记 loop贸府
-	int RandomIdx = rand() % m_pModel->Get_NumAnim();
-	int i = 0;
-	
-	wstring RandomKey = L"";
 	for (auto& pair : m_pModel->Get_Anims())
 	{
-		if (i == RandomIdx && RandomKey == L"")
-			RandomKey = pair.first;
-
-
-		else
-			++i;
-
 		if (pair.second)
 			pair.second->Set_Loop(true);
-	
-	
 	}
 
-	m_pModel->Set_Animation(RandomKey ,true);
 
-
+	
 	return S_OK;
 }
 
@@ -67,8 +53,12 @@ void CMonster_Body::Update(_float fTimeDelta)
 
 void CMonster_Body::Update_Late(_float fTimeDelta)
 {
+	if (m_pModel)
+		m_pModel->Set_Animation(m_NextAnimKey, m_NextAnimLoop);
+
+
 	__super::Update_Late(fTimeDelta);
-	m_pModel->Play_Animation(fTimeDelta);
+	
 }
 
 void CMonster_Body::Update_Render(_float fTimeDelta)
@@ -111,4 +101,19 @@ CGameObject* CMonster_Body::Clone(void* pArg)
 void CMonster_Body::Free()
 {
 	__super::Free();
+}
+
+void CMonster_Body::Register_AnimKey(CMonster::MONSTER_BASE_STATE first, const _wstring& second)
+{
+	auto iter = m_AnimKeys.find(first);
+
+	if(iter==m_AnimKeys.end())
+		m_AnimKeys.emplace(first, second);
+
+}
+
+_wstring CMonster_Body::Get_AnimKey(CMonster::MONSTER_BASE_STATE first)
+{
+	return m_AnimKeys[first];
+
 }

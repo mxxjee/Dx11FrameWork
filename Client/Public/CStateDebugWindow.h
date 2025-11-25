@@ -25,7 +25,9 @@ public:
 public:
     void        Set_Player(CPlayer* pPlayer) { m_pPlayer = pPlayer; }
 
-    
+public:
+    void        Set_SelectObject(CGameObject* pObj) { pSelectObject = pObj; }
+
 public:
     static CStateDebugWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
     virtual void Free();
@@ -34,6 +36,8 @@ private:
     CPlayer* m_pPlayer = nullptr;
     tagActionControl* pActionControl = nullptr;
     int Value = 0;
+
+    CGameObject* pSelectObject = { nullptr };
 };
 NS_END
 

@@ -3,6 +3,9 @@
 #include "CGameInstance.h"
 #include "CBody.h"
 #include "Client_Defines.h"
+#include "CMonsterState.h"
+#include "CNavigation.h"
+#include "CMonster_Body.h"
 
 
 USING(Client)
@@ -32,6 +35,11 @@ HRESULT CMonster::Initialize_Prototype()
 HRESULT CMonster::Initialize_Copytype(void* pArg)
 {
     CMonster::MONSTER_DESC* desc=static_cast<CMonster::MONSTER_DESC*>(pArg);
+   
+    
+    CTransform::TRANSFORM_DESC* transdesc = static_cast<CTransform::TRANSFORM_DESC*>(desc->TransformDesc);
+    m_fInitSpeed=transdesc->fSpeedPerSec = 3.f;
+
 
     /*부모 컴포넌트 값세팅 */
     if (FAILED(__super::Initialize_Copytype(pArg)))
@@ -42,19 +50,25 @@ HRESULT CMonster::Initialize_Copytype(void* pArg)
     pBodyDesc->pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
     pBodyDesc->pParentState = &m_iState;
 
+    if (FAILED(Ready_Components(pArg)))
+        return E_FAIL;
+
 
     if (FAILED(Ready_PartObjects(pArg)))
         return E_FAIL;
 
-    if (FAILED(Ready_Resource(&desc)))
+    if (FAILED(Ready_Resource(pArg)))
         return E_FAIL;
 
-    m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(
-        m_pGameInstance->Random(0.0f, 20.f),
-        3.0f,
-        m_pGameInstance->Random(0.0f, 20.f),
-        1.f
-    ));
+  
+    if (m_pBody)
+        m_pMonsterBody = dynamic_cast<CMonster_Body*>(m_pBody);
+
+    if (m_pNavigationCom)
+        m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
+
+
+  
     
     return S_OK;
 }
@@ -66,6 +80,10 @@ void CMonster::Update_Priority(_float fTimeDelta)
 
 void CMonster::Update(_float fTimeDelta)
 {
+   
+
+   
+
     __super::Update(fTimeDelta);
 
 }
@@ -73,6 +91,13 @@ void CMonster::Update(_float fTimeDelta)
 void CMonster::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
+  
+    m_pTransformCom->Set_State(STATE::POSITION,
+        m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
+
+
+    if (m_pCurState)
+        m_pCurState->Update_Late(this, fTimeDelta);
 }
 
 void CMonster::Update_Render(_float fTimeDelta)
@@ -89,6 +114,76 @@ HRESULT CMonster::Render()
     return S_OK;
 }
 
+
+_wstring CMonster::Get_AnimKey(CMonster::MONSTER_BASE_STATE eType)
+{
+    if (m_pMonsterBody)
+        return m_pMonsterBody->Get_AnimKey(eType);
+
+    return L"";
+}
+
+void CMonster::Change_State(int newState)
+{
+    if (m_pCurState == m_States[newState])
+        return;
+
+    if (m_pCurState && !m_pCurState->CanExit())
+        return;
+
+    if (m_pCurState)
+        m_pCurState->Exit(this);
+
+    m_iPreState = m_iState;
+    m_iState = newState;
+
+
+    m_pNextState = m_States[newState];
+    m_pNextState->Enter(this);
+}
+
+string CMonster::Convert_String_To_Enum(_uint eState)
+{
+    string StateDebugStr = "";
+
+    if (eState == 0)
+        return "NONE";
+
+
+    else
+    {
+        if (eState == ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::INTRO))
+            StateDebugStr += "INTRO ";
+
+        if (eState == ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::IDLE))
+            StateDebugStr += "IDLE ";
+
+        if (eState == ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::WALK))
+            StateDebugStr += "WALK";
+
+        if (eState == ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::RUN))
+            StateDebugStr += "RUN";
+
+        if (eState == ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::JUMP))
+            StateDebugStr += "JUMP ";
+
+        if (eState == ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::ATTACK))
+            StateDebugStr += "ATTACK ";
+
+        if (eState == ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DAMAGE))
+            StateDebugStr += "DAMAGE ";
+
+        if (eState == ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DIE))
+            StateDebugStr += "DIE";
+
+
+    }
+
+
+
+    return StateDebugStr;
+}
+
 HRESULT CMonster::Ready_Resource(void* pArg)
 {
 
@@ -99,10 +194,13 @@ HRESULT CMonster::Ready_Resource(void* pArg)
     iHp = iMaxHp;
 
     iAttack = pMonsterDesc->MaxHp;
+    fActionRange = pMonsterDesc->fActionRange;
+
 
 
     return S_OK;
 }
+
 
 HRESULT CMonster::Ready_PartObjects(void* pArg)
 {
@@ -116,8 +214,61 @@ HRESULT CMonster::Ready_PartObjects(void* pArg)
         if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Monster_Body"), L"Part_Body", pBodyDesc)))
             return E_FAIL;
 
+        m_pBody = dynamic_cast<CBody*>(Find_PartObject(L"Part_Body"));
+
     }
     return S_OK;
+}
+
+HRESULT CMonster::Ready_Components(void* pArg)
+{
+    //생성 및 추가
+    CComponent::COMPONENT_DESC Desc;
+    Desc.pOwner = this;
+
+    CComponent* pNavigation = dynamic_cast<Engine::CNavigation*>(m_pGameInstance->Clone_Prototype(
+        PROTOTYPE::COMPONENT,
+        0,
+        PROTO_COMPONENT_NAME(L"Navigation"),
+        &Desc)
+        );
+
+    if (FAILED(Add_Component(
+        COMPONENT_TYPE::NAVIGATION,
+        pNavigation,
+        reinterpret_cast<CComponent**>(&m_pNavigationCom)
+    )))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+void CMonster::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop)
+{
+    CheckNull(m_pBody);
+    m_pBody->Reserve_Animation(AnimKey, bNextAnimLoop);
+
+}
+
+bool CMonster::Is_InRange(_float fDistance)
+{
+    ///일단 플레이어가져와서 판단
+    CGameObject* pPlayer = m_pGameInstance->Find_GameObject(0, L"Player_Layer", L"Player");
+    CTransform* pPlayerTrans = pPlayer->Get_Transform();
+
+    if (pPlayerTrans)
+    {
+        _vector PlayerPos = pPlayerTrans->Get_State(STATE::POSITION, TransformScope::WORLD);
+        _vector ownPos = m_pTransformCom->Get_State(STATE::POSITION, TransformScope::WORLD);
+
+
+        _float Distance = XMVectorGetX(XMVector3Length(PlayerPos - ownPos));
+        if (Distance <= fDistance)
+            return true;
+
+    }
+
+    return false;
 }
 
 CMonster* CMonster::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -149,6 +300,19 @@ CGameObject* CMonster::Clone(void* pArg)
 
 void CMonster::Free()
 {
-  
+    Safe_Release(m_pNavigationCom);
+
+    for (auto& pair : m_States)
+    {
+        if (pair.second)
+            Safe_Release(pair.second);
+    }
     __super::Free();
+}
+
+void CMonster::Set_Dead()
+{
+    Set_Active(false);
+
+
 }

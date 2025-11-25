@@ -33,6 +33,7 @@
 #include "CPlayer_Body.h"
 #include "CMonster_Body.h"
 #include "CNPC_Body.h"
+#include "CM_GreenZol.h"
 
 
 USING(Client)
@@ -291,9 +292,11 @@ HRESULT CLoader::Register_Models()
 
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/LinkAnim", matrix);
-   
+  
     _matrix NPCmatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
+    _matrix GreenZolMatrix = XMMatrixScaling(0.7f, 0.7f, 0.7f);
 
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy", GreenZolMatrix);
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC", NPCmatrix);
 
 
@@ -381,8 +384,7 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Model", CModelObject::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Monster", CMonster::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
+    
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Body", CBody::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
@@ -390,18 +392,28 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Body", CPlayer_Body::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Monster_Body", CMonster_Body::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"NPC_Body", CNPC_Body::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
-
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"FadeScreen", CFadeScreen::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Button", CButton::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
+
+
+    ////////////////Monsters//////////////////
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Monster", CMonster::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Monster_Body", CMonster_Body::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"CM_GreenZol", CM_GreenZol::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+
 
     return S_OK;
 }

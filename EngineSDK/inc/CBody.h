@@ -42,6 +42,9 @@ public:
 
 public:
     void Set_VisibleMesh(const wstring& MeshName, bool bVisible);
+    void Set_Animation_Speed(const wstring& AnimName, _float fSpeed);
+
+
 public:
     _float3             Get_RootDelta();
 protected:

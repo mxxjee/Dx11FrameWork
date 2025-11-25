@@ -8,6 +8,7 @@
 #include "Engine_Function.h"
 #include "CImGui_Manager.h"
 #include "CObjectDebugWindow.h"
+#include "CStateDebugWindow.h"
 
 
 USING(Client)
@@ -42,7 +43,7 @@ void CLevelDebugWindow::Update()
     {
         
         //스택 순회(아래->위)
-        for (size_t i = stack->size()-1; i >=0; --i)
+        for (int i = stack->size()-1; i >=0; --i)
         {
             CLevel* pLevel = (*stack)[i];
             if (pLevel)
@@ -95,11 +96,19 @@ void CLevelDebugWindow::Update()
                                     if (ImGui::Selectable(WStringToUTF8(i->Get_Tag()).c_str(), pSelectObject ==i))
                                     {
                                         CImgui_Base* pBase = CImGui_Manager::GetInstance()->Find_Window("ObjectDebugWindow");
-                                        if (pBase)
+                                        CImgui_Base*  pDebugWindowBase= CImGui_Manager::GetInstance()->Find_Window("StateDebugWindow");
+                                        if (pBase && pDebugWindowBase)
                                         {
                                             CObjectDebugWindow* pWindow = dynamic_cast<CObjectDebugWindow*>(pBase);
-                                            if (pWindow)
+                                            CStateDebugWindow* ppWindow = dynamic_cast<CStateDebugWindow*>(pDebugWindowBase);
+                                            if (pWindow && ppWindow)
+                                            {
                                                 pWindow->Set_SelectObject(i);
+                                                ppWindow->Set_SelectObject(i);
+                                            }
+
+
+                                               
                                         }
                                     }
                                 }
@@ -139,11 +148,19 @@ void CLevelDebugWindow::Update()
                             if (ImGui::Selectable(WStringToUTF8(i->Get_Tag()).c_str(), pSelectObject == i))
                             {
                                 CImgui_Base* pBase = CImGui_Manager::GetInstance()->Find_Window("ObjectDebugWindow");
-                                if (pBase)
+                                CImgui_Base* pDebugWindowBase = CImGui_Manager::GetInstance()->Find_Window("StateDebugWindow");
+                                if (pBase && pDebugWindowBase)
                                 {
                                     CObjectDebugWindow* pWindow = dynamic_cast<CObjectDebugWindow*>(pBase);
-                                    if (pWindow)
+                                    CStateDebugWindow* ppWindow = dynamic_cast<CStateDebugWindow*>(pDebugWindowBase);
+                                    if (pWindow && ppWindow)
+                                    {
                                         pWindow->Set_SelectObject(i);
+                                        ppWindow->Set_SelectObject(i);
+                                    }
+
+
+
                                 }
                             }
                         }

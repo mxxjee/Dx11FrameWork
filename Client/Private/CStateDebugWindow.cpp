@@ -28,48 +28,15 @@ void CStateDebugWindow::Update()
     
 
     ImGui::Begin(m_WindowTitle.c_str(), &m_bOpen);
+    if (pSelectObject)
+    {
+        CModelObject* pModel = dynamic_cast<CModelObject*>(pSelectObject);
+        if (pModel)
+            pModel->Render_StateDebug(&Value);
 
-    if (ImGui::RadioButton("Ladder", (int*)(&Value), 0))
-    {
-        pActionControl->m_bLadder = true;
-        pActionControl->m_bPush = false;
-        pActionControl->m_bCarry = false;
-        pActionControl->m_bItemGet = false;
-    }
-    if (ImGui::RadioButton("Push", (int*)(&Value), 1))
-    {
-        pActionControl->m_bLadder = false;
-        pActionControl->m_bPush = true;
-        pActionControl->m_bCarry = false;
-        pActionControl->m_bItemGet = false;
     }
 
-
-    if (ImGui::RadioButton("Carry", (int*)(&Value), 2))
-    {
-        pActionControl->m_bLadder = false;
-        pActionControl->m_bPush = false;
-        pActionControl->m_bCarry = true;
-        pActionControl->m_bItemGet = false;
-    }
-
-
-    if (ImGui::RadioButton("ItemGet", (int*)(&Value), 3))
-    {
-        pActionControl->m_bLadder = false;
-        pActionControl->m_bPush = false;
-        pActionControl->m_bCarry = false;
-        pActionControl->m_bItemGet = true;
-    }
-
-    if (ImGui::RadioButton("None", (int*)(&Value),4))
-    {
-        pActionControl->m_bLadder = false;
-        pActionControl->m_bPush = false;
-        pActionControl->m_bCarry = false;
-        pActionControl->m_bItemGet = false;
-    }
-
+  
 
     ImGui::End();
 }

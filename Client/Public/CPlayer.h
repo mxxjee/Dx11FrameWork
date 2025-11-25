@@ -121,7 +121,7 @@ public:
 
 
 private:
-    CNavigation* m_pNavigationCom = { nullptr };
+    Engine::CNavigation* m_pNavigationCom = { nullptr };
 private:
     bool bPressed = false;
     bool m_bActionInput = false;
@@ -132,7 +132,7 @@ private:
 
 public:
     virtual string Convert_String_To_Enum(_uint eState);
-
+    virtual void        Render_StateDebug(int* pArg);
 
 private:
     PLAYER_INPUT        m_Input;
@@ -148,6 +148,8 @@ private:
 
 private:
     float           m_fInitSpeed = 0.f;
+
+    
 };
 
 NS_END

@@ -2,12 +2,12 @@
 #include "CPlayer.h"
 #include "CCamera_Base.h"
 #include "CGameInstance.h"
+#include "GlobalGameEvent.h"
 
 
 
 USING(Client)
 CPlayerFallState::CPlayerFallState()
-	:m_pGameInstance(CGameInstance::GetInstance())
 {
 }
 
@@ -23,12 +23,11 @@ void CPlayerFallState::Enter(CPlayer* pPlayer)
 
 
 	pPlayer->Reserve_Animation_To_Body(L"fall", true);
-
-
 	pPlayer->Set_CanMove(false);
 
-	CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(m_pGameInstance->Get_MainCamera());
-	pCameraBase->Set_Target(nullptr);
+
+	GameEvent Fix_CameraEvent = MakeEvent("Fix_Camera");
+	m_pGameInstance->Emit(Fix_CameraEvent);
 
 	m_fTime = 0.f;
 
@@ -64,8 +63,12 @@ void CPlayerFallState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 
 void CPlayerFallState::Exit(CPlayer* pPlayer)
 {
-	CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(m_pGameInstance->Get_MainCamera());
-	pCameraBase->Set_Target(pPlayer);
+	GameEvent	InitCameraEvent = MakeEvent("Init_Camera");
+	
+	EventPayload  Paylaod;
+	Paylaod.Ptrs["Player"] = pPlayer;
+	InitCameraEvent.Payload = Paylaod;
+	m_pGameInstance->Emit(InitCameraEvent);
 
 
 	pPlayer->Respawn();

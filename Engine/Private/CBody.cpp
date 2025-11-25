@@ -110,6 +110,13 @@ void CBody::Set_VisibleMesh(const wstring& MeshName, bool bVisible)
         m_pModel->Set_VisibleMesh(MeshName, bVisible);
 }
 
+void CBody::Set_Animation_Speed(const wstring& AnimName, _float fSpeed)
+{
+    if (m_pModel)
+        m_pModel->Set_Animation_Speed(AnimName, fSpeed);
+
+}
+
 _float3 CBody::Get_RootDelta()
 {
     _float3         Result = _float3();

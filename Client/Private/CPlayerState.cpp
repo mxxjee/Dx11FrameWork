@@ -1,8 +1,10 @@
 #include "CPlayerState.h"
 #include "CPlayer.h"
+#include "CGameInstance.h"
 
 USING(Client)
 CPlayerState::CPlayerState()
+	:m_pGameInstance(CGameInstance::GetInstance())
 {
 	
 }

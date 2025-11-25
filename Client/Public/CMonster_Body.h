@@ -1,5 +1,6 @@
 #pragma once
 #include "CBody.h"
+#include "CMonster.h"
 
 NS_BEGIN(Client)
 class CMonster_Body :
@@ -24,6 +25,17 @@ public:
     static CMonster_Body* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
+
+
+public:
+            //State에서 사용할 animKey들을 저장.(몬스터들은 종류가많아서.)
+     void Register_AnimKey(CMonster::MONSTER_BASE_STATE first, const _wstring& second);
+     _wstring Get_AnimKey(CMonster::MONSTER_BASE_STATE first);
+
+public:
+
+    UMap<CMonster::MONSTER_BASE_STATE, _wstring>        m_AnimKeys;
+
 
 
 };

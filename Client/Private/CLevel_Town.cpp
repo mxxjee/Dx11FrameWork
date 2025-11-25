@@ -47,8 +47,8 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_NPC(L"NPC_Layer")))
         return E_FAIL;
 
-    //if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
-    //    return E_FAIL;
+    if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
+        return E_FAIL;
 
     if (FAILED(Ready_Layer_UI(L"UI_Layer")))
         return E_FAIL;
@@ -376,37 +376,36 @@ HRESULT CLevel_Town::Ready_Layer_Player(const _wstring& strLayerTag)
 }
 
 HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
-{
-    for (int i = 0; i < 20; ++i)
-    {
-        CMonster::MonsterDesc desc;
+{  
+    CMonster::MonsterDesc desc;
 
-        CBody::BODY_DESC bodyDesc;
-        bodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
-        bodyDesc.modelName = L"MoriblinSword";
+    CBody::BODY_DESC bodyDesc;
+    bodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+    bodyDesc.modelName = L"ZolGreenAnim";
 
-        desc.BodyDesc = &bodyDesc;
+    desc.BodyDesc = &bodyDesc;
 
-        desc.iAttack = 10;
-        desc.MaxHp = 5;
+    desc.iAttack = 10;
+    desc.MaxHp = 5;
+    desc.fActionRange = 5.f;
 
-        desc.ObjTag = L"Monster" + to_wstring(i);
-        CTransform::TRANSFORM_DESC TransDesc = {};
-        TransDesc.vLocalPosition = { 10.f,0.f,10.f,1.f };
-        TransDesc.fSpeedPerSec = 5.f;
-        TransDesc.fRotationPerSec = 10.f;
+    desc.ObjTag = L"CM_GreenZol" + to_wstring(0);
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.vLocalPosition = { 30.f,5.f,20.f,1.f };
+    TransDesc.fSpeedPerSec = 5.f;
+    TransDesc.fRotationPerSec = 10.f;
 
-        desc.TransformDesc = &TransDesc;
-
+    desc.TransformDesc = &TransDesc;
 
 
-        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-            PROTO_OBJ_NAME(L"Monster"),
-            ENUM_TO_UINT(LEVEL_ID::TOWN),
-            strLayerTag, &desc)))
-            return E_FAIL;
 
-    }
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"CM_GreenZol"),
+        ENUM_TO_UINT(LEVEL_ID::TOWN),
+        strLayerTag, &desc)))
+        return E_FAIL;
+
+    
 
     return S_OK;
 

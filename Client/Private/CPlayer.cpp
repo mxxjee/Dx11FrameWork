@@ -259,9 +259,9 @@ void CPlayer::Normal_Movement(_float fTimeDelta)
     CheckTrue(m_ActionControl.m_bFixDir);
 
     if(m_ActionControl.m_Holds[HoldKey::HOLD_T].m_bHeld)
-        m_pTransformCom->Set_Speed(m_fInitSpeed/1.5f);
+        m_pTransformCom->Set_Speed(m_fInitSpeed/2.f);
 
-    if(m_ActionControl.m_bPush || m_ActionControl.m_bCarry)
+    else if(m_ActionControl.m_bPush || m_ActionControl.m_bCarry)
         m_pTransformCom->Set_Speed(m_fInitSpeed / 4.f);
 
 
@@ -572,7 +572,7 @@ HRESULT CPlayer::Ready_Components(void* pArg)
     CComponent::COMPONENT_DESC Desc;
     Desc.pOwner = this;
 
-    CComponent* pNavigation = dynamic_cast<CNavigation*>(m_pGameInstance->Clone_Prototype(
+    CComponent* pNavigation = dynamic_cast<Engine::CNavigation*>(m_pGameInstance->Clone_Prototype(
         PROTOTYPE::COMPONENT,
         0,
         PROTO_COMPONENT_NAME(L"Navigation"),
@@ -698,6 +698,51 @@ string CPlayer::Convert_String_To_Enum(_uint eState)
 
 
     return StateDebugStr;
+}
+
+void CPlayer::Render_StateDebug(int* pArg)
+{
+    if (ImGui::RadioButton("Ladder", (int*)(pArg), 0))
+    {
+        m_ActionControl.m_bLadder = true;
+        m_ActionControl.m_bPush = false;
+        m_ActionControl.m_bCarry = false;
+        m_ActionControl.m_bItemGet = false;
+    }
+    if (ImGui::RadioButton("Push", (int*)(pArg), 1))
+    {
+        m_ActionControl.m_bLadder = false;
+        m_ActionControl.m_bPush = true;
+        m_ActionControl.m_bCarry = false;
+        m_ActionControl.m_bItemGet = false;
+    }
+
+
+    if (ImGui::RadioButton("Carry", (int*)(pArg), 2))
+    {
+        m_ActionControl.m_bLadder = false;
+        m_ActionControl.m_bPush = false;
+        m_ActionControl.m_bCarry = true;
+        m_ActionControl.m_bItemGet = false;
+    }
+
+
+    if (ImGui::RadioButton("ItemGet", (int*)(pArg), 3))
+    {
+        m_ActionControl.m_bLadder = false;
+        m_ActionControl.m_bPush = false;
+        m_ActionControl.m_bCarry = false;
+        m_ActionControl.m_bItemGet = true;
+    }
+
+    if (ImGui::RadioButton("None", (int*)(pArg), 4))
+    {
+        m_ActionControl.m_bLadder = false;
+        m_ActionControl.m_bPush = false;
+        m_ActionControl.m_bCarry = false;
+        m_ActionControl.m_bItemGet = false;
+    }
+
 }
 
 

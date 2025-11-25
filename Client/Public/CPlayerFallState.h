@@ -31,7 +31,7 @@ private:
 
 private:
     float       m_fTime = 0.f;
-    CGameInstance* m_pGameInstance = nullptr;
+
 };
 
 NS_END

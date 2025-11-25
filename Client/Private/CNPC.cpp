@@ -5,6 +5,7 @@
 #include "CBody.h"
 #include "CCamera_Base.h"
 #include "CInteraction_Manager.h"
+#include "CNavigation.h"
 
 
 USING(Client)
@@ -42,8 +43,15 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
     if (FAILED(Ready_Resource(pArg)))
         return E_FAIL;
 
+    if (FAILED(Ready_Components(pArg)))
+        return E_FAIL;
+
+
 
     m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player"));
+
+    if (m_pNavigationCom)
+        m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
 
     Ready_Events();
   
@@ -64,6 +72,10 @@ void CNPC::Update(_float fTimeDelta)
 void CNPC::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
+    m_pTransformCom->Set_State(STATE::POSITION,
+        m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
+
+
 }
 
 void CNPC::Update_Render(_float fTimeDelta)
@@ -164,6 +176,24 @@ void CNPC::Exit_Interaction()
 
 HRESULT CNPC::Ready_Components(void* pArg)
 {
+    //생성 및 추가
+    CComponent::COMPONENT_DESC Desc;
+    Desc.pOwner = this;
+
+    CComponent* pNavigation = dynamic_cast<Engine::CNavigation*>(m_pGameInstance->Clone_Prototype(
+        PROTOTYPE::COMPONENT,
+        0,
+        PROTO_COMPONENT_NAME(L"Navigation"),
+        &Desc)
+        );
+
+    if (FAILED(Add_Component(
+        COMPONENT_TYPE::NAVIGATION,
+        pNavigation,
+        reinterpret_cast<CComponent**>(&m_pNavigationCom)
+    )))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -232,6 +262,7 @@ CGameObject* CNPC::Clone(void* pArg)
 
 void CNPC::Free()
 {
+    Safe_Release(m_pNavigationCom);
     CInteraction_Manager::GetInstance()->UnRegisterInteractable(this);
     __super::Free();
    

@@ -3,8 +3,14 @@
 #include "Client_Defines.h"
 
 
+NS_BEGIN(Engine)
+class CGameInstance;
+NS_END
+
+
 NS_BEGIN(Client)
 class CPlayer;
+
 
 class CPlayerState:
     public CBase
@@ -30,7 +36,9 @@ protected:
     bool        m_bCanExit =true;        //강제 전이 가능여부
     PLAYER_INPUT*           pPlayerInput = nullptr;
     ACTION_CONTROL*         pActionControl = nullptr;
-;
+
+protected:
+    CGameInstance* m_pGameInstance = nullptr;
 };
 
 NS_END

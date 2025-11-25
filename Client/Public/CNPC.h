@@ -4,6 +4,7 @@
 
 NS_BEGIN(Client)
 class CPlayer;
+class CNavigation;
 
 class CNPC :
     public CModelObject, public CIInteractable
@@ -38,8 +39,10 @@ public:
 
     virtual HRESULT Render();
 
-public:
+private:
+    Engine::CNavigation* m_pNavigationCom = { nullptr };
 
+public:
     ///////////범위감지용//////////
     virtual bool            IsInteratable();      //상호작용조건
     virtual void        Enter_InteractRange();

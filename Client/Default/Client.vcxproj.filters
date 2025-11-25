@@ -2,16 +2,16 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="Client.h">
-      <Filter>98.Default</Filter>
+      <Filter>9999.Default</Filter>
     </ClInclude>
     <ClInclude Include="framework.h">
-      <Filter>98.Default</Filter>
+      <Filter>9999.Default</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>98.Default</Filter>
+      <Filter>9999.Default</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>98.Default</Filter>
+      <Filter>9999.Default</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Client_Defines.h">
       <Filter>99.Defines</Filter>
@@ -137,22 +137,54 @@
     <ClInclude Include="..\Public\CIInteractable.h">
       <Filter>96.Managers\InteractionManager\IInteractable</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CInteraction_Manager.h" />
+    <ClInclude Include="..\Public\CInteraction_Manager.h">
+      <Filter>96.Managers\InteractionManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\GlobalGameEvent.h">
+      <Filter>99.Defines\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CM_GreenZol.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMonsterState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMonsterIdleState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMonsterIntroState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Intro</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMGreenZolIntroState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\Intro</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MonsterStates.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMonsterWalkState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMGreenZolJumpAttackState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\JumpAttack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMGreenZolHideState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\Hide</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMonsterDeadState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Dead</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
-      <Filter>98.Default</Filter>
+      <Filter>9999.Default</Filter>
     </Image>
     <Image Include="small.ico">
-      <Filter>98.Default</Filter>
+      <Filter>9999.Default</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.MainApp">
       <UniqueIdentifier>{f7ad392e-d377-4c33-b633-c98d611803db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="98.Default">
-      <UniqueIdentifier>{a89887f0-4226-43a8-a01a-f0dd62446745}</UniqueIdentifier>
     </Filter>
     <Filter Include="99.Defines">
       <UniqueIdentifier>{99c6fa45-527e-4360-8251-bb7622a41094}</UniqueIdentifier>
@@ -307,10 +339,46 @@
     <Filter Include="96.Managers\InteractionManager\IInteractable">
       <UniqueIdentifier>{7088a61f-0f74-46e4-a044-2163365114b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="9999.Default">
+      <UniqueIdentifier>{a89887f0-4226-43a8-a01a-f0dd62446745}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defines\Utils">
+      <UniqueIdentifier>{6fe0b4bb-d7e3-4259-8b91-a6d25e146b80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol">
+      <UniqueIdentifier>{9c7f0ff6-b7b6-4e4e-b97b-ebd6642bb7cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State">
+      <UniqueIdentifier>{1fd50713-f30a-466e-9faf-229a35386f06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Idle">
+      <UniqueIdentifier>{51eb9977-4c78-4d2c-8480-11a31edf57c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Intro">
+      <UniqueIdentifier>{defb2b35-493d-44ab-9ab3-74b7d584612a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State">
+      <UniqueIdentifier>{aa3a9a72-b009-49b8-96fb-a1e2cba5dbdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\Intro">
+      <UniqueIdentifier>{61f0663f-292d-42d7-87f2-769bd1f1caf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Walk">
+      <UniqueIdentifier>{7394bdf0-3c4a-4b9b-bea1-143d047f7884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\JumpAttack">
+      <UniqueIdentifier>{707e386a-9dd9-4aeb-beae-eb1bb26e7071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\Hide">
+      <UniqueIdentifier>{4b462099-1d21-4fd2-aba7-0ce2b90a7ad3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Dead">
+      <UniqueIdentifier>{fcde0cd1-0c87-4cef-a396-73c3e082fb88}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
-      <Filter>98.Default</Filter>
+      <Filter>9999.Default</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMainApp.cpp">
       <Filter>00.MainApp</Filter>
@@ -430,11 +498,40 @@
     <ClCompile Include="..\Private\CIInteractable.cpp">
       <Filter>96.Managers\InteractionManager\IInteractable</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CInteraction_Manager.cpp" />
+    <ClCompile Include="..\Private\CInteraction_Manager.cpp">
+      <Filter>96.Managers\InteractionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CM_GreenZol.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMonsterState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMonsterIdleState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMonsterIntroState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Intro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMGreenZolIntroState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\Intro</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMonsterWalkState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMGreenZolJumpAttackState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\JumpAttack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMGreenZolHideState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\Hide</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMonsterDeadState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Dead</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
-      <Filter>98.Default</Filter>
+      <Filter>9999.Default</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
