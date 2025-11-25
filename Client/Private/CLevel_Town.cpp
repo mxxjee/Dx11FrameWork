@@ -392,6 +392,8 @@ HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
     desc.ObjTag = L"CM_GreenZol" + to_wstring(0);
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.vLocalPosition = { 30.f,5.f,20.f,1.f };
+    TransDesc.vLocalRotation = { 0.f,180.f,0.f,1.f };
+
     TransDesc.fSpeedPerSec = 5.f;
     TransDesc.fRotationPerSec = 10.f;
 

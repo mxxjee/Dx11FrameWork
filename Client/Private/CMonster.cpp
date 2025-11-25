@@ -6,6 +6,8 @@
 #include "CMonsterState.h"
 #include "CNavigation.h"
 #include "CMonster_Body.h"
+#include "CLayer.h"
+#include "CImGui_Manager.h"
 
 
 USING(Client)
@@ -195,6 +197,7 @@ HRESULT CMonster::Ready_Resource(void* pArg)
 
     iAttack = pMonsterDesc->MaxHp;
     fActionRange = pMonsterDesc->fActionRange;
+    m_iLevelID = pMonsterDesc->iLevelID;
 
 
 
@@ -313,6 +316,16 @@ void CMonster::Free()
 void CMonster::Set_Dead()
 {
     Set_Active(false);
+    CLayer* pLayer = m_pGameInstance->Find_Layer(m_iLevelID, L"Monster_Layer");
+    pLayer->RequestDestroy(this);
+    
 
+#if _DEBUG
+    //selectobjec관련들 다 초기화
+    CImGui_Manager::GetInstance()->Reset_Window("ObjectDebugWindow");
+    CImGui_Manager::GetInstance()->Reset_Window("StateDebugWindow");
+
+
+#endif
 
 }

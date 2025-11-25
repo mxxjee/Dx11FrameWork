@@ -4,6 +4,7 @@
 #include "MathUtils.h"
 #include "ColorUtils.h"
 #include "CModelObject.h"
+#include "CImGui_Manager.h"
 
 USING(Client)
 CObjectDebugWindow::CObjectDebugWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -15,6 +16,10 @@ HRESULT CObjectDebugWindow::Initialize(void* pArg)
 {
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
+
+
+
+
 
     return S_OK;
 }
@@ -72,7 +77,7 @@ void CObjectDebugWindow::Update()
     
 
     ImGui::End();
-
+ 
 }
 
 void CObjectDebugWindow::Render()

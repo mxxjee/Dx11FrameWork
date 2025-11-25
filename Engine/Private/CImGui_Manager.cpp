@@ -213,3 +213,10 @@ CImgui_Base* CImGui_Manager::Find_Window(string _tag)
 
     return pTarget;
 }
+
+void CImGui_Manager::Reset_Window(string _WindowName)
+{
+    CImgui_Base* pWindow = Find_Window(_WindowName);
+    if (pWindow)
+        pWindow->Reset();
+}

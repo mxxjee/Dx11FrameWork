@@ -5,7 +5,7 @@ NS_BEGIN(Engine)
 
 class CGameObject;
 
-class CLayer final:
+class ENGINE_DLL CLayer final:
     public CBase
 {
 private:
@@ -22,9 +22,12 @@ public:
     const list<CGameObject*>& Get_ObjList() {return m_ObjList; }
     CGameObject* Find_GameObject(const wstring& Tag);
 
+public:
+    void            RequestDestroy(CGameObject* pObj);
+    void            ProcessDestory();
 private:
     list<CGameObject*>      m_ObjList;
-
+    queue<CGameObject*>      m_DestroyQueue;         //지연삭제 큐 
 public:
     static CLayer* Create();
     virtual void Free() override;

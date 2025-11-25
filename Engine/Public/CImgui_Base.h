@@ -22,6 +22,10 @@ public:
 	virtual		void	Update()=0;
 	virtual		void	Render()=0;
 
+
+public:
+	virtual void    Reset() {};        //리셋하고싶은 값 리셋하기
+
 	const string& Get_Tag() { return m_Tag; }
 	void		Set_Active(bool _b) { m_bActive = _b; }
 protected:

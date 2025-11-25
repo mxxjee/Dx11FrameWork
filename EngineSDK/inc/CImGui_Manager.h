@@ -23,10 +23,12 @@ public CBase
 public:
         void            Free() override;
 
-
-    public:
+public:
         void        RegisterWindow(CImgui_Base* pInstance);
         CImgui_Base* Find_Window(string _tag);
+        void        Reset_Window(string _WindowName);
+
+
     private:
         bool        show_another_window ={ false };
         bool        show_demo_window = { true };

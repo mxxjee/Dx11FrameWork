@@ -295,6 +295,7 @@ HRESULT CLoader::Register_Models()
   
     _matrix NPCmatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
     _matrix GreenZolMatrix = XMMatrixScaling(0.7f, 0.7f, 0.7f);
+    GreenZolMatrix = XMMatrixMultiply(GreenZolMatrix,XMMatrixRotationY(XMConvertToRadians(180.f)));
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy", GreenZolMatrix);
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC", NPCmatrix);

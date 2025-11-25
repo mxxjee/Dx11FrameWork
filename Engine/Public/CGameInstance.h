@@ -88,6 +88,8 @@ public:
 	
 	//이미생성한 것을 추가하는 함수
 	HRESULT     Add_GameObject_To_Layer(_uint iLayerLevelIndex, const _wstring & strLayerTag, CGameObject * pObject);
+	class CLayer*		Find_Layer(_uint iLevelIndex, const _wstring & LayerTag);
+
 
 #pragma endregion
 
@@ -335,7 +337,6 @@ public:
 
 	 class CNavMesh_Manager* m_pNavMeshManager = { nullptr };
 	 class CEventBus_Manager* m_pEventBusManager = { nullptr };
-
 
 private:
 	vector<D3D11_VIEWPORT>          m_ViewPorts;

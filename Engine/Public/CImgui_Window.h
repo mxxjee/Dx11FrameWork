@@ -47,6 +47,7 @@ public:
         m_vWidgets.push_back(pInstance);
         return S_OK;
     }
+
 public:
     static CImgui_Window* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
     virtual void Free();

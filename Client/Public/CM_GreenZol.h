@@ -39,6 +39,7 @@ private:
     void                Move_RandomDir();
 public:
     virtual         void        UpdateOnIdleState() override;
+    void                        Jump_To_Player(_float fTimeDelta);
 
 public:
     static CM_GreenZol* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);

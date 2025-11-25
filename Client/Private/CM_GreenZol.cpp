@@ -207,9 +207,10 @@ void CM_GreenZol::Update_Movement(_float fTimeDelta)
 		Move_RandomDir();
 		break;
 
-		//플레이어 방향으로 이동 
-	case Client::CMonster::MONSTER_BASE_STATE::RUN:
-
+		//플레이어 쳐다보고 플레이어방향으로 점프
+	case Client::CMonster::MONSTER_BASE_STATE::ATTACK:
+		Jump_To_Player(fTimeDelta);
+		
 		break;
 
 
@@ -253,6 +254,26 @@ void CM_GreenZol::UpdateOnIdleState()
 	if (m_bHide)
 		Change_State(ENUM_TO_UINT(CM_GreenZol::GreenZolState::HIDE));
 
+}
+
+void CM_GreenZol::Jump_To_Player(_float fTimeDelta)
+{
+	CGameObject* pPlayer = m_pGameInstance->Find_GameObject(0, L"Player_Layer", L"Player");
+	CTransform* pPlayerTrans = pPlayer->Get_Transform();
+
+	if (pPlayerTrans)
+	{
+		_vector PlayerPos = pPlayerTrans->Get_State(STATE::POSITION, TransformScope::WORLD);
+		m_pTransformCom->LookAtSmooth(PlayerPos, 3.f, fTimeDelta);
+		CheckFalse(m_bCanMove);
+
+
+		
+		m_pTransformCom->Chase(PlayerPos, fTimeDelta, 2.f);
+	}
+
+
+	
 }
 
 

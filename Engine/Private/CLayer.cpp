@@ -50,6 +50,8 @@ void CLayer::Update_Late(_float fTimeDelta)
         }
             
     }
+
+    ProcessDestory();
 }
 
 void CLayer::Update_Render(_float fTimeDelta)
@@ -74,6 +76,31 @@ CGameObject* CLayer::Find_GameObject(const wstring& Tag)
 
     }
     return nullptr;
+}
+void CLayer::RequestDestroy(CGameObject* pObj)
+{
+    pObj->Set_Active(false);
+    m_DestroyQueue.push(pObj);
+}
+void CLayer::ProcessDestory()
+{
+    while (!m_DestroyQueue.empty())
+    {
+        CGameObject* pObj = m_DestroyQueue.front();
+        m_DestroyQueue.pop();
+
+        for (auto it = m_ObjList.begin(); it != m_ObjList.end();)
+        {
+            if (*it == pObj)
+                it = m_ObjList.erase(it);
+
+            else
+                ++it;
+
+        }
+
+        Safe_Release(pObj);
+    }
 }
 //
 //bool CLayer::Check_Picking(HWND hWnd, ComPtr<ID3D11DeviceContext> m_pContext, _float4x4& Proj, _float4x4& View)

@@ -25,7 +25,7 @@ public:
         int MaxHp;
         int iAttack;
         float fActionRange = 3.f;
-
+        _uint   iLevelID=ENUM_TO_UINT(LEVEL_ID::TOWN);       //스폰된 레벨
 
     }MONSTER_DESC;
 protected:
@@ -92,6 +92,7 @@ protected:
     float           fActionRange=0.f;
     
     float           m_fTime = 0.f;
+    int             m_iLevelID= ENUM_TO_UINT(LEVEL_ID::TOWN);
 
 protected:
     UMap<_uint, CMonsterState*>       m_States;
@@ -104,9 +105,13 @@ protected:
 
     MONSTER_BASE_STATE      m_eCurState = MONSTER_BASE_STATE::NONE;
 
+public:
+    bool            Is_CanMove() { return m_bCanMove; }
+    void            Set_CanMove(bool b) { m_bCanMove = b; }
+
 protected:
     float           m_fInitSpeed = 0.f;
-
+    bool            m_bCanMove = true;
 };
 
 NS_END

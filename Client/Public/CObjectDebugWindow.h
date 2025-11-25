@@ -24,6 +24,8 @@ public:
 
 public:
     void            Set_SelectObject(class CGameObject* pTarget) { pSelectObject = pTarget; }
+    virtual         void    Reset() {pSelectObject = nullptr;}        //리셋하고싶은 값 리셋하기
+
 public:
     static CObjectDebugWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
     virtual void Free();

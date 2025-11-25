@@ -24,6 +24,7 @@ public:
 
 public:
     void        Set_Player(CPlayer* pPlayer) { m_pPlayer = pPlayer; }
+    virtual         void    Reset() { pSelectObject = nullptr; }        //리셋하고싶은 값 리셋하기
 
 public:
     void        Set_SelectObject(CGameObject* pObj) { pSelectObject = pObj; }
