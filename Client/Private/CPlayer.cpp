@@ -11,7 +11,7 @@
 #include "CCell.h"
 
 #include "CInteraction_Manager.h"
-
+#include "CGravity.h"
 
 
 USING(Client)
@@ -175,8 +175,12 @@ void CPlayer::Update_Input(_float fTimeDelta)
         m_Input.m_bisShield = false;
 
     m_Input.m_bisShieldRelease = m_pInputManager->IsKeyReleased(KeyCode::T);
-    m_Input.m_bisJump = m_pInputManager->IsKeyPressed(KeyCode::X);
+    if (m_Input.m_bisJump = m_pInputManager->IsKeyPressed(KeyCode::X) && m_pGravity->IsJumping() == false)
+    {
+        m_pGravity->Jump(20);
+        m_pGravity->SetOnGround(false);
 
+    }
     /*등록한 홀드키에 대해서 모두 홀드키 시간, 여부 검사*/
     Update_HoldTime(fTimeDelta);
    
@@ -202,7 +206,7 @@ void CPlayer::Update_Input(_float fTimeDelta)
 
 void CPlayer::Update_Fall(_float fTimeDelta)
 {
-    CheckNull(m_pNavigationCom);
+     CheckNull(m_pNavigationCom);
     CheckTrue(m_ActionControl.m_bFall);
 
 
@@ -226,11 +230,13 @@ void CPlayer::Update_Movement(_float fTimeDelta)
         Normal_Movement(fTimeDelta);
 
 
-    if (m_pTarget)
-        m_pTransformCom->Chase(m_pTarget->Get_Transform()->Get_State(STATE::POSITION, TransformScope::WORLD), fTimeDelta, 5);
+    
+    JumpMovement(fTimeDelta);
 
 
-    m_pTransformCom->Set_State(STATE::POSITION,
+    
+    if(m_pGravity->IsOnGround())
+        m_pTransformCom->Set_State(STATE::POSITION,
         m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
 
 
@@ -269,6 +275,7 @@ void CPlayer::Normal_Movement(_float fTimeDelta)
         m_pTransformCom->Set_Speed(m_fInitSpeed);
 
 
+   
     if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LeftArrow))
     {
         if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
@@ -555,6 +562,7 @@ void CPlayer::Free()
 {
     Safe_Release(m_pInputManager);
     Safe_Release(m_pNavigationCom);
+    Safe_Release(m_pGravity);
 
     for (auto& pair : m_States)
     {
@@ -583,6 +591,21 @@ HRESULT CPlayer::Ready_Components(void* pArg)
         COMPONENT_TYPE::NAVIGATION,
         pNavigation,
         reinterpret_cast<CComponent**>(&m_pNavigationCom)
+    )))
+        return E_FAIL;
+
+    /////////////////Gravity추가
+    CComponent* pGravity = dynamic_cast<CGravity*>(m_pGameInstance->Clone_Prototype(
+        PROTOTYPE::COMPONENT,
+        0,
+        PROTO_COMPONENT_NAME(L"Gravity"),
+        &Desc)
+        );
+
+    if (FAILED(Add_Component(
+        COMPONENT_TYPE::GRAVITYCOM,
+        pGravity,
+        reinterpret_cast<CComponent**>(&m_pGravity)
     )))
         return E_FAIL;
 
@@ -649,6 +672,71 @@ void CPlayer::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop)
     CheckNull(m_pBody);
     m_pBody->Reserve_Animation(AnimKey, bNextAnimLoop);
 }
+
+
+
+void CPlayer::JumpMovement(_float fTimeDelta)
+{
+    // 1) 중력 갱신
+    m_pGravity->Update(0.016);
+
+    // 2) 이번 프레임 Y 이동량
+    float fDT = m_pGravity->GetFallDistance(0.016);
+
+    _vector vCurPos = m_pTransformCom->Get_State(STATE::POSITION);
+    _vector vNewPos = vCurPos + XMVectorSet(0.f, fDT, 0.f, 0.f);
+
+    // 3) 바닥 체크
+    _float vOutY = 0.f;
+    bool bOnGround = m_pNavigationCom->CheckGround(vNewPos, vOutY);
+
+    //------------------------------------------------
+    // A. 점프 중 (위로 뜨거나, 아직 공중일 때)
+    //------------------------------------------------
+    if (m_pGravity->IsJumping())
+    {
+        // 일단 위치는 무조건 업데이트 (이륙/상승 허용)
+        m_pTransformCom->Set_State(STATE::POSITION, vNewPos);
+
+        if (m_pGravity->GetVelocityY() <= 0.f)
+        {
+            m_pGravity->SetJumping(false);   // 점프 상승 종료
+            // 낙하 상태로 넘어가고, 아래 분기(B)에서 떨어짐 처리됨
+        }
+
+        return;
+    }
+
+    //------------------------------------------------
+    // B. 점프 중은 아닌데, 아직 공중 (떨어지는 중)
+    //------------------------------------------------
+    if (!bOnGround)
+    { 
+        m_pTransformCom->Set_State(STATE::POSITION, vNewPos);
+        m_pGravity->SetOnGround(false);
+        return;
+    }
+
+    //------------------------------------------------
+    // C. 바닥 감지 && 떨어지는 중 → 착지 처리
+    //------------------------------------------------
+    if (m_pGravity->GetVelocityY() <= 0.f)
+    {
+        // 바닥 높이로 스냅
+        vNewPos = XMVectorSetY(vNewPos, vOutY);
+        m_pTransformCom->Set_State(STATE::POSITION, vNewPos);
+
+        // 착지
+        m_pGravity->Land();      // 여기서 Velocity 0, OnGround=true, Jumping=false
+        return;
+    }
+
+    //------------------------------------------------
+    // D. 그냥 평지 위에 서 있는 상태
+    //------------------------------------------------
+    m_pGravity->SetOnGround(true);
+}
+
 
 string CPlayer::Convert_String_To_Enum(_uint eState)
 {

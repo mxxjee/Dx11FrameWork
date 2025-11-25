@@ -11,6 +11,7 @@ namespace Engine
     class CBody;
     class CInput_Manager;
     class CNavigation;
+    class CGravity;
 
 }
 NS_BEGIN(Client)
@@ -122,6 +123,8 @@ public:
 
 private:
     Engine::CNavigation* m_pNavigationCom = { nullptr };
+    CGravity* m_pGravity = { nullptr };
+
 private:
     bool bPressed = false;
     bool m_bActionInput = false;
@@ -131,7 +134,8 @@ private:
 
 
 public:
-    virtual string Convert_String_To_Enum(_uint eState);
+    void                JumpMovement(_float fTimeDelta);
+    virtual             string Convert_String_To_Enum(_uint eState);
     virtual void        Render_StateDebug(int* pArg);
 
 private:

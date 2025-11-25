@@ -146,6 +146,7 @@ namespace Engine
 		MESH_COLLIDER,
 		MODEL,
 		NAVIGATION,
+		GRAVITYCOM,
 		UI
 	};
 

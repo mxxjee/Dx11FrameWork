@@ -112,7 +112,7 @@ HRESULT CCell::Render()
 
     if (FAILED(m_pVIBufferCom->Render()))
         return E_FAIL;
-
+ 
 
     m_pContext->RSSetState(pOldRS.Get());
 

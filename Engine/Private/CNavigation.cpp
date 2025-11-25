@@ -109,6 +109,42 @@ _bool CNavigation::isMove(_fvector vResultPos)
 	return true;
 }
 
+_bool CNavigation::CheckGround(_fvector& vResultPos, _float& vOutGroundPosY)
+{
+	CheckTrueResult(m_iCurrentCellIndex == -1, false);
+
+	///vResultpos를 cell과 같은 공간으로 일치시킴.
+	_vector vCellSpace_ResultPos = XMVector3TransformCoord(vResultPos, XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pParentMatrix)));
+
+	//평면위에 존재하고, 삼각형 내부에 있으면 현재 셀위에 있음 판정
+
+	//1.평면과 현재 점 사이의 길이
+	CCell* pCurrentCell = (*m_Cells)[m_iCurrentCellIndex];
+	DefaultCellInfo cellInfo = pCurrentCell->Get_CellInfo();
+
+	_vector NormalPlane = XMVector3Normalize(XMVectorSet(cellInfo.m_Plane.x, cellInfo.m_Plane.y, cellInfo.m_Plane.z, 1.f));
+
+	//AX+BY+CZ+D
+	float dist = (XMVectorGetX(NormalPlane) * XMVectorGetX(vCellSpace_ResultPos) +
+		XMVectorGetY(NormalPlane) * XMVectorGetY(vCellSpace_ResultPos) +
+		XMVectorGetZ(NormalPlane) * XMVectorGetZ(vCellSpace_ResultPos) +
+		cellInfo.m_Plane.w);
+
+	_int neighbor = 0;
+
+	bool bIsIn = pCurrentCell->isIn(vCellSpace_ResultPos, &neighbor);
+
+
+	if (bIsIn && dist >= -0.5f && dist <= 0.5f)
+	{
+		vOutGroundPosY = pCurrentCell->Compute_Height(vCellSpace_ResultPos);
+		return true;
+	}
+
+	else
+		return false;
+}  
+
 _vector CNavigation::SetUp_OnNavigation(_fvector vWorldPos)
 {
 	_vector vCellPos = XMVector3TransformCoord(vWorldPos, XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pParentMatrix)));

@@ -364,6 +364,9 @@
     <Filter Include="00.System\16.EventBus">
       <UniqueIdentifier>{8b911375-c08a-47b5-930e-e47e3ee83463}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\Gravity">
+      <UniqueIdentifier>{7f1accec-6c82-40e8-a603-84309a98bb85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -717,6 +720,9 @@
     <ClInclude Include="..\Public\CBody.h">
       <Filter>03.GameObject\PartObject\Body</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CGravity.h">
+      <Filter>05.Component\Gravity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -1025,6 +1031,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CBody.cpp">
       <Filter>03.GameObject\PartObject\Body</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGravity.cpp">
+      <Filter>05.Component\Gravity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

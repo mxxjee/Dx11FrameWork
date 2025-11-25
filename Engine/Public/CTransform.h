@@ -104,6 +104,8 @@ public:
 
 public:
     void        Set_Speed(float _fSpeed) { m_fSpeedPerSec = _fSpeed; }
+    _vector     Get_MoveResultPos() {return m_vMoveResultPos;}
+    void        Set_MoveResultPos(_vector vPos) { m_vMoveResultPos = vPos; }
 
 private:
     /*저장용 데이터( 직렬 계산)*/
@@ -113,6 +115,8 @@ private:
     _float3   m_fEularDegree = { 0.f,0.f,0.f };
 
     _vector     m_vMoveDir;
+
+    _vector     m_vMoveResultPos;
 
 private:
     CTransform* m_pParent = { nullptr };

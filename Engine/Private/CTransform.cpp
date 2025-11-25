@@ -256,6 +256,9 @@ void CTransform::Move(DIRECTION eDir, float fTimeDelta, Space space, CNavigation
 	vPosition += XMVector3Normalize(vTargetAxis) * fTargetSpeed * fTimeDelta;
 	m_vMoveDir = XMVectorScale(XMVector3Normalize(vTargetAxis), fTargetSpeed);
 
+
+	//m_vMoveResultPos = vPosition;
+
 	if(pNavigation==nullptr || pNavigation->isMove(vPosition))
 		Set_State(STATE::POSITION, vPosition);
 

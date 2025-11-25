@@ -39,6 +39,7 @@
 #define WORLD_RIGHT XMVectorSet(1.f,0.f,0.f,0.f)
 #define WORLD_LOOK XMVectorSet(0.f,0.f,1.f,0.f)
 
+#define GRAVITY -980.f
 
 #define ENABLE_BITMASK_OPERATORS(x)                     \
 inline x operator|(x a, x b) {                          \

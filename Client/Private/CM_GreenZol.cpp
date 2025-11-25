@@ -267,9 +267,6 @@ void CM_GreenZol::Jump_To_Player(_float fTimeDelta)
 		m_pTransformCom->LookAtSmooth(PlayerPos, 3.f, fTimeDelta);
 		CheckFalse(m_bCanMove);
 
-
-		
-		m_pTransformCom->Chase(PlayerPos, fTimeDelta, 2.f);
 	}
 
 

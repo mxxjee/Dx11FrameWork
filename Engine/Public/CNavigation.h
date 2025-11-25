@@ -27,6 +27,8 @@ public:
     _uint       Get_PreCellIdx() { return m_iPreCellIdx; }
 public:
     _bool isMove(_fvector vResultPos);
+    _bool CheckGround(_fvector& vResultPos,_float& vOutGroundPosY);      //마지막으로 측정된 CurIdx기준으로 현재 평면위에있는가.
+
     _vector SetUp_OnNavigation(_fvector vWorldPos);     //네브메쉬 평면을 타게함.
     _uint    Get_CurrentCellType();
 public:

@@ -15,6 +15,8 @@
 #include "CVIBuffer_Terrain.h"
 #include "CModel.h"
 #include "CVIBuffer_Triangle.h"
+#include "CGravity.h"
+
 
 ///////////////GameObject//////////////////////
 #include "CBackGround.h"
@@ -338,6 +340,10 @@ HRESULT CLoader::Register_Components()
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Triangle"), CVIBuffer_Triangle::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Gravity"), CGravity::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
 
     return S_OK;
 }

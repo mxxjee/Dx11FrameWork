@@ -35,6 +35,7 @@ public:
     _vector     Get_CenterPos();
 
     _uint      Get_CurrentCellType() { return m_CellInfo.CellType; }
+    const DefaultCellInfo& Get_CellInfo() { return m_CellInfo; }
 
 private:
     DefaultCellInfo         m_CellInfo;
