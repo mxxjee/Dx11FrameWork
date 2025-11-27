@@ -259,17 +259,20 @@ CGraphic_Device* CGraphic_Device::Create(HWND hWnd, WINMODE isWindowed,
 
 void CGraphic_Device::Free()
 {
-	// GPU 파이프라인 정리
+
+
+
+	// 2) Context 정리
 	m_pDeviceContext->ClearState();
 	m_pDeviceContext->Flush();
 
+	// 3) Context 해제 (!!!! 핵심)
+	m_pDeviceContext.Reset();
+
+	// 4) SwapChain / RTV / DSV 해제
 	m_pBackBufferRTV.Reset();
 	m_pDepthStencilView.Reset();
 	m_pSwapChain.Reset();
-
-
-	m_pDeviceContext.Reset();
-
 
 #if defined(DEBUG) || defined(_DEBUG)
 	ID3D11Debug* d3dDebug;
@@ -289,11 +292,8 @@ void CGraphic_Device::Free()
 	if (d3dDebug != nullptr)            d3dDebug->Release();
 #endif
 
-
-
-
+	// 5) Device 해제
 	m_pDevice.Reset();
-
 
 
 }

@@ -157,6 +157,9 @@ CCell* CCell::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> p
 void CCell::Free()
 {
     __super::Free();
+
+    m_pWireframeRS.Reset();
+
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pGameInstance);
 }

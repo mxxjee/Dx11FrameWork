@@ -135,7 +135,7 @@ _bool CNavigation::CheckGround(_fvector& vResultPos, _float& vOutGroundPosY)
 	bool bIsIn = pCurrentCell->isIn(vCellSpace_ResultPos, &neighbor);
 
 
-	if (bIsIn && dist >= -0.5f && dist <= 0.5f)
+	if (bIsIn && dist >= -0.1f && dist <= 0.1f)
 	{
 		vOutGroundPosY = pCurrentCell->Compute_Height(vCellSpace_ResultPos);
 		return true;

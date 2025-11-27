@@ -61,8 +61,8 @@ private:
     bool        m_bOnGround = false;        //착지 여부
 
     ///////////////////////////////////////////////
-    float           m_Gravity = -98.f;
-    float           MaxFallSpeed = -50.f;     //최대 낙하 속도(MAX)
+    float           m_Gravity = -98.0f;
+    float           MaxFallSpeed = -5.f;     //최대 낙하 속도(MAX)
     float           m_VelocityY = 0.f;      //떨어지는 속도
 
 };

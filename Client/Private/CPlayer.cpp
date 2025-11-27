@@ -156,8 +156,12 @@ HRESULT CPlayer::Render()
   /*이제 각 파츠들이 rendergroup으로 들어가서 렌더한다.*/
 
 #ifdef _DEBUG
-    m_pCollider->Render();
-    m_pNavigationCom->Render();
+    if (m_bDrawDebug)
+    {
+       // m_pCollider->Render();
+        m_pNavigationCom->Render();
+    }
+        
 #endif
 
     return S_OK;
@@ -223,6 +227,15 @@ void CPlayer::Update_Fall(_float fTimeDelta)
 
 void CPlayer::Update_Movement(_float fTimeDelta)
 {
+
+    JumpMovement(fTimeDelta);
+
+
+    if (m_pGravity->IsOnGround())
+        m_pTransformCom->Set_State(STATE::POSITION,
+            m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
+
+
     CheckFalse(m_ActionControl.m_bCanMove);
 
     if (m_ActionControl.IsHold(HOLD_B))
@@ -235,15 +248,7 @@ void CPlayer::Update_Movement(_float fTimeDelta)
         Normal_Movement(fTimeDelta);
 
 
-    
-    JumpMovement(fTimeDelta);
-
-
-    
-    if(m_pGravity->IsOnGround())
-        m_pTransformCom->Set_State(STATE::POSITION,
-        m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
-
+ 
 
 }
 
@@ -710,37 +715,37 @@ void CPlayer::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop)
 
 void CPlayer::JumpMovement(_float fTimeDelta)
 {
-    // 1) 중력 갱신
     m_pGravity->Update(0.016);
 
-    // 2) 이번 프레임 Y 이동량
+    // 이번 프레임 Y 이동량
     float fDT = m_pGravity->GetFallDistance(0.016);
 
     _vector vCurPos = m_pTransformCom->Get_State(STATE::POSITION);
     _vector vNewPos = vCurPos + XMVectorSet(0.f, fDT, 0.f, 0.f);
-    // 3) 바닥 체크
+   
+    //바닥 체크
     _float vOutY = 0.f;
     bool bOnGround = m_pNavigationCom->CheckGround(vNewPos, vOutY);
 
     //------------------------------------------------
-    // A. 점프 중 (위로 뜨거나, 아직 공중일 때)
+    //점프 중 (위로 뜨거나, 아직 공중일 때)
     //------------------------------------------------
     if (m_pGravity->IsJumping())
     {
-        // 일단 위치는 무조건 업데이트 (이륙/상승 허용)
+        //점프 시 위치설정
         m_pTransformCom->Set_State(STATE::POSITION, vNewPos);
 
+        //낙하 상태체크
         if (m_pGravity->GetVelocityY() <= 0.f)
         {
-            m_pGravity->SetJumping(false);   // 점프 상승 종료
-            // 낙하 상태로 넘어가고, 아래 분기(B)에서 떨어짐 처리됨
+            m_pGravity->SetJumping(false);
         }
 
         return;
     }
 
     //------------------------------------------------
-    // B. 점프 중은 아닌데, 아직 공중 (떨어지는 중)
+    // 점프 중은 아닌데, 아직 공중 (떨어지는 중)
     //------------------------------------------------
     if (!bOnGround)
     { 
@@ -750,7 +755,7 @@ void CPlayer::JumpMovement(_float fTimeDelta)
     }
 
     //------------------------------------------------
-    // C. 바닥 감지 && 떨어지는 중 → 착지 처리
+    // 바닥 감지 && 떨어지는 중-> 착지 처리
     //------------------------------------------------
     if (m_pGravity->GetVelocityY() <= 0.f)
     {
@@ -764,7 +769,7 @@ void CPlayer::JumpMovement(_float fTimeDelta)
     }
 
     //------------------------------------------------
-    // D. 그냥 평지 위에 서 있는 상태
+    //  그냥 평지 위에 서 있는 상태
     //------------------------------------------------
     m_pGravity->SetOnGround(true);
 }

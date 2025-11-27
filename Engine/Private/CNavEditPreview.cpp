@@ -143,6 +143,8 @@ void CNavEditPreview::Free()
 {
     __super::Free();
 
+    m_pWireframeRS.Reset();
+
     Safe_Release(m_pShader);
     Safe_Release(m_pVIBufferCom);
     Safe_Release(m_pGameInstance);

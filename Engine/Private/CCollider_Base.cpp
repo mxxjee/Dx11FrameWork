@@ -97,4 +97,5 @@ void CCollider_Base::Free()
     }
 
     Safe_Release(m_pBounding);
+    Safe_Release(m_pInputLayout);
 }
