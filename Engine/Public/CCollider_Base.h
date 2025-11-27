@@ -22,7 +22,7 @@ public:
 
 public:
     virtual      HRESULT   Update_Collider(class CTransform* pTransform)=0;
-    virtual      bool   Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)=0;
+    virtual      bool   Intersects_Ray(_vector origin, _vector rayDir, _float& Dist,class CTransform* pTransform)=0;
 
 
 #ifdef _DEBUG

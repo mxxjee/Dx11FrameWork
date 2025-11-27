@@ -1,9 +1,11 @@
 #include "CMeshColliderComponent.h"
 #include "CTransform.h"
 #include "CGameInstance.h"
-#include "MathUtils.h"
 #include "CModel.h"
 #include "CMeshComponent.h"
+
+#include "CBounding_Mesh.h"
+#include "CBounding_AABB.h"
 
 CMeshColliderComponent::CMeshColliderComponent(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CCollider_Base(pDevice,pContext), m_pGameInstance(CGameInstance::GetInstance())
@@ -12,8 +14,8 @@ CMeshColliderComponent::CMeshColliderComponent(ComPtr<ID3D11Device> pDevice, Com
 }
 
 CMeshColliderComponent::CMeshColliderComponent(const CMeshColliderComponent& Prototype)
-    : CCollider_Base(Prototype), 
-    m_BoundingBox(Prototype.m_BoundingBox), 
+    : CCollider_Base(Prototype),
+    m_pMeshBounding(Prototype.m_pMeshBounding),
     m_pGameInstance(Prototype.m_pGameInstance)
 {
     Safe_AddRef(m_pGameInstance);
@@ -21,21 +23,27 @@ CMeshColliderComponent::CMeshColliderComponent(const CMeshColliderComponent& Pro
 
 HRESULT CMeshColliderComponent::Initialize_Prototype()
 {
+    if (FAILED(__super::Initialize_Prototype()))
+        return E_FAIL;
+
     m_EngineDesc = m_pGameInstance->Get_EngineDesc();
+    m_eType = COLLIDER_TYPE::MESH;
 
     return S_OK;
 }
 
 HRESULT CMeshColliderComponent::Initialize_Copytype(void* pArg)
 {
+    CBounding::BOUNDING_DESC* pDesc = static_cast<CBounding::BOUNDING_DESC*>(pArg);
+
+
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
-    m_eType = COLLIDER_TYPE::MESH;
+    /*MeshCollider->AABB + MEsh*/
+    m_pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pDesc);
+    m_pMeshBounding = CBounding_Mesh::Create(m_pDevice, m_pContext, pDesc);
 
-    CheckNullResult(pArg,E_FAIL);
-    COLLIDER_MESH* pDesc = static_cast<COLLIDER_MESH*>(pArg);
-    m_pModel = pDesc->pModel;
 
     return S_OK;
 }
@@ -44,23 +52,28 @@ HRESULT CMeshColliderComponent::Update_Collider(CTransform* pTransform)
 {
 
    // _float4x4 WorldMatrix = pTransform->Get_World();
-
-    m_BoundingBox.Center = _float3(0.f, 0.f, 0.f);
-
-    m_BoundingBox.Extents = vScaleOffSet;
+    m_pBounding->Update(pTransform);
+    m_pMeshBounding->Update(pTransform);
 
     return S_OK;
 }
 
-bool CMeshColliderComponent::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
+bool CMeshColliderComponent::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist,CTransform* pTransform)
 {
-    CheckNullResult(m_pOwner,false);
-    CheckNullResult(m_pModel,false);
 
-    if (!m_BoundingBox.Intersects(origin, rayDir, Dist))
+    if (!m_pBounding->Intersects_Ray(origin, rayDir, Dist))
         return false;
 
-    return m_pModel->Intersects_Ray(origin, rayDir, Dist);
+
+
+    _matrix InvWorld = pTransform->Get_WorldInverse();
+
+    _vector localOrigin = XMVector3TransformCoord(origin, InvWorld);
+    _vector localDir = XMVector3TransformNormal(rayDir, InvWorld);
+    localDir = XMVector3Normalize(localDir);
+
+
+    return m_pMeshBounding->Intersects_Ray(localOrigin, localDir, Dist);
     
 
 
@@ -83,7 +96,9 @@ CMeshColliderComponent* CMeshColliderComponent::Clone(void* pArg)
 void CMeshColliderComponent::Free()
 {
     __super::Free();
+    Safe_Release(m_pMeshBounding);
     Safe_Release(m_pGameInstance);
+
 
 }
 

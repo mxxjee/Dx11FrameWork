@@ -17,17 +17,15 @@ public:
 
 public:
     virtual HRESULT        Update_Collider(class CTransform* pTransform);
-    bool            Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);
+    bool            Intersects_Ray(_vector origin, _vector rayDir, _float& Dist, CTransform* pTransform);
 
 public:
+    static CSphereColliderComponent* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual CSphereColliderComponent* Clone(void* pArg);
     virtual void Free() override;
 
 public:
-    static CSphereColliderComponent* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
-
-private:
-    BoundingSphere      m_Sphere;
+    void        Set_Radius(_float fRadius);
 
 };
 

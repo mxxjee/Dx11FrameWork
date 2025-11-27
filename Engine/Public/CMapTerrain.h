@@ -52,8 +52,8 @@ public:
     virtual void Free() override;
 
 public:
-    //픽킹 확인
-  //  bool            Is_Picked(_vector Origin, _vector Dir, float& Dist);
+   // 픽킹 확인
+    bool            Is_Picked(_vector Origin, _vector Dir, float& Dist);
 
     void            Set_CanPicking(bool bPicking) { m_bCanPicking = bPicking; }
     bool            Is_CanPicking() { return m_bCanPicking; }

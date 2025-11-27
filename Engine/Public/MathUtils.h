@@ -190,16 +190,20 @@ namespace MathUtils
 		_uint           iNumViewports = { 1 };
 		m_pContext->RSGetViewports(&iNumViewports, &ViewportDesc);
 
-		vMousePos = XMVectorSet(ptMouse.x / (ViewportDesc.Width * 0.5f) - 1.f,
-			ptMouse.y / -(ViewportDesc.Height * 0.5f) + 1.f,
-			0,
-			1.f);
+		float px = (2.0f * ptMouse.x / ViewportDesc.Width) - 1.0f;
+		float py = 1.0f - (2.0f * ptMouse.y / ViewportDesc.Height);
+
+		_vector nearP = XMVectorSet(px, py, 0.f, 1.f);
+		_vector farP = XMVectorSet(px, py, 1.f, 1.f);
 
 		// 투영 -> 뷰스페이스
 		_matrix	matProj = XMMatrixIdentity();
 		matProj = XMLoadFloat4x4(&Proj);
 		matProj = XMMatrixInverse(nullptr, matProj);
-		vMousePos = XMVector3TransformCoord(vMousePos, matProj);
+
+		nearP = XMVector3TransformCoord(nearP, matProj);
+		farP = XMVector3TransformCoord(farP, matProj);
+
 
 
 		//뷰스페이스->월드
@@ -208,16 +212,12 @@ namespace MathUtils
 
 		matView = XMLoadFloat4x4(&View);
 		matView = XMMatrixInverse(nullptr, matView);
+		nearP = XMVector3TransformCoord(nearP, matView);
+		farP = XMVector3TransformCoord(farP, matView);
 
-		_vector	vRayPos{ 0.f, 0.f, 0.f };		// 뷰 스페이스
-		_vector	vRayDir = vMousePos - vRayPos;
-
-		vRayPos = XMVector3TransformCoord(vRayPos, matView);
-		vRayDir = XMVector3TransformNormal(vRayDir, matView);
-
-
-		newRay.Dir = XMVector3Normalize(vRayDir);
-		newRay.Origin = vRayPos;
+		newRay.Origin = nearP;
+		newRay.Dir = XMVector3Normalize(farP-nearP);
+		
 
 		return newRay;
 

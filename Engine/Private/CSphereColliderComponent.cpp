@@ -1,26 +1,37 @@
 #include "CSphereColliderComponent.h"
 #include "CTransform.h"
+#include "CBounding_Sphere.h"
+
+
 CSphereColliderComponent::CSphereColliderComponent(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CCollider_Base(pDevice,pContext)
 {
 }
 
 CSphereColliderComponent::CSphereColliderComponent(const CSphereColliderComponent& Prototype)
-    : CCollider_Base(Prototype), m_Sphere(Prototype.m_Sphere)
+    : CCollider_Base(Prototype)
 {
 }
 
 HRESULT CSphereColliderComponent::Initialize_Prototype()
 {
+    if (__super::Initialize_Prototype())
+        return E_FAIL;
+
+
+    m_eType = COLLIDER_TYPE::SPHERE;
+
     return S_OK;
 }
 
 HRESULT CSphereColliderComponent::Initialize_Copytype(void* pArg)
 {
-   if(FAILED(__super::Initialize_Copytype(pArg)))
-       return E_FAIL;
+    CBounding::BOUNDING_DESC* pDesc = static_cast<CBounding::BOUNDING_DESC*>(pArg);
 
-   m_eType = COLLIDER_TYPE::SPHERE;
+    if (FAILED(__super::Initialize_Copytype(pArg)))
+        return E_FAIL;
+
+    m_pBounding = CBounding_Sphere::Create(m_pDevice, m_pContext, pDesc);
 
 
     return S_OK;
@@ -29,23 +40,15 @@ HRESULT CSphereColliderComponent::Initialize_Copytype(void* pArg)
 HRESULT CSphereColliderComponent::Update_Collider(CTransform* pTransform)
 {
 
-    XMStoreFloat3(&vCenter, pTransform->Get_State(STATE::POSITION));
-    XMStoreFloat3(&m_Sphere.Center, XMLoadFloat3(&vOffset) + XMLoadFloat3(&vCenter));
-
-
-    _float3 vScale = pTransform->Get_Scale_ByFloat3();
-    float Radius= max(vScale.x, vScale.y);
-    Radius = max(Radius, vScale.z);
-
-    m_Sphere.Radius = Radius * vScaleOffSet.x;
-
+    m_pBounding->Update(pTransform);
 
     return S_OK;
 }
 
-bool CSphereColliderComponent::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
+bool CSphereColliderComponent::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist, CTransform* pTransform)
 {
-    return m_Sphere.Intersects(origin, rayDir, Dist);
+    return m_pBounding->Intersects_Ray(origin, rayDir, Dist);
+
 }
 
 CSphereColliderComponent* CSphereColliderComponent::Clone(void* pArg)
@@ -78,4 +81,9 @@ CSphereColliderComponent* CSphereColliderComponent::Create(ComPtr<ID3D11Device> 
 void CSphereColliderComponent::Free()
 {
     __super::Free();
+}
+
+void CSphereColliderComponent::Set_Radius(_float fRadius)
+{
+    dynamic_cast<CBounding_Sphere*>(m_pBounding)->Set_Raidus(fRadius);
 }

@@ -159,6 +159,8 @@
     <ClInclude Include="..\Public\CBone.h" />
     <ClInclude Include="..\Public\CBounding.h" />
     <ClInclude Include="..\Public\CBounding_AABB.h" />
+    <ClInclude Include="..\Public\CBounding_Mesh.h" />
+    <ClInclude Include="..\Public\CBounding_Sphere.h" />
     <ClInclude Include="..\Public\CBoxColliderComponent.h" />
     <ClInclude Include="..\Public\CCameraComponent.h" />
     <ClInclude Include="..\Public\CCamera_Base.h" />
@@ -196,33 +198,33 @@
     <ClInclude Include="..\Public\CLight.h" />
     <ClInclude Include="..\Public\CLight_Manager.h" />
     <ClInclude Include="..\Public\CMapField.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CMapLayer.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CMapModel.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CMapObject.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CMapObject_Manager.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CMapQuad.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CMapTerrain.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CMapToolCell.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CMaterial.h" />
     <ClInclude Include="..\Public\CMaterial_Manager.h" />
     <ClInclude Include="..\Public\CMeshColliderComponent.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CMeshComponent.h" />
     <ClInclude Include="..\Public\CMinimapCamera.h" />
@@ -233,7 +235,7 @@
     <ClInclude Include="..\Public\CNavEditPreview.h" />
     <ClInclude Include="..\Public\CNavMesh_Manager.h" />
     <ClInclude Include="..\Public\CNavMeshEdit_Manager.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CNavigation.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
@@ -254,7 +256,7 @@
     <ClInclude Include="..\Public\CShader.h" />
     <ClInclude Include="..\Public\CShader_Manager.h" />
     <ClInclude Include="..\Public\CSphereColliderComponent.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CTerrain_Base.h" />
     <ClInclude Include="..\Public\CTerrain_Manager.h" />
@@ -304,6 +306,8 @@
     <ClCompile Include="..\Private\CBone.cpp" />
     <ClCompile Include="..\Private\CBounding.cpp" />
     <ClCompile Include="..\Private\CBounding_AABB.cpp" />
+    <ClCompile Include="..\Private\CBounding_Mesh.cpp" />
+    <ClCompile Include="..\Private\CBounding_Sphere.cpp" />
     <ClCompile Include="..\Private\CBoxColliderComponent.cpp" />
     <ClCompile Include="..\Private\CCameraComponent.cpp" />
     <ClCompile Include="..\Private\CCamera_Base.cpp" />
@@ -341,30 +345,30 @@
     <ClCompile Include="..\Private\CLight.cpp" />
     <ClCompile Include="..\Private\CLight_Manager.cpp" />
     <ClCompile Include="..\Private\CMapField.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CMapModel.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CMapObject.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CMapObject_Manager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CMapQuad.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CMapTerrain.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CMapToolCell.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CMaterial.cpp" />
     <ClCompile Include="..\Private\CMaterial_Manager.cpp" />
     <ClCompile Include="..\Private\CMeshColliderComponent.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CMeshComponent.cpp" />
     <ClCompile Include="..\Private\CMinimapCamera.cpp" />
@@ -375,7 +379,7 @@
     <ClCompile Include="..\Private\CNavEditPreview.cpp" />
     <ClCompile Include="..\Private\CNavMesh_Manager.cpp" />
     <ClCompile Include="..\Private\CNavMeshEdit_Manager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CNavigation.cpp" />
     <ClCompile Include="..\Private\CObject_Manager.cpp" />
@@ -394,7 +398,7 @@
     <ClCompile Include="..\Private\CShader.cpp" />
     <ClCompile Include="..\Private\CShader_Manager.cpp" />
     <ClCompile Include="..\Private\CSphereColliderComponent.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CTerrain_Base.cpp" />
     <ClCompile Include="..\Private\CTerrain_Manager.cpp" />
@@ -425,7 +429,7 @@
     <ClCompile Include="..\Public\IMapEditable.cpp" />
     <ClCompile Include="..\Public\VertexData.cpp" />
     <ClCompile Include="CMapLayer.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

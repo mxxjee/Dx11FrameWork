@@ -5,6 +5,7 @@
 #include "CModelObject.h"
 #include "CGameInstance.h"
 #include "CMeshColliderComponent.h"
+#include "CBounding_Mesh.h"
 
 
 
@@ -114,16 +115,15 @@ HRESULT CMapModel::Ready_Component(void* pArg)
     }
 
     /*메쉬콜라이더컴포넌트(픽킹검사)*/
-    CMeshColliderComponent::COLLIDER_MESH ColliderDesc;
-    ColliderDesc.pModel = m_pModel;
-    ColliderDesc.pOwner = this;
-    ColliderDesc.vScaleOffSet = _float3(10.f, 10.f, 10.f);
+    CBounding_Mesh::BOUNDING_MESH_DESC MeshDesc;
+    MeshDesc.pModel = m_pModel;
+    MeshDesc.Extents = { 10.f,10.f,10.f };
 
     CComponent* pMeshCollider = dynamic_cast<CMeshColliderComponent*>(m_pGameInstance->Clone_Prototype(
         PROTOTYPE::COMPONENT,
         0,
         PROTO_COMPONENT_NAME(L"MeshCollider"),
-        &ColliderDesc));
+        &MeshDesc));
 
     if (FAILED(Add_Component(
         COMPONENT_TYPE::MESH_COLLIDER,

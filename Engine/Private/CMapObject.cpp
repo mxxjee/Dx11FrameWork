@@ -8,6 +8,8 @@
 #include "ImGuizmo.h"
 #include "CInput_Manager.h"
 #include "CMapLayer.h"
+#include "CBounding_AABB.h"
+
 
 
 CMapObject::CMapObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -102,7 +104,7 @@ bool CMapObject::Is_Picked(_vector Origin, _vector Dir, float& Dist)
 {
 	CheckNullResult(pColliderComp, false);
 
-	bool Result= pColliderComp->Intersects_Ray(Origin, Dir, Dist);
+	bool Result= pColliderComp->Intersects_Ray(Origin, Dir, Dist,m_pTransformCom);
 
 
 	return Result;
@@ -114,18 +116,16 @@ HRESULT CMapObject::Ready_Component(void* pArg)
 	MapObject_DESC* pDesc = static_cast<MapObject_DESC*>(pArg);
 
 	//없다면 자동으로 만들어주자.
-	CCollider_Base::COLLIDER_DESC ColDesc;
-	CComponent::COMPONENT_DESC* ColliderDesc = static_cast<CCollider_Base::COLLIDER_DESC*>(pDesc->ColliderComponent);
+	CBounding_AABB::BOUNDING_AABB_DESC AABBDesc;
+	CBounding_AABB::BOUNDING_AABB_DESC* ColliderDesc = static_cast<CBounding_AABB::BOUNDING_AABB_DESC*>(pDesc->ColliderComponent);
 	if (!ColliderDesc)
 	{
-		ColDesc.vScaleOffSet = { 0.3f,0.3f,0.3f };
-		ColliderDesc = &ColDesc;
+		AABBDesc.Extents = { 0.3f,0.3f,0.3f };
+		ColliderDesc = &AABBDesc;
 
-		pDesc->ColliderComponent = &ColDesc;
+		pDesc->ColliderComponent = &AABBDesc;
 
 	}
-
-	ColliderDesc->pOwner = this;
 
 	CComponent* pCollider = dynamic_cast<CBoxColliderComponent*>(m_pGameInstance->Clone_Prototype
 	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"BoxColliderComponent"), pDesc->ColliderComponent));

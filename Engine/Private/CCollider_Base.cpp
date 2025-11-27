@@ -62,7 +62,7 @@ HRESULT CCollider_Base::Update_Collider(CTransform* pTransform)
     return E_NOTIMPL;
 }
 
-bool CCollider_Base::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
+bool CCollider_Base::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist, CTransform* pTransform)
 {
     return false;
 }

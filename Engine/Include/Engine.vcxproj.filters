@@ -376,6 +376,12 @@
     <Filter Include="05.Component\Collision\DebugDraw">
       <UniqueIdentifier>{ecdf86b2-1406-4648-bf4b-9d33c6fa6fa8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\Collision\Bonding\Sphere">
+      <UniqueIdentifier>{c790a863-d409-4b55-b3b0-dbf97306b8a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\Collision\Bonding\Mesh">
+      <UniqueIdentifier>{415726d4-964a-462e-b10c-35251cdf44b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -741,6 +747,12 @@
     <ClInclude Include="..\Public\DebugDraw.h">
       <Filter>05.Component\Collision\DebugDraw</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CBounding_Sphere.h">
+      <Filter>05.Component\Collision\Bonding\Sphere</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBounding_Mesh.h">
+      <Filter>05.Component\Collision\Bonding\Mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -1061,6 +1073,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\DebugDraw.cpp">
       <Filter>05.Component\Collision\DebugDraw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounding_Sphere.cpp">
+      <Filter>05.Component\Collision\Bonding\Sphere</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounding_Mesh.cpp">
+      <Filter>05.Component\Collision\Bonding\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

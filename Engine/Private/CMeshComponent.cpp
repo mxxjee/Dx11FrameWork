@@ -116,6 +116,9 @@ HRESULT CMeshComponent::Render()
 
 bool CMeshComponent::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
 {
+	bool isHit = false;
+	float closestDist = FLT_MAX;
+
 	for (_uint i = 0; i < m_pIndices.size(); i += 3)
 	{
 
@@ -128,15 +131,22 @@ bool CMeshComponent::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist
 		if (TriangleTests::Intersects(origin, rayDir, p0, p1, p2, dist))
 		{
 			Dist = dist;
-			if (isnan(dist))
-				return false;
-
-			return true;
+			if (!isnan(dist) && dist < closestDist)
+			{
+				closestDist = dist;
+				isHit = true;
+			}
 
 		}
 
 
 
+	}
+
+	if (isHit)
+	{
+		Dist = closestDist;
+		return true;
 	}
 
 	return false;

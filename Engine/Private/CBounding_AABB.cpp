@@ -25,12 +25,12 @@ HRESULT CBounding_AABB::Initialize(const BOUNDING_DESC* pInitialDesc)
 HRESULT CBounding_AABB::Update(CTransform* pTransform)
 {
       //월드행렬을 따라가되, 내가 설정한 콜라이더자체의 offset과 scale을 포함한다.
-    XMMATRIX  NewWorld = XMLoadFloat4x4(&pTransform->Get_World());
-    NewWorld = XMMatrixMultiply(NewWorld, XMMatrixScaling(m_vSize.x, m_vSize.y, m_vSize.z));
-    NewWorld = XMMatrixMultiply(NewWorld, XMMatrixTranslation(m_vOffSet.x, m_vOffSet.y, m_vOffSet.z));
+    XMMATRIX  OriginWorld = XMLoadFloat4x4(&pTransform->Get_World());
+    XMMATRIX NewWorld = XMMatrixScaling(m_vSize.x, m_vSize.y, m_vSize.z) * XMMatrixTranslation(m_vOffSet.x, m_vOffSet.y, m_vOffSet.z);
 
+    XMMATRIX Final = NewWorld * OriginWorld;
 
-    m_pOriginalDesc->Transform((*m_pDesc), NewWorld);
+    m_pOriginalDesc->Transform(*m_pDesc, Final);
 
 
 

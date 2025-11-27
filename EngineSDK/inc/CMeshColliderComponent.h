@@ -10,12 +10,7 @@ class CModel;
 class ENGINE_DLL CMeshColliderComponent :
     public CCollider_Base
 {
-public:
-    typedef struct tagMeshColliderDesc :CCollider_Base::COLLIDER_DESC
-    {
-        CModel* pModel;
 
-    }COLLIDER_MESH;
 protected:
     CMeshColliderComponent(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CMeshColliderComponent(const CMeshColliderComponent& Prototype);
@@ -28,7 +23,7 @@ public:
 
 public:
     virtual HRESULT        Update_Collider(class CTransform* pTransform);
-    bool                Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);
+    bool                Intersects_Ray(_vector origin, _vector rayDir, _float& Dist,class CTransform* pTransform);
 
 
 public:
@@ -38,9 +33,10 @@ public:
 public:
     static CMeshColliderComponent* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
 
+
 private:
-    BoundingBox      m_BoundingBox;
-    CModel*           m_pModel=nullptr;
+    //바운딩박스로 먼저 검사 + model검사 , 콜라이더 2개필요
+    CBounding* m_pMeshBounding = { nullptr };
 
 private:
     CGameInstance* m_pGameInstance = nullptr;

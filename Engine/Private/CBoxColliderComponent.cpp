@@ -14,7 +14,7 @@ CBoxColliderComponent::CBoxColliderComponent(const CBoxColliderComponent& Protot
 
 HRESULT CBoxColliderComponent::Initialize_Prototype()
 {
-    if (__super::Initialize_Prototype())
+    if (FAILED(__super::Initialize_Prototype()))
         return E_FAIL;
 
 
@@ -43,7 +43,7 @@ HRESULT CBoxColliderComponent::Update_Collider(CTransform* pTransform)
     return S_OK;
 }
 
-bool CBoxColliderComponent::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
+bool CBoxColliderComponent::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist, CTransform* pTransform)
 {
     return m_pBounding->Intersects_Ray(origin, rayDir, Dist);
 

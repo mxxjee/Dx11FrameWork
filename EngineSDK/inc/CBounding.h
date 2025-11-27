@@ -2,6 +2,7 @@
 #include "CBase.h"
 
 NS_BEGIN(Engine)
+class CTransform;
 class ENGINE_DLL CBounding abstract:
     public CBase
 {

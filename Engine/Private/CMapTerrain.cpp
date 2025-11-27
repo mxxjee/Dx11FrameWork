@@ -8,6 +8,8 @@
 #include "MathUtils.h"
 #include "CInput_Manager.h"
 #include "CMapObject_Manager.h"
+#include "CBounding_Mesh.h"
+
 
 
 
@@ -111,6 +113,7 @@ HRESULT CMapTerrain::Render()
 
     }
 
+    m_pMeshCollidercomponent->Render();
 
     return S_OK;
 }
@@ -131,23 +134,23 @@ HRESULT CMapTerrain::Ready_Components(void* pArg)
 
         
         /*메쉬콜라이더컴포넌트(픽킹검사)*/
-     /*   CMeshColliderComponent::COLLIDER_MESH ColliderDesc;
-        ColliderDesc.pModel = m_pModel;
-        ColliderDesc.pOwner = this;
-        ColliderDesc.vScaleOffSet = _float3(16.f,16.f,16.f);
+        CBounding_Mesh::BOUNDING_MESH_DESC MeshDesc;
+        MeshDesc.pModel = m_pModel;
+        MeshDesc.Extents = { 16.f,16.f,16.f };
+
 
         CComponent* pMeshCollider = dynamic_cast<CMeshColliderComponent*>(m_pGameInstance->Clone_Prototype(
             PROTOTYPE::COMPONENT,
             0,
             PROTO_COMPONENT_NAME(L"MeshCollider"),
-            &ColliderDesc));
+            &MeshDesc));
 
         if (FAILED(Add_Component(
             COMPONENT_TYPE::MESH_COLLIDER,
             pMeshCollider,
             reinterpret_cast<CComponent**>(&m_pMeshCollidercomponent)
         )))
-            return E_FAIL;*/
+            return E_FAIL;
     }
 
     return S_OK;
@@ -216,16 +219,16 @@ void CMapTerrain::Free()
     Safe_Release(m_pModel);
 }
 
-//bool CMapTerrain::Is_Picked(_vector Origin, _vector Dir, float& Dist)
-//{
-//    CheckNullResult(m_pMeshCollidercomponent, false);
-//    CheckFalseResult(m_bCanPicking, false);
-//
-//    bool Result = m_pMeshCollidercomponent->Intersects_Ray(Origin, Dir, Dist);
-//
-//
-//    return Result;
-//}
+bool CMapTerrain::Is_Picked(_vector Origin, _vector Dir, float& Dist)
+{
+    CheckNullResult(m_pMeshCollidercomponent, false);
+    CheckFalseResult(m_bCanPicking, false);
+
+    bool Result = m_pMeshCollidercomponent->Intersects_Ray(Origin, Dir, Dist,m_pTransformCom);
+
+
+    return Result;
+}
 
 void CMapTerrain::OnSeletected(bool bSelected)
 {
