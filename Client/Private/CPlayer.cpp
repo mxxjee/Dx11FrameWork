@@ -184,7 +184,7 @@ void CPlayer::Update_Input(_float fTimeDelta)
         m_Input.m_bisShield = false;
 
     m_Input.m_bisShieldRelease = m_pInputManager->IsKeyReleased(KeyCode::T);
-    if (m_Input.m_bisJump = m_pInputManager->IsKeyPressed(KeyCode::X) && m_pGravity->IsJumping() == false)
+    if (m_Input.m_bisJump = m_pInputManager->IsKeyPressed(KeyCode::X) && m_iState!= ENUM_TO_UINT(CPlayer::PLAYER_STATE::JUMP))
     {
         m_pGravity->Jump(20);
         m_pGravity->SetOnGround(false);
@@ -584,6 +584,28 @@ void CPlayer::Free()
 
     __super::Free();
 }
+
+#ifdef  _DEBUG
+void CPlayer::Render_Transform_Imgui()
+{
+    __super::Render_Transform_Imgui();
+
+    string result;
+    if (m_pGravity->IsOnGround())
+        result = "true";
+    else
+        result = "false";
+
+    ImGui::Separator();
+    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 255, 255));
+    ImGui::BulletText("isOnGround:%s",
+        result.c_str());
+    ImGui::PopStyleColor();
+
+
+}
+#endif //  _DEBUG
+
 
 
 HRESULT CPlayer::Ready_Components(void* pArg)

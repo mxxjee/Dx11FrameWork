@@ -56,7 +56,11 @@ public:
 
 public:
     CGameObject*    Get_Target() { return m_pTarget; }
-
+   
+#ifdef _DEBUG
+public:
+    virtual void            Render_Transform_Imgui();
+#endif
 
 protected:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };

@@ -100,8 +100,7 @@ protected:
     CMonsterState* m_pCurState = nullptr;
     CMonsterState* m_pNextState = nullptr;
 
-    Engine::CNavigation* m_pNavigationCom = { nullptr };
-    CMonster_Body*      m_pMonsterBody = nullptr;
+     CMonster_Body*      m_pMonsterBody = nullptr;
 
     MONSTER_BASE_STATE      m_eCurState = MONSTER_BASE_STATE::NONE;
 
@@ -112,6 +111,11 @@ public:
 protected:
     float           m_fInitSpeed = 0.f;
     bool            m_bCanMove = true;
+
+protected:
+    Engine::CNavigation* m_pNavigationCom = { nullptr };
+
+
 };
 
 NS_END

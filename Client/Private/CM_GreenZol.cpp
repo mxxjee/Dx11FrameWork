@@ -2,6 +2,9 @@
 #include "CMonster_Body.h"
 #include "CPlayer.h"
 
+////////////////////Components/////////
+#include "CGravity.h"
+#include "CNavigation.h"
 
 //////////////States///////////
 #include "MonsterStates.h"
@@ -40,6 +43,8 @@ HRESULT CM_GreenZol::Initialize_Copytype(void* pArg)
 
 	Register_Anim();
 
+	if (FAILED(Ready_Component(pArg)))
+		return E_FAIL;
 
 	
 
@@ -80,10 +85,15 @@ void CM_GreenZol::Update(_float fTimeDelta)
 
 void CM_GreenZol::Update_Late(_float fTimeDelta)
 {
-	__super::Update_Late(fTimeDelta);
+	CModelObject::Update_Late(fTimeDelta);
 
 	Update_Movement(fTimeDelta);
+
+	if (m_pCurState)
+		m_pCurState->Update_Late(this, fTimeDelta);
 }
+
+
 
 void CM_GreenZol::Update_Render(_float fTimeDelta)
 {
@@ -115,6 +125,7 @@ void CM_GreenZol::Register_Anim()
 		//////////Speed///////
 		m_pMonsterBody->Set_Animation_Speed(L"spawn", 25.f);
 		m_pMonsterBody->Set_Animation_Speed(L"jump_sign",50.f);
+		m_pMonsterBody->Set_Animation_Speed(L"jump_loop", 50.f);
 		m_pMonsterBody->Set_Animation_Speed(L"depop", 50.f);
 
 	}
@@ -157,6 +168,33 @@ void CM_GreenZol::Change_State(int newState)
 	m_fTime = 0.f;
 	
 
+}
+
+
+
+HRESULT CM_GreenZol::Ready_Component(void* pArg)
+{
+	CComponent::COMPONENT_DESC Desc;
+	Desc.pOwner = this;
+
+
+	/////////////////Gravity추가
+	CComponent* pGravity = dynamic_cast<CGravity*>(m_pGameInstance->Clone_Prototype(
+		PROTOTYPE::COMPONENT,
+		0,
+		PROTO_COMPONENT_NAME(L"Gravity"),
+		&Desc)
+		);
+
+	if (FAILED(Add_Component(
+		COMPONENT_TYPE::GRAVITYCOM,
+		pGravity,
+		reinterpret_cast<CComponent**>(&m_pGravity)
+	)))
+		return E_FAIL;
+
+
+	return S_OK;
 }
 
 void CM_GreenZol::AIState_Change(_float fTimeDelta)
@@ -212,11 +250,15 @@ void CM_GreenZol::Update_Movement(_float fTimeDelta)
 		Jump_To_Player(fTimeDelta);
 		
 		break;
-
-
 	default:
 		break;
 	}
+
+	if(m_pGravity->IsOnGround())
+		m_pTransformCom->Set_State(STATE::POSITION,
+			m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
+
+
 }
 
 void CM_GreenZol::Render_StateDebug(int* pArg)
@@ -265,10 +307,65 @@ void CM_GreenZol::Jump_To_Player(_float fTimeDelta)
 	{
 		_vector PlayerPos = pPlayerTrans->Get_State(STATE::POSITION, TransformScope::WORLD);
 		m_pTransformCom->LookAtSmooth(PlayerPos, 3.f, fTimeDelta);
-		CheckFalse(m_bCanMove);
 
 	}
 
+	m_pGravity->Update(fTimeDelta);
+	// 이번 프레임 Y 이동량
+	float fDT = m_pGravity->GetFallDistance(fTimeDelta);
+
+	_vector vCurPos = m_pTransformCom->Get_State(STATE::POSITION);
+	_vector vNewPos = vCurPos + XMVectorSet(0.f, fDT, 0.f, 0.f);
+
+	//바닥 체크
+	_float vOutY = 0.f;
+	bool bOnGround = m_pNavigationCom->CheckGround(vNewPos, vOutY);
+
+	//------------------------------------------------
+	//점프 중 (위로 뜨거나, 아직 공중일 때)
+	//------------------------------------------------
+	if (m_pGravity->IsJumping())
+	{
+		//점프 시 위치설정
+		m_pTransformCom->Set_State(STATE::POSITION, vNewPos);
+
+		//낙하 상태체크
+		if (m_pGravity->GetVelocityY() <= 0.f)
+		{
+			m_pGravity->SetJumping(false);
+		}
+
+		return;
+	}
+
+	//------------------------------------------------
+	// 점프 중은 아닌데, 아직 공중 (떨어지는 중)
+	//------------------------------------------------
+	if (!bOnGround)
+	{
+		m_pTransformCom->Set_State(STATE::POSITION, vNewPos);
+		m_pGravity->SetOnGround(false);
+		return;
+	}
+
+	//------------------------------------------------
+	// 바닥 감지 && 떨어지는 중-> 착지 처리
+	//------------------------------------------------
+	if (m_pGravity->GetVelocityY() <= 0.f)
+	{
+		// 바닥 높이로 스냅
+		vNewPos = XMVectorSetY(vNewPos, vOutY);
+		m_pTransformCom->Set_State(STATE::POSITION, vNewPos);
+
+		// 착지
+		m_pGravity->Land();      // 여기서 Velocity 0, OnGround=true, Jumping=false
+		return;
+	}
+
+	//------------------------------------------------
+	//  그냥 평지 위에 서 있는 상태
+	//------------------------------------------------
+	m_pGravity->SetOnGround(true);
 
 	
 }
@@ -305,6 +402,7 @@ CGameObject* CM_GreenZol::Clone(void* pArg)
 void CM_GreenZol::Free()
 {
 	__super::Free();
+	Safe_Release(m_pGravity);
 }
 
 HRESULT CM_GreenZol::Ready_States()
@@ -344,4 +442,17 @@ void CM_GreenZol::Idle_Behavior(_float fTimeDelta)
 	}
 
 
+}
+
+void CM_GreenZol::JumpStart_Behavior()
+{
+	m_bJump = true;
+	//m_pTransformCom->Move(DIRECTION::FORWARD,)
+	m_pGravity->Jump(25.f);
+
+}
+
+bool CM_GreenZol::Get_IsOnGround()
+{
+	return m_pGravity->IsOnGround();
 }

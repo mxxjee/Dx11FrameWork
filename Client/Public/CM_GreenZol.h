@@ -1,6 +1,10 @@
 #pragma once
 #include "CMonster.h"
 
+namespace Engine
+{
+    class CGravity;
+}
 NS_BEGIN(Client)
 class CM_GreenZol :
     public CMonster
@@ -27,10 +31,12 @@ public:
     virtual HRESULT Render();
 
 public:
-    void                Register_Anim();
-    virtual void        Intro_Behavor();
+    void                    Register_Anim();
+    virtual void            Intro_Behavor();
     virtual void            Change_State(int newState);
 
+public:
+    HRESULT          Ready_Component(void* pArg);
 public:
     virtual void        AIState_Change(_float fTimeDelta) override;
     virtual void        Update_Movement(_float fTimeDelta) override;
@@ -52,7 +58,9 @@ public:
 
 public:
     void            Idle_Behavior(_float fTimeDelta);
+    void            JumpStart_Behavior();
     bool            Get_IsHide() { return m_bHide; }
+    bool            Get_IsOnGround();
 private:
     MONSTER_BASE_STATE  m_eCurState;
     float               m_fSecond = 1.f;
@@ -60,8 +68,10 @@ private:
 private:
     float           m_fSpawnRange = 3.f;        //스폰하기위한 범위
     bool             m_bHide = false;
+    bool             m_bJump = false;
 
-
+private:
+    CGravity* m_pGravity = { nullptr };
 };
 NS_END
 

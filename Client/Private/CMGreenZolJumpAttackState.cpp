@@ -21,6 +21,7 @@ void CMGreenZolJumpAttackState::Enter(CMonster* pMonster)
 	pMonster->Reserve_Animation_To_Body(L"jump_sign", true);
 	m_ePhase = PHASE::SIGN;
 	m_fTime = 0.f;
+
 	pMonster->Set_CanMove(false);
 }
 
@@ -43,6 +44,8 @@ void CMGreenZolJumpAttackState::Update(CMonster* pMonster, _float fTimeDelta)
 			if (m_fTime >= 1.f)
 			{
 				m_fTime = 0.f;
+				
+				m_pGreenZol->JumpStart_Behavior();
 				m_ePhase = PHASE::START;
 				pMonster->Reserve_Animation_To_Body(L"jump_st", false);
 				pMonster->Set_CanMove(false);
@@ -59,7 +62,7 @@ void CMGreenZolJumpAttackState::Update(CMonster* pMonster, _float fTimeDelta)
 		{
 
 			m_ePhase = PHASE::LOOP;
-			pMonster->Reserve_Animation_To_Body(L"jump_loop", false);
+			pMonster->Reserve_Animation_To_Body(L"jump_loop", true);
 			pMonster->Set_CanMove(true);
 		}
 		break;
@@ -67,7 +70,7 @@ void CMGreenZolJumpAttackState::Update(CMonster* pMonster, _float fTimeDelta)
 
 
 	case Client::CMGreenZolJumpAttackState::LOOP:
-		if (pMonster->Is_AnimEnd())
+		if (m_pGreenZol->Get_IsOnGround())
 		{
 
 			m_ePhase = PHASE::ED;

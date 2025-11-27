@@ -57,8 +57,8 @@ public:
 
 private:
     bool        m_bEnableGravity = false;    //중력 사용 여부(공중일떄 동작한다)
-    bool        m_bIsJumping = false;       //현재 점프하고있나요?
-    bool        m_bOnGround = false;        //착지 여부
+    bool        m_bIsJumping = true;       //현재 점프하고있나요?
+    bool        m_bOnGround = true;        //착지 여부
 
     ///////////////////////////////////////////////
     float           m_Gravity = -98.0f;

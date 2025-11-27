@@ -115,6 +115,12 @@ public:
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
+
+#ifdef _DEBUG
+public:
+    virtual void            Render_Transform_Imgui() override;
+#endif
+
 public:
     virtual HRESULT     Ready_Components(void* pArg);
     virtual HRESULT     Ready_PartObjects(void* pArg);

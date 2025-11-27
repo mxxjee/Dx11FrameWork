@@ -20,7 +20,6 @@ public:
     virtual void        Update_Late(CMonster* pMonster, _float fTimeDelta)override;
     virtual void        Exit(CMonster* pMonster)override;
 
-
 public:
     static CMGreenZolJumpAttackState* Create() {
         return new CMGreenZolJumpAttackState;
@@ -30,7 +29,7 @@ private:
     CM_GreenZol*    m_pGreenZol;
     PHASE       m_ePhase = PHASE::END;
     _float          m_fTime = 0.f;
-
+    bool            m_bJump = false;
 
 };
 

@@ -30,41 +30,7 @@ void CObjectDebugWindow::Update()
 
     if (pSelectObject)
     {
-        ImGui::Text("Name : %s", WStringToUTF8(pSelectObject->Get_Tag()).c_str());
-
-
-        CTransform* pTransform = dynamic_cast<CTransform*>(pSelectObject->Get_Component(COMPONENT_TYPE::TRANSFORM));
-        if (pTransform)
-        {
-            ImGui::Separator();
-
-            _float4 s, t, r;
-
-            XMStoreFloat4(&s, pTransform->Get_SRT(SRTType::SCALE));
-            XMStoreFloat4(&t, pTransform->Get_SRT(SRTType::TRANSFORM));
-            XMStoreFloat4(&r, pTransform->Get_SRT(SRTType::ROTATION));
-
-
-          
-            _float3 rResult = MathUtils::QuaternionToEuler(XMLoadFloat4(&r));
-            
-            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
-            ImGui::BulletText("Position X:%f, Y:%f, Z:%f", t.x, t.y, t.z);
-            ImGui::PopStyleColor();
-
-            ImGui::Separator();
-            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-            ImGui::BulletText("Scale X:%f, Y:%f, Z:%f", s.x, s.y, s.z);
-            ImGui::PopStyleColor();
-
-            ImGui::Separator();
-            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 255, 255));
-            ImGui::BulletText("Rotation X:%f, Y:%f, Z:%f", 
-                rResult.x,
-                rResult.y,
-                rResult.z);
-            ImGui::PopStyleColor();
-        }
+        pSelectObject->Render_Transform_Imgui();
 
         CModelObject* pModelObj = dynamic_cast<CModelObject*>(pSelectObject);
         if (pModelObj)

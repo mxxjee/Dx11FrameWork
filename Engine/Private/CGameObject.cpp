@@ -1,6 +1,8 @@
 #include "CGameObject.h"
 #include "CGameInstance.h"
 #include "CComponent.h"
+#include "MathUtils.h"
+
 
 CGameObject::CGameObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :m_pDevice(pDevice),
@@ -130,6 +132,47 @@ CComponent* CGameObject::Get_Component(COMPONENT_TYPE eType)
     return iter->second;
 }
 
+#ifdef  _DEBUG
+
+void CGameObject::Render_Transform_Imgui()
+{
+    ImGui::Text("Name : %s", WStringToUTF8(tag).c_str());
+    CheckNull(m_pTransformCom);
+
+	ImGui::Separator();
+
+	_float4 s, t, r;
+
+	XMStoreFloat4(&s, m_pTransformCom->Get_SRT(SRTType::SCALE));
+	XMStoreFloat4(&t, m_pTransformCom->Get_SRT(SRTType::TRANSFORM));
+	XMStoreFloat4(&r, m_pTransformCom->Get_SRT(SRTType::ROTATION));
+
+
+
+	_float3 rResult = MathUtils::QuaternionToEuler(XMLoadFloat4(&r));
+
+	ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
+	ImGui::BulletText("Position X:%f, Y:%f, Z:%f", t.x, t.y, t.z);
+	ImGui::PopStyleColor();
+
+	ImGui::Separator();
+	ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+	ImGui::BulletText("Scale X:%f, Y:%f, Z:%f", s.x, s.y, s.z);
+	ImGui::PopStyleColor();
+
+	ImGui::Separator();
+	ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 255, 255));
+	ImGui::BulletText("Rotation X:%f, Y:%f, Z:%f",
+		rResult.x,
+		rResult.y,
+		rResult.z);
+	ImGui::PopStyleColor();
+
+
+}
+
+
+#endif //  _DEBUG
 
 void CGameObject::Free()
 {
