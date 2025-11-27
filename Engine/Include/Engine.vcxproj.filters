@@ -367,6 +367,15 @@
     <Filter Include="05.Component\Gravity">
       <UniqueIdentifier>{7f1accec-6c82-40e8-a603-84309a98bb85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\Collision\Bonding">
+      <UniqueIdentifier>{df127e4e-7d62-4e8a-ac2b-b2c0d6c947e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\Collision\Bonding\AABB">
+      <UniqueIdentifier>{059b491b-81b9-49b8-9d4a-20f653d07e3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\Collision\DebugDraw">
+      <UniqueIdentifier>{ecdf86b2-1406-4648-bf4b-9d33c6fa6fa8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -723,6 +732,15 @@
     <ClInclude Include="..\Public\CGravity.h">
       <Filter>05.Component\Gravity</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CBounding.h">
+      <Filter>05.Component\Collision\Bonding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CBounding_AABB.h">
+      <Filter>05.Component\Collision\Bonding\AABB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\DebugDraw.h">
+      <Filter>05.Component\Collision\DebugDraw</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -1034,6 +1052,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\CGravity.cpp">
       <Filter>05.Component\Gravity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounding.cpp">
+      <Filter>05.Component\Collision\Bonding</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounding_AABB.cpp">
+      <Filter>05.Component\Collision\Bonding\AABB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\DebugDraw.cpp">
+      <Filter>05.Component\Collision\DebugDraw</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

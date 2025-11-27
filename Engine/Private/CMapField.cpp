@@ -26,7 +26,7 @@ HRESULT CMapField::Initialize_Copytype(void* pArg)
 		return E_FAIL;
 
 
-	pColliderComp->Set_ScaleOffset(_float3(10.f, 10.f, 10.f));
+	//pColliderComp->Set_ScaleOffset(_float3(10.f, 10.f, 10.f));
 
 	return S_OK;
 }

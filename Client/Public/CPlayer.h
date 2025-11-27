@@ -12,6 +12,7 @@ namespace Engine
     class CInput_Manager;
     class CNavigation;
     class CGravity;
+    class CBoxColliderComponent;
 
 }
 NS_BEGIN(Client)
@@ -124,6 +125,7 @@ public:
 private:
     Engine::CNavigation* m_pNavigationCom = { nullptr };
     CGravity* m_pGravity = { nullptr };
+    CBoxColliderComponent* m_pCollider = { nullptr };
 
 private:
     bool bPressed = false;

@@ -12,6 +12,10 @@
 
 #include "CInteraction_Manager.h"
 #include "CGravity.h"
+#include "CBoxColliderComponent.h"
+#include "CBounding_AABB.h"
+
+
 
 
 USING(Client)
@@ -135,7 +139,7 @@ void CPlayer::Update_Late(_float fTimeDelta)
 
     }
 
-
+    m_pCollider->Update_Collider(m_pTransformCom);
 
     //Motion_Change();
   
@@ -152,6 +156,7 @@ HRESULT CPlayer::Render()
   /*이제 각 파츠들이 rendergroup으로 들어가서 렌더한다.*/
 
 #ifdef _DEBUG
+    m_pCollider->Render();
     m_pNavigationCom->Render();
 #endif
 
@@ -563,6 +568,8 @@ void CPlayer::Free()
     Safe_Release(m_pInputManager);
     Safe_Release(m_pNavigationCom);
     Safe_Release(m_pGravity);
+    Safe_Release(m_pCollider);
+
 
     for (auto& pair : m_States)
     {
@@ -608,6 +615,32 @@ HRESULT CPlayer::Ready_Components(void* pArg)
         reinterpret_cast<CComponent**>(&m_pGravity)
     )))
         return E_FAIL;
+
+
+
+    //////////////Boxcollider추가
+    CBounding_AABB::BOUNDING_AABB_DESC CollDesc;
+    CollDesc.vCenter = { 0.f,0.5f,0.f };
+    CollDesc.Extents = { 0.5f,0.8f,0.5f };
+
+
+    CComponent* pCollider = dynamic_cast<CBoxColliderComponent*>(m_pGameInstance->Clone_Prototype(
+        PROTOTYPE::COMPONENT,
+        0,
+        PROTO_COMPONENT_NAME(L"BoxCollider"),
+        &CollDesc)
+        );
+
+    if (FAILED(Add_Component(
+        COMPONENT_TYPE::BOX_COLLIDER,
+        pCollider,
+        reinterpret_cast<CComponent**>(&m_pCollider)
+    )))
+        return E_FAIL;
+
+
+
+
 
     return S_OK;
 }
@@ -685,7 +718,6 @@ void CPlayer::JumpMovement(_float fTimeDelta)
 
     _vector vCurPos = m_pTransformCom->Get_State(STATE::POSITION);
     _vector vNewPos = vCurPos + XMVectorSet(0.f, fDT, 0.f, 0.f);
-
     // 3) 바닥 체크
     _float vOutY = 0.f;
     bool bOnGround = m_pNavigationCom->CheckGround(vNewPos, vOutY);

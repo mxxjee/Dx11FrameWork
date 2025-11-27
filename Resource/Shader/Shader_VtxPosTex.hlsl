@@ -219,7 +219,7 @@ float4 PS_SaveSlot(PS_IN In) : SV_Target0
     
     return color;
 }
-
+                        
 
 /*렌더링 방법을 정의한다.*/
 technique11 DefaultTechnique

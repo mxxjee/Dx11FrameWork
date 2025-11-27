@@ -18,16 +18,15 @@ public:
 public:
     virtual HRESULT        Update_Collider(class CTransform* pTransform);
     bool            Intersects_Ray(_vector origin, _vector rayDir, _float & Dist);
-
+    
 public:
+    void            Set_OffSet(_float3 vOffset);
+    void            Set_Size(_float3 vSize);
+public:
+    static CBoxColliderComponent* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual CBoxColliderComponent* Clone(void* pArg);
     virtual void Free() override;
 
-public:
-    static CBoxColliderComponent* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
-
-private:
-    BoundingBox      m_BoundingBox;
 
 };
 NS_END

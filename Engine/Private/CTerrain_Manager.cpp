@@ -223,32 +223,32 @@ CTerrain_Base* CTerrain_Manager::Check_Picking()
 	CTerrain_Base* pPickObj = nullptr;
 
 
-	for (auto& pair : m_TerrainMap)
-	{
-		if (pair.second)
-		{
-			Ray ray = MathUtils::CreateRayLocal(m_EngineDesc.hWnd, m_pDeviceContext, pair.second, Proj, View);
-			CMapTerrain* pTerrain = dynamic_cast<CMapTerrain*>(pair.second);
-			if (pTerrain)
-			{
-				if (pTerrain->Is_Picked(ray.Origin, ray.Dir, Dist))
-				{
-					if (Dist < MinDist)
-					{
-						MinDist = Dist;
-						pPickObj = pair.second;
-						XMStoreFloat3(&PickingWolrdPos, ray.Origin + ray.Dir * Dist);
+	//for (auto& pair : m_TerrainMap)
+	//{
+	//	if (pair.second)
+	//	{
+	//		Ray ray = MathUtils::CreateRayLocal(m_EngineDesc.hWnd, m_pDeviceContext, pair.second, Proj, View);
+	//		CMapTerrain* pTerrain = dynamic_cast<CMapTerrain*>(pair.second);
+	//		if (pTerrain)
+	//		{
+	//			if (pTerrain->Is_Picked(ray.Origin, ray.Dir, Dist))
+	//			{
+	//				if (Dist < MinDist)
+	//				{
+	//					MinDist = Dist;
+	//					pPickObj = pair.second;
+	//					XMStoreFloat3(&PickingWolrdPos, ray.Origin + ray.Dir * Dist);
 
-						XMStoreFloat3(&PickingWolrdPos, XMVector3TransformCoord(XMLoadFloat3(&PickingWolrdPos), XMLoadFloat4x4(&pTerrain->Get_Transform()->Get_World(TransformScope::WORLD))));
-						
-					}
-				}
-			}
-		}
-	}
+	//					XMStoreFloat3(&PickingWolrdPos, XMVector3TransformCoord(XMLoadFloat3(&PickingWolrdPos), XMLoadFloat4x4(&pTerrain->Get_Transform()->Get_World(TransformScope::WORLD))));
+	//					
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 
 
-	m_fPickDist = Dist;
+	//m_fPickDist = Dist;
 
 
 	return pPickObj;
@@ -286,7 +286,7 @@ HRESULT CTerrain_Manager::Save_All_Terrains(const string& path, int iNum)
 
 HRESULT CTerrain_Manager::Load_Terrains_MapTool(const string& LoadPath)
 {
-	m_pPickTerrain = nullptr;
+	/*m_pPickTerrain = nullptr;
 
 	CGameInstance* m_pGameInstance=CGameInstance::GetInstance();
 	Clear_Terrains();
@@ -351,7 +351,7 @@ HRESULT CTerrain_Manager::Load_Terrains_MapTool(const string& LoadPath)
 
 
 
-	}
+	}*/
 	return S_OK;
 }
 

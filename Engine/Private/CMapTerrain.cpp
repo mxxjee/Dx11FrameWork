@@ -131,7 +131,7 @@ HRESULT CMapTerrain::Ready_Components(void* pArg)
 
         
         /*메쉬콜라이더컴포넌트(픽킹검사)*/
-        CMeshColliderComponent::COLLIDER_MESH ColliderDesc;
+     /*   CMeshColliderComponent::COLLIDER_MESH ColliderDesc;
         ColliderDesc.pModel = m_pModel;
         ColliderDesc.pOwner = this;
         ColliderDesc.vScaleOffSet = _float3(16.f,16.f,16.f);
@@ -147,7 +147,7 @@ HRESULT CMapTerrain::Ready_Components(void* pArg)
             pMeshCollider,
             reinterpret_cast<CComponent**>(&m_pMeshCollidercomponent)
         )))
-            return E_FAIL;
+            return E_FAIL;*/
     }
 
     return S_OK;
@@ -216,16 +216,16 @@ void CMapTerrain::Free()
     Safe_Release(m_pModel);
 }
 
-bool CMapTerrain::Is_Picked(_vector Origin, _vector Dir, float& Dist)
-{
-    CheckNullResult(m_pMeshCollidercomponent, false);
-    CheckFalseResult(m_bCanPicking, false);
-
-    bool Result = m_pMeshCollidercomponent->Intersects_Ray(Origin, Dir, Dist);
-
-
-    return Result;
-}
+//bool CMapTerrain::Is_Picked(_vector Origin, _vector Dir, float& Dist)
+//{
+//    CheckNullResult(m_pMeshCollidercomponent, false);
+//    CheckFalseResult(m_bCanPicking, false);
+//
+//    bool Result = m_pMeshCollidercomponent->Intersects_Ray(Origin, Dir, Dist);
+//
+//
+//    return Result;
+//}
 
 void CMapTerrain::OnSeletected(bool bSelected)
 {

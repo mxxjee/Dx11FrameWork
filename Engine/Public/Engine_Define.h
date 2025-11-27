@@ -31,6 +31,12 @@ using namespace Microsoft::WRL;
 #include "DirectXTK/DDSTextureLoader.h"
 #include "DirectXTK/WICTextureLoader.h"
 #include "DirectXTK/ScreenGrab.h"
+#include <DirectXTK/PrimitiveBatch.h>
+#include <DirectXTK/Effects.h>
+#include <DirectXTK/VertexTypes.h>
+
+#include <DirectXTK/SpriteBatch.h>
+#include <DirectXTK/SpriteFont.h>
 
 #include "assimp/scene.h"
 #include "assimp/Importer.hpp"
@@ -38,6 +44,7 @@ using namespace Microsoft::WRL;
 
 
 #include <wincodec.h>
+
 
 using namespace DirectX;
 #include <vector>

@@ -222,5 +222,7 @@ namespace Engine
 	enum class LINE{AB,BC,CA,END};
 
 	enum class CellType {DEFAULT,FALL,END};
+	enum class COLLIDER_TYPE{SPHERE,AABB,MESH,END};
+
 }
 #endif // Engine_Enum_h__
