@@ -37,7 +37,7 @@ HRESULT CPlayer_Shield::Initialize_Copytype(void* pArg)
 
     m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(0.f, 0.f, -0.5f, 1.f));
      
-
+    Set_Active(false);
 
     return S_OK;
 }

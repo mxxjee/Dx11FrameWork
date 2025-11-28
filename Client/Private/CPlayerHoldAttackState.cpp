@@ -85,7 +85,7 @@ void CPlayerHoldAttackState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 
 void CPlayerHoldAttackState::Exit(CPlayer* pPlayer)
 {
-    pPlayer->OnAttackEnd();
+   
 }
 
 void CPlayerHoldAttackState::ChangePhase(CPlayer* pPlayer)
@@ -126,7 +126,7 @@ void CPlayerHoldAttackState::ChangePhase(CPlayer* pPlayer)
     {
         if (m_bChange)
         {
-
+            pPlayer->OnAttackEnd();
             pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
             pPlayer->Set_CanMove(true);
             pPlayer->Set_FixDir(true);

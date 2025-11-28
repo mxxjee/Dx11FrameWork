@@ -25,7 +25,7 @@ void CPlayerSlashShieldState::Enter(CPlayer* pPlayer)
 
     m_bChangeState = false; //state¹Ù²Ù±â
 
-
+ 
 }
 
 void CPlayerSlashShieldState::Update(CPlayer* pPlayer, _float fTimeDelta)
@@ -65,7 +65,10 @@ void CPlayerSlashShieldState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
     case NextAnim::ATTACK_END:
     {
         if (pPlayer->Is_AnimEnd())
+        {
             e_NextAnim = NextAnim::IDLE;
+        }
+            
 
         m_bChangeState = true;
     }
@@ -149,8 +152,13 @@ void CPlayerSlashShieldState::Change_Other_State(CPlayer* pPlayer)
 
 
     case NextAnim::IDLE:
+    {
+        pPlayer->Set_ShieldEnable(false);
+        pPlayer->OnAttackEnd();
         pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
-        break;
+
+    }
+         break;
 
 
     case NextAnim::SHIELD:
@@ -163,8 +171,11 @@ void CPlayerSlashShieldState::Change_Other_State(CPlayer* pPlayer)
         break;
 
     case NextAnim::ATTACK_HOLD:
+    {
+        pPlayer->Set_ShieldEnable(false);
         pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::HOLD_ATTACK));
-        break;
+    }
+    break;
     }
 
     m_bChangeState = false;

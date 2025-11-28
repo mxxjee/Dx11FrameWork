@@ -36,8 +36,11 @@ void CPlayerAttackState::Update(CPlayer* pPlayer, _float fTimeDelta)
         switch (e_NextAnim)
         {
         case NextAnim::IDLE:
+        {
+            pPlayer->OnAttackEnd();
             pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
-  
+
+        }
             break;
 
         case NextAnim::HOLD:
@@ -111,7 +114,7 @@ void CPlayerAttackState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 
 void CPlayerAttackState::Exit(CPlayer* pPlayer)
 {
-    pPlayer->OnAttackEnd();
+   
 }
 
 CPlayerAttackState* CPlayerAttackState::Create()

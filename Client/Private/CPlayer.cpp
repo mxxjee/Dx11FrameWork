@@ -526,6 +526,13 @@ void CPlayer::OnAttackEnd()
 
 }
 
+void CPlayer::Set_ShieldEnable(bool b)
+{
+    CPartObject* pPlayerShield = Find_PartObject(L"Player_Shield");
+    if (pPlayerShield)
+        pPlayerShield->Set_Active(b);
+}
+
 void CPlayer::Respawn()
 {
     CheckNull(m_pNavigationCom);
@@ -667,7 +674,7 @@ HRESULT CPlayer::Ready_Components(void* pArg)
     //////////////Boxcollider√ﬂ∞°
     CBounding_AABB::BOUNDING_AABB_DESC CollDesc;
     CollDesc.vCenter = { 0.f,0.5f,0.f };
-    CollDesc.Extents = { 0.5f,0.8f,0.5f };
+    CollDesc.Extents = { 0.3f,0.8f,0.4f };
 
 
     CComponent* pCollider = dynamic_cast<CBoxColliderComponent*>(m_pGameInstance->Clone_Prototype(

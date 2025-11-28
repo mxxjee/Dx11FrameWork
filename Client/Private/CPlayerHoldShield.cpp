@@ -199,8 +199,10 @@ void CPlayerHoldShield::Change_Phase(CPlayer* pPlayer)
 	break;
 
 	case Phase::End:           //EndÅ»ÃâÇØ¶ó.
-		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
-
+    { 
+        pPlayer->Set_ShieldEnable(false);
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
+    }
 		break;
 	}
 

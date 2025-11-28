@@ -163,25 +163,39 @@ HRESULT CPlayer_Body::Ready_Animation_Speed()
 
 HRESULT CPlayer_Body::Ready_Animation_Notify()
 {
-	///////////NotifyTest///////
+	///////////Notify///////
+	GameEvent Event;
+	EventPayload payload;
+	Event.Payload = payload;
+	if (m_pOwner)
+	{
+		CContainerObject* pPlayer = m_pOwner;
+		Event.Payload.Ptrs["Player"] = pPlayer;
+	}
+
+
+
 	CAnimation* pAnim = m_pModel->Find_Animation(L"slash");
 	if (pAnim)
 	{
-		GameEvent Event;
 		Event.Name = "AttackBegin";
-
-		EventPayload payload;
-		if (m_pOwner)
-		{
-			CContainerObject* pPlayer = m_pOwner;
-			Event.Payload.Ptrs["Player"] = pPlayer;
-			pAnim->AddNotify(5, Event);
-		}
-		
-
+		pAnim->AddNotify(5, Event);
 	}
 		
+	pAnim = m_pModel->Find_Animation(L"shield_lp");
+	if (pAnim)
+	{
+		Event.Name = "Shield_Loop";
+		pAnim->AddNotify(2, Event);
+	}
 
+
+	pAnim = m_pModel->Find_Animation(L"slash_hold_shield_lp");
+	if (pAnim)
+	{
+		Event.Name = "slash_hold_shield_lp";
+		pAnim->AddNotify(2, Event);
+	}
 	return S_OK;
 }
 
@@ -194,7 +208,20 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 				pPlayer->OnAttackBegin();
 		});
 
+	m_pGameInstance->RegisterListners("Shield_Loop", [](const GameEvent& event)
+		{
+			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
+			if (pPlayer)
+				pPlayer->Set_ShieldEnable(true);
+		});
 
+
+	m_pGameInstance->RegisterListners("slash_hold_shield_lp", [](const GameEvent& event)
+		{
+			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
+			if (pPlayer)
+				pPlayer->Set_ShieldEnable(true);
+		});
 	return S_OK;
 }
 

@@ -111,6 +111,7 @@ public:
 public:
     void            OnAttackBegin();
     void            OnAttackEnd();
+    void            Set_ShieldEnable(bool b);
 
 public:
     void        Respawn();
