@@ -14,6 +14,9 @@
 #include "CGravity.h"
 #include "CBoxColliderComponent.h"
 #include "CBounding_AABB.h"
+#include "CPlayer_Sword.h"
+#include "CPlayer_Shield.h"
+
 
 
 
@@ -139,7 +142,7 @@ void CPlayer::Update_Late(_float fTimeDelta)
 
     }
 
-    m_pCollider->Update_Collider(m_pTransformCom);
+    m_pCollider->Update_Collider(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
 
     //Motion_Change();
   
@@ -158,7 +161,7 @@ HRESULT CPlayer::Render()
 #ifdef _DEBUG
     if (m_bDrawDebug)
     {
-       // m_pCollider->Render();
+        m_pCollider->Render();
         m_pNavigationCom->Render();
     }
         
@@ -685,6 +688,25 @@ HRESULT CPlayer::Ready_PartObjects(void* pArg)
         m_pBody = dynamic_cast<CBody*>(Find_PartObject(L"Part_Body"));
 
     }
+
+
+    /////////WEapon
+    CWeapon::WEAPON_DESC SWordDesc{};
+    SWordDesc.pSocketMatrix = m_pBody->Get_SocketMatrix("itemA_L");
+    SWordDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
+
+    if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Player_Sword"), L"Player_Sword", &SWordDesc)))
+        return E_FAIL;
+
+
+    /////////Weapon-shield
+    CWeapon::WEAPON_DESC ShieldDesc{};
+    ShieldDesc.pSocketMatrix = m_pBody->Get_SocketMatrix("root");
+    ShieldDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
+
+    if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Player_Shield"), L"Player_Shield", &ShieldDesc)))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -737,10 +759,10 @@ void CPlayer::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop)
 
 void CPlayer::JumpMovement(_float fTimeDelta)
 {
-    m_pGravity->Update(0.016);
+    m_pGravity->Update(0.016f);
 
     // 이번 프레임 Y 이동량
-    float fDT = m_pGravity->GetFallDistance(0.016);
+    float fDT = m_pGravity->GetFallDistance(0.016f);
 
     _vector vCurPos = m_pTransformCom->Get_State(STATE::POSITION);
     _vector vNewPos = vCurPos + XMVectorSet(0.f, fDT, 0.f, 0.f);

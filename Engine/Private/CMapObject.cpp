@@ -69,7 +69,7 @@ void CMapObject::Update(_float fTimeDelta)
 	CheckNull(pColliderComp);
 		
 	
-	pColliderComp->Update_Collider(m_pTransformCom);
+	pColliderComp->Update_Collider(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
 
 	if (m_bSelected)
 		m_passName = "Select";

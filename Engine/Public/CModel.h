@@ -66,9 +66,13 @@ public:
 
 
     const wstring& Get_CurrentAnimKey() { return m_CurrentAnimKey; }
+    class CAnimation* Get_CurrentAnim();
     _float3         Get_RootDelta();
 
+
     int         Get_BoneIndex(const char* pBoneName);
+    const _float4x4* Get_BoneMatrix(const char* pBoneName);
+
     int         Get_NumAnim() { return m_iNumAnimations; }
     void        Set_Loop(const wstring& AnimKey, bool bLoop);
     bool        Get_IsAnimFinished() { return m_isAnimFinished; }

@@ -558,6 +558,11 @@ void CModel::Set_EnableRootMotion(const wstring& AnimKey, _bool bEnableRootMotio
 	return pAnim->Set_RootMotionEnalbe(bEnableRootMotion);
 }
 
+CAnimation* CModel::Get_CurrentAnim()
+{
+	return Find_Animation(m_CurrentAnimKey);
+}
+
 _float3 CModel::Get_RootDelta()
 {
 	
@@ -589,6 +594,23 @@ int CModel::Get_BoneIndex(const char* pBoneName)
 		return -1;
 
 	return iIndex;
+}
+
+const _float4x4* CModel::Get_BoneMatrix(const char* pBoneName)
+{
+	
+	auto    iter = find_if(m_Bones.begin(), m_Bones.end(), [&](CBone* pBone)->_bool
+		{
+			if (pBone->Compare_Name(pBoneName))
+				return true;
+
+			return false;
+		});
+
+	if (iter == m_Bones.end())
+		return nullptr;
+
+	return (*iter)->Get_CombinedTransformationMatrixPtr();
 }
 
 void CModel::Set_Loop(const wstring& AnimKey, bool bLoop)

@@ -173,6 +173,13 @@
     <ClInclude Include="..\Public\CMonsterDeadState.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Dead</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CWeapon.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPlayer_Sword.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Sword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPlayer_Shield.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -375,6 +382,18 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Dead">
       <UniqueIdentifier>{fcde0cd1-0c87-4cef-a396-73c3e082fb88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon">
+      <UniqueIdentifier>{0bc7a364-6528-442b-b598-e22a45800038}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon">
+      <UniqueIdentifier>{3644965f-ce1a-4422-9271-a4445de18abd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Sword">
+      <UniqueIdentifier>{d1c24f9b-4e65-40d9-a9a6-6da7a414ff01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Shield">
+      <UniqueIdentifier>{1bdfffe0-dec8-4dc5-9ee1-6ce578d00c13}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -528,6 +547,13 @@
     <ClCompile Include="..\Private\CMonsterDeadState.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Dead</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CWeapon.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPlayer_Sword.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Sword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPlayer_Shield.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

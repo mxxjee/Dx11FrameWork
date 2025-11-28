@@ -21,6 +21,8 @@ public:
     }
 
     const _float4x4   Get_TransformMatrix() { return m_TransformationMatrix; }
+
+    const _float4x4* Get_CombinedTransformationMatrixPtr() const { return &m_CombinedTransformationMatrix; }
     
     const _matrix   Get_TransformMatrix_By_XMMatrix() { return XMLoadFloat4x4(&m_TransformationMatrix);}
     const _matrix   Get_Pre_TransformMatrix_By_XMMatrix() { return XMLoadFloat4x4(&m_Pre_TransformationMatrix); }

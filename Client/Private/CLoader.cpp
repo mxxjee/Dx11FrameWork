@@ -17,6 +17,8 @@
 #include "CVIBuffer_Triangle.h"
 #include "CGravity.h"
 #include "CBoxColliderComponent.h"
+#include "CSphereColliderComponent.h"
+#include "COBBColliderComponent.h"
 
 
 ///////////////GameObject//////////////////////
@@ -37,6 +39,10 @@
 #include "CMonster_Body.h"
 #include "CNPC_Body.h"
 #include "CM_GreenZol.h"
+#include "CPlayer_Sword.h"
+#include "CPlayer_Shield.h"
+
+
 
 
 USING(Client)
@@ -347,6 +353,14 @@ HRESULT CLoader::Register_Components()
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"BoxCollider"), CBoxColliderComponent::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"SphereCollider"), CSphereColliderComponent::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"OBBCollider"), COBBColliderComponent::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+   
     return S_OK;
 }
 
@@ -401,6 +415,12 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Body", CPlayer_Body::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Sword", CPlayer_Sword::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Shield", CPlayer_Shield::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"NPC_Body", CNPC_Body::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;

@@ -382,6 +382,12 @@
     <Filter Include="05.Component\Collision\Bonding\Mesh">
       <UniqueIdentifier>{415726d4-964a-462e-b10c-35251cdf44b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\Collision\OBB">
+      <UniqueIdentifier>{4137c663-37d7-4d08-845c-18a663e01d6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\Collision\Bonding\OBB">
+      <UniqueIdentifier>{268bf149-f633-4af7-b7e5-150fce32fe92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -753,6 +759,12 @@
     <ClInclude Include="..\Public\CBounding_Mesh.h">
       <Filter>05.Component\Collision\Bonding\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CBounding_OBB.h">
+      <Filter>05.Component\Collision\Bonding\OBB</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\COBBColliderComponent.h">
+      <Filter>05.Component\Collision\OBB</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -1079,6 +1091,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CBounding_Mesh.cpp">
       <Filter>05.Component\Collision\Bonding\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CBounding_OBB.cpp">
+      <Filter>05.Component\Collision\Bonding\OBB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\COBBColliderComponent.cpp">
+      <Filter>05.Component\Collision\OBB</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -18,7 +18,7 @@ private:
 
 public:
     HRESULT     Initialize(const BOUNDING_DESC* pInitialDesc);
-    virtual         HRESULT         Update(class CTransform* pTransform);
+    virtual         HRESULT         Update(XMMATRIX WorldMatrix);
     bool            Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);
 
 private:
@@ -26,7 +26,7 @@ private:
     BoundingBox* m_pDesc = { nullptr };     // 월드행렬을 가공한 상태의 AABB바운딩박스
 
 public:
-    virtual HRESULT         Render(PrimitiveBatch<VertexPositionColor>* pBatch) override;
+    virtual HRESULT         Render(PrimitiveBatch<VertexPositionColor>* pBatch, _bool isColl) override;
 
 
 public:

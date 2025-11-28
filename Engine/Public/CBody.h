@@ -51,7 +51,8 @@ protected:
     const _uint* m_pParentState = { nullptr };
     const _uint* m_pParentPreState = { nullptr };
 
-
+public:
+    const _float4x4* Get_SocketMatrix(const char* pBoneName);
 
 
 protected:

@@ -37,10 +37,10 @@ HRESULT CSphereColliderComponent::Initialize_Copytype(void* pArg)
     return S_OK;
 }
 
-HRESULT CSphereColliderComponent::Update_Collider(CTransform* pTransform)
+HRESULT CSphereColliderComponent::Update_Collider(XMMATRIX    WorldMatrix)
 {
-
-    m_pBounding->Update(pTransform);
+    
+    m_pBounding->Update(WorldMatrix);
 
     return S_OK;
 }

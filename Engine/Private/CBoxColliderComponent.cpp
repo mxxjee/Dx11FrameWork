@@ -36,9 +36,9 @@ HRESULT CBoxColliderComponent::Initialize_Copytype(void* pArg)
     return S_OK;
 }
 
-HRESULT CBoxColliderComponent::Update_Collider(CTransform* pTransform)
+HRESULT CBoxColliderComponent::Update_Collider(XMMATRIX    WorldMatrix)
 {
-    m_pBounding->Update(pTransform);
+    m_pBounding->Update(WorldMatrix);
 
     return S_OK;
 }

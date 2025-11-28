@@ -18,11 +18,10 @@ HRESULT CBounding_Sphere::Initialize(const BOUNDING_DESC* pInitialDesc)
     return S_OK;
 }
 
-HRESULT CBounding_Sphere::Update(CTransform* pTransform)
+HRESULT CBounding_Sphere::Update(XMMATRIX WorldMatrix)
 {
     //월드행렬을 따라가되, 내가 설정한 콜라이더자체의 offset과 scale을 포함한다.
-    XMMATRIX  NewWorld = XMLoadFloat4x4(&pTransform->Get_World());
-    NewWorld = XMMatrixMultiply(NewWorld, XMMatrixScaling(m_fRadius, m_fRadius, m_fRadius));
+    _matrix NewWorld = XMMatrixMultiply(WorldMatrix, XMMatrixScaling(m_fRadius, m_fRadius, m_fRadius));
 
 
     m_pOriginalDesc->Transform((*m_pDesc), NewWorld);
@@ -38,9 +37,9 @@ bool CBounding_Sphere::Intersects_Ray(_vector origin, _vector rayDir, _float& Di
 
 }
 
-HRESULT CBounding_Sphere::Render(PrimitiveBatch<VertexPositionColor>* pBatch)
+HRESULT CBounding_Sphere::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _bool isColl)
 {
-    DX::Draw(pBatch, *m_pDesc);
+    DX::Draw(pBatch, *m_pDesc, isColl == true ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f));
 
     return E_NOTIMPL;
 }

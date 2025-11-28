@@ -21,7 +21,7 @@ public:
     virtual         HRESULT     Initialize_Copytype(void* pArg);
 
 public:
-    virtual      HRESULT   Update_Collider(class CTransform* pTransform)=0;
+    virtual      HRESULT   Update_Collider(XMMATRIX    WorldMatrix)=0;
     virtual      bool   Intersects_Ray(_vector origin, _vector rayDir, _float& Dist,class CTransform* pTransform)=0;
 
 
@@ -44,6 +44,10 @@ protected:
     _bool                    m_bActive = true;   //활성화 여부
     _bool                    m_bDebugDraw = false;
     class                    CBounding* m_pBounding = { nullptr };     //생성할 바운딩박스 
+    
+
+private:
+    _bool                   m_isColl = { false };           //충돌 했는지 판단
 
 };
 NS_END

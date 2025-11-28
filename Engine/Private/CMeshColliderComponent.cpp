@@ -48,12 +48,12 @@ HRESULT CMeshColliderComponent::Initialize_Copytype(void* pArg)
     return S_OK;
 }
 
-HRESULT CMeshColliderComponent::Update_Collider(CTransform* pTransform)
+HRESULT CMeshColliderComponent::Update_Collider(XMMATRIX    WorldMatrix)
 {
 
    // _float4x4 WorldMatrix = pTransform->Get_World();
-    m_pBounding->Update(pTransform);
-    m_pMeshBounding->Update(pTransform);
+    m_pBounding->Update(WorldMatrix);
+    m_pMeshBounding->Update(WorldMatrix);
 
     return S_OK;
 }

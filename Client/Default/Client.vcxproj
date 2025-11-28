@@ -196,12 +196,15 @@
     <ClInclude Include="..\Public\CPlayerStateGetItem.h" />
     <ClInclude Include="..\Public\CPlayerTalkState.h" />
     <ClInclude Include="..\Public\CPlayer_Body.h" />
+    <ClInclude Include="..\Public\CPlayer_Shield.h" />
+    <ClInclude Include="..\Public\CPlayer_Sword.h" />
     <ClInclude Include="..\Public\CStateDebugWindow.h" />
     <ClInclude Include="..\Public\CTerrain.h" />
     <ClInclude Include="..\Public\CUI_Interactable.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\CWeapon.h" />
     <ClInclude Include="..\Public\GlobalGameEvent.h" />
     <ClInclude Include="..\Public\MonsterStates.h" />
     <ClInclude Include="..\Public\PlayerStates.h" />
@@ -258,12 +261,15 @@
     <ClCompile Include="..\Private\CPlayerStateGetItem.cpp" />
     <ClCompile Include="..\Private\CPlayerTalkState.cpp" />
     <ClCompile Include="..\Private\CPlayer_Body.cpp" />
+    <ClCompile Include="..\Private\CPlayer_Shield.cpp" />
+    <ClCompile Include="..\Private\CPlayer_Sword.cpp" />
     <ClCompile Include="..\Private\CStateDebugWindow.cpp" />
     <ClCompile Include="..\Private\CTerrain.cpp" />
     <ClCompile Include="..\Private\CUI_Interactable.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\CWeapon.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="CScreenFilter.cpp" />
   </ItemGroup>

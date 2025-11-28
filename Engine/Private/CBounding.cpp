@@ -5,7 +5,7 @@ CBounding::CBounding(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> p
 {
 }
 
-HRESULT CBounding::Update(CTransform* pTransform)
+HRESULT CBounding::Update(XMMATRIX WorldMatrix)
 {
     return E_NOTIMPL;
 }

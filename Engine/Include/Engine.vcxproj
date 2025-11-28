@@ -160,6 +160,7 @@
     <ClInclude Include="..\Public\CBounding.h" />
     <ClInclude Include="..\Public\CBounding_AABB.h" />
     <ClInclude Include="..\Public\CBounding_Mesh.h" />
+    <ClInclude Include="..\Public\CBounding_OBB.h" />
     <ClInclude Include="..\Public\CBounding_Sphere.h" />
     <ClInclude Include="..\Public\CBoxColliderComponent.h" />
     <ClInclude Include="..\Public\CCameraComponent.h" />
@@ -238,6 +239,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CNavigation.h" />
+    <ClInclude Include="..\Public\COBBColliderComponent.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
     <ClInclude Include="..\Public\CMainCamera.h" />
     <ClInclude Include="..\Public\ColorUtils.h" />
@@ -307,6 +309,7 @@
     <ClCompile Include="..\Private\CBounding.cpp" />
     <ClCompile Include="..\Private\CBounding_AABB.cpp" />
     <ClCompile Include="..\Private\CBounding_Mesh.cpp" />
+    <ClCompile Include="..\Private\CBounding_OBB.cpp" />
     <ClCompile Include="..\Private\CBounding_Sphere.cpp" />
     <ClCompile Include="..\Private\CBoxColliderComponent.cpp" />
     <ClCompile Include="..\Private\CCameraComponent.cpp" />
@@ -382,6 +385,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CNavigation.cpp" />
+    <ClCompile Include="..\Private\COBBColliderComponent.cpp" />
     <ClCompile Include="..\Private\CObject_Manager.cpp" />
     <ClCompile Include="..\Private\CMainCamera.cpp" />
     <ClCompile Include="..\Private\COrthographicCameraComponent.cpp" />

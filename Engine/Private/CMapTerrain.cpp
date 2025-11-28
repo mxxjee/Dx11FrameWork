@@ -68,7 +68,8 @@ void CMapTerrain::Update(_float fTimeDelta)
     CheckNull(m_pTransformCom);
     CheckNull(m_pMeshCollidercomponent);
 
-    m_pMeshCollidercomponent->Update_Collider(m_pTransformCom);
+    
+    m_pMeshCollidercomponent->Update_Collider(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
 
     
 }

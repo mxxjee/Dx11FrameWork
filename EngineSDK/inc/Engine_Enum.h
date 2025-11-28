@@ -144,6 +144,7 @@ namespace Engine
 		SPHERE_COLLIDER,
 		BOX_COLLIDER,
 		MESH_COLLIDER,
+		OBB_COLLIDER,
 		MODEL,
 		NAVIGATION,
 		GRAVITYCOM,
@@ -222,7 +223,7 @@ namespace Engine
 	enum class LINE{AB,BC,CA,END};
 
 	enum class CellType {DEFAULT,FALL,END};
-	enum class COLLIDER_TYPE{SPHERE,AABB,MESH,END};
+	enum class COLLIDER_TYPE{SPHERE,AABB,MESH,OBB,END};
 
 }
 #endif // Engine_Enum_h__

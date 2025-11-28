@@ -18,7 +18,7 @@ HRESULT CBounding_Mesh::Initialize(const BOUNDING_DESC* pInitialDesc)
     return S_OK;
 }
 
-HRESULT CBounding_Mesh::Update(CTransform* pTransform)
+HRESULT CBounding_Mesh::Update(XMMATRIX WorldMatrix)
 {
     return S_OK;
 }
@@ -28,7 +28,7 @@ bool CBounding_Mesh::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist
     return m_pModel->Intersects_Ray(origin,rayDir,Dist);
 }
 
-HRESULT CBounding_Mesh::Render(PrimitiveBatch<VertexPositionColor>* pBatch)
+HRESULT CBounding_Mesh::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _bool isColl)
 {
     /*Render X*/
     return S_OK;

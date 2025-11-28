@@ -127,6 +127,11 @@ _float3 CBody::Get_RootDelta()
     return Result;
 }
 
+const _float4x4* CBody::Get_SocketMatrix(const char* pBoneName)
+{
+    return m_pModel->Get_BoneMatrix(pBoneName);
+}
+
 bool CBody::Get_IsAnimFinished()
 {
 

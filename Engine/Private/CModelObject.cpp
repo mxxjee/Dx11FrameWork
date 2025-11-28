@@ -6,6 +6,8 @@
 #include "CMeshComponent.h"
 #include "CModel.h"
 #include "CBody.h"
+#include "CAnimation.h"
+
 
 
 
@@ -161,12 +163,17 @@ void CModelObject::Render_CurrentState_Animation()
 
 
 
-
+    CAnimation* pCurrentAnim = m_pBody->Get_Model()->Get_CurrentAnim();
     string CurrentAnimKey = WStringToUTF8(m_pBody->Get_Model()->Get_CurrentAnimKey());
+    
+   
 
     ImGui::BulletText("NowPlaying:%s",
         CurrentAnimKey.c_str());
 
+
+    ImGui::BulletText("Now KeyFrame:%d",
+        pCurrentAnim->Get_CurrentKeyFrameIndex(0));
     ImGui::PopStyleColor();
 }
 string CModelObject::Convert_String_To_Enum(_uint eState)

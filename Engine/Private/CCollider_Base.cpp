@@ -57,9 +57,9 @@ HRESULT CCollider_Base::Initialize_Copytype(void* pArg)
     return S_OK;
 }
 
-HRESULT CCollider_Base::Update_Collider(CTransform* pTransform)
+HRESULT CCollider_Base::Update_Collider(XMMATRIX    WorldMatrix)
 {
-    return E_NOTIMPL;
+    return S_OK;
 }
 
 bool CCollider_Base::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist, CTransform* pTransform)
@@ -79,7 +79,7 @@ HRESULT CCollider_Base::Render()
 
     m_pBatch->Begin();
 
-    m_pBounding->Render(m_pBatch);
+    m_pBounding->Render(m_pBatch, m_isColl);
 
     m_pBatch->End();
     return S_OK;
@@ -94,8 +94,9 @@ void CCollider_Base::Free()
     {
         Safe_Delete(m_pBatch);
         Safe_Delete(m_pEffect);
+        Safe_Release(m_pInputLayout);
     }
 
     Safe_Release(m_pBounding);
-    Safe_Release(m_pInputLayout);
+   
 }

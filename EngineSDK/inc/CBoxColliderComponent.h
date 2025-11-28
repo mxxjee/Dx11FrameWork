@@ -16,7 +16,7 @@ public:
     virtual         HRESULT     Initialize_Copytype(void* pArg);
 
 public:
-    virtual HRESULT        Update_Collider(class CTransform* pTransform);
+    virtual HRESULT        Update_Collider(XMMATRIX    WorldMatrix);
     bool            Intersects_Ray(_vector origin, _vector rayDir, _float & Dist, class CTransform* pTransform);
     
 public:

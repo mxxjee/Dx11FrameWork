@@ -18,12 +18,12 @@ protected:
     virtual ~CBounding() = default;
 
 public:
-    virtual         HRESULT         Update(class CTransform* pTransform)=0;
+    virtual         HRESULT         Update(XMMATRIX WorldMatrix)=0;
     virtual bool            Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)=0;
 
 #ifdef _DEBUG
 public:
-    virtual HRESULT         Render(PrimitiveBatch<VertexPositionColor>* pBatch) = 0;
+    virtual HRESULT         Render(PrimitiveBatch<VertexPositionColor>* pBatch,_bool isColl) = 0;
     
 #endif
 public:
@@ -36,6 +36,7 @@ protected:
     ComPtr<ID3D11DeviceContext> m_pContext = nullptr;
 public:
     virtual void Free() override;
+
 
 };
 NS_END
