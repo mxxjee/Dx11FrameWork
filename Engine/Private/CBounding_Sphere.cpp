@@ -36,13 +36,14 @@ bool CBounding_Sphere::Intersects_Ray(_vector origin, _vector rayDir, _float& Di
     return m_pDesc->Intersects(origin, rayDir, Dist);
 
 }
-
+#ifdef _DEBUG
 HRESULT CBounding_Sphere::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _bool isColl)
 {
     DX::Draw(pBatch, *m_pDesc, isColl == true ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f));
 
     return E_NOTIMPL;
 }
+#endif // DEBUG
 
 CBounding_Sphere* CBounding_Sphere::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const BOUNDING_DESC* pInitialDesc)
 {

@@ -28,11 +28,13 @@ bool CBounding_Mesh::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist
     return m_pModel->Intersects_Ray(origin,rayDir,Dist);
 }
 
+#ifdef _DEBUG
 HRESULT CBounding_Mesh::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _bool isColl)
 {
     /*Render X*/
     return S_OK;
 }
+#endif
 
 CBounding_Mesh* CBounding_Mesh::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const BOUNDING_DESC* pInitialDesc)
 {

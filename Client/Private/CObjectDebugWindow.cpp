@@ -26,6 +26,7 @@ HRESULT CObjectDebugWindow::Initialize(void* pArg)
 
 void CObjectDebugWindow::Update()
 {
+#ifdef _DEBUG
     ImGui::Begin(m_WindowTitle.c_str(), &m_bOpen);
 
     if (pSelectObject)
@@ -44,6 +45,7 @@ void CObjectDebugWindow::Update()
 
     ImGui::End();
  
+#endif
 }
 
 void CObjectDebugWindow::Render()

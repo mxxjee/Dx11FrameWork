@@ -49,12 +49,16 @@ bool CBounding_AABB::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist
 
 }
 
+#ifdef _DEBUG
 HRESULT CBounding_AABB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _bool isColl)
 {
     DX::Draw(pBatch, *m_pDesc, isColl == true ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f));
 
     return S_OK;
 }
+#endif // DEBUG
+
+
 
 CBounding_AABB* CBounding_AABB::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const BOUNDING_DESC* pInitialDesc)
 {

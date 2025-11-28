@@ -31,13 +31,18 @@ using namespace Microsoft::WRL;
 #include "DirectXTK/DDSTextureLoader.h"
 #include "DirectXTK/WICTextureLoader.h"
 #include "DirectXTK/ScreenGrab.h"
+
+#ifdef _DEBUG
+
 #include <DirectXTK/PrimitiveBatch.h>
 #include <DirectXTK/Effects.h>
 #include <DirectXTK/VertexTypes.h>
 
+#endif // _DEBUG
+
+
 #include <DirectXTK/SpriteBatch.h>
 #include <DirectXTK/SpriteFont.h>
-
 #include "assimp/scene.h"
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"

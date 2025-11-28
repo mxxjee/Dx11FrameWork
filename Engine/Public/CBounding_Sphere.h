@@ -24,12 +24,15 @@ public:
 
 private:
     BoundingSphere* m_pOriginalDesc = { nullptr };       //로컬 상태의 바운딩sphere
-    BoundingSphere* m_pDesc = { nullptr };             // 월드행렬을 가공한 상태의 바운딩sphere
+    BoundingSphere* m_pDesc = { nullptr };
+    // 월드행렬을 가공한 상태의 바운딩sphere
 
+
+#ifdef _DEBUG
 public:
     virtual HRESULT         Render(PrimitiveBatch<VertexPositionColor>*pBatch, _bool isColl) override;
 
-
+#endif // DEBUG
 public:
     static  CBounding_Sphere* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext>        pContext, const BOUNDING_DESC * pInitialDesc);
     virtual void Free() override;

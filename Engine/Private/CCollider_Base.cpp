@@ -16,14 +16,13 @@ CCollider_Base::CCollider_Base(const CCollider_Base& Prototype)
     m_WolrdMatrix(Prototype.m_WolrdMatrix),
     m_bActive(Prototype.m_bActive),
     m_bDebugDraw(Prototype.m_bDebugDraw),
-    m_eType(Prototype.m_eType),
+    m_eType(Prototype.m_eType)
 #ifdef  _DEBUG
-    m_pBatch(Prototype.m_pBatch),
+    ,m_pBatch(Prototype.m_pBatch),
     m_pEffect(Prototype.m_pEffect),
     m_pInputLayout(Prototype.m_pInputLayout)
 
 #endif //  _DEBUG
-
 {
     m_WolrdMatrix = XMMatrixIdentity();
 }
@@ -90,6 +89,7 @@ HRESULT CCollider_Base::Render()
 void CCollider_Base::Free()
 {
     __super::Free();
+#ifdef DEBUG
     if (false == m_isClone)
     {
         Safe_Delete(m_pBatch);
@@ -97,6 +97,9 @@ void CCollider_Base::Free()
         Safe_Release(m_pInputLayout);
     }
 
+#endif // DEBUG
+
+    
     Safe_Release(m_pBounding);
    
 }

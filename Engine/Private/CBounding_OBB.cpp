@@ -48,6 +48,7 @@ bool CBounding_OBB::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
     return m_pDesc->Intersects(origin,rayDir,Dist);
 }
 
+#ifdef _DEBUG
 HRESULT CBounding_OBB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _bool isColl)
 {
 
@@ -55,6 +56,8 @@ HRESULT CBounding_OBB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _bool
 
     return S_OK;
 }
+#endif // DEBUG
+
 
 CBounding_OBB* CBounding_OBB::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const BOUNDING_DESC* pInitialDesc)
 {

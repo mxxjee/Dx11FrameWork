@@ -25,8 +25,12 @@ private:
     BoundingBox* m_pOriginalDesc = {nullptr};       //로컬 상태의 AABB바운딩박스
     BoundingBox* m_pDesc = { nullptr };     // 월드행렬을 가공한 상태의 AABB바운딩박스
 
+#ifdef _DEBUG
 public:
     virtual HRESULT         Render(PrimitiveBatch<VertexPositionColor>* pBatch, _bool isColl) override;
+
+#endif // DEBUG
+
 
 
 public:

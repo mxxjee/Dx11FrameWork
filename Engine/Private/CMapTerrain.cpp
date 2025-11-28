@@ -113,9 +113,9 @@ HRESULT CMapTerrain::Render()
 
 
     }
-
+#ifdef _DEBUG
     m_pMeshCollidercomponent->Render();
-
+#endif
     return S_OK;
 }
 
