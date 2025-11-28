@@ -25,7 +25,7 @@ public:
     HRESULT Initialize(class CModel* pModel, json& Json, const char* AnimFilePath, int AnimIdx, int index);
     void    Update_TransformationMatrix(const vector<class CBone*>& Bones, _float fCurrentTrackPosition,_uint* pCurrentKeyFrameIdx );
     KEYFRAME*    Get_KeyFrame(int idx) { if (idx >= m_KeyFrames.size())return nullptr;else return &m_KeyFrames[idx]; }
-
+    const vector<KEYFRAME>& Get_KeyFrames() { return m_KeyFrames; }
 
             //지금 키프레임값의 SRT와 다음애니메이션보간
     void    UpdateTransformMatrix_Blned_By_PrevToCurr(const vector<class CBone*>& Bones,_matrix ExistMatrix,_float Ratio);

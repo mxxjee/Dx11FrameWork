@@ -85,6 +85,7 @@ void CPlayerHoldAttackState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 
 void CPlayerHoldAttackState::Exit(CPlayer* pPlayer)
 {
+    pPlayer->OnAttackEnd();
 }
 
 void CPlayerHoldAttackState::ChangePhase(CPlayer* pPlayer)

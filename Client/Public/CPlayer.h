@@ -109,6 +109,10 @@ public:
     void        Set_Default();
 
 public:
+    void            OnAttackBegin();
+    void            OnAttackEnd();
+
+public:
     void        Respawn();
 public:
     static CPlayer* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);

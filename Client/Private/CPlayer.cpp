@@ -510,6 +510,22 @@ void CPlayer::Set_Default()
     m_pBody->Set_VisibleMesh(L"Ocarina_ocarina_low__Ocarina_MI_ocarina", false);
 }
 
+void CPlayer::OnAttackBegin()
+{
+    CPartObject* pPlayerSword = Find_PartObject(L"Player_Sword");
+    if (pPlayerSword)
+        pPlayerSword->Set_Active(true);
+
+}
+
+void CPlayer::OnAttackEnd()
+{
+    CPartObject* pPlayerSword = Find_PartObject(L"Player_Sword");
+    if (pPlayerSword)
+        pPlayerSword->Set_Active(false);
+
+}
+
 void CPlayer::Respawn()
 {
     CheckNull(m_pNavigationCom);
@@ -682,6 +698,8 @@ HRESULT CPlayer::Ready_PartObjects(void* pArg)
     if (pModelDesc)
     {
         CBody::BODY_DESC* pBodyDesc = static_cast<CBody::BODY_DESC*>(pModelDesc->BodyDesc);
+        pBodyDesc->pOwner = this;
+
         if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Player_Body"), L"Part_Body", pBodyDesc)))
             return E_FAIL;
 
@@ -692,6 +710,7 @@ HRESULT CPlayer::Ready_PartObjects(void* pArg)
 
     /////////WEapon
     CWeapon::WEAPON_DESC SWordDesc{};
+    SWordDesc.pOwner = this;
     SWordDesc.pSocketMatrix = m_pBody->Get_SocketMatrix("itemA_L");
     SWordDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
 
@@ -701,6 +720,7 @@ HRESULT CPlayer::Ready_PartObjects(void* pArg)
 
     /////////Weapon-shield
     CWeapon::WEAPON_DESC ShieldDesc{};
+    ShieldDesc.pOwner = this;
     ShieldDesc.pSocketMatrix = m_pBody->Get_SocketMatrix("root");
     ShieldDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
 

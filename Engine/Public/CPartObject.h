@@ -8,12 +8,15 @@
 #include "CGameObject.h"
 
 NS_BEGIN(Engine)
+class CContainerObject;
+
 class ENGINE_DLL CPartObject :
     public CGameObject
 {
 public:
     typedef struct tagPartObjectDesc : CGameObject::GAMEOBJECT_DESC
     {
+        class CContainerObject* pOwner = nullptr;
         const _float4x4* pParentMatrix = { nullptr };//포인터참조
     }PARTOBJECT_DESC;
 protected:
@@ -34,7 +37,7 @@ public:
 
     virtual HRESULT Render();
 
-
+    void        Set_Owner(CContainerObject* pOwner) { m_pOwner = pOwner; }
 
 protected:
     const _float4x4* m_pParentMatrix = { nullptr };
@@ -47,6 +50,9 @@ protected:
 public:
     virtual CGameObject* Clone(void* pArg) = 0;
     virtual void    Free() override;
+
+protected:
+        CContainerObject* m_pOwner = nullptr;
 };
 
 NS_END

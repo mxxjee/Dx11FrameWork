@@ -38,6 +38,8 @@ HRESULT CPlayer_Sword::Initialize_Copytype(void* pArg)
 	
 	m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(0.f, 0.f, -0.6f, 1.f));
 
+
+	Set_Active(false);
 	return S_OK;
 }
 

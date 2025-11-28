@@ -23,6 +23,9 @@ public:
 
 private:
     void        Motion_Change();
+    HRESULT        Ready_Animation_Speed();
+    HRESULT        Ready_Animation_Notify();
+    HRESULT        Ready_Animation_Listner();       // 이벤트리스너 등록
 
 public:
     static CPlayer_Body* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);

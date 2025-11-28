@@ -111,7 +111,7 @@ void CPlayerAttackState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 
 void CPlayerAttackState::Exit(CPlayer* pPlayer)
 {
-   
+    pPlayer->OnAttackEnd();
 }
 
 CPlayerAttackState* CPlayerAttackState::Create()

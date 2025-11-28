@@ -13,9 +13,6 @@
     <ClInclude Include="targetver.h">
       <Filter>9999.Default</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\Client_Defines.h">
-      <Filter>99.Defines</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CMainApp.h">
       <Filter>00.MainApp</Filter>
     </ClInclude>
@@ -180,6 +177,9 @@
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Sword</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayer_Shield.h" />
+    <ClInclude Include="..\Public\Client_Defines.h">
+      <Filter>99.Defines\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">

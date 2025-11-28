@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CAnimation.h" />
+    <ClInclude Include="..\Public\CAnimNotify.h" />
     <ClInclude Include="..\Public\CBase.h" />
     <ClInclude Include="..\Public\CBody.h" />
     <ClInclude Include="..\Public\CBone.h" />
@@ -303,6 +304,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CAnimation.cpp" />
+    <ClCompile Include="..\Private\CAnimNotify.cpp" />
     <ClCompile Include="..\Private\CBase.cpp" />
     <ClCompile Include="..\Private\CBody.cpp" />
     <ClCompile Include="..\Private\CBone.cpp" />

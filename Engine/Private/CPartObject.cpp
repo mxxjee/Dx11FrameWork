@@ -20,6 +20,7 @@ HRESULT CPartObject::Initialize_Copytype(void* pArg)
 {
     PARTOBJECT_DESC* pDesc = static_cast<PARTOBJECT_DESC*>(pArg);
     m_pParentMatrix = pDesc->pParentMatrix;
+    m_pOwner = pDesc->pOwner;
 
     if(FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;

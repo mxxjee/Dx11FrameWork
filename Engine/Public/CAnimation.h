@@ -4,6 +4,8 @@
 NS_BEGIN(Engine)
 class CChannel;
 class CGameObject;
+class CAnimNotify;
+
 
 class ENGINE_DLL CAnimation :
     public CBase
@@ -39,9 +41,12 @@ public:
 public:
     void                Set_RootMotionEnalbe(bool b) {m_bEnableRootMotion = b;}
     _float3             Get_RootDelta() { return RootDelta; }
-private:
+    void                AddNotify(_uint iFrame, const GameEvent& Event);
+
+public:
     void                Update_RootMotion(const vector<class CBone*>& Bones, CChannel* pChannel);
-    
+    void                CheckAnimNotify(_float PrevFrame,_float CurrentTrackPosition);  //매프레임마다 각 키프레임에 존재하는 노티파이를 실행한다.
+    _uint               Get_CurrentFrame(_float fCurrentTime);
 private:
     _uint               m_iNumChannels = {};
     vector<class CChannel*> m_Channels;
@@ -67,6 +72,10 @@ private:
 
 private:
     CGameObject* m_pOwner = nullptr;
+
+private:
+    vector<CAnimNotify*>        m_AnimNotifies;
+
 
 };
 NS_END

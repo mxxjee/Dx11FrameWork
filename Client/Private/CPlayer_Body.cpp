@@ -2,6 +2,9 @@
 #include "CModel.h"
 #include "CModelObject.h"
 #include "CAnimation.h"
+#include "CGameInstance.h"
+#include "CPlayer.h"
+
 
 
 USING(Client)
@@ -37,55 +40,15 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 			pair.second->Set_Loop(true);
 	}
 
+	if (FAILED(Ready_Animation_Speed()))
+		return E_FAIL;
 
+	if (FAILED(Ready_Animation_Notify()))
+		return E_FAIL;
 
-	m_pModel->Set_Animation(L"Idle", true);
-	m_pModel->Set_Loop(L"slash", false);
+	if (FAILED(Ready_Animation_Listner()))
+		return E_FAIL;
 
-	m_pModel->Set_Animation_Speed(L"Idle", 60.f);
-	m_pModel->Set_Animation_Speed(L"run", 60.f);
-	m_pModel->Set_Animation_Speed(L"slash",90.f);
-
-	m_pModel->Set_Animation_Speed(L"slash_hold_st", 80.f);
-	m_pModel->Set_Animation_Speed(L"slash_hold_lp", 60.f);
-	m_pModel->Set_Animation_Speed(L"slash_hold_ed", 80.f);
-
-
-	m_pModel->Set_Animation_Speed(L"slash_hold_l", 60.f);
-	m_pModel->Set_Animation_Speed(L"slash_hold_r", 60.f);
-	m_pModel->Set_Animation_Speed(L"slash_hold_b", 60.f);
-	m_pModel->Set_Animation_Speed(L"slash_hold_f", 60.f);
-
-
-	m_pModel->Set_Animation_Speed(L"shield_st", 100.f);
-	m_pModel->Set_Animation_Speed(L"shield_lp",100.f);
-	m_pModel->Set_Animation_Speed(L"shield_ed", 150.f);
-
-	m_pModel->Set_Animation_Speed(L"shield_hold_f", 60.f);
-	
-	m_pModel->Set_Animation_Speed(L"slash_hold_shield_b", 60.f);
-	m_pModel->Set_Animation_Speed(L"slash_hold_shield_f", 60.f);
-	m_pModel->Set_Animation_Speed(L"slash_hold_shield_r", 60.f);
-	m_pModel->Set_Animation_Speed(L"slash_hold_shield_l", 60.f);
-
-	m_pModel->Set_Animation_Speed(L"slash_hold_shield_l", 60.f);
-
-
-	m_pModel->Set_Animation_Speed(L"jump", 50.f);
-	m_pModel->Set_Animation_Speed(L"land",80.f);
-
-
-	m_pModel->Set_Animation_Speed(L"item_get_st", 50.f);
-	m_pModel->Set_Animation_Speed(L"item_get_lp", 50.f);
-	m_pModel->Set_Animation_Speed(L"item_get_ed", 50.f);
-
-
-	m_pModel->Set_Animation_Speed(L"carry", 50.f);
-	m_pModel->Set_Animation_Speed(L"jump_carry", 70.f);
-	m_pModel->Set_Animation_Speed(L"talk", 70.f);
-
-	
-	//m_pModel->Set_EnableRootMotion(L"jump", true);
 
 	m_pModel->Set_TransitionTime(0.2f);
 
@@ -143,6 +106,96 @@ HRESULT CPlayer_Body::Render()
 void CPlayer_Body::Motion_Change()
 {
 
+}
+
+HRESULT CPlayer_Body::Ready_Animation_Speed()
+{
+
+	m_pModel->Set_Animation(L"Idle", true);
+	m_pModel->Set_Loop(L"slash", false);
+
+
+	m_pModel->Set_Animation_Speed(L"Idle", 60.f);
+	m_pModel->Set_Animation_Speed(L"run", 60.f);
+	m_pModel->Set_Animation_Speed(L"slash", 90.f);
+
+	m_pModel->Set_Animation_Speed(L"slash_hold_st", 80.f);
+	m_pModel->Set_Animation_Speed(L"slash_hold_lp", 60.f);
+	m_pModel->Set_Animation_Speed(L"slash_hold_ed", 80.f);
+
+
+	m_pModel->Set_Animation_Speed(L"slash_hold_l", 60.f);
+	m_pModel->Set_Animation_Speed(L"slash_hold_r", 60.f);
+	m_pModel->Set_Animation_Speed(L"slash_hold_b", 60.f);
+	m_pModel->Set_Animation_Speed(L"slash_hold_f", 60.f);
+
+
+	m_pModel->Set_Animation_Speed(L"shield_st", 100.f);
+	m_pModel->Set_Animation_Speed(L"shield_lp", 100.f);
+	m_pModel->Set_Animation_Speed(L"shield_ed", 150.f);
+
+	m_pModel->Set_Animation_Speed(L"shield_hold_f", 60.f);
+
+	m_pModel->Set_Animation_Speed(L"slash_hold_shield_b", 60.f);
+	m_pModel->Set_Animation_Speed(L"slash_hold_shield_f", 60.f);
+	m_pModel->Set_Animation_Speed(L"slash_hold_shield_r", 60.f);
+	m_pModel->Set_Animation_Speed(L"slash_hold_shield_l", 60.f);
+
+	m_pModel->Set_Animation_Speed(L"slash_hold_shield_l", 60.f);
+
+
+	m_pModel->Set_Animation_Speed(L"jump", 50.f);
+	m_pModel->Set_Animation_Speed(L"land", 80.f);
+
+
+	m_pModel->Set_Animation_Speed(L"item_get_st", 50.f);
+	m_pModel->Set_Animation_Speed(L"item_get_lp", 50.f);
+	m_pModel->Set_Animation_Speed(L"item_get_ed", 50.f);
+
+
+	m_pModel->Set_Animation_Speed(L"carry", 50.f);
+	m_pModel->Set_Animation_Speed(L"jump_carry", 70.f);
+	m_pModel->Set_Animation_Speed(L"talk", 70.f);
+
+
+	return S_OK;
+}
+
+HRESULT CPlayer_Body::Ready_Animation_Notify()
+{
+	///////////NotifyTest///////
+	CAnimation* pAnim = m_pModel->Find_Animation(L"slash");
+	if (pAnim)
+	{
+		GameEvent Event;
+		Event.Name = "AttackBegin";
+
+		EventPayload payload;
+		if (m_pOwner)
+		{
+			CContainerObject* pPlayer = m_pOwner;
+			Event.Payload.Ptrs["Player"] = pPlayer;
+			pAnim->AddNotify(5, Event);
+		}
+		
+
+	}
+		
+
+	return S_OK;
+}
+
+HRESULT CPlayer_Body::Ready_Animation_Listner()
+{
+	m_pGameInstance->RegisterListners("AttackBegin", [](const GameEvent& event)
+		{
+			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
+			if (pPlayer)
+				pPlayer->OnAttackBegin();
+		});
+
+
+	return S_OK;
 }
 
 

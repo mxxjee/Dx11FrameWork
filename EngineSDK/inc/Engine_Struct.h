@@ -153,6 +153,13 @@ namespace Engine
 		UMap<string, int>		Ints;
 		UMap<string, void*>		Ptrs;
 
+		EventPayload() {}
+		EventPayload(const EventPayload& Prototpye)
+		{
+			Floats = Prototpye.Floats;
+			Ints = Prototpye.Ints;
+			Ptrs = Prototpye.Ptrs;
+		}
 	};
 
 
@@ -162,6 +169,20 @@ namespace Engine
 		string	Name = "";
 		EventPayload	Payload;		//부가데이터( 타겟지정, float값들 등)
 
+		GameEvent() {}
+		GameEvent(const GameEvent& Prototype)
+			:Name(Prototype.Name),
+			Payload(Prototype.Payload)
+		{
+		}
+
+		GameEvent operator=(const GameEvent& Other)
+		{
+			Name = Other.Name;
+			Payload = Other.Payload;
+
+			return (*this);
+		}
 	};
 
 	using EventCallBack = function<void(const GameEvent&)>;

@@ -3,6 +3,8 @@
 #include "CModel.h"
 #include "CBone.h"
 #include "CBody.h"
+#include "CAnimNotify.h"
+
 
 CAnimation::CAnimation()
 {
@@ -60,9 +62,10 @@ HRESULT CAnimation::Initialize(CModel* pModel, json& Json, const char* filePath,
 
 bool CAnimation::Update_TransformationMatrices(const vector<class CBone*>& Bones, _float fTimeDelta)
 {
+	float prevTime = m_fCurrentTrackPosition;
 
+	
 	m_fCurrentTrackPosition += fTimeDelta * m_fTickPerSecond;
-
 
 	if (m_fCurrentTrackPosition >= m_fDuration)
 	{
@@ -78,8 +81,11 @@ bool CAnimation::Update_TransformationMatrices(const vector<class CBone*>& Bones
 		
 	}
 
+
+	CheckAnimNotify(prevTime,m_fCurrentTrackPosition);
+
+
 	//전이상태가 아니라면..특정 뼈들만 상태갱신
-	
 	_uint	iIndex = {};
 
 	/*재생바의 위치에 따라 뼈들의 상태를 갱신시킨다.*/
@@ -142,6 +148,17 @@ int CAnimation::Get_ChannelIdx(int BoneNum)
 	return Num;
 }
 
+void CAnimation::AddNotify(_uint iFrame, const GameEvent& Event)
+{
+	CAnimNotify::AnimNotify_DESC Desc;
+	Desc.GameEvent = Event;
+	Desc.iKeyFrame = iFrame;
+
+	CAnimNotify* pAnimNotify = CAnimNotify::Create(&Desc);
+	m_AnimNotifies.push_back(pAnimNotify);
+
+}
+
 void CAnimation::Update_RootMotion(const vector<class CBone*>& Bones, CChannel* pChannel)
 {
 	//루트본이아니라면, 실행X
@@ -179,6 +196,35 @@ void CAnimation::Update_RootMotion(const vector<class CBone*>& Bones, CChannel* 
 	keyFrame->vTranslation.y = 0.f;
 }
 
+void CAnimation::CheckAnimNotify(_float PrevFrame, _float CurrentTrackPosition)
+{
+	_int PrevKeyFrame = Get_CurrentFrame(PrevFrame);
+	_int CurrentKeyFrame = Get_CurrentFrame(CurrentTrackPosition);
+
+
+	for (auto& Notify : m_AnimNotifies)
+	{
+		if (PrevKeyFrame <= Notify->Get_Frame() && Notify->Get_Frame() < CurrentKeyFrame)
+			Notify->NotifyBegin();
+	}
+}
+
+_uint CAnimation::Get_CurrentFrame(_float fCurrentTime)
+{
+
+	float t = fCurrentTime;
+	const auto& keys = m_Channels[0]->Get_KeyFrames();
+
+	for (_uint i = 0; i < keys.size() - 1; ++i)
+	{
+		if (t >= keys[i].fTrackPosition && t < keys[i + 1].fTrackPosition)
+			return i;
+	}
+
+	return keys.size() - 1;
+
+}
+
 CAnimation* CAnimation::Create(CModel* pModel, json& Json, const char* filePath, _uint idx)
 {
 	CAnimation* pInstance = new CAnimation();
@@ -200,8 +246,13 @@ void CAnimation::Free()
 {
 	__super::Free();
 
+	for (auto& pNotify : m_AnimNotifies)
+		Safe_Release(pNotify);
+
 	for (auto& pChannel : m_Channels)
 		Safe_Release(pChannel);
+
+	
 
 	m_Channels.clear();
 }

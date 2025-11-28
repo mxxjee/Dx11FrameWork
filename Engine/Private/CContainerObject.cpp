@@ -31,7 +31,12 @@ void CContainerObject::Update_Priority(_float fTimeDelta)
     for (auto& pair : m_PartObjects)
     {
         if (pair.second)
-            pair.second->Update_Priority(fTimeDelta);
+        {
+            if(pair.second->Is_Active())
+                pair.second->Update_Priority(fTimeDelta);
+        
+        }
+           
     }
         
 }
@@ -41,7 +46,11 @@ void CContainerObject::Update(_float fTimeDelta)
     for (auto& pair : m_PartObjects)
     {
         if (pair.second)
-            pair.second->Update(fTimeDelta);
+        {
+            if (pair.second->Is_Active())
+                pair.second->Update(fTimeDelta);
+        }
+            
     }
 }
 
@@ -50,7 +59,11 @@ void CContainerObject::Update_Late(_float fTimeDelta)
     for (auto& pair : m_PartObjects)
     {
         if (pair.second)
-            pair.second->Update_Late(fTimeDelta);
+        {
+            if (pair.second->Is_Active())
+                pair.second->Update_Late(fTimeDelta);
+        }
+            
     }
 }
 
@@ -59,7 +72,11 @@ void CContainerObject::Update_Render(_float fTimeDelta)
     for (auto& pair : m_PartObjects)
     {
         if (pair.second)
-            pair.second->Update_Render(fTimeDelta);
+        {
+            if (pair.second->Is_Active())
+                pair.second->Update_Render(fTimeDelta);
+        }
+            
     }
 }
 
@@ -85,7 +102,6 @@ HRESULT CContainerObject::Add_PartObject(_uint iPrototypeLevelIdx, const _wstrin
 
     pPartObject->Set_Tag(strPartObjTag);
     m_PartObjects.emplace(strPartObjTag, pPartObject);
-
     return S_OK;
 }
 

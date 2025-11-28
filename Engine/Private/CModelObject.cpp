@@ -173,7 +173,7 @@ void CModelObject::Render_CurrentState_Animation()
 
 
     ImGui::BulletText("Now KeyFrame:%d",
-        pCurrentAnim->Get_CurrentKeyFrameIndex(0));
+        pCurrentAnim->Get_CurrentFrame(pCurrentAnim->Get_CurrentTrackPoistion()));
     ImGui::PopStyleColor();
 }
 string CModelObject::Convert_String_To_Enum(_uint eState)

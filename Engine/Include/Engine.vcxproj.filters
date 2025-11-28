@@ -388,6 +388,9 @@
     <Filter Include="05.Component\Collision\Bonding\OBB">
       <UniqueIdentifier>{268bf149-f633-4af7-b7e5-150fce32fe92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\13.ModelManager\Model\Animations\AnimNotify">
+      <UniqueIdentifier>{3870886b-a8e9-4337-8fa4-3d32d2d8258d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -765,6 +768,9 @@
     <ClInclude Include="..\Public\COBBColliderComponent.h">
       <Filter>05.Component\Collision\OBB</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CAnimNotify.h">
+      <Filter>00.System\13.ModelManager\Model\Animations\AnimNotify</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -1097,6 +1103,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\COBBColliderComponent.cpp">
       <Filter>05.Component\Collision\OBB</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAnimNotify.cpp">
+      <Filter>00.System\13.ModelManager\Model\Animations\AnimNotify</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
