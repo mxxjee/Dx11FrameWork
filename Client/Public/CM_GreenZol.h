@@ -59,6 +59,9 @@ public:
 public:
     void            Idle_Behavior(_float fTimeDelta);
     void            JumpStart_Behavior();
+    void            JumpLoop_Behavior(_float fTimeDelta);
+    void            JumpEnd_Behavior();
+
     bool            Get_IsHide() { return m_bHide; }
     bool            Get_IsOnGround();
 private:

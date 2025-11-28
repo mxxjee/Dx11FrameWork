@@ -58,10 +58,12 @@ void CMGreenZolJumpAttackState::Update(CMonster* pMonster, _float fTimeDelta)
 
 
 	case Client::CMGreenZolJumpAttackState::START:
+		m_pGreenZol->JumpLoop_Behavior(fTimeDelta);
 		if (pMonster->Is_AnimEnd())
 		{
-
+			
 			m_ePhase = PHASE::LOOP;
+			m_pGreenZol->JumpEnd_Behavior();
 			pMonster->Reserve_Animation_To_Body(L"jump_loop", true);
 			pMonster->Set_CanMove(true);
 		}

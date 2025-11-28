@@ -447,9 +447,20 @@ void CM_GreenZol::Idle_Behavior(_float fTimeDelta)
 void CM_GreenZol::JumpStart_Behavior()
 {
 	m_bJump = true;
-	//m_pTransformCom->Move(DIRECTION::FORWARD,)
 	m_pGravity->Jump(25.f);
 
+}
+
+void CM_GreenZol::JumpLoop_Behavior(_float fTimeDelta)
+{
+	CheckFalse(m_bJump);
+	m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta, Space::Local, m_pNavigationCom);
+
+}
+
+void CM_GreenZol::JumpEnd_Behavior()
+{
+	m_bJump = false;
 }
 
 bool CM_GreenZol::Get_IsOnGround()
