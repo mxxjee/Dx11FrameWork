@@ -34,6 +34,7 @@
 
 #include "CFreeCamera.h"
 #include "ImGuizmo.h"
+#include "MapTool_Defines.h"
 
 
 
@@ -160,6 +161,13 @@ HRESULT CMainTool::Initialize_MapTool()
     pGameInstance->Register_HotKey(KeyCode::E, true, false, false, []()
         {
             CImGui_Manager::GetInstance()->Set_MapToolMode(MapToolMode::EDIT);
+
+        });
+
+
+    pGameInstance->Register_HotKey(KeyCode::D, true, false, false, []()
+        {
+            CGameInstance::m_bDrawDebug = !CGameInstance::m_bDrawDebug;
 
         });
     return S_OK;

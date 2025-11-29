@@ -152,8 +152,8 @@ HRESULT CMainApp::Initialize_Cilent()
 	pGameInstance->Register_HotKey(KeyCode::D, true, false,false,[]()
 		{
 			
-			m_bDrawDebug = !m_bDrawDebug;
-			CGameInstance::GetInstance()->Set_DrawDebug(m_bDrawDebug);
+			CGameInstance::m_bDrawDebug = !CGameInstance::m_bDrawDebug;
+
 		
 		});
 

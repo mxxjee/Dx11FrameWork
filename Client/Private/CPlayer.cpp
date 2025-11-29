@@ -159,7 +159,7 @@ HRESULT CPlayer::Render()
   /*이제 각 파츠들이 rendergroup으로 들어가서 렌더한다.*/
 
 #ifdef _DEBUG
-    if (m_bDrawDebug)
+    if (CGameInstance::m_bDrawDebug)
     {
         m_pCollider->Render();
         m_pNavigationCom->Render();

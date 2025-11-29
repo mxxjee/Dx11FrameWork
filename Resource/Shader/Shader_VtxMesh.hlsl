@@ -83,14 +83,16 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
 
     //Maskmap의 흰색부분 = 풀, 검은색 부분 = 흙
     float4 MtrlDiffuseColor =  g_DiffuseTexture.Sample(sampler0, Input.vTexcoord);
- 
+       
+    clip(MtrlDiffuseColor.a - 0.5f);
+               
     //음영값 (diffuse 세기)
     float fShade = Compute_Shade(g_vLightDirection, Input.vNormal);
     
   
     //specular 세기 = 반사벡터를 구해서  카메라 시야벡터 * (-1)와 내적
     float fSpecular = Compute_Specular(g_vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition,50);
-    
+                  
  
     fDiffuseColor = g_vLightDiffuse * MtrlDiffuseColor * fShade;
     fAmbientColor = g_vLightAmbient * g_vMaterialAmbient * (MtrlDiffuseColor * 0.5f);

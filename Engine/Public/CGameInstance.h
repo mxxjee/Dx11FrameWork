@@ -345,6 +345,9 @@ public:
 	void                Release_Engine();
 	virtual void        Free() override;
 
+#ifdef _DEBUG
+	static  bool		m_bDrawDebug;
+#endif 
 };
 
 NS_END

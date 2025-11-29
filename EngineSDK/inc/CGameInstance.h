@@ -6,7 +6,7 @@
 /*엔진의 모든 매니저들을 관리한다.
 1. 엔진의 모든 매니저들을 업데이트/렌더한다.
 2. 여러 매니저들의 함수를 호출해주는 역할 (링크)
-3. 알아서 Update한다.
+3. 알아서 Update한다. 
 4. 알아서 Render한다.
 
 */
@@ -345,6 +345,9 @@ public:
 	void                Release_Engine();
 	virtual void        Free() override;
 
+#ifdef _DEBUG
+	static  bool		m_bDrawDebug;
+#endif 
 };
 
 NS_END

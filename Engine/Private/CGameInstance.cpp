@@ -37,6 +37,7 @@
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
+bool		CGameInstance::m_bDrawDebug = true;
 CGameInstance::CGameInstance()
 {
 	 

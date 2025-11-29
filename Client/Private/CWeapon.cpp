@@ -72,7 +72,7 @@ void CWeapon::Update_Render(_float fTimeDelta)
 HRESULT CWeapon::Render()
 {
 #ifdef _DEBUG
-    if (m_bDrawDebug)
+    if (CGameInstance::m_bDrawDebug)
     {
         for (auto& i : m_pCollider)
             i->Render();

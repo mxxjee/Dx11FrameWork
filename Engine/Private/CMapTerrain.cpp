@@ -3,12 +3,12 @@
 #include "CShader.h"
 #include "CMeshComponent.h"
 #include "CGameInstance.h"
-#include "CGameInstance.h"
 #include "CMeshColliderComponent.h"
 #include "MathUtils.h"
 #include "CInput_Manager.h"
 #include "CMapObject_Manager.h"
 #include "CBounding_Mesh.h"
+
 
 
 
@@ -114,7 +114,8 @@ HRESULT CMapTerrain::Render()
 
     }
 #ifdef _DEBUG
-    m_pMeshCollidercomponent->Render();
+    if(CGameInstance::m_bDrawDebug)
+        m_pMeshCollidercomponent->Render();
 #endif
     return S_OK;
 }

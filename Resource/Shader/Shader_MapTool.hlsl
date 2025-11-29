@@ -77,7 +77,8 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
     //////////////////Direction_Light에 대한 연산///////////////////////////////////
     //DiffuseColor
     float4 fDiffuseColor = g_DiffuseTexture.Sample(sampler0, Input.vTexcoord);
-
+    clip(fDiffuseColor.a-0.1f);
+       
     return fDiffuseColor;
 
 }
