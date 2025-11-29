@@ -30,7 +30,7 @@
 #include "IMapEditable.h"
 #include "CNavMeshEdit_Manager.h"
 #include "CNavMeshDebugWindow.h"
-
+#include "CTerrainBuildWindow.h"
 
 #include "CFreeCamera.h"
 #include "ImGuizmo.h"
@@ -77,6 +77,7 @@ HRESULT CMainTool::Initialize()
     //CreateSaveWindow();
     CreateMenuBar();
     CreateNavMeshDebugWindow();
+    CreateTerrainBuildWindow();
 
     Reigster_Levels();
     if (FAILED(Start_Level(Client::LEVEL_ID::MAPTOOL, LEVELCHANGETYPE::REPLACETOP)))
@@ -536,6 +537,18 @@ void CMainTool::CreateNavMeshDebugWindow()
     Desc.Tag = "NavMeshDebug";
 
     pImGui_Manager->RegisterWindow(CNavMeshDebugWindow::Create(m_pDevice, m_pContext, &Desc));
+
+}
+
+void CMainTool::CreateTerrainBuildWindow()
+{
+    CNavMeshDebugWindow::IMGUIWINDOW_DESC Desc;
+    Desc.m_WindowTitle = "TerrainBuildWindow";
+    Desc.m_WindowPos = ImVec2(100, 100);
+    Desc.m_WindowSize = ImVec2(300, 300);
+    Desc.Tag = "TerrainBuildWindow";
+
+    pImGui_Manager->RegisterWindow(CTerrainBuildWindow::Create(m_pDevice, m_pContext, &Desc));
 
 }
 

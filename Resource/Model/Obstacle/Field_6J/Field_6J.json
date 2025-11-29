@@ -1,0 +1,492 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "MI_f_Kanaletto_tile_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_f_Kanaletto_tile_01",
+            "Normal": "",
+            "OPACITY": "MI_f_Kanaletto_tile_01_alb.png",
+            "Specular": "MI_f_Kanaletto_tile_01_smt.png"
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_f_Kanaletto_tile_02_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_f_Kanaletto_tile_02.001",
+            "Normal": "",
+            "OPACITY": "MI_f_Kanaletto_tile_02_alb.png",
+            "Specular": "MI_f_Kanaletto_tile_02_smt.png"
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_tile_c_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_tile_c_01",
+            "Normal": "",
+            "OPACITY": "MI_tile_c_01_alb.png",
+            "Specular": "MI_tile_c_01_smt.png"
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_tile_g_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_tile_g_01.001",
+            "Normal": "",
+            "OPACITY": "MI_tile_g_01_alb.png",
+            "Specular": "MI_tile_g_01_smt.png"
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_f_Kanaletto_03_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_f_Kanaletto_03",
+            "Normal": "",
+            "OPACITY": "MI_f_Kanaletto_03_alb.png",
+            "Specular": "MI_f_Kanaletto_03_smt.png"
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_f_Kanaletto_04_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_f_Kanaletto_04.001",
+            "Normal": "",
+            "OPACITY": "MI_f_Kanaletto_04_alb.png",
+            "Specular": "MI_f_Kanaletto_04_smt.png"
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_f_Kanaletto_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_f_Kanaletto_01.001",
+            "Normal": "",
+            "OPACITY": "MI_f_Kanaletto_01_alb.png",
+            "Specular": "MI_f_Kanaletto_01_smt.png"
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_f_Kanaletto_02_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_f_Kanaletto_02.001",
+            "Normal": "",
+            "OPACITY": "MI_f_Kanaletto_02_alb.png",
+            "Specular": "MI_f_Kanaletto_02_smt.png"
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_f_Kanaletto_04_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_f_Kanaletto_04.001",
+            "Normal": "",
+            "OPACITY": "MI_f_Kanaletto_04_alb.png",
+            "Specular": "MI_f_Kanaletto_04_smt.png"
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_f_Kanaletto_05_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_f_Kanaletto_06.001",
+            "Normal": "",
+            "OPACITY": "MI_f_Kanaletto_05_alb.png",
+            "Specular": "MI_f_Kanaletto_05_smt.png"
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_f_Kanaletto_06_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_f_Kanaletto_07.001",
+            "Normal": "",
+            "OPACITY": "MI_f_Kanaletto_06_alb.png",
+            "Specular": "MI_f_Kanaletto_06_smt.png"
+        }
+    ],
+    "MeshNums": 11,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 234,
+            "MaterialName": "MI_f_Kanaletto_tile_01",
+            "MeshIdx": 0,
+            "Name": "floor_k__MI_f_Kanaletto_tile_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    -1.6292068494294654e-07,
+                    1.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -1.0,
+                    -1.6292068494294654e-07,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 64
+        },
+        {
+            "IBPath": "Mesh_1.ib",
+            "IndexCount": 486,
+            "MaterialName": "MI_f_Kanaletto_tile_02.001",
+            "MeshIdx": 1,
+            "Name": "floor_k__MI_f_Kanaletto_tile_02",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    -1.6292068494294654e-07,
+                    1.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -1.0,
+                    -1.6292068494294654e-07,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_1.vb",
+            "VertexCount": 144
+        },
+        {
+            "IBPath": "Mesh_2.ib",
+            "IndexCount": 138,
+            "MaterialName": "MI_tile_c_01",
+            "MeshIdx": 2,
+            "Name": "floor_k__MI_tile_c_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    -1.6292068494294654e-07,
+                    1.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -1.0,
+                    -1.6292068494294654e-07,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_2.vb",
+            "VertexCount": 92
+        },
+        {
+            "IBPath": "Mesh_3.ib",
+            "IndexCount": 972,
+            "MaterialName": "MI_tile_g_01.001",
+            "MeshIdx": 3,
+            "Name": "floor_k__MI_tile_g_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    -1.6292068494294654e-07,
+                    1.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -1.0,
+                    -1.6292068494294654e-07,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_3.vb",
+            "VertexCount": 288
+        },
+        {
+            "IBPath": "Mesh_4.ib",
+            "IndexCount": 4212,
+            "MaterialName": "MI_f_Kanaletto_03",
+            "MeshIdx": 4,
+            "Name": "hata__MI_f_Kanaletto_03",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    -1.6292068494294654e-07,
+                    1.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -1.0,
+                    -1.6292068494294654e-07,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_4.vb",
+            "VertexCount": 1188
+        },
+        {
+            "IBPath": "Mesh_5.ib",
+            "IndexCount": 588,
+            "MaterialName": "MI_f_Kanaletto_04.001",
+            "MeshIdx": 5,
+            "Name": "hata__MI_f_Kanaletto_04",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    -1.6292068494294654e-07,
+                    1.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -1.0,
+                    -1.6292068494294654e-07,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_5.vb",
+            "VertexCount": 124
+        },
+        {
+            "IBPath": "Mesh_6.ib",
+            "IndexCount": 2058,
+            "MaterialName": "MI_f_Kanaletto_01.001",
+            "MeshIdx": 6,
+            "Name": "wall_k__MI_f_Kanaletto_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    -1.6292068494294654e-07,
+                    1.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -1.0,
+                    -1.6292068494294654e-07,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_6.vb",
+            "VertexCount": 758
+        },
+        {
+            "IBPath": "Mesh_7.ib",
+            "IndexCount": 7443,
+            "MaterialName": "MI_f_Kanaletto_02.001",
+            "MeshIdx": 7,
+            "Name": "wall_k__MI_f_Kanaletto_02",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    -1.6292068494294654e-07,
+                    1.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -1.0,
+                    -1.6292068494294654e-07,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_7.vb",
+            "VertexCount": 2883
+        },
+        {
+            "IBPath": "Mesh_8.ib",
+            "IndexCount": 18753,
+            "MaterialName": "MI_f_Kanaletto_04.001",
+            "MeshIdx": 8,
+            "Name": "wall_k__MI_f_Kanaletto_04",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    -1.6292068494294654e-07,
+                    1.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -1.0,
+                    -1.6292068494294654e-07,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_8.vb",
+            "VertexCount": 5442
+        },
+        {
+            "IBPath": "Mesh_9.ib",
+            "IndexCount": 114,
+            "MaterialName": "MI_f_Kanaletto_06.001",
+            "MeshIdx": 9,
+            "Name": "wall_k__MI_f_Kanaletto_06",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    -1.6292068494294654e-07,
+                    1.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -1.0,
+                    -1.6292068494294654e-07,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_9.vb",
+            "VertexCount": 40
+        },
+        {
+            "IBPath": "Mesh_10.ib",
+            "IndexCount": 5229,
+            "MaterialName": "MI_f_Kanaletto_07.001",
+            "MeshIdx": 10,
+            "Name": "wall_k__MI_f_Kanaletto_07",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    -1.6292068494294654e-07,
+                    1.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -1.0,
+                    -1.6292068494294654e-07,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_10.vb",
+            "VertexCount": 2107
+        }
+    ],
+    "ModelName": "Field_6J"
+}

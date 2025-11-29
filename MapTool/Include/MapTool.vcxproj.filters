@@ -73,6 +73,9 @@
     <Filter Include="02.ImguiObjects\NavMeshDebugWindow">
       <UniqueIdentifier>{a7eba30b-6bce-4d23-9fc8-aad54d165b66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.ImguiObjects\TerrainBuildWindow">
+      <UniqueIdentifier>{8f074fbe-d777-4e4e-aa1f-299bab4d830a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CMainTool.h">
@@ -141,6 +144,9 @@
     <ClInclude Include="..\Public\CNavMeshDebugWindow.h">
       <Filter>02.ImguiObjects\NavMeshDebugWindow</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CTerrainBuildWindow.h">
+      <Filter>02.ImguiObjects\TerrainBuildWindow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CMainTool.cpp">
@@ -193,6 +199,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CNavMeshDebugWindow.cpp">
       <Filter>02.ImguiObjects\NavMeshDebugWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTerrainBuildWindow.cpp">
+      <Filter>02.ImguiObjects\TerrainBuildWindow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -51,6 +51,7 @@ private:
 	void		CreateAssetBrowserWindow();
 	void		CreateSaveWindow();
 	void		CreateNavMeshDebugWindow();
+	void		CreateTerrainBuildWindow();
 	
 	void		CreateMenuBar();
 

@@ -1,0 +1,562 @@
+{
+    "AnimDatas": [
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 2200,
+                    "BoneName": "center",
+                    "NumKeyFrames": 50
+                },
+                {
+                    "BinaryOffset": 2200,
+                    "BinarySize": 2200,
+                    "BoneName": "eye_L",
+                    "NumKeyFrames": 50
+                },
+                {
+                    "BinaryOffset": 4400,
+                    "BinarySize": 2200,
+                    "BoneName": "eye_R",
+                    "NumKeyFrames": 50
+                },
+                {
+                    "BinaryOffset": 6600,
+                    "BinarySize": 2068,
+                    "BoneName": "lower_a",
+                    "NumKeyFrames": 47
+                },
+                {
+                    "BinaryOffset": 8668,
+                    "BinarySize": 1232,
+                    "BoneName": "lower_b",
+                    "NumKeyFrames": 28
+                },
+                {
+                    "BinaryOffset": 9900,
+                    "BinarySize": 2200,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 50
+                },
+                {
+                    "BinaryOffset": 12100,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 12188,
+                    "BinarySize": 2200,
+                    "BoneName": "upper_a",
+                    "NumKeyFrames": 50
+                },
+                {
+                    "BinaryOffset": 14388,
+                    "BinarySize": 1760,
+                    "BoneName": "upper_b",
+                    "NumKeyFrames": 40
+                }
+            ],
+            "Duration": 49.0,
+            "Name": "spawn",
+            "NumChannels": 10,
+            "TickPerSecond": 24.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 88,
+                    "BoneName": "center",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 88,
+                    "BinarySize": 88,
+                    "BoneName": "eye_L",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 176,
+                    "BinarySize": 88,
+                    "BoneName": "eye_R",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 264,
+                    "BinarySize": 88,
+                    "BoneName": "lower_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 352,
+                    "BinarySize": 88,
+                    "BoneName": "lower_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 440,
+                    "BinarySize": 3564,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 81
+                },
+                {
+                    "BinaryOffset": 4004,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 4092,
+                    "BinarySize": 88,
+                    "BoneName": "upper_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 4180,
+                    "BinarySize": 88,
+                    "BoneName": "upper_b",
+                    "NumKeyFrames": 2
+                }
+            ],
+            "Duration": 80.0,
+            "Name": "jump_sign",
+            "NumChannels": 10,
+            "TickPerSecond": 24.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 396,
+                    "BoneName": "center",
+                    "NumKeyFrames": 9
+                },
+                {
+                    "BinaryOffset": 396,
+                    "BinarySize": 396,
+                    "BoneName": "eye_L",
+                    "NumKeyFrames": 9
+                },
+                {
+                    "BinaryOffset": 792,
+                    "BinarySize": 396,
+                    "BoneName": "eye_R",
+                    "NumKeyFrames": 9
+                },
+                {
+                    "BinaryOffset": 1188,
+                    "BinarySize": 352,
+                    "BoneName": "lower_a",
+                    "NumKeyFrames": 8
+                },
+                {
+                    "BinaryOffset": 1540,
+                    "BinarySize": 396,
+                    "BoneName": "lower_b",
+                    "NumKeyFrames": 9
+                },
+                {
+                    "BinaryOffset": 1936,
+                    "BinarySize": 396,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 9
+                },
+                {
+                    "BinaryOffset": 2332,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2420,
+                    "BinarySize": 396,
+                    "BoneName": "upper_a",
+                    "NumKeyFrames": 9
+                },
+                {
+                    "BinaryOffset": 2816,
+                    "BinarySize": 396,
+                    "BoneName": "upper_b",
+                    "NumKeyFrames": 9
+                }
+            ],
+            "Duration": 8.0,
+            "Name": "jump_st",
+            "NumChannels": 10,
+            "TickPerSecond": 24.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 1804,
+                    "BoneName": "center",
+                    "NumKeyFrames": 41
+                },
+                {
+                    "BinaryOffset": 1804,
+                    "BinarySize": 1804,
+                    "BoneName": "eye_L",
+                    "NumKeyFrames": 41
+                },
+                {
+                    "BinaryOffset": 3608,
+                    "BinarySize": 1804,
+                    "BoneName": "eye_R",
+                    "NumKeyFrames": 41
+                },
+                {
+                    "BinaryOffset": 5412,
+                    "BinarySize": 1760,
+                    "BoneName": "lower_a",
+                    "NumKeyFrames": 40
+                },
+                {
+                    "BinaryOffset": 7172,
+                    "BinarySize": 1804,
+                    "BoneName": "lower_b",
+                    "NumKeyFrames": 41
+                },
+                {
+                    "BinaryOffset": 8976,
+                    "BinarySize": 1804,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 41
+                },
+                {
+                    "BinaryOffset": 10780,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 10868,
+                    "BinarySize": 1804,
+                    "BoneName": "upper_a",
+                    "NumKeyFrames": 41
+                },
+                {
+                    "BinaryOffset": 12672,
+                    "BinarySize": 88,
+                    "BoneName": "upper_b",
+                    "NumKeyFrames": 2
+                }
+            ],
+            "Duration": 40.0,
+            "Name": "jump_loop",
+            "NumChannels": 10,
+            "TickPerSecond": 24.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 352,
+                    "BoneName": "center",
+                    "NumKeyFrames": 8
+                },
+                {
+                    "BinaryOffset": 352,
+                    "BinarySize": 1100,
+                    "BoneName": "eye_L",
+                    "NumKeyFrames": 25
+                },
+                {
+                    "BinaryOffset": 1452,
+                    "BinarySize": 1100,
+                    "BoneName": "eye_R",
+                    "NumKeyFrames": 25
+                },
+                {
+                    "BinaryOffset": 2552,
+                    "BinarySize": 396,
+                    "BoneName": "lower_a",
+                    "NumKeyFrames": 9
+                },
+                {
+                    "BinaryOffset": 2948,
+                    "BinarySize": 220,
+                    "BoneName": "lower_b",
+                    "NumKeyFrames": 5
+                },
+                {
+                    "BinaryOffset": 3168,
+                    "BinarySize": 132,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 3
+                },
+                {
+                    "BinaryOffset": 3300,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 3388,
+                    "BinarySize": 220,
+                    "BoneName": "upper_a",
+                    "NumKeyFrames": 5
+                },
+                {
+                    "BinaryOffset": 3608,
+                    "BinarySize": 220,
+                    "BoneName": "upper_b",
+                    "NumKeyFrames": 5
+                }
+            ],
+            "Duration": 32.0,
+            "Name": "jump_ed",
+            "NumChannels": 10,
+            "TickPerSecond": 24.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 88,
+                    "BoneName": "center",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 88,
+                    "BinarySize": 880,
+                    "BoneName": "eye_L",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 968,
+                    "BinarySize": 880,
+                    "BoneName": "eye_R",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 1848,
+                    "BinarySize": 880,
+                    "BoneName": "lower_a",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 2728,
+                    "BinarySize": 880,
+                    "BoneName": "lower_b",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 3608,
+                    "BinarySize": 880,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 4488,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 4576,
+                    "BinarySize": 880,
+                    "BoneName": "upper_a",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 5456,
+                    "BinarySize": 880,
+                    "BoneName": "upper_b",
+                    "NumKeyFrames": 20
+                }
+            ],
+            "Duration": 19.0,
+            "Name": "dead",
+            "NumChannels": 10,
+            "TickPerSecond": 24.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 88,
+                    "BoneName": "center",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 88,
+                    "BinarySize": 88,
+                    "BoneName": "eye_L",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 176,
+                    "BinarySize": 88,
+                    "BoneName": "eye_R",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 264,
+                    "BinarySize": 88,
+                    "BoneName": "lower_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 352,
+                    "BinarySize": 88,
+                    "BoneName": "lower_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 440,
+                    "BinarySize": 88,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 528,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 616,
+                    "BinarySize": 88,
+                    "BoneName": "upper_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 704,
+                    "BinarySize": 88,
+                    "BoneName": "upper_b",
+                    "NumKeyFrames": 2
+                }
+            ],
+            "Duration": 1.0,
+            "Name": "under_wait",
+            "NumChannels": 10,
+            "TickPerSecond": 24.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 88,
+                    "BoneName": "center",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 88,
+                    "BinarySize": 2156,
+                    "BoneName": "eye_L",
+                    "NumKeyFrames": 49
+                },
+                {
+                    "BinaryOffset": 2244,
+                    "BinarySize": 2156,
+                    "BoneName": "eye_R",
+                    "NumKeyFrames": 49
+                },
+                {
+                    "BinaryOffset": 4400,
+                    "BinarySize": 1848,
+                    "BoneName": "lower_a",
+                    "NumKeyFrames": 42
+                },
+                {
+                    "BinaryOffset": 6248,
+                    "BinarySize": 2112,
+                    "BoneName": "lower_b",
+                    "NumKeyFrames": 48
+                },
+                {
+                    "BinaryOffset": 8360,
+                    "BinarySize": 1980,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 45
+                },
+                {
+                    "BinaryOffset": 10340,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 10428,
+                    "BinarySize": 1760,
+                    "BoneName": "upper_a",
+                    "NumKeyFrames": 40
+                },
+                {
+                    "BinaryOffset": 12188,
+                    "BinarySize": 2156,
+                    "BoneName": "upper_b",
+                    "NumKeyFrames": 49
+                }
+            ],
+            "Duration": 48.0,
+            "Name": "wait",
+            "NumChannels": 10,
+            "TickPerSecond": 24.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 792,
+                    "BoneName": "center",
+                    "NumKeyFrames": 18
+                },
+                {
+                    "BinaryOffset": 792,
+                    "BinarySize": 792,
+                    "BoneName": "eye_L",
+                    "NumKeyFrames": 18
+                },
+                {
+                    "BinaryOffset": 1584,
+                    "BinarySize": 792,
+                    "BoneName": "eye_R",
+                    "NumKeyFrames": 18
+                },
+                {
+                    "BinaryOffset": 2376,
+                    "BinarySize": 792,
+                    "BoneName": "lower_a",
+                    "NumKeyFrames": 18
+                },
+                {
+                    "BinaryOffset": 3168,
+                    "BinarySize": 792,
+                    "BoneName": "lower_b",
+                    "NumKeyFrames": 18
+                },
+                {
+                    "BinaryOffset": 3960,
+                    "BinarySize": 616,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 14
+                },
+                {
+                    "BinaryOffset": 4576,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 4664,
+                    "BinarySize": 792,
+                    "BoneName": "upper_a",
+                    "NumKeyFrames": 18
+                },
+                {
+                    "BinaryOffset": 5456,
+                    "BinarySize": 836,
+                    "BoneName": "upper_b",
+                    "NumKeyFrames": 19
+                }
+            ],
+            "Duration": 28.0,
+            "Name": "walk",
+            "NumChannels": 10,
+            "TickPerSecond": 24.0
+        }
+    ]
+}

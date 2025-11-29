@@ -89,7 +89,7 @@ HRESULT CCollider_Base::Render()
 void CCollider_Base::Free()
 {
     __super::Free();
-#ifdef DEBUG
+#ifdef _DEBUG
     if (false == m_isClone)
     {
         Safe_Delete(m_pBatch);
