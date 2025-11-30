@@ -188,7 +188,7 @@ HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
     ////////////////Terrain불러오기//////////////////
     ///////////////////////////////////
 #pragma region Loading Terrain
-    vector<tagLoadTerrainData> LoadDatas=m_pGameInstance->Load_Terrains_Runtime("../../Resource/Data/Map/Stage1.json");
+    vector<tagLoadTerrainData> LoadDatas=m_pGameInstance->Load_Terrains_Runtime("../../Resource/Data/Map/Final_Town.json");
     for (int i = 0; i < LoadDatas.size(); ++i)
     {
         tagLoadTerrainData TargetData = LoadDatas[i];
@@ -201,6 +201,7 @@ HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
         desc.BodyDesc = &bodyDesc;
 
         desc.ObjTag = L"Terrain"+bodyDesc.modelName;
+        desc.vIndex = TargetData.vIndex;
 
         CTransform::TRANSFORM_DESC TransDesc = {};
         TransDesc.vLocalPosition = TargetData.vPosition;

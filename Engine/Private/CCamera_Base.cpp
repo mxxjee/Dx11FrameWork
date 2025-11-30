@@ -188,7 +188,7 @@ HRESULT CCamera_Base::Ready_Resource(void* pArg)
 void CCamera_Base::Make_Planes()
 {
     _float4x4 ViewProj;
-    XMStoreFloat4x4(&ViewProj, m_pGameInstance->Get_ViewProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE)));
+    XMStoreFloat4x4(&ViewProj, m_pGameInstance->Get_ViewProjMatrix(ENUM_TO_UINT(m_pGameInstance->Get_MainCamera()->Get_CameraType())));
 
     m_Planes[ENUM_TO_UINT(PLANE::LEFT)].x = ViewProj._14 + ViewProj._11;
     m_Planes[ENUM_TO_UINT(PLANE::LEFT)].y = ViewProj._24 + ViewProj._21;

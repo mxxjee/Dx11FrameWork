@@ -18,6 +18,8 @@ public:
     typedef struct tagTerrainObjectDesc :CGameObject::GAMEOBJECT_DESC
     {
         void* BodyDesc = nullptr;
+        _float2 vIndex = _float2(0.f, 0.f);
+
     }TERRAINOBJECT_DESC;
 
 protected:

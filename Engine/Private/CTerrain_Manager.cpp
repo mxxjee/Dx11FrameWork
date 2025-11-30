@@ -82,9 +82,12 @@ void CTerrain_Manager::Update(_float fTimeDelta)
 
 void CTerrain_Manager::Update_Late(_float fTimeDelta)
 {
-	
+#ifdef  _DEBUG
 	ImGuiIO& io = ImGui::GetIO();
 	CheckTrue(io.WantCaptureMouse);
+#endif //  _DEBUG
+
+	
 
 	
 	if (m_pImguiManager->Get_MapToolMode() == MapToolMode::EDIT)

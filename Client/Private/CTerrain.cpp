@@ -41,6 +41,23 @@ HRESULT CTerrain::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
 
+    TERRAINOBJECT_DESC* pDesc = static_cast<TERRAINOBJECT_DESC*>(pArg);
+    m_TerrainChunk.iIdxZX = pDesc->vIndex;
+
+    Bound AABB;
+    _vector vPos = m_pTransformCom->Get_State(STATE::POSITION);
+
+    //min,max
+    AABB.MinBound = _float3(XMVectorGetX(vPos) - (ChunkWidth * 0.5f),
+        XMVectorGetY(vPos) - (ChunkHeight * 0.5f),
+        XMVectorGetZ(vPos) - (ChunkDepth * 0.5f));
+
+    AABB.MaxBound = _float3(XMVectorGetX(vPos) + (ChunkWidth * 0.5f),
+        XMVectorGetY(vPos) + (ChunkHeight * 0.5f),
+        XMVectorGetZ(vPos) + (ChunkDepth * 0.5f));
+
+    m_TerrainChunk.ChunkBound = AABB;
+    XMStoreFloat3(&m_TerrainChunk.vCenter, vPos);
     return S_OK;
 }
 
