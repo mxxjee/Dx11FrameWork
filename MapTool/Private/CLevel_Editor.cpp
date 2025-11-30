@@ -203,7 +203,7 @@ HRESULT CLevel_Editor::Ready_Layer_MainCamera(const _wstring& strLayerTag)
 
 	CTransform::TRANSFORM_DESC TransDesc = {};
 	TransDesc.fRotationPerSec = 10.f;
-	TransDesc.fSpeedPerSec = 8.f;
+	TransDesc.fSpeedPerSec = 15.f;
 	
 
 

@@ -277,14 +277,12 @@ void CMapTerrain::Save_To_Json(json& Json)
 
     json Transform;
     //TransformÁ¤º¸
-    _float3 s, t;
-    _float4 r;
+    _float3 s, r,t;
 
 
     XMStoreFloat3(&s, m_pTransformCom->Get_SRT(SRTType::SCALE));
     XMStoreFloat3(&t, m_pTransformCom->Get_SRT(SRTType::TRANSFORM));
-    XMStoreFloat4(&r, m_pTransformCom->Get_SRT(SRTType::ROTATION));
-    _float3 rResult = MathUtils::QuaternionToEuler(XMLoadFloat4(&r));
+    r = m_pTransformCom->Get_Rotation_ByEular();
 
     json position=json::array();
     position.push_back(t.x);
@@ -309,6 +307,16 @@ void CMapTerrain::Save_To_Json(json& Json)
     Transform["Rotation"] = Rotation;
 
     Meta["Transform"]=Transform;
+
+    json ChunkInfo;
+    json Index = json::array();
+    Index.push_back(m_TerrainChunk.iIdxZX.x);
+    Index.push_back(m_TerrainChunk.iIdxZX.y);
+    
+    ChunkInfo["Index"] = Index;
+
+    Meta["ChunkInfo"] = ChunkInfo;
+
 
     Json.push_back(Meta);
 }
@@ -413,8 +421,7 @@ void CMapTerrain::Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _
 
     XMStoreFloat3(vPosition, m_pTransformCom->Get_State(STATE::POSITION));
 
-    *vRotation = MathUtils::QuaternionToEuler(m_pTransformCom->Get_SRT(SRTType::ROTATION));
-
+    *vRotation = m_pTransformCom->Get_Rotation_ByEular();
     ImGui::TextColored(ImVec4(0.f, 1.f, 1.f, 1.f), "Index[z][x]:[%d][%d]", (int)m_TerrainChunk.iIdxZX.x, (int)m_TerrainChunk.iIdxZX.y);
 
 }

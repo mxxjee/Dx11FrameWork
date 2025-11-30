@@ -70,6 +70,8 @@ public:
     _vector                 Get_SRT(SRTType eType);
     CTransform*             Get_Parent() { return m_pParent; }
     _vector                 Get_MoveDir() { return m_vMoveDir; }
+
+    _float3                 Get_Rotation_ByEular() {return m_fEularDegree ; }
 #pragma region Translation(모두 로컬기준 이동/회전)
 public:
     void    Move(DIRECTION eDir, float fTimeDelta,Space space=Space::Local,class CNavigation* pNavigation=nullptr);                                                                  //look벡터 갱신여부

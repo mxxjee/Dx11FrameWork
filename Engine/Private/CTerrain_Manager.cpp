@@ -83,6 +83,9 @@ void CTerrain_Manager::Update(_float fTimeDelta)
 void CTerrain_Manager::Update_Late(_float fTimeDelta)
 {
 	
+	ImGuiIO& io = ImGui::GetIO();
+	CheckTrue(io.WantCaptureMouse);
+
 	
 	if (m_pImguiManager->Get_MapToolMode() == MapToolMode::EDIT)
 	{
@@ -293,7 +296,7 @@ HRESULT CTerrain_Manager::Save_All_Terrains(const string& path, int iNum)
 
 HRESULT CTerrain_Manager::Load_Terrains_MapTool(const string& LoadPath)
 {
-	/*m_pPickTerrain = nullptr;
+	m_pPickTerrain = nullptr;
 
 	CGameInstance* m_pGameInstance=CGameInstance::GetInstance();
 	Clear_Terrains();
@@ -307,6 +310,7 @@ HRESULT CTerrain_Manager::Load_Terrains_MapTool(const string& LoadPath)
 		int TileID = jTerrain["TileID"];
 
 		json TransformData = jTerrain["Transform"];
+		json ChunkInfoData = jTerrain["ChunkInfo"];
 
 
 		_float3 vPos, vRot, vScale;
@@ -322,12 +326,25 @@ HRESULT CTerrain_Manager::Load_Terrains_MapTool(const string& LoadPath)
 		vScale.y = TransformData["Scale"][1].get<float>();
 		vScale.z = TransformData["Scale"][2].get<float>();
 
+		_float2 vIndex = { 0.f,0.f };
+		if (!ChunkInfoData.is_null())
+		{
+			if (!ChunkInfoData["Index"].is_null())
+			{
+				vIndex.x = ChunkInfoData["Index"][0].get<int>();
+				vIndex.y = ChunkInfoData["Index"][1].get<int>();
 
+			}
+		}
+		
+	
 		CMapTerrain::MAPTERRAIN_DESC desc;
 		desc.eRenderGroup = 0;
 		desc.modelName = StringToWString(ModelName);
 		desc.ObjTag = CMapObject_Manager::GetInstance()->Generate_UniqueTag(MapObjType::TERRAIN, desc.modelName);
 		desc.ObjType = MapObjType::TERRAIN;
+		desc.iIdxZX = vIndex;
+
 
 		CModel::tagModelDesc modelDesc;
 		desc.modelDesc = &modelDesc;
@@ -358,7 +375,7 @@ HRESULT CTerrain_Manager::Load_Terrains_MapTool(const string& LoadPath)
 
 
 
-	}*/
+	}
 	return S_OK;
 }
 
@@ -376,6 +393,7 @@ const vector<LOADTERRAINDATA>& CTerrain_Manager::Load_Terrains_Runtime(const str
 		int TileID = jTerrain["TileID"];
 
 		json TransformData = jTerrain["Transform"];
+		json ChunkInfoData = jTerrain["ChunkInfo"];
 
 
 		_float3 vPos, vRot, vScale;
@@ -391,12 +409,23 @@ const vector<LOADTERRAINDATA>& CTerrain_Manager::Load_Terrains_Runtime(const str
 		vScale.y = TransformData["Scale"][1].get<float>();
 		vScale.z = TransformData["Scale"][2].get<float>();
 
+		_float2 vIndex = { 0.f,0.f };
+		if (!ChunkInfoData.is_null())
+		{
+			if (!ChunkInfoData["Index"].is_null())
+			{
+				vIndex.x = ChunkInfoData["Index"][0].get<int>();
+				vIndex.y = ChunkInfoData["Index"][1].get<int>();
+
+			}
+		}
 
 		LOADTERRAINDATA Data;
 		Data.ModelName = ModelName;
 		Data.vPosition = _float4(vPos.x, vPos.y, vPos.z, 1.f);
 		Data.vScale = _float4(vScale.x, vScale.y, vScale.z, 1.f);
 		Data.vRotation = _float4(vRot.x, vRot.y, vRot.z, 1.f);
+		Data.vIndex = vIndex;
 
 		LoadDatas.push_back(Data);
 

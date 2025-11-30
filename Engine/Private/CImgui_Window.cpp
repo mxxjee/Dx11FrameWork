@@ -33,6 +33,7 @@ void CImgui_Window::Update_Priority()
 
 void CImgui_Window::Update()
 {
+    
     if (!m_bOpen || !m_bActive)
         return;
 

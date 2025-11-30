@@ -523,27 +523,26 @@ void CTransform::Set_Parent(CTransform* pParent)
 void CTransform::Rotation(_float3 fEularDegree)
 {
 	//x,y,z 쿼터니온 4원수회전
-
+	
 	m_fEularDegree.x = fEularDegree.x;
 	m_fEularDegree.y = fEularDegree.y;
 	m_fEularDegree.z = fEularDegree.z;
 
-	_vector vQuaternion = XMQuaternionRotationRollPitchYaw(XMConvertToRadians(m_fEularDegree.x),
+	_vector vQuaternion = XMQuaternionRotationRollPitchYaw(
+		XMConvertToRadians(m_fEularDegree.x),
 		XMConvertToRadians(m_fEularDegree.y),
 		XMConvertToRadians(m_fEularDegree.z));
-
-	_matrix RotationMatrix = XMMatrixRotationQuaternion(vQuaternion);
 
 	_float3 vScale= Get_Scale_ByFloat3();			//크기유지
 	
 	//크기 유지
-	_vector vRight = XMVectorSet(1.f, 0.f, 0.f, 0.f)*vScale.x;
-	_vector vUp = XMVectorSet(0.f, 1.f, 0.f, 0.f)*vScale.y;
-	_vector vLook = XMVectorSet(0.f, 0.f, 1.f, 0.f)*vScale.z;
+	_vector vRight = XMVector3Rotate(XMVectorSet(1.f, 0.f, 0.f, 0.f),vQuaternion)*vScale.x;
+	_vector vUp = XMVector3Rotate(XMVectorSet(0.f, 1.f, 0.f, 0.f), vQuaternion) *vScale.y;
+	_vector vLook = XMVector3Rotate(XMVectorSet(0.f, 0.f, 1.f, 0.f), vQuaternion) *vScale.z;
 
-	Set_State(STATE::RIGHT, XMVector3TransformNormal(vRight, RotationMatrix));
-	Set_State(STATE::UP, XMVector3TransformNormal(vUp, RotationMatrix));
-	Set_State(STATE::LOOK, XMVector3TransformNormal(vLook, RotationMatrix));
+	Set_State(STATE::RIGHT, vRight);
+	Set_State(STATE::UP, vUp);
+	Set_State(STATE::LOOK, vLook);
 
 
 }

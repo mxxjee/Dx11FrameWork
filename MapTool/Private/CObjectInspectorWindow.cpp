@@ -39,20 +39,23 @@ HRESULT CObjectInspectorWindow::Initialize(void* pArg)
 void CObjectInspectorWindow::Update()
 {
 
-    
+
+
 
     ImGui::Begin(m_WindowTitle.c_str(), &m_bOpen);
   
-    Update_SelectObject();
-    m_fMoveSpeed = m_pMapObject_Manager->Get_MoveSpeed();
-
 
     if (pSelectObject)
     {
-        IMapEditable* pMapEditable = dynamic_cast<IMapEditable*>(pSelectObject);
-        if (pMapEditable)
-            pMapEditable->Show_Gizmo(); 
+        if (m_bRotationDirty)
+        {
+            pSelectObject->Get_Transform()->Rotation(vRotation);
+            m_bRotationDirty = false;
+        }
     }
+    Update_SelectObject();
+    m_fMoveSpeed = m_pMapObject_Manager->Get_MoveSpeed();
+
     ImGui::End();
 
   
@@ -170,41 +173,33 @@ HRESULT CObjectInspectorWindow::Create_Widgets()
     InputFloatDesc_Rot.Tag = InputFloatDesc_Rot.Label;
     InputFloatDesc_Rot.m_RelativePos = ImVec2(0, fRotationButtonY);
     InputFloatDesc_Rot.pData = &vRotation.x;
-
+    InputFloatDesc_Rot.callback = [this]() {m_bRotationDirty = true; };
 
     if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc_Rot, reinterpret_cast<CImgui_Widget**>(&RotationInput[0]))))
         return E_FAIL;
 
 
-    InputFloatDesc_Rot.Label = "RotationY";
-    InputFloatDesc_Rot.Tag = InputFloatDesc_Rot.Label;
-    InputFloatDesc_Rot.m_RelativePos = ImVec2(0, fRotationButtonY + 20);
-    InputFloatDesc_Rot.pData = &vRotation.y;
-    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc_Rot, reinterpret_cast<CImgui_Widget**>(&RotationInput[1]))))
+    CImgui_InputFloat::IMGUITEXTFLOAT_DESC InputFloatDesc_RotY;
+
+    InputFloatDesc_RotY.Label = "RotationY";
+    InputFloatDesc_RotY.Tag = InputFloatDesc_RotY.Label;
+    InputFloatDesc_RotY.m_RelativePos = ImVec2(0, fRotationButtonY + 20);
+    InputFloatDesc_RotY.pData = &vRotation.y;
+    InputFloatDesc_RotY.callback = [this](){m_bRotationDirty = true;};
+    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc_RotY, reinterpret_cast<CImgui_Widget**>(&RotationInput[1]))))
         return E_FAIL;
 
-    InputFloatDesc_Rot.Label = "RotationZ";
-    InputFloatDesc_Rot.Tag = InputFloatDesc_Rot.Label;
-    InputFloatDesc_Rot.m_RelativePos = ImVec2(0, fRotationButtonY + 40);
-    InputFloatDesc_Rot.pData = &vRotation.z;
-    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc_Rot, reinterpret_cast<CImgui_Widget**>(&RotationInput[2]))))
+    CImgui_InputFloat::IMGUITEXTFLOAT_DESC InputFloatDesc_RotZ;
+
+    InputFloatDesc_RotZ.Label = "RotationZ";
+    InputFloatDesc_RotZ.Tag = InputFloatDesc_RotZ.Label;
+    InputFloatDesc_RotZ.m_RelativePos = ImVec2(0, fRotationButtonY + 40);
+    InputFloatDesc_RotZ.pData = &vRotation.z;
+    InputFloatDesc_RotZ.callback = [this]() {m_bRotationDirty = true; };
+    if (FAILED(Add_Widgets<CImgui_InputFloat>(&InputFloatDesc_RotZ, reinterpret_cast<CImgui_Widget**>(&RotationInput[2]))))
         return E_FAIL;
 
-    for (int i = 0; i < 3; ++i)
-    {
-        if (RotationInput[i])
-        {
-            RotationInput[i]->Set_Callback([this]()
-                {
-                    if (pSelectObject)
-                        pSelectObject->Get_Transform()->Rotation(vRotation);
-
-                });
-            RotationInput[i]->Set_Active(false);
-        }
-
-    }
-
+  
     ///이동스피드
     CImgui_InputFloat::IMGUITEXTFLOAT_DESC InputFloatDesc_Speed;
     float fSpeedButtonY = fPosButtonY + 200;

@@ -72,6 +72,8 @@ void CImGui_Manager::Update()
     //나중에 외부에서 설정할듯, 일단 테스트.
    // Test();
 
+ 
+
     for (auto& pair : m_Windows)
         pair.second->Update();
 }

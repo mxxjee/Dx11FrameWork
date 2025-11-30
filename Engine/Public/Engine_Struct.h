@@ -44,6 +44,7 @@ namespace Engine
 		_float4 vPosition;
 		_float4 vScale;
 		_float4 vRotation;
+		_float2 vIndex;
 		string ModelName;
 
 	}LOADTERRAINDATA;

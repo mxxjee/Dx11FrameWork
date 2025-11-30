@@ -7,6 +7,7 @@ namespace Engine
     class CMapObject_Manager;
     class CImgui_InputFloat;
     class IMapEditable;
+    class CGameObject;
 
 }
 
@@ -57,6 +58,6 @@ private:
 private:
     CMapObject_Manager* m_pMapObject_Manager = { nullptr };
     _float              m_fMoveSpeed = 0.f;
-
+    bool            m_bRotationDirty = false;
 };
 NS_END
