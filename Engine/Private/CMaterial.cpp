@@ -45,6 +45,10 @@ HRESULT CMaterial::Register_MaterialTexture(const char* BasePath, map<aiTextureT
 		fs::path path = BasePath;
 		
 		wstring TexName = wstring(it->second.begin(), it->second.end());
+		fs::path TexPath = TexName;
+
+		TexName=TexPath.stem().wstring()+L".dds";
+
 		wstring TexKey= path.parent_path().parent_path().filename().wstring() + L"/" + TexName;
 		
 		
