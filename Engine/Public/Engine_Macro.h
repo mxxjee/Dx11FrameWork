@@ -41,6 +41,12 @@
 
 #define GRAVITY -980.f
 
+#define ChunkWidth 15.f
+#define ChunkHeight 20.f
+#define ChunkDepth 12.f
+
+
+
 #define ENABLE_BITMASK_OPERATORS(x)                     \
 inline x operator|(x a, x b) {                          \
     return static_cast<x>(static_cast<int>(a) | static_cast<int>(b)); } \

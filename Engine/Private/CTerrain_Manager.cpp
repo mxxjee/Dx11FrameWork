@@ -6,6 +6,7 @@
 #include "CMapObject_Manager.h"
 #include "CModel.h"
 #include "CImGui_Manager.h"
+#include "CCamera_Base.h"
 
 
 
@@ -111,12 +112,18 @@ void CTerrain_Manager::Update_Late(_float fTimeDelta)
 
 void CTerrain_Manager::Update_Render(_float fTimeDelta)
 {
+	CCamera_Base* pMaincamera = CGameInstance::GetInstance()->Get_MainCamera();
+
 	for (auto& pair : m_TerrainMap)
 	{
 		if (pair.second)
 		{
-			if(pair.second->Is_Active())
+			//pair.second->Update_Render(fTimeDelta)
+			if (pMaincamera->IsInFrustum(pair.second->Get_Chunk().ChunkBound))
 				pair.second->Update_Render(fTimeDelta);
+
+			else
+				int A = 10;
 		}
 			
 	}

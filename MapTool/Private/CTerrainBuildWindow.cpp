@@ -94,7 +94,7 @@ HRESULT CTerrainBuildWindow::Create_Widgets()
     return S_OK;
 }
 
-HRESULT CTerrainBuildWindow::Create_Terrain(const wstring& Tag, _float3 vPosition)
+HRESULT CTerrainBuildWindow::Create_Terrain(const wstring& Tag, _float3 vPosition,_float2 iIdxZX)
 {
     CMapTerrain::MAPTERRAIN_DESC Desc;
     Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
@@ -102,6 +102,7 @@ HRESULT CTerrainBuildWindow::Create_Terrain(const wstring& Tag, _float3 vPositio
     Desc.modelName = Tag;
     Desc.ObjType = MapObjType::TERRAIN;
       
+    Desc.iIdxZX = iIdxZX;
     CTransform::TRANSFORM_DESC TransDesc;
     TransDesc.vLocalPosition = _float4(vPosition.x, vPosition.y, vPosition.z, 1.f);
 
@@ -187,10 +188,14 @@ void CTerrainBuildWindow::Free()
 void CTerrainBuildWindow::Start_Build()
 {
   
+  
+    int Zidx = 0;
+
     //1.모델로드 
     wchar_t      pAlphabets[16] = { L'A',L'B',L'C',L'D',L'E',L'F',L'G',L'H',L'I',L'J',L'K',L'L',L'M',L'N',L'O',L'P'};
     for (int i = m_iStartModelNum; i <= m_iEndModelNum; ++i)
     {
+        int Xidx = 0;
         //시작위치 설정
         _float3 m_fTargetStartPos = m_fStartPos;
         m_fTargetStartPos.z = m_fStartPos.z - (m_fOffSet.z * (i-m_iStartModelNum));
@@ -225,12 +230,17 @@ void CTerrainBuildWindow::Start_Build()
             m_fTargetStartPos.x = m_fStartPos.x + (m_fOffSet.x * k);
             if (m_Models[k])
             {
-                Create_Terrain(m_Models[k]->Get_ModelData().name, m_fTargetStartPos);
-
+                
+                Create_Terrain(m_Models[k]->Get_ModelData().name, m_fTargetStartPos,_float2(Zidx, Xidx));
+                
             }
+
+            ++Xidx;
         
         }
 
+
+        ++Zidx;
     }
 
 

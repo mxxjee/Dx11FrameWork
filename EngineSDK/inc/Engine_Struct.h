@@ -188,6 +188,23 @@ namespace Engine
 	using EventCallBack = function<void(const GameEvent&)>;
 
 	
+
+	///청크렌더링용
+	struct Bound
+	{
+		_float3 MinBound = { 0.f,0.f,0.f };
+		_float3 MaxBound = { 0.f,0.f,0.f };
+
+
+
+	};
+
+	struct Chunk
+	{
+		Bound ChunkBound;
+		_float3 vCenter = { 0.f,0.f,0.f };
+		_float2 iIdxZX = { 0.f,0.f };
+	};
 }
 
 

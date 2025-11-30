@@ -25,7 +25,7 @@ protected:
 
 private:
     HRESULT     Create_Widgets();
-    HRESULT        Create_Terrain(const wstring& Tag,_float3 vPosition);
+    HRESULT        Create_Terrain(const wstring& Tag,_float3 vPosition, _float2 iIdxZX);
 public:
     // CImgui_Base을(를) 통해 상속됨
     virtual HRESULT Initialize(void* pArg) override;

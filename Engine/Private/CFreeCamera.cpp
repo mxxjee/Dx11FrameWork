@@ -5,6 +5,7 @@
 #include "CShader.h"
 
 
+
 CFreeCamera::CFreeCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CCamera_Base(pDevice,pContext)
 {
@@ -82,8 +83,6 @@ void CFreeCamera::Update(_float fTimeDelta)
 void CFreeCamera::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
-
-
 
 }
 
@@ -166,3 +165,5 @@ void CFreeCamera::Free()
     __super::Free();
 
 }
+
+

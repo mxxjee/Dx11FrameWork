@@ -54,6 +54,28 @@ HRESULT CMapTerrain::Initialize_Copytype(void* pArg)
 
     m_passName = "Default";
 
+    MAPTERRAIN_DESC* pDesc = static_cast<MAPTERRAIN_DESC*>(pArg);
+    m_TerrainChunk.iIdxZX = pDesc->iIdxZX;
+
+    Bound AABB;
+
+    //min,max
+    
+    _vector vPos = m_pTransformCom->Get_State(STATE::POSITION);
+
+
+    //min,max
+    AABB.MinBound = _float3(XMVectorGetX(vPos) - (ChunkWidth * 0.5f),
+        XMVectorGetY(vPos)-(ChunkHeight*0.5f),
+        XMVectorGetZ(vPos)-(ChunkDepth * 0.5f));
+
+    AABB.MaxBound = _float3(XMVectorGetX(vPos) + (ChunkWidth * 0.5f),
+        XMVectorGetY(vPos) + (ChunkHeight * 0.5f),
+        XMVectorGetZ(vPos) + (ChunkDepth * 0.5f));
+
+    m_TerrainChunk.ChunkBound = AABB;
+    XMStoreFloat3(&m_TerrainChunk.vCenter, vPos);
+
     return S_OK;
 }
 
@@ -138,7 +160,7 @@ HRESULT CMapTerrain::Ready_Components(void* pArg)
         /*메쉬콜라이더컴포넌트(픽킹검사)*/
         CBounding_Mesh::BOUNDING_MESH_DESC MeshDesc;
         MeshDesc.pModel = m_pModel;
-        MeshDesc.Extents = { 16.f,16.f,16.f };
+        MeshDesc.Extents = { ChunkWidth*0.5f,ChunkHeight*0.5f,ChunkDepth*0.5f };
 
 
         CComponent* pMeshCollider = dynamic_cast<CMeshColliderComponent*>(m_pGameInstance->Clone_Prototype(
@@ -392,6 +414,8 @@ void CMapTerrain::Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _
     XMStoreFloat3(vPosition, m_pTransformCom->Get_State(STATE::POSITION));
 
     *vRotation = MathUtils::QuaternionToEuler(m_pTransformCom->Get_SRT(SRTType::ROTATION));
+
+    ImGui::TextColored(ImVec4(0.f, 1.f, 1.f, 1.f), "Index[z][x]:[%d][%d]", (int)m_TerrainChunk.iIdxZX.x, (int)m_TerrainChunk.iIdxZX.y);
 
 }
 

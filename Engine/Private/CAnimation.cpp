@@ -48,7 +48,7 @@ HRESULT CAnimation::Initialize(CModel* pModel, json& Json, const char* filePath,
 	for (size_t i = 0; i < m_iNumChannels; ++i)
 	{
 		//채널이 키프레임을 만들떄 필요한 .anim파일을 넘겨준다.
-		CChannel* pChannel = CChannel::Create(pModel, Json,animPath.c_str(), idx, i);
+		CChannel* pChannel = CChannel::Create(pModel, Json,animPath.c_str(), idx, (int)i);
 		if (nullptr == pChannel)
 			return E_FAIL;
 
@@ -204,7 +204,7 @@ void CAnimation::CheckAnimNotify(_float PrevFrame, _float CurrentTrackPosition)
 
 	for (auto& Notify : m_AnimNotifies)
 	{
-		if (PrevKeyFrame <= Notify->Get_Frame() && Notify->Get_Frame() < CurrentKeyFrame)
+		if ((_uint)PrevKeyFrame <= Notify->Get_Frame() && Notify->Get_Frame() < (_uint)CurrentKeyFrame)
 			Notify->NotifyBegin();
 	}
 }
@@ -221,7 +221,7 @@ _uint CAnimation::Get_CurrentFrame(_float fCurrentTime)
 			return i;
 	}
 
-	return keys.size() - 1;
+	return (_uint)keys.size() - 1;
 
 }
 

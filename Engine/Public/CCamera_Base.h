@@ -49,7 +49,7 @@ protected:
 public:
     virtual HRESULT     Initialize_Prototype(); /*원형 객체가 생성될때 부르는 Initialize*/
     virtual HRESULT     Initialize_Copytype(void* pArg); /*사본 객체가 생성될때 부르는 Initialize*/
-
+    virtual void        Update_Late(_float fTimeDelta);
 private:
     HRESULT        Ready_Resource(void* pArg);
 public:
@@ -104,6 +104,15 @@ public:
     const _float    Get_Near() { return m_fNearZ; }
     const _float    Get_Far() { return m_fFarZ; }
 
+
+private:
+    void            Make_Planes();
+
+public:
+    virtual bool IsInFrustum(const Bound& box);
+
+private:
+    bool        IsOutSidePlane(_uint PlaneDir, const Bound& box);
 protected:
     CAMERA_TYPE                     m_eCameraType = CAMERA_TYPE::END;
     CAMERA_FLAG                     m_eCameraFlag = CAMERA_FLAG::END;
@@ -112,6 +121,9 @@ protected:
 
     RENDER_TARGET                   m_tRenderTarget;        //모든 카메라는 렌더타겟을 갖는다.하지만 특수한경우에만 새로운 렌더타겟을 생성한다.
 
+protected:
+    _float4         m_Planes[ENUM_TO_UINT(PLANE::END)];
+    _float3         m_PlaneNormal[ENUM_TO_UINT(PLANE::END)];
 
 protected:
     vector<uint8_t>                    m_RenderMask;

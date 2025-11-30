@@ -40,16 +40,19 @@ public:
     virtual CGameObject* Clone(void* pArg);
     virtual void    Free() override;
 
+
 private:
     long                    m_ScreenWidth = {};
     long                    m_ScreenHeight = {};
 
     float                   m_fInitSpeed = {};
 
+    
 private:
     //ImguiÀü¿ë rh°ª
     _float4x4   RHView;
     _float4x4   RHProj;
+
 
 };
 NS_END

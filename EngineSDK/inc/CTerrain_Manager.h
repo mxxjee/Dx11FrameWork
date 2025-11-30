@@ -70,6 +70,9 @@ private:
     class                   CImGui_Manager* m_pImguiManager = { nullptr };
 private:
     vector<LOADTERRAINDATA>         LoadDatas;
+
+
+
 };
 
 

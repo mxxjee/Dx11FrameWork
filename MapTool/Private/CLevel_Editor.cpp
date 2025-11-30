@@ -199,7 +199,7 @@ HRESULT CLevel_Editor::Ready_Layer_MainCamera(const _wstring& strLayerTag)
 	Desc.fNear = 0.1f;
 	Desc.vPosition = _float3(0.f, 5.f, -5.f);
 	Desc.vAt = { 0.f,5.f, 0.f};
-	Desc.fFar = 1000.f;
+	Desc.fFar = 500.f;
 
 	CTransform::TRANSFORM_DESC TransDesc = {};
 	TransDesc.fRotationPerSec = 10.f;
@@ -314,6 +314,8 @@ void CLevel_Editor::Terrain_Picking_WorldPos()
 
 void CLevel_Editor::OnEnter()
 {
+	m_pGameInstance->Set_MainCamera(CAMERA_TYPE::FREE);
+
 	CImgui_Base* pWindow = CImGui_Manager::GetInstance()->Find_Window("GridDebugWindow");
 	if (pWindow)
 	{

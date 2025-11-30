@@ -21,6 +21,7 @@ public:
         MapObjType              ObjType;
         _wstring    modelName;
         void* modelDesc = nullptr;
+        _float2 iIdxZX = { 0.f,0.f };       //√ª≈© ∑ª¥ı∏µ¿« [z][x]¿Œµ¶Ω∫
 
     }MAPTERRAIN_DESC;
 
@@ -45,6 +46,7 @@ public:
     HRESULT                     Ready_Components(void* pArg);
     HRESULT                     Ready_Resources(void* pArg);
     HRESULT                     Bind_ShaderResources();
+
 
 public:
     static CMapTerrain* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
@@ -89,6 +91,8 @@ private:
 
 private:
     class CInput_Manager* m_pInputManager = nullptr;
+
+
 };
 
 NS_END

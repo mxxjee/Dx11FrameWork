@@ -40,6 +40,11 @@ HRESULT CCamera_Base::Initialize_Copytype(void* pArg)
     return S_OK;
 }
 
+void CCamera_Base::Update_Late(_float fTimeDelta)
+{
+    Make_Planes();
+}
+
 
 void CCamera_Base::Update_PipeLine()
 {
@@ -180,6 +185,129 @@ HRESULT CCamera_Base::Ready_Resource(void* pArg)
     return S_OK;    
 }
 
+void CCamera_Base::Make_Planes()
+{
+    _float4x4 ViewProj;
+    XMStoreFloat4x4(&ViewProj, m_pGameInstance->Get_ViewProjMatrix(ENUM_TO_UINT(CAMERA_TYPE::FREE)));
+
+    m_Planes[ENUM_TO_UINT(PLANE::LEFT)].x = ViewProj._14 + ViewProj._11;
+    m_Planes[ENUM_TO_UINT(PLANE::LEFT)].y = ViewProj._24 + ViewProj._21;
+    m_Planes[ENUM_TO_UINT(PLANE::LEFT)].z = ViewProj._34 + ViewProj._31;
+    m_Planes[ENUM_TO_UINT(PLANE::LEFT)].w = ViewProj._44 + ViewProj._41;
+
+
+
+    m_Planes[ENUM_TO_UINT(PLANE::RIGHT)].x = ViewProj._14 - ViewProj._11;
+    m_Planes[ENUM_TO_UINT(PLANE::RIGHT)].y = ViewProj._24 - ViewProj._21;
+    m_Planes[ENUM_TO_UINT(PLANE::RIGHT)].z = ViewProj._34 - ViewProj._31;
+    m_Planes[ENUM_TO_UINT(PLANE::RIGHT)].w = ViewProj._44 - ViewProj._41;
+
+    m_Planes[ENUM_TO_UINT(PLANE::BOTTOM)].x = ViewProj._14 + ViewProj._12;
+    m_Planes[ENUM_TO_UINT(PLANE::BOTTOM)].y = ViewProj._24 + ViewProj._22;
+    m_Planes[ENUM_TO_UINT(PLANE::BOTTOM)].z = ViewProj._34 + ViewProj._32;
+    m_Planes[ENUM_TO_UINT(PLANE::BOTTOM)].w = ViewProj._44 + ViewProj._42;
+
+    m_Planes[ENUM_TO_UINT(PLANE::TOP)].x = ViewProj._14 - ViewProj._12;
+    m_Planes[ENUM_TO_UINT(PLANE::TOP)].y = ViewProj._24 - ViewProj._22;
+    m_Planes[ENUM_TO_UINT(PLANE::TOP)].z = ViewProj._34 - ViewProj._32;
+    m_Planes[ENUM_TO_UINT(PLANE::TOP)].w = ViewProj._44 - ViewProj._42;
+
+
+    m_Planes[ENUM_TO_UINT(PLANE::PLANE_NEAR)].x = ViewProj._13;
+    m_Planes[ENUM_TO_UINT(PLANE::PLANE_NEAR)].y = ViewProj._23;
+    m_Planes[ENUM_TO_UINT(PLANE::PLANE_NEAR)].z = ViewProj._33;
+    m_Planes[ENUM_TO_UINT(PLANE::PLANE_NEAR)].w = ViewProj._43;
+
+
+
+    m_Planes[ENUM_TO_UINT(PLANE::PLANE_FAR)].x = ViewProj._14 - ViewProj._13;
+    m_Planes[ENUM_TO_UINT(PLANE::PLANE_FAR)].y = ViewProj._24 - ViewProj._23;
+    m_Planes[ENUM_TO_UINT(PLANE::PLANE_FAR)].z = ViewProj._34 - ViewProj._33;
+    m_Planes[ENUM_TO_UINT(PLANE::PLANE_FAR)].w = ViewProj._44 - ViewProj._43;
+
+    //////Normals//////
+    m_PlaneNormal[ENUM_TO_UINT(PLANE::LEFT)] =
+        _float3(
+            m_Planes[ENUM_TO_UINT(PLANE::LEFT)].x
+            , m_Planes[ENUM_TO_UINT(PLANE::LEFT)].y
+            , m_Planes[ENUM_TO_UINT(PLANE::LEFT)].z);
+
+    m_PlaneNormal[ENUM_TO_UINT(PLANE::RIGHT)] =
+        _float3(
+            m_Planes[ENUM_TO_UINT(PLANE::RIGHT)].x
+            , m_Planes[ENUM_TO_UINT(PLANE::RIGHT)].y
+            , m_Planes[ENUM_TO_UINT(PLANE::RIGHT)].z);
+
+    m_PlaneNormal[ENUM_TO_UINT(PLANE::BOTTOM)] =
+        _float3(
+            m_Planes[ENUM_TO_UINT(PLANE::BOTTOM)].x
+            , m_Planes[ENUM_TO_UINT(PLANE::BOTTOM)].y
+            , m_Planes[ENUM_TO_UINT(PLANE::BOTTOM)].z);
+
+    m_PlaneNormal[ENUM_TO_UINT(PLANE::TOP)] =
+        _float3(
+            m_Planes[ENUM_TO_UINT(PLANE::TOP)].x
+            , m_Planes[ENUM_TO_UINT(PLANE::TOP)].y
+            , m_Planes[ENUM_TO_UINT(PLANE::TOP)].z);
+
+    m_PlaneNormal[ENUM_TO_UINT(PLANE::PLANE_FAR)] =
+        _float3(
+            m_Planes[ENUM_TO_UINT(PLANE::PLANE_FAR)].x
+            , m_Planes[ENUM_TO_UINT(PLANE::PLANE_FAR)].y
+            , m_Planes[ENUM_TO_UINT(PLANE::PLANE_FAR)].z);
+
+
+    m_PlaneNormal[ENUM_TO_UINT(PLANE::PLANE_NEAR)] =
+        _float3(
+            m_Planes[ENUM_TO_UINT(PLANE::PLANE_NEAR)].x
+            , m_Planes[ENUM_TO_UINT(PLANE::PLANE_NEAR)].y
+            , m_Planes[ENUM_TO_UINT(PLANE::PLANE_NEAR)].z);
+
+    //모두정규화
+    //법선,D 정규화
+    for (int i = 0; i < ENUM_TO_UINT(PLANE::END); ++i)
+    {
+        
+        _float PlaneNormalLegth= XMVectorGetX(XMVector3Length(XMLoadFloat3(&m_PlaneNormal[i])));
+
+        m_PlaneNormal[i].x = m_PlaneNormal[i].x / PlaneNormalLegth;
+        m_PlaneNormal[i].y = m_PlaneNormal[i].y / PlaneNormalLegth;
+        m_PlaneNormal[i].z = m_PlaneNormal[i].z / PlaneNormalLegth;
+        
+
+        m_Planes[i].w /= PlaneNormalLegth;
+
+
+    }
+ 
+   
+}
+bool CCamera_Base::IsInFrustum(const Bound& box)
+{
+    for (int i = 0; i < ENUM_TO_UINT(PLANE::END); ++i)
+    {
+        //하나라도밖에있으면 렌더하지않는다.
+        if (IsOutSidePlane((_uint)i, box))
+            return false;
+    }
+    return true;
+}
+bool CCamera_Base::IsOutSidePlane(_uint PlaneDir, const Bound& box)
+{
+    _float3       PositiveVertex;
+
+    PositiveVertex.x = (m_PlaneNormal[PlaneDir].x >= 0) ? box.MaxBound.x : box.MinBound.x;
+    PositiveVertex.y = (m_PlaneNormal[PlaneDir].y >= 0) ? box.MaxBound.y : box.MinBound.y;
+    PositiveVertex.z = (m_PlaneNormal[PlaneDir].z >= 0) ? box.MaxBound.z : box.MinBound.z;
+
+    float distance = m_PlaneNormal[PlaneDir].x * PositiveVertex.x +
+        m_PlaneNormal[PlaneDir].y * PositiveVertex.y +
+        m_PlaneNormal[PlaneDir].z * PositiveVertex.z+
+        m_Planes[PlaneDir].w;
+
+    //양수라면, 평면바깥에존재
+    return distance<0.0f;
+}
 void CCamera_Base::Free()
 {
     __super::Free();
