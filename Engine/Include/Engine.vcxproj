@@ -170,6 +170,7 @@
     <ClInclude Include="..\Public\CCell.h" />
     <ClInclude Include="..\Public\CChannel.h" />
     <ClInclude Include="..\Public\CCollider_Base.h" />
+    <ClInclude Include="..\Public\CCollision_Manager.h" />
     <ClInclude Include="..\Public\CContainerObject.h" />
     <ClInclude Include="..\Public\CEventBus_Manager.h" />
     <ClInclude Include="..\Public\CFolder.h" />
@@ -320,6 +321,7 @@
     <ClCompile Include="..\Private\CCell.cpp" />
     <ClCompile Include="..\Private\CChannel.cpp" />
     <ClCompile Include="..\Private\CCollider_Base.cpp" />
+    <ClCompile Include="..\Private\CCollision_Manager.cpp" />
     <ClCompile Include="..\Private\CContainerObject.cpp" />
     <ClCompile Include="..\Private\CEventBus_Manager.cpp" />
     <ClCompile Include="..\Private\CFolder.cpp" />

@@ -5,6 +5,7 @@
 #include "CInput_Manager.h"
 #include "CBounding_OBB.h"
 #include "COBBColliderComponent.h"
+#include "Client_Defines.h"
 
 
 USING(Client)
@@ -75,17 +76,21 @@ HRESULT CPlayer_Shield::Render()
 HRESULT CPlayer_Shield::Ready_Components(void* pArg)
 {
 
+    CCollider_Base::COLLIDER_DESC pColliderDesc;
+    pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON);
 
+    
     CBounding_OBB::BOUNDING_OBB_DESC CollDesc;
     CollDesc.vCenter = { 0.f,0.5f,0.f };
     CollDesc.Extents = { 0.4f,0.4f,0.1f };
 
+    pColliderDesc.m_BoundingDesc = &CollDesc;
 
     CComponent* pCollider = dynamic_cast<COBBColliderComponent*>(m_pGameInstance->Clone_Prototype(
         PROTOTYPE::COMPONENT,
         0,
         PROTO_COMPONENT_NAME(L"OBBCollider"),
-        &CollDesc)
+        &pColliderDesc)
         );
 
     if (FAILED(Add_Component(

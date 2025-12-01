@@ -1,4 +1,6 @@
 #include "CBounding_AABB.h"
+#include "CBounding_OBB.h"
+#include "CBounding_Sphere.h"
 #include "DebugDraw.h"
 #include "CTransform.h"
 
@@ -47,6 +49,27 @@ bool CBounding_AABB::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist
 {
     return m_pDesc->Intersects(origin, rayDir, Dist);
 
+}
+
+bool CBounding_AABB::Intersect(COLLIDER_TYPE eType, CBounding* pOther)
+{
+    switch (eType)
+    {
+    case COLLIDER_TYPE::AABB:
+        return m_pDesc->Intersects(*static_cast<CBounding_AABB*>(pOther)->Get_Desc());
+        break;
+
+    case COLLIDER_TYPE::OBB:
+        return m_pDesc->Intersects(*static_cast<CBounding_OBB*>(pOther)->Get_Desc());
+        break;
+
+    case COLLIDER_TYPE::SPHERE:
+        return m_pDesc->Intersects(*static_cast<CBounding_Sphere*>(pOther)->Get_Desc());
+        break;
+
+    }
+
+    return false;
 }
 
 #ifdef _DEBUG

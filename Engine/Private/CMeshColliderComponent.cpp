@@ -34,15 +34,16 @@ HRESULT CMeshColliderComponent::Initialize_Prototype()
 
 HRESULT CMeshColliderComponent::Initialize_Copytype(void* pArg)
 {
-    CBounding::BOUNDING_DESC* pDesc = static_cast<CBounding::BOUNDING_DESC*>(pArg);
-
 
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
     /*MeshCollider->AABB + MEsh*/
-    m_pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pDesc);
-    m_pMeshBounding = CBounding_Mesh::Create(m_pDevice, m_pContext, pDesc);
+    COLLIDER_DESC* pDesc = static_cast<COLLIDER_DESC*>(pArg);
+    CBounding::BOUNDING_DESC* pBoundingDesc = static_cast<CBounding::BOUNDING_DESC*>(pDesc->m_BoundingDesc);
+
+    m_pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pBoundingDesc);
+    m_pMeshBounding = CBounding_Mesh::Create(m_pDevice, m_pContext, pBoundingDesc);
 
 
     return S_OK;
@@ -113,4 +114,10 @@ CMeshColliderComponent* CMeshColliderComponent::Create(ComPtr<ID3D11Device> pDev
 
 
     return pInstance;
+}
+
+bool CMeshColliderComponent::Intersect(CCollider_Base* pOther)
+{
+    m_isColl = m_pBounding->Intersect(pOther->Get_Type(), pOther->Get_Bounding());
+    return m_isColl;
 }

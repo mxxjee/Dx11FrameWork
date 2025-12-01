@@ -20,7 +20,9 @@ public:
     HRESULT     Initialize(const BOUNDING_DESC* pInitialDesc);
     virtual         HRESULT         Update(XMMATRIX WorldMatrix);
     bool            Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);
+    virtual bool            Intersect(COLLIDER_TYPE eType, CBounding* pOther);
 
+    BoundingBox* Get_Desc() { return m_pDesc; }
 private:
     BoundingBox* m_pOriginalDesc = {nullptr};       //로컬 상태의 AABB바운딩박스
     BoundingBox* m_pDesc = { nullptr };     // 월드행렬을 가공한 상태의 AABB바운딩박스

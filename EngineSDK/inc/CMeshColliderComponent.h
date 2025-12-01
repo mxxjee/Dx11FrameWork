@@ -43,6 +43,10 @@ private:
     ENGINE_DESC m_EngineDesc;
 
 
+
+    // CCollider_Base을(를) 통해 상속됨
+    virtual bool Intersect(CCollider_Base* pOther) override;
+
 };
 
 NS_END

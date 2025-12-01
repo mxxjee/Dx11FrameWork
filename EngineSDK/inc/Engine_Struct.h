@@ -22,6 +22,7 @@ namespace Engine
 		unsigned int iWinSizeY;
 		unsigned int iNumLevels;
 		WINMODE		winMode;
+		_uint		colGroupMax = 0;
 
 	}ENGINE_DESC;
 

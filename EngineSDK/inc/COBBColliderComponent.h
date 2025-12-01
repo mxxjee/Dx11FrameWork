@@ -25,5 +25,6 @@ public:
     static COBBColliderComponent* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual COBBColliderComponent* Clone(void* pArg);
     virtual void Free() override;
+
 };
 NS_END

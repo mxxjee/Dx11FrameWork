@@ -54,3 +54,8 @@ void CBounding_Mesh::Free()
     __super::Free();
  
 }
+
+bool CBounding_Mesh::Intersect(COLLIDER_TYPE eType, CBounding* pOther)
+{
+    return false;
+}

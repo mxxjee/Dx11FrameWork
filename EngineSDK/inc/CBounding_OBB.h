@@ -22,7 +22,7 @@ public:
     HRESULT     Initialize(const BOUNDING_DESC * pInitialDesc);
     virtual         HRESULT         Update(XMMATRIX WorldMatrix);
     bool            Intersects_Ray(_vector origin, _vector rayDir, _float & Dist);
-
+    BoundingOrientedBox* Get_Desc() { return m_pDesc; }
 private:
     BoundingOrientedBox* m_pOriginalDesc = { nullptr };       //로컬 상태의 AABB바운딩박스
     BoundingOrientedBox* m_pDesc = { nullptr };     // 월드행렬을 가공한 상태의 AABB바운딩박스
@@ -45,6 +45,10 @@ private:
     _float3         m_vOffSet = { 0.f, 0.f, 0.f };
     _float3         m_vSize = { 1.f,1.f,1.f };  //월드행렬의 scale*m_vSize
 
+
+
+                                                // CBounding을(를) 통해 상속됨
+    virtual bool Intersect(COLLIDER_TYPE eType, CBounding* pOther) override;
 
 };
 

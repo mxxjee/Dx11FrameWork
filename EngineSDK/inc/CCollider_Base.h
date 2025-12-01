@@ -2,9 +2,17 @@
 #include "CComponent.h"
 
 NS_BEGIN(Engine)
+
 class ENGINE_DLL CCollider_Base:
     public CComponent
 {
+public:
+    typedef struct tagColliderDesc :CComponent::COMPONENT_DESC
+    {
+        _uint m_eColGroup = 0;
+        void* m_BoundingDesc = nullptr;
+
+    }COLLIDER_DESC;
 protected:
     CCollider_Base(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CCollider_Base(const CCollider_Base& Prototype);
@@ -23,7 +31,12 @@ public:
 public:
     virtual      HRESULT   Update_Collider(XMMATRIX    WorldMatrix)=0;
     virtual      bool   Intersects_Ray(_vector origin, _vector rayDir, _float& Dist,class CTransform* pTransform)=0;
+    _uint       Get_ColGroup() { return m_eColGroup; }
 
+                //콜라이더끼리충돌
+    virtual     bool    Intersect(CCollider_Base* pOther);
+
+    void        OnCollision(CCollider_Base* pOther);
 
 #ifdef _DEBUG
 public:
@@ -38,17 +51,20 @@ public:
     virtual CComponent* Clone(void* pArg) = 0;
     virtual void Free() override;
 
+public:
+    void        Reset_Collision() { m_isColl = false; }
+public:
+    COLLIDER_TYPE   Get_Type() { return m_eType; }
+    class CBounding*      Get_Bounding() { return m_pBounding; }
+
 protected:
     COLLIDER_TYPE            m_eType;      //콜라이더 타입,어느충돌?
     _matrix                  m_WolrdMatrix;      //오너의 월드매트릭스
     _bool                    m_bActive = true;   //활성화 여부
     _bool                    m_bDebugDraw = false;
     class                    CBounding* m_pBounding = { nullptr };     //생성할 바운딩박스 
-    
-
-private:
     _bool                   m_isColl = { false };           //충돌 했는지 판단
-
+    _uint                    m_eColGroup = 0;
 };
 NS_END
 

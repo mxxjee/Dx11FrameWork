@@ -25,12 +25,14 @@ HRESULT CBoxColliderComponent::Initialize_Prototype()
 
 HRESULT CBoxColliderComponent::Initialize_Copytype(void* pArg)
 {
-    CBounding::BOUNDING_DESC* pDesc = static_cast<CBounding::BOUNDING_DESC*>(pArg);
-
+    
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
-    m_pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pDesc);
+    COLLIDER_DESC* pDesc = static_cast<COLLIDER_DESC*>(pArg);
+    CBounding::BOUNDING_DESC* pBoundingDesc = static_cast<CBounding::BOUNDING_DESC*>(pDesc->m_BoundingDesc);
+
+    m_pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pBoundingDesc);
 
 
     return S_OK;
@@ -48,6 +50,7 @@ bool CBoxColliderComponent::Intersects_Ray(_vector origin, _vector rayDir, _floa
     return m_pBounding->Intersects_Ray(origin, rayDir, Dist);
 
 }
+
 
 void CBoxColliderComponent::Set_OffSet(_float3 vOffset)
 {

@@ -2,7 +2,7 @@
 #include "CSphereColliderComponent.h"
 #include "CBounding_Sphere.h"
 #include "CGameInstance.h"
-
+#include "Client_Defines.h"
 
 USING(Client)
 CPlayer_Sword::CPlayer_Sword(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -75,18 +75,26 @@ HRESULT CPlayer_Sword::Ready_Components(void* pArg)
 {
 	/* For.Com_Collider_Sphere */
 
+
+	CCollider_Base::COLLIDER_DESC pColliderDesc;
+	pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON);
+	pColliderDesc.pOwner = this;
+
 	for (int i = 0; i < CollisionPos::END; ++i)
 	{
 		CBounding_Sphere::BOUNDING_SPHERE_DESC      CollDesc{};
-		CollDesc.fRadius = 0.2f;
+		CollDesc.fRadius = 0.4f;
 		CollDesc.vCenter = _float3(0.f,  0.f, (CollDesc.fRadius*2) * i);
+
+		pColliderDesc.m_BoundingDesc = &CollDesc;
+		
 
 
 		CComponent* pCollider = dynamic_cast<CSphereColliderComponent*>(m_pGameInstance->Clone_Prototype(
 			PROTOTYPE::COMPONENT,
 			0,
 			PROTO_COMPONENT_NAME(L"SphereCollider"),
-			&CollDesc)
+			&pColliderDesc)
 			);
 
 		m_pCollider[i] = dynamic_cast<CCollider_Base*>(pCollider);

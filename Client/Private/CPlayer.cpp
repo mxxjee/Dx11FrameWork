@@ -672,16 +672,22 @@ HRESULT CPlayer::Ready_Components(void* pArg)
 
 
     //////////////Boxcollider√ﬂ∞°
+
+    CCollider_Base::COLLIDER_DESC pColliderDesc;
+    pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::PLAYER);
+
+
     CBounding_AABB::BOUNDING_AABB_DESC CollDesc;
     CollDesc.vCenter = { 0.f,0.5f,0.f };
     CollDesc.Extents = { 0.3f,0.8f,0.4f };
+    pColliderDesc.m_BoundingDesc = &CollDesc;
 
 
     CComponent* pCollider = dynamic_cast<CBoxColliderComponent*>(m_pGameInstance->Clone_Prototype(
         PROTOTYPE::COMPONENT,
         0,
         PROTO_COMPONENT_NAME(L"BoxCollider"),
-        &CollDesc)
+        &pColliderDesc)
         );
 
     if (FAILED(Add_Component(

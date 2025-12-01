@@ -51,6 +51,7 @@ HRESULT CMainApp::Initialize()
 	desc.iWinSizeY = g_iWinSizeY;
 	desc.winMode = WINMODE::WIN;
 	desc.iNumLevels = ENUM_TO_UINT(LEVEL_ID::END);
+	desc.colGroupMax = ENUM_TO_UINT(COLLISION_GROUP::END);
 
 
 	if(FAILED(pGameInstance->Initialize_Engine(desc,&m_pDevice,&m_pContext)))
@@ -58,6 +59,9 @@ HRESULT CMainApp::Initialize()
 
 	if (FAILED(Initialize_Cilent()))
 		return E_FAIL;
+
+	Set_Collision_Rules();
+
 	CInput_Manager::GetInstance()->Init_Input(g_hInst, g_hWnd);
 
 	Register_Levels();
@@ -157,7 +161,21 @@ HRESULT CMainApp::Initialize_Cilent()
 		
 		});
 
+
+
+
+
 	return S_OK;
+
+}
+
+void CMainApp::Set_Collision_Rules()
+{
+	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
+	//pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER_WEAPON), true);
+	
+	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
+	//pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON), ENUM_TO_UINT(COLLISION_GROUP::MONSTER_WEAPON), true);
 
 }
 

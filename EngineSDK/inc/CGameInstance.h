@@ -312,6 +312,21 @@ public:
 	 void RegisterListners(const string& CBName, EventCallBack Callback);
 
 #pragma endregion
+
+
+#pragma region CollisionManager
+		// 콜라이더 등록
+	 HRESULT     Register_Collider(class CCollider_Base* pCollider);
+		
+	 //객체 삭제 시 호출해줘야함. 콜라이더 등록해제
+	 HRESULT     UnRegister_Collider(CCollider_Base* pCollider);
+
+
+		//각 그룹간의 충돌 설정 
+	 void        Set_Enable_Collision(_uint iSrcGroup, _uint iDstGroup, bool bEnable);
+
+
+#pragma endregion
  private:
 	 class CLevel_Manager* m_pLevelManager = { nullptr };
 	 class CTimer_Manager* m_pTimerManager = { nullptr };
@@ -337,6 +352,7 @@ public:
 
 	 class CNavMesh_Manager* m_pNavMeshManager = { nullptr };
 	 class CEventBus_Manager* m_pEventBusManager = { nullptr };
+	 class CCollision_Manager* m_pCollisionManager = { nullptr };
 
 private:
 	vector<D3D11_VIEWPORT>          m_ViewPorts;

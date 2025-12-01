@@ -9,6 +9,7 @@ CCollider_Base::CCollider_Base(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11Device
     :CComponent(pDevice,pContext)
 {
 
+
 }
 
 CCollider_Base::CCollider_Base(const CCollider_Base& Prototype)
@@ -52,7 +53,12 @@ HRESULT CCollider_Base::Initialize_Prototype()
 
 HRESULT CCollider_Base::Initialize_Copytype(void* pArg)
 {
-   
+    COLLIDER_DESC* pDesc = static_cast<COLLIDER_DESC*>(pArg);
+    if (pDesc)
+        m_eColGroup = pDesc->m_eColGroup;
+
+    m_pGameInstance->Register_Collider(this);
+
     return S_OK;
 }
 
@@ -64,6 +70,19 @@ HRESULT CCollider_Base::Update_Collider(XMMATRIX    WorldMatrix)
 bool CCollider_Base::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist, CTransform* pTransform)
 {
     return false;
+}
+
+
+bool CCollider_Base::Intersect(CCollider_Base* pOther)
+{
+  
+    m_isColl = m_pBounding->Intersect(pOther->m_eType, pOther->m_pBounding);
+
+    return m_isColl;
+}
+void CCollider_Base::OnCollision(CCollider_Base* pOther)
+{
+    int A = 10;
 }
 
 #ifdef _DEBUG

@@ -23,7 +23,7 @@
 #include "CMaterial_Manager.h"
 #include "CModel_Manager.h"
 #include "CHotKey_Manager.h"
-
+#include "CCollision_Manager.h"
 
 ////////////////Add-Ons////////////////
 #include "CShader.h"
@@ -31,6 +31,7 @@
 #include "CTerrain_Base.h"
 #include "CMapObject.h"
 #include "CLayer.h"
+#include "CCollider_Base.h"
 
 
 
@@ -145,7 +146,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	m_pNavMeshManager = CNavMesh_Manager::Create(*pDevice,*pContext);
 	CheckNullResult(m_pNavMeshManager, E_FAIL);
 
-	
+	/*collision ¸Å´ÏÀú*/
+	m_pCollisionManager = CCollision_Manager::Create(EngineDesc.colGroupMax);
+	CheckNullResult(m_pCollisionManager, E_FAIL);
 
 
 	return S_OK;
@@ -188,6 +191,7 @@ void CGameInstance::LateUpdate_Engine(float fTimedelta)
 	m_pEventBusManager->DisPatch(fTimedelta);
 	m_pLevelManager->Update_Late(fTimedelta);
 	LateUpdate_Cameras(fTimedelta);
+	m_pCollisionManager->Update_CollisionGroup(fTimedelta);
 	
 }
 
@@ -881,15 +885,37 @@ void CGameInstance::RegisterListners(const string& CBName, EventCallBack Callbac
 
 }
 
+HRESULT CGameInstance::Register_Collider(CCollider_Base* pCollider)
+{
+	CheckNullResult(m_pCollisionManager, E_FAIL);
+	return m_pCollisionManager->Register_Collider(pCollider);
+}
+
+HRESULT CGameInstance::UnRegister_Collider(CCollider_Base* pCollider)
+{
+	CheckNullResult(m_pCollisionManager, E_FAIL);
+	return m_pCollisionManager->UnRegister_Collider(pCollider);
+}
+
+void CGameInstance::Set_Enable_Collision(_uint iSrcGroup, _uint iDstGroup, bool bEnable)
+{
+	CheckNull(m_pCollisionManager);
+	return m_pCollisionManager->Set_Enable_Collision(iSrcGroup, iDstGroup, bEnable);
+}
+
 #pragma endregion
 
 void CGameInstance::Release_Engine()
 {
 	Safe_Release(m_pLevelManager);
 	Safe_Release(m_pTimerManager);
+
 	Safe_Release(m_pLevelFactory);
+	Safe_Release(m_pCollisionManager);
+
 	Safe_Release(m_pRenderer);
 	Safe_Release(m_pProtoManager);
+
 	Safe_Release(m_pObjectManager);
 	Safe_Release(m_pCameraManager);
 
@@ -909,6 +935,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pHotKeyManager);
 	Safe_Release(m_pNavMeshManager);
 	Safe_Release(m_pEventBusManager);
+	
+
 
 	Safe_Release(m_pGraphicDev);
 

@@ -8,6 +8,8 @@
 #include "CMonster_Body.h"
 #include "CLayer.h"
 #include "CImGui_Manager.h"
+#include "CBoxColliderComponent.h"
+
 
 
 USING(Client)
@@ -100,17 +102,26 @@ void CMonster::Update_Late(_float fTimeDelta)
 
     if (m_pCurState)
         m_pCurState->Update_Late(this, fTimeDelta);
+
+    m_pCollider->Update_Collider(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
+
 }
 
 void CMonster::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
+    m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::NONALPHA), this);
 }
 
 HRESULT CMonster::Render()
 {
     __super::Render();
 
+#ifdef _DEBUG
+    if (m_pGameInstance->m_bDrawDebug)
+        m_pCollider->Render();
+
+#endif
 
 
     return S_OK;
@@ -304,12 +315,14 @@ CGameObject* CMonster::Clone(void* pArg)
 void CMonster::Free()
 {
     Safe_Release(m_pNavigationCom);
-
+    m_pGameInstance->UnRegister_Collider(m_pCollider);
     for (auto& pair : m_States)
     {
         if (pair.second)
             Safe_Release(pair.second);
     }
+
+    Safe_Release(m_pCollider);
     __super::Free();
 }
 
@@ -319,7 +332,6 @@ void CMonster::Set_Dead()
     CLayer* pLayer = m_pGameInstance->Find_Layer(m_iLevelID, L"Monster_Layer");
     pLayer->RequestDestroy(this);
     
-
 #if _DEBUG
     //selectobjec관련들 다 초기화
     CImGui_Manager::GetInstance()->Reset_Window("ObjectDebugWindow");

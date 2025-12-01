@@ -21,6 +21,8 @@ public:
     HRESULT     Initialize(const BOUNDING_DESC * pInitialDesc);
     virtual         HRESULT         Update(XMMATRIX WorldMatrix);
     bool            Intersects_Ray(_vector origin, _vector rayDir, _float & Dist);
+    BoundingSphere* Get_Desc() { return m_pDesc; }
+    virtual bool            Intersect(COLLIDER_TYPE eType, CBounding* pOther);
 
 private:
     BoundingSphere* m_pOriginalDesc = { nullptr };       //로컬 상태의 바운딩sphere

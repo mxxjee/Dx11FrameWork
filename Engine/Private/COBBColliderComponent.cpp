@@ -25,12 +25,14 @@ HRESULT COBBColliderComponent::Initialize_Prototype()
 
 HRESULT COBBColliderComponent::Initialize_Copytype(void* pArg)
 {
-    CBounding::BOUNDING_DESC* pDesc = static_cast<CBounding::BOUNDING_DESC*>(pArg);
-
+    
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
-    m_pBounding = CBounding_OBB::Create(m_pDevice, m_pContext, pDesc);
+    COLLIDER_DESC* pDesc = static_cast<COLLIDER_DESC*>(pArg);
+    CBounding::BOUNDING_DESC* pBoundingDesc = static_cast<CBounding::BOUNDING_DESC*>(pDesc->m_BoundingDesc);
+
+    m_pBounding = CBounding_OBB::Create(m_pDevice, m_pContext, pBoundingDesc);
 
 
     return S_OK;
@@ -89,3 +91,4 @@ void COBBColliderComponent::Free()
 {
     __super::Free();
 }
+

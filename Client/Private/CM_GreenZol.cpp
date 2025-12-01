@@ -5,6 +5,11 @@
 ////////////////////Components/////////
 #include "CGravity.h"
 #include "CNavigation.h"
+#include "CCollider_Base.h"
+#include "CBounding_AABB.h"
+#include "CBoxColliderComponent.h"
+
+
 
 //////////////States///////////
 #include "MonsterStates.h"
@@ -91,6 +96,9 @@ void CM_GreenZol::Update_Late(_float fTimeDelta)
 
 	if (m_pCurState)
 		m_pCurState->Update_Late(this, fTimeDelta);
+
+	m_pCollider->Update_Collider(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
+
 }
 
 
@@ -98,6 +106,7 @@ void CM_GreenZol::Update_Late(_float fTimeDelta)
 void CM_GreenZol::Update_Render(_float fTimeDelta)
 {
 	__super::Update_Render(fTimeDelta);
+	
 }
 
 HRESULT CM_GreenZol::Render()
@@ -193,6 +202,31 @@ HRESULT CM_GreenZol::Ready_Component(void* pArg)
 	)))
 		return E_FAIL;
 
+
+	//////////////Boxcollider√ﬂ∞°
+	CCollider_Base::COLLIDER_DESC pColliderDesc;
+	pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::MONSTER);
+
+
+	CBounding_AABB::BOUNDING_AABB_DESC CollDesc;
+	CollDesc.vCenter = { 0.f,0.5f,0.f };
+	CollDesc.Extents = { 0.3f,0.8f,0.4f };
+	pColliderDesc.m_BoundingDesc = &CollDesc;
+
+
+	CComponent* pCollider = dynamic_cast<CBoxColliderComponent*>(m_pGameInstance->Clone_Prototype(
+		PROTOTYPE::COMPONENT,
+		0,
+		PROTO_COMPONENT_NAME(L"BoxCollider"),
+		&pColliderDesc)
+		);
+
+	if (FAILED(Add_Component(
+		COMPONENT_TYPE::BOX_COLLIDER,
+		pCollider,
+		reinterpret_cast<CComponent**>(&m_pCollider)
+	)))
+		return E_FAIL;
 
 	return S_OK;
 }

@@ -40,6 +40,9 @@ public:
 
 private:
     CModel*             m_pModel;
+
+    // CBounding을(를) 통해 상속됨
+    virtual bool Intersect(COLLIDER_TYPE eType, CBounding* pOther) override;
 };
 NS_END
 

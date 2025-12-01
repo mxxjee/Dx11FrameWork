@@ -1,4 +1,8 @@
 #include "CBounding_Sphere.h"
+#include "CBounding_AABB.h"
+#include "CBounding_OBB.h"
+
+
 #include "DebugDraw.h"
 #include "CTransform.h"
 
@@ -64,4 +68,24 @@ void CBounding_Sphere::Free()
     Safe_Delete(m_pOriginalDesc);
     Safe_Delete(m_pDesc);
 
+}
+
+bool CBounding_Sphere::Intersect(COLLIDER_TYPE eType, CBounding* pOther)
+{
+    switch (eType)
+    {
+    case COLLIDER_TYPE::AABB:
+        return m_pDesc->Intersects(*static_cast<CBounding_AABB*>(pOther)->Get_Desc());
+        break;
+
+    case COLLIDER_TYPE::OBB:
+        return m_pDesc->Intersects(*static_cast<CBounding_OBB*>(pOther)->Get_Desc());
+        break;
+
+    case COLLIDER_TYPE::SPHERE:
+        return m_pDesc->Intersects(*static_cast<CBounding_Sphere*>(pOther)->Get_Desc());
+        break;
+    }
+
+    return false;
 }

@@ -391,6 +391,9 @@
     <Filter Include="00.System\13.ModelManager\Model\Animations\AnimNotify">
       <UniqueIdentifier>{3870886b-a8e9-4337-8fa4-3d32d2d8258d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\17.Collision">
+      <UniqueIdentifier>{72a053be-f0e1-450e-9e5e-9f9479311759}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -771,6 +774,7 @@
     <ClInclude Include="..\Public\CAnimNotify.h">
       <Filter>00.System\13.ModelManager\Model\Animations\AnimNotify</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CCollision_Manager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -1107,5 +1111,6 @@
     <ClCompile Include="..\Private\CAnimNotify.cpp">
       <Filter>00.System\13.ModelManager\Model\Animations\AnimNotify</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CCollision_Manager.cpp" />
   </ItemGroup>
 </Project>

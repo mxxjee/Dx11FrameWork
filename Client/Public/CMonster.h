@@ -5,6 +5,8 @@
 namespace Engine
 {
     class CNavigation;
+    class CBoxColliderComponent;
+
 }
 
 NS_BEGIN(Client)
@@ -103,6 +105,7 @@ protected:
      CMonster_Body*      m_pMonsterBody = nullptr;
 
     MONSTER_BASE_STATE      m_eCurState = MONSTER_BASE_STATE::NONE;
+    CBoxColliderComponent*  m_pCollider = { nullptr };
 
 public:
     bool            Is_CanMove() { return m_bCanMove; }

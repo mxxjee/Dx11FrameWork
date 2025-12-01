@@ -176,9 +176,11 @@
     <ClInclude Include="..\Public\CPlayer_Sword.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Sword</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CPlayer_Shield.h" />
     <ClInclude Include="..\Public\Client_Defines.h">
       <Filter>99.Defines\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPlayer_Shield.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Shield</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -553,7 +555,9 @@
     <ClCompile Include="..\Private\CPlayer_Sword.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Sword</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CPlayer_Shield.cpp" />
+    <ClCompile Include="..\Private\CPlayer_Shield.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Shield</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
