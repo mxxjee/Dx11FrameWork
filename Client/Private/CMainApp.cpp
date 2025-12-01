@@ -319,10 +319,10 @@ void CMainApp::CreateSamplerStates()
 	desc.MinLOD = FLT_MIN;
 	desc.MipLODBias = 0.0f;
 
-	for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP); ++i)
+	for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP); ++i)
 		m_pDevice->CreateSamplerState(&desc, m_RenderStates[i]._samplerState.GetAddressOf());
 
-	for (int i = ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP); i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+	for (int i = ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP); i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
 		m_pDevice->CreateSamplerState(&desc, m_RenderStates[i]._samplerState.GetAddressOf());
 
 }
@@ -378,13 +378,14 @@ void CMainApp::CreateDepthStencilStates()
 
 	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._DepthStencilState.GetAddressOf());
 	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::NONALPHA)]._DepthStencilState.GetAddressOf());
-
+	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP)]._DepthStencilState.GetAddressOf());
 	//깊이 테스트여부
 	desc.DepthEnable = true;
 
 	//깊이 기록여부
 	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::ALPHA)]._DepthStencilState.GetAddressOf());
+
 	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP)]._DepthStencilState.GetAddressOf());
 
 	desc.DepthEnable = false;

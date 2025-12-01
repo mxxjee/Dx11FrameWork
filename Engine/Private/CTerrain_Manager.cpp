@@ -15,7 +15,8 @@
 CTerrain_Manager::CTerrain_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
 	:m_pDevice{_pDevice},m_pDeviceContext{ _pContext },
 	PickingWolrdPos{}, m_EngineDesc{},
-	m_pImguiManager{ CImGui_Manager ::GetInstance()}
+	m_pImguiManager{ CImGui_Manager ::GetInstance()},
+	m_pGameInstance{CGameInstance::GetInstance()}
 {
 }
 
@@ -118,21 +119,26 @@ void CTerrain_Manager::Update_Late(_float fTimeDelta)
 
 void CTerrain_Manager::Update_Render(_float fTimeDelta)
 {
-	CCamera_Base* pMaincamera = CGameInstance::GetInstance()->Get_MainCamera();
+	CCamera_Base* pMaincamera = m_pGameInstance->Get_MainCamera();
+	CCamera_Base* pMiniMapCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
 
+	CCamera_Base* pRenderCamera = m_pGameInstance->Get_RenderCamera();
+		
 	for (auto& pair : m_TerrainMap)
 	{
 		if (pair.second)
 		{
-			//pair.second->Update_Render(fTimeDelta)
 			if (pMaincamera->IsInDistance(pair.second->Get_Chunk()))
 			{
 				if (pMaincamera->IsInFrustum(pair.second->Get_Chunk().ChunkBound))
 					pair.second->Update_Render(fTimeDelta);
 			}
 
-			else
-				int A = 10;
+			if (pMiniMapCamera)
+			{
+				if (pMiniMapCamera->IsInDistance(pair.second->Get_Chunk()))
+					pair.second->Update_Render_MiniMapPriority();
+			}
 		}
 			
 	}

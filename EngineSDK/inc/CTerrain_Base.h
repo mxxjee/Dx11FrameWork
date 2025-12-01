@@ -51,6 +51,9 @@ public:
 public:
      virtual void Free() override;
 
+public:
+    virtual         void Update_Render_MiniMapPriority() {};
+
 protected:
     CVIBuffer* m_pVIBufferCom = { nullptr };
     CTexture* m_pTexture = { nullptr };

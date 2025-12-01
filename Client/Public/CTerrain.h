@@ -47,6 +47,8 @@ public:
     virtual CGameObject* Clone(void* pArg);
     virtual void Free() override;
 
+public:
+    void Update_Render_MiniMapPriority() override;
 private:
     CBody* m_pBody = nullptr;
 

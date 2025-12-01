@@ -5,6 +5,8 @@
 /*맵툴에서 설치한 터레인(FILED) 모델들 관리함..!!!*/
 
 NS_BEGIN(Engine)
+class CGameInstance;
+
 class CTerrain_Manager :
     public CBase
 {
@@ -70,7 +72,7 @@ private:
     class                   CImGui_Manager* m_pImguiManager = { nullptr };
 private:
     vector<LOADTERRAINDATA>         LoadDatas;
-
+    CGameInstance*                  m_pGameInstance = nullptr;
 
 
 };

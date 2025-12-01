@@ -152,3 +152,9 @@ void CTerrain::Free()
     Safe_Release(m_pBody);
  
 }
+
+void CTerrain::Update_Render_MiniMapPriority()
+{
+    m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP), m_pBody);
+
+}

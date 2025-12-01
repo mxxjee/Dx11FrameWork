@@ -173,7 +173,7 @@ HRESULT CCameraDebugWindow::Create_Widgets()
     //렌더그룹체크박스
     m_CheckBoxs.resize(ENUM_TO_UINT(RENDERGROUP::END));
     const char* pElemets[ENUM_TO_UINT(RENDERGROUP::END)] = {
-        "PRIORITY","NONALPHA","ALPHA", "WORLD_UI_MINIMAP","UI"
+        "PRIORITY","NONALPHA","ALPHA", "WORLD_UI_MINIMAP","WORLD_UI_MINIMAP", "UI"
     };
 
     //Camera Culling Dist슬라이더

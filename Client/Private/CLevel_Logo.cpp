@@ -489,6 +489,7 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
     CCamera_Base* pTargetCam = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
     if (pTargetCam)
     {
+        pTargetCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP), false);
         pTargetCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP), false);
         pTargetCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::UI), false);
 
@@ -498,6 +499,7 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
     CCamera_Base* pFreeCam = m_pGameInstance->Find_Camera(CAMERA_TYPE::FREE);
     if (pFreeCam)
     {
+        pFreeCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP), false);
         pFreeCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP), false);
         pFreeCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::UI), false);
 
@@ -516,9 +518,11 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
     CCamera_Base* pMinimapCam = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
     if (pMinimapCam)
     {
+        pMinimapCam->Set_Distance(30.f);
         pMinimapCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::NONALPHA), false);
         pMinimapCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::UI), false);
-
+        pMinimapCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::PRIORITY), false);
+    
     }
     
 
