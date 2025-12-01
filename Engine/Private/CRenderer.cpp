@@ -101,6 +101,14 @@ void CRenderer::RenderGroupObjects(_uint eGroup)
 			i->Render();
 	}
 
+	if (eGroup == 0)
+	{
+		wchar_t buffer[128];
+		swprintf_s(buffer, L"Priority: %d\n", iter.size());
+
+		OutputDebugString(buffer);
+	}
+		
 }
 
 

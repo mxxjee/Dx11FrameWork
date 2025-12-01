@@ -671,7 +671,9 @@ void CLevel_Logo::Create_MainCamera()
     Desc.fHeight = (float)g_iWinSizeY;
     Desc.fFovy = 90.f;
     Desc.fNear = 0.1f;
-    Desc.vPosition = _float3(0.f, 2.f, -2.f);
+
+
+
     Desc.vOffset= _float3(0.f, 4.f, -3.f);
     Desc.fFar = 100.f;
     Desc.pTarget = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Player_Layer", L"Player");
@@ -680,7 +682,8 @@ void CLevel_Logo::Create_MainCamera()
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
-    TransDesc.vLocalRotation = { 30.f,0.f,0.f,1.f };
+    TransDesc.vLocalRotation = {50.f,0.f,0.f,1.f };
+    TransDesc.vLocalScale = { 1.f,1.f,1.f,1.f };
     Desc.TransformDesc = &TransDesc;
 
 

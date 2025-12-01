@@ -42,7 +42,7 @@
 #define GRAVITY -980.f
 
 #define ChunkWidth 15.f
-#define ChunkHeight 20.f
+#define ChunkHeight 30.f
 #define ChunkDepth 12.f
 
 

@@ -188,7 +188,7 @@ HRESULT CCamera_Base::Ready_Resource(void* pArg)
 void CCamera_Base::Make_Planes()
 {
     _float4x4 ViewProj;
-    XMStoreFloat4x4(&ViewProj, m_pGameInstance->Get_ViewProjMatrix(ENUM_TO_UINT(m_pGameInstance->Get_MainCamera()->Get_CameraType())));
+    XMStoreFloat4x4(&ViewProj, m_pGameInstance->Get_ViewProjMatrix(ENUM_TO_UINT(m_eCameraType)));
 
     m_Planes[ENUM_TO_UINT(PLANE::LEFT)].x = ViewProj._14 + ViewProj._11;
     m_Planes[ENUM_TO_UINT(PLANE::LEFT)].y = ViewProj._24 + ViewProj._21;
@@ -282,11 +282,23 @@ void CCamera_Base::Make_Planes()
  
    
 }
+bool CCamera_Base::IsInDistance(const Chunk& chunk)
+{
+    _vector campos = m_pTransformCom->Get_State(STATE::POSITION);
+
+    
+    float dist = XMVectorGetX(XMVector3Length(campos - XMLoadFloat3(&chunk.vCenter)));
+    if (dist > m_fCulDistance)
+        return false;
+
+    return true;
+}
 bool CCamera_Base::IsInFrustum(const Bound& box)
 {
     for (int i = 0; i < ENUM_TO_UINT(PLANE::END); ++i)
     {
         //하나라도밖에있으면 렌더하지않는다.
+        
         if (IsOutSidePlane((_uint)i, box))
             return false;
     }

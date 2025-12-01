@@ -222,7 +222,7 @@ HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
 
     ///////////////////////Navigation 불러오기
-    m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::TOWN), "../../Resource/Data/Map/Terrain8_Nav.dat");
+    m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::TOWN), "../../Resource/Data/Map/Nav12.dat");
 #ifdef _DEBUG
     m_pGameInstance->Set_NavMeshShader(m_pGameInstance->Find_Shader(L"VtxPos"));
 #endif
@@ -394,7 +394,7 @@ HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
 
     desc.ObjTag = L"CM_GreenZol" + to_wstring(0);
     CTransform::TRANSFORM_DESC TransDesc = {};
-    TransDesc.vLocalPosition = { 30.f,5.f,20.f,1.f };
+    TransDesc.vLocalPosition = { 20.108f,10.5f,27.893f,1.f };
     TransDesc.vLocalRotation = { 0.f,180.f,0.f,1.f };
 
     TransDesc.fSpeedPerSec = 2.f;
@@ -421,7 +421,7 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
     CNPC::NPC_DESC pDesc;
 
     CTransform::TRANSFORM_DESC pTransDesc;
-    pTransDesc.vLocalPosition= { 40.f,9.5f,19.f,1.f };
+    pTransDesc.vLocalPosition = { 30.642f,10.421f,23.642f,1.f };
     pDesc.ObjTag = L"NPC_Richard";
     pDesc.pTarget = nullptr;
     pDesc.ModelName = L"RichardAnim";

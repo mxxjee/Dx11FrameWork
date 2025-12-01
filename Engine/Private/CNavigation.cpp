@@ -23,22 +23,34 @@ void CNavigation::Set_CurrentIdx(_vector vWorldPos)
 	_matrix Inverse = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pParentMatrix));
 	_vector vCellResultPos = XMVector3TransformCoord(vWorldPos, Inverse);
 	_int NeighborIdx;
-
+	
+	bool bQuit = false;
 	for (int i = 0; i < size; ++i)
 	{
-		if ((*m_Cells)[i]->isIn(vCellResultPos,&NeighborIdx))
+		if (false == (*m_Cells)[i]->isIn(vCellResultPos, &NeighborIdx))
 		{
 			//curIndex를 갱신하기위해
 			while (true)
 			{
-				if (true == (*m_Cells)[NeighborIdx]->isIn(vCellResultPos, &NeighborIdx))
-					break;
-
+				//못찾으면..while문탈출 후 다른 셀찾기
 				if (-1 == NeighborIdx)
 					break;
+
+				if (true == (*m_Cells)[NeighborIdx]->isIn(vCellResultPos, &NeighborIdx))
+				{
+					m_iPreCellIdx = m_iCurrentCellIndex;
+					m_iCurrentCellIndex = NeighborIdx;
+					return;
+				}
+				
 			}
+			
+		}
+
+		else
+		{
 			m_iPreCellIdx = m_iCurrentCellIndex;
-			m_iCurrentCellIndex = NeighborIdx;
+			m_iCurrentCellIndex = i;
 			return;
 		}
 	}

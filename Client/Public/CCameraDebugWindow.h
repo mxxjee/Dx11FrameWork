@@ -63,6 +63,8 @@ private:
 
     vector<CImgui_Checkbox*> m_CheckBoxs;
 
+    CImgui_Slider*  m_CulDistSlider = nullptr;
+
 private:
     CGameInstance* m_pGameInstance = { nullptr };
     int            m_bClickOrtho = -1;
@@ -70,6 +72,8 @@ private:
     float fDebugNear = 0.f;
     float fDebugFar = 0.f;
     float fDebugFov = 0.f;
+    float fCulDist = 50.f;
+
 
     _float3 fDebugOffSet;
     _float3 fDefaultOffSet;

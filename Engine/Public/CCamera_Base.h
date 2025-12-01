@@ -62,8 +62,8 @@ public:
  
 
 protected:
-    //pipeline에게 정보업데이트
-    void Update_PipeLine();
+    //pipeline에게 정보업데이트, 3인칭카메라는 따로 정의한다.
+    virtual void Update_PipeLine();
 
 public:
     virtual HRESULT     Create_RenderTagetview(bool bCreateRenderTarget);
@@ -109,6 +109,9 @@ private:
     void            Make_Planes();
 
 public:
+    bool            IsInDistance(const Chunk& chunk);
+    void            Set_Distance(_float fDistance) { m_fCulDistance = fDistance; }
+public:
     virtual bool IsInFrustum(const Bound& box);
 
 private:
@@ -140,6 +143,8 @@ protected:
     _float3         m_vInitOffset;
 
     bool            m_bPerspective = true;
+
+    float           m_fCulDistance = 50.f;
 };
 
 NS_END

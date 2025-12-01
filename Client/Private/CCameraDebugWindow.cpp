@@ -176,6 +176,15 @@ HRESULT CCameraDebugWindow::Create_Widgets()
         "PRIORITY","NONALPHA","ALPHA", "WORLD_UI_MINIMAP","UI"
     };
 
+    //Camera Culling Dist슬라이더
+    CImgui_Slider::IMGUISLIDER_DESC CulSliderDesc;
+    CulSliderDesc.m_LabelName = "Culling Dist";
+    CulSliderDesc.m_RelativePos = ImVec2(230.f, 400.f);
+    CulSliderDesc.vMin = 0.1f;
+    CulSliderDesc.vMax = 999.f;
+    if (FAILED(Add_Widgets<CImgui_Slider>(&CulSliderDesc, reinterpret_cast<CImgui_Widget**>(&m_CulDistSlider))))
+        return E_FAIL;
+
 
     for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
     {
@@ -352,6 +361,7 @@ void CCameraDebugWindow::ToggleOffSetDebug()
         m_InuptFloats[0]->Set_Active(false);
         m_InuptFloats[1]->Set_Active(false);
         m_InuptFloats[2]->Set_Active(false);
+        m_CulDistSlider->Set_Active(false);
 
         m_pDefaultOffSetButton->Set_Active(false);
 
@@ -458,8 +468,10 @@ void CCameraDebugWindow::ToggleClickOrtho(bool _b)
             m_InuptFloats[2]->Set_BindValue(&(fDebugOffSet.z));
 
             ///////////////////////////////
-
-
+            m_CulDistSlider->Set_BindValue(&fCulDist);
+            m_CulDistSlider->Set_Callback([pTarget, this]() {
+                pTarget->Set_Distance(fCulDist);
+                });
 
             ////////////최종 세팅/////////
             for (int i = NearClip; i <= FOV; ++i)
@@ -519,6 +531,8 @@ void CCameraDebugWindow::Free()
     Safe_Release(m_pPerspectiveCamButton);
     Safe_Release(m_pOrthoGraphicCamButton);
     Safe_Release(m_pDefaultOffSetButton);
+
+    Safe_Release(m_CulDistSlider);
 
     for (auto& i : m_InuptFloats)
         Safe_Release(i);

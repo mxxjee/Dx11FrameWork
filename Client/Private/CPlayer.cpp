@@ -49,7 +49,7 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
 
     m_fInitSpeed = 4.f;
     TransDesc.fSpeedPerSec = m_fInitSpeed;
-    TransDesc.vLocalPosition = { 35.f,10.f,19.f,1.f };
+    TransDesc.vLocalPosition = { 30.642f,10.421f,23.642f,1.f };
     TransDesc.vLocalRotation = { 0.f,180.f,0.f,0.f };                                                                                      
 
 

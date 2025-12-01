@@ -29,6 +29,8 @@ public:
     virtual HRESULT Render();
 
 public:
+    virtual void Update_PipeLine() override;
+public:
     //bInit = 초기화용, 첫프레임시 튀는걸 방지한다(바로스냅). 자연스럽게 타겟변경시에는 Set_Target()사용
     void        Set_Target(CGameObject* pTarget,bool bInit=false);
     void        Follow_Target(_float fTimeDelta);
@@ -37,6 +39,11 @@ public:
     static CMainCamera* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg);
     virtual void    Free() override;
+
+private:
+    _matrix ViewMatrix;
+    _float4 m_vLocalRotation;
+
 
 
 };

@@ -2,7 +2,8 @@
 #include    "CPlayer.h"
 #include "CBody.h"
 
-
+#include "CNavigation.h"
+#include "CCell.h"
 
 USING(Client)
 CNPC_Richard::CNPC_Richard(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -20,7 +21,9 @@ HRESULT CNPC_Richard::Initialize_Prototype(void* pArg)
     if (FAILED(__super::Initialize_Prototype(pArg)))
         return E_FAIL;
 
-    return S_OK;
+
+
+    return S_OK; 
 }
 
 void CNPC_Richard::Update_Priority(_float fTimeDelta)

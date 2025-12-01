@@ -39,7 +39,7 @@ public:
 
     virtual HRESULT Render();
 
-private:
+protected:
     Engine::CNavigation* m_pNavigationCom = { nullptr };
 
 public:

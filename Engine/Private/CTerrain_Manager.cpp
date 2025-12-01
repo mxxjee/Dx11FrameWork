@@ -125,8 +125,11 @@ void CTerrain_Manager::Update_Render(_float fTimeDelta)
 		if (pair.second)
 		{
 			//pair.second->Update_Render(fTimeDelta)
-			if (pMaincamera->IsInFrustum(pair.second->Get_Chunk().ChunkBound))
-				pair.second->Update_Render(fTimeDelta);
+			if (pMaincamera->IsInDistance(pair.second->Get_Chunk()))
+			{
+				if (pMaincamera->IsInFrustum(pair.second->Get_Chunk().ChunkBound))
+					pair.second->Update_Render(fTimeDelta);
+			}
 
 			else
 				int A = 10;
@@ -252,7 +255,7 @@ CTerrain_Base* CTerrain_Manager::Check_Picking()
 						pPickObj = pair.second;
 						XMStoreFloat3(&PickingWolrdPos, ray.Origin + ray.Dir * Dist);
 
-						XMStoreFloat3(&PickingWolrdPos, XMVector3TransformCoord(XMLoadFloat3(&PickingWolrdPos), XMLoadFloat4x4(&pTerrain->Get_Transform()->Get_World(TransformScope::WORLD))));
+						//XMStoreFloat3(&PickingWolrdPos, XMVector3TransformCoord(XMLoadFloat3(&PickingWolrdPos), XMLoadFloat4x4(&pTerrain->Get_Transform()->Get_World(TransformScope::WORLD))));
 						
 					}
 				}

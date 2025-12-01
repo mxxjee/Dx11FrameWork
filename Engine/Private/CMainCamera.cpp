@@ -4,6 +4,8 @@
 #include "CShader.h"
 
 
+
+
 CMainCamera::CMainCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CCamera_Base(pDevice,pContext)
 {
@@ -25,9 +27,16 @@ HRESULT CMainCamera::Initialize_Copytype(void* pArg)
 		return E_FAIL;
 
 
-
+	CAMERABASE_DESC* pCameraDesc = static_cast<CAMERABASE_DESC*>(pArg);
+	if (pCameraDesc)
+	{
+		CTransform::TRANSFORM_DESC* pTransDesc = static_cast<CTransform::TRANSFORM_DESC*>(pCameraDesc->TransformDesc);
+		if (pTransDesc)
+			m_vLocalRotation = pTransDesc->vLocalRotation;
+	}
 	m_bPerspective = true;
-
+	m_pTransformCom->Set_Scale(_float4{ 1.f, 1.f, 1.f,1.f });
+	m_pTransformCom->Set_Parent(nullptr);
 	return S_OK;
 }
 
@@ -42,6 +51,7 @@ void CMainCamera::Update(_float fTimeDelta)
 	__super::Update(fTimeDelta);
 	
 	Follow_Target(fTimeDelta);
+	m_pTransformCom->Rotation(_float3(m_vLocalRotation.x, m_vLocalRotation.y, m_vLocalRotation.z));
 	Update_PipeLine();
 	
 	
@@ -66,6 +76,15 @@ HRESULT CMainCamera::Render()
 
 	
 	return S_OK;
+}
+
+void CMainCamera::Update_PipeLine()
+{
+	//pipeline에게 정보업데이트
+	m_pGameInstance->Set_Transform(ENUM_TO_UINT(m_eCameraType), D3DTS::VIEW, ViewMatrix);
+
+	m_pGameInstance->Set_Transform(ENUM_TO_UINT(m_eCameraType), D3DTS::PROJ, XMMatrixPerspectiveFovLH(XMConvertToRadians(m_fFovy), (m_fWidth / m_fHeight), m_fNearZ, m_fFarZ));
+
 }
 
 
@@ -97,8 +116,8 @@ void CMainCamera::Follow_Target(_float fTimeDelta)
 {
 	if (!m_pTarget)
 		return;
-	//OutputDebugString(L"[CAMERA] Update Tick\n");
 
+	
 	CTransform* pTargetTransform = static_cast<CTransform*>(m_pTarget->Get_Component(COMPONENT_TYPE::TRANSFORM));
 	if (!m_pTransformCom || !pTargetTransform)
 		return;
@@ -108,6 +127,13 @@ void CMainCamera::Follow_Target(_float fTimeDelta)
 	const _vector TargetPos = pTargetTransform->Get_State(STATE::POSITION,TransformScope::WORLD);
 	m_pTransformCom->MoveLerp(TargetPos + XMLoadFloat3(&m_vOffset), 3.f, fTimeDelta);
 
+
+	//??????? 왜이상한곳을보고있니
+	_vector eye = m_pTransformCom->Get_State(STATE::POSITION);
+	_vector look = XMVector3Normalize(m_pTransformCom->Get_State(STATE::LOOK));
+	XMVECTOR up = m_pTransformCom->Get_State(STATE::UP);
+
+	ViewMatrix = XMMatrixLookToLH(eye, look, up);
 
 }
 
