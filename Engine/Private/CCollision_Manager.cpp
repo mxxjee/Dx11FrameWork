@@ -11,6 +11,7 @@ HRESULT CCollision_Manager::Initialize(_uint MaxGroup)
 
     m_CollisionTable.resize(MaxGroup);
     m_pColliderGroups.resize(MaxGroup);
+    m_PrevFrameCollision.resize(MaxGroup);
 
     for (_uint i = 0; i < MaxGroup; ++i)
         m_CollisionTable[i].resize(MaxGroup,false);
@@ -18,6 +19,8 @@ HRESULT CCollision_Manager::Initialize(_uint MaxGroup)
     for (_uint i = 0; i < MaxGroup; ++i)
         m_pColliderGroups[i].resize(MaxGroup, nullptr);
 
+    for (_uint i = 0; i < MaxGroup; ++i)
+        m_PrevFrameCollision[i].resize(MaxGroup, false);
 
     return S_OK;
 }
@@ -83,11 +86,34 @@ void CCollision_Manager::Update_CollisionGroup(_float fTimeDelta)
 
 					if (Src->Intersect(Dst) && Dst->Intersect(Src))
 					{
-						Src->OnCollision(Dst);
-						Dst->OnCollision(Src);
+                        if (!m_PrevFrameCollision[i][j] && !m_PrevFrameCollision[j][i])
+                        {
+                            Src->OnCollisionEnter(Dst);
+                            Dst->OnCollisionEnter(Src);
+                        }
 
+                        else
+                        {
+                            Src->OnCollision(Dst);
+                            Dst->OnCollision(Src);
+                        }
 
+                        m_PrevFrameCollision[i][j] = true;
+                        m_PrevFrameCollision[j][i] = true;
 					}
+
+                    else
+                    {
+                        if (m_PrevFrameCollision[i][j] && m_PrevFrameCollision[j][i])
+                        {
+                            Src->OnCollisionExit(Dst);
+                            Dst->OnCollisionExit(Src);
+                        }
+
+                        m_PrevFrameCollision[i][j] = false;
+                        m_PrevFrameCollision[j][i] = false;
+
+                    }
                 }
             }
 

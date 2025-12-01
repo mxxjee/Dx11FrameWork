@@ -36,7 +36,9 @@ public:
                 //콜라이더끼리충돌
     virtual     bool    Intersect(CCollider_Base* pOther);
 
+    void        OnCollisionEnter(CCollider_Base* pOther);
     void        OnCollision(CCollider_Base* pOther);
+    void        OnCollisionExit(CCollider_Base* pOther);
 
 #ifdef _DEBUG
 public:

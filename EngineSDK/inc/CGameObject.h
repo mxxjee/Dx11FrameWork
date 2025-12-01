@@ -3,6 +3,7 @@
 #include "CTransform.h"
 
 NS_BEGIN(Engine)
+class CCollider_Base;
 
 class ENGINE_DLL CGameObject :
     public CBase
@@ -61,6 +62,12 @@ public:
 public:
     virtual void            Render_Transform_Imgui();
 #endif
+
+
+public:
+    virtual     void    OnCollisionEnter(CCollider_Base* pOther) {};
+    virtual     void    OnCollisionStay(CCollider_Base* pOther){};
+    virtual     void    OnCollisionExit(CCollider_Base* pOther){};
 
 protected:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };

@@ -80,10 +80,22 @@ bool CCollider_Base::Intersect(CCollider_Base* pOther)
 
     return m_isColl;
 }
+void CCollider_Base::OnCollisionEnter(CCollider_Base* pOther)
+{
+ 
+}
 void CCollider_Base::OnCollision(CCollider_Base* pOther)
 {
-    int A = 10;
+  
 }
+
+void CCollider_Base::OnCollisionExit(CCollider_Base* pOther)
+{
+    
+}
+
+
+
 
 #ifdef _DEBUG
 HRESULT CCollider_Base::Render()
