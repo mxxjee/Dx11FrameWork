@@ -50,8 +50,6 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
 
     m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player"));
 
-    if (m_pNavigationCom)
-        m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
 
     Ready_Events();
   

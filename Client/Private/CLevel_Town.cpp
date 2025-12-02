@@ -222,7 +222,7 @@ HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
 
     ///////////////////////Navigation 불러오기
-    m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::TOWN), "../../Resource/Data/Map/Nav12.dat");
+    m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::TOWN), "../../Resource/Data/Map/Terrain17_Nav.dat");
 #ifdef _DEBUG
     m_pGameInstance->Set_NavMeshShader(m_pGameInstance->Find_Shader(L"VtxPos"));
 #endif

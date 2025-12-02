@@ -186,6 +186,12 @@ void CMenuBarWindow::Show_SaveMenu()
                 m_pImgui_DataManager->Set_LoadFilePath(m_LoadFilePath);
             }
 
+            else  //그냥일반저장
+            {
+                if (FAILED(CNavMeshEdit_Manager::GetInstance()->Save_NavigationData(m_SaveFilePath.m_CurrentNavSaveFilePath, m_SaveFilePath.m_NavSaveFiles.size())))
+                    return;
+
+            }
             //Refresh SaveFileList
             if (FAILED(m_pImgui_DataManager->Update_SaveFiles()))
                 return;

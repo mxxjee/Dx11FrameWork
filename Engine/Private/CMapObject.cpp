@@ -116,17 +116,19 @@ HRESULT CMapObject::Ready_Component(void* pArg)
 	MapObject_DESC* pDesc = static_cast<MapObject_DESC*>(pArg);
 
 	//없다면 자동으로 만들어주자.
+	CCollider_Base::COLLIDER_DESC colDesc;
+
 	CBounding_AABB::BOUNDING_AABB_DESC AABBDesc;
-	CBounding_AABB::BOUNDING_AABB_DESC* ColliderDesc = static_cast<CBounding_AABB::BOUNDING_AABB_DESC*>(pDesc->ColliderComponent);
+	CCollider_Base::COLLIDER_DESC* ColliderDesc = static_cast<CCollider_Base::COLLIDER_DESC*>(pDesc->ColliderComponent);
+	
 	if (!ColliderDesc)
 	{
 		AABBDesc.Extents = { 0.3f,0.3f,0.3f };
-		ColliderDesc = &AABBDesc;
-
-		pDesc->ColliderComponent = &AABBDesc;
-
+		XMStoreFloat3(&AABBDesc.vCenter, m_pTransformCom->Get_State(STATE::POSITION));
+		colDesc.m_BoundingDesc = &AABBDesc;
 	}
-
+	
+	pDesc->ColliderComponent = &colDesc;
 	CComponent* pCollider = dynamic_cast<CBoxColliderComponent*>(m_pGameInstance->Clone_Prototype
 	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"BoxColliderComponent"), pDesc->ColliderComponent));
 

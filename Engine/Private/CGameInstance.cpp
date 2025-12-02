@@ -191,7 +191,11 @@ void CGameInstance::LateUpdate_Engine(float fTimedelta)
 	m_pEventBusManager->DisPatch(fTimedelta);
 	m_pLevelManager->Update_Late(fTimedelta);
 	LateUpdate_Cameras(fTimedelta);
+
+#ifdef _CLIENT
 	m_pCollisionManager->Update_CollisionGroup(fTimedelta);
+#endif // _CLIENT
+
 	
 }
 

@@ -57,7 +57,10 @@ HRESULT CCollider_Base::Initialize_Copytype(void* pArg)
     if (pDesc)
         m_eColGroup = pDesc->m_eColGroup;
 
+#ifdef _CLIENT
     m_pGameInstance->Register_Collider(this);
+#endif // _CLIENT
+
 
     return S_OK;
 }

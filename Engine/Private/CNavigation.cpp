@@ -84,39 +84,112 @@ HRESULT CNavigation::Initialize_Copytype(void* pArg)
 
 _bool CNavigation::isMove(_fvector vResultPos)
 {
-	if (-1 == m_iCurrentCellIndex)
+#pragma region 원래코드
+	//if (-1 == m_iCurrentCellIndex) return false; //Result를 parentmatrix의 역행렬을 곱해 cell space로맞춰준다. 
+	//_matrix Inverse = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pParentMatrix));
+	//_vector vCellResultPos = XMVector3TransformCoord(vResultPos, Inverse);
+
+	//_int iNeighborIndex = { -1 };
+	//
+	//if (false == (*m_Cells)[m_iCurrentCellIndex]->isIn(vCellResultPos, &iNeighborIndex))
+	//{	
+	//	//이웃이없다면 , 이 결과좌표로 갱신하지말것(이동불가)
+	//	if(-1==iNeighborIndex) return false;
+	//	else { 
+	//		//curIndex를 갱신하기위해 
+	//		while (true) {
+	//			//여기서 가끔무한루프 //왜 ..? 
+	//			//왜 무한루프가걸려?미친넘아 
+	//			if (true == (*m_Cells)[iNeighborIndex]->isIn(vCellResultPos, &iNeighborIndex))
+	//				break;
+	//			
+	//			if (-1 == iNeighborIndex) 
+	//				return false; 
+	//		
+	//		} 
+	//		
+	//		m_iPreCellIdx = m_iCurrentCellIndex;
+	//		m_iCurrentCellIndex = iNeighborIndex;
+	//		return true; 
+	//	} 
+	//
+	//
+	//} return true;
+#pragma endregion
+	if (m_iCurrentCellIndex == -1)
 		return false;
 
-	//Result를 parentmatrix의 역행렬을 곱해 cell space로맞춰준다.
+	// resultPos를 parentMatrix의 역행렬로 변환해서 Cell Local Space로 맞춘다.
 	_matrix Inverse = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pParentMatrix));
 	_vector vCellResultPos = XMVector3TransformCoord(vResultPos, Inverse);
 
-	_int		iNeighborIndex = { -1 };
+	// 현재 셀에서 검사 시작
+	int curIndex = m_iCurrentCellIndex;
+	int nextIndex = -1;
 
-
-	if (false == (*m_Cells)[m_iCurrentCellIndex]->isIn(vCellResultPos, &iNeighborIndex))
+	// 1) 현재 셀 안에 있는지 검사
+	if ((*m_Cells)[curIndex]->isIn(vCellResultPos, &nextIndex))
 	{
-		//이웃이없다면 , 이 결과좌표로 갱신하지말것(이동불가)
-		if(-1==iNeighborIndex)
+		// 그대로 이동 가능
+		return true;
+	}
+
+	// 2) 현재 셀에서 나갔는데 이웃이 아예 없다면 실패
+	if (nextIndex == -1)
+		return false;
+
+	// 3) 셀 경계를 넘어 이웃 셀로 이동하면서
+	//    "결국 들어갈 수 있는 셀"을 찾는 로직
+	//    (= Ray cast / Traverse Cell 방식)
+	//
+	//	기존 코드가 무한루프 걸린 핵심 원인:
+	//    nextIndex를 curIndex에 바로 덮어쓰고,
+	//    isIn()도 그 same 변수를 다시 덮어쓰기 때문에
+	//    A → B → A → B → ... 로 왕복하며 break 못함.
+
+	std::set<int> visited;   // 무한루프 방지용 디버그 set
+
+	while (true)
+	{
+		// (디버그) 이미 방문한 셀이면 A↔B 루프 발생
+		if (visited.count(curIndex))
+		{
+			// 여기 찍히면 네브메쉬 자체가 꼬인 것 (normal 방향 or edge 오류)
+			// 실제 게임에서는 false 리턴으로 빠져야 함
+			// 또는 assert/debug break
+			// 예:
+			// DebugLog("Cell loop detected: %d", curIndex);
+			return false;
+		}
+		visited.insert(curIndex);
+
+		// curIndex = 현재 검사할 셀  
+		// nextIndex = isIn이 반환한 "다음 후보 셀 index"
+		// 이 둘을 절대 같은 변수로 쓰면 안 된다. (무한루프 원인!)
+
+		int tempNext = -1;
+
+		// 현재 후보(nextIndex) 셀에 실제로 들어갈 수 있는지 검사
+		if ((*m_Cells)[nextIndex]->isIn(vCellResultPos, &tempNext))
+		{
+			// 이 셀이 "진짜 들어갈 수 있는 셀"이면 break
+			// tempNext는 isIn 내부 로직 영향으로 다시 갱신될 수 있음.
+			curIndex = nextIndex;
+			break;
+		}
+
+		// 다음 후보 셀도 없음 → 이동 불가
+		if (tempNext == -1)
 			return false;
 
-		else
-		{
-			//curIndex를 갱신하기위해
-			while (true)
-			{
-				if (true == (*m_Cells)[iNeighborIndex]->isIn(vCellResultPos, &iNeighborIndex))
-					break;
-
-				if (-1 == iNeighborIndex)
-					return false;
-			}
-
-			m_iPreCellIdx = m_iCurrentCellIndex;
-			m_iCurrentCellIndex = iNeighborIndex;
-			return true;
-		}
+		// 다음 셀로 이동하며 검사 계속 (Cell Traverse)
+		curIndex = nextIndex;
+		nextIndex = tempNext;
 	}
+
+	// 정상적으로 들어갈 셀 찾았으면 Index 갱신
+	m_iPreCellIdx = m_iCurrentCellIndex;
+	m_iCurrentCellIndex = curIndex;
 
 	return true;
 }

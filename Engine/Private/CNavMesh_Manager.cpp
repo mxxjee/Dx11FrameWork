@@ -24,7 +24,6 @@ HRESULT CNavMesh_Manager::Load_NavMesh(_uint iLevelIdx, const string& Filepath)
 	vector<CCell*>* FindCells = Find_Cells(iLevelIdx);
 	CheckTrueResult(FindCells != nullptr, E_FAIL);
 
-	vector<CCell*>	m_pCells;
 
 	_ulong dwByte = {};
 	HANDLE hFile = CreateFile(StringToWString(Filepath).c_str(), GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
@@ -32,19 +31,34 @@ HRESULT CNavMesh_Manager::Load_NavMesh(_uint iLevelIdx, const string& Filepath)
 		return E_FAIL;
 
 	DefaultCellInfo Info = {};
-	while (true)
+	DWORD fileSize = GetFileSize(hFile, nullptr);
+	int cellCount = fileSize / 108;
+
+
+	vector<CCell*>	m_pCells;
+	m_pCells.resize(cellCount);
+
+	for (int i = 0; i < cellCount; ++i)
 	{
-		bool bRead=ReadFile(hFile, &Info, sizeof(DefaultCellInfo), &dwByte, nullptr);
+		DefaultCellInfo ReadInfo;
+		bool bRead;
+
+		bRead = ReadFile(hFile, ReadInfo.m_vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
+		bRead = ReadFile(hFile, ReadInfo.m_vNormals, sizeof(_float3) * 3, &dwByte, nullptr);
+		bRead = ReadFile(hFile, ReadInfo.m_iNeighbors, sizeof(int) * 3, &dwByte, nullptr);
+		bRead = ReadFile(hFile, &ReadInfo.m_iIndex, sizeof(UINT32), &dwByte, nullptr);
+		bRead = ReadFile(hFile, &ReadInfo.m_Plane, sizeof(_float4), &dwByte, nullptr);
+		bRead = ReadFile(hFile, &ReadInfo.CellType, sizeof(UINT32), &dwByte, nullptr);
+
 		if (0 == dwByte)
 			break;
 
 
-		CCell* pInstance = CCell::Create(m_pDevice, m_pDeviceContext, Info);
+		CCell* pInstance = CCell::Create(m_pDevice, m_pDeviceContext, ReadInfo);
 		if (!pInstance)
 			return E_FAIL;
 
-		m_pCells.push_back(pInstance);
-
+		m_pCells[i]=pInstance;
 
 	}
 

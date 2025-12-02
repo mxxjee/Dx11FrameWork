@@ -65,10 +65,19 @@ void CNavMeshEdit_Manager::Free()
 		Safe_Release(i);
 }
 
-HRESULT CNavMeshEdit_Manager::Save_NavigationData(const string& filePath)
+HRESULT CNavMeshEdit_Manager::Save_NavigationData(const string& filePath,_uint iNum)
 {
 	_ulong dwByte = {};
-	HANDLE		hFile = CreateFile(StringToWString(filePath).c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+
+	string NewFilePath = "";
+
+	if (iNum == 0)
+		NewFilePath = filePath;
+
+	else
+		NewFilePath = filePath + to_string(iNum);
+
+	HANDLE		hFile = CreateFile(StringToWString(NewFilePath).c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;
 
@@ -77,7 +86,13 @@ HRESULT CNavMeshEdit_Manager::Save_NavigationData(const string& filePath)
 	for (auto& cell : m_pMapToolCells)
 	{
 		DefaultCellInfo info = cell->Get_CellInfo();
-		WriteFile(hFile, &info, sizeof(info), &dwByte, nullptr);
+
+		WriteFile(hFile, info.m_vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
+		WriteFile(hFile, info.m_vNormals, sizeof(_float3) * 3, &dwByte, nullptr);
+		WriteFile(hFile, info.m_iNeighbors, sizeof(int) * 3, &dwByte, nullptr);
+		WriteFile(hFile, &info.m_iIndex, sizeof(UINT32), &dwByte, nullptr);
+		WriteFile(hFile, &info.m_Plane, sizeof(_float4), &dwByte, nullptr);
+		WriteFile(hFile, &info.CellType, sizeof(UINT32), &dwByte, nullptr);
 	}
 
 	CloseHandle(hFile);
@@ -98,15 +113,29 @@ HRESULT CNavMeshEdit_Manager::Load_NavigationData(const string& filePath)
 	if (INVALID_HANDLE_VALUE == hFile)
 		return E_FAIL;
 
-	DefaultCellInfo Info = {}; 
-	while (true)
+	
+	DWORD fileSize = GetFileSize(hFile, nullptr);
+	int cellCount = fileSize / 108;
+
+
+	for (int i = 0; i < cellCount; ++i)
 	{
-		ReadFile(hFile, &Info, sizeof(DefaultCellInfo), &dwByte, nullptr);
+		DefaultCellInfo Info = {};
+
+		CMapToolCell::MAPTOOLCELL_DESC Desc;
+		bool bRead;
+
+		bRead = ReadFile(hFile, Info.m_vPoints, sizeof(_float3) * 3, &dwByte, nullptr);
+		bRead = ReadFile(hFile, Info.m_vNormals, sizeof(_float3) * 3, &dwByte, nullptr);
+		bRead = ReadFile(hFile, Info.m_iNeighbors, sizeof(int) * 3, &dwByte, nullptr);
+		bRead = ReadFile(hFile, &Info.m_iIndex, sizeof(UINT32), &dwByte, nullptr);
+		bRead = ReadFile(hFile, &Info.m_Plane, sizeof(_float4), &dwByte, nullptr);
+		bRead = ReadFile(hFile, &Info.CellType, sizeof(UINT32), &dwByte, nullptr);
+
 		if (0 == dwByte)
 			break;
 
-
-		CMapToolCell::MAPTOOLCELL_DESC Desc;
+		
 		Desc.iIdx = Info.m_iIndex;
 
 		CVIBuffer_Triangle::TRIANGLEBUFFER_DESC  TriangleDesc;

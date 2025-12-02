@@ -81,6 +81,8 @@ void CCollision_Manager::Update_CollisionGroup(_float fTimeDelta)
                     if (Src == Dst || !Src||!Dst)
                         continue;
 
+                     //이거 여기다 두니까 충돌 그룹 여러개 true하면 빨간색 표시 잘안됨
+                     //리셋이 계속되는듯..? /??? 
                     Src->Reset_Collision();
                     Dst->Reset_Collision();
 

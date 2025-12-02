@@ -8,6 +8,7 @@
 #include "CCollider_Base.h"
 #include "CBounding_AABB.h"
 #include "CBoxColliderComponent.h"
+#include "CCell.h"
 
 
 
@@ -57,6 +58,11 @@ HRESULT CM_GreenZol::Initialize_Copytype(void* pArg)
 		return E_FAIL;
 
 
+	if (m_pNavigationCom)
+	{
+		m_pTransformCom->Set_State(STATE::POSITION, m_pNavigationCom->Get_Cell(30)->Get_CenterPos());
+		m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
+	}
 
 	Change_State(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::INTRO));
 	m_eCurState = MONSTER_BASE_STATE::INTRO;

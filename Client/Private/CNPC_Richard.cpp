@@ -21,6 +21,11 @@ HRESULT CNPC_Richard::Initialize_Prototype(void* pArg)
     if (FAILED(__super::Initialize_Prototype(pArg)))
         return E_FAIL;
 
+    if (m_pNavigationCom)
+    {
+        m_pTransformCom->Set_State(STATE::POSITION, m_pNavigationCom->Get_Cell(10)->Get_CenterPos());
+        m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
+    }
 
 
     return S_OK; 

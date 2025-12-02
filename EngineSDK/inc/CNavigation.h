@@ -23,6 +23,8 @@ public:
     virtual HRESULT Initialize_Copytype(void* pArg) override;
 
 public:
+    class CCell* Get_Cell(_uint i) { return (*m_Cells)[i]; }
+public:
     class CCell* Get_CurrentCell() { return (*m_Cells)[m_iCurrentCellIndex]; }
     _uint       Get_PreCellIdx() { return m_iPreCellIdx; }
 public:

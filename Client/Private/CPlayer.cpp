@@ -49,7 +49,7 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
 
     m_fInitSpeed = 4.f;
     TransDesc.fSpeedPerSec = m_fInitSpeed;
-    TransDesc.vLocalPosition = { 30.642f,10.421f,23.642f,1.f };
+    TransDesc.vLocalPosition = 
     TransDesc.vLocalRotation = { 0.f,180.f,0.f,0.f };                                                                                      
 
 
@@ -84,9 +84,13 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     m_iPreState = CModelObject::NONE;
     m_iState = CModelObject::IDLE;
 
-
+   
     if (m_pNavigationCom)
+    {
+        m_pTransformCom->Set_State(STATE::POSITION,m_pNavigationCom->Get_Cell(0)->Get_CenterPos());
         m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
+    }
+        
     
     Change_State(IDLE);
 

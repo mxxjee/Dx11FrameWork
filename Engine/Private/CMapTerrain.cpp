@@ -8,6 +8,8 @@
 #include "CInput_Manager.h"
 #include "CMapObject_Manager.h"
 #include "CBounding_Mesh.h"
+#include "CCollider_Base.h"
+
 
 
 
@@ -158,16 +160,20 @@ HRESULT CMapTerrain::Ready_Components(void* pArg)
 
         
         /*메쉬콜라이더컴포넌트(픽킹검사)*/
+        CCollider_Base::COLLIDER_DESC colDesc;
+
+        
         CBounding_Mesh::BOUNDING_MESH_DESC MeshDesc;
         MeshDesc.pModel = m_pModel;
         MeshDesc.Extents = { ChunkWidth*0.5f,ChunkHeight*0.5f,ChunkDepth*0.5f };
 
+        colDesc.m_BoundingDesc = &MeshDesc;
 
         CComponent* pMeshCollider = dynamic_cast<CMeshColliderComponent*>(m_pGameInstance->Clone_Prototype(
             PROTOTYPE::COMPONENT,
             0,
             PROTO_COMPONENT_NAME(L"MeshCollider"),
-            &MeshDesc));
+            &colDesc));
 
         if (FAILED(Add_Component(
             COMPONENT_TYPE::MESH_COLLIDER,

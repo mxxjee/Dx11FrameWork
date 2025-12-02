@@ -70,7 +70,7 @@ public:
 
 public:
     void            Free() override;
-    HRESULT         Save_NavigationData(const string& filePath);
+    HRESULT         Save_NavigationData(const string& filePath,_uint iNum=0);
     HRESULT         Load_NavigationData(const string& filePath);
 
 public:
