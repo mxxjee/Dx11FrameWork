@@ -106,6 +106,8 @@ void CCollider_Base::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
 #ifdef _DEBUG
 HRESULT CCollider_Base::Render()
 {
+    CheckFalseResult(m_bActive,E_FAIL);
+
     m_pEffect->SetWorld(XMMatrixIdentity());
     m_pEffect->SetView(XMLoadFloat4x4(&m_pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(m_pGameInstance->Get_RenderCamera()->Get_CameraType()))));
     m_pEffect->SetProjection(XMLoadFloat4x4(&m_pGameInstance->Get_ProjMatrix(ENUM_TO_UINT(m_pGameInstance->Get_RenderCamera()->Get_CameraType()))));

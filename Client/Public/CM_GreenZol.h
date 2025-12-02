@@ -54,7 +54,8 @@ public:
 
 public:
     HRESULT                Ready_States();
-   
+
+
 
 public:
     void            Idle_Behavior(_float fTimeDelta);
@@ -64,6 +65,9 @@ public:
 
     bool            Get_IsHide() { return m_bHide; }
     bool            Get_IsOnGround();
+
+
+
 private:
     MONSTER_BASE_STATE  m_eCurState;
     float               m_fSecond = 1.f;

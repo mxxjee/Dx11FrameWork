@@ -17,7 +17,8 @@ void CMGreenZolHideState::Enter(CMonster* pMonster)
 	m_pGreenZol = dynamic_cast<CM_GreenZol*>(pMonster);
 
 	pMonster->Reserve_Animation_To_Body(L"depop", false);
-
+	pMonster->Set_CollisionEnable(false);
+	
 }
 
 void CMGreenZolHideState::Update(CMonster* pMonster, _float fTimeDelta)
@@ -34,4 +35,7 @@ void CMGreenZolHideState::Exit(CMonster* pMonster)
 {
 	m_pActionControl->m_bIntroEnd = false;
 	m_pActionControl->Reset();
+	
+
+
 }

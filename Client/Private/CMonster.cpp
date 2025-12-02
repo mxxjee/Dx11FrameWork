@@ -360,6 +360,13 @@ void CMonster::Set_Dead()
 
 }
 
+void CMonster::Set_CollisionEnable(bool _b)
+{
+    m_pCollider->Set_Active(_b);
+}
+
+
+
 void CMonster::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {
     CGameObject* pOwner = pOther->Get_Owner();

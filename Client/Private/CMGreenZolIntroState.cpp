@@ -42,8 +42,12 @@ void CMGreenZolIntroState::Update(CMonster* pMonster, _float fTimeDelta)
 	case Client::CMGreenZolIntroState::SPAWN:
 	{
 		if (m_pGreenZol->Is_AnimEnd())
+		{
+			pMonster->Set_CollisionEnable(true);
 			pMonster->Change_State(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::IDLE));
 
+		}
+			
 
 	}
 		break;

@@ -67,6 +67,8 @@ HRESULT CM_GreenZol::Initialize_Copytype(void* pArg)
 	Change_State(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::INTRO));
 	m_eCurState = MONSTER_BASE_STATE::INTRO;
 
+	m_pCollider->Set_Active(false);
+
 	return S_OK; 
 }
 
@@ -159,7 +161,10 @@ void CM_GreenZol::Intro_Behavor()
 
 	m_ActionControl.m_bRange = Is_InRange(m_fSpawnRange);
 	if (m_ActionControl.m_bRange)
+	{
 		m_bHide = false;
+		
+	}
 
 
 }

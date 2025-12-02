@@ -94,7 +94,7 @@ public:
 
 public: 
     void        Set_Dead();
-
+    void        Set_CollisionEnable(bool _b);
 
 
 protected:
