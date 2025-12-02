@@ -11,6 +11,12 @@ CPlayerState::CPlayerState()
 
 void CPlayerState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
+	if (pActionControl->m_bDamage == 1.0f)
+	{
+		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::DAMANGE));
+		return;
+	}
+
 	if (pActionControl->m_bLadder)
 	{
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::LADDER));

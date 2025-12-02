@@ -101,6 +101,9 @@ public:
     void    ScaleLerp(_vector vTargetScale, float fLerpSpeed, float fTimeDelta);
     void    RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDelta);
 
+    ////////////앞뒤 판별,vDir =캐릭터에서 목표물로 향하는 방향벡터
+    bool    IsFront(_vector vDir);
+
             //방향으로 힘만큼 미는 것
     void    AddImpulse(float fPower, const _float3 direction);
     void    UpdateImpulse(_float fTimeDelta, class CNavigation* pNavigation = nullptr);

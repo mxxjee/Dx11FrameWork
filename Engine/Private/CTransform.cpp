@@ -62,7 +62,7 @@ HRESULT CTransform::Initialize_Copytype(void* pArg)
 
 
 
-	m_vVelocity = XMVectorSet(0.f, 0.f, 0.f, 1.f);
+	m_vVelocity = XMVectorSet(0.f, 0.f, 0.f, 0.f);
 
 	return S_OK;
 }
@@ -304,6 +304,23 @@ void CTransform::RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDel
 	XMStoreFloat3(&vRotation, vNew);
 
 	AddRotation(vRotation);
+}
+
+bool CTransform::IsFront(_vector vDir)
+{
+	//나의 룩벡터와 vDir을 내적한 결과가
+	//  
+	//양수일경우 앞(true)
+	//음수일 경우 (false)
+
+	
+	_vector vLook = XMVector3Normalize(Get_State(STATE::LOOK));
+	vDir = XMVector3Normalize(vDir);
+
+	float Dot = XMVectorGetX(XMVector3Dot(vLook, vDir));
+
+	return Dot >= 0.f ? true : false;
+
 }
 
 void CTransform::AddImpulse(float fPower, const _float3 direction)

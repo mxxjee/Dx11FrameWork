@@ -183,6 +183,7 @@
     <ClInclude Include="..\Public\CPlayer.h" />
     <ClInclude Include="..\Public\CPlayerAttackState.h" />
     <ClInclude Include="..\Public\CPlayerCarryState.h" />
+    <ClInclude Include="..\Public\CPlayerDamageState.h" />
     <ClInclude Include="..\Public\CPlayerFallState.h" />
     <ClInclude Include="..\Public\CPlayerHoldAttackState.h" />
     <ClInclude Include="..\Public\CPlayerHoldShield.h" />
@@ -248,6 +249,7 @@
     <ClCompile Include="..\Private\CPlayer.cpp" />
     <ClCompile Include="..\Private\CPlayerAttackState.cpp" />
     <ClCompile Include="..\Private\CPlayerCarryState.cpp" />
+    <ClCompile Include="..\Private\CPlayerDamageState.cpp" />
     <ClCompile Include="..\Private\CPlayerFallState.cpp" />
     <ClCompile Include="..\Private\CPlayerHoldAttackState.cpp" />
     <ClCompile Include="..\Private\CPlayerHoldShield.cpp" />

@@ -243,8 +243,10 @@ void CPlayer::Update_Movement(_float fTimeDelta)
         m_pTransformCom->Set_State(STATE::POSITION,
             m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
 
+    m_pTransformCom->UpdateImpulse(fTimeDelta,m_pNavigationCom);
 
     CheckFalse(m_ActionControl.m_bCanMove);
+    CheckTrue(m_ActionControl.m_bDamage);
 
     if (m_ActionControl.IsHold(HOLD_B))
         Hold_Movement(fTimeDelta);
@@ -616,26 +618,26 @@ void CPlayer::Free()
     __super::Free();
 }
 
-#ifdef  _DEBUG
-void CPlayer::Render_Transform_Imgui()
+
+void CPlayer::Damage_Behavior()
 {
-    __super::Render_Transform_Imgui();
+    _float3 vDir;
+   
+    XMStoreFloat3(&vDir, XMVectorSetW(m_pTransformCom->Get_State(STATE::LOOK), 0.f));
 
-    string result;
-    if (m_pGravity->IsOnGround())
-        result = "true";
-    else
-        result = "false";
+    if (m_bHitFront)//앞에서맞앙쓰니까 뒤로밀리기
+    {
+        vDir.x *= -1.f; vDir.y *= -1.f; vDir.z *= -1.f;
+        m_pTransformCom->AddImpulse(0.15f, vDir);
 
-    ImGui::Separator();
-    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 255, 255));
-    ImGui::BulletText("isOnGround:%s",
-        result.c_str());
-    ImGui::PopStyleColor();
+    }
+        
 
+    else            //뒤에서맞앙쓰니까 앞으로밀리기
+        m_pTransformCom->AddImpulse(0.15f, vDir);
 
 }
-#endif //  _DEBUG
+
 
 
 
@@ -766,6 +768,7 @@ HRESULT CPlayer::Ready_States()
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::CARRY), CPlayerCarryState::Create());
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::TALK), CPlayerTalkState::Create());
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::FALL), CPlayerFallState::Create());
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::DAMANGE), CPlayerDamageState::Create());
 
 
     /// <summary>
@@ -858,7 +861,7 @@ void CPlayer::JumpMovement(_float fTimeDelta)
     m_pGravity->SetOnGround(true);
 }
 
-
+#ifdef  _DEBUG
 string CPlayer::Convert_String_To_Enum(_uint eState)
 {
     string StateDebugStr = "";
@@ -902,6 +905,9 @@ string CPlayer::Convert_String_To_Enum(_uint eState)
 
         if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::TALK))
             StateDebugStr += "TALK";
+
+        if (eState == ENUM_TO_UINT(CPlayer::PLAYER_STATE::DAMANGE))
+            StateDebugStr += "DAMAGE";
     }
 
 
@@ -909,6 +915,24 @@ string CPlayer::Convert_String_To_Enum(_uint eState)
     return StateDebugStr;
 }
 
+void CPlayer::Render_Transform_Imgui()
+{
+    __super::Render_Transform_Imgui();
+
+    string result;
+    if (m_pGravity->IsOnGround())
+        result = "true";
+    else
+        result = "false";
+
+    ImGui::Separator();
+    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 255, 255));
+    ImGui::BulletText("isOnGround:%s",
+        result.c_str());
+    ImGui::PopStyleColor();
+
+
+}
 void CPlayer::Render_StateDebug(int* pArg)
 {
     if (ImGui::RadioButton("Ladder", (int*)(pArg), 0))
@@ -953,10 +977,36 @@ void CPlayer::Render_StateDebug(int* pArg)
     }
 
 }
+#endif
 
 void CPlayer::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {
-  
+    CGameObject* pOwner = pOther->Get_Owner();
+
+    CheckNull(pOwner);
+    switch (COLLISION_GROUP(iGroup))
+    {
+    case Client::COLLISION_GROUP::MONSTER:
+    {   m_ActionControl.m_bDamage = true;
+
+    _vector vDir = (pOwner->Get_Transform()->Get_State(STATE::POSITION))
+        - (m_pTransformCom->Get_State(STATE::POSITION));
+
+        m_bHitFront = m_pTransformCom->IsFront(vDir);
+     
+    }
+        break;
+    case Client::COLLISION_GROUP::MONSTER_WEAPON:
+        break;
+    case Client::COLLISION_GROUP::TRIGGER:
+        break;
+    case Client::COLLISION_GROUP::END:
+        break;
+    default:
+        break;
+
+
+    }
     
 
 }

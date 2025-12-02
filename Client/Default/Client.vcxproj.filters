@@ -182,6 +182,9 @@
     <ClInclude Include="..\Public\CPlayer_Shield.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Shield</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CPlayerDamageState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Damage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -396,6 +399,9 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Shield">
       <UniqueIdentifier>{1bdfffe0-dec8-4dc5-9ee1-6ce578d00c13}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Damage">
+      <UniqueIdentifier>{2a81e5ff-bfd7-4e77-bca3-5fcc345383cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -557,6 +563,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CPlayer_Shield.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPlayerDamageState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Damage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

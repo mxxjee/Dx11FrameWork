@@ -44,6 +44,7 @@ public:
         CARRY,
         TALK,
         FALL,
+        DAMANGE,
         END
     };
 
@@ -120,7 +121,11 @@ public:
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
+public:
+    bool        Get_IsFront() { return m_bHitFront; }
 
+public:
+    void        Damage_Behavior();
 #ifdef _DEBUG
 public:
     virtual void            Render_Transform_Imgui() override;
@@ -170,6 +175,7 @@ private:
 
 private:
     float           m_fInitSpeed = 0.f;
+    bool            m_bHitFront = false;
 
     
 };

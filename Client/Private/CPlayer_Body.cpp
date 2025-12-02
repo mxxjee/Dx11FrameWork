@@ -173,7 +173,8 @@ HRESULT CPlayer_Body::Ready_Animation_Speed()
 	m_pModel->Set_Animation_Speed(L"jump_carry", 70.f);
 	m_pModel->Set_Animation_Speed(L"talk", 70.f);
 
-
+	m_pModel->Set_Animation_Speed(L"dmg_f", 60.f);
+	m_pModel->Set_Animation_Speed(L"dmg_b", 60.f);
 	return S_OK;
 }
 
@@ -212,6 +213,27 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 		Event.Name = "slash_hold_shield_lp";
 		pAnim->AddNotify(2, Event);
 	}
+
+	pAnim = m_pModel->Find_Animation(L"slash_hold_shield_lp");
+	if (pAnim)
+	{
+		Event.Name = "slash_hold_shield_lp";
+		pAnim->AddNotify(2, Event);
+	}
+
+	pAnim = m_pModel->Find_Animation(L"dmg_f");
+	if (pAnim)
+	{
+		Event.Name = "PlayerOnDamage";
+		pAnim->AddNotify(2, Event);
+	}
+
+	pAnim = m_pModel->Find_Animation(L"dmg_b");
+	if (pAnim)
+	{
+		Event.Name = "PlayerOnDamage";
+		pAnim->AddNotify(2, Event);
+	}
 	return S_OK;
 }
 
@@ -237,6 +259,13 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
 			if (pPlayer)
 				pPlayer->Set_ShieldEnable(true);
+		});
+
+	m_pGameInstance->RegisterListners("PlayerOnDamage", [](const GameEvent& event)
+		{
+			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
+			if (pPlayer)
+				pPlayer->Damage_Behavior();     
 		});
 	return S_OK;
 }

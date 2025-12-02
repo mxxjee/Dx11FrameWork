@@ -14,3 +14,4 @@
 #include "CPlayerCarryState.h"
 #include "CPlayerTalkState.h"
 #include "CPlayerFallState.h"
+#include "CPlayerDamageState.h"
