@@ -49,10 +49,12 @@ HRESULT CMonster::Initialize_Copytype(void* pArg)
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
-    CBody::BODY_DESC* pBodyDesc = static_cast<CBody::BODY_DESC*>(desc->BodyDesc);
+    CMonster_Body::MONSTER_BODY_DESC* pBodyDesc = static_cast<CMonster_Body::MONSTER_BODY_DESC*>(desc->BodyDesc);
 
     pBodyDesc->pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
     pBodyDesc->pParentState = &m_iState;
+    pBodyDesc->pActionControl = &m_ActionControl;
+
 
     if (FAILED(Ready_Components(pArg)))
         return E_FAIL;
@@ -339,5 +341,32 @@ void CMonster::Set_Dead()
 
 
 #endif
+
+}
+
+void CMonster::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
+{
+    CGameObject* pOwner = pOther->Get_Owner();
+    CheckNull(pOwner);
+
+    switch (COLLISION_GROUP(iGroup))
+    {
+    case COLLISION_GROUP::PLAYER_WEAPON:
+        m_ActionControl.m_bDamage = true;
+        --iHp;
+
+        break;
+    }
+}
+
+
+void CMonster::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)
+{
+
+}
+
+
+void CMonster::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
+{
 
 }

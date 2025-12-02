@@ -2,6 +2,7 @@
 #include "CCollider_Base.h"
 #include "CGameInstance.h"
 #include "Client_Defines.h"
+#include "CCollider_Base.h"
 
 USING(Client)
 CWeapon::CWeapon(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -80,6 +81,14 @@ HRESULT CWeapon::Render()
 
 #endif
     return S_OK;
+}
+
+void CWeapon::Set_Active(bool _b)
+{
+    m_bActive = _b;
+    for(auto& pCol:m_pCollider)
+        pCol->Set_Active(_b);
+
 }
 
 

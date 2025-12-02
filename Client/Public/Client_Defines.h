@@ -55,6 +55,9 @@ typedef struct tagActionControl
 
 	bool				m_bFall = false;
 
+	//이건 리셋X
+	bool				m_bDamage = false;
+
 	void		Reset()
 	{
 		m_bCanAttack = true;

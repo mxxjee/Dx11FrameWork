@@ -357,6 +357,7 @@ public:
 private:
 	vector<D3D11_VIEWPORT>          m_ViewPorts;
 	tagEngine_Desc                  m_EngineDesc;
+
 public:
 	void                Release_Engine();
 	virtual void        Free() override;

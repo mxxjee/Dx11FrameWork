@@ -36,9 +36,9 @@ public:
                 //콜라이더끼리충돌
     virtual     bool    Intersect(CCollider_Base* pOther);
 
-    void        OnCollisionEnter(CCollider_Base* pOther);
-    void        OnCollision(CCollider_Base* pOther);
-    void        OnCollisionExit(CCollider_Base* pOther);
+    void        OnCollisionEnter(_uint iGroup,CCollider_Base* pOther);
+    void        OnCollision(_uint iGroup,CCollider_Base* pOther);
+    void        OnCollisionExit(_uint iGroup,CCollider_Base* pOther);
 
 #ifdef _DEBUG
 public:
@@ -55,6 +55,8 @@ public:
 
 public:
     void        Reset_Collision() { m_isColl = false; }
+    void        Set_Active(bool b) { m_bActive = b; }
+    bool        Is_Active() { return m_bActive; }
 public:
     COLLIDER_TYPE   Get_Type() { return m_eType; }
     class CBounding*      Get_Bounding() { return m_pBounding; }
@@ -67,6 +69,7 @@ protected:
     class                    CBounding* m_pBounding = { nullptr };     //생성할 바운딩박스 
     _bool                   m_isColl = { false };           //충돌 했는지 판단
     _uint                    m_eColGroup = 0;
+
 };
 NS_END
 

@@ -17,7 +17,10 @@ Texture2D g_AmbientTexture;
 
 
 Texture2D g_MaskTexture;
- 
+
+float4 g_DamageColor = float4(1.f, 0.f, 0.f, 1.f);
+bool b_Damage = false;
+
 
 ////////임시로 정해놓은 오브젝트의 메테리얼값, 실제는 텍스처를 읽어서 처리해야함
 
@@ -94,10 +97,10 @@ VS_OUT VS_MAIN(VS_IN In)
 float4 PS_MAIN(PS_IN Input) : SV_Target0
 {
     float4 fDiffuseColor, fAmbientColor, fSpeculrColor;
-
-    //Maskmap의 흰색부분 = 풀, 검은색 부분 = 흙
     float4 MtrlDiffuseColor =  g_DiffuseTexture.Sample(sampler0, Input.vTexcoord);
 
+    
+    
     
     //음영값 (diffuse 세기)
     float fShade = Compute_Shade(g_vLightDirection, Input.vNormal);
@@ -140,11 +143,16 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
   
     
     //fAmbientColor *= 0.8f;
+   
     float4 ResultColor = fDiffuseColor + fAmbientColor + fSpeculrColor;
+
+    
+     //데미지 여부에 따른 피격효과\
+    ResultColor = (ResultColor * (1 - b_Damage)) + (g_DamageColor * b_Damage);
+    
     return saturate(ResultColor);
 
 }
-
 
 float4 PS_Eye(PS_IN Input) : SV_Target0
 {

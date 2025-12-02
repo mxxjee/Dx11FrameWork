@@ -57,9 +57,9 @@ HRESULT CCollider_Base::Initialize_Copytype(void* pArg)
     if (pDesc)
         m_eColGroup = pDesc->m_eColGroup;
 
-#ifdef _CLIENT
-    m_pGameInstance->Register_Collider(this);
-#endif // _CLIENT
+    if(m_pGameInstance->Get_EngineDesc().eEngineMode==EngineMode::CLIENT)
+        m_pGameInstance->Register_Collider(this);
+
 
 
     return S_OK;
@@ -78,23 +78,26 @@ bool CCollider_Base::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist
 
 bool CCollider_Base::Intersect(CCollider_Base* pOther)
 {
-  
     m_isColl = m_pBounding->Intersect(pOther->m_eType, pOther->m_pBounding);
 
     return m_isColl;
 }
-void CCollider_Base::OnCollisionEnter(CCollider_Base* pOther)
+void CCollider_Base::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {
+    if (m_pOwner)
+        m_pOwner->OnCollisionEnter(iGroup,pOther);
  
 }
-void CCollider_Base::OnCollision(CCollider_Base* pOther)
+void CCollider_Base::OnCollision(_uint iGroup, CCollider_Base* pOther)
 {
-  
+    if (m_pOwner)
+        m_pOwner->OnCollisionStay(iGroup,pOther);
 }
 
-void CCollider_Base::OnCollisionExit(CCollider_Base* pOther)
+void CCollider_Base::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
 {
-    
+    if (m_pOwner)
+        m_pOwner->OnCollisionExit(iGroup,pOther);
 }
 
 

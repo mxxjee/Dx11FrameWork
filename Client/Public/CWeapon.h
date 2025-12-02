@@ -33,6 +33,8 @@ public:
 
     virtual HRESULT Render();
 
+public:
+    virtual void    Set_Active(bool _b);
 protected:
     vector<CCollider_Base*> m_pCollider = { nullptr };
 

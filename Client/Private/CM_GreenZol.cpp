@@ -277,6 +277,8 @@ void CM_GreenZol::AIState_Change(_float fTimeDelta)
 
 void CM_GreenZol::Update_Movement(_float fTimeDelta)
 {
+	CheckTrue(m_ActionControl.m_bDead);
+
 	switch (m_eCurState)
 	{
 	

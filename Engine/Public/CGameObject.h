@@ -43,7 +43,7 @@ public:
     HRESULT     Add_Component(COMPONENT_TYPE eType, CComponent* pComp, CComponent** pOut);
 
 public:
-    void    Set_Active(bool _b) { m_bActive = _b; }
+    virtual void    Set_Active(bool _b) { m_bActive = _b; }
     void    Set_Target(CGameObject* pObj) { m_pTarget = pObj; }
     void    Set_Tag(const _wstring& Tag) {tag = Tag;}
 
@@ -65,9 +65,9 @@ public:
 
 
 public:
-    virtual     void    OnCollisionEnter(CCollider_Base* pOther) {};
-    virtual     void    OnCollisionStay(CCollider_Base* pOther){};
-    virtual     void    OnCollisionExit(CCollider_Base* pOther){};
+    virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther) {};
+    virtual     void    OnCollisionStay(_uint iGroup, CCollider_Base* pOther) {};
+    virtual     void    OnCollisionExit(_uint iGroup, CCollider_Base* pOther){};
 
 protected:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };

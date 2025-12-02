@@ -71,7 +71,7 @@ protected:
     HRESULT         Ready_Components(void *pArg);
     HRESULT         Ready_Resource(void* pArg);
 
-    HRESULT         Bind_ShaderResources();
+    virtual HRESULT         Bind_ShaderResources();
 
 public:
     static CBody* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);

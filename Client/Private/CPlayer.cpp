@@ -6,6 +6,7 @@
 #include "CBody.h"
 #include "CNavigation.h"
 #include "PlayerStates.h"
+#include "CPlayer_Body.h"
 
 #include "CNPC.h"
 #include "CCell.h"
@@ -61,13 +62,13 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
         return E_FAIL;
  
 
-    CBody::BODY_DESC BodyDesc;
+    CPlayer_Body::PLAYER_BODY_DESC BodyDesc;
     BodyDesc.modelName = L"LinkAnim";
     BodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
     BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
     BodyDesc.pParentState = &m_iState;
     BodyDesc.ObjTag = desc.ObjTag + L"_body";
-
+    BodyDesc.pActionControl = &m_ActionControl;
     desc.BodyDesc = &BodyDesc;
 
     if (FAILED(Ready_Components(&desc)))
@@ -127,10 +128,11 @@ void CPlayer::Update(_float fTimeDelta)
 
 void CPlayer::Update_Late(_float fTimeDelta)
 {
-    __super::Update_Late(fTimeDelta);
-
 
     Update_Movement(fTimeDelta);
+    m_pCollider->Update_Collider(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
+    __super::Update_Late(fTimeDelta);
+
 
 
     if (m_pCurState)
@@ -146,8 +148,7 @@ void CPlayer::Update_Late(_float fTimeDelta)
 
     }
 
-    m_pCollider->Update_Collider(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
-
+   
     //Motion_Change();
   
 }
@@ -794,6 +795,8 @@ void CPlayer::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop)
 
 
 
+
+
 void CPlayer::JumpMovement(_float fTimeDelta)
 {
     m_pGravity->Update(0.016f);
@@ -922,7 +925,7 @@ void CPlayer::Render_StateDebug(int* pArg)
         m_ActionControl.m_bCarry = false;
         m_ActionControl.m_bItemGet = false;
     }
-
+    
 
     if (ImGui::RadioButton("Carry", (int*)(pArg), 2))
     {
@@ -951,4 +954,20 @@ void CPlayer::Render_StateDebug(int* pArg)
 
 }
 
+void CPlayer::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
+{
+  
+    
 
+}
+
+void CPlayer::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)
+{
+
+  
+}
+
+void CPlayer::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
+{
+ 
+}

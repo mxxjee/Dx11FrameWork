@@ -18,6 +18,12 @@ void CMonsterState::Enter(CMonster* pMonster)
 
 void CMonsterState::Update(CMonster* pMonster, _float fTimeDelta)
 {
+
+	if (m_pActionControl->m_bDead)
+		pMonster->Change_State(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DIE));
+
+	CheckTrue(pMonster->Is_Dead());
+
 	if (m_pActionControl->m_bDamage)
 		pMonster->Change_State(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DAMAGE));
 
@@ -27,8 +33,6 @@ void CMonsterState::Update(CMonster* pMonster, _float fTimeDelta)
 
 	
 
-	if (m_pActionControl->m_bDead)
-		pMonster->Change_State(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DIE));
 }
 
 void CMonsterState::Free()

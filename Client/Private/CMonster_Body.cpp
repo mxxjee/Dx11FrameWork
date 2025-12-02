@@ -2,6 +2,8 @@
 #include "CModel.h"
 #include "CModelObject.h"
 #include "CAnimation.h"
+#include "CShader.h"
+
 
 USING(Client)
 CMonster_Body::CMonster_Body(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -37,6 +39,9 @@ HRESULT CMonster_Body::Initialize_Copytype(void* pArg)
 	}
 
 
+	CMonster_Body::MONSTER_BODY_DESC* pDesc = static_cast<CMonster_Body::MONSTER_BODY_DESC*>(pArg);
+	m_pActionControl = pDesc->pActionControl;
+
 	
 	return S_OK;
 }
@@ -68,7 +73,9 @@ void CMonster_Body::Update_Render(_float fTimeDelta)
 
 HRESULT CMonster_Body::Render()
 {
+	
 	__super::Render();
+
 
 	return S_OK;
 }
@@ -101,6 +108,18 @@ CGameObject* CMonster_Body::Clone(void* pArg)
 void CMonster_Body::Free()
 {
 	__super::Free();
+}
+
+HRESULT CMonster_Body::Bind_ShaderResources()
+{
+
+	if (FAILED(__super::Bind_ShaderResources()))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Bind_RawValue("b_Damage", &m_pActionControl->m_bDamage,sizeof(int))))
+		return E_FAIL;
+
+	return S_OK;
 }
 
 void CMonster_Body::Register_AnimKey(CMonster::MONSTER_BASE_STATE first, const _wstring& second)

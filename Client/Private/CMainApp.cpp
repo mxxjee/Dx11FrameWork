@@ -52,7 +52,7 @@ HRESULT CMainApp::Initialize()
 	desc.winMode = WINMODE::WIN;
 	desc.iNumLevels = ENUM_TO_UINT(LEVEL_ID::END);
 	desc.colGroupMax = ENUM_TO_UINT(COLLISION_GROUP::END);
-
+	desc.eEngineMode = EngineMode::CLIENT;
 
 	if(FAILED(pGameInstance->Initialize_Engine(desc,&m_pDevice,&m_pContext)))
 		return E_FAIL;

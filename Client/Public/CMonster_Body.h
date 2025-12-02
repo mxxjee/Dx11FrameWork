@@ -6,6 +6,13 @@ NS_BEGIN(Client)
 class CMonster_Body :
     public CBody
 {
+public:
+    typedef struct tagMonsterBodyDesc : CBody::BODY_DESC
+    {
+        MONSTER_ACTION_CONTORL* pActionControl = nullptr;
+
+    }MONSTER_BODY_DESC;
+
 protected:
     CMonster_Body(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CMonster_Body(const CMonster_Body& rhs);
@@ -26,6 +33,10 @@ public:
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
+private:
+            //피격효과 추가
+    virtual HRESULT         Bind_ShaderResources() override;
+
 
 public:
             //State에서 사용할 animKey들을 저장.(몬스터들은 종류가많아서.)
@@ -33,10 +44,12 @@ public:
      _wstring Get_AnimKey(CMonster::MONSTER_BASE_STATE first);
 
 public:
-
     UMap<CMonster::MONSTER_BASE_STATE, _wstring>        m_AnimKeys;
 
 
+private:    
+            //부모 monster로부터 참조받음
+    MONSTER_ACTION_CONTORL* m_pActionControl = nullptr; 
 
 };
 NS_END

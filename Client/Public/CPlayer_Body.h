@@ -1,10 +1,18 @@
 #pragma once
 #include "CBody.h"
+#include "Client_Defines.h"
 
 NS_BEGIN(Client)
 class CPlayer_Body :
     public CBody
 {
+public:
+    typedef struct tagCPlayer_BodyDesc : CBody::BODY_DESC
+    {
+        ACTION_CONTROL* pActionControl = nullptr;
+
+    }PLAYER_BODY_DESC;
+
 protected:
     CPlayer_Body(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CPlayer_Body(const CPlayer_Body& rhs);
@@ -21,6 +29,9 @@ public:
 
     virtual HRESULT Render();
 
+private :
+    virtual HRESULT         Bind_ShaderResources() override;
+
 private:
     void        Motion_Change();
     HRESULT        Ready_Animation_Speed();
@@ -31,6 +42,10 @@ public:
     static CPlayer_Body* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
+
+private:
+    ACTION_CONTROL* m_pActionControl = nullptr;
+
 
 };
 NS_END

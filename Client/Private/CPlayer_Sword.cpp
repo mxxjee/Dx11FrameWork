@@ -71,6 +71,22 @@ HRESULT CPlayer_Sword::Render()
 	return S_OK;
 }
 
+void CPlayer_Sword::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
+{
+	
+}
+
+void CPlayer_Sword::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)
+{
+
+	
+}
+
+void CPlayer_Sword::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
+{
+
+}
+
 HRESULT CPlayer_Sword::Ready_Components(void* pArg)
 {
 	/* For.Com_Collider_Sphere */

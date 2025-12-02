@@ -48,7 +48,6 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	m_EngineDesc = EngineDesc;
 
 
-
 	/* 그래픽 디바이스 초기화 */
 	m_pGraphicDev = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.winMode, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, pDevice, pContext);
 	CheckNullResult(m_pGraphicDev, E_FAIL);
@@ -192,9 +191,9 @@ void CGameInstance::LateUpdate_Engine(float fTimedelta)
 	m_pLevelManager->Update_Late(fTimedelta);
 	LateUpdate_Cameras(fTimedelta);
 
-#ifdef _CLIENT
-	m_pCollisionManager->Update_CollisionGroup(fTimedelta);
-#endif // _CLIENT
+	if(m_EngineDesc.eEngineMode==EngineMode::CLIENT)
+		m_pCollisionManager->Update_CollisionGroup(fTimedelta);
+
 
 	
 }

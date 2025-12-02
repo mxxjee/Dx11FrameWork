@@ -132,6 +132,11 @@ public:
     HRESULT                Ready_States();
     void                Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop);
 
+public:
+    virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther);
+    virtual     void    OnCollisionStay(_uint iGroup, CCollider_Base* pOther);
+    virtual     void    OnCollisionExit(_uint iGroup, CCollider_Base* pOther);
+
 
 private:
     Engine::CNavigation* m_pNavigationCom = { nullptr };

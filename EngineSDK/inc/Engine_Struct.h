@@ -22,6 +22,7 @@ namespace Engine
 		unsigned int iWinSizeY;
 		unsigned int iNumLevels;
 		WINMODE		winMode;
+		EngineMode	eEngineMode;
 		_uint		colGroupMax = 0;
 
 	}ENGINE_DESC;
@@ -207,6 +208,9 @@ namespace Engine
 		_float3 vCenter = { 0.f,0.f,0.f };
 		_float2 iIdxZX = { 0.f,0.f };
 	};
+
+
+
 }
 
 

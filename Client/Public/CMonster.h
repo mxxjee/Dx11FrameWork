@@ -61,7 +61,8 @@ public:
 private:
     HRESULT     Ready_Resource(void* pArg);
 
-
+public:
+    bool        Is_Dead() { return m_ActionControl.m_bDead; }
 public:
     virtual         void        UpdateOnIdleState() {};
 
@@ -106,6 +107,13 @@ protected:
 
     MONSTER_BASE_STATE      m_eCurState = MONSTER_BASE_STATE::NONE;
     CBoxColliderComponent*  m_pCollider = { nullptr };
+
+
+public:
+    virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther);
+    virtual     void    OnCollisionStay(_uint iGroup, CCollider_Base* pOther);
+    virtual     void    OnCollisionExit(_uint iGroup, CCollider_Base* pOther);
+
 
 public:
     bool            Is_CanMove() { return m_bCanMove; }

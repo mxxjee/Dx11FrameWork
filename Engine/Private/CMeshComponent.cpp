@@ -160,6 +160,8 @@ HRESULT CMeshComponent::Bind_ShaderResource(CShader* pShader, const _char* pCons
 	CheckNullResult(m_pMaterial,E_FAIL);
 
 	return m_pMaterial->Bind_ShaderResource(pShader,pConstName,eMaterialType,Textureindex);
+
+
 }
 
 HRESULT CMeshComponent::Bind_Bones(CShader* pShader, const _char* pConstatName, const vector<CBone*>& Bones)

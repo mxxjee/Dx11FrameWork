@@ -81,6 +81,9 @@ void CCollision_Manager::Update_CollisionGroup(_float fTimeDelta)
                     if (Src == Dst || !Src||!Dst)
                         continue;
 
+                    if (!Src->Is_Active() || !Dst->Is_Active())
+                        continue;
+
                      //이거 여기다 두니까 충돌 그룹 여러개 true하면 빨간색 표시 잘안됨
                      //리셋이 계속되는듯..? /??? 
                     Src->Reset_Collision();
@@ -90,26 +93,28 @@ void CCollision_Manager::Update_CollisionGroup(_float fTimeDelta)
 					{
                         if (!m_PrevFrameCollision[i][j] && !m_PrevFrameCollision[j][i])
                         {
-                            Src->OnCollisionEnter(Dst);
-                            Dst->OnCollisionEnter(Src);
+                            Src->OnCollisionEnter(j,Dst);
+                            Dst->OnCollisionEnter(i,Src);
+
+                            m_PrevFrameCollision[i][j] = true;
+                            m_PrevFrameCollision[j][i] = true;
                         }
 
                         else
                         {
-                            Src->OnCollision(Dst);
-                            Dst->OnCollision(Src);
+                            Src->OnCollision(j,Dst);
+                            Dst->OnCollision(i,Src);
                         }
 
-                        m_PrevFrameCollision[i][j] = true;
-                        m_PrevFrameCollision[j][i] = true;
+                        
 					}
 
                     else
                     {
                         if (m_PrevFrameCollision[i][j] && m_PrevFrameCollision[j][i])
                         {
-                            Src->OnCollisionExit(Dst);
-                            Dst->OnCollisionExit(Src);
+                            Src->OnCollisionExit(j,Dst);
+                            Dst->OnCollisionExit(i,Src);
                         }
 
                         m_PrevFrameCollision[i][j] = false;

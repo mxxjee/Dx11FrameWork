@@ -4,6 +4,8 @@
 #include "CAnimation.h"
 #include "CGameInstance.h"
 #include "CPlayer.h"
+#include "CShader.h"
+
 
 
 
@@ -63,6 +65,9 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 #pragma endregion
 
 
+	CPlayer_Body::PLAYER_BODY_DESC* pDesc = static_cast<CPlayer_Body::PLAYER_BODY_DESC*>(pArg);
+	m_pActionControl = pDesc->pActionControl;
+
 	return S_OK;
 }
 
@@ -99,6 +104,17 @@ void CPlayer_Body::Update_Render(_float fTimeDelta)
 HRESULT CPlayer_Body::Render()
 {
 	__super::Render();
+
+	return S_OK;
+}
+
+HRESULT CPlayer_Body::Bind_ShaderResources()
+{
+	if (FAILED(__super::Bind_ShaderResources()))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Bind_RawValue("b_Damage", &m_pActionControl->m_bDamage, sizeof(bool))))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -179,7 +195,7 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 	if (pAnim)
 	{
 		Event.Name = "AttackBegin";
-		pAnim->AddNotify(5, Event);
+		pAnim->AddNotify(2, Event);
 	}
 		
 	pAnim = m_pModel->Find_Animation(L"shield_lp");

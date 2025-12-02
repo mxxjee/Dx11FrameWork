@@ -6,6 +6,8 @@
 #include "CPerspectiveCameraComponent.h"
 #include "CTerrain.h"
 #include "CMonster.h"
+#include "CMonster_Body.h"
+
 #include "CBody.h"
 #include "CInput_Manager.h"
 #include "CLight.h"
@@ -379,9 +381,10 @@ HRESULT CLevel_Town::Ready_Layer_Player(const _wstring& strLayerTag)
 
 HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
 {  
+    //몬스터 생성루틴
     CMonster::MonsterDesc desc;
 
-    CBody::BODY_DESC bodyDesc;
+    CMonster_Body::MONSTER_BODY_DESC bodyDesc;
     bodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
     bodyDesc.modelName = L"ZolGreenAnim";
 
@@ -389,7 +392,7 @@ HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
 
      
     desc.iAttack = 10;
-    desc.MaxHp = 5;
+    desc.MaxHp = 1;
     desc.fActionRange = 10.f;
 
     desc.ObjTag = L"CM_GreenZol" + to_wstring(0);

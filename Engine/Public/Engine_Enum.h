@@ -225,6 +225,8 @@ namespace Engine
 	enum class CellType {DEFAULT,FALL,END};
 	enum class COLLIDER_TYPE{SPHERE,AABB,MESH,OBB,END};
 
+	enum class EngineMode{CLIENT,MAPTOOL,END};
+
 	enum class PLANE{LEFT,RIGHT,TOP,BOTTOM,PLANE_FAR,PLANE_NEAR,END};
 }
 #endif // Engine_Enum_h__

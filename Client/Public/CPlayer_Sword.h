@@ -24,6 +24,12 @@ public:
 
     virtual HRESULT Render();
 
+public:
+    virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther);
+    virtual     void    OnCollisionStay(_uint iGroup, CCollider_Base* pOther);
+    virtual     void    OnCollisionExit(_uint iGroup, CCollider_Base* pOther);
+
+
 private:
     HRESULT Ready_Components(void* pArg);
 public:

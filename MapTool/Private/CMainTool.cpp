@@ -61,6 +61,8 @@ HRESULT CMainTool::Initialize()
     desc.iWinSizeY = g_iWinSizeY;
     desc.winMode = WINMODE::WIN;
     desc.iNumLevels = ENUM_TO_UINT(Client::LEVEL_ID::END);
+    desc.eEngineMode = EngineMode::MAPTOOL;
+
 
     if(FAILED(pGameInstance->Initialize_Engine(desc, &m_pDevice, &m_pContext)))
         return E_FAIL;
