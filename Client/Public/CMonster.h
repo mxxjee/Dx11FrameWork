@@ -48,6 +48,8 @@ public:
     virtual HRESULT Render();
 
 public:
+    virtual void    Set_Active(bool _b);
+public:
     virtual void        AIState_Change(_float fTimeDelta) {};
     _wstring    Get_AnimKey(CMonster::MONSTER_BASE_STATE eType);
 
@@ -60,6 +62,8 @@ public:
 
 private:
     HRESULT     Ready_Resource(void* pArg);
+    
+
 
 public:
     bool        Is_Dead() { return m_ActionControl.m_bDead; }
@@ -78,6 +82,10 @@ public:
 public:
     /////////////////////State Behavior////////////////
     virtual void        Intro_Behavor() {};
+
+
+    void                Damage_Behavior(_float fTimeDelta);
+
     bool                Is_InRange(_float fDistance);
 public:
     static CMonster* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
@@ -87,6 +95,8 @@ public:
 public: 
     void        Set_Dead();
 
+
+
 protected:
     MONSTER_ACTION_CONTORL      m_ActionControl;
     int             iHp;
@@ -94,9 +104,13 @@ protected:
     int             iAttack = 10;
     float           fActionRange=0.f;
     
-    float           m_fTime = 0.f;
+                    //현재 속한 레벨의 아이디
     int             m_iLevelID= ENUM_TO_UINT(LEVEL_ID::TOWN);
 
+
+protected:
+    float           m_fTime = 0.f;
+    float            m_fDamageTime = 0.f;
 protected:
     UMap<_uint, CMonsterState*>       m_States;
 

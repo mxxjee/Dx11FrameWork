@@ -19,7 +19,7 @@ Texture2D g_AmbientTexture;
 Texture2D g_MaskTexture;
 
 float4 g_DamageColor = float4(1.f, 0.f, 0.f, 1.f);
-bool b_Damage = false;
+float b_Damage = false;
 
 
 ////////임시로 정해놓은 오브젝트의 메테리얼값, 실제는 텍스처를 읽어서 처리해야함
@@ -140,17 +140,18 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
         
 
     }
-  
+     
+    float4 ResultColor = fDiffuseColor + fAmbientColor + fSpeculrColor;
+    ResultColor = saturate(ResultColor);
     
     //fAmbientColor *= 0.8f;
-   
-    float4 ResultColor = fDiffuseColor + fAmbientColor + fSpeculrColor;
+        //데미지 여부에 따른 피격효과\
+    
+    float3 Tmpcolor = saturate(ResultColor.rgb + float3(2.5, 0.0, 0.0));
+    ResultColor.rgb = lerp(ResultColor.rgb, Tmpcolor, b_Damage);
+ 
 
-    
-     //데미지 여부에 따른 피격효과\
-    ResultColor = (ResultColor * (1 - b_Damage)) + (g_DamageColor * b_Damage);
-    
-    return saturate(ResultColor);
+    return ResultColor;
 
 }
 
@@ -176,8 +177,6 @@ technique11 DefaultTechnique
 
     }
 
-
-   
 
     
 }

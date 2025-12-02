@@ -101,7 +101,9 @@ public:
     void    ScaleLerp(_vector vTargetScale, float fLerpSpeed, float fTimeDelta);
     void    RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDelta);
 
-
+            //방향으로 힘만큼 미는 것
+    void    AddImpulse(float fPower, const _float3 direction);
+    void    UpdateImpulse(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
 #pragma endregion
 
 public:
@@ -120,12 +122,17 @@ private:
 
     _vector     m_vMoveResultPos;
 
+    _vector     m_vVelocity;
+
 private:
     CTransform* m_pParent = { nullptr };
 
     _float4x4   m_LocalWorldMatrix = {};//로컬 상태의 matrix
     _float4x4   m_WorldMatrix = {};     //부모행렬까지 모두 계산된 matrix
 
+
+private:
+    bool            m_bAddImpulse = false;
 
 public:
     static CTransform* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);

@@ -2,6 +2,7 @@
 #include "CModel.h"
 #include "CModelObject.h"
 #include "CAnimation.h"
+#include "CShader.h"
 
 
 USING(Client)
@@ -74,6 +75,17 @@ void CNPC_Body::Update_Render(_float fTimeDelta)
 HRESULT CNPC_Body::Render()
 {
 	__super::Render();
+
+	return S_OK;
+}
+
+HRESULT CNPC_Body::Bind_ShaderResources()
+{
+	if (FAILED(__super::Bind_ShaderResources()))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Bind_Float("b_Damage", m_bDamage)))
+		return E_FAIL;
 
 	return S_OK;
 }

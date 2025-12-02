@@ -21,12 +21,18 @@ public:
 
     virtual HRESULT Render();
 
+protected:
+    virtual HRESULT         Bind_ShaderResources();
+
+
 
 public:
     static CNPC_Body* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
-
+    
+private:
+    float        m_bDamage = 0.f;  //Ç×»ó false
 };
 
 NS_END

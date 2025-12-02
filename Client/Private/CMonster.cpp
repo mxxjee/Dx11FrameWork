@@ -9,7 +9,7 @@
 #include "CLayer.h"
 #include "CImGui_Manager.h"
 #include "CBoxColliderComponent.h"
-
+#include "CPartObject.h"
 
 
 USING(Client)
@@ -86,18 +86,19 @@ void CMonster::Update_Priority(_float fTimeDelta)
 
 void CMonster::Update(_float fTimeDelta)
 {
-   
-
-   
 
     __super::Update(fTimeDelta);
+
 
 }
 
 void CMonster::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
-  
+
+
+    m_pTransformCom->UpdateImpulse(fTimeDelta, m_pNavigationCom);
+
     m_pTransformCom->Set_State(STATE::POSITION,
         m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
 
@@ -127,6 +128,20 @@ HRESULT CMonster::Render()
 
 
     return S_OK;
+}
+
+void CMonster::Set_Active(bool _b)
+{
+    m_bActive = _b;
+    for (auto& pair : m_PartObjects)
+    {
+        if (pair.second)
+            pair.second->Set_Active(false);
+
+    }
+
+    m_pCollider->Set_Active(false);
+
 }
 
 
@@ -266,6 +281,7 @@ void CMonster::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop)
 
 }
 
+
 bool CMonster::Is_InRange(_float fDistance)
 {
     ///일단 플레이어가져와서 판단
@@ -352,11 +368,29 @@ void CMonster::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
     switch (COLLISION_GROUP(iGroup))
     {
     case COLLISION_GROUP::PLAYER_WEAPON:
-        m_ActionControl.m_bDamage = true;
+    {
+        m_ActionControl.m_bDamage = 1.f;
         --iHp;
 
+        CPartObject* pPart = dynamic_cast<CPartObject*>(pOwner);
+        if (pPart)
+        {
+          
+            //pOther을 바라보고,
+            m_pTransformCom->LookAt(pPart->Get_Owner()->Get_Transform());
+          
+            _float3 vDir;
+            XMStoreFloat3(&vDir, m_pTransformCom->Get_State(STATE::LOOK));
+            m_pTransformCom->AddImpulse(-0.3f, vDir);
+        }
+            
+    }
+       
         break;
     }
+
+   
+
 }
 
 
@@ -368,5 +402,25 @@ void CMonster::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)
 
 void CMonster::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
 {
+
+}
+
+
+
+void CMonster::Damage_Behavior(_float fTimeDelta)
+{
+    if (m_ActionControl.m_bDamage!=0.f)
+    {
+        //2초뒤 다시 원래색깔로..
+        m_fDamageTime += fTimeDelta;
+
+        if (m_fDamageTime >= 2.f)
+        {
+            m_ActionControl.m_bDamage = 0.f;
+            m_fDamageTime = 0.f;
+        }
+   }
+
+
 
 }

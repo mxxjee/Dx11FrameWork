@@ -43,6 +43,8 @@ void CContainerObject::Update_Priority(_float fTimeDelta)
 
 void CContainerObject::Update(_float fTimeDelta)
 {
+    __super::Update(fTimeDelta);
+
     for (auto& pair : m_PartObjects)
     {
         if (pair.second)
@@ -56,6 +58,9 @@ void CContainerObject::Update(_float fTimeDelta)
 
 void CContainerObject::Update_Late(_float fTimeDelta)
 {
+
+    __super::Update_Late(fTimeDelta);
+
     for (auto& pair : m_PartObjects)
     {
         if (pair.second)
@@ -101,6 +106,7 @@ HRESULT CContainerObject::Add_PartObject(_uint iPrototypeLevelIdx, const _wstrin
     CheckNullResult(pPartObject, E_FAIL);
 
     pPartObject->Set_Tag(strPartObjTag);
+    pPartObject->Set_Owner(this);
     m_PartObjects.emplace(strPartObjTag, pPartObject);
     return S_OK;
 }

@@ -38,7 +38,7 @@ public:
     virtual HRESULT Render();
 
     void        Set_Owner(CContainerObject* pOwner) { m_pOwner = pOwner; }
-
+    CContainerObject* Get_Owner() { return m_pOwner; }
 protected:
     const _float4x4* m_pParentMatrix = { nullptr };
     _float4x4       m_CombinedWorldMatrix = {};     //╥ндц * parent matrix

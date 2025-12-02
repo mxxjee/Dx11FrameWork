@@ -62,14 +62,14 @@ HRESULT CTransform::Initialize_Copytype(void* pArg)
 
 
 
-
-
+	m_vVelocity = XMVectorSet(0.f, 0.f, 0.f, 1.f);
 
 	return S_OK;
 }
 
 void CTransform::Update_Matrix()
 {
+	
 	if (m_pParent)
 	{
 		//부모행렬 가져와서 계산
@@ -304,6 +304,34 @@ void CTransform::RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDel
 	XMStoreFloat3(&vRotation, vNew);
 
 	AddRotation(vRotation);
+}
+
+void CTransform::AddImpulse(float fPower, const _float3 direction)
+{
+	_float3 impulse;
+
+	XMStoreFloat3(&impulse, XMVector3Normalize(XMLoadFloat3(&direction)) * fPower);
+	m_vVelocity += XMLoadFloat3(&impulse);
+
+	m_bAddImpulse = true;
+
+}
+
+void CTransform::UpdateImpulse(_float fTimeDelta, CNavigation* pNavigation)
+{
+	if (m_bAddImpulse)
+	{
+		_vector vPosition = Get_State(STATE::POSITION) + m_vVelocity;
+		if (pNavigation == nullptr || pNavigation->isMove(vPosition))
+			Set_State(STATE::POSITION, vPosition);
+
+		m_vVelocity *= 0.9f;
+		if (XMVector3Equal(m_vVelocity, XMVectorSet(0.f, 0.f, 0.f, 1.f)))
+			m_bAddImpulse = false;
+
+	}
+
+
 }
 
 

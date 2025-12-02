@@ -56,7 +56,7 @@ typedef struct tagActionControl
 	bool				m_bFall = false;
 
 	//이건 리셋X
-	bool				m_bDamage = false;
+	float				m_bDamage = 0.0f;
 
 	void		Reset()
 	{
@@ -99,7 +99,7 @@ typedef struct tagMonsterActionControl
 	bool	m_bIntroEnd = false;
 
 	//////////////////////
-	bool	m_bDamage = false;
+	float	m_bDamage = 0.f;	//Shader에서 ㅏㅅ용하므로 float
 	bool	m_bMove = false;		//true라면 walk, false람녀 idle/ range&&move라면 attack가능
 	
 	bool	m_bAttack = false;

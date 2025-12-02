@@ -20,13 +20,14 @@ void CMonsterDeadState::Enter(CMonster* pMonster)
 
 void CMonsterDeadState::Update(CMonster* pMonster, _float fTimeDelta)
 {
-	if (pMonster->Is_AnimEnd())
-		pMonster->Set_Dead();
+
 
 }
 
 void CMonsterDeadState::Update_Late(CMonster* pMonster, _float fTimeDelta)
 {
+	if (pMonster->Is_AnimEnd())
+		pMonster->Set_Dead();
 }
 
 void CMonsterDeadState::Exit(CMonster* pMonster)

@@ -116,7 +116,7 @@ HRESULT CMonster_Body::Bind_ShaderResources()
 	if (FAILED(__super::Bind_ShaderResources()))
 		return E_FAIL;
 
-	if (FAILED(m_pShader->Bind_RawValue("b_Damage", &m_pActionControl->m_bDamage,sizeof(int))))
+	if (FAILED(m_pShader->Bind_Float("b_Damage", m_pActionControl->m_bDamage)))
 		return E_FAIL;
 
 	return S_OK;

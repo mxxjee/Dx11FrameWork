@@ -27,7 +27,9 @@ void CMGreenZolJumpAttackState::Enter(CMonster* pMonster)
 
 void CMGreenZolJumpAttackState::Update(CMonster* pMonster, _float fTimeDelta)
 {
-	
+
+	__super::Update(pMonster, fTimeDelta);
+
 	switch (m_ePhase)
 	{
 	case Client::CMGreenZolJumpAttackState::SIGN:

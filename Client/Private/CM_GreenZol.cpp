@@ -98,6 +98,10 @@ void CM_GreenZol::Update_Late(_float fTimeDelta)
 {
 	CModelObject::Update_Late(fTimeDelta);
 
+	//밀렸을떄 움직임..
+	m_pTransformCom->UpdateImpulse(fTimeDelta, m_pNavigationCom);
+	Damage_Behavior(fTimeDelta);
+
 	Update_Movement(fTimeDelta);
 
 	if (m_pCurState)
@@ -277,6 +281,11 @@ void CM_GreenZol::AIState_Change(_float fTimeDelta)
 
 void CM_GreenZol::Update_Movement(_float fTimeDelta)
 {
+	if (m_pGravity->IsOnGround())
+		m_pTransformCom->Set_State(STATE::POSITION,
+			m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
+
+
 	CheckTrue(m_ActionControl.m_bDead);
 
 	switch (m_eCurState)
@@ -296,10 +305,7 @@ void CM_GreenZol::Update_Movement(_float fTimeDelta)
 		break;
 	}
 
-	if(m_pGravity->IsOnGround())
-		m_pTransformCom->Set_State(STATE::POSITION,
-			m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
-
+	
 
 }
 
@@ -509,3 +515,4 @@ bool CM_GreenZol::Get_IsOnGround()
 {
 	return m_pGravity->IsOnGround();
 }
+
