@@ -328,6 +328,12 @@ public:
 
 
 #pragma endregion
+
+#pragma region FontManager
+	 HRESULT Add_Font(const _wstring& strFontTag, const _tchar* pFontFilePath);
+	 HRESULT Draw_Text(const _wstring& strFontTag, const _tchar* pText, const _float2& vPosition, _fvector vColor = XMVectorSet(1.f, 1.f, 1.f, 1.f));
+
+#pragma endregion
  private:
 	 class CLevel_Manager* m_pLevelManager = { nullptr };
 	 class CTimer_Manager* m_pTimerManager = { nullptr };
@@ -354,7 +360,7 @@ public:
 	 class CNavMesh_Manager* m_pNavMeshManager = { nullptr };
 	 class CEventBus_Manager* m_pEventBusManager = { nullptr };
 	 class CCollision_Manager* m_pCollisionManager = { nullptr };
-
+	 class CFont_Manager* m_pFont_Manager = { nullptr };
 private:
 	vector<D3D11_VIEWPORT>          m_ViewPorts;
 	tagEngine_Desc                  m_EngineDesc;

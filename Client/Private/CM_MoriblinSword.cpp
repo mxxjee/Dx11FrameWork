@@ -166,7 +166,7 @@ HRESULT CM_MoriblinSword::Ready_WeaponColliders()
 	SwordDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
 	SwordDesc.AnimKey = L"";	//단지 튕겨내기
 	SwordDesc.fRadius = 0.3f;
-	SwordDesc.vOffSet= _float3(0.f, 0.f, (-1));
+	SwordDesc.vOffSet= _float3(0.f, 0.f, (-0.5f));
 
 	if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Moriblin_Weapon"), L"Moriblin_Sword", &SwordDesc)))
 		return E_FAIL;
@@ -177,7 +177,7 @@ HRESULT CM_MoriblinSword::Ready_WeaponColliders()
 	ShieldDesc.pSocketMatrix = m_pBody->Get_SocketMatrix("attach_R");
 	ShieldDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
 	ShieldDesc.AnimKey = L"guard";	//가드애니메이션
-	ShieldDesc.fRadius = 0.5f;
+	ShieldDesc.fRadius = 0.2f;
 
 	if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Moriblin_Weapon"), L"Moriblin_Shield", &ShieldDesc)))
 		return E_FAIL;
@@ -310,6 +310,13 @@ void CM_MoriblinSword::Chase_Behavior(float fTimeDelta)
 
 void CM_MoriblinSword::Attack_Behavior(float fTimeDelta)
 {
+	if (!m_pTarget)
+	{
+		m_ActionControl.m_bAttack = false;
+		return;
+	}
+
+
 	m_pTransformCom->LookAt(m_pTarget->Get_Transform());
 
 	

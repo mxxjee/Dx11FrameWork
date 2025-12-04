@@ -150,7 +150,7 @@ void CMMoriblin_Weapon::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
         m_pMoriblin->Set_Guard(true,m_AnimKey);
         _float3 vDir;
         XMStoreFloat3(&vDir, m_pOwner->Get_Transform()->Get_State(STATE::LOOK));
-        m_pTransformCom->AddImpulse(-2.f, vDir);
+        Get_Owner()->Get_Transform()->AddImpulse(-0.3f, vDir);
 
         break;
     case Client::COLLISION_GROUP::PLAYER:

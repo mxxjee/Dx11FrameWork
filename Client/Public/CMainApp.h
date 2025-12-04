@@ -22,6 +22,8 @@ private:
 public:
 	HRESULT Initialize();
 	HRESULT Initialize_Cilent();
+
+	HRESULT Ready_Fonts();
 	void	Set_Collision_Rules();		//그룹간 충돌 설정
 
 	void	Update_Priority(_float fTimeDelta);

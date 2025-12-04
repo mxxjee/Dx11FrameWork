@@ -24,6 +24,8 @@
 #include "CModel_Manager.h"
 #include "CHotKey_Manager.h"
 #include "CCollision_Manager.h"
+#include "CFont_Manager.h"
+
 
 ////////////////Add-Ons////////////////
 #include "CShader.h"
@@ -148,6 +150,11 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	/*collision 매니저*/
 	m_pCollisionManager = CCollision_Manager::Create(EngineDesc.colGroupMax);
 	CheckNullResult(m_pCollisionManager, E_FAIL);
+
+	/*Font매니저*/
+	m_pFont_Manager = CFont_Manager::Create(*pDevice, *pContext);
+	if (nullptr == m_pFont_Manager)
+		return E_FAIL;
 
 
 	return S_OK;
@@ -876,10 +883,13 @@ HRESULT CGameInstance::Render_NavMeshManager()
 	return m_pNavMeshManager->Render();
 }
 #endif
+
 _float4x4* CGameInstance::Get_ParentMatrix()
 {
 	return m_pNavMeshManager->Get_ParentMatrix();
 }
+#pragma endregion
+
 void CGameInstance::Emit(const GameEvent& Event)
 {
 	CheckNull(m_pEventBusManager);
@@ -911,12 +921,24 @@ void CGameInstance::Set_Enable_Collision(_uint iSrcGroup, _uint iDstGroup, bool 
 	return m_pCollisionManager->Set_Enable_Collision(iSrcGroup, iDstGroup, bEnable);
 }
 
-#pragma endregion
+#pragma region Font_Manager
+HRESULT CGameInstance::Add_Font(const _wstring& strFontTag, const _tchar* pFontFilePath)
+{
+	return m_pFont_Manager->Add_Font(strFontTag, pFontFilePath);
+}
+
+HRESULT CGameInstance::Draw_Text(const _wstring& strFontTag, const _tchar* pText, const _float2& vPosition, _fvector vColor)
+{
+	return m_pFont_Manager->Draw_Text(strFontTag, pText, vPosition, vColor);
+}
+
 
 void CGameInstance::Release_Engine()
 {
+	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pLevelManager);
 	Safe_Release(m_pTimerManager);
+
 
 	Safe_Release(m_pLevelFactory);
 	Safe_Release(m_pCollisionManager);

@@ -60,6 +60,10 @@ HRESULT CMainApp::Initialize()
 	if (FAILED(Initialize_Cilent()))
 		return E_FAIL;
 
+	if (FAILED(Ready_Fonts()))
+		return E_FAIL;
+
+
 	Set_Collision_Rules();
 
 	CInput_Manager::GetInstance()->Init_Input(g_hInst, g_hWnd);
@@ -169,6 +173,15 @@ HRESULT CMainApp::Initialize_Cilent()
 
 }
 
+HRESULT CMainApp::Ready_Fonts()
+{
+	//맑은고딕으로 테스트
+	if (FAILED(pGameInstance->Add_Font(TEXT("Font_Default"), TEXT("../..//Resource/Fonts/156ex.spritefont"))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 void CMainApp::Set_Collision_Rules()
 {
 	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
@@ -221,6 +234,8 @@ void CMainApp::Render()
 
 #ifdef _DEBUG
 	pImGui_Manager->Render(m_pContext.Get());
+	//pGameInstance->Draw_Text(TEXT("Font_Default"), TEXT("테스트"), _float2(0.f, 0.f));
+
 #endif
 
 	pGameInstance->Draw_End();

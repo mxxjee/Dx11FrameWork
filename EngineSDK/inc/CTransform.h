@@ -105,7 +105,7 @@ public:
     bool    IsFront(_vector vDir);
 
             //방향으로 힘만큼 미는 것
-    void    AddImpulse(float fPower, const _float3 direction);
+    void    AddImpulse(float fPower, const _float3 direction, class CNavigation* pNavigation=nullptr);
     void    UpdateImpulse(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
 
                 //시야범위내에 있는지 판별하는 함수, (시야각./ㅓㄷㅇ
