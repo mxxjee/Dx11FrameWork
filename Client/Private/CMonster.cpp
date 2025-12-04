@@ -10,6 +10,8 @@
 #include "CImGui_Manager.h"
 #include "CBoxColliderComponent.h"
 #include "CPartObject.h"
+#include "CCell.h"
+
 
 
 USING(Client)
@@ -42,7 +44,7 @@ HRESULT CMonster::Initialize_Copytype(void* pArg)
    
     
     CTransform::TRANSFORM_DESC* transdesc = static_cast<CTransform::TRANSFORM_DESC*>(desc->TransformDesc);
-    m_fInitSpeed=transdesc->fSpeedPerSec = 3.f;
+    m_fInitSpeed=transdesc->fSpeedPerSec;
 
 
     /*부모 컴포넌트 값세팅 */
@@ -144,8 +146,14 @@ void CMonster::Set_Active(bool _b)
 
 }
 
+void CMonster::Enter_State(int newState)
+{
+    //둘이다를때만 enter_state진입
+ 
+}
 
-_wstring CMonster::Get_AnimKey(CMonster::MONSTER_BASE_STATE eType)
+
+_wstring CMonster::Get_AnimKey(_uint eType)
 {
     if (m_pMonsterBody)
         return m_pMonsterBody->Get_AnimKey(eType);
@@ -169,6 +177,7 @@ void CMonster::Change_State(int newState)
 
 
     m_pNextState = m_States[newState];
+    Enter_State(m_iState);
     m_pNextState->Enter(this);
 }
 
@@ -296,9 +305,12 @@ bool CMonster::Is_InRange(_float fDistance)
 
         _float Distance = XMVectorGetX(XMVector3Length(PlayerPos - ownPos));
         if (Distance <= fDistance)
-            return true;
+        {
 
+            return true;
+        }
     }
+
 
     return false;
 }
@@ -365,6 +377,10 @@ void CMonster::Set_CollisionEnable(bool _b)
     m_pCollider->Set_Active(_b);
 }
 
+void CMonster::Patrol()
+{
+}
+
 
 
 void CMonster::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
@@ -410,6 +426,22 @@ void CMonster::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)
 void CMonster::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
 {
 
+}
+
+void CMonster::Reset_RandomCell()
+{
+    CCell* pCell = m_pNavigationCom->Get_Cell(m_iHomeCell);
+    CheckNull(pCell);
+
+    float dist = XMVectorGetX(XMVector3Length(m_pTransformCom->Get_State(STATE::POSITION) - pCell->Get_CenterPos()));
+
+    if (dist > m_fRoamRadius * 1.5f)
+    {
+
+        // 너무 멀리 벗어남, 다시 계산
+        m_pNavigationCom->Get_RandomCells(m_pTransformCom->Get_State(STATE::POSITION),
+            m_fRoamRadius, &m_RandomCells);
+    }
 }
 
 

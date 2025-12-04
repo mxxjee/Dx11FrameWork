@@ -245,6 +245,62 @@ _uint CNavigation::Get_CurrentCellType()
 	return ENUM_TO_UINT((*m_Cells)[m_iCurrentCellIndex]->Get_CurrentCellType());
 }
 
+void CNavigation::Get_RandomCells(_vector vPos,_float fRadius, vector<int>* vecInt)
+{
+	_float3 vTargetCenter;
+	XMStoreFloat3(&vTargetCenter, vPos);
+
+	//현재셀
+	queue<int> OpenQueue;
+	unordered_set<int> Visited;
+
+	float r2 = fRadius * fRadius;
+
+	OpenQueue.push(m_iCurrentCellIndex);
+	Visited.insert(m_iCurrentCellIndex);
+
+	while (!OpenQueue.empty())
+	{
+		int idx = OpenQueue.front();
+		OpenQueue.pop();
+
+		const DefaultCellInfo& CellInfo = (*m_Cells)[idx]->Get_CellInfo();
+		_float3 vCellCenter;
+		XMStoreFloat3(&vCellCenter, (*m_Cells)[idx]->Get_CenterPos());
+		
+		//중심점과 현재위치계산
+		
+		if (DistanceSq(vTargetCenter, vCellCenter) > r2)
+			continue;
+
+		else
+			vecInt->push_back(idx);
+
+		//인접한 셀부터 탐색
+		for (int i = 0; i < ENUM_TO_UINT(POINTType::END);++i)
+		{
+			int neighbor = CellInfo.m_iNeighbors[i];
+			if (neighbor == -1)
+				continue;
+
+			if (Visited.count(neighbor) == 0)
+			{
+				Visited.insert(neighbor);
+				OpenQueue.push(neighbor);
+			}
+		}
+	}
+
+
+}
+
+float CNavigation::DistanceSq(const _float3& a, const _float3& b)
+{
+	_vector vDist = XMVector3Length(XMLoadFloat3(&a) - XMLoadFloat3(&b));
+
+	return XMVectorGetX(XMVector3LengthSq(vDist));
+}
+
 const list<_vector>* CNavigation::Make_Route(_int iGoalIndex)
 {
 	if (m_iOldGoalIndex == iGoalIndex)

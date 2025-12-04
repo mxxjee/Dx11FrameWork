@@ -17,7 +17,7 @@ class CMonster :
     public CModelObject
 {
 public:
-    enum class MONSTER_BASE_STATE
+    enum  MONSTER_BASE_STATE
     {
         NONE, INTRO,IDLE, WALK, RUN, JUMP, ATTACK, DAMAGE, DIE,END
     };
@@ -50,8 +50,9 @@ public:
 public:
     virtual void    Set_Active(bool _b);
 public:
+    virtual void        Enter_State(int newState);
     virtual void        AIState_Change(_float fTimeDelta) {};
-    _wstring    Get_AnimKey(CMonster::MONSTER_BASE_STATE eType);
+    _wstring    Get_AnimKey(_uint eType);
 
 public:
     virtual void            Change_State(int newState);
@@ -95,7 +96,7 @@ public:
 public: 
     void        Set_Dead();
     void        Set_CollisionEnable(bool _b);
-
+    virtual void        Patrol();
 
 protected:
     MONSTER_ACTION_CONTORL      m_ActionControl;
@@ -111,13 +112,17 @@ protected:
 protected:
     float           m_fTime = 0.f;
     float            m_fDamageTime = 0.f;
+
+    float               m_fWaitCurrentTime = 0.f;
+    float               m_fWaitTime = 2.f; //idle진입하고 대기시간
+
 protected:
     UMap<_uint, CMonsterState*>       m_States;
 
     CMonsterState* m_pCurState = nullptr;
     CMonsterState* m_pNextState = nullptr;
 
-     CMonster_Body*      m_pMonsterBody = nullptr;
+    CMonster_Body*      m_pMonsterBody = nullptr;
 
     MONSTER_BASE_STATE      m_eCurState = MONSTER_BASE_STATE::NONE;
     CBoxColliderComponent*  m_pCollider = { nullptr };
@@ -137,10 +142,16 @@ protected:
     float           m_fInitSpeed = 0.f;
     bool            m_bCanMove = true;
 
+public:
+    void            Reset_RandomCell();
 protected:
     Engine::CNavigation* m_pNavigationCom = { nullptr };
+    float           m_fRoamRadius = 20.f;     //정찰가능한 거리
+    
+    int             m_iHomeCell;        //첫 스폰한 셀인덱스 기록,Idle상태일때마다 리셋된다.
+    int             m_iNextCell;            //다음으로 이동할 셀.
 
-
+    vector<int>     m_RandomCells;      //정찰할때 사용할 randomcell들을 담는다.
 };
 
 NS_END

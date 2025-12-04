@@ -14,7 +14,7 @@ void CMonsterDeadState::Enter(CMonster* pMonster)
 {
 	__super::Enter(pMonster);
 
-	pMonster->Reserve_Animation_To_Body(pMonster->Get_AnimKey(CMonster::MONSTER_BASE_STATE::DIE), false);
+	pMonster->Reserve_Animation_To_Body(pMonster->Get_AnimKey(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DIE)), false);
 	pMonster->Set_CollisionEnable(false);
 
 }

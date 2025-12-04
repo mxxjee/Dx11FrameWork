@@ -93,8 +93,8 @@ public:
     
     void    LookAtSmooth(_vector vTargetPos, float fLerpSpped, float fTimeDelta);
   
-       
-    void    Chase(_vector vPoint, _float fTimeDelta, _float MinDistance = 0.f);    //최소 거리 까지만 쫓아간다.
+                //거리만족하면 true(멈춤), 아니라면 false(쫓아가고있는 중 반환)
+    bool    Chase(_vector vPoint, _float fTimeDelta,class CNavigation* pNavigation=nullptr, _float MinDistance = 0.f);    //최소 거리 까지만 쫓아간다.
 
 //////////////////////////
     void    MoveLerp(_vector vTargetPos, float fLerpSpeed, float fTimeDelta, bool bUpdateLook = true);
@@ -107,6 +107,9 @@ public:
             //방향으로 힘만큼 미는 것
     void    AddImpulse(float fPower, const _float3 direction);
     void    UpdateImpulse(_float fTimeDelta, class CNavigation* pNavigation = nullptr);
+
+                //시야범위내에 있는지 판별하는 함수, (시야각./ㅓㄷㅇ
+    bool    IsInSight(_float SightFov, _vector vToTargetDir);
 #pragma endregion
 
 public:

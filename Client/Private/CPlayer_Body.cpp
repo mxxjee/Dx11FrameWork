@@ -66,7 +66,7 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 
 
 	CPlayer_Body::PLAYER_BODY_DESC* pDesc = static_cast<CPlayer_Body::PLAYER_BODY_DESC*>(pArg);
-	m_pActionControl = pDesc->pActionControl;
+	m_pDamageRender = pDesc->pDamgeRender;
 
 	return S_OK;
 }
@@ -113,7 +113,7 @@ HRESULT CPlayer_Body::Bind_ShaderResources()
 	if (FAILED(__super::Bind_ShaderResources()))
 		return E_FAIL;
 
-	if (FAILED(m_pShader->Bind_Float("b_Damage", m_pActionControl->m_bDamage)))
+	if (FAILED(m_pShader->Bind_Float("b_Damage", (*m_pDamageRender))))
 		return E_FAIL;
 
 	return S_OK;

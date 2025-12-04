@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Private\CMMoriblinSwordIdleState.h" />
     <ClInclude Include="..\Public\CBackGround.h" />
     <ClInclude Include="..\Public\CButton.h" />
     <ClInclude Include="..\Public\CCameraDebugWindow.h" />
@@ -167,14 +168,22 @@
     <ClInclude Include="..\Public\CMGreenZolHideState.h" />
     <ClInclude Include="..\Public\CMGreenZolIntroState.h" />
     <ClInclude Include="..\Public\CMGreenZolJumpAttackState.h" />
+    <ClInclude Include="..\Public\CMMoriblinAttackState.h" />
+    <ClInclude Include="..\Public\CMMoriblinSwordDetectState.h" />
+    <ClInclude Include="..\Public\CMMoriblinSwordGuardState.h" />
+    <ClInclude Include="..\Public\CMMoriblin_Weapon.h" />
     <ClInclude Include="..\Public\CMonster.h" />
+    <ClInclude Include="..\Public\CMonsterAttackState.h" />
+    <ClInclude Include="..\Public\CMonsterDamageState.h" />
     <ClInclude Include="..\Public\CMonsterDeadState.h" />
     <ClInclude Include="..\Public\CMonsterIdleState.h" />
     <ClInclude Include="..\Public\CMonsterIntroState.h" />
+    <ClInclude Include="..\Public\CMonsterRunState.h" />
     <ClInclude Include="..\Public\CMonsterState.h" />
     <ClInclude Include="..\Public\CMonsterWalkState.h" />
     <ClInclude Include="..\Public\CMonster_Body.h" />
     <ClInclude Include="..\Public\CM_GreenZol.h" />
+    <ClInclude Include="..\Public\CM_MoriblinSword.h" />
     <ClInclude Include="..\Public\CNPC.h" />
     <ClInclude Include="..\Public\CNPC_Body.h" />
     <ClInclude Include="..\Public\CNPC_Richard.h" />
@@ -233,14 +242,23 @@
     <ClCompile Include="..\Private\CMGreenZolHideState.cpp" />
     <ClCompile Include="..\Private\CMGreenZolIntroState.cpp" />
     <ClCompile Include="..\Private\CMGreenZolJumpAttackState.cpp" />
+    <ClCompile Include="..\Private\CMMoriblinAttackState.cpp" />
+    <ClCompile Include="..\Private\CMMoriblinSwordDetectState.cpp" />
+    <ClCompile Include="..\Private\CMMoriblinSwordGuardState.cpp" />
+    <ClCompile Include="..\Private\CMMoriblinSwordIdleState.cpp" />
+    <ClCompile Include="..\Private\CMMoriblin_Weapon.cpp" />
     <ClCompile Include="..\Private\CMonster.cpp" />
+    <ClCompile Include="..\Private\CMonsterAttackState.cpp" />
+    <ClCompile Include="..\Private\CMonsterDamageState.cpp" />
     <ClCompile Include="..\Private\CMonsterDeadState.cpp" />
     <ClCompile Include="..\Private\CMonsterIdleState.cpp" />
     <ClCompile Include="..\Private\CMonsterIntroState.cpp" />
+    <ClCompile Include="..\Private\CMonsterRunState.cpp" />
     <ClCompile Include="..\Private\CMonsterState.cpp" />
     <ClCompile Include="..\Private\CMonsterWalkState.cpp" />
     <ClCompile Include="..\Private\CMonster_Body.cpp" />
     <ClCompile Include="..\Private\CM_GreenZol.cpp" />
+    <ClCompile Include="..\Private\CM_MoriblinSword.cpp" />
     <ClCompile Include="..\Private\CNPC.cpp" />
     <ClCompile Include="..\Private\CNPC_Body.cpp" />
     <ClCompile Include="..\Private\CNPC_Richard.cpp" />

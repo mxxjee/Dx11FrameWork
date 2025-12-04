@@ -114,7 +114,7 @@
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\GetItem</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerCarryState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Carry</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Carry</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CNPC.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC</Filter>
@@ -184,6 +184,33 @@
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerDamageState.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Damage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CM_MoriblinSword.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMonsterDamageState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Damage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Private\CMMoriblinSwordIdleState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMMoriblinSwordDetectState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Detect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMonsterRunState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Run</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMonsterAttackState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMMoriblin_Weapon.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\CMMoriblin_Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMMoriblinSwordGuardState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Guard</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMMoriblinAttackState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Attack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -324,9 +351,6 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\GetItem">
       <UniqueIdentifier>{0be55c6a-e911-4772-b0e4-266c01537c6a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Carry">
-      <UniqueIdentifier>{360d42cd-f7de-477e-bbcb-a56fab47421e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Talk">
       <UniqueIdentifier>{2140fabe-20b1-4c44-aea6-d6ec9c7bf548}</UniqueIdentifier>
     </Filter>
@@ -401,6 +425,39 @@
     </Filter>
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Damage">
       <UniqueIdentifier>{2a81e5ff-bfd7-4e77-bca3-5fcc345383cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword">
+      <UniqueIdentifier>{8aae687a-cf5b-40b9-b602-ca614be21fee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Damage">
+      <UniqueIdentifier>{3f319939-2aaf-482b-b3d7-10b1833ddac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State">
+      <UniqueIdentifier>{e84dd3f2-918f-4606-89fa-c159418f5dd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Carry">
+      <UniqueIdentifier>{360d42cd-f7de-477e-bbcb-a56fab47421e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Idle">
+      <UniqueIdentifier>{6301634c-3d2d-405a-9ea6-5e8c28ce2fe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Detect">
+      <UniqueIdentifier>{3990ad52-ee77-4b3f-b73c-b3022041d30c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Run">
+      <UniqueIdentifier>{a5417400-35c7-4042-bff9-bea1d5613261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Attack">
+      <UniqueIdentifier>{470ce81a-eb58-44e9-8714-d789db727ca8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\CMMoriblin_Weapon">
+      <UniqueIdentifier>{041cd987-7b4f-44aa-9648-6c9a6ee3fc0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Guard">
+      <UniqueIdentifier>{f9365590-54f0-40e2-a851-a194747fe713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Attack">
+      <UniqueIdentifier>{cbfa7bf0-8652-437c-9ab7-f5b8dbdabf6b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -505,7 +562,7 @@
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\GetItem</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerCarryState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Carry</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Carry</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CNPC.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC</Filter>
@@ -566,6 +623,33 @@
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerDamageState.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Damage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMonsterDamageState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Damage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CM_MoriblinSword.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMMoriblinSwordIdleState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMMoriblinSwordDetectState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Detect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMonsterRunState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Run</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMonsterAttackState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMMoriblin_Weapon.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\CMMoriblin_Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMMoriblinSwordGuardState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Guard</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMMoriblinAttackState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Attack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

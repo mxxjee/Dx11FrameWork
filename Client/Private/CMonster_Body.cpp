@@ -122,7 +122,7 @@ HRESULT CMonster_Body::Bind_ShaderResources()
 	return S_OK;
 }
 
-void CMonster_Body::Register_AnimKey(CMonster::MONSTER_BASE_STATE first, const _wstring& second)
+void CMonster_Body::Register_AnimKey(_uint first, const _wstring& second)
 {
 	auto iter = m_AnimKeys.find(first);
 
@@ -131,7 +131,18 @@ void CMonster_Body::Register_AnimKey(CMonster::MONSTER_BASE_STATE first, const _
 
 }
 
-_wstring CMonster_Body::Get_AnimKey(CMonster::MONSTER_BASE_STATE first)
+void CMonster_Body::Change_AnimKey(_uint first, const _wstring& second)
+{
+	auto iter = m_AnimKeys.find(first);
+
+	if (iter != m_AnimKeys.end())
+	{
+		iter->second = second;
+
+	}
+}
+
+_wstring CMonster_Body::Get_AnimKey(_uint first)
 {
 	return m_AnimKeys[first];
 

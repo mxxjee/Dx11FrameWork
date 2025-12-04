@@ -29,8 +29,10 @@ void CPlayerDamageState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
     if (pPlayer->Is_AnimEnd())
     {
+        //·»´õ ²¨ÁÖ°í..
+        pPlayer->Set_DamageRender(0.f);
         pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
-        pActionControl->m_bDamage = false;
+        
     }
 
 }

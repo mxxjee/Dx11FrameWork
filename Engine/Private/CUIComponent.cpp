@@ -164,7 +164,7 @@ void CUIComponent::Set_OwnerTransform(CTransform* ptransform)
 
 
 
-void CUIComponent::PlayAnim(UIAnimType _AnimType, _float4 vStart, _float4 vTarget, float fSpeed, bool bLoop)
+void CUIComponent::PlayAnim(UIAnimType _AnimType, _float4 vStart, _float4 vTarget, float fSpeed, bool bLoop,bool bAutoDisable)
 {
 	CheckTrue(_AnimType == UIAnimType::END);
 
@@ -178,6 +178,8 @@ void CUIComponent::PlayAnim(UIAnimType _AnimType, _float4 vStart, _float4 vTarge
 
 	m_AnimInfo[ENUM_TO_UINT(_AnimType)].m_fSpeed = fSpeed;
 	m_AnimInfo[ENUM_TO_UINT(_AnimType)].bLoop = bLoop;
+
+	m_AnimInfo[ENUM_TO_UINT(_AnimType)].bAutoDisable = bAutoDisable;
 
 	/*오너의 애니메이션타입 추가.*/
 	Set_AnimFlag(_AnimType);
@@ -209,6 +211,8 @@ bool CUIComponent::Is_AnimEnd(UIAnimType _AnimType)
 	CheckFalseResult(m_AnimInfo[ENUM_TO_UINT(_AnimType)].m_bRegister,false);
 
 	return m_AnimInfo[ENUM_TO_UINT(_AnimType)].m_bEnd;
+
+
 }
 
 void CUIComponent::Apply_StartValue(UIAnimType eType, UIAnimInfo& Info)
@@ -260,6 +264,9 @@ void CUIComponent::Check_LoopAnimation(UIAnimType eType, UIAnimInfo& Info, _floa
 			{
 				Info.m_bPlay = false;
 				Info.m_bEnd = true;
+				if (Info.bAutoDisable)
+					m_pOwner->Set_Active(false);
+
 			}
 
 		}
@@ -278,6 +285,9 @@ void CUIComponent::Check_LoopAnimation(UIAnimType eType, UIAnimInfo& Info, _floa
 			{
 				Info.m_bPlay = false;
 				Info.m_bEnd = true;
+
+				if (Info.bAutoDisable)
+					m_pOwner->Set_Active(false);
 			}
 
 		}

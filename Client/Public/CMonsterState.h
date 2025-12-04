@@ -28,6 +28,8 @@ public:
 protected:
     bool        m_bCanExit = true;        //강제 전이 가능여부
 
+protected:
+    virtual void        Check_Always(CMonster* pMonster, _float fTimeDelta);
 
 
 protected:

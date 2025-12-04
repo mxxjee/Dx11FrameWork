@@ -30,7 +30,7 @@ void CPlayerStateGetItem::Enter(CPlayer* pPlayer)
     pPlayer->Set_CanMove(false);
 
     CCamera_Base* pCameraBase = m_pGameInstance->Get_MainCamera();
-    pCameraBase->Set_Offset(_float3(0.f, 2.5f, -1.5f));
+    pCameraBase->Set_Offset(_float3(0.f, 3.5f, -1.5f));
 
 
 

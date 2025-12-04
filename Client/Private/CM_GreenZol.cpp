@@ -460,7 +460,7 @@ void CM_GreenZol::Free()
 
 HRESULT CM_GreenZol::Ready_States()
 {
-	m_States.emplace(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::INTRO), CMGreenZolIntroState::Create());
+	m_States.emplace(CMonster::MONSTER_BASE_STATE::INTRO, CMGreenZolIntroState::Create());
 	m_States.emplace(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::IDLE), CMonsterIdleState::Create());
 	m_States.emplace(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::ATTACK), CMGreenZolJumpAttackState::Create());
 	m_States.emplace(ENUM_TO_UINT(CM_GreenZol::GreenZolState::HIDE), CMGreenZolHideState::Create());
@@ -500,7 +500,7 @@ void CM_GreenZol::Idle_Behavior(_float fTimeDelta)
 void CM_GreenZol::JumpStart_Behavior()
 {
 	m_bJump = true;
-	m_pGravity->Jump(25.f);
+	m_pGravity->Jump(20.f);
 
 }
 

@@ -9,7 +9,7 @@ class CPlayer_Body :
 public:
     typedef struct tagCPlayer_BodyDesc : CBody::BODY_DESC
     {
-        ACTION_CONTROL* pActionControl = nullptr;
+        float* pDamgeRender = nullptr;
 
     }PLAYER_BODY_DESC;
 
@@ -43,9 +43,9 @@ public:
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
-private:
-    ACTION_CONTROL* m_pActionControl = nullptr;
 
+private:
+    float*        m_pDamageRender = nullptr;
 
 };
 NS_END

@@ -11,7 +11,7 @@ CPlayerState::CPlayerState()
 
 void CPlayerState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
-	if (pActionControl->m_bDamage == 1.0f)
+	if (pPlayer->Get_DamageRender()==1.f)
 	{
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::DAMANGE));
 		return;

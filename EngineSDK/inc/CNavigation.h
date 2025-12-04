@@ -33,6 +33,12 @@ public:
 
     _vector SetUp_OnNavigation(_fvector vWorldPos);     //네브메쉬 평면을 타게함.
     _uint    Get_CurrentCellType();
+
+public:
+                //현재 셀부터 반경내의 Radius만큼 랜덤한 cell을 담는다.
+    void        Get_RandomCells(_vector vPos, _float fRadius, vector<int>* vecInt);
+    float       DistanceSq(const _float3& a, const _float3& b);
+
 public:
     const list<_vector>* Make_Route(_int iGoalIndex);
     _bool       CanPush(_int iCellIndex);

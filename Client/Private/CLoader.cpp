@@ -41,6 +41,8 @@
 #include "CM_GreenZol.h"
 #include "CPlayer_Sword.h"
 #include "CPlayer_Shield.h"
+#include "CM_MoriblinSword.h"
+#include "CMMoriblin_Weapon.h"
 
 
 
@@ -306,7 +308,15 @@ HRESULT CLoader::Register_Models()
     _matrix GreenZolMatrix = XMMatrixScaling(0.7f, 0.7f, 0.7f);
     GreenZolMatrix = XMMatrixMultiply(GreenZolMatrix,XMMatrixRotationY(XMConvertToRadians(180.f)));
 
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy", GreenZolMatrix);
+
+    _matrix MoriblinSwordMatrix= XMMatrixRotationY(XMConvertToRadians(180.f));
+    
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy/ZolGreenAnim", GreenZolMatrix);
+    
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy/MoriblinSword", MoriblinSwordMatrix);
+
+
+    
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC", NPCmatrix);
 
 
@@ -442,7 +452,11 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"CM_GreenZol", CM_GreenZol::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"CM_MoriblinSword", CM_MoriblinSword::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Moriblin_Weapon", CMMoriblin_Weapon::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
     return S_OK;
 }

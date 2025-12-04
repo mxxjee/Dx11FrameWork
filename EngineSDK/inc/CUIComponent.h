@@ -23,6 +23,8 @@ public:
 
         bool        bLoop=false;      //반복여부
 
+        bool        bAutoDisable = false;       //애니메이션이 끝나면 자동으로 비활성화할건지 여부.
+
     };
 
     typedef struct tagUICompDesc : CComponent::tagComponentDesc
@@ -52,7 +54,7 @@ public:
     void            Set_OwnerTransform(class CTransform* ptransform);
 public:
             //새로운 애니메이션을 만들어서 바로 재생시킨다.
-    void        PlayAnim(UIAnimType _AnimType, _float4 vStart, _float4 vTarget, float fSpeed, bool bLoop);
+    void        PlayAnim(UIAnimType _AnimType, _float4 vStart, _float4 vTarget, float fSpeed, bool bLoop, bool bAutoDisable);
                 
                 //이미존재하는 애니메이션을 재생시킨다.
     void        PlayAnim(UIAnimType _AnimType);

@@ -148,8 +148,10 @@ void CLevel_Town::Update_Late(_float fTimeDelta)
 void CLevel_Town::Render()
 {
     //UI렌더. (로딩바)
-    SetWindowText(g_hWnd, L"게임플레이 씬입니다.");
+    wchar_t szTitle[256];
+    swprintf_s(szTitle, L"Town 씬입니다. FPS : %.1f", m_pGameInstance->Get_FPS(L"Timer_60"));
 
+    SetWindowText(g_hWnd, szTitle);
 }
 
 HRESULT CLevel_Town::Ready_Lights()
@@ -224,7 +226,7 @@ HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
 
     ///////////////////////Navigation 불러오기
-    m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::TOWN), "../../Resource/Data/Map/Terrain20_Nav.dat");
+    m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::TOWN), "../../Resource/Data/Map/Terrain21_Nav.dat");
 #ifdef _DEBUG
     m_pGameInstance->Set_NavMeshShader(m_pGameInstance->Find_Shader(L"VtxPos"));
 #endif
@@ -261,15 +263,17 @@ HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
 
         //AlphaAnim등록
         CUIComponent::UICOMP_DESC UIDesc = {};
-        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].fStart = _float4(Desc.fX, Desc.fY, 1.f, 1.f);
+    /*    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].fStart = _float4(Desc.fX, Desc.fY, 1.f, 1.f);
         UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].fTarget = _float4(Desc.fX - 10.f, Desc.fY, 1.f, 1.f);
         UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].m_fSpeed = 0.1f;
-        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].bLoop = true;
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].bLoop = true;*/
 
         UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].fStart = _float4(1.f, 0.f, 0.f, 0.f);
         UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].fTarget = _float4(0.f, 0.f, 0.f, 0.f);
         UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].m_fSpeed = 5.f;
-        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bLoop = true;
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bLoop = false;
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bAutoDisable = true;
+
         Desc.UICompDesc = &UIDesc;
 
 
@@ -302,12 +306,14 @@ HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
                     CUI* pUI = dynamic_cast<CUI*>(i);
                     if (pUI)
                     {
-                        if (pUI->Get_Idx() == *iHp)
+                        if (pUI->Get_Idx() == (*iHp)) 
                         {
                             pUI->Set_ActiveAnim(1, [pUI]()
                                 {
                                     pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA);
-                                    pUI->Get_UIComp()->PlayAnim(UIAnimType::POSITION);
+                                
+
+                                   // pUI->Get_UIComp()->PlayAnim(UIAnimType::POSITION);
                                 });
 
 
@@ -400,7 +406,7 @@ HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
     TransDesc.vLocalPosition = { 20.108f,10.5f,27.893f,1.f };
     TransDesc.vLocalRotation = { 0.f,180.f,0.f,1.f };
 
-    TransDesc.fSpeedPerSec = 2.f;
+    TransDesc.fSpeedPerSec = 3.f;
     TransDesc.fRotationPerSec = 10.f;
 
     desc.TransformDesc = &TransDesc;
@@ -415,6 +421,36 @@ HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
 
     
 
+    ///////////////////////////
+    CMonster::MonsterDesc Moriblindesc;
+
+    CMonster_Body::MONSTER_BODY_DESC MoriblinbodyDesc;
+    MoriblinbodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+    MoriblinbodyDesc.modelName = L"MoriblinSword";
+
+    Moriblindesc.BodyDesc = &MoriblinbodyDesc;
+
+
+    Moriblindesc.iAttack = 10;
+    Moriblindesc.MaxHp = 10;
+    Moriblindesc.fActionRange = 3.f;
+
+    Moriblindesc.ObjTag = L"MoriblinSword" + to_wstring(0);
+    CTransform::TRANSFORM_DESC MoriblinTransDesc = {};
+    MoriblinTransDesc.vLocalRotation = { 0.f,180.f,0.f,1.f };
+
+    MoriblinTransDesc.fSpeedPerSec = 2.f;
+    MoriblinTransDesc.fRotationPerSec = 10.f;
+
+    Moriblindesc.TransformDesc = &MoriblinTransDesc;
+
+
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"CM_MoriblinSword"),
+        ENUM_TO_UINT(LEVEL_ID::TOWN),
+        strLayerTag, &Moriblindesc)))
+        return E_FAIL;
     return S_OK;
 
 }

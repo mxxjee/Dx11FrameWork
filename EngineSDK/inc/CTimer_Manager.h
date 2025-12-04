@@ -21,6 +21,9 @@ public:
 
 public:
 	static CTimer_Manager* Create();
+public:
+	_float	Get_FPS(const _tchar* pTimerTag);
+
 private:
 	CTimer* Find_Timer(const _tchar* pTimerTag);
 

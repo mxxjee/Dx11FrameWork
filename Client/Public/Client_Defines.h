@@ -56,7 +56,7 @@ typedef struct tagActionControl
 	bool				m_bFall = false;
 
 	//이건 리셋X
-	float				m_bDamage = 0.0f;
+	float				m_fDamage = 0.0f;
 
 	void		Reset()
 	{
@@ -99,15 +99,18 @@ typedef struct tagMonsterActionControl
 	bool	m_bIntroEnd = false;
 
 	//////////////////////
-	float	m_bDamage = 0.f;	//Shader에서 ㅏㅅ용하므로 float
+	float	m_bDamage = false;	
 	bool	m_bMove = false;		//true라면 walk, false람녀 idle/ range&&move라면 attack가능
 	
 	bool	m_bAttack = false;
 
-	bool	m_bRange = false;		//범위내에있는지
-	bool	m_bDead = false;			//죽음처리됐는지( 애니메이션 호출용)
+	bool	m_bRange = false;		//true라면 detect		//공격범위내에있는지
+	bool	m_bChase = false;
 
-
+	bool	m_bThink = false;			//true라면 잠깐 idle상태의 대기상태로진입..
+	
+	bool	m_bDead = false;	//죽음처리됐는지( 애니메이션 호출용)
+	
 	void Reset()
 	{
 		m_bIntroEnd = false;
@@ -117,7 +120,7 @@ typedef struct tagMonsterActionControl
 		m_bAttack = false;
 
 		m_bRange = false;
-		m_bDead = false;
+		m_bChase = false;
 	}
 
 }MONSTER_ACTION_CONTORL;

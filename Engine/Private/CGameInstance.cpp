@@ -316,6 +316,11 @@ void CGameInstance::Compute_TimeDelta(const _tchar* pTimerTag)
 	return m_pTimerManager->Compute_TimeDelta(pTimerTag);
 
 }
+_float CGameInstance::Get_FPS(const _tchar* pTimerTag)
+{
+	return m_pTimerManager->Get_FPS(pTimerTag);
+}
+
 HRESULT CGameInstance::Add_Timer(const _tchar* pTimerTag)
 {
 	CheckNullResult(m_pTimerManager, E_FAIL);

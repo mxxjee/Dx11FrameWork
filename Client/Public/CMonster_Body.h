@@ -40,11 +40,13 @@ private:
 
 public:
             //State에서 사용할 animKey들을 저장.(몬스터들은 종류가많아서.)
-     void Register_AnimKey(CMonster::MONSTER_BASE_STATE first, const _wstring& second);
-     _wstring Get_AnimKey(CMonster::MONSTER_BASE_STATE first);
+     void Register_AnimKey(_uint first, const _wstring& second);
+     void Change_AnimKey(_uint first, const _wstring& second);
+
+     _wstring Get_AnimKey(_uint first);
 
 public:
-    UMap<CMonster::MONSTER_BASE_STATE, _wstring>        m_AnimKeys;
+    UMap<_uint, _wstring>        m_AnimKeys;
 
 
 private:    

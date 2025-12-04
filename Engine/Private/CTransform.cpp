@@ -327,8 +327,11 @@ void CTransform::AddImpulse(float fPower, const _float3 direction)
 {
 	_float3 impulse;
 
+	m_vVelocity = XMVectorSet(0.f,0.f,0.f,0.f);
 	XMStoreFloat3(&impulse, XMVector3Normalize(XMLoadFloat3(&direction)) * fPower);
 	m_vVelocity += XMLoadFloat3(&impulse);
+
+	XMVectorSetW(m_vMoveResultPos, 0.f);
 
 	m_bAddImpulse = true;
 
@@ -348,6 +351,24 @@ void CTransform::UpdateImpulse(_float fTimeDelta, CNavigation* pNavigation)
 
 	}
 
+
+}
+
+bool CTransform::IsInSight(_float SightFov, _vector vToTargetDir)
+{
+	_float fCosFov = cosf(SightFov / 2.f);
+
+	//시선벡터 정규화
+
+	
+	_vector vLook= XMVector3Normalize(Get_State(STATE::LOOK));
+	_vector vToTarget = XMVector3Normalize(vToTargetDir);
+
+	
+	_float vTargetDot = XMVectorGetX(XMVector3Dot(vLook, vToTarget));
+
+	
+	return vTargetDot >= fCosFov;
 
 }
 
@@ -754,9 +775,11 @@ void CTransform::LookAtSmooth(_vector vTargetPos, float fLerpSpped, float fTimeD
 }
 
 
-void CTransform::Chase(_vector vPoint, _float fTimeDelta, _float MinDistance)
+bool CTransform::Chase(_vector vPoint, _float fTimeDelta, CNavigation* pNavigation,_float MinDistance)
 {
 	//쫓아가는 방향구하기
+	bool Result = false;
+
 	_vector vPosition = Get_State(STATE::POSITION);
 	
 	_vector vNewLook = vPoint - vPosition;
@@ -764,11 +787,18 @@ void CTransform::Chase(_vector vPoint, _float fTimeDelta, _float MinDistance)
 
 	
 	if (vLookLength >= MinDistance)
+	{
 		vPosition += XMVector3Normalize(vNewLook) * fTimeDelta * m_fSpeedPerSec;
+		Result = false;
+	}
 
-		
-	Set_State(STATE::POSITION, vPosition);
+	else
+		Result = true;
 
+	if (pNavigation == nullptr || pNavigation->isMove(vPosition))
+		Set_State(STATE::POSITION, vPosition);
+
+	return Result;
 }
 
 CTransform* CTransform::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)

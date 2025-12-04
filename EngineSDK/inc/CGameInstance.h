@@ -63,6 +63,7 @@ public:
 	_float			Get_TimeDelta(const _tchar * pTimerTag);
 	HRESULT			Add_Timer(const _tchar * pTimerTag);
 	void			Compute_TimeDelta(const _tchar * pTimerTag);
+	_float			Get_FPS(const _tchar * pTimerTag);
 #pragma endregion
 
 #pragma region ProtoManager

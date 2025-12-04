@@ -162,10 +162,18 @@ public:
     virtual void        Render_StateDebug(int* pArg);
 
 private:
+    void    OnDamageBehavior(_float fTimeDelta);
+
+private:
     PLAYER_INPUT        m_Input;
     ACTION_CONTROL      m_ActionControl;
 
-
+public:
+    void        Set_DamageRender(float f) { m_ActionControl.m_fDamage = f; }
+    float        Get_DamageRender() { return  m_ActionControl.m_fDamage; }
+private:
+    float   m_fDamageTime = 0.f;
+    bool    m_bCanCollision = true;
 
 private:
     UMap<_uint, CPlayerState*>       m_States;

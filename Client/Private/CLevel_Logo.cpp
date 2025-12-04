@@ -230,8 +230,10 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
 void CLevel_Logo::Render()
 {
     //UI렌더. (로딩바)
-    SetWindowText(g_hWnd, L"로고 씬입니다.");
+    wchar_t szTitle[256];
+    swprintf_s(szTitle, L"로고 씬입니다. FPS : %.1f", m_pGameInstance->Get_FPS(L"Timer_60"));
 
+    SetWindowText(g_hWnd, szTitle);
 }
 
 
@@ -384,7 +386,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
                     if (pFadeScreen)
                     {
                         pFadeScreen->Set_AutoMode(true);
-                        pFadeScreen->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 8.f, false);
+                        pFadeScreen->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 8.f, false,false);
                     }
                 }
             }
@@ -401,7 +403,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
                     CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(i);
                     if (pFadeScreen)
                     {
-                        pFadeScreen->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 8.f, false);
+                        pFadeScreen->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 8.f, false,false);
                         
                     }
                 }

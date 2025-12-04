@@ -68,7 +68,7 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
     BodyDesc.pParentState = &m_iState;
     BodyDesc.ObjTag = desc.ObjTag + L"_body";
-    BodyDesc.pActionControl = &m_ActionControl;
+    BodyDesc.pDamgeRender = &m_ActionControl.m_fDamage;
     desc.BodyDesc = &BodyDesc;
 
     if (FAILED(Ready_Components(&desc)))
@@ -107,6 +107,7 @@ void CPlayer::Update(_float fTimeDelta)
 {
    
     Update_Input(fTimeDelta);
+    OnDamageBehavior(fTimeDelta);
 
    //State_Change();     //애니메이션 완료 이후에 어떻게 바꿔줄것인지
     if (m_pNextState != nullptr)
@@ -246,7 +247,7 @@ void CPlayer::Update_Movement(_float fTimeDelta)
     m_pTransformCom->UpdateImpulse(fTimeDelta,m_pNavigationCom);
 
     CheckFalse(m_ActionControl.m_bCanMove);
-    CheckTrue(m_ActionControl.m_bDamage);
+    CheckTrue(m_ActionControl.m_fDamage==1.f);
 
     if (m_ActionControl.IsHold(HOLD_B))
         Hold_Movement(fTimeDelta);
@@ -636,6 +637,11 @@ void CPlayer::Damage_Behavior()
     else            //뒤에서맞앙쓰니까 앞으로밀리기
         m_pTransformCom->AddImpulse(0.15f, vDir);
 
+
+    --iHp;
+    m_pGameInstance->BroadCastEvent(L"OnHeartDamaged", &iHp);
+    
+
 }
 
 
@@ -977,27 +983,42 @@ void CPlayer::Render_StateDebug(int* pArg)
     }
 
 }
+
 #endif
+
+void CPlayer::OnDamageBehavior(_float fTimeDelta)
+{
+    //3초무적
+
+	m_fDamageTime += fTimeDelta;
+	if (m_fDamageTime >= 2.f)
+    {
+        m_bCanCollision = true;
+        m_fDamageTime = 0.f;
+	}
+    
+}
 
 void CPlayer::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {
+    CheckFalse(m_bCanCollision);
     CGameObject* pOwner = pOther->Get_Owner();
 
     CheckNull(pOwner);
     switch (COLLISION_GROUP(iGroup))
     {
     case Client::COLLISION_GROUP::MONSTER:
-    {   m_ActionControl.m_bDamage = true;
+    case Client::COLLISION_GROUP::MONSTER_WEAPON:
+    {   m_ActionControl.m_fDamage =1.f;
 
     _vector vDir = (pOwner->Get_Transform()->Get_State(STATE::POSITION))
         - (m_pTransformCom->Get_State(STATE::POSITION));
 
         m_bHitFront = m_pTransformCom->IsFront(vDir);
-     
+        m_bCanCollision = false;
     }
         break;
-    case Client::COLLISION_GROUP::MONSTER_WEAPON:
-        break;
+
     case Client::COLLISION_GROUP::TRIGGER:
         break;
     case Client::COLLISION_GROUP::END:
