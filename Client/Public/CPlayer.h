@@ -174,6 +174,7 @@ public:
 private:
     float   m_fDamageTime = 0.f;
     bool    m_bCanCollision = true;
+    
 
 private:
     UMap<_uint, CPlayerState*>       m_States;

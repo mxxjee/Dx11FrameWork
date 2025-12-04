@@ -19,6 +19,8 @@ void CMMoriblinAttackState::Enter(CMonster* pMonster)
 
 
 	m_pMoriblinSword = dynamic_cast<CM_MoriblinSword*>(pMonster);
+	m_pActionControl->m_bDamage = 0.f;
+
 
 	pMonster->Reserve_Animation_To_Body(pMonster->Get_AnimKey(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::ATTACK)), true);
 
@@ -43,14 +45,18 @@ void CMMoriblinAttackState::Exit(CMonster* pMonster)
 
 void CMMoriblinAttackState::Check_Always(CMonster* pMonster, _float fTimeDelta)
 {
+	if (m_pMoriblinSword->Get_Guard())
+	{
+		pMonster->Change_State(CM_MoriblinSword::GUARD);
+		return;
 
+	}
 	__super::Check_Always(pMonster, fTimeDelta);
 
 	CheckTrue(pMonster->Is_Dead());
 	CheckTrue(m_pActionControl->m_bDamage == 1.f);
 
-	if (m_pMoriblinSword->Get_Guard())
-		pMonster->Change_State(CM_MoriblinSword::GUARD);
+
 
 
 	

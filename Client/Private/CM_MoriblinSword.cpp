@@ -413,8 +413,7 @@ void CM_MoriblinSword::AIState_Change(_float fTimeDelta)
 
 void CM_MoriblinSword::Update_Movement(_float fTimeDelta)
 {
-	m_pTransformCom->UpdateImpulse(fTimeDelta, m_pNavigationCom);
-
+	
 	m_pTransformCom->Set_State(STATE::POSITION,
 		m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
 
@@ -516,27 +515,39 @@ void CM_MoriblinSword::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 	CheckTrue(m_bGuard);
 	CheckTrue(m_ActionControl.m_bDamage == 1.f);
 
-	__super::OnCollisionEnter(iGroup, pOther);
 	CGameObject* pOwner = pOther->Get_Owner();
 
 	switch (COLLISION_GROUP(iGroup))
 	{
 	case COLLISION_GROUP::PLAYER_WEAPON:
 	{
-		CWeapon* pWeapon = dynamic_cast<CWeapon*>(pOther->Get_Owner());
-		if (pWeapon)
+		m_ActionControl.m_bDamage = 1.f;
+		--iHp;
+
+		CPartObject* pPart = dynamic_cast<CPartObject*>(pOwner);
+		if (pPart)
 		{
-			_vector vDir = (pWeapon->Get_Owner()->Get_Transform()->Get_State(STATE::POSITION))
-				- (m_pTransformCom->Get_State(STATE::POSITION));
 
-			bool bHitFront = m_pTransformCom->IsFront(vDir);
-			if (bHitFront)
-				m_pMonsterBody->Change_AnimKey(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DAMAGE), L"damage_f");
+			//pOther을 바라보고,
+			m_pTransformCom->LookAt(pPart->Get_Owner()->Get_Transform());
 
-			else
-				m_pMonsterBody->Change_AnimKey(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DAMAGE), L"damage_b");
-
+			_float3 vDir;
+			XMStoreFloat3(&vDir, m_pTransformCom->Get_State(STATE::LOOK));
+			m_pTransformCom->AddImpulse(-0.3f, vDir);
 		}
+
+
+		_vector vDir = (pPart->Get_Owner()->Get_Transform()->Get_State(STATE::POSITION))
+			- (m_pTransformCom->Get_State(STATE::POSITION));
+
+		bool bHitFront = m_pTransformCom->IsFront(vDir);
+		if (bHitFront)
+			m_pMonsterBody->Change_AnimKey(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DAMAGE), L"damage_f");
+
+		else
+			m_pMonsterBody->Change_AnimKey(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DAMAGE), L"damage_b");
+
+
 		
 	}
 		break;

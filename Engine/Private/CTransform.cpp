@@ -323,7 +323,7 @@ bool CTransform::IsFront(_vector vDir)
 
 }
 
-void CTransform::AddImpulse(float fPower, const _float3 direction)
+void CTransform::AddImpulse(float fPower, const _float3 direction, CNavigation* pNavigation)
 {
 	_float3 impulse;
 
@@ -335,6 +335,8 @@ void CTransform::AddImpulse(float fPower, const _float3 direction)
 
 	m_bAddImpulse = true;
 
+	//즉시 1회적용
+	UpdateImpulse(0.f, pNavigation);
 }
 
 void CTransform::UpdateImpulse(_float fTimeDelta, CNavigation* pNavigation)

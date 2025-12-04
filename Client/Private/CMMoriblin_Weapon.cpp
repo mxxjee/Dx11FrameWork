@@ -138,6 +138,9 @@ void CMMoriblin_Weapon::Free()
 
 void CMMoriblin_Weapon::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {
+    CheckTrue(m_pMoriblin->Get_Guard());
+    CheckTrue(m_pMoriblin->Get_ActionControl()->m_bDamage == 1.f);
+
     CGameObject* pOwner = pOther->Get_Owner();
 
     CheckNull(pOwner);
@@ -148,6 +151,7 @@ void CMMoriblin_Weapon::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
         _float3 vDir;
         XMStoreFloat3(&vDir, m_pOwner->Get_Transform()->Get_State(STATE::LOOK));
         m_pTransformCom->AddImpulse(-2.f, vDir);
+
         break;
     case Client::COLLISION_GROUP::PLAYER:
 

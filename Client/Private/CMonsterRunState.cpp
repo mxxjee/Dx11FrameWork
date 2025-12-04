@@ -20,6 +20,8 @@ void CMonsterRunState::Enter(CMonster* pMonster)
 
 void CMonsterRunState::Update(CMonster* pMonster, _float fTimeDelta)
 {
+	__super::Update(pMonster, fTimeDelta);
+
 	if(!m_pActionControl->m_bChase)
 		pMonster->Change_State(CMonster::IDLE);
 

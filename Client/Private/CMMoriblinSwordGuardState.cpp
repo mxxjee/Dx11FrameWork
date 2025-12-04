@@ -44,7 +44,11 @@ void CMMoriblinSwordGuardState::Update(CMonster* pMonster, _float fTimeDelta)
 		}
 		break;
 	case Client::CMMoriblinSwordGuardState::SWORD:
+	{
+		m_pMoriblinSword->Set_Guard(false, L"");
 		pMonster->Change_State(CMonster::ATTACK);
+	}
+		
 		break;
 
 	default:

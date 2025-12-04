@@ -385,6 +385,8 @@ void CMonster::Patrol()
 
 void CMonster::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {
+    CheckTrue(m_ActionControl.m_bDamage == 1.f);
+
     CGameObject* pOwner = pOther->Get_Owner();
     CheckNull(pOwner);
 

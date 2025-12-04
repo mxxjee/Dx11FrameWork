@@ -23,7 +23,7 @@ void CMonsterDamageState::Update(CMonster* pMonster, _float fTimeDelta)
 {
 	if (pMonster->Is_AnimEnd())
 	{
-		m_pActionControl->m_bDamage = false;
+		m_pActionControl->m_bDamage = 0.f;
 		pMonster->Change_State(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::IDLE));
 
 
@@ -32,8 +32,10 @@ void CMonsterDamageState::Update(CMonster* pMonster, _float fTimeDelta)
 
 void CMonsterDamageState::Update_Late(CMonster* pMonster, _float fTimeDelta)
 {
+
 }
 
 void CMonsterDamageState::Exit(CMonster* pMonster)
 {
+	m_pActionControl->m_bDamage = 0.f;
 }

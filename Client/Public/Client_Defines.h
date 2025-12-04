@@ -99,7 +99,7 @@ typedef struct tagMonsterActionControl
 	bool	m_bIntroEnd = false;
 
 	//////////////////////
-	float	m_bDamage = false;	
+	float	m_bDamage = 0.f;	
 	bool	m_bMove = false;		//true라면 walk, false람녀 idle/ range&&move라면 attack가능
 	
 	bool	m_bAttack = false;
@@ -114,7 +114,7 @@ typedef struct tagMonsterActionControl
 	void Reset()
 	{
 		m_bIntroEnd = false;
-		m_bDamage = false;
+		m_bDamage = 0.f;
 		m_bMove = false;
 
 		m_bAttack = false;
