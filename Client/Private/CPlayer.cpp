@@ -69,7 +69,9 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     BodyDesc.pParentState = &m_iState;
     BodyDesc.ObjTag = desc.ObjTag + L"_body";
     BodyDesc.pDamgeRender = &m_ActionControl.m_fDamage;
+    BodyDesc.pDamageTime = &m_fDamageTime;
     desc.BodyDesc = &BodyDesc;
+    
 
     if (FAILED(Ready_Components(&desc)))
         return E_FAIL;
@@ -107,7 +109,7 @@ void CPlayer::Update(_float fTimeDelta)
 {
    
     Update_Input(fTimeDelta);
-    OnDamageBehavior(fTimeDelta);
+    UpdateFlash(fTimeDelta);
 
    //State_Change();     //애니메이션 완료 이후에 어떻게 바꿔줄것인지
     if (m_pNextState != nullptr)
@@ -176,6 +178,17 @@ HRESULT CPlayer::Render()
     return S_OK;
 } 
 
+
+void CPlayer::Enter_State(int newState)
+{
+    switch (CPlayer::PLAYER_STATE(newState))
+    {
+
+    case CPlayer::PLAYER_STATE::DAMANGE:
+        OnDamageBehavior();
+        break;
+    }
+}
 
 void CPlayer::Update_Input(_float fTimeDelta)
 {
@@ -453,6 +466,7 @@ void CPlayer::Change_State(int newState)
 
 
     m_pNextState = m_States[newState];
+    Enter_State(m_iState);
     m_pNextState->Enter(this);
 }
 
@@ -986,17 +1000,42 @@ void CPlayer::Render_StateDebug(int* pArg)
 
 #endif
 
-void CPlayer::OnDamageBehavior(_float fTimeDelta)
+void CPlayer::OnDamageBehavior()
 {
-    //3초무적
+    //2초후 다시 충돌 키기
+    m_pGameInstance->Invoke(2.f, 0.f, false, false, [this]()
+        {
+            m_bCanCollision = true;
+            }, this);
 
-	m_fDamageTime += fTimeDelta;
-	if (m_fDamageTime >= 2.f)
-    {
-        m_bCanCollision = true;
-        m_fDamageTime = 0.f;
-	}
+
+
+    //Damage Animnotify...시간이후 깜빡거림
     
+}
+
+void CPlayer::UpdateFlash(_float fTimeDelta)
+{
+    CheckFalse(m_bFlash);
+    m_fDamageTime += fTimeDelta;
+    //.task.로 2초뒤에 m_fTime=0, m_bFlash=false
+
+}
+
+void CPlayer::Set_Flash(bool b)
+{
+     m_bFlash = b; 
+
+     if (b) //5초뒤에 다시꺼주기에약
+     {
+         m_pGameInstance->Invoke(1.5f, 0.f, false, false,
+             [this]()
+             {
+                 Reset_Flash();
+             },
+             this);
+     }
+        
 }
 
 void CPlayer::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)

@@ -25,7 +25,7 @@
 #include "CHotKey_Manager.h"
 #include "CCollision_Manager.h"
 #include "CFont_Manager.h"
-
+#include "CTimerTask_Manager.h"
 
 ////////////////Add-Ons////////////////
 #include "CShader.h"
@@ -153,9 +153,10 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 
 	/*Font¸Å´ÏÀú*/
 	m_pFont_Manager = CFont_Manager::Create(*pDevice, *pContext);
-	if (nullptr == m_pFont_Manager)
-		return E_FAIL;
+	CheckNullResult(m_pFont_Manager, E_FAIL);
 
+	m_pTimerTask_Manager = CTimerTask_Manager::Create();
+	CheckNullResult(m_pTimerTask_Manager, E_FAIL);
 
 	return S_OK;
 }
@@ -194,15 +195,15 @@ void CGameInstance::LateUpdate_Engine(float fTimedelta)
 	
 
 	m_pTerrainManager->Update_Late(fTimedelta);
-	m_pEventBusManager->DisPatch(fTimedelta);
 	m_pLevelManager->Update_Late(fTimedelta);
+
 	LateUpdate_Cameras(fTimedelta);
 
 	if(m_EngineDesc.eEngineMode==EngineMode::CLIENT)
 		m_pCollisionManager->Update_CollisionGroup(fTimedelta);
 
-
-	
+	m_pTimerTask_Manager->Update(fTimedelta);
+	m_pEventBusManager->DisPatch(fTimedelta);
 }
 
 void CGameInstance::Update_Render(float fTimedelta)
@@ -932,9 +933,29 @@ HRESULT CGameInstance::Draw_Text(const _wstring& strFontTag, const _tchar* pText
 	return m_pFont_Manager->Draw_Text(strFontTag, pText, vPosition, vColor);
 }
 
+HRESULT CGameInstance::Invoke(float _fTime, float _finterval, bool _bRepeat, bool _bCancelled, std::function<void()> cb, CGameObject* pOwner)
+{
+	CheckNullResult(m_pTimerTask_Manager, E_FAIL);
+	return m_pTimerTask_Manager->Invoke(_fTime,_finterval,_bRepeat,_bCancelled,cb,pOwner);
+}
+
+HRESULT CGameInstance::Repeat(float _fTime, float _finterval, bool _bRepeat, bool _bCancelled, std::function<void()> cb, CGameObject* pOwner)
+{
+	CheckNullResult(m_pTimerTask_Manager, E_FAIL);
+	return m_pTimerTask_Manager->Repeat(_fTime, _finterval, _bRepeat, _bCancelled, cb, pOwner);
+}
+
+HRESULT CGameInstance::CancelTaskOf(CGameObject* pOwner)
+{
+	CheckNullResult(m_pTimerTask_Manager, E_FAIL);
+	return m_pTimerTask_Manager->CancelTaskOf(pOwner);
+}
+
 
 void CGameInstance::Release_Engine()
 {
+	Safe_Release(m_pTimerTask_Manager);
+
 	Safe_Release(m_pFont_Manager);
 	Safe_Release(m_pLevelManager);
 	Safe_Release(m_pTimerManager);

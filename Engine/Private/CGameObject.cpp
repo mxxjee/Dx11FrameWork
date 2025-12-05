@@ -182,5 +182,6 @@ void CGameObject::Free()
     for (auto& pair : m_Components)
         Safe_Release(pair.second);
 
+    m_pGameInstance->CancelTaskOf(this);
     Safe_Release(m_pGameInstance);
 }

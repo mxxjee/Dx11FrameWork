@@ -66,6 +66,7 @@ public:
     virtual HRESULT Render();
 
 private:
+    void        Enter_State(int newState);
     void        Update_Input(_float fTimeDelta);
     void        Update_Fall(_float fTimeDelta);     //셀타입에 따라서 떨어짐 체크
 
@@ -162,7 +163,9 @@ public:
     virtual void        Render_StateDebug(int* pArg);
 
 private:
-    void    OnDamageBehavior(_float fTimeDelta);
+            //Damage진입시 수행
+    void    OnDamageBehavior();
+    void    UpdateFlash(_float fTimeDelta); //피격시 깜빡거림 활성화
 
 private:
     PLAYER_INPUT        m_Input;
@@ -171,8 +174,13 @@ private:
 public:
     void        Set_DamageRender(float f) { m_ActionControl.m_fDamage = f; }
     float        Get_DamageRender() { return  m_ActionControl.m_fDamage; }
+    
+    void    Set_Flash(bool b);
+    void    Reset_Flash() { m_bFlash = false; m_fDamageTime = 0.f; }
 private:
     float   m_fDamageTime = 0.f;
+
+    bool    m_bFlash = false;   //피격시 깜빡거림
     bool    m_bCanCollision = true;
     
 

@@ -334,6 +334,14 @@ public:
 	 HRESULT Draw_Text(const _wstring& strFontTag, const _tchar* pText, const _float2& vPosition, _fvector vColor = XMVectorSet(1.f, 1.f, 1.f, 1.f));
 
 #pragma endregion
+
+
+#pragma region TimerTask_Manager
+	 HRESULT         Invoke(float _fTime, float _finterval, bool _bRepeat, bool _bCancelled, std::function<void()> cb, CGameObject* pOwner);
+	 HRESULT         Repeat(float _fTime, float _finterval, bool _bRepeat, bool _bCancelled, std::function<void()> cb, CGameObject* pOwner);
+	 HRESULT         CancelTaskOf(CGameObject* pOwner);
+
+#pragma endregion
  private:
 	 class CLevel_Manager* m_pLevelManager = { nullptr };
 	 class CTimer_Manager* m_pTimerManager = { nullptr };
@@ -361,6 +369,8 @@ public:
 	 class CEventBus_Manager* m_pEventBusManager = { nullptr };
 	 class CCollision_Manager* m_pCollisionManager = { nullptr };
 	 class CFont_Manager* m_pFont_Manager = { nullptr };
+	 class CTimerTask_Manager* m_pTimerTask_Manager = { nullptr };
+
 private:
 	vector<D3D11_VIEWPORT>          m_ViewPorts;
 	tagEngine_Desc                  m_EngineDesc;

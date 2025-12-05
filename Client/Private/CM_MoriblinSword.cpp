@@ -166,7 +166,7 @@ HRESULT CM_MoriblinSword::Ready_WeaponColliders()
 	SwordDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
 	SwordDesc.AnimKey = L"";	//단지 튕겨내기
 	SwordDesc.fRadius = 0.3f;
-	SwordDesc.vOffSet= _float3(0.f, 0.f, (-0.5f));
+	SwordDesc.vOffSet= _float3(0.f, 0.f, 0.f);
 
 	if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Moriblin_Weapon"), L"Moriblin_Sword", &SwordDesc)))
 		return E_FAIL;
@@ -386,6 +386,7 @@ void CM_MoriblinSword::Enter_State(int newState)
 
 void CM_MoriblinSword::AIState_Change(_float fTimeDelta)
 {         
+	Update_DeadState(fTimeDelta);
 
 	CheckTrue(m_ActionControl.m_bDead);
 
@@ -549,12 +550,17 @@ void CM_MoriblinSword::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 
 		bool bHitFront = m_pTransformCom->IsFront(vDir);
 		if (bHitFront)
+		{
 			m_pMonsterBody->Change_AnimKey(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DAMAGE), L"damage_f");
-
+			m_pMonsterBody->Change_AnimKey(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DIE), L"dead_f");
+		}
 		else
+		{
 			m_pMonsterBody->Change_AnimKey(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DAMAGE), L"damage_b");
+			m_pMonsterBody->Change_AnimKey(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DIE), L"dead_b");
 
 
+		}
 		
 	}
 		break;

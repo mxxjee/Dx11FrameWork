@@ -377,6 +377,13 @@ void CMonster::Set_CollisionEnable(bool _b)
     m_pCollider->Set_Active(_b);
 }
 
+void CMonster::Update_DeadState(_float fTimeDelta)
+{
+    if (iHp <= 0)
+        m_ActionControl.m_bDead = true;
+
+}
+
 void CMonster::Patrol()
 {
 }

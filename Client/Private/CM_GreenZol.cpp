@@ -251,8 +251,7 @@ void CM_GreenZol::AIState_Change(_float fTimeDelta)
 	CheckFalse(m_ActionControl.m_bIntroEnd);
 	//인트로 시작안했으면 이후처리X
 
-	if (iHp <= 0)
-		m_ActionControl.m_bDead = true;
+	Update_DeadState(fTimeDelta);
 
 
 	CheckTrue(m_ActionControl.m_bDead);

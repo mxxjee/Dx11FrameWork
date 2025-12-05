@@ -432,7 +432,7 @@ HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
 
 
     Moriblindesc.iAttack = 10;
-    Moriblindesc.MaxHp = 10;
+    Moriblindesc.MaxHp = 3;
     Moriblindesc.fActionRange = 3.f;
 
     Moriblindesc.ObjTag = L"MoriblinSword" + to_wstring(0);

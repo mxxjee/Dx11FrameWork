@@ -10,6 +10,7 @@ public:
     typedef struct tagCPlayer_BodyDesc : CBody::BODY_DESC
     {
         float* pDamgeRender = nullptr;
+        float* pDamageTime = nullptr;
 
     }PLAYER_BODY_DESC;
 
@@ -46,6 +47,7 @@ public:
 
 private:
     float*        m_pDamageRender = nullptr;
+    float*      m_fDamageTime = nullptr;
 
 };
 NS_END

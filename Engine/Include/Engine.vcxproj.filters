@@ -400,6 +400,12 @@
     <Filter Include="00.System\18.Font\Font">
       <UniqueIdentifier>{9f8fe983-543b-4c49-91f8-6f20117330b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\19.TimerTask">
+      <UniqueIdentifier>{0f68000e-4aef-492e-a411-e8d44a64710c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\19.TimerTask\CTimerTask">
+      <UniqueIdentifier>{5d2c643a-bc37-49e4-97dd-60ad56f27624}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -787,6 +793,9 @@
     <ClInclude Include="..\Public\CFont.h">
       <Filter>00.System\18.Font\Font</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CTimerTask.h">
+      <Filter>00.System\19.TimerTask\CTimerTask</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -1129,6 +1138,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CFont.cpp">
       <Filter>00.System\18.Font\Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTimerTask.cpp">
+      <Filter>00.System\19.TimerTask\CTimerTask</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -87,6 +87,9 @@ HRESULT CNPC_Body::Bind_ShaderResources()
 	if (FAILED(m_pShader->Bind_Float("b_Damage", m_bDamage)))
 		return E_FAIL;
 
+	if (FAILED(m_pShader->Bind_Float("g_Time", 0.f)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

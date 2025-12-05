@@ -22,6 +22,7 @@ void CPlayerDamageState::Enter(CPlayer* pPlayer)
     else
         pPlayer->Reserve_Animation_To_Body(L"dmg_b", false);
              
+    //Damage애니메이션 조금진행됐을때 깜빡거림 시작..
 
 }
 

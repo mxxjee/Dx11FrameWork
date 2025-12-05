@@ -269,6 +269,7 @@
     <ClInclude Include="..\Public\CTexture.h" />
     <ClInclude Include="..\Public\CTexture_Manager.h" />
     <ClInclude Include="..\Public\CTimer.h" />
+    <ClInclude Include="..\Public\CTimerTask_Manager.h" />
     <ClInclude Include="..\Public\CTimer_Manager.h" />
     <ClInclude Include="..\Public\CTransform.h" />
     <ClInclude Include="..\Public\CUI.h" />
@@ -417,6 +418,7 @@
     <ClCompile Include="..\Private\CTexture.cpp" />
     <ClCompile Include="..\Private\CTexture_Manager.cpp" />
     <ClCompile Include="..\Private\CTimer.cpp" />
+    <ClCompile Include="..\Private\CTimerTask_Manager.cpp" />
     <ClCompile Include="..\Private\CTimer_Manager.cpp" />
     <ClCompile Include="..\Private\CTransform.cpp" />
     <ClCompile Include="..\Private\CUI.cpp" />

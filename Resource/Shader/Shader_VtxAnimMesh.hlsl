@@ -20,6 +20,7 @@ Texture2D g_MaskTexture;
 
 float4 g_DamageColor = float4(1.f, 0.f, 0.f, 1.f);
 float b_Damage = false;
+float g_Time;
 
 
 ////////임시로 정해놓은 오브젝트의 메테리얼값, 실제는 텍스처를 읽어서 처리해야함
@@ -149,8 +150,12 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
     
     float3 Tmpcolor = saturate(ResultColor.rgb + float3(2.5, 0.0, 0.0));
     ResultColor.rgb = lerp(ResultColor.rgb, Tmpcolor, b_Damage);
- 
-
+    
+    float flash = abs(sin(g_Time*20));
+    if(flash>0.5)
+        discard;
+    
+    
     return ResultColor;
 
 }

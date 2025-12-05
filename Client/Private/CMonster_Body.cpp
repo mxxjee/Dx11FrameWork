@@ -119,6 +119,10 @@ HRESULT CMonster_Body::Bind_ShaderResources()
 	if (FAILED(m_pShader->Bind_Float("b_Damage", m_pActionControl->m_bDamage)))
 		return E_FAIL;
 
+	//±ôºý°Å¸²¾øÀ½.
+	if (FAILED(m_pShader->Bind_Float("g_Time", 0.f)))
+		return E_FAIL;
+
 	return S_OK;
 }
 

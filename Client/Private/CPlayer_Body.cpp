@@ -67,6 +67,7 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 
 	CPlayer_Body::PLAYER_BODY_DESC* pDesc = static_cast<CPlayer_Body::PLAYER_BODY_DESC*>(pArg);
 	m_pDamageRender = pDesc->pDamgeRender;
+	m_fDamageTime = pDesc->pDamageTime;
 
 	return S_OK;
 }
@@ -114,6 +115,9 @@ HRESULT CPlayer_Body::Bind_ShaderResources()
 		return E_FAIL;
 
 	if (FAILED(m_pShader->Bind_Float("b_Damage", (*m_pDamageRender))))
+		return E_FAIL;
+
+  	if (FAILED(m_pShader->Bind_Float("g_Time", (*m_fDamageTime))))
 		return E_FAIL;
 
 	return S_OK;
@@ -226,6 +230,10 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 	{
 		Event.Name = "PlayerOnDamage";
 		pAnim->AddNotify(2, Event);
+
+		Event.Name = "PlayerFlash";
+		pAnim->AddNotify(10, Event);
+
 	}
 
 	pAnim = m_pModel->Find_Animation(L"dmg_b");
@@ -233,6 +241,9 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 	{
 		Event.Name = "PlayerOnDamage";
 		pAnim->AddNotify(2, Event);
+
+		Event.Name = "PlayerFlash";
+		pAnim->AddNotify(10, Event);
 	}
 	return S_OK;
 }
@@ -267,6 +278,19 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 			if (pPlayer)
 				pPlayer->Damage_Behavior();     
 		});
+
+
+	//±ôºý±ôºý°Å¸®±â
+	m_pGameInstance->RegisterListners("PlayerFlash", [](const GameEvent& event)
+		{
+			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
+			if (pPlayer)
+				pPlayer->Set_Flash(true);
+		
+			
+
+		});
+
 	return S_OK;
 }
 
