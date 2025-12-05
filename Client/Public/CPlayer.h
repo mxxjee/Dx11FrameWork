@@ -159,8 +159,11 @@ private:
 
 public:
     void                JumpMovement(_float fTimeDelta);
+#ifdef _DEBUG
     virtual             string Convert_String_To_Enum(_uint eState);
     virtual void        Render_StateDebug(int* pArg);
+
+#endif // _DEBUG
 
 private:
             //Damage진입시 수행

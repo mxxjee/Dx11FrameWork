@@ -155,15 +155,18 @@ HRESULT CMainApp::Initialize_Cilent()
 	if (FAILED(pGameInstance->Add_SortFunc(ENUM_TO_UINT(RENDERGROUP::UI), UISort)))
 		return E_FAIL;
 
-
+#ifdef _DEBUG
 	//단축키등록
-	pGameInstance->Register_HotKey(KeyCode::D, true, false,false,[]()
+	pGameInstance->Register_HotKey(KeyCode::D, true, false, false, []()
 		{
-			
+
 			CGameInstance::m_bDrawDebug = !CGameInstance::m_bDrawDebug;
 
-		
+
 		});
+
+#endif // _DEBUG
+
 
 
 

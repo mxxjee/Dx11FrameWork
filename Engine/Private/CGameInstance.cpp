@@ -40,7 +40,11 @@
 
 IMPLEMENT_SINGLETON(CGameInstance)
 
+#ifdef _DEBUG
 bool		CGameInstance::m_bDrawDebug = true;
+#endif // _DEBUG
+
+
 CGameInstance::CGameInstance()
 {
 	 

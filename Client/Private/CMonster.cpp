@@ -344,6 +344,7 @@ CGameObject* CMonster::Clone(void* pArg)
 
 void CMonster::Free()
 {
+    
     Safe_Release(m_pNavigationCom);
     m_pGameInstance->UnRegister_Collider(m_pCollider);
     for (auto& pair : m_States)

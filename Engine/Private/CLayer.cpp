@@ -79,6 +79,15 @@ CGameObject* CLayer::Find_GameObject(const wstring& Tag)
 }
 void CLayer::RequestDestroy(CGameObject* pObj)
 {
+    queue<CGameObject*> temp = m_DestroyQueue;
+    while (!temp.empty())
+    {
+        if (temp.front() == pObj)
+            return; // 이미 들어있는경우 다시 push 하면 double free 위험
+        temp.pop();
+    }
+
+
     pObj->Set_Active(false);
     m_DestroyQueue.push(pObj);
 }
