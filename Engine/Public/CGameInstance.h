@@ -360,7 +360,7 @@ public:
 	 class CUI_Manager* m_pUIManager = { nullptr };
 	 class CTerrain_Manager* m_pTerrainManager = { nullptr };
 	 class CLight_Manager* m_pLightManager = { nullptr };
-
+	 
 	 class CMaterial_Manager* m_pMaterialManager = { nullptr };
 	 class CModel_Manager* m_pModelManager = { nullptr };
 	 class CHotKey_Manager* m_pHotKeyManager = { nullptr };

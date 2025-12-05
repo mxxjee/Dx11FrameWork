@@ -156,7 +156,11 @@ void CPlayerHoldShield::Change_Other_State(CPlayer* pPlayer)
     {
   
     case Client::CPlayerHoldShield::NextAnim::RUN:
-            pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::RUN));
+    {
+        pPlayer->Set_ShieldEnable(false);
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::RUN));
+
+    }
         break;
 
     case Client::CPlayerHoldShield::NextAnim::SLASH_SHIELD:
@@ -194,6 +198,7 @@ void CPlayerHoldShield::Change_Phase(CPlayer* pPlayer)
 	case Phase::Loop:       //Loop->end·Î¹Ù²¸¶ó
 	{
 		m_ePhase = Phase::End;
+        pPlayer->Set_ShieldEnable(false);
 		pPlayer->Reserve_Animation_To_Body(L"shield_ed", false);
 	}
 	break;
@@ -238,7 +243,7 @@ void CPlayerHoldShield::Hold_Movement(CPlayer* pPlayer)
 
 void CPlayerHoldShield::Exit(CPlayer* pPlayer)
 {
-
+    
     m_bChangeState = false;
 }
 

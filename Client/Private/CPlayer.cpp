@@ -112,12 +112,12 @@ void CPlayer::Update(_float fTimeDelta)
     UpdateFlash(fTimeDelta);
 
    //State_Change();     //애니메이션 완료 이후에 어떻게 바꿔줄것인지
-    if (m_pNextState != nullptr)
+ /*   if (m_pNextState != nullptr)
     {
         m_pCurState = m_pNextState;
         m_pNextState = nullptr;
       
-    }
+    }*/
 
 
     if (m_pCurState)
@@ -465,9 +465,9 @@ void CPlayer::Change_State(int newState)
     m_iState = newState;
 
 
-    m_pNextState = m_States[newState];
+    m_pCurState = m_States[newState];
     Enter_State(m_iState);
-    m_pNextState->Enter(this);
+    m_pCurState->Enter(this);
 }
 
 void CPlayer::Set_VisibleMesh(const wstring& MeshName, bool bVisible)

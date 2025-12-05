@@ -211,6 +211,13 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 	}
 
 
+	pAnim = m_pModel->Find_Animation(L"shield_hold_f");
+	if (pAnim)
+	{
+		Event.Name = "Shield_Loop";
+		pAnim->AddNotify(2, Event);
+	}
+
 	pAnim = m_pModel->Find_Animation(L"slash_hold_shield_lp");
 	if (pAnim)
 	{
