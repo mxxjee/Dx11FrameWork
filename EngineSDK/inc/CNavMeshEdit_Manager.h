@@ -67,7 +67,7 @@ public:
     
     void                Set_FixCell(bool b) { m_bFixCell = b; }
     void                Set_FixEdge(bool b) { m_bFixEdge = b; }
-
+     
 public:
     void            Free() override;
     HRESULT         Save_NavigationData(const string& filePath,_uint iNum=0);

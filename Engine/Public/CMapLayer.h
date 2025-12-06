@@ -32,6 +32,8 @@ public:
     
 public:
     void        Set_AblePicking(bool b) { m_bAblePicking = b; }
+    HRESULT     Save_Data(const string& filePath, _uint iNum);
+    HRESULT     Load_Data(const string& LoadPath))
 private:
     list<CMapObject*>      m_ObjList;
     queue<CMapObject*>      m_DestroyQueue;

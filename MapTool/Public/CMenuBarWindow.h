@@ -49,6 +49,7 @@ private:
 
     void        Show_TerrainListBox();     //불러올목록표시
     void        Show_NavListBox();
+    void        Show_InteractionBox();
 
     void        Show_TextBox();     //다른이름으로 저장할 이름 적는곳
 
@@ -65,6 +66,7 @@ private:
 private:
     bool            m_bTerrainListOpen = false;
     bool            m_bNavListOpen = false;
+    bool            m_bInteractionOpen = false;
 
     bool            m_bTextOpen = false;
     char            m_szSaveName[MAX_PATH]="";

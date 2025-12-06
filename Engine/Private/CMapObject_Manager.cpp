@@ -9,8 +9,9 @@
 #include "CTerrain_Base.h"
 #include "CImGui_Manager.h"
 
-
-
+///////////////
+#include "CMapInteractObject.h"
+#include "CBounding_Mesh.h"
 
 
 IMPLEMENT_SINGLETON(CMapObject_Manager)
@@ -213,6 +214,39 @@ CMapLayer* CMapObject_Manager::Find_MapLayer(const _wstring& LayerTag)
     return nullptr;
 }
 
+CBounding_Mesh::BOUNDING_MESH_DESC  CMapObject_Manager::Generate_Collider_By_InteractionType(_uint i)
+{
+   
+    CBounding_Mesh::BOUNDING_MESH_DESC MeshDesc;
+    MeshDesc.vCenter = _float3(0.f, 0.f, 0.f);
+
+    switch ((CMapInteractObject::InteractionType)i)
+    {
+    case CMapInteractObject::InteractionType::ROCK:
+        MeshDesc.vCenter = _float3(0.f, 1.f, 0.f);
+        MeshDesc.Extents = _float3(0.7f, 0.7f, 0.7f);
+        break;
+
+
+    case CMapInteractObject::InteractionType::LAWN:
+        MeshDesc.Extents = _float3(0.5f, 0.5f, 0.5f);
+        break;
+
+
+    case CMapInteractObject::InteractionType::GRASS:
+        MeshDesc.Extents = _float3(0.5f, 0.5f, 0.5f);
+        break;
+
+
+    default:
+        break;
+    }
+
+    return MeshDesc;
+
+   
+}
+
 //
 //void CMapObject_Manager::Set_SelectObject(CMapObject* pObj)
 //{
@@ -264,6 +298,9 @@ CMapLayer* CMapObject_Manager::Get_Layer_By_MapObjType(MapObjType eType)
         break;
 
 
+    case MapObjType::INTERACTION:
+        LayerTag = L"Interaction_Layer";
+        break;
     default:
         break;
     }
@@ -279,6 +316,24 @@ CMapLayer* CMapObject_Manager::Get_Layer_By_MapObjType(MapObjType eType)
     
     return pLayer;
 
+}
+
+HRESULT CMapObject_Manager::Save_InteractionData(const string& filePath, _uint iNum)
+{
+    CMapLayer* pLayer = Find_MapLayer(L"Interaction_Layer");
+    if (pLayer)
+        pLayer->Save_Data(filePath, iNum);
+
+    return S_OK;
+}
+
+HRESULT CMapObject_Manager::Load_InteractionData(const string& filePath)
+{
+    CMapLayer* pLayer = Find_MapLayer(L"Interaction_Layer");
+    if (pLayer)
+        pLayer->Load_Data(filePath);
+
+    return S_OK;
 }
 
 wstring CMapObject_Manager::Generate_UniqueTag(MapObjType Type, const wstring& baseName)

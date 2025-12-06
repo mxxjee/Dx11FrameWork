@@ -32,6 +32,7 @@
 #include "CNavMeshEdit_Manager.h"
 #include "CNavEditPreview.h"
 
+#include "MapTool_Defines.h"
 USING(MapTool)
 
 CLevel_Editor::CLevel_Editor(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -248,6 +249,7 @@ HRESULT CLevel_Editor::Ready_Layer_Player(const _wstring& strLayerTag)
 
 void CLevel_Editor::Terrain_Picking()
 {
+	CheckFalse(bEnableTerrainPicking);
 
 	Triangle* pPickingPos = m_pGrid_Manager->PickGrid();
 	m_pGrid_Manager->Set_MouseWorldPos();

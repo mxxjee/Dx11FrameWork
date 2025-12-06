@@ -11,7 +11,7 @@ enum class MODE {EDIT,NAVMESH,END};
 
 extern HWND g_hWnd;
 
-
+extern bool		bEnableTerrainPicking;
 extern HINSTANCE g_hInst;
 
 namespace MapTool

@@ -406,6 +406,9 @@
     <Filter Include="00.System\19.TimerTask\CTimerTask">
       <UniqueIdentifier>{5d2c643a-bc37-49e4-97dd-60ad56f27624}</UniqueIdentifier>
     </Filter>
+    <Filter Include="998.MapTool\Object\MapInteractionObj">
+      <UniqueIdentifier>{a929de51-9d88-4e9d-8ccf-eecab6832d59}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -786,15 +789,20 @@
     <ClInclude Include="..\Public\CAnimNotify.h">
       <Filter>00.System\13.ModelManager\Model\Animations\AnimNotify</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CCollision_Manager.h" />
     <ClInclude Include="..\Public\CFont_Manager.h">
       <Filter>00.System\18.Font</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CFont.h">
       <Filter>00.System\18.Font\Font</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CTimerTask.h">
-      <Filter>00.System\19.TimerTask\CTimerTask</Filter>
+    <ClInclude Include="..\Public\CMapInteractObject.h">
+      <Filter>998.MapTool\Object\MapInteractionObj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CCollision_Manager.h">
+      <Filter>00.System\17.Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CTimerTask_Manager.h">
+      <Filter>00.System\19.TimerTask</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1132,15 +1140,20 @@
     <ClCompile Include="..\Private\CAnimNotify.cpp">
       <Filter>00.System\13.ModelManager\Model\Animations\AnimNotify</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CCollision_Manager.cpp" />
     <ClCompile Include="..\Private\CFont_Manager.cpp">
       <Filter>00.System\18.Font</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CFont.cpp">
       <Filter>00.System\18.Font\Font</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CTimerTask.cpp">
-      <Filter>00.System\19.TimerTask\CTimerTask</Filter>
+    <ClCompile Include="..\Private\CMapInteractObject.cpp">
+      <Filter>998.MapTool\Object\MapInteractionObj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CCollision_Manager.cpp">
+      <Filter>00.System\17.Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTimerTask_Manager.cpp">
+      <Filter>00.System\19.TimerTask</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

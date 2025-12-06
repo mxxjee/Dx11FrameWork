@@ -27,6 +27,7 @@ HRESULT CAssetListWindow::Create_Widgets()
 HRESULT CAssetListWindow::Create_Folders()
 {
     /*폴더생성*/
+    vector<CFolder*>    m_Folders;
     for (int i = 5; i <= 16; ++i)
     {
 
@@ -54,7 +55,7 @@ HRESULT CAssetListWindow::Create_Folders()
 
     //크기배치용 그냥일반모델들 폴더
     CFolder::tagFolderDesc Desc;
-    strcpy_s(Desc.Name, MAX_PATH,"Models");
+    strcpy_s(Desc.Name, MAX_PATH,"Model");
     Desc.Size = ImVec2(60.f, 60.f);
     Desc.iIdx = m_Folders.size();
     Desc.Category = "Model";
@@ -67,6 +68,27 @@ HRESULT CAssetListWindow::Create_Folders()
         m_Folders.push_back(pInstance);
 
     }
+
+    m_FolderMap.emplace(L"Model", m_Folders);
+
+    //Interaction 오브젝트들 폴더
+    vector<CFolder*>    ObjectFolder;
+    CFolder::tagFolderDesc InteractionDesc;
+    strcpy_s(InteractionDesc.Name, MAX_PATH, "Interaction");
+    InteractionDesc.Size = ImVec2(60.f, 60.f);
+    InteractionDesc.iIdx = ObjectFolder.size();
+    InteractionDesc.Category = "Interaction";
+    pInstance = CFolder::Create(m_pDevice, m_pContext, &InteractionDesc);
+    if (pInstance)
+    {
+        if (FAILED(pInstance->Initialize(&InteractionDesc)))
+            return E_FAIL;
+
+        ObjectFolder.push_back(pInstance);
+
+    }
+    m_FolderMap.emplace(L"Interaction", ObjectFolder);
+
 
     return S_OK;
 
@@ -117,19 +139,25 @@ void CAssetListWindow::Update()
     //선택안함 = SelectIdx=-1;
     if (SelectIdx == -1)
     {
-        for (auto& p : m_Folders)
-        {
-            if (p->Update())
-            {
-
-                m_pImgui_DataManager->Send_SelectedIdx(p->Get_Idx());
-            }
-
-            ImGui::TextWrapped(p->Get_Name());
-            ImGui::NextColumn();
+        vector<CFolder*> Folders = m_FolderMap[StringToWString(SelectCategory)];
 
 
-        }
+		for (auto& p : Folders)
+		{
+			if (p->Update())
+			{
+
+				m_pImgui_DataManager->Send_SelectedIdx(p->Get_Idx());
+			}
+
+			ImGui::TextWrapped(p->Get_Name());
+			ImGui::NextColumn();
+		}
+
+
+          
+
+
 
     }
   
@@ -240,12 +268,36 @@ HRESULT CAssetListWindow::Create_ModelFile()
         Info.TexKey = modelData.name;
         Info.FullPath = modelData.ResourcePath;
 
-        CFolder* pFolder = Get_Folder("Models");
+        CFolder* pFolder = Get_Folder("Model");
         if (pFolder)
             pFolder->Add_Info(Info);
 
     }
-   
+
+    ///////////Interaction 오브젝트들/////
+    wstring IteractionModelNames[] = { L"CaveRock" };
+    int iSize = sizeof(IteractionModelNames) / sizeof(IteractionModelNames[0]);
+
+    CFolder* pInteractionFolder= Get_Folder("Interaction");
+    CheckNullResult(pInteractionFolder, E_FAIL);
+    for (int i = 0; i < iSize; ++i)
+    {
+        CModel* pModel = pGameInstance->Find_Model(IteractionModelNames[i]);
+        if (pModel)
+        {
+            const ModelData modelData = pModel->Get_ModelData();
+            AssetInfo Info;
+            wstring Key = modelData.name.substr(0, modelData.name.size() - 1);
+            string Result = WStringToUTF8(Key);
+            Info.ObjType = MapObjType::INTERACTION;
+            Info.TexKey = modelData.name;
+            Info.FullPath = modelData.ResourcePath;
+
+            pInteractionFolder->Add_Info(Info);
+           
+
+        }
+    }
 
     return S_OK;
 }
@@ -258,13 +310,21 @@ void CAssetListWindow::Show_Grid(const string& Category,int FieldNum)
     int  columnCount = 10;
     ImVec2 iconSize = ImVec2(64, 64); // 썸네일 크기
     ImGui::Columns(columnCount, 0, false);
-    vector<tagAssetInfo>*        Target;
+    vector<tagAssetInfo>*        Target=nullptr;
+
     if (Category == "Model")
     {
-        Target = m_Folders[FieldNum]->get_vector();
+        auto iter = m_FolderMap.find(L"Model");
+        if(iter!=m_FolderMap.end())
+            Target = (iter->second)[FieldNum]->get_vector();
     }
         
-
+    else if (Category == "Interaction")
+    {
+        auto iter = m_FolderMap.find(L"Interaction");
+        if (iter != m_FolderMap.end())
+            Target = (iter->second)[FieldNum]->get_vector();
+    }
     else
         Target = &TileImages;
 
@@ -302,6 +362,7 @@ void CAssetListWindow::Show_Grid(const string& Category,int FieldNum)
             ///지금해야하는것 : 클릭한애들의 ObjType을 어케지정할거냐..
             CImgui_DataManager::PlaceObjectInfo PlaceInfo;
             PlaceInfo.ObjType = m_pImgui_DataManager->Get_ObjType_From_Path(info.FullPath);
+            PlaceInfo.idx = i;
 
             if (PlaceInfo.ObjType == MapObjType::TILE)
                 PlaceInfo.m_resourceType = ResourceType::TEXTURE;
@@ -332,10 +393,14 @@ void CAssetListWindow::Show_Grid(const string& Category,int FieldNum)
 
 CFolder* CAssetListWindow::Get_Folder(const char* FileName)
 {
-    for (auto& pFolder : m_Folders)
+    for (auto& pair : m_FolderMap)
     {
-        if (!strcmp(pFolder->Get_Name(), FileName))
-            return pFolder;
+        for (auto& pFolder : pair.second)
+        {
+            if (!strcmp(pFolder->Get_Name(), FileName))
+                return pFolder;
+        }
+  
 
     }
 
@@ -345,9 +410,17 @@ CFolder* CAssetListWindow::Get_Folder(const char* FileName)
 void CAssetListWindow::Free()
 {
     __super::Free();
-    for (auto& i : m_Folders)
-        Safe_Release(i);
+    for (auto& pair : m_FolderMap)
+    {
+        for (auto& pFolder : pair.second)
+        {
+            Safe_Release(pFolder);
+        }
+       
 
+    }
+
+    m_FolderMap.clear();
     Safe_Release(m_pMapObject_Manager);
     Safe_Release(m_pImgui_DataManager);
     Safe_Release(pGameInstance);

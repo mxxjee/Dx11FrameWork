@@ -70,7 +70,7 @@ protected:
     string                  m_passName = "";
 
 
-private:
+public:
     CMapObject_Manager*         m_pMapObject_Manager = nullptr;
 
     // IMapEditable을(를) 통해 상속됨

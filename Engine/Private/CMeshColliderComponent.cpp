@@ -34,16 +34,23 @@ HRESULT CMeshColliderComponent::Initialize_Prototype()
 
 HRESULT CMeshColliderComponent::Initialize_Copytype(void* pArg)
 {
+    /*MeshCollider->AABB + MEsh*/
+    CMeshColliderComponent::COLLIDER_DESC* pDesc = static_cast<CMeshColliderComponent::COLLIDER_DESC*>(pArg);
+    CBounding_Mesh::BOUNDING_MESH_DESC* pBoundingMeshDesc = static_cast<CBounding_Mesh::BOUNDING_MESH_DESC*>(pDesc->m_BoundingDesc);
 
-    if (FAILED(__super::Initialize_Copytype(pArg)))
+    if (FAILED(__super::Initialize_Copytype(pDesc)))
         return E_FAIL;
 
-    /*MeshCollider->AABB + MEsh*/
-    COLLIDER_DESC* pDesc = static_cast<COLLIDER_DESC*>(pArg);
-    CBounding::BOUNDING_DESC* pBoundingDesc = static_cast<CBounding::BOUNDING_DESC*>(pDesc->m_BoundingDesc);
+    
+  
+    CBounding_AABB::BOUNDING_AABB_DESC AABBDesc;
+    AABBDesc.vCenter = pBoundingMeshDesc->vCenter;
+    AABBDesc.Extents = pBoundingMeshDesc->Extents;
 
-    m_pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, pBoundingDesc);
-    m_pMeshBounding = CBounding_Mesh::Create(m_pDevice, m_pContext, pBoundingDesc);
+    m_pBounding = CBounding_AABB::Create(m_pDevice, m_pContext, &AABBDesc);
+
+
+    m_pMeshBounding = CBounding_Mesh::Create(m_pDevice, m_pContext, pBoundingMeshDesc);
 
 
     return S_OK;

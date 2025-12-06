@@ -83,13 +83,13 @@ CMapObject* CMapLayer::Check_Picking(HWND g_hWnd, ComPtr<ID3D11DeviceContext> Co
     CheckTrueResult(m_ObjList.empty(),nullptr);
     CheckFalseResult(m_bAblePicking, nullptr);
 
+    
     float fMinDist = FLT_MAX;
     CMapObject* pPickedObj = nullptr;
 
 	for (auto& obj : m_ObjList)
 	{
-        Ray ray = MathUtils::CreateRayLocal(g_hWnd, Context, obj, Proj, View);
-
+        Ray ray = MathUtils::CreateRayWorld(g_hWnd, Context, Proj, View);
         float fDist = 0.f;
         if (obj->Is_Picked(ray.Origin, ray.Dir, fDist))
         {
@@ -137,6 +137,31 @@ void CMapLayer::ProcessDestroy()
         Safe_Release(pObj);
     }
 }
+
+HRESULT CMapLayer::Save_Data(const string& filePath, _uint iNum)
+{
+    json jInteraction;
+
+	for (auto& obj : m_ObjList)
+	{
+		if (obj)
+		{
+            obj->Save_To_Json(jInteraction);
+		}
+	}
+    string FinalPath = "";
+    FinalPath = filePath;
+
+    ofstream	file(FinalPath);
+    file << std::setw(4) << jInteraction;
+
+    file.close();
+
+
+    MSG_BOX("Save Complete");
+    return S_OK;
+}
+
 
 
 

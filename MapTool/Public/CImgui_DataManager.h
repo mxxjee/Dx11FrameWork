@@ -31,6 +31,7 @@ public:
 
 
         wstring                 TexKey = L"";   //아이콘에 표시되는 텍스처이름,이걸 기반으로 아이디생성할듯
+        _uint                   idx = 0;
 
 
 
@@ -72,6 +73,7 @@ public:
 private:
     HRESULT             Create_MapObject();
     HRESULT             Create_MapTerrain();
+    HRESULT             Create_MapInteraction();
     HRESULT             Create_Model();
 
 
@@ -89,6 +91,8 @@ public:
 public:
     bool            IsLoadedTerrain() { return m_LoadFilePath.m_CurrentLoadTerrainFilePath != ""; }//로드한적이있냐. 그러면 덮어쓰기가능!
     bool            IsLoadedNav() { return m_LoadFilePath.m_CurrentLoadNavFilePath != ""; }
+    bool            IsLoadInteraction() { return m_LoadFilePath.m_CurrentLoadInteractionFilePath != ""; }
+
 
     const SaveFilePath& Get_SaveFilePath() { return m_SaveFilePath; }
     const LoadFilePath& Get_LoadFilePath() { return m_LoadFilePath; }

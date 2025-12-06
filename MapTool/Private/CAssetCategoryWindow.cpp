@@ -54,9 +54,25 @@ HRESULT CAssetCategoryWindow::Create_Widgets()
     TileButtonDesc.callback = [this]()
     {
         m_pImgui_DataManager->Send_SelectedCategory("Tile");
+        m_pImgui_DataManager->Send_SelectedIdx(-1);//초기화
     };
 
     if (FAILED(Add_Widgets<CImgui_Button>(&TileButtonDesc)))
+        return E_FAIL;
+
+    CImgui_Button::ImguiButton_Desc InteractionButtonDesc;
+    InteractionButtonDesc.Tag = "Interaction";
+    InteractionButtonDesc.Label = "Interaction";
+    InteractionButtonDesc.m_RelativePos = ImVec2(10, 110);
+    InteractionButtonDesc.callback = [this]()
+    {
+        m_pImgui_DataManager->Send_SelectedCategory("Interaction");
+        m_pImgui_DataManager->Send_SelectedIdx(-1);//초기화
+
+    };
+
+
+    if (FAILED(Add_Widgets<CImgui_Button>(&InteractionButtonDesc)))
         return E_FAIL;
 
     return S_OK;

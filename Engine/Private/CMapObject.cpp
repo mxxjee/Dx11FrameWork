@@ -83,6 +83,7 @@ void CMapObject::Update(_float fTimeDelta)
 void CMapObject::Update_Late(_float fTimeDelta)
 {
 	__super::Update_Late(fTimeDelta);
+
 }
 
 
@@ -96,6 +97,8 @@ void CMapObject::Update_Render(_float fTimeDelta)
 HRESULT CMapObject::Render()
 {
 	__super::Render();
+	if (m_pGameInstance->m_bDrawDebug)
+		pColliderComp->Render();
 
 	return S_OK;
 }

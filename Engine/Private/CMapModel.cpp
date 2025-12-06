@@ -59,6 +59,7 @@ void CMapModel::Update(_float fTimeDelta)
 void CMapModel::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
+  
 }
 
 void CMapModel::Update_Render(_float fTimeDelta)
@@ -68,6 +69,7 @@ void CMapModel::Update_Render(_float fTimeDelta)
 
 HRESULT CMapModel::Render()
 {
+    
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
 
@@ -96,6 +98,8 @@ HRESULT CMapModel::Render()
 
     }
 
+    if (m_pGameInstance->m_bDrawDebug)
+        pColliderComp->Render();
 
     return S_OK;
 }
@@ -115,22 +119,55 @@ HRESULT CMapModel::Ready_Component(void* pArg)
     }
 
     /*메쉬콜라이더컴포넌트(픽킹검사)*/
-    CBounding_Mesh::BOUNDING_MESH_DESC MeshDesc;
-    MeshDesc.pModel = m_pModel;
-    MeshDesc.Extents = { 10.f,10.f,10.f };
+    if (!pModelDesc->ColliderComponent)
+    {
+        CMeshColliderComponent::COLLIDER_DESC desc;
+        CBounding_Mesh::BOUNDING_MESH_DESC MeshDesc;
+        MeshDesc.pModel = m_pModel;
+        MeshDesc.Extents = { 0.5f,0.5f,0.5f };
+        desc.m_BoundingDesc = &MeshDesc;
+        pModelDesc->ColliderComponent = &desc;
 
-    CComponent* pMeshCollider = dynamic_cast<CMeshColliderComponent*>(m_pGameInstance->Clone_Prototype(
-        PROTOTYPE::COMPONENT,
-        0,
-        PROTO_COMPONENT_NAME(L"MeshCollider"),
-        &MeshDesc));
+        CComponent* pMeshCollider = dynamic_cast<CMeshColliderComponent*>(m_pGameInstance->Clone_Prototype(
+            PROTOTYPE::COMPONENT,
+            0,
+            PROTO_COMPONENT_NAME(L"MeshCollider"),
+            &desc));
 
-    if (FAILED(Add_Component(
-        COMPONENT_TYPE::MESH_COLLIDER,
-        pMeshCollider,
-        reinterpret_cast<CComponent**>(&pColliderComp)
-    )))
-        return E_FAIL;
+        if (FAILED(Add_Component(
+            COMPONENT_TYPE::MESH_COLLIDER,
+            pMeshCollider,
+            reinterpret_cast<CComponent**>(&pColliderComp)
+        )))
+            return E_FAIL;
+    }
+    
+
+    //있으면 그대로 받은걸로생성..
+    else
+    {
+        CMeshColliderComponent::COLLIDER_DESC* desc = static_cast<CMeshColliderComponent::COLLIDER_DESC*>(pModelDesc->ColliderComponent);
+        CBounding_Mesh::BOUNDING_MESH_DESC* MeshDesc=static_cast<CBounding_Mesh::BOUNDING_MESH_DESC*>(desc->m_BoundingDesc);
+        MeshDesc->pModel = m_pModel;
+
+        desc->m_BoundingDesc = MeshDesc;
+
+        pModelDesc->ColliderComponent = desc;
+        
+        CComponent* pMeshCollider = dynamic_cast<CMeshColliderComponent*>(m_pGameInstance->Clone_Prototype(
+            PROTOTYPE::COMPONENT,
+            0,
+            PROTO_COMPONENT_NAME(L"MeshCollider"),
+            desc));
+
+        if (FAILED(Add_Component(
+            COMPONENT_TYPE::MESH_COLLIDER,
+            pMeshCollider,
+            reinterpret_cast<CComponent**>(&pColliderComp)
+        )))
+            return E_FAIL;
+    }
+ 
 
 
     return S_OK;

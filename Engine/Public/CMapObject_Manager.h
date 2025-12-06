@@ -1,6 +1,6 @@
 #pragma once
 #include "CBase.h"
-
+#include "CBounding_Mesh.h"
 
 NS_BEGIN(Engine)
 
@@ -9,6 +9,8 @@ class CMapLayer;
 class CGameInstance;
 class IMapEditable;
 class CInput_Manager;
+
+
 
 
 class ENGINE_DLL CMapObject_Manager :
@@ -48,8 +50,16 @@ public:
     CMapLayer*              Find_MapLayer(const _wstring& LayerTag);
   
 public:
+                                    //interaction type에 맞는 meshcollider 값채우기
+    CBounding_Mesh::BOUNDING_MESH_DESC           Generate_Collider_By_InteractionType(_uint i);
+
+public:
     HRESULT             Save_Data(const wstring& Path);
     CMapLayer*             Get_Layer_By_MapObjType(MapObjType eType);
+    
+public:
+    HRESULT         Save_InteractionData(const string& filePath, _uint iNum = 0);
+    HRESULT         Load_InteractionData(const string& filePath);
 
 public:
     wstring         Generate_UniqueTag(MapObjType Type, const wstring& baseName);

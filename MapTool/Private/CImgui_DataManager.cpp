@@ -14,7 +14,11 @@
 #include "CGameObject.h"
 
 #include "CMapTerrain.h"
+#include "CMapInteractObject.h"
 #include "CMapLayer.h"
+#include "CMeshColliderComponent.h"
+
+
 
 
 USING(Engine)
@@ -49,6 +53,7 @@ HRESULT CImgui_DataManager::Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3
 
 	int iTerrainSize = m_SaveFilePath.m_TerrainSaveFiles.size();
 	int iNavSize = m_SaveFilePath.m_NavSaveFiles.size();
+	int iInteractionSize = m_SaveFilePath.m_InteractionFiles.size();
 
 
 	//이제 저장 누르면 이 경로로 저장될거야!
@@ -56,6 +61,10 @@ HRESULT CImgui_DataManager::Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3
 	
 	
 	m_SaveFilePath.m_CurrentNavSaveFilePath = m_SaveFilePath.m_SavePathBase + "Nav" + to_string(iNavSize) + ".dat";
+
+
+	m_SaveFilePath.m_CurrentInteractionFilePath = m_SaveFilePath.m_SavePathBase + "Interaction" + to_string(iInteractionSize) + ".json";
+
 
 
 	return S_OK;
@@ -207,6 +216,9 @@ HRESULT CImgui_DataManager::Create_MapObject()
 		return Create_MapTerrain();
 		break;
 
+	case MapObjType::INTERACTION:
+		return Create_MapInteraction();
+		break;
 
 	default:
 		return Create_Model();
@@ -245,6 +257,40 @@ HRESULT CImgui_DataManager::Create_MapTerrain()
 	}
 
 	return E_FAIL;
+}
+
+HRESULT CImgui_DataManager::Create_MapInteraction()
+{
+	wstring LayerTag = L"Interaction_Layer";
+	wstring ProtoTag = L"MapInteraction";
+
+	CMapInteractObject::MapInteraction_DESC Desc;
+	CModel::MODEL_DSC modelDesc;
+	Desc.modelDesc = &modelDesc;
+
+	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+	Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
+	Desc.modelName = m_PlaceObjInfo.TexKey;
+	Desc.ObjType = m_PlaceObjInfo.ObjType;
+	Desc.eInteractionType = m_PlaceObjInfo.idx;
+
+
+	
+
+	CMeshColliderComponent::COLLIDER_DESC desc;
+	CBounding_Mesh::BOUNDING_MESH_DESC meshBound=m_pMapObject_Manager->Generate_Collider_By_InteractionType(Desc.eInteractionType);
+
+	Desc.ColliderComponent = &desc;
+	desc.m_BoundingDesc = &meshBound;
+
+	if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc)))
+		return E_FAIL;
+
+
+	m_pPlaceObject = m_pMapObject_Manager->Find_MapObject(LayerTag, Desc.ObjTag);
+
+
+	return S_OK;
 }
 
 HRESULT CImgui_DataManager::Create_Model()
@@ -297,8 +343,11 @@ HRESULT CImgui_DataManager::Create_Model()
 		break;
 	}
 
+
 	if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc)))
 		return E_FAIL;
+
+	
 
 	m_pPlaceObject = m_pMapObject_Manager->Find_MapObject(LayerTag, Desc.ObjTag);
 
@@ -322,12 +371,17 @@ HRESULT CImgui_DataManager::Update_SaveFiles()
 {
 	m_SaveFilePath.m_TerrainSaveFiles.clear();
 	m_SaveFilePath.m_NavSaveFiles.clear();
+	m_SaveFilePath.m_InteractionFiles.clear();
+
 
 	m_SaveFilePath.m_SaveTerrainFileNames.clear();
 	m_SaveFilePath.m_SaveNavFileNames.clear();
-	
+	m_SaveFilePath.m_InteractionFileNames.clear();
+
+
 	m_SaveFilePath.m_TerrainSaveFileNamesStr.clear();
 	m_SaveFilePath.m_NavSaveFileNamesStr.clear();
+	m_SaveFilePath.m_InteractionFileNames.clear();
 
 
 
@@ -335,22 +389,43 @@ HRESULT CImgui_DataManager::Update_SaveFiles()
 	{
 		if (entry.path().extension() == ".json")
 		{
+			string path = entry.path().string();
 			std::string fullPath = entry.path().string();
 			std::string fileName = entry.path().stem().string() + ".json"; // 이름만 추출
 
+
+			if (path.find("Interaction") != string::npos)
+			{
+				m_SaveFilePath.m_InteractionFiles.push_back(fullPath);    // 경로 저장
+				m_SaveFilePath.m_InteractionFileNames.push_back(fileName);
+			}
+
+			else
+			{
+				m_SaveFilePath.m_TerrainSaveFiles.push_back(fullPath);    // 경로 저장
+				m_SaveFilePath.m_SaveTerrainFileNames.push_back(fileName);
+
+			}
+
+
 			
-			m_SaveFilePath.m_TerrainSaveFiles.push_back(fullPath);    // 경로 저장
-			m_SaveFilePath.m_SaveTerrainFileNames.push_back(fileName);
 		}
 
 		else if (entry.path().extension() == ".dat")
 		{
+			string path = entry.path().string();
 			std::string fullPath = entry.path().string();
 			std::string fileName = entry.path().stem().string() + ".dat"; // 이름만 추출
 
 
-			m_SaveFilePath.m_NavSaveFiles.push_back(fullPath);    // 경로 저장
-			m_SaveFilePath.m_SaveNavFileNames.push_back(fileName);
+			if (path.find("Nav") != string::npos)
+			{
+				
+				m_SaveFilePath.m_NavSaveFiles.push_back(fullPath);    // 경로 저장
+				m_SaveFilePath.m_SaveNavFileNames.push_back(fileName);
+			}
+
+			
 		}
 
 	}
@@ -364,6 +439,11 @@ HRESULT CImgui_DataManager::Update_SaveFiles()
 	for (auto& name : m_SaveFilePath.m_SaveNavFileNames)
 		m_SaveFilePath.m_NavSaveFileNamesStr.push_back(name.c_str());
 
+
+	m_SaveFilePath.m_InteractionFileNamesStr.reserve(m_SaveFilePath.m_InteractionFiles.size());
+	for (auto& name : m_SaveFilePath.m_InteractionFiles)
+		m_SaveFilePath.m_InteractionFileNamesStr.push_back(name.c_str());
+	
 	return S_OK;
 }
 

@@ -26,6 +26,7 @@
 #include "CMapTerrain.h"
 
 
+#include "CMapInteractObject.h"
 
 
 
@@ -168,6 +169,8 @@ HRESULT CLoader::Loading_MapTool()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapTerrain"), CMapTerrain::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapInteraction"), CMapInteractObject::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
     m_isFinished = true;
     return S_OK;
@@ -224,7 +227,7 @@ HRESULT CLoader::Register_Shaders()
 HRESULT    CLoader::Register_Models()
 {
     //m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor");
-
+    
     _matrix PreMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
     PreMatrix=XMMatrixMultiply(PreMatrix, XMMatrixRotationX(XMConvertToRadians(-180.f)));
 
@@ -234,6 +237,7 @@ HRESULT    CLoader::Register_Models()
 
     m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/LinkAnim/LinkAnim.json", RotateYMatrix);
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle/", PreMatrix);
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Object/", XMMatrixIdentity());
 
     return S_OK;
 }

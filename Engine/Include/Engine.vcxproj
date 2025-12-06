@@ -205,6 +205,7 @@
     <ClInclude Include="..\Public\CMapField.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\CMapInteractObject.h" />
     <ClInclude Include="..\Public\CMapLayer.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
@@ -359,6 +360,7 @@
     <ClCompile Include="..\Private\CMapField.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\CMapInteractObject.cpp" />
     <ClCompile Include="..\Private\CMapModel.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>

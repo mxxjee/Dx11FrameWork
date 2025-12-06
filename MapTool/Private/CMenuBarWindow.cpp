@@ -5,6 +5,7 @@
 #include "CImGui_Manager.h"
 #include "CMapObject_Manager.h"
 #include "CNavMeshEdit_Manager.h"
+#include "MapTool_Defines.h"
 
 USING(MapTool)
 
@@ -129,6 +130,7 @@ void CMenuBarWindow::Update_Menu()
     Show_TerrainListBox();
     Show_NavListBox();
     Show_TextBox();
+    Show_InteractionBox();
 }
 
 void CMenuBarWindow::Show_SaveMenu()
@@ -136,7 +138,7 @@ void CMenuBarWindow::Show_SaveMenu()
     //그냥 일반 저장, 불러오기했으면 덮어씌워져야하고, 아니면 그냥 연속적ㅇ파일로 저장
    
     if (ImGui::BeginMenu("Save", "Ctrl+S"))
-    {
+             {
 #pragma region Save_Terrain
         if (ImGui::MenuItem("Save_Terrain","Ctrl+S"))
         {
@@ -196,13 +198,37 @@ void CMenuBarWindow::Show_SaveMenu()
             if (FAILED(m_pImgui_DataManager->Update_SaveFiles()))
                 return;
         }
+        ////////////////////////
+        if (ImGui::MenuItem("Save_Interaction", "Ctrl+S"))
+        {
+            if (m_pImgui_DataManager->IsLoadInteraction())
+            {
+                if (FAILED(m_pMapObject_Manager->Save_InteractionData(m_SaveFilePath.m_CurrentInteractionFilePath,
+                                                                        m_SaveFilePath.m_InteractionFiles.size())))
+                {
+                    MSG_BOX("Nothing to Save!");
+                    return;
+                }
 
-     
+                m_LoadFilePath.m_CurrentLoadInteractionFilePath = "";
+                m_pImgui_DataManager->Set_LoadFilePath(m_LoadFilePath);
+            }
 
-        ImGui::EndMenu();
+            else  //그냥일반저장
+                if (FAILED(m_pMapObject_Manager->Save_InteractionData(m_SaveFilePath.m_CurrentInteractionFilePath, m_SaveFilePath.m_InteractionFiles.size())))
+                    return;
+
+            }
+            //Refresh SaveFileList
+            if (FAILED(m_pImgui_DataManager->Update_SaveFiles()))
+                return;
+
+            ImGui::EndMenu();
+        }
+
+        
     }
 
-}
 
 void CMenuBarWindow::Show_SaveAsMenu()
 {
@@ -254,6 +280,12 @@ void CMenuBarWindow::Show_LoadMenu()
           
         }
 
+        if (ImGui::MenuItem("Load_Interaction", "Ctrl+L"))
+        {
+            m_bInteractionOpen = true;
+
+        }
+
 
         ImGui::EndMenu();
     }
@@ -270,6 +302,12 @@ void CMenuBarWindow::Show_ModeMenu()
     if (ImGui::MenuItem("EditMode", "Ctrl+E"))
     {
         CImGui_Manager::GetInstance()->Set_MapToolMode(MapToolMode::EDIT);
+        CMapObject_Manager::GetInstance()->Set_SelectObject(nullptr);
+    }
+
+    if (ImGui::MenuItem("Toggle_TerrainPicking", "Ctrl+T"))
+    {
+        bEnableTerrainPicking = !bEnableTerrainPicking;
         CMapObject_Manager::GetInstance()->Set_SelectObject(nullptr);
     }
 }
@@ -326,6 +364,36 @@ void CMenuBarWindow::Show_NavListBox()
         m_pImgui_DataManager->Set_LoadFilePath(m_LoadFilePath);
 
       
+    }
+
+    ImGui::End();
+}
+
+void CMenuBarWindow::Show_InteractionBox()
+{
+    CheckFalse(m_bInteractionOpen);
+
+    ImGui::Begin("InteractionFileList", &m_bInteractionOpen);
+
+
+    if (ImGui::ListBox("InteractionFileList", &m_LoadFilePath.LoadInteractionFileIdx, m_SaveFilePath.m_InteractionFileNamesStr.data(), m_SaveFilePath.m_NavSaveFileNamesStr.size()))
+    {
+        m_bLoad = true;
+
+
+        CMapObject_Manager::GetInstance()->Set_SelectObject(nullptr);
+
+        //불러오기 및 덮어쓰기를위한 경로갱신
+        if (FAILED(CNavMeshEdit_Manager::GetInstance()->Load_NavigationData(m_SaveFilePath.m_NavSaveFiles[m_LoadFilePath.LoadNavFileIdx])))
+        {
+            ImGui::End();
+            MSG_BOX("Nothing to Load!, Empty");
+            return;
+        }
+        m_LoadFilePath.m_CurrentLoadNavFilePath = m_SaveFilePath.m_NavSaveFiles[m_LoadFilePath.LoadNavFileIdx];
+        m_pImgui_DataManager->Set_LoadFilePath(m_LoadFilePath);
+
+
     }
 
     ImGui::End();

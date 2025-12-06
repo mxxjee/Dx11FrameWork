@@ -57,8 +57,7 @@ private:
 
 
 private:
-    vector<CFolder*>        m_Folders;
-
+    UMap<_wstring, vector<CFolder*>> m_FolderMap;
     vector<tagAssetInfo>         TileImages;
 
 

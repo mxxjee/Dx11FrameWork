@@ -23,7 +23,7 @@ public:
     virtual bool            Intersect(COLLIDER_TYPE eType, CBounding* pOther);
 
     BoundingBox* Get_Desc() { return m_pDesc; }
-
+    BoundingBox* Get_OrignialDesc() { return m_pOriginalDesc; }
 public:
     virtual _float3         Get_MaxBound(_vector vCenter);
     virtual _float3         Get_MinBound(_vector vCenter);
