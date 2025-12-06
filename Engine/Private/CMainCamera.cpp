@@ -37,6 +37,8 @@ HRESULT CMainCamera::Initialize_Copytype(void* pArg)
 	m_bPerspective = true;
 	m_pTransformCom->Set_Scale(_float4{ 1.f, 1.f, 1.f,1.f });
 	m_pTransformCom->Set_Parent(nullptr);
+
+	m_fCulDistance = 50.f;
 	return S_OK;
 }
 

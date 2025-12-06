@@ -60,8 +60,9 @@ void CLayer::Update_Render(_float fTimeDelta)
     {
         if (i != nullptr)
         {
-            if (i->Is_Active())
-                i->Update_Render(fTimeDelta);
+            //culling때문에 항상 체크해야함
+            //if (i->Is_Active())
+            i->Update_Render(fTimeDelta);
         }
             
     }

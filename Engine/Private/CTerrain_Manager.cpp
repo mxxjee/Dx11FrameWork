@@ -121,22 +121,24 @@ void CTerrain_Manager::Update_Render(_float fTimeDelta)
 {
 	CCamera_Base* pMaincamera = m_pGameInstance->Get_MainCamera();
 	CCamera_Base* pMiniMapCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
-
-	CCamera_Base* pRenderCamera = m_pGameInstance->Get_RenderCamera();
 		
 	for (auto& pair : m_TerrainMap)
 	{
 		if (pair.second)
 		{
-			if (pMaincamera->IsInDistance(pair.second->Get_Chunk()))
+			Chunk chunk = pair.second->Get_Chunk();
+
+			if (pMaincamera->IsInDistance(chunk.vCenter))
 			{
-				if (pMaincamera->IsInFrustum(pair.second->Get_Chunk().ChunkBound))
+				if (pMaincamera->IsInFrustum(chunk.ChunkBound.MinBound,chunk.ChunkBound.MaxBound))
+				{
 					pair.second->Update_Render(fTimeDelta);
+				}
 			}
 
 			if (pMiniMapCamera)
 			{
-				if (pMiniMapCamera->IsInDistance(pair.second->Get_Chunk()))
+				if (pMiniMapCamera->IsInDistance(chunk.vCenter))
 					pair.second->Update_Render_MiniMapPriority();
 			}
 		}

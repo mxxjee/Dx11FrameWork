@@ -5,6 +5,8 @@
 #include "CTexture.h"
 #include "CVIBuffer.h"
 
+#include "CCamera_Base.h"
+
 CTerrain_Base::CTerrain_Base(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CGameObject{ pDevice,pContext }
 {
@@ -56,7 +58,8 @@ void CTerrain_Base::Update_Late(_float fTimeDelta)
 void CTerrain_Base::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
-    m_pGameInstance->Add_RenderObject(m_eRenderGroup, this);
+    if(Is_Visible())
+        m_pGameInstance->Add_RenderObject(m_eRenderGroup, this);
 
 }
 
@@ -113,6 +116,13 @@ HRESULT CTerrain_Base::Bind_ShaderResources()
 
 
     return S_OK;
+}
+
+bool CTerrain_Base::Is_Visible()
+{
+    CCamera_Base* pMaincamera = m_pGameInstance->Get_MainCamera();
+
+    return false;
 }
 
 

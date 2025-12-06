@@ -29,7 +29,7 @@ HRESULT CMinimapCamera::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
     m_bPerspective = false;
-
+    m_fCulDistance = 70.f;
     return S_OK;
 }
 

@@ -55,6 +55,8 @@ public:
 
     bool            Is_Active() { return m_bActive; }
 
+                    //컬링에 걸리는지 확인.(true면 add_renderobject성공, 아니라면 RenderX)
+    virtual bool            Is_Visible() {};
 public:
     CGameObject*    Get_Target() { return m_pTarget; }
    
