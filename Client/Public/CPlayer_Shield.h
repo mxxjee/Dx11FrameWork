@@ -2,6 +2,8 @@
 #include "CWeapon.h"
 
 NS_BEGIN(Client)
+class CPlayer;
+
 class CPlayer_Shield :
     public CWeapon
 {
@@ -29,9 +31,16 @@ public:
     virtual void Free() override;
 
 
+public:
+    virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther);
+    virtual     void    OnCollisionStay(_uint iGroup, CCollider_Base* pOther);
+    virtual     void    OnCollisionExit(_uint iGroup, CCollider_Base* pOther);
+
+
+
 private:
     _float3 vTmp = _float3(0.f, 0.f, 0.f);
-
+    CPlayer* m_pPlayer = nullptr;
 };
 
 NS_END

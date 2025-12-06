@@ -4,6 +4,7 @@
 #include "CSphereColliderComponent.h"
 #include "CBounding_Sphere.h"
 #include "CM_MoriblinSword.h"
+#include "CPlayer.h"
 
 
 
@@ -138,20 +139,42 @@ void CMMoriblin_Weapon::Free()
 
 void CMMoriblin_Weapon::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {
+   
     CheckTrue(m_pMoriblin->Get_Guard());
     CheckTrue(m_pMoriblin->Get_ActionControl()->m_bDamage == 1.f);
 
     CGameObject* pOwner = pOther->Get_Owner();
-
     CheckNull(pOwner);
+
+
     switch (COLLISION_GROUP(iGroup))
     {
     case Client::COLLISION_GROUP::PLAYER_WEAPON:
-        m_pMoriblin->Set_Guard(true,m_AnimKey);
-        _float3 vDir;
-        XMStoreFloat3(&vDir, m_pOwner->Get_Transform()->Get_State(STATE::LOOK));
-        Get_Owner()->Get_Transform()->AddImpulse(-0.3f, vDir);
+    {
+        CWeapon* pWeapon = dynamic_cast<CWeapon*>(pOwner);
+        if (pWeapon)
+        {
+            CPlayer* pPlayer = dynamic_cast<CPlayer*>(pWeapon->Get_Owner());
+            if (pPlayer)
+            {
+                //가드중이라면,그냥 return
+                if (pPlayer->Get_Hold(CPlayer::HoldKey::HOLD_T))
+                    return;
 
+                //아니라면 충돌처리
+                else
+                {
+                    m_pMoriblin->Set_Guard(true, m_AnimKey);
+                    _float3 vDir;
+                    XMStoreFloat3(&vDir, m_pOwner->Get_Transform()->Get_State(STATE::LOOK));
+                    Get_Owner()->Get_Transform()->AddImpulse(-0.3f, vDir);
+                }
+            }
+        }
+     
+
+    }
+       
         break;
     case Client::COLLISION_GROUP::PLAYER:
 

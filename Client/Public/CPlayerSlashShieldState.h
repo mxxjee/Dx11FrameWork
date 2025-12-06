@@ -22,6 +22,7 @@ public:
     virtual void        Update_Late(CPlayer* pPlayer, _float fTimeDelta)override;
     virtual void        Exit(CPlayer* pPlayer)override;
 
+
 private:
     void        Hold_Movement(CPlayer* pPlayer);
     void        Change_Other_State(CPlayer* pPlayer);

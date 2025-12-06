@@ -21,7 +21,6 @@ public:
     virtual         HRESULT         Update(XMMATRIX WorldMatrix)=0;
     virtual bool            Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)=0;
     virtual bool            Intersect(COLLIDER_TYPE eType, CBounding* pOther)=0;
-
 #ifdef _DEBUG
 public:
     virtual HRESULT         Render(PrimitiveBatch<VertexPositionColor>* pBatch,_bool isColl) = 0;

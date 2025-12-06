@@ -80,7 +80,7 @@ public:
 
 public:
     //Body Update 시 Set_Animation할 애니메이션 설정
-    void        Reserve_Animation(_wstring AnimKey, bool bLoop);
+    void        Reserve_Animation(_wstring AnimKey, bool bLoop, bool immediately=false);
 private:
     _uint                   m_eRenderGroup = 0;
 
@@ -88,6 +88,8 @@ private:
 protected:
     wstring             m_NextAnimKey = L"";
     bool                m_NextAnimLoop = false;
+
+    float               m_fInitTransitionTime=0.2f;
 
 };
 NS_END

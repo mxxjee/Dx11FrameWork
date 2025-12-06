@@ -810,10 +810,10 @@ HRESULT CPlayer::Ready_States()
     return S_OK;
 }
 
-void CPlayer::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop)
+void CPlayer::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop, bool immediately)
 {
     CheckNull(m_pBody);
-    m_pBody->Reserve_Animation(AnimKey, bNextAnimLoop);
+    m_pBody->Reserve_Animation(AnimKey, bNextAnimLoop,true);
 }
 
 
@@ -1012,6 +1012,36 @@ void CPlayer::OnDamageBehavior()
 
     //Damage Animnotify...시간이후 깜빡거림
     
+}
+
+void CPlayer::Shield_Hit_Behavior()
+{
+    CheckFalse(Get_Hold(CPlayer::HoldKey::HOLD_T));
+
+    //현재스테이트의 shield함수 실행
+    CPlayerHoldShield* pShieldState = dynamic_cast<CPlayerHoldShield*>(m_pCurState);
+    if (pShieldState)
+    {
+        
+        pShieldState->Hit_Shield(this);
+
+    }
+}
+
+void CPlayer::Push_Behavior()
+{
+    _float3 vDir;
+    XMStoreFloat3(&vDir, m_pTransformCom->Get_State(STATE::LOOK));
+    m_pTransformCom->AddImpulse(-0.1f, vDir);
+    m_bCanCollision = false;
+    m_pGameInstance->Invoke(2.f, 0.f, false, false, [this]()
+        {
+            m_bCanCollision = true;
+        }, this);
+
+
+    //ShieldHit애니메이션
+    Shield_Hit_Behavior();
 }
 
 void CPlayer::UpdateFlash(_float fTimeDelta)

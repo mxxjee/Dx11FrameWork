@@ -19,7 +19,7 @@ class CMonster :
 public:
     enum  MONSTER_BASE_STATE
     {
-        NONE, INTRO,IDLE, WALK, RUN, JUMP, ATTACK, DAMAGE, DIE,END
+        NONE, INTRO, IDLE, WALK, RUN, JUMP, ATTACK, DAMAGE, DIE, END
     };
 public:
     typedef struct MonsterDesc : public CModelObject::MODELOBJECT_DESC
@@ -27,7 +27,7 @@ public:
         int MaxHp;
         int iAttack;
         float fActionRange = 3.f;
-        _uint   iLevelID=ENUM_TO_UINT(LEVEL_ID::TOWN);       //스폰된 레벨
+        _uint   iLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);       //스폰된 레벨
 
     }MONSTER_DESC;
 protected:
@@ -56,6 +56,7 @@ public:
 
 public:
     virtual void            Change_State(int newState);
+    virtual void            Exit_State(int newState) {};
     MONSTER_ACTION_CONTORL* Get_ActionControl() { return &m_ActionControl; }
 
 public:
@@ -77,7 +78,7 @@ private:
    
    
 public:
-    void                Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop);
+    void                Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop, bool immediately = false);
     virtual void                Update_Movement(_float fTimeDelta) {};
 
 public:
@@ -88,6 +89,8 @@ public:
     void                Damage_Behavior(_float fTimeDelta);
 
     bool                Is_InRange(_float fDistance);
+            //플레이어 weapon과 충돌했을때 밀어내는 행동(재정의 가능)
+    virtual void        Push_Behavior(CGameObject* pOther);
 public:
     static CMonster* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
@@ -140,13 +143,15 @@ public:
 public:
     bool            Is_CanMove() { return m_bCanMove; }
     void            Set_CanMove(bool b) { m_bCanMove = b; }
+    bool            Get_CanCollision() { return m_bCanCollision; }
 
 protected:
     float           m_fInitSpeed = 0.f;
     bool            m_bCanMove = true;
-
+    bool            m_bCanCollision = true;
 public:
     void            Reset_RandomCell();
+ 
 protected:
     Engine::CNavigation* m_pNavigationCom = { nullptr };
     float           m_fRoamRadius = 20.f;     //정찰가능한 거리

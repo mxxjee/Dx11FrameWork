@@ -14,7 +14,7 @@ CPlayerHoldShield::~CPlayerHoldShield()
 void CPlayerHoldShield::Enter(CPlayer* pPlayer)
 {
     pPlayerInput = pPlayer->Get_Input();
-    pPlayer->Reserve_Animation_To_Body(L"shield_lp", true);
+    pPlayer->Reserve_Animation_To_Body(L"shield_lp", true,true);
 
     e_NextAnim = NextAnim::NONE;
     m_ePhase = Phase::Loop;
@@ -75,6 +75,12 @@ void CPlayerHoldShield::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
                 m_bChangePhase = true;
             break;
 
+        case Client::CPlayerHoldShield::Phase::Hit:
+            if (pPlayer->Is_AnimEnd())
+                m_bChangePhase = true;
+
+            break;
+
         case Client::CPlayerHoldShield::Phase::Loop:
             if (pPlayerInput->m_bisShieldRelease)
             {
@@ -116,6 +122,7 @@ void CPlayerHoldShield::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
                 break;
 
             case Client::CPlayerHoldShield::Phase::Loop:
+            case Client::CPlayerHoldShield::Phase::Hit:
             {
                 if (pPlayerInput->m_bisShieldRelease)
                 {
@@ -147,6 +154,13 @@ void CPlayerHoldShield::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 
 
 
+
+}
+
+void CPlayerHoldShield::Hit_Shield(CPlayer* pPlayer)
+{
+    pPlayer->Reserve_Animation_To_Body(L"shieldhit", false);
+    m_ePhase = Phase::Hit;
 
 }
 
@@ -189,11 +203,13 @@ void CPlayerHoldShield::Change_Phase(CPlayer* pPlayer)
 	switch (m_ePhase)
 	{
 	case Phase::Start:  //start->Loop·Î¹Ù²¸¶ó
+    case Phase::Hit:
 	{
 		m_ePhase = Phase::Loop;
 		pPlayer->Reserve_Animation_To_Body(L"shield_lp", false);
 	}
 	break;
+
 
 	case Phase::Loop:       //Loop->end·Î¹Ù²¸¶ó
 	{

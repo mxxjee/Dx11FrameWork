@@ -33,6 +33,8 @@ HRESULT CBody::Initialize_Copytype(void* pArg)
     m_pParentState = pDesc->pParentState;
 
 
+    m_fInitTransitionTime = 0.2f;
+
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
@@ -220,10 +222,16 @@ void CBody::Free()
     Safe_Release(m_pShader);
 }
 
-void CBody::Reserve_Animation(_wstring AnimKey, bool bLoop)
+void CBody::Reserve_Animation(_wstring AnimKey, bool bLoop, bool immediately)
 {
     m_NextAnimKey = AnimKey;
     m_NextAnimLoop = bLoop;
+
+    if (immediately)
+        m_pModel->Set_TransitionTime(0.05f);
+
+    else
+        m_pModel->Set_TransitionTime(m_fInitTransitionTime);
 
 }
 

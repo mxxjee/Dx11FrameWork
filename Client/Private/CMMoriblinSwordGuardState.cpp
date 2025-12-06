@@ -25,7 +25,7 @@ void CMMoriblinSwordGuardState::Enter(CMonster* pMonster)
 	else
 	{
 		m_eType = GuardType::SHIELD;
-		pMonster->Reserve_Animation_To_Body(AnimKey, false);
+		pMonster->Reserve_Animation_To_Body(AnimKey, false,true);
 	}
 
 	

@@ -30,8 +30,10 @@ private:
     void        Chase_Behavior(float fTimeDelta);
     void        Attack_Behavior(float fTimeDelta);
     void        Patrol_Behavior(float fTimeDelta);
+
 public:
     virtual void        Enter_State(int newState);
+    virtual void        Exit_State(int newState);
     virtual void        AIState_Change(_float fTimeDelta) override;
     virtual void        Update_Movement(_float fTimeDelta) override;
 
@@ -53,7 +55,8 @@ public:
 
 public:
     virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther);
-
+    //플레이어 weapon과 충돌했을때 밀어내는 행동(재정의 가능)
+    virtual void        Push_Behavior(CGameObject* pOther);
 public:
     bool        Get_Detect() { return m_bDetect; }
     bool        Get_Guard() { return m_bGuard; }
@@ -61,9 +64,11 @@ public:
 private:
     bool            m_bDetect = false;      //이전에 감지했던 기록이없고, idle상태일때 전이가능
     _float          m_fDetectRange = 10.f;
-
-
     bool            m_bGuard = false;
+
+
+private:
+    vector<class CWeapon*>        m_pWeapons;
 
 };
 NS_END

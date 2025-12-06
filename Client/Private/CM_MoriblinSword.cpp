@@ -2,6 +2,8 @@
 #include "CMonster_Body.h"
 #include "CPlayer.h"
 #include "CMMoriblin_Weapon.h"
+#include "CWeapon.h"
+
 ////////////////////Components/////////
 #include "CBounding_AABB.h"
 #include "CBoxColliderComponent.h"
@@ -181,6 +183,12 @@ HRESULT CM_MoriblinSword::Ready_WeaponColliders()
 
 	if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Moriblin_Weapon"), L"Moriblin_Shield", &ShieldDesc)))
 		return E_FAIL;
+
+	m_pWeapons.resize(2);
+
+	m_pWeapons[0] = dynamic_cast<CWeapon*>(Find_PartObject(L"Moriblin_Shield"));
+	m_pWeapons[1] = dynamic_cast<CWeapon*>(Find_PartObject(L"Moriblin_Sword"));
+
 	return S_OK;
 }
 
@@ -381,7 +389,22 @@ void CM_MoriblinSword::Enter_State(int newState)
 		m_ActionControl.m_bThink = true;
 	}
 
+	if (newState == CMonster::DAMAGE)
+	{
+		//잠깐 weapon콜라이더 비활성화.
+		for (int i = 0; i < m_pWeapons.size(); ++i)
+			m_pWeapons[i]->Set_Active(false);
+
+	}
+
        
+}
+
+void CM_MoriblinSword::Exit_State(int newState)
+{
+	for (int i = 0; i < m_pWeapons.size(); ++i)
+		m_pWeapons[i]->Set_Active(true);
+
 }
 
 void CM_MoriblinSword::AIState_Change(_float fTimeDelta)
@@ -442,14 +465,6 @@ void CM_MoriblinSword::Update_Priority(_float fTimeDelta)
 void CM_MoriblinSword::Update(_float fTimeDelta)
 {
 	AIState_Change(fTimeDelta);
-
-
-	if (m_pNextState != nullptr)
-	{
-		m_pCurState = m_pNextState;
-		m_pNextState = nullptr;
-
-	}
 
 
 	if (m_pCurState)
@@ -520,6 +535,7 @@ void CM_MoriblinSword::Free()
 
 void CM_MoriblinSword::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {
+	CheckFalse(m_bCanCollision);
 	CheckTrue(m_bGuard);
 	CheckTrue(m_ActionControl.m_bDamage == 1.f);
 
@@ -569,6 +585,17 @@ void CM_MoriblinSword::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 	
 	
 	
+}
+
+
+void CM_MoriblinSword::Push_Behavior(CGameObject* pOther)
+{
+	__super::Push_Behavior(pOther);
+	
+	m_bGuard = false;
+	m_pMonsterBody->Change_AnimKey(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DAMAGE), L"damage_f");
+	Change_State(CMonster::MONSTER_BASE_STATE::DAMAGE);
+
 }
 
 

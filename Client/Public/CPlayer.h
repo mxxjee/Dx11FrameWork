@@ -136,13 +136,16 @@ public:
     virtual HRESULT     Ready_Components(void* pArg);
     virtual HRESULT     Ready_PartObjects(void* pArg);
     HRESULT                Ready_States();
-    void                Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop);
+
+    void                Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop,bool immediately=false);
 
 public:
     virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther);
     virtual     void    OnCollisionStay(_uint iGroup, CCollider_Base* pOther);
     virtual     void    OnCollisionExit(_uint iGroup, CCollider_Base* pOther);
 
+public:
+    class CBoxColliderComponent* GetCollider() { return m_pCollider; }
 
 private:
     Engine::CNavigation* m_pNavigationCom = { nullptr };
@@ -169,6 +172,10 @@ private:
             //Damage진입시 수행
     void    OnDamageBehavior();
     void    UpdateFlash(_float fTimeDelta); //피격시 깜빡거림 활성화
+
+public:
+    void    Shield_Hit_Behavior();  //쉴드 가드 중 맞았을때 행동
+    void    Push_Behavior();        //밀리는 동작
 
 private:
     PLAYER_INPUT        m_Input;

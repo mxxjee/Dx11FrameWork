@@ -17,10 +17,10 @@ void CPlayerDamageState::Enter(CPlayer* pPlayer)
 
     //맞은방향 판별한거 가져오기
     if(pPlayer->Get_IsFront())
-        pPlayer->Reserve_Animation_To_Body(L"dmg_f", false);
+        pPlayer->Reserve_Animation_To_Body(L"dmg_f", false,true);
 
     else
-        pPlayer->Reserve_Animation_To_Body(L"dmg_b", false);
+        pPlayer->Reserve_Animation_To_Body(L"dmg_b", false, true);
              
     //Damage애니메이션 조금진행됐을때 깜빡거림 시작..
 

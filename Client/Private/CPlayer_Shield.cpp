@@ -6,6 +6,12 @@
 #include "CBounding_OBB.h"
 #include "COBBColliderComponent.h"
 #include "Client_Defines.h"
+#include "CBoxColliderComponent.h"
+#include "CBounding_AABB.h"
+#include "CMonster.h"
+#include "CPlayer.h"
+
+
 
 
 USING(Client)
@@ -37,7 +43,8 @@ HRESULT CPlayer_Shield::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
     m_pTransformCom->Set_State(STATE::POSITION, XMVectorSet(0.f, 0.f, -0.5f, 1.f));
-     
+    m_pPlayer = dynamic_cast<CPlayer*>(m_pOwner);
+
     Set_Active(false);
 
     return S_OK;
@@ -130,7 +137,64 @@ CGameObject* CPlayer_Shield::Clone(void* pArg)
     return pInstance;
 }
 
+
 void CPlayer_Shield::Free()
 {
     __super::Free();
+}
+
+void CPlayer_Shield::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
+{
+    CGameObject* pOwner = pOther->Get_Owner();
+
+    CheckNull(pOwner);
+    switch (COLLISION_GROUP(iGroup))
+    {
+    case Client::COLLISION_GROUP::MONSTER:
+    {
+        CMonster* pMonster = dynamic_cast<CMonster*>(pOwner);
+        if (pMonster)
+            pMonster->Push_Behavior(m_pPlayer);
+
+        //플레이어 자신도 밀린다.
+        if (m_pPlayer)
+            m_pPlayer->Push_Behavior();
+        
+    }
+    case Client::COLLISION_GROUP::MONSTER_WEAPON:
+    {
+        CWeapon* pWeapon = dynamic_cast<CWeapon*>(pOwner);
+        if (pWeapon)
+        {
+            CMonster* pMonster = dynamic_cast<CMonster*>(pWeapon->Get_Owner());
+            if (pMonster)
+                pMonster->Push_Behavior(m_pPlayer);
+
+            //플레이어 자신도 밀린다.
+            if (m_pPlayer)
+                m_pPlayer->Push_Behavior();
+
+        }
+    
+    }
+    break;
+
+    case Client::COLLISION_GROUP::TRIGGER:
+        break;
+    case Client::COLLISION_GROUP::END:
+        break;
+    default:
+        break;
+
+
+    }
+
+}
+
+void CPlayer_Shield::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)
+{
+}
+
+void CPlayer_Shield::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
+{
 }

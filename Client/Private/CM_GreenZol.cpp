@@ -64,6 +64,7 @@ HRESULT CM_GreenZol::Initialize_Copytype(void* pArg)
 		m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
 	}
 
+
 	Change_State(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::INTRO));
 	m_eCurState = MONSTER_BASE_STATE::INTRO;
 
@@ -81,13 +82,6 @@ void CM_GreenZol::Update(_float fTimeDelta)
 {
 	Intro_Behavor();
 	AIState_Change(fTimeDelta);
-
-	if (m_pNextState != nullptr)
-	{
-		m_pCurState = m_pNextState;
-		m_pNextState = nullptr;
-
-	}
 
 
 	if (m_pCurState)
@@ -184,8 +178,8 @@ void CM_GreenZol::Change_State(int newState)
 	m_iState = newState;
 
 
-	m_pNextState = m_States[newState];
-	m_pNextState->Enter(this);
+	m_pCurState = m_States[newState];
+	m_pCurState->Enter(this);
 
 	//시간초기화..
 	m_eCurState = static_cast<MONSTER_BASE_STATE>(newState);

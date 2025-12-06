@@ -51,8 +51,8 @@ HRESULT CPlayer_Body::Initialize_Copytype(void* pArg)
 	if (FAILED(Ready_Animation_Listner()))
 		return E_FAIL;
 
-
-	m_pModel->Set_TransitionTime(0.2f);
+	
+	m_pModel->Set_TransitionTime(m_fInitTransitionTime);
 
 #pragma region Set Visible Mesh
 	m_pModel->Set_VisibleMesh(L"flipperL_low__MI_flippers", false);

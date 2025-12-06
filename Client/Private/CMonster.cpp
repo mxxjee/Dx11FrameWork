@@ -172,13 +172,15 @@ void CMonster::Change_State(int newState)
     if (m_pCurState)
         m_pCurState->Exit(this);
 
+    Exit_State(m_iState);
+
     m_iPreState = m_iState;
     m_iState = newState;
 
 
-    m_pNextState = m_States[newState];
+    m_pCurState = m_States[newState];
     Enter_State(m_iState);
-    m_pNextState->Enter(this);
+    m_pCurState->Enter(this);
 }
 
 string CMonster::Convert_String_To_Enum(_uint eState)
@@ -283,10 +285,10 @@ HRESULT CMonster::Ready_Components(void* pArg)
     return S_OK;
 }
 
-void CMonster::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop)
+void CMonster::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop, bool immediately)
 {
     CheckNull(m_pBody);
-    m_pBody->Reserve_Animation(AnimKey, bNextAnimLoop);
+    m_pBody->Reserve_Animation(AnimKey, bNextAnimLoop, immediately);
 
 }
 
@@ -313,6 +315,24 @@ bool CMonster::Is_InRange(_float fDistance)
 
 
     return false;
+}
+
+void CMonster::Push_Behavior(CGameObject* pOther)
+{
+    //바라보고, 뒤로밀어내기
+    m_pTransformCom->LookAt(pOther->Get_Transform());
+
+
+    _float3 vDir;
+    XMStoreFloat3(&vDir, m_pTransformCom->Get_State(STATE::LOOK));
+    m_pTransformCom->AddImpulse(-0.2f, vDir);
+
+    m_bCanCollision = false;
+    m_pGameInstance->Invoke(2.f, 0.f, false, false, [this]()
+        {
+            m_bCanCollision = true;
+        },this);
+
 }
 
 CMonster* CMonster::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -393,6 +413,7 @@ void CMonster::Patrol()
 
 void CMonster::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {
+    CheckFalse(m_bCanCollision);
     CheckTrue(m_ActionControl.m_bDamage == 1.f);
 
     CGameObject* pOwner = pOther->Get_Owner();
