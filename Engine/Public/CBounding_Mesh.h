@@ -33,6 +33,9 @@ private:
 public:
     virtual HRESULT         Render(PrimitiveBatch<VertexPositionColor>*pBatch, _bool isColl) override;
 #endif
+public:
+    _float3         Get_MaxBound(_vector vCenter);
+    _float3         Get_MinBound(_vector vCenter);
 
 public:
     static  CBounding_Mesh* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext>        pContext, const BOUNDING_DESC * pInitialDesc);

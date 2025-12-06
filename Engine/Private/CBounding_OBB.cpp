@@ -51,7 +51,29 @@ bool CBounding_OBB::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
     return m_pDesc->Intersects(origin,rayDir,Dist);
 }
 
+_float3 CBounding_OBB::Get_MaxBound(_vector vCenter)
+{
+    _float3 fCenter;
+    XMStoreFloat3(&fCenter, vCenter);
+
+
+    return _float3(m_pDesc->Center.x + m_pDesc->Extents.x,
+        m_pDesc->Center.y + m_pDesc->Extents.y,
+        m_pDesc->Center.z + m_pDesc->Extents.z);
+}
+_float3 CBounding_OBB::Get_MinBound(_vector vCenter)
+{
+    _float3 fCenter;
+    XMStoreFloat3(&fCenter, vCenter);
+
+
+    return _float3(m_pDesc->Center.x - m_pDesc->Extents.x,
+        m_pDesc->Center.y - m_pDesc->Extents.y,
+        m_pDesc->Center.z - m_pDesc->Extents.z);
+}
+
 #ifdef _DEBUG
+
 HRESULT CBounding_OBB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _bool isColl)
 {
 

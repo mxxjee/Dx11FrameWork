@@ -33,7 +33,6 @@ public:
 public:
     static CMeshColliderComponent* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
 
-
 private:
     //바운딩박스로 먼저 검사 + model검사 , 콜라이더 2개필요
     CBounding* m_pMeshBounding = { nullptr };

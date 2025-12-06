@@ -42,7 +42,8 @@ public:
 public:
     void        Set_Raidus(_float fRadius) { m_fRadius = fRadius; }
  
-
+    virtual _float3         Get_MaxBound(_vector vCenter);
+    virtual _float3         Get_MinBound(_vector vCenter);
 private:
     _float      m_fRadius = 1.f;
 

@@ -11,6 +11,8 @@
 #include "CBoxColliderComponent.h"
 #include "CPartObject.h"
 #include "CCell.h"
+#include "CCamera_Base.h"
+
 
 
 
@@ -114,8 +116,12 @@ void CMonster::Update_Late(_float fTimeDelta)
 
 void CMonster::Update_Render(_float fTimeDelta)
 {
-    __super::Update_Render(fTimeDelta);
-    m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::NONALPHA), this);
+    if (Is_Visible())
+    {
+        __super::Update_Render(fTimeDelta);
+        m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::NONALPHA), this);
+    }
+
 }
 
 HRESULT CMonster::Render()
@@ -144,6 +150,24 @@ void CMonster::Set_Active(bool _b)
 
     m_pCollider->Set_Active(false);
 
+}
+
+bool CMonster::Is_Visible()
+{
+    CCamera_Base* pMaincamera = m_pGameInstance->Get_MainCamera();
+    CheckNullResult(pMaincamera, false);
+
+    _float3 vPos;
+    _vector  vCenter = m_pTransformCom->Get_State(STATE::POSITION);
+    XMStoreFloat3(&vPos, vCenter);
+    
+    if (pMaincamera->IsInDistance(vPos))
+    {
+        if (pMaincamera->IsInFrustum(m_pCollider->Get_MinBound(vCenter),m_pCollider->Get_MaxBound(vCenter)))
+            return true;
+    }
+
+    return false;
 }
 
 void CMonster::Enter_State(int newState)

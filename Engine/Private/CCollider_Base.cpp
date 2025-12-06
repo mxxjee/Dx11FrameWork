@@ -100,6 +100,16 @@ void CCollider_Base::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
         m_pOwner->OnCollisionExit(iGroup,pOther);
 }
 
+_float3 CCollider_Base::Get_MaxBound(_vector vCenter)
+{
+    return m_pBounding->Get_MaxBound(vCenter);
+}
+
+_float3 CCollider_Base::Get_MinBound(_vector vCenter)
+{
+    return m_pBounding->Get_MinBound(vCenter);
+}
+
 
 
 

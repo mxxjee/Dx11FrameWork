@@ -70,6 +70,28 @@ void CBounding_Sphere::Free()
 
 }
 
+_float3 CBounding_Sphere::Get_MaxBound(_vector vCenter)
+{
+    _float3 fCenter;
+    XMStoreFloat3(&fCenter, vCenter);
+
+   
+    return _float3(m_pDesc->Center.x + m_pDesc->Radius,
+                    m_pDesc->Center.y + m_pDesc->Radius,
+                    m_pDesc->Center.z + m_pDesc->Radius);
+
+}
+
+_float3 CBounding_Sphere::Get_MinBound(_vector vCenter)
+{
+    _float3 fCenter;
+    XMStoreFloat3(&fCenter, vCenter);
+
+    return _float3(m_pDesc->Center.x - m_pDesc->Radius,
+        m_pDesc->Center.y - m_pDesc->Radius,
+        m_pDesc->Center.z - m_pDesc->Radius);
+}
+
 bool CBounding_Sphere::Intersect(COLLIDER_TYPE eType, CBounding* pOther)
 {
     switch (eType)

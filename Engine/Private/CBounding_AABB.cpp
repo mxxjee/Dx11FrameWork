@@ -72,6 +72,28 @@ bool CBounding_AABB::Intersect(COLLIDER_TYPE eType, CBounding* pOther)
     return false;
 }
 
+_float3 CBounding_AABB::Get_MaxBound(_vector vCenter)
+{
+    _float3 fCenter;
+    XMStoreFloat3(&fCenter, vCenter);
+
+
+    return _float3(m_pDesc->Center.x +m_pDesc->Extents.x,
+        m_pDesc->Center.y + m_pDesc->Extents.y,
+        m_pDesc->Center.z + m_pDesc->Extents.z);
+}
+
+_float3 CBounding_AABB::Get_MinBound(_vector vCenter)
+{
+    _float3 fCenter;
+    XMStoreFloat3(&fCenter, vCenter);
+
+
+    return _float3(m_pDesc->Center.x - m_pDesc->Extents.x,
+        m_pDesc->Center.y - m_pDesc->Extents.y,
+        m_pDesc->Center.z - m_pDesc->Extents.z);
+}
+
 #ifdef _DEBUG
 HRESULT CBounding_AABB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _bool isColl)
 {

@@ -116,6 +116,7 @@ CMeshColliderComponent* CMeshColliderComponent::Create(ComPtr<ID3D11Device> pDev
     return pInstance;
 }
 
+
 bool CMeshColliderComponent::Intersect(CCollider_Base* pOther)
 {
     m_isColl = m_pBounding->Intersect(pOther->Get_Type(), pOther->Get_Bounding());

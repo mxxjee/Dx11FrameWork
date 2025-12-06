@@ -49,6 +49,7 @@ public:
 
 public:
     virtual void    Set_Active(bool _b);
+    virtual bool            Is_Visible();
 public:
     virtual void        Enter_State(int newState);
     virtual void        AIState_Change(_float fTimeDelta) {};
