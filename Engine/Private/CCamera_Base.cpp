@@ -283,35 +283,35 @@ void CCamera_Base::Make_Planes()
  
    
 }
-bool CCamera_Base::IsInDistance(const Chunk& chunk)
+bool CCamera_Base::IsInDistance(const _float3 vCenter)
 {
     _vector campos = m_pTransformCom->Get_State(STATE::POSITION);
 
     
-    float dist = XMVectorGetX(XMVector3Length(campos - XMLoadFloat3(&chunk.vCenter)));
+    float dist = XMVectorGetX(XMVector3Length(campos - XMLoadFloat3(&vCenter)));
     if (dist > m_fCulDistance)
         return false;
 
     return true;
 }
-bool CCamera_Base::IsInFrustum(const Bound& box)
+bool CCamera_Base::IsInFrustum(const _float3& MinBound, const _float3& MaxBound)
 {
     for (int i = 0; i < ENUM_TO_UINT(PLANE::END); ++i)
     {
         //하나라도밖에있으면 렌더하지않는다.
         
-        if (IsOutSidePlane((_uint)i, box))
+        if (IsOutSidePlane((_uint)i, MinBound, MaxBound))
             return false;
     }
     return true;
 }
-bool CCamera_Base::IsOutSidePlane(_uint PlaneDir, const Bound& box)
+bool CCamera_Base::IsOutSidePlane(_uint PlaneDir, const _float3& MinBound, const _float3& MaxBound)
 {
     _float3       PositiveVertex;
 
-    PositiveVertex.x = (m_PlaneNormal[PlaneDir].x >= 0) ? box.MaxBound.x : box.MinBound.x;
-    PositiveVertex.y = (m_PlaneNormal[PlaneDir].y >= 0) ? box.MaxBound.y : box.MinBound.y;
-    PositiveVertex.z = (m_PlaneNormal[PlaneDir].z >= 0) ? box.MaxBound.z : box.MinBound.z;
+    PositiveVertex.x = (m_PlaneNormal[PlaneDir].x >= 0) ? MaxBound.x : MinBound.x;
+    PositiveVertex.y = (m_PlaneNormal[PlaneDir].y >= 0) ? MaxBound.y : MinBound.y;
+    PositiveVertex.z = (m_PlaneNormal[PlaneDir].z >= 0) ? MaxBound.z : MinBound.z;
 
     float distance = m_PlaneNormal[PlaneDir].x * PositiveVertex.x +
         m_PlaneNormal[PlaneDir].y * PositiveVertex.y +

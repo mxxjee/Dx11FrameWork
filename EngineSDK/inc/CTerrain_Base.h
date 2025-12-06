@@ -47,7 +47,7 @@ private:
 
 public:
     CVIBuffer* Get_VIBufferCom() { return m_pVIBufferCom; }
-
+    virtual bool            Is_Visible();
 public:
      virtual void Free() override;
 

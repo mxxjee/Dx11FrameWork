@@ -54,7 +54,8 @@ public:
     CTransform* Get_Transform() const { return m_pTransformCom; }
 
     bool            Is_Active() { return m_bActive; }
-
+                //컬링 판단
+    virtual bool            Is_Visible() { return true; }
 public:
     CGameObject*    Get_Target() { return m_pTarget; }
    

@@ -5,6 +5,9 @@
 #include "CTexture.h"
 #include "CVIBuffer.h"
 
+#include "CCamera_Base.h"
+
+
 CTerrain_Base::CTerrain_Base(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CGameObject{ pDevice,pContext }
 {
@@ -56,7 +59,8 @@ void CTerrain_Base::Update_Late(_float fTimeDelta)
 void CTerrain_Base::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
-    m_pGameInstance->Add_RenderObject(m_eRenderGroup, this);
+    if(Is_Visible())
+        m_pGameInstance->Add_RenderObject(m_eRenderGroup, this);
 
 }
 
@@ -116,6 +120,21 @@ HRESULT CTerrain_Base::Bind_ShaderResources()
 }
 
 
+
+bool CTerrain_Base::Is_Visible()
+{
+    CCamera_Base* pMaincamera = m_pGameInstance->Get_MainCamera();
+    CheckNullResult(pMaincamera, false);
+
+    if (pMaincamera->IsInDistance(m_TerrainChunk.vCenter))
+    {
+        if (pMaincamera->IsInFrustum(m_TerrainChunk.ChunkBound.MinBound,
+                                    m_TerrainChunk.ChunkBound.MaxBound))
+            return true;
+    }
+
+    return false;
+}
 
 void CTerrain_Base::Free()
 {

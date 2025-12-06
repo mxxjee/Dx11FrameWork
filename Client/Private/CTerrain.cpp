@@ -7,6 +7,7 @@
 #include "CShader.h"
 
 #include "Client_Defines.h"
+#include "CCamera_Base.h"
 
 
 USING(Client)
@@ -82,8 +83,12 @@ void CTerrain::Update_Late(_float fTimeDelta)
 
 void CTerrain::Update_Render(_float fTimeDelta)
 {
-    __super::Update_Render(fTimeDelta); 
-    m_pBody->Update_Render(fTimeDelta);
+    if (Is_Visible())
+    {
+        m_pBody->Update_Render(fTimeDelta);
+        m_pGameInstance->Add_RenderObject(m_eRenderGroup, this);
+    }
+    
 }
 
 HRESULT CTerrain::Render()
@@ -155,6 +160,14 @@ void CTerrain::Free()
 
 void CTerrain::Update_Render_MiniMapPriority()
 {
-    m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP), m_pBody);
+    CCamera_Base* pMiniMapCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
+    CheckNull(pMiniMapCamera);
 
+    if (pMiniMapCamera)
+    {
+        if (pMiniMapCamera->IsInDistance(m_TerrainChunk.vCenter))
+            m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP), m_pBody);
+
+    }
+   
 }

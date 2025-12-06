@@ -128,17 +128,11 @@ void CTerrain_Manager::Update_Render(_float fTimeDelta)
 	{
 		if (pair.second)
 		{
-			if (pMaincamera->IsInDistance(pair.second->Get_Chunk()))
-			{
-				if (pMaincamera->IsInFrustum(pair.second->Get_Chunk().ChunkBound))
-					pair.second->Update_Render(fTimeDelta);
-			}
 
-			if (pMiniMapCamera)
-			{
-				if (pMiniMapCamera->IsInDistance(pair.second->Get_Chunk()))
-					pair.second->Update_Render_MiniMapPriority();
-			}
+			pair.second->Update_Render(fTimeDelta);
+			pair.second->Update_Render_MiniMapPriority();
+
+
 		}
 			
 	}

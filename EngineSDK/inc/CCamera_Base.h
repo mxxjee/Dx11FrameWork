@@ -109,13 +109,13 @@ private:
     void            Make_Planes();
 
 public:
-    bool            IsInDistance(const Chunk& chunk);
+    bool            IsInDistance(const _float3 vCenter);
     void            Set_Distance(_float fDistance) { m_fCulDistance = fDistance; }
 public:
-    virtual bool IsInFrustum(const Bound& box);
+    virtual bool IsInFrustum(const _float3& MinBound, const _float3& MaxBound);
 
 private:
-    bool        IsOutSidePlane(_uint PlaneDir, const Bound& box);
+    bool        IsOutSidePlane(_uint PlaneDir, const _float3& MinBound, const _float3& MaxBound);
 protected:
     CAMERA_TYPE                     m_eCameraType = CAMERA_TYPE::END;
     CAMERA_FLAG                     m_eCameraFlag = CAMERA_FLAG::END;
