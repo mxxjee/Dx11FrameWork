@@ -4,6 +4,9 @@
 namespace Engine
 {
     class CGameObject;
+    class CModelObject;
+    class CAnimModelObject;
+
 }
 
 NS_BEGIN(Client)
@@ -23,7 +26,7 @@ public:
     virtual void Render() override;
 
 public:
-    void            Set_SelectObject(class CGameObject* pTarget) { pSelectObject = pTarget; }
+    void            Set_SelectObject(class CGameObject* pTarget);
     virtual         void    Reset() {pSelectObject = nullptr;}        //리셋하고싶은 값 리셋하기
 
 public:
@@ -32,6 +35,8 @@ public:
 
 private:
     CGameObject* pSelectObject = { nullptr };
+    CModelObject* pSelectModelObj = nullptr;
+    CAnimModelObject* pSelectAnimModelObj = nullptr;
 
 };
 

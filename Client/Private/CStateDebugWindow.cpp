@@ -30,11 +30,10 @@ void CStateDebugWindow::Update()
     ImGui::Begin(m_WindowTitle.c_str(), &m_bOpen);
     if (pSelectObject)
     {
-        CModelObject* pModel = dynamic_cast<CModelObject*>(pSelectObject);
         if (pModel)
         {
-            CAnimModelObject* ppAnimModel = dynamic_cast<CAnimModelObject*>(pModel);
-            ppAnimModel->Render_StateDebug(&Value);
+           if(ppAnimModel)
+                ppAnimModel->Render_StateDebug(&Value);
 
         }
     }
@@ -48,6 +47,15 @@ void CStateDebugWindow::Render()
 {
 }
 
+void CStateDebugWindow::Set_SelectObject(CGameObject* pObj)
+{
+    if (pObj != pSelectObject)
+    {
+        pModel = dynamic_cast<CModelObject*>(pObj);
+        ppAnimModel = dynamic_cast<CAnimModelObject*>(pModel);
+
+    }
+}
 
 
 CStateDebugWindow* CStateDebugWindow::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg)

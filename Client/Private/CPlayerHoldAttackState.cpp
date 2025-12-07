@@ -14,7 +14,7 @@ CPlayerHoldAttackState::~CPlayerHoldAttackState()
 void CPlayerHoldAttackState::Enter(CPlayer* pPlayer)
 {
     pPlayerInput = pPlayer->Get_Input();
-    pPlayer->Reserve_Animation_To_Body(L"slash_hold_st", false,true);
+    pPlayer->Reserve_Animation_To_Body(L"slash_hold_st", false);
 
     pPlayer->Reset_ActionControl();
 

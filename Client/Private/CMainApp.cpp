@@ -192,7 +192,7 @@ void CMainApp::Set_Collision_Rules()
 	
 	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
 	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON), ENUM_TO_UINT(COLLISION_GROUP::MONSTER_WEAPON), true);
-
+	
 }
 
 void CMainApp::Update_Priority(_float fTimeDelta)

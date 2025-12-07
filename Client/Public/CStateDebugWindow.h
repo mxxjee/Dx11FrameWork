@@ -6,6 +6,9 @@
 namespace Engine
 {
     class CGameObject;
+    class CModelObject;
+    class CAnimModelObject;
+
 }
 
 NS_BEGIN(Client)
@@ -27,8 +30,7 @@ public:
     virtual         void    Reset() { pSelectObject = nullptr; }        //리셋하고싶은 값 리셋하기
 
 public:
-    void        Set_SelectObject(CGameObject* pObj) { pSelectObject = pObj; }
-
+    void        Set_SelectObject(CGameObject* pObj);
 public:
     static CStateDebugWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
     virtual void Free();
@@ -39,6 +41,8 @@ private:
     int Value = 0;
 
     CGameObject* pSelectObject = { nullptr };
+    CModelObject* pModel = nullptr;
+    CAnimModelObject* ppAnimModel = nullptr;
 };
 NS_END
 

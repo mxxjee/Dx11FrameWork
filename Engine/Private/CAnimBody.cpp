@@ -4,6 +4,8 @@
 #include "CModel.h"
 #include "CModelObject.h"
 #include "CGameInstance.h"
+#include "CMeshComponent.h"
+#include "CShader.h"
 
 CAnimBody::CAnimBody(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 	:CBody(pDevice,pContext)
@@ -62,7 +64,39 @@ void CAnimBody::Update_Render(_float fTimeDelta)
 
 HRESULT CAnimBody::Render()
 {
-	__super::Render();
+
+	if (FAILED(Bind_ShaderResources()))
+		return E_FAIL;
+
+
+	for (auto& Mesh : m_pModel->Get_Meshs())
+	{
+		/*모든 메쉬를 순회하면서 바인드한다.
+		   각 메쉬들의 위치와 소유한 메테리얼의 이미지 바인딩.
+		   이후 메쉬를 그리는 작업*/
+
+		if (Mesh.second)
+		{
+			Mesh.second->Bind_ShaderResource(m_pShader, "g_DiffuseTexture", aiTextureType::aiTextureType_DIFFUSE);
+			Mesh.second->Bind_ShaderResource(m_pShader, "g_SpecularTexture", aiTextureType::aiTextureType_SPECULAR);
+			Mesh.second->Bind_ShaderResource(m_pShader, "g_AmbientTexture", aiTextureType::aiTextureType_AMBIENT);
+
+			if (FAILED(m_pModel->Bind_Bones(m_pShader, "g_BoneMatrices", Mesh.second)))
+				return E_FAIL;
+
+			if (FAILED(m_pShader->Begin(Mesh.second->Get_PassName())))
+				return E_FAIL;
+
+			if (FAILED(m_pModel->Render(Mesh.second)))
+				return E_FAIL;
+
+
+		}
+
+
+
+	}
+
 
 	return S_OK;
 }

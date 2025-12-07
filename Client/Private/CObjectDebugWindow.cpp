@@ -34,13 +34,10 @@ void CObjectDebugWindow::Update()
     {
         pSelectObject->Render_Transform_Imgui();
 
-        CModelObject* pModelObj = dynamic_cast<CModelObject*>(pSelectObject);
-        if (pModelObj)
+        if (pSelectModelObj)
         {
-            CAnimModelObject* ppAnimModel = dynamic_cast<CAnimModelObject*>(pModelObj);
-            
-            if(ppAnimModel)
-                ppAnimModel->Render_CurrentState_Animation();
+            if(pSelectAnimModelObj)
+                pSelectAnimModelObj->Render_CurrentState_Animation();
         }
     }
 
@@ -56,6 +53,17 @@ void CObjectDebugWindow::Update()
 
 void CObjectDebugWindow::Render()
 {
+}
+
+void CObjectDebugWindow::Set_SelectObject(CGameObject* pTarget)
+{
+    if (pTarget != pSelectObject)
+    {
+        pSelectObject = pTarget;
+
+        pSelectModelObj = dynamic_cast<CModelObject*>(pSelectObject);
+        pSelectAnimModelObj = dynamic_cast<CAnimModelObject*>(pSelectModelObj);
+    }
 }
 
 CObjectDebugWindow* CObjectDebugWindow::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg)
