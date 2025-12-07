@@ -815,7 +815,7 @@ HRESULT CPlayer::Ready_States()
 void CPlayer::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop, bool immediately)
 {
     CheckNull(m_pAnimBody);
-    m_pAnimBody->Reserve_Animation(AnimKey, bNextAnimLoop,true);
+    m_pAnimBody->Reserve_Animation(AnimKey, bNextAnimLoop, immediately);
 }
 
 

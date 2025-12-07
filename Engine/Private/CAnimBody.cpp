@@ -48,6 +48,8 @@ void CAnimBody::Update_Priority(_float fTimeDelta)
 void CAnimBody::Update(_float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
+
+
 }
 
 void CAnimBody::Update_Late(_float fTimeDelta)

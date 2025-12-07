@@ -1,4 +1,4 @@
-#include "CQuad.h"
+#include "CQuad.h" 
 #include "CGameInstance.h"
 
 #include "CTexture.h"

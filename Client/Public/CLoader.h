@@ -40,6 +40,7 @@ private:
     HRESULT         Register_Models();
     HRESULT         Register_Components();
     HRESULT         Register_GameObjects();
+    HRESULT         Load_TownMapData();
 
 public:
     _bool       IsFinished() const { return m_isFinished; }

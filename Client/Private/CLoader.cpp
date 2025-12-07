@@ -1,5 +1,7 @@
+#include "..\..\MapTool\Public\CLoader.h"
 #include "CLoader.h"
 #include "CGameInstance.h"
+#include "CMapLoader.h"
 
 ////////////////////UI/////////////////////
 #include "CFadeScreen.h"
@@ -161,12 +163,13 @@ HRESULT CLoader::Loading_Town()
     {
         int a = 10;
     }
-    lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
 
+
+    lstrcpy(m_szFPS, TEXT("맵 로딩중입니다."));
+    Load_TownMapData();
    
+    lstrcpy(m_szFPS, TEXT("로딩완료!"));
 
-    //if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::GAMEPLAY), PROTO_OBJ_NAME(L"BackGround"), CBackGround::Create(m_pDevice, m_pDeviceContext))))
-    //    return E_FAIL;
 
     m_isFinished = true;
     return S_OK;
@@ -378,6 +381,7 @@ HRESULT CLoader::Register_Components()
     return S_OK;
 }
 
+
 HRESULT CLoader::Register_GameObjects()
 {
     
@@ -477,6 +481,11 @@ HRESULT CLoader::Register_GameObjects()
     return S_OK;
 }
 
+HRESULT CLoader::Load_TownMapData()
+{
+    CMapLoader::Load_Town();
+    return S_OK;
+}
 
 
 CLoader* CLoader::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LEVEL_ID iNextLevelID)

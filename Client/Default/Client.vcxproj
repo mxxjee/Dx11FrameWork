@@ -156,6 +156,7 @@
     <ClInclude Include="..\Public\CFadeScreen.h" />
     <ClInclude Include="..\Public\CFloor.h" />
     <ClInclude Include="..\Public\CIInteractable.h" />
+    <ClInclude Include="..\Public\CInteractionObject.h" />
     <ClInclude Include="..\Public\CInteraction_Manager.h" />
     <ClInclude Include="..\Public\CLevelDebugWindow.h" />
     <ClInclude Include="..\Public\CLevel_Town.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\CLoader.h" />
     <ClInclude Include="..\Public\CMainApp.h" />
+    <ClInclude Include="..\Public\CMapLoader.h" />
     <ClInclude Include="..\Public\CMGreenZolHideState.h" />
     <ClInclude Include="..\Public\CMGreenZolIntroState.h" />
     <ClInclude Include="..\Public\CMGreenZolJumpAttackState.h" />
@@ -231,6 +233,7 @@
     <ClCompile Include="..\Private\CFadeScreen.cpp" />
     <ClCompile Include="..\Private\CFloor.cpp" />
     <ClCompile Include="..\Private\CIInteractable.cpp" />
+    <ClCompile Include="..\Private\CInteractionObject.cpp" />
     <ClCompile Include="..\Private\CInteraction_Manager.cpp" />
     <ClCompile Include="..\Private\CLevelDebugWindow.cpp" />
     <ClCompile Include="..\Private\CLevel_Town.cpp" />
@@ -239,6 +242,7 @@
     <ClCompile Include="..\Private\CLevel_UI.cpp" />
     <ClCompile Include="..\Private\CLoader.cpp" />
     <ClCompile Include="..\Private\CMainApp.cpp" />
+    <ClCompile Include="..\Private\CMapLoader.cpp" />
     <ClCompile Include="..\Private\CMGreenZolHideState.cpp" />
     <ClCompile Include="..\Private\CMGreenZolIntroState.cpp" />
     <ClCompile Include="..\Private\CMGreenZolJumpAttackState.cpp" />

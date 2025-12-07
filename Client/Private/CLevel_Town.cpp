@@ -189,48 +189,8 @@ HRESULT CLevel_Town::Ready_Lights()
 HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 {
 
-    ////////////////Terrain불러오기//////////////////
-    ///////////////////////////////////
-#pragma region Loading Terrain
-    vector<tagLoadTerrainData> LoadDatas=m_pGameInstance->Load_Terrains_Runtime("../../Resource/Data/Map/Final_Town.json");
-    for (int i = 0; i < LoadDatas.size(); ++i)
-    {
-        tagLoadTerrainData TargetData = LoadDatas[i];
-
-        CTerrain::TERRAINOBJECT_DESC desc;
-
-        CBody::BODY_DESC bodyDesc;
-        bodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
-        bodyDesc.modelName =StringToWString(TargetData.ModelName);
-        desc.BodyDesc = &bodyDesc;
-
-        desc.ObjTag = L"Terrain"+bodyDesc.modelName;
-        desc.vIndex = TargetData.vIndex;
-
-        CTransform::TRANSFORM_DESC TransDesc = {};
-        TransDesc.vLocalPosition = TargetData.vPosition;
-        TransDesc.vLocalRotation = TargetData.vRotation;
-        TransDesc.vLocalScale = TargetData.vScale;
-
-        desc.TransformDesc = &TransDesc;
-
-        CTerrain_Base* pTerrain = dynamic_cast<CTerrain_Base*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC),
-            PROTO_OBJ_NAME(L"Terrain"), &desc));
-
-        if (pTerrain)
-            m_pGameInstance->Register_Terrain(pTerrain->Get_Tag(),pTerrain);
-    }
-
-  
-#pragma endregion
-
-
-    ///////////////////////Navigation 불러오기
-    m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::TOWN), "../../Resource/Data/Map/Terrain21_Nav.dat");
-#ifdef _DEBUG
-    m_pGameInstance->Set_NavMeshShader(m_pGameInstance->Find_Shader(L"VtxPos"));
-#endif
     m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::TOWN));
+    CGameInstance::GetInstance()->Set_EnableUpdate(true);
 
     return S_OK;
 }

@@ -53,6 +53,8 @@ public:
     _float3             Get_PickingWorldPos() { return PickingWolrdPos; }
     
     const UMap<_wstring, CTerrain_Base*>& Get_TerrainMap() { return m_TerrainMap;}
+public:
+    void                Set_EnableUpdate(bool b) { m_bUpdate = b; }
 private:
     ComPtr<ID3D11Device>		m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext>	m_pDeviceContext = { nullptr };
@@ -73,6 +75,7 @@ private:
 private:
     vector<LOADTERRAINDATA>         LoadDatas;
     CGameInstance*                  m_pGameInstance = nullptr;
+    bool                            m_bUpdate = true;
 
 
 };

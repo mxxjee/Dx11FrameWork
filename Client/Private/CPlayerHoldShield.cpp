@@ -159,7 +159,7 @@ void CPlayerHoldShield::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 
 void CPlayerHoldShield::Hit_Shield(CPlayer* pPlayer)
 {
-    pPlayer->Reserve_Animation_To_Body(L"shieldhit", false);
+    pPlayer->Reserve_Animation_To_Body(L"shieldhit", false,true);
     m_ePhase = Phase::Hit;
 
 }
@@ -206,7 +206,7 @@ void CPlayerHoldShield::Change_Phase(CPlayer* pPlayer)
     case Phase::Hit:
 	{
 		m_ePhase = Phase::Loop;
-		pPlayer->Reserve_Animation_To_Body(L"shield_lp", false);
+		pPlayer->Reserve_Animation_To_Body(L"shield_lp", false,true);
 	}
 	break;
 

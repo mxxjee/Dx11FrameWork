@@ -212,6 +212,12 @@
     <ClInclude Include="..\Public\CMMoriblinAttackState.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Attack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CMapLoader.h">
+      <Filter>96.Managers\MapLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CInteractionObject.h">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -459,6 +465,12 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Attack">
       <UniqueIdentifier>{cbfa7bf0-8652-437c-9ab7-f5b8dbdabf6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96.Managers\MapLoader">
+      <UniqueIdentifier>{1b2bbf5f-e0c0-4e28-88ac-099e95827850}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\02.InteractionObject">
+      <UniqueIdentifier>{a6125283-5b1e-4114-a068-4680692df159}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -650,6 +662,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMMoriblinAttackState.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapLoader.cpp">
+      <Filter>96.Managers\MapLoader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CInteractionObject.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

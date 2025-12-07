@@ -723,6 +723,11 @@ Triangle* CGameInstance::PickTerrain(const _wstring& Key)
 	return m_pTerrainManager->PickTerrain(Key);
 }
 
+void CGameInstance::Set_EnableUpdate(bool b)
+{
+	return m_pTerrainManager->Set_EnableUpdate(b);
+}
+
 _float3 CGameInstance::Get_PickingWorldPos()
 {
 	return m_pTerrainManager->Get_PickingWorldPos();

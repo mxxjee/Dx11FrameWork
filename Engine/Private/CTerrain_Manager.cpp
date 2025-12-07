@@ -57,6 +57,7 @@ HRESULT CTerrain_Manager::UnRegister_Terrain(const _wstring& Key)
 
 void CTerrain_Manager::Update_Priority(_float fTimeDelta)
 {
+	CheckFalse(m_bUpdate);
 	for (auto& pair : m_TerrainMap)
 	{
 		if (pair.second)
@@ -70,6 +71,8 @@ void CTerrain_Manager::Update_Priority(_float fTimeDelta)
 
 void CTerrain_Manager::Update(_float fTimeDelta)
 {
+	CheckFalse(m_bUpdate);
+
 	for (auto& pair : m_TerrainMap)
 	{
 		if (pair.second)
@@ -90,7 +93,8 @@ void CTerrain_Manager::Update_Late(_float fTimeDelta)
 
 	
 
-	
+	CheckFalse(m_bUpdate);
+
 	if (m_pImguiManager->Get_MapToolMode() == MapToolMode::EDIT)
 	{
 		if (CInput_Manager::GetInstance()->IsMouseButtonPressed(0))
@@ -119,6 +123,8 @@ void CTerrain_Manager::Update_Late(_float fTimeDelta)
 
 void CTerrain_Manager::Update_Render(_float fTimeDelta)
 {
+
+	CheckFalse(m_bUpdate);
 	CCamera_Base* pMaincamera = m_pGameInstance->Get_MainCamera();
 	CCamera_Base* pMiniMapCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
 

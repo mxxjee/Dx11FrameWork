@@ -4,20 +4,42 @@
 
 USING(Client)
 IMPLEMENT_SINGLETON(CInteraction_Manager)
-void CInteraction_Manager::RegisterInteractable(CIInteractable* pObj)
+void CInteraction_Manager::RegisterInteractable(string SceneName, CIInteractable* pObj)
 {
-	CIInteractable* pTarget = Find_Object(pObj);
-	if (!pTarget)
-		m_InteractableObjects.push_back(pObj);
+
+	vector<CIInteractable*>*		Interactables=Find_InteractionObjects_By_SceneName(SceneName);
+	if (Interactables == nullptr)
+	{
+		size_t Key = hash<string>()(SceneName);
+
+		vector<CIInteractable*>		Objs;
+		Objs.push_back(pObj);
+
+		m_sceneInteractbles.emplace(Key, Objs);
+
+	}
+
+	else
+	{
+		CIInteractable* pTarget = Find_Object(SceneName,pObj);
+		if (!pTarget)
+			m_InteractableObjects.push_back(pObj);
+	}
+	
+
+	
 }
 
-void CInteraction_Manager::UnRegisterInteractable(const CIInteractable* pObj)
+void CInteraction_Manager::UnRegisterInteractable(string SceneName, const CIInteractable* pObj)
 {
-	auto pFindObj = find(m_InteractableObjects.begin(), m_InteractableObjects.end(), pObj);
+	vector<CIInteractable*>* Interactables = Find_InteractionObjects_By_SceneName(SceneName);
+	if (Interactables)
+	{
+		vector<CIInteractable*>::iterator pFindObj = find(Interactables->begin(), Interactables->end(), pObj);
+		if (pFindObj != Interactables->end())
+			Interactables->erase(pFindObj);
+	}
 
-	if (pFindObj != m_InteractableObjects.end())
-		m_InteractableObjects.erase(pFindObj);
-	 
 	else
 		return;
 }
@@ -28,7 +50,7 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 	CIInteractable* pBest = nullptr;
 
 	//전체 리스트를 돌면서 상호작용가능한 조건을 가지는 애들을 간추리기
-	for (auto pInteratable : m_InteractableObjects)
+	for (auto pInteratable : (*MainInteractbles))
 	{
 		if (!pInteratable)
 			continue;
@@ -61,7 +83,7 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 		m_pCurrentTarget->Stay_Interaction(fTimeDelta);
 
 
-	for (auto obj : m_InteractableObjects)
+	for (auto obj : (*MainInteractbles))
 	{
 		if (obj->m_bPrevInteracting && obj != m_pCurrentTarget)
 		{
@@ -96,7 +118,12 @@ bool CInteraction_Manager::OnInteractKeyPresed()
 void CInteraction_Manager::Clear()
 {
 	m_pCurrentTarget = nullptr;
-	m_InteractableObjects.clear();
+
+	for (auto& pair : m_sceneInteractbles)
+	{
+		pair.second.clear();
+	}
+
 }
 
 bool CInteraction_Manager::Check_InteractiveType(InteractionType eType)
@@ -106,15 +133,39 @@ bool CInteraction_Manager::Check_InteractiveType(InteractionType eType)
 	return m_pCurrentTarget->Get_Interaction_Priority() == (int)eType;
 }
 
-CIInteractable* CInteraction_Manager::Find_Object(const CIInteractable* pObj)
+CIInteractable* CInteraction_Manager::Find_Object(string SceneName, const CIInteractable* pObj)
 {
-	auto pFindObj = find(m_InteractableObjects.begin(), m_InteractableObjects.end(), pObj);
+	size_t Key = hash<string>()(SceneName);
+	
+	vector<CIInteractable*>* pFindVector = Find_InteractionObjects_By_SceneName(SceneName);
+	if (!pFindVector)
+		nullptr;
 
 
-	if (pFindObj != m_InteractableObjects.end())
+
+	vector<CIInteractable*>::iterator pFindObj = find(pFindVector->begin(), pFindVector->end(), pObj);
+
+
+	if (pFindObj != pFindVector->end())
 		return (*pFindObj);
 
+	else
+		return nullptr;
+
+
 	return nullptr;
+}
+
+vector<CIInteractable*>* CInteraction_Manager::Find_InteractionObjects_By_SceneName(string SceneName)
+{
+	size_t SceneID = hash<string>()(SceneName);
+	auto iter = m_sceneInteractbles.find(SceneID);
+
+	if (iter == m_sceneInteractbles.end())
+		return nullptr;
+
+
+	return &iter->second;
 }
 
 void CInteraction_Manager::Free()
@@ -125,6 +176,24 @@ void CInteraction_Manager::Free()
 	m_InteractableObjects.clear();
 
 	__super::Free();
+}
+
+HRESULT CInteraction_Manager::Set_MainInteratables(string SceneName)
+{
+	vector<CIInteractable*>* Interactables = Find_InteractionObjects_By_SceneName(SceneName);
+	if (Interactables)
+		MainInteractbles = Interactables;
+
+
+	else
+	{
+		MainInteractbles = nullptr;
+		return E_FAIL;
+
+	}
+
+
+	return S_OK;
 }
 
 

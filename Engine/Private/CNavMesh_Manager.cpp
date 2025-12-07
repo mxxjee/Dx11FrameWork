@@ -105,8 +105,8 @@ CNavMesh_Manager* CNavMesh_Manager::Create(ComPtr<ID3D11Device> _pDevice, ComPtr
 #ifdef _DEBUG
 HRESULT CNavMesh_Manager::Render()
 {
+	CheckNullResult(m_MainCells, E_FAIL);
 	CheckFalseResult(m_bDrawDebug,E_FAIL);
-
 	CheckNullResult(m_pShader, E_FAIL);
 	CheckTrueResult(m_MainCells->empty(),E_FAIL);
 
