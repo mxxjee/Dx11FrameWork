@@ -2,6 +2,7 @@
 #include "CBody.h"
 #include "CAnimation.h"
 #include "CModel.h"
+#include "CAnimBody.h"
 
 
 CAnimModelObject::CAnimModelObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -58,8 +59,8 @@ HRESULT CAnimModelObject::Render()
 
 bool CAnimModelObject::Is_AnimEnd()
 {
-    CheckNullResult(m_pBody, false);
-    return m_pBody->Get_IsAnimFinished();
+    CheckNullResult(m_pAnimBody, false);
+    return m_pAnimBody->Get_IsAnimFinished();
 }
 
 #ifdef _DEBUG
@@ -92,7 +93,7 @@ void CAnimModelObject::Render_CurrentState_Animation()
         pCurrentAnim->Get_CurrentFrame(pCurrentAnim->Get_CurrentTrackPoistion()));
     ImGui::PopStyleColor();
 }
-
+#endif
 string CAnimModelObject::Convert_String_To_Enum(_uint eState)
 {
     string StateDebugStr = "";
@@ -146,4 +147,7 @@ void CAnimModelObject::Free()
 {
     __super::Free();
 }
-#endif
+CBody* CAnimModelObject::Get_Body()
+{
+    return m_pAnimBody;
+}

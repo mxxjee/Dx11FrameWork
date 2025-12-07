@@ -1,5 +1,5 @@
 #pragma once
-#include "CModelObject.h"
+#include "CAnimModelObject.h"
 #include "CIInteractable.h"
 
 NS_BEGIN(Client)
@@ -7,7 +7,7 @@ class CPlayer;
 class CNavigation;
 
 class CNPC :
-    public CModelObject, public CIInteractable
+    public CAnimModelObject, public CIInteractable
 {
 public:
     enum class NPC_STATE

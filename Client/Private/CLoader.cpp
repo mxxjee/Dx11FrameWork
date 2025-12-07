@@ -43,6 +43,10 @@
 #include "CPlayer_Shield.h"
 #include "CM_MoriblinSword.h"
 #include "CMMoriblin_Weapon.h"
+#include "CStaticBody.h"
+#include "CAnimBody.h"
+#include "CAnimModelObject.h"
+#include "CStaticModelObject.h"
 
 
 
@@ -417,10 +421,22 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Model", CModelObject::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"AnimModel", CAnimModelObject::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"StaticModel", CStaticModelObject::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Body", CBody::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"AnimBody", CAnimBody::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"StaticBody", CStaticBody::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Body", CPlayer_Body::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;

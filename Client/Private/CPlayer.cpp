@@ -24,13 +24,13 @@
 
 USING(Client)
 CPlayer::CPlayer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CModelObject(pDevice,pContext),m_pInputManager(CInput_Manager::GetInstance())
+    :CAnimModelObject(pDevice,pContext),m_pInputManager(CInput_Manager::GetInstance())
 {
     Safe_AddRef(m_pInputManager);
 }
 
 CPlayer::CPlayer(const CPlayer& rhs)
-    : CModelObject(rhs),m_pInputManager(rhs.m_pInputManager)
+    : CAnimModelObject(rhs),m_pInputManager(rhs.m_pInputManager)
 {
     Safe_AddRef(m_pInputManager);
 }
@@ -84,8 +84,8 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
     
-    m_iPreState = CModelObject::NONE;
-    m_iState = CModelObject::IDLE;
+    m_iPreState = CAnimModelObject::NONE;
+    m_iState = CAnimModelObject::IDLE;
 
    
     if (m_pNavigationCom)
@@ -744,7 +744,9 @@ HRESULT CPlayer::Ready_PartObjects(void* pArg)
             return E_FAIL;
 
         m_pBody = dynamic_cast<CBody*>(Find_PartObject(L"Part_Body"));
-
+        
+        if (m_pBody)
+            m_pAnimBody = dynamic_cast<CAnimBody*>(m_pBody);
     }
 
 
@@ -812,8 +814,8 @@ HRESULT CPlayer::Ready_States()
 
 void CPlayer::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop, bool immediately)
 {
-    CheckNull(m_pBody);
-    m_pBody->Reserve_Animation(AnimKey, bNextAnimLoop,true);
+    CheckNull(m_pAnimBody);
+    m_pAnimBody->Reserve_Animation(AnimKey, bNextAnimLoop,true);
 }
 
 

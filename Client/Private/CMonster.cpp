@@ -18,12 +18,12 @@
 
 USING(Client)
 CMonster::CMonster(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CModelObject(pDevice, pContext), iHp(0),iMaxHp(0)
+    :CAnimModelObject(pDevice, pContext), iHp(0),iMaxHp(0)
 {
 }
 
 CMonster::CMonster(const CMonster& rhs)
-    : CModelObject(rhs),
+    : CAnimModelObject(rhs),
     iHp(rhs.iHp),
     iMaxHp(rhs.iMaxHp)
 {
@@ -281,7 +281,9 @@ HRESULT CMonster::Ready_PartObjects(void* pArg)
             return E_FAIL;
 
         m_pBody = dynamic_cast<CBody*>(Find_PartObject(L"Part_Body"));
-
+        
+        if(m_pBody)
+            m_pAnimBody = dynamic_cast<CAnimBody*>(m_pBody);
     }
     return S_OK;
 }
@@ -311,8 +313,8 @@ HRESULT CMonster::Ready_Components(void* pArg)
 
 void CMonster::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop, bool immediately)
 {
-    CheckNull(m_pBody);
-    m_pBody->Reserve_Animation(AnimKey, bNextAnimLoop, immediately);
+    CheckNull(m_pAnimBody);
+    m_pAnimBody->Reserve_Animation(AnimKey, bNextAnimLoop, immediately);
 
 }
 

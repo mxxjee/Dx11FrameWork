@@ -154,6 +154,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CAnimation.h" />
+    <ClInclude Include="..\Public\CAnimBody.h" />
+    <ClInclude Include="..\Public\CAnimModelObject.h" />
     <ClInclude Include="..\Public\CAnimNotify.h" />
     <ClInclude Include="..\Public\CBase.h" />
     <ClInclude Include="..\Public\CBody.h" />
@@ -265,6 +267,8 @@
     <ClInclude Include="..\Public\CSphereColliderComponent.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\CStaticBody.h" />
+    <ClInclude Include="..\Public\CStaticModelObject.h" />
     <ClInclude Include="..\Public\CTerrain_Base.h" />
     <ClInclude Include="..\Public\CTerrain_Manager.h" />
     <ClInclude Include="..\Public\CTexture.h" />
@@ -309,6 +313,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CAnimation.cpp" />
+    <ClCompile Include="..\Private\CAnimBody.cpp" />
+    <ClCompile Include="..\Private\CAnimModelObject.cpp" />
     <ClCompile Include="..\Private\CAnimNotify.cpp" />
     <ClCompile Include="..\Private\CBase.cpp" />
     <ClCompile Include="..\Private\CBody.cpp" />
@@ -415,6 +421,8 @@
     <ClCompile Include="..\Private\CSphereColliderComponent.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\CStaticBody.cpp" />
+    <ClCompile Include="..\Private\CStaticModelObject.cpp" />
     <ClCompile Include="..\Private\CTerrain_Base.cpp" />
     <ClCompile Include="..\Private\CTerrain_Manager.cpp" />
     <ClCompile Include="..\Private\CTexture.cpp" />

@@ -409,6 +409,18 @@
     <Filter Include="998.MapTool\Object\MapInteractionObj">
       <UniqueIdentifier>{a929de51-9d88-4e9d-8ccf-eecab6832d59}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.GameObject\ModelObject\StaticModelObjct">
+      <UniqueIdentifier>{2cedf26b-1894-41ef-9e72-3a8b08548a7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\ModelObject\AnimModelObject">
+      <UniqueIdentifier>{4ad0d6ed-4a76-4013-83ff-c688b77ba98d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\PartObject\Body\AnimBody">
+      <UniqueIdentifier>{2ad53812-960b-4ba9-90df-9a9472dc8306}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.GameObject\PartObject\Body\StaticBody">
+      <UniqueIdentifier>{25614e8b-cd89-40de-9486-94d831cc72e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -804,6 +816,18 @@
     <ClInclude Include="..\Public\CTimerTask_Manager.h">
       <Filter>00.System\19.TimerTask</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CAnimModelObject.h">
+      <Filter>03.GameObject\ModelObject\AnimModelObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStaticModelObject.h">
+      <Filter>03.GameObject\ModelObject\StaticModelObjct</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CAnimBody.h">
+      <Filter>03.GameObject\PartObject\Body\AnimBody</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStaticBody.h">
+      <Filter>03.GameObject\PartObject\Body\StaticBody</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -1154,6 +1178,18 @@
     </ClCompile>
     <ClCompile Include="..\Private\CTimerTask_Manager.cpp">
       <Filter>00.System\19.TimerTask</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAnimModelObject.cpp">
+      <Filter>03.GameObject\ModelObject\AnimModelObject</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStaticModelObject.cpp">
+      <Filter>03.GameObject\ModelObject\StaticModelObjct</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAnimBody.cpp">
+      <Filter>03.GameObject\PartObject\Body\AnimBody</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStaticBody.cpp">
+      <Filter>03.GameObject\PartObject\Body\StaticBody</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

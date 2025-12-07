@@ -39,9 +39,6 @@ HRESULT CModelObject::Initialize_Copytype(void* pArg)
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
-    /*내 컴포넌트 값 세팅*/
-    if (FAILED(Ready_Components(pArg)))
-        return E_FAIL;
 
   
  

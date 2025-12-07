@@ -1,13 +1,13 @@
 #pragma once
-#include "CBody.h"
+#include "CAnimBody.h"
 #include "CMonster.h"
 
 NS_BEGIN(Client)
 class CMonster_Body :
-    public CBody
+    public CAnimBody
 {
 public:
-    typedef struct tagMonsterBodyDesc : CBody::BODY_DESC
+    typedef struct tagMonsterBodyDesc : CAnimBody::ANIMBODY_DESC
     {
         MONSTER_ACTION_CONTORL* pActionControl = nullptr;
 

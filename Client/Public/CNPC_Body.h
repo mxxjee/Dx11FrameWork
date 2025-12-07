@@ -1,9 +1,9 @@
 #pragma once
-#include "CBody.h"
+#include "CAnimBody.h"
 
 NS_BEGIN(Client)
 class CNPC_Body :
-    public CBody
+    public CAnimBody
 {
 protected:
     CNPC_Body(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
@@ -34,5 +34,4 @@ public:
 private:
     float        m_bDamage = 0.f;  //Ç×»ó false
 };
-
 NS_END

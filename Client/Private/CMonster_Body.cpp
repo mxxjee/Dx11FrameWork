@@ -7,12 +7,12 @@
 
 USING(Client)
 CMonster_Body::CMonster_Body(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-	:CBody(pDevice, pContext)
+	:CAnimBody(pDevice, pContext)
 {
 }
 
 CMonster_Body::CMonster_Body(const CMonster_Body& rhs)
-	: CBody(rhs)
+	: CAnimBody(rhs)
 {
 }
 

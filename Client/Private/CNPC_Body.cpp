@@ -7,12 +7,12 @@
 
 USING(Client)
 CNPC_Body::CNPC_Body(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-	:CBody(pDevice,pContext)
+	:CAnimBody(pDevice,pContext)
 {
 }
 
 CNPC_Body::CNPC_Body(const CNPC_Body& rhs)
-	: CBody(rhs)
+	: CAnimBody(rhs)
 {
 }
 

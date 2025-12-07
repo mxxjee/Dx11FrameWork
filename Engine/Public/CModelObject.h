@@ -47,9 +47,9 @@ public:
     virtual void Free() override;
    
 public:
-    HRESULT     Ready_Components(void* pArg);     
-    HRESULT     Ready_PartObjects(void* pArg);
-
+    virtual HRESULT     Ready_Components(void* pArg);     
+    virtual HRESULT     Ready_PartObjects(void* pArg);
+    virtual CBody* Get_Body() { return m_pBody;}
 
 protected:
     CBody*           m_pBody = nullptr;

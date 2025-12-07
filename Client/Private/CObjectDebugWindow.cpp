@@ -5,6 +5,7 @@
 #include "ColorUtils.h"
 #include "CModelObject.h"
 #include "CImGui_Manager.h"
+#include "CAnimModelObject.h"
 
 USING(Client)
 CObjectDebugWindow::CObjectDebugWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -35,9 +36,14 @@ void CObjectDebugWindow::Update()
 
         CModelObject* pModelObj = dynamic_cast<CModelObject*>(pSelectObject);
         if (pModelObj)
-            pModelObj->Render_CurrentState_Animation();
-
+        {
+            CAnimModelObject* ppAnimModel = dynamic_cast<CAnimModelObject*>(pModelObj);
+            
+            if(ppAnimModel)
+                ppAnimModel->Render_CurrentState_Animation();
+        }
     }
+
         
 
    

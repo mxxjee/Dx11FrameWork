@@ -7,7 +7,7 @@ namespace Engine
     class CVIBuffer_Terrain;
     class CShader;
     class CTexture;
-    class CBody;
+    class CStaticBody;
 }
 
 NS_BEGIN(Client)
@@ -50,7 +50,7 @@ public:
 public:
     void Update_Render_MiniMapPriority() override;
 private:
-    CBody* m_pBody = nullptr;
+    CStaticBody* m_pBody = nullptr;
 
 };
 

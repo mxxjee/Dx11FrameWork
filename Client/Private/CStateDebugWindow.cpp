@@ -32,8 +32,11 @@ void CStateDebugWindow::Update()
     {
         CModelObject* pModel = dynamic_cast<CModelObject*>(pSelectObject);
         if (pModel)
-            pModel->Render_StateDebug(&Value);
+        {
+            CAnimModelObject* ppAnimModel = dynamic_cast<CAnimModelObject*>(pModel);
+            ppAnimModel->Render_StateDebug(&Value);
 
+        }
     }
 
   

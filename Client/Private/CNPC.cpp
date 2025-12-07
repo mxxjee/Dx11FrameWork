@@ -2,7 +2,7 @@
 #include "CPlayer.h"
 #include "Client_Defines.h"
 #include "CModel.h"
-#include "CBody.h"
+#include "CAnimBody.h"
 #include "CCamera_Base.h"
 #include "CInteraction_Manager.h"
 #include "CNavigation.h"
@@ -10,12 +10,12 @@
 
 USING(Client)
 CNPC::CNPC(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CModelObject(pDevice, pContext)
+    :CAnimModelObject(pDevice, pContext)
 {
 }
 
 CNPC::CNPC(const CNPC& rhs)
-    : CModelObject(rhs)
+    : CAnimModelObject(rhs)
 {
 }
 
@@ -27,7 +27,7 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
     NPC_DESC* pNpcDesc = static_cast<NPC_DESC*>(pArg);
 
 
-    CBody::BODY_DESC BodyDesc;
+    CAnimBody::ANIMBODY_DESC BodyDesc;
     BodyDesc.modelName = pNpcDesc->ModelName;
     BodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
     BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
@@ -130,7 +130,7 @@ void CNPC::Exit_InteractRange()
 void CNPC::Enter_Interaction()
 {
     m_bTalking = true;
-    m_pBody->Reserve_Animation(L"talk", true);
+    m_pAnimBody->Reserve_Animation(L"talk", true);
 
     m_pGameInstance->Emit(Enter_Interaction_Event);
     /*CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(m_pGameInstance->Get_MainCamera());
@@ -161,7 +161,7 @@ void CNPC::Exit_Interaction()
 {
     m_bTalking = false;
     m_pPlayer->Get_ActionControl()->m_bTalk = false;
-    m_pBody->Reserve_Animation(L"wait", true);
+    m_pAnimBody->Reserve_Animation(L"wait", true);
 
     m_pGameInstance->Emit(Exit_Interaction_Event);
 
@@ -206,7 +206,9 @@ HRESULT CNPC::Ready_PartObjects(void* pArg)
             return E_FAIL;
 
         m_pBody = dynamic_cast<CBody*>(Find_PartObject(L"Part_Body"));
-
+        
+        if (m_pBody)
+            m_pAnimBody = dynamic_cast<CAnimBody*>(m_pBody);
     }
     return S_OK;
 }

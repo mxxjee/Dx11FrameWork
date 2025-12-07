@@ -8,6 +8,8 @@
 
 #include "Client_Defines.h"
 #include "CCamera_Base.h"
+#include "CStaticBody.h"
+
 
 
 USING(Client)
@@ -117,7 +119,7 @@ HRESULT CTerrain::Ready_PartObjects(void* pArg)
         pBodyDesc->ObjTag = tag + L"_Body";
 
 
-        m_pBody = dynamic_cast<CBody*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Body"), pBodyDesc));
+        m_pBody = dynamic_cast<CStaticBody*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"StaticBody"), pBodyDesc));
 
     }
     return S_OK;

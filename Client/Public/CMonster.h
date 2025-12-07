@@ -1,5 +1,5 @@
 #pragma once
-#include "CModelObject.h"
+#include "CAnimModelObject.h"
 #include "Client_Defines.h"
 
 namespace Engine
@@ -14,7 +14,7 @@ class CMonsterState;
 class CMonster_Body;
 
 class CMonster :
-    public CModelObject
+    public CAnimModelObject
 {
 public:
     enum  MONSTER_BASE_STATE

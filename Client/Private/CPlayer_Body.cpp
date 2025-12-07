@@ -11,12 +11,12 @@
 
 USING(Client)
 CPlayer_Body::CPlayer_Body(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-	:CBody(pDevice,pContext)
+	:CAnimBody(pDevice,pContext)
 {
 }
 
 CPlayer_Body::CPlayer_Body(const CPlayer_Body& rhs)
-	:CBody(rhs)
+	: CAnimBody(rhs)
 {
 }
 

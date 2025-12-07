@@ -18,7 +18,6 @@ public:
     typedef struct tagBodyDesc : public CPartObject::tagPartObjectDesc
     {
         wstring    modelName;               //이 body가 사용할 모델이름
-        const _uint* pParentState = nullptr;//부모의 상태를 통해서 애님제어
         _uint eRenderGroup = 0;
     
     }BODY_DESC;
@@ -42,14 +41,11 @@ public:
 
 public:
     void Set_VisibleMesh(const wstring& MeshName, bool bVisible);
-    void Set_Animation_Speed(const wstring& AnimName, _float fSpeed);
-
+    
 
 public:
     _float3             Get_RootDelta();
-protected:
-    const _uint* m_pParentState = { nullptr };
-    const _uint* m_pParentPreState = { nullptr };
+
 
 public:
     const _float4x4* Get_SocketMatrix(const char* pBoneName);
@@ -64,12 +60,12 @@ protected:
 public:
     CModel* Get_Model() { return m_pModel; }
     CShader* Get_Shader() { return m_pShader; }
-    bool        Get_IsAnimFinished();
+ 
 
 
 protected:
-    HRESULT         Ready_Components(void *pArg);
-    HRESULT         Ready_Resource(void* pArg);
+    virtual HRESULT         Ready_Components(void *pArg);
+    virtual HRESULT         Ready_Resource(void* pArg);
 
     virtual HRESULT         Bind_ShaderResources();
 
@@ -78,18 +74,9 @@ public:
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
-public:
-    //Body Update 시 Set_Animation할 애니메이션 설정
-    void        Reserve_Animation(_wstring AnimKey, bool bLoop, bool immediately=false);
-private:
+protected:
     _uint                   m_eRenderGroup = 0;
 
-
-protected:
-    wstring             m_NextAnimKey = L"";
-    bool                m_NextAnimLoop = false;
-
-    float               m_fInitTransitionTime=0.2f;
 
 };
 NS_END

@@ -1,5 +1,5 @@
 #pragma once
-#include "CModelObject.h"
+#include "CAnimModelObject.h"
 #include "VertexData.h"
 #include "Client_Defines.h"
 
@@ -19,7 +19,7 @@ NS_BEGIN(Client)
 class CPlayerState;
 
 class CPlayer :
-    public CModelObject
+    public CAnimModelObject
 {
 public:
     enum HoldKey

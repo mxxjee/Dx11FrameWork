@@ -1,13 +1,13 @@
 #pragma once
-#include "CBody.h"
+#include "CAnimBody.h"
 #include "Client_Defines.h"
 
 NS_BEGIN(Client)
 class CPlayer_Body :
-    public CBody
+    public CAnimBody
 {
 public:
-    typedef struct tagCPlayer_BodyDesc : CBody::BODY_DESC
+    typedef struct tagCPlayer_BodyDesc : CAnimBody::ANIMBODY_DESC
     {
         float* pDamgeRender = nullptr;
         float* pDamageTime = nullptr;

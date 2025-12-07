@@ -30,11 +30,9 @@ HRESULT CBody::Initialize_Prototype()
 HRESULT CBody::Initialize_Copytype(void* pArg)
 {
     BODY_DESC* pDesc = static_cast<BODY_DESC*>(pArg);
-    m_pParentState = pDesc->pParentState;
 
 
-    m_fInitTransitionTime = 0.2f;
-
+    
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
@@ -54,13 +52,12 @@ void CBody::Update_Priority(_float fTimeDelta)
 
 void CBody::Update(_float fTimeDelta)
 {
-   
+    __super::Update(fTimeDelta);
 }
 
 void CBody::Update_Late(_float fTimeDelta)
 {
-    if (m_pModel && m_pModel->Get_NumAnim() > 0)
-        m_pModel->Play_Animation(fTimeDelta);
+    __super::Update_Late(fTimeDelta);
 }
 
 void CBody::Update_Render(_float fTimeDelta)
@@ -112,12 +109,6 @@ void CBody::Set_VisibleMesh(const wstring& MeshName, bool bVisible)
         m_pModel->Set_VisibleMesh(MeshName, bVisible);
 }
 
-void CBody::Set_Animation_Speed(const wstring& AnimName, _float fSpeed)
-{
-    if (m_pModel)
-        m_pModel->Set_Animation_Speed(AnimName, fSpeed);
-
-}
 
 _float3 CBody::Get_RootDelta()
 {
@@ -134,16 +125,6 @@ const _float4x4* CBody::Get_SocketMatrix(const char* pBoneName)
     return m_pModel->Get_BoneMatrix(pBoneName);
 }
 
-bool CBody::Get_IsAnimFinished()
-{
-
-	CheckNullResult(m_pModel, false);
-    CheckTrueResult(m_pModel->Get_NumAnim() == 0, false);
-
-
-	return m_pModel->Get_IsAnimFinished();
-
-}
 
 HRESULT CBody::Ready_Components(void* pArg)
 {
@@ -166,7 +147,6 @@ HRESULT CBody::Ready_Resource(void* pArg)
 {
     CBody::BODY_DESC* pBodyDesc = static_cast<CBody::BODY_DESC*>(pArg);
     m_eRenderGroup = pBodyDesc->eRenderGroup;
-    m_pParentState = pBodyDesc->pParentState;
 
     if (m_pModel)
     {
@@ -222,16 +202,5 @@ void CBody::Free()
     Safe_Release(m_pShader);
 }
 
-void CBody::Reserve_Animation(_wstring AnimKey, bool bLoop, bool immediately)
-{
-    m_NextAnimKey = AnimKey;
-    m_NextAnimLoop = bLoop;
 
-    if (immediately)
-        m_pModel->Set_TransitionTime(0.05f);
-
-    else
-        m_pModel->Set_TransitionTime(m_fInitTransitionTime);
-
-}
 
