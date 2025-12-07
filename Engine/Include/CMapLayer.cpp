@@ -1,6 +1,7 @@
 #include "CMapLayer.h"
 #include "CMapObject.h"
 #include "MathUtils.h"
+#include "CMapInteractObject.h"
 
 CMapLayer::CMapLayer()
 {
@@ -159,6 +160,69 @@ HRESULT CMapLayer::Save_Data(const string& filePath, _uint iNum)
 
 
     MSG_BOX("Save Complete");
+    return S_OK;
+}
+
+HRESULT CMapLayer::Load_Data(const string& LoadPath, vector<DefaultInteractionData>& Infos)
+{
+    /*기존 리스트를 비우고 로드한다.*/
+    for (auto& i : m_ObjList)
+        Safe_Release(i);
+
+    m_ObjList.clear();
+
+    ifstream file(LoadPath);
+    json jInteractionData = json::parse(file);
+    for (auto& iInteraction : jInteractionData)
+    {
+        DefaultInteractionData Data;
+
+        Data.ModelName= iInteraction["ModelName"];
+        string InteractionType = iInteraction["InteractionType"];
+        if (InteractionType == "CaveRock")
+            Data.InteractionType = ENUM_TO_UINT(CMapInteractObject::InteractionType::CAVEROCK);
+
+        else if (InteractionType == "Rock")
+            Data.InteractionType = ENUM_TO_UINT(CMapInteractObject::InteractionType::ROCK);
+
+
+        else if (InteractionType == "Lawn")
+            Data.InteractionType = ENUM_TO_UINT(CMapInteractObject::InteractionType::LAWN);
+
+        
+        else if (InteractionType == "Grass")
+            Data.InteractionType = ENUM_TO_UINT(CMapInteractObject::InteractionType::GRASS);
+
+        json TransformData = iInteraction["Transform"];
+
+        Data.vPos.x = TransformData["Position"][0].get<float>();
+        Data.vPos.y = TransformData["Position"][1].get<float>();
+        Data.vPos.z = TransformData["Position"][2].get<float>();
+
+        Data.vRotation.x = TransformData["Rotation"][0].get<float>();
+        Data.vRotation.y = TransformData["Rotation"][1].get<float>();
+        Data.vRotation.z = TransformData["Rotation"][2].get<float>();
+
+        Data.vScale.x = TransformData["Scale"][0].get<float>();
+        Data.vScale.y = TransformData["Scale"][1].get<float>();
+        Data.vScale.z = TransformData["Scale"][2].get<float>();
+
+
+        json ColliderData = iInteraction["Collider"];
+        
+        Data.ColliderCenter.x = ColliderData["Center"][0].get<float>();
+        Data.ColliderCenter.y = ColliderData["Center"][1].get<float>();
+        Data.ColliderCenter.z = ColliderData["Center"][2].get<float>();
+
+        Data.ColliderExtent.x = ColliderData["Extent"][0].get<float>();
+        Data.ColliderExtent.y = ColliderData["Extent"][1].get<float>();
+        Data.ColliderExtent.z = ColliderData["Extent"][2].get<float>();;
+
+        Infos.push_back(Data);
+
+    }
+
+    
     return S_OK;
 }
 

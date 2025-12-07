@@ -126,6 +126,12 @@ void CMapInteractObject::Save_To_Json(json& Json)
 	string InteractionInfo = "";
 	switch (InteractionType(m_eInteractionType))
 	{
+	case InteractionType::CAVEROCK:
+		InteractionInfo = "CaveRock";
+
+		break;
+
+
 	case InteractionType::ROCK:
 		InteractionInfo = "Rock";
 

@@ -21,6 +21,7 @@
 
 
 
+
 USING(Engine)
 
 IMPLEMENT_SINGLETON(CImgui_DataManager)
@@ -376,12 +377,12 @@ HRESULT CImgui_DataManager::Update_SaveFiles()
 
 	m_SaveFilePath.m_SaveTerrainFileNames.clear();
 	m_SaveFilePath.m_SaveNavFileNames.clear();
-	m_SaveFilePath.m_InteractionFileNames.clear();
+	m_SaveFilePath.m_SaveInteractionFileNames.clear();
 
 
 	m_SaveFilePath.m_TerrainSaveFileNamesStr.clear();
 	m_SaveFilePath.m_NavSaveFileNamesStr.clear();
-	m_SaveFilePath.m_InteractionFileNames.clear();
+	m_SaveFilePath.m_InteractionSaveFileNamesStr.clear();
 
 
 
@@ -397,7 +398,8 @@ HRESULT CImgui_DataManager::Update_SaveFiles()
 			if (path.find("Interaction") != string::npos)
 			{
 				m_SaveFilePath.m_InteractionFiles.push_back(fullPath);    // 경로 저장
-				m_SaveFilePath.m_InteractionFileNames.push_back(fileName);
+				m_SaveFilePath.m_SaveInteractionFileNames.push_back(fileName);
+
 			}
 
 			else
@@ -423,6 +425,7 @@ HRESULT CImgui_DataManager::Update_SaveFiles()
 				
 				m_SaveFilePath.m_NavSaveFiles.push_back(fullPath);    // 경로 저장
 				m_SaveFilePath.m_SaveNavFileNames.push_back(fileName);
+
 			}
 
 			
@@ -440,10 +443,63 @@ HRESULT CImgui_DataManager::Update_SaveFiles()
 		m_SaveFilePath.m_NavSaveFileNamesStr.push_back(name.c_str());
 
 
-	m_SaveFilePath.m_InteractionFileNamesStr.reserve(m_SaveFilePath.m_InteractionFiles.size());
-	for (auto& name : m_SaveFilePath.m_InteractionFiles)
-		m_SaveFilePath.m_InteractionFileNamesStr.push_back(name.c_str());
+	m_SaveFilePath.m_InteractionSaveFileNamesStr.reserve(m_SaveFilePath.m_InteractionFiles.size());
+	for (auto& name : m_SaveFilePath.m_SaveInteractionFileNames)
+		m_SaveFilePath.m_InteractionSaveFileNamesStr.push_back(name.c_str());
 	
+	return S_OK;
+}
+
+HRESULT CImgui_DataManager::Load_InteractionData(const string& filePath)
+{
+	vector<DefaultInteractionData> Datas;
+	if (FAILED(m_pMapObject_Manager->Load_InteractionData(filePath, Datas)))
+		return E_FAIL;
+
+	if (FAILED(Create_InteractionObj_By_Data(Datas)))
+		return E_FAIL;
+
+
+	
+	return S_OK;
+}
+
+HRESULT CImgui_DataManager::Create_InteractionObj_By_Data(vector<DefaultInteractionData>& Datas)
+{
+	CheckTrueResult(Datas.empty(),E_FAIL);
+
+	for (auto& info : (Datas))
+	{
+		CMapInteractObject::MapInteraction_DESC Desc;
+		CModel::MODEL_DSC modelDesc;
+		Desc.modelDesc = &modelDesc;
+
+		Desc.eRenderGroup =ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+		Desc.modelName = StringToWString(info.ModelName);
+		Desc.eInteractionType = info.InteractionType;
+		Desc.ObjType = MapObjType::INTERACTION;
+		Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(MapObjType::INTERACTION, Desc.modelName);
+
+		CTransform::TRANSFORM_DESC TransDesc;
+		TransDesc.vLocalPosition = _float4(info.vPos.x, info.vPos.y, info.vPos.z, 1.f);
+		TransDesc.vLocalRotation = _float4(info.vRotation.x, info.vRotation.y, info.vRotation.z, 0.f);
+		TransDesc.vLocalScale = _float4(info.vScale.x, info.vScale.y, info.vScale.z, 1.f);
+
+		CMeshColliderComponent::COLLIDER_DESC ColDesc;
+		CBounding_Mesh::BOUNDING_MESH_DESC meshBound;
+		meshBound.Extents = info.ColliderExtent;
+		meshBound.vCenter = info.ColliderCenter;
+
+		ColDesc.m_BoundingDesc = &meshBound;
+
+		Desc.ColliderComponent = &ColDesc;
+		Desc.TransformDesc = &TransDesc;
+
+		if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(0), PROTO_OBJ_NAME(L"MapInteraction"), L"Interaction_Layer", &Desc)))
+			return E_FAIL;
+
+	}
+
 	return S_OK;
 }
 

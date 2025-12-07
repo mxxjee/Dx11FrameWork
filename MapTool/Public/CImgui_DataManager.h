@@ -1,6 +1,8 @@
 #pragma once
 #include "CBase.h"
 #include "MapTool_Struct.h"
+#include "Engine_Struct.h"
+
 //MAPTOOL프로젝트에서만 사용하는 임구이 데이터전달용
 
 namespace Engine
@@ -103,6 +105,11 @@ public:
 
 public:
     HRESULT       Update_SaveFiles();       //저장된 파일들을 모두 검사하여 경로를벡터에담는다.
+    HRESULT       Load_InteractionData(const string& filePath);
+
+private:
+    //로드한정보따라서 내부적으로 생성
+    HRESULT            Create_InteractionObj_By_Data(vector<DefaultInteractionData>& Datas);
 private:
     SaveFilePath            m_SaveFilePath;
     LoadFilePath            m_LoadFilePath;

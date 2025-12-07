@@ -10,16 +10,7 @@ class CBody;
 class ENGINE_DLL CModelObject :
     public CContainerObject
 {
-public:
-    /*모델들이 가지는 기본상태값들.. 이거 상속받아서 추가로 세팅*/
-    enum MODEL_STATE : UINT32
-    {
-        NONE,
-        IDLE = 1 << 0,
-        RUN = 1 << 1,
-        ATTACK = 1 << 2,
-        SHIELD
-    };
+
 public:
     typedef struct tagModelObjectDesc : CGameObject::GAMEOBJECT_DESC
     {
@@ -47,10 +38,6 @@ public:
     virtual HRESULT Render();
 
 
-public:
-                    //상태값, update돌릴 state  클래스 변경
-    virtual void            Change_State(int newState) {};
-    bool                    Is_AnimEnd();
 private:
     HRESULT                     Bind_ShaderResources();
 
@@ -63,16 +50,10 @@ public:
     HRESULT     Ready_Components(void* pArg);     
     HRESULT     Ready_PartObjects(void* pArg);
 
-public:
-    /*Imgui 디버그용..현재 상태와 애니메이션출력*/
-    virtual void        Render_CurrentState_Animation();
-    virtual string Convert_String_To_Enum(_uint eState);
-    virtual void        Render_StateDebug(int* pArg) {};
+
 protected:
     CBody*           m_pBody = nullptr;
-protected:
-    _uint                   m_iState = {};
-    _uint                   m_iPreState{};
+
 
 
 

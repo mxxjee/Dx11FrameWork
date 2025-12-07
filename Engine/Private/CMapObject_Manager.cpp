@@ -12,6 +12,8 @@
 ///////////////
 #include "CMapInteractObject.h"
 #include "CBounding_Mesh.h"
+#include "CModel.h"
+#include "CMeshColliderComponent.h"
 
 
 IMPLEMENT_SINGLETON(CMapObject_Manager)
@@ -327,14 +329,24 @@ HRESULT CMapObject_Manager::Save_InteractionData(const string& filePath, _uint i
     return S_OK;
 }
 
-HRESULT CMapObject_Manager::Load_InteractionData(const string& filePath)
+HRESULT CMapObject_Manager::Load_InteractionData(const string& filePath, vector<DefaultInteractionData>& Datas)
 {
+    m_pSelectedObject = nullptr;
+
     CMapLayer* pLayer = Find_MapLayer(L"Interaction_Layer");
-    if (pLayer)
-        pLayer->Load_Data(filePath);
+    if (!pLayer)
+    {
+        pLayer = CMapLayer::Create();
+        m_Layers.emplace(L"Interaction_Layer", pLayer);
+
+    }
+    
+    pLayer->Load_Data(filePath,Datas);
 
     return S_OK;
 }
+
+
 
 wstring CMapObject_Manager::Generate_UniqueTag(MapObjType Type, const wstring& baseName)
 {

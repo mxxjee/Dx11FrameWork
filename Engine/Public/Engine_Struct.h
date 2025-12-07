@@ -148,6 +148,20 @@ namespace Engine
 	
 	};
 
+	struct DefaultInteractionData
+	{
+		string ModelName = "";
+		_uint InteractionType = 0;
+
+		_float3 vPos;
+		_float3 vScale;
+		_float3 vRotation;
+
+		_float3 ColliderCenter;
+		_float3 ColliderExtent;
+
+
+	};
 	
 	//게임이벤트 구조체에 담길 부가 데이터, 이벤트 전달시 이용할 데이터들
 	struct EventPayload

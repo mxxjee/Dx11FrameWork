@@ -59,12 +59,12 @@ public:
     
 public:
     HRESULT         Save_InteractionData(const string& filePath, _uint iNum = 0);
-    HRESULT         Load_InteractionData(const string& filePath);
+    HRESULT         Load_InteractionData(const string& filePath, vector<DefaultInteractionData>& Datas);
+         
 
 public:
     wstring         Generate_UniqueTag(MapObjType Type, const wstring& baseName);
-
-public:
+   public:
     //레이어리스트를 가져온다.
     const UMap<_wstring, CMapLayer*>&    Get_MapLayers() { return m_Layers; }
 

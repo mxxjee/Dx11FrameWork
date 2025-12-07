@@ -8,7 +8,7 @@ class ENGINE_DLL CMapInteractObject :
 public:
     enum class InteractionType
     {
-        ROCK, LAWN, GRASS, END
+        CAVEROCK,ROCK, LAWN, GRASS, END
     };
 public:
     typedef struct MapInteraction_DESC : CMapModel::MAPMODEL_DESC

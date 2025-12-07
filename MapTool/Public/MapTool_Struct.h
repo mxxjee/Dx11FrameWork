@@ -19,13 +19,13 @@ struct SaveFilePath
 	//ListÄ³½Ì¿ë..
 	vector<string>              m_SaveTerrainFileNames;
 	vector<string>				m_SaveNavFileNames;
-	vector<string>				m_InteractionFileNames;
+	vector<string>				m_SaveInteractionFileNames;
 
 
 
 	vector<const char*>         m_TerrainSaveFileNamesStr;
 	vector<const char*>			m_NavSaveFileNamesStr;
-	vector<const char*>			m_InteractionFileNamesStr;
+	vector<const char*>			m_InteractionSaveFileNamesStr;
 
 
 

@@ -83,11 +83,6 @@ HRESULT CModelObject::Render()
 
 
 
-bool CModelObject::Is_AnimEnd()
-{
-    CheckNullResult(m_pBody, false);
-    return m_pBody->Get_IsAnimFinished();
-}
 
 HRESULT CModelObject::Bind_ShaderResources()
 {
@@ -147,59 +142,7 @@ HRESULT CModelObject::Ready_PartObjects(void* pArg)
     return S_OK;
 
 }
-void CModelObject::Render_CurrentState_Animation()
-{
-    ImGui::Separator();
-    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 255));
 
-    string pPreState = Convert_String_To_Enum(m_iPreState);
-    string pCurState = Convert_String_To_Enum(m_iState);
-
-    ImGui::BulletText("PreState:%s",
-        pPreState.c_str());
-
-    ImGui::BulletText("CurrentState:%s",
-        pCurState.c_str());
-
-
-
-    CAnimation* pCurrentAnim = m_pBody->Get_Model()->Get_CurrentAnim();
-    string CurrentAnimKey = WStringToUTF8(m_pBody->Get_Model()->Get_CurrentAnimKey());
-    
-   
-
-    ImGui::BulletText("NowPlaying:%s",
-        CurrentAnimKey.c_str());
-
-
-    ImGui::BulletText("Now KeyFrame:%d",
-        pCurrentAnim->Get_CurrentFrame(pCurrentAnim->Get_CurrentTrackPoistion()));
-    ImGui::PopStyleColor();
-}
-string CModelObject::Convert_String_To_Enum(_uint eState)
-{
-    string StateDebugStr="";
-
-    if (eState == 0)
-        return "NONE";
-        
-
-    else
-    {
-        if (eState & IDLE)
-            StateDebugStr += "IDLE ";
-
-        if (eState & RUN)
-            StateDebugStr += "Run ";
-
-        if (eState & ATTACK)
-            StateDebugStr += "ATTACK ";
-    }
-   
-
-
-    return StateDebugStr;
-}
 void CModelObject::Free()
 {
     __super::Free();
