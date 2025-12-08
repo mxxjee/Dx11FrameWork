@@ -24,7 +24,7 @@ protected:
 
 public:
     virtual void        Enter(CPlayer* pPlayer) {};
-    virtual void        Update(CPlayer* pPlayer,_float fTimeDelta);
+    virtual bool        Update(CPlayer* pPlayer,_float fTimeDelta);
     virtual void        Update_Late(CPlayer* pPlayer,_float fTimeDelta) {};
     virtual void        Exit(CPlayer* pPlayer){};
 

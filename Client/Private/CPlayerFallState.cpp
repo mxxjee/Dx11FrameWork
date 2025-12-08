@@ -33,7 +33,7 @@ void CPlayerFallState::Enter(CPlayer* pPlayer)
 
 }
 
-void CPlayerFallState::Update(CPlayer* pPlayer, _float fTimeDelta)
+bool CPlayerFallState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
 	m_fTime += fTimeDelta;
 
@@ -52,6 +52,8 @@ void CPlayerFallState::Update(CPlayer* pPlayer, _float fTimeDelta)
 		//이후엔 이웃셀에 위치해라(이런거이벤트로모아놓으면 될듯)
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
 	}
+
+	return true;
 	
 }
 

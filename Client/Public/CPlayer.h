@@ -144,6 +144,13 @@ public:
     virtual     void    OnCollisionStay(_uint iGroup, CCollider_Base* pOther);
     virtual     void    OnCollisionExit(_uint iGroup, CCollider_Base* pOther);
 
+
+private:
+                    //길어질거같아서 함수로빼기
+    void            Check_Interaction_Collision(CCollider_Base* pOther);
+    //길어질거같아서 함수로빼기
+    void            Check_Interaction_ExitCollision(CCollider_Base* pOther);
+
 public:
     class CBoxColliderComponent* GetCollider() { return m_pCollider; }
 

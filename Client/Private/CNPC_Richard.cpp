@@ -55,6 +55,8 @@ void CNPC_Richard::Update_Render(_float fTimeDelta)
 
 HRESULT CNPC_Richard::Render()
 {
+    __super::Render();
+
     return S_OK;
 }
 

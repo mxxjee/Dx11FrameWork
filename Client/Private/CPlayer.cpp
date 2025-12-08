@@ -298,6 +298,7 @@ void CPlayer::Normal_Movement(_float fTimeDelta)
 {
     CheckTrue(m_ActionControl.m_bFixDir);
 
+
     if(m_ActionControl.m_Holds[HoldKey::HOLD_T].m_bHeld)
         m_pTransformCom->Set_Speed(m_fInitSpeed/2.f);
 
@@ -312,11 +313,17 @@ void CPlayer::Normal_Movement(_float fTimeDelta)
    
     if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LeftArrow))
     {
-        if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
-            m_pTransformCom->Rotation(_float3(0.f, -135.f, 0.f));
+        if (!m_ActionControl.m_bPush)
+        {
+            if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+                m_pTransformCom->Rotation(_float3(0.f, -135.f, 0.f));
 
-        else if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
-            m_pTransformCom->Rotation(_float3(0.f, -45.f, 0.f));
+            else if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+                m_pTransformCom->Rotation(_float3(0.f, -45.f, 0.f));
+            else
+                m_pTransformCom->Rotation(_float3(0.f, -90.f, 0.f));
+        }
+        
         else
             m_pTransformCom->Rotation(_float3(0.f, -90.f, 0.f));
 
@@ -326,14 +333,21 @@ void CPlayer::Normal_Movement(_float fTimeDelta)
 
     else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::RightArrow))
     {
-        if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
+        if (!m_ActionControl.m_bPush)
+        {
+            if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
 
-            m_pTransformCom->Rotation(_float3(0.f, 135.f, 0.f));
+                m_pTransformCom->Rotation(_float3(0.f, 135.f, 0.f));
 
-        else if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
-            m_pTransformCom->Rotation(_float3(0.f, 45.f, 0.f));
+            else if (m_pInputManager->IsKeyHeld(KeyCode::UpArrow))
+                m_pTransformCom->Rotation(_float3(0.f, 45.f, 0.f));
+            else
+                m_pTransformCom->Rotation(_float3(0.f, 90.f, 0.f));
+        }
+
         else
             m_pTransformCom->Rotation(_float3(0.f, 90.f, 0.f));
+        
     }
 
 
@@ -1091,8 +1105,14 @@ void CPlayer::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
         break;
 
     case Client::COLLISION_GROUP::TRIGGER:
+     
         break;
     case Client::COLLISION_GROUP::END:
+        break;
+
+
+    case Client::COLLISION_GROUP::INTERACTION:
+        Check_Interaction_Collision(pOther);
         break;
     default:
         break;
@@ -1105,11 +1125,82 @@ void CPlayer::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 
 void CPlayer::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)
 {
+    CheckFalse(m_bCanCollision);
+    CGameObject* pOwner = pOther->Get_Owner();
+
+    CheckNull(pOwner);
+    switch (COLLISION_GROUP(iGroup))
+    {
+
+
+    case Client::COLLISION_GROUP::INTERACTION:
+        Check_Interaction_Collision(pOther);
+        break;
+    default:
+        break;
+
+
+    }
+
+
 
   
 }
 
 void CPlayer::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
 {
- 
+
+    CheckFalse(m_bCanCollision);
+    CGameObject* pOwner = pOther->Get_Owner();
+
+    CheckNull(pOwner);
+    switch (COLLISION_GROUP(iGroup))
+    {
+
+
+    case Client::COLLISION_GROUP::INTERACTION:
+        Check_Interaction_ExitCollision(pOther);
+        break;
+    default:
+        break;
+
+
+    }
+
+
+
+}
+
+void CPlayer::Check_Interaction_Collision(CCollider_Base* pOther)
+{
+    //들고있는상태에선 밀어내는동작X
+    CheckTrue(m_ActionControl.m_bCarry || m_ActionControl.m_bPush);
+
+    CGameObject* pOtherOwner = pOther->Get_Owner();
+    CheckNull(pOtherOwner);
+
+    CIInteractable* pInteratable = dynamic_cast<CIInteractable*>(pOtherOwner);
+    CheckNull(pInteratable);
+
+    Interact_Behavior_Type BehaviorType = pInteratable->Get_BehaviorType();
+    switch (BehaviorType)
+    {
+    case Interact_Behavior_Type::PUSHABLE:
+    case Interact_Behavior_Type::CARRYABLE:
+        m_ActionControl.m_bPush=true;
+        
+        break;
+    case END:
+        break;
+    default:
+        break;
+    }
+}
+
+void CPlayer::Check_Interaction_ExitCollision(CCollider_Base* pOther)
+{
+    if (m_ActionControl.m_bPush)
+        m_ActionControl.m_bPush = false;
+
+
 }

@@ -32,7 +32,7 @@ void CPlayerHoldAttackState::Enter(CPlayer* pPlayer)
 
 }
 
-void CPlayerHoldAttackState::Update(CPlayer* pPlayer, _float fTimeDelta)
+bool CPlayerHoldAttackState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
 
     //Hold상태일 시 움직이는 애니메이션에 따른 처리
@@ -46,6 +46,7 @@ void CPlayerHoldAttackState::Update(CPlayer* pPlayer, _float fTimeDelta)
     else if (m_bChangeState)
         ChangeState(pPlayer);
 
+    return true;
 }
 
 void CPlayerHoldAttackState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)

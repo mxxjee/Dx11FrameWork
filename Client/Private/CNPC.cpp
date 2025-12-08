@@ -6,6 +6,8 @@
 #include "CCamera_Base.h"
 #include "CInteraction_Manager.h"
 #include "CNavigation.h"
+#include "CBoxColliderComponent.h"
+#include "CBounding_AABB.h"
 
 
 USING(Client)
@@ -74,16 +76,24 @@ void CNPC::Update_Late(_float fTimeDelta)
     m_pTransformCom->Set_State(STATE::POSITION,
         m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
 
+   
+    //m_pCollider->Update_Collider(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
+
 
 }
 
 void CNPC::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
+    m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::NONALPHA), this);
+
 }
 
 HRESULT CNPC::Render()
 {
+    if (m_pGameInstance->m_bDrawDebug)
+        ///m_pCollider->Render();
+
     return S_OK;
 }
 
@@ -193,6 +203,30 @@ HRESULT CNPC::Ready_Components(void* pArg)
     )))
         return E_FAIL;
 
+   // //AABB콜라이더생성
+   ////////////////Boxcollider추가
+   // CCollider_Base::COLLIDER_DESC ColDesc;
+   // CBounding_AABB::BOUNDING_AABB_DESC AABBDesc;
+   // AABBDesc.Extents = _float3(0.5f, 0.5f, 0.5f);
+   // ColDesc.m_BoundingDesc = &AABBDesc;
+   // ColDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::INTERACTION);
+
+   // CComponent* pCollider = dynamic_cast<CBoxColliderComponent*>(m_pGameInstance->Clone_Prototype(
+   //     PROTOTYPE::COMPONENT,
+   //     0,
+   //     PROTO_COMPONENT_NAME(L"BoxCollider"),
+   //     &ColDesc)
+   //     );
+
+   // if (FAILED(Add_Component(
+   //     COMPONENT_TYPE::BOX_COLLIDER,
+   //     pCollider,
+   //     reinterpret_cast<CComponent**>(&m_pCollider)
+   // )))
+   //     return E_FAIL;
+
+
+   // m_pCollider->Set_Trigger(false);
     return S_OK;
 }
 
@@ -264,6 +298,8 @@ CGameObject* CNPC::Clone(void* pArg)
 void CNPC::Free()
 {
     Safe_Release(m_pNavigationCom);
+    //Safe_Release(m_pCollider);
+
      __super::Free();
    
 }

@@ -26,7 +26,7 @@ void CPlayerDamageState::Enter(CPlayer* pPlayer)
 
 }
 
-void CPlayerDamageState::Update(CPlayer* pPlayer, _float fTimeDelta)
+bool CPlayerDamageState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
     if (pPlayer->Is_AnimEnd())
     {
@@ -36,6 +36,7 @@ void CPlayerDamageState::Update(CPlayer* pPlayer, _float fTimeDelta)
         
     }
 
+    return true;
 }
 
 void CPlayerDamageState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)

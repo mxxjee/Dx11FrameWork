@@ -18,6 +18,7 @@ HRESULT CInteraction_Rock::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
     m_pCollider->Set_Trigger(false);
+    m_BehaviorType = Interact_Behavior_Type::CARRYABLE;
 
     return S_OK;
 }

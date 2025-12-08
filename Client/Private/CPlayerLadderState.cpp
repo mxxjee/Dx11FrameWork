@@ -27,7 +27,7 @@ void CPlayerLadderState::Enter(CPlayer* pPlayer)
     m_bChangeState = false;
 }
 
-void CPlayerLadderState::Update(CPlayer* pPlayer, _float fTimeDelta)
+bool CPlayerLadderState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
     Hold_Movement(pPlayer);
 
@@ -36,6 +36,8 @@ void CPlayerLadderState::Update(CPlayer* pPlayer, _float fTimeDelta)
 
     if(m_bChangeState)
         ChangeState(pPlayer);
+
+    return true;
 }
 
 void CPlayerLadderState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)

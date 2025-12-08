@@ -29,15 +29,23 @@ void CPlayerPushState::Enter(CPlayer* pPlayer)
 
 }
 
-void CPlayerPushState::Update(CPlayer* pPlayer, _float fTimeDelta)
+bool CPlayerPushState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
+    if (!pPlayerInput->m_bisMove)
+    {
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
+        return true;
+
+    }
+
     Hold_Movement(pPlayer);
 
+   
 
     if (pActionControl->m_bCarry)
     {
         pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::CARRY));
-        return;
+        return true;
     }
 
     if (m_bChange)
@@ -45,6 +53,8 @@ void CPlayerPushState::Update(CPlayer* pPlayer, _float fTimeDelta)
 
     if (m_bChangeState)
         ChangeState(pPlayer);
+
+    return true;
 }
 
 void CPlayerPushState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)

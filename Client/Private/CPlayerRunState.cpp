@@ -22,10 +22,16 @@ void CPlayerRunState::Enter(CPlayer* pPlayer)
 
 }
 
-void CPlayerRunState::Update(CPlayer* pPlayer, _float fTimeDelta)
+bool CPlayerRunState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
-	__super::Update(pPlayer, fTimeDelta);
+	if (__super::Update(pPlayer, fTimeDelta))
+		return true;
 
+	if (pActionControl->m_bPush)
+	{
+		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::PUSH));
+		return true;
+	}
 
 	if (pPlayerInput->m_bisAttack && pPlayer->Get_CanAttackEnable())
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ATTACK));
@@ -42,6 +48,8 @@ void CPlayerRunState::Update(CPlayer* pPlayer, _float fTimeDelta)
 			pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
 
 	}
+
+	return true;
 }
 
 void CPlayerRunState::Exit(CPlayer* pPlayer)

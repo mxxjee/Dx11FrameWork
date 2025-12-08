@@ -17,6 +17,8 @@ public:
 
 	virtual _int	Get_Interaction_Priority()=0;	//여러개의 interaction이 존재할떄, 우선순위
 
+public:
+	Interact_Behavior_Type		Get_BehaviorType() { return m_BehaviorType; }
 
 public:
 	bool		m_bPrevRange = false;		//이전프레임
@@ -24,6 +26,8 @@ public:
 
 protected:
 	string			m_SceneName = "";
+	Interact_Behavior_Type			m_BehaviorType=NONE;
+
 };
 NS_END
 

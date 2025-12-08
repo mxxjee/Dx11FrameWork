@@ -38,13 +38,15 @@ void CPlayerStateGetItem::Enter(CPlayer* pPlayer)
 
 }
 
-void CPlayerStateGetItem::Update(CPlayer* pPlayer, _float fTimeDelta)
+bool CPlayerStateGetItem::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
     if (m_bChange)
         ChangePhase(pPlayer);
 
     else if (m_bChangeState)
         ChangeState(pPlayer);
+
+    return true;
 }
 
 void CPlayerStateGetItem::Update_Late(CPlayer* pPlayer, _float fTimeDelta)

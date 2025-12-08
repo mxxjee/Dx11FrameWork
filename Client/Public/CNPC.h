@@ -2,6 +2,12 @@
 #include "CAnimModelObject.h"
 #include "CIInteractable.h"
 
+namespace Engine
+{
+    class CCollider_Base;
+
+}
+
 NS_BEGIN(Client)
 class CPlayer;
 class CNavigation;
@@ -75,6 +81,7 @@ public:
 protected:
     NPC_DESC        m_NpcDesc;
     CPlayer*        m_pPlayer = nullptr;
+    CCollider_Base* m_pCollider = nullptr; //    콜라이더 정보
 
 
 protected:

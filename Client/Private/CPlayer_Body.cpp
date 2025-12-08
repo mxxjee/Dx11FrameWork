@@ -179,6 +179,11 @@ HRESULT CPlayer_Body::Ready_Animation_Speed()
 
 	m_pModel->Set_Animation_Speed(L"dmg_f", 60.f);
 	m_pModel->Set_Animation_Speed(L"dmg_b", 60.f);
+
+
+	m_pModel->Set_Animation_Speed(L"push_st", 70.f);
+	m_pModel->Set_Animation_Speed(L"push_lp", 60.f);
+	m_pModel->Set_Animation_Speed(L"push_ed", 60.f);
 	return S_OK;
 }
 

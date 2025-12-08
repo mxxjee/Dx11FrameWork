@@ -156,6 +156,14 @@ enum Interact_Object_Type
 	LAWN,
 	GRASS
 };
+
+enum Interact_Behavior_Type
+{
+	NONE,
+	PUSHABLE,
+	CARRYABLE,
+	Interact_Behavior_Type_END
+};
 using namespace Client;
 using namespace std;
 

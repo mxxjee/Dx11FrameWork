@@ -23,14 +23,15 @@ void CPlayerTalkState::Enter(CPlayer* pPlayer)
 	pPlayer->Set_CanMove(false);
 }
 
-void CPlayerTalkState::Update(CPlayer* pPlayer, _float fTimeDelta)
+bool CPlayerTalkState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
 	if (!pActionControl->m_bTalk)
 	{
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
-		return;
+		return true;
 	}
 
+	return true;
 }
 
 void CPlayerTalkState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)

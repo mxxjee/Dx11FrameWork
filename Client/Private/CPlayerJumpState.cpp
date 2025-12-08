@@ -26,7 +26,7 @@ void CPlayerJumpState::Enter(CPlayer* pPlayer)
     m_bChangeState = false;
 }
 
-void CPlayerJumpState::Update(CPlayer* pPlayer, _float fTimeDelta)
+bool CPlayerJumpState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
     
     ChangePhase(pPlayer);
@@ -35,6 +35,7 @@ void CPlayerJumpState::Update(CPlayer* pPlayer, _float fTimeDelta)
     if (m_bChangeState)
         ChangeState(pPlayer);
 
+    return true;
 }
 
 void CPlayerJumpState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)

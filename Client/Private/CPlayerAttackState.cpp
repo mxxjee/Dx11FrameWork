@@ -29,7 +29,7 @@ void CPlayerAttackState::Enter(CPlayer* pPlayer)
 }
 
 
-void CPlayerAttackState::Update(CPlayer* pPlayer, _float fTimeDelta)
+bool CPlayerAttackState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
     if (m_bChange)
     {
@@ -58,6 +58,8 @@ void CPlayerAttackState::Update(CPlayer* pPlayer, _float fTimeDelta)
         }
        
     }
+
+    return true;
        
 
 }

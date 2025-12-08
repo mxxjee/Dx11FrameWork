@@ -9,37 +9,33 @@ CPlayerState::CPlayerState()
 	
 }
 
-void CPlayerState::Update(CPlayer* pPlayer, _float fTimeDelta)
+bool CPlayerState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
 	if (pPlayer->Get_DamageRender()==1.f)
 	{
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::DAMANGE));
-		return;
+		return true;
 	}
 
 	if (pActionControl->m_bLadder)
 	{
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::LADDER));
-		return;
+		return true;
 	}
 
-	if (pActionControl->m_bPush)
-	{
-		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::PUSH));
-		return;
-	}
+	
 
 	if (pActionControl->m_bItemGet)
 	{
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ITEMGET));
-		return;
+		return true;
 	}
 
 
 	if (pActionControl->m_bCarry)
 	{
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::CARRY));
-		return;
+		return true;
 	}
 
 
@@ -47,14 +43,16 @@ void CPlayerState::Update(CPlayer* pPlayer, _float fTimeDelta)
 	if (pActionControl->m_bTalk)
 	{
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::TALK));
-		return;
+		return true;
 	}
 
 	if (pActionControl->m_bFall)
 	{
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::FALL));
-		return;
+		return true;
 	}
+
+	return false;
 }
 
 void CPlayerState::Free()

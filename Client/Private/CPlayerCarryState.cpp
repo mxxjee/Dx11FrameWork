@@ -26,13 +26,15 @@ void CPlayerCarryState::Enter(CPlayer* pPlayer)
 
 }
 
-void CPlayerCarryState::Update(CPlayer* pPlayer, _float fTimeDelta)
+bool CPlayerCarryState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
     if (m_bChange)
         ChangePhase(pPlayer);
 
     else if (m_bChangeState)
         ChangeState(pPlayer);
+
+    return true;
 }
 
 void CPlayerCarryState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)

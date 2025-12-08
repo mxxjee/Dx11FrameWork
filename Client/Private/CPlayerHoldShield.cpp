@@ -28,7 +28,7 @@ void CPlayerHoldShield::Enter(CPlayer* pPlayer)
 
 }
 
-void CPlayerHoldShield::Update(CPlayer* pPlayer, _float fTimeDelta)
+bool CPlayerHoldShield::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
     Hold_Movement(pPlayer);
 
@@ -39,6 +39,7 @@ void CPlayerHoldShield::Update(CPlayer* pPlayer, _float fTimeDelta)
         Change_Other_State(pPlayer);
 
    
+    return true;
 }
 
 void CPlayerHoldShield::Update_Late(CPlayer* pPlayer, _float fTimeDelta)

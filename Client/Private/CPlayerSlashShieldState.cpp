@@ -28,7 +28,7 @@ void CPlayerSlashShieldState::Enter(CPlayer* pPlayer)
  
 }
 
-void CPlayerSlashShieldState::Update(CPlayer* pPlayer, _float fTimeDelta)
+bool CPlayerSlashShieldState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
     Hold_Movement(pPlayer);
 
@@ -36,6 +36,7 @@ void CPlayerSlashShieldState::Update(CPlayer* pPlayer, _float fTimeDelta)
    if (m_bChangeState)
         Change_Other_State(pPlayer);
 
+   return true;
 
 }
 
