@@ -60,6 +60,7 @@ public:
     void        Reset_Collision() { m_isColl = false; }
     void        Set_Active(bool b) { m_bActive = b; }
     bool        Is_Active() { return m_bActive; }
+    void        Set_Trigger(bool b) { m_bTrigger = b; }
 public:
     COLLIDER_TYPE   Get_Type() { return m_eType; }
     class CBounding*      Get_Bounding() { return m_pBounding; }
@@ -73,6 +74,8 @@ protected:
     _bool                   m_isColl = { false };           //충돌 했는지 판단
     _uint                    m_eColGroup = 0;
 
+protected:
+    bool                    m_bTrigger = true;       //통과여부,false면 충돌시 밀어내기계산
 };
 NS_END
 

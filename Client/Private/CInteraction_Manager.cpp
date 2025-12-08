@@ -3,46 +3,30 @@
 #include "CInput_Manager.h"
 #include "Client_Defines.h"
 #include "CInteractionObject.h"
-#include "CBounding_AABB.h"
-#include "CBoxColliderComponent.h"
 
 
 USING(Client)
 IMPLEMENT_SINGLETON(CInteraction_Manager)
-void CInteraction_Manager::RegisterInteractable(string SceneName, CIInteractable* pObj)
+void CInteraction_Manager::RegisterInteractable(CIInteractable* pObj)
 {
+	CIInteractable* pTarget = Find_Object(pObj);
 
-	vector<CIInteractable*>*		Interactables=Find_InteractionObjects_By_SceneName(SceneName);
-	if (Interactables == nullptr)
+	if (!pTarget)
 	{
-		size_t Key = hash<string>()(SceneName);
-
-		vector<CIInteractable*>		Objs;
-		Objs.push_back(pObj);
-
-		m_sceneInteractbles.emplace(Key, Objs);
-
+		m_InteractableObjects.push_back(pObj);
 	}
-
-	else
-	{
-		CIInteractable* pTarget = Find_Object(SceneName,pObj);
-		if (!pTarget)
-			m_InteractableObjects.push_back(pObj);
-	}
-	
-
-	
 }
 
-void CInteraction_Manager::UnRegisterInteractable(string SceneName, const CIInteractable* pObj)
+
+
+void CInteraction_Manager::UnRegisterInteractable(const CIInteractable* pObj)
 {
-	vector<CIInteractable*>* Interactables = Find_InteractionObjects_By_SceneName(SceneName);
+	CIInteractable* Interactables = Find_Object(pObj);
 	if (Interactables)
 	{
-		vector<CIInteractable*>::iterator pFindObj = find(Interactables->begin(), Interactables->end(), pObj);
-		if (pFindObj != Interactables->end())
-			Interactables->erase(pFindObj);
+		list<CIInteractable*>::iterator pFindObj = find(m_InteractableObjects.begin(), m_InteractableObjects.end(), pObj);
+		if (pFindObj != m_InteractableObjects.end())
+			m_InteractableObjects.erase(pFindObj);
 	}
 
 	else
@@ -51,12 +35,12 @@ void CInteraction_Manager::UnRegisterInteractable(string SceneName, const CIInte
 
 void CInteraction_Manager::Update(_float fTimeDelta)
 {
-	CheckNull(MainInteractbles);
+	CheckTrue(m_InteractableObjects.empty());
 	//최적의 InteratableOBject를 찾아서 저장
 	CIInteractable* pBest = nullptr;
 
 	//전체 리스트를 돌면서 상호작용가능한 조건을 가지는 애들을 간추리기
-	for (auto pInteratable : (*MainInteractbles))
+	for (auto pInteratable : m_InteractableObjects)
 	{
 		if (!pInteratable)
 			continue;
@@ -89,7 +73,7 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 		m_pCurrentTarget->Stay_Interaction(fTimeDelta);
 
 
-	for (auto obj : (*MainInteractbles))
+	for (auto obj : m_InteractableObjects)
 	{
 		if (obj->m_bPrevInteracting && obj != m_pCurrentTarget)
 		{
@@ -125,10 +109,8 @@ void CInteraction_Manager::Clear()
 {
 	m_pCurrentTarget = nullptr;
 
-	for (auto& pair : m_sceneInteractbles)
-	{
-		pair.second.clear();
-	}
+	m_InteractableObjects.clear();
+
 
 }
 
@@ -139,20 +121,16 @@ bool CInteraction_Manager::Check_InteractiveType(InteractionType eType)
 	return m_pCurrentTarget->Get_Interaction_Priority() == (int)eType;
 }
 
-CIInteractable* CInteraction_Manager::Find_Object(string SceneName, const CIInteractable* pObj)
+
+
+CIInteractable* CInteraction_Manager::Find_Object(const CIInteractable* pObj)
 {
-	size_t Key = hash<string>()(SceneName);
 	
-	vector<CIInteractable*>* pFindVector = Find_InteractionObjects_By_SceneName(SceneName);
-	if (!pFindVector)
-		nullptr;
+	
+	list<CIInteractable*>::iterator pFindObj = find(m_InteractableObjects.begin(), m_InteractableObjects.end(), pObj);
 
 
-
-	vector<CIInteractable*>::iterator pFindObj = find(pFindVector->begin(), pFindVector->end(), pObj);
-
-
-	if (pFindObj != pFindVector->end())
+	if (pFindObj != m_InteractableObjects.end())
 		return (*pFindObj);
 
 	else
@@ -162,52 +140,22 @@ CIInteractable* CInteraction_Manager::Find_Object(string SceneName, const CIInte
 	return nullptr;
 }
 
-vector<CIInteractable*>* CInteraction_Manager::Find_InteractionObjects_By_SceneName(string SceneName)
-{
-	size_t SceneID = hash<string>()(SceneName);
-	auto iter = m_sceneInteractbles.find(SceneID);
-
-	if (iter == m_sceneInteractbles.end())
-		return nullptr;
-
-
-	return &iter->second;
-}
-
-
 
 void CInteraction_Manager::Free()
 {
-	
-	
+
 	m_pCurrentTarget = nullptr;
 	m_InteractableObjects.clear();
 
 	__super::Free();
 }
 
-HRESULT CInteraction_Manager::Set_MainInteratables(string SceneName)
-{
-	vector<CIInteractable*>* Interactables = Find_InteractionObjects_By_SceneName(SceneName);
-	if (Interactables)
-		MainInteractbles = Interactables;
 
 
-	else
-	{
-		MainInteractbles = nullptr;
-		return E_FAIL;
-
-	}
-
-
-	return S_OK;
-}
-
-HRESULT CInteraction_Manager::Load_Data(string SceneName, const string& LoadPath)
+HRESULT CInteraction_Manager::Load_Data(string SceneName, vector< DefaultInteractionData>& Infos, const string& LoadPath)
 {
 
-	vector< DefaultInteractionData>		Infos;
+	
 
 	ifstream file(LoadPath);
 	json jInteractionData = json::parse(file);
@@ -260,55 +208,11 @@ HRESULT CInteraction_Manager::Load_Data(string SceneName, const string& LoadPath
 
 	}
 
-	if (FAILED(Create_Object_By_LoadData(SceneName, Infos)))
-		return E_FAIL;
 
 	return S_OK;
 }
 
 
-HRESULT CInteraction_Manager::Create_Object_By_LoadData(string SceneName, vector<DefaultInteractionData>& Infos)
-{
-	CheckTrueResult(Infos.empty(),E_FAIL);
 
 
-	//넣기 위한 해시값
-	size_t Key = hash<string>()(SceneName);
-	for (auto& Info : Infos)
-	{
-		CInteractionObject::Interaction_DESC Desc;
-		Desc.eInteractionType = ENUM_TO_UINT(InteractionType::OBJECT);
-		Desc.eInteract_Object_Type = Info.InteractionType;
-
-		Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
-		Desc.ModelName = StringToWString(Info.ModelName);
-
-		Desc.bAnimated = false;
-
-		CTransform::TRANSFORM_DESC TransDesc;
-		TransDesc.vLocalPosition = _float4(Info.vPos.x, Info.vPos.y, Info.vPos.z, 1.f);
-		TransDesc.vLocalRotation = _float4(Info.vRotation.x, Info.vRotation.y, Info.vRotation.z, 0.f);
-		TransDesc.vLocalScale = _float4(Info.vScale.x, Info.vScale.y, Info.vScale.z,1.f);
-		Desc.TransformDesc = &TransDesc;
-
-
-		CBoxColliderComponent::COLLIDER_DESC ColDesc;
-		ColDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::INTERACTION);
-		CBounding_AABB::BOUNDING_AABB_DESC aabbDesc;
-		aabbDesc.vCenter = Info.ColliderCenter;
-		aabbDesc.Extents = Info.ColliderExtent;
-		ColDesc.m_BoundingDesc = &aabbDesc;
-		Desc.pColliderComp = &ColDesc;
-
-		//생성을떄려준다
-		
-
-
-		
-
-
-	}
-	
-	return S_OK;
-}
 

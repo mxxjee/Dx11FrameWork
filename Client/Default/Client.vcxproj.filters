@@ -219,6 +219,12 @@
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CSnow.h" />
+    <ClInclude Include="..\Public\CInteraction_Rock.h">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Rock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CInteraction_Lawn.h">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Lawn</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -484,6 +490,9 @@
     <Filter Include="02.GameObjects\98.Effect\Particle\Snow">
       <UniqueIdentifier>{50cd7236-7f73-4178-85c9-509b0cbd2d6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Lawn">
+      <UniqueIdentifier>{853babcc-2290-4f0d-aced-2fd502c9cdca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -683,6 +692,12 @@
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CSnow.cpp" />
+    <ClCompile Include="..\Private\CInteraction_Rock.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Rock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CInteraction_Lawn.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Lawn</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

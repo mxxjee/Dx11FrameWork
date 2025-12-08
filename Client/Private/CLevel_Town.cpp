@@ -21,7 +21,8 @@
 #include "CIInteractable.h"
 
 #include "CInteraction_Manager.h"
-
+#include "CMapLoader.h"
+#include "CLayer.h"
 
 
 USING(Client)
@@ -55,9 +56,11 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_UI(L"UI_Layer")))
         return E_FAIL;
 
-
-    if (FAILED(Ready_Layer_Particle(L"Particle_Layer")))
+    if (FAILED(Ready_Layer_InteractionObject(L"Interaction_Layer")))
         return E_FAIL;
+
+   /* if (FAILED(Ready_Layer_Particle(L"Particle_Layer")))
+        return E_FAIL;*/
 
     return S_OK;
 }
@@ -445,6 +448,18 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
     return S_OK;
 }
 
+HRESULT CLevel_Town::Ready_Layer_InteractionObject(const _wstring& strLayerTag)
+{
+
+    if (FAILED(m_pGameInstance->Make_New_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag)))
+        return E_FAIL;
+
+    CLayer* pInteractionLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag);
+    CMapLoader::Make_Object_By_LoadData("Level_Town", pInteractionLayer);
+
+    return S_OK;
+}
+
 HRESULT CLevel_Town::Ready_Layer_Particle(const _wstring& strLayerTag)
 {
     CGameObject::GAMEOBJECT_DESC Desc;
@@ -499,10 +514,22 @@ void CLevel_Town::OnEnter()
             
 
     }
+    
+
+    //////현재씬의 itneraction 등록
+    CLayer* pInteractionLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), L"Interaction_Layer");
+    for (auto& pObj : pInteractionLayer->Get_ObjList())
+    {
+        CIInteractable* pInteractable = dynamic_cast<CIInteractable*>(pObj);
+        if(pInteractable)
+            CInteraction_Manager::GetInstance()->RegisterInteractable(pInteractable);
+    }
 }
 
 void CLevel_Town::OnResume()
-{ 
+{
+    //씬이 다시시작행슬때 메인 상호작용오브ㅈ게트들 설정
+    //CInteraction_Manager::GetInstance()->Set_MainInteratables("Level_Town");
     int A=0;
 }
 
@@ -517,6 +544,7 @@ void CLevel_Town::OnPause()
 void CLevel_Town::OnExit()
 {
     int A=0;
+
 }
 
 

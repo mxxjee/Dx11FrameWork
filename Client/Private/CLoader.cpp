@@ -52,6 +52,10 @@
 #include "CStaticModelObject.h"
 #include "CSnow.h"
 
+#include "CInteractionObject.h"
+#include "CInteraction_Lawn.h"
+#include "CInteraction_Rock.h"
+
 
 
 
@@ -339,7 +343,7 @@ HRESULT CLoader::Register_Models()
     
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC", NPCmatrix);
 
-
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Object/", XMMatrixIdentity());
 
     
     // m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle");
@@ -501,6 +505,18 @@ HRESULT CLoader::Register_GameObjects()
         return E_FAIL;
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Moriblin_Weapon", CMMoriblin_Weapon::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+
+
+    /// /////////Interaction Objects
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"InteractionObject", CInteractionObject::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Interaction_Rock", CInteraction_Rock::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Interaction_Lawn", CInteraction_Lawn::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     ////////Particles

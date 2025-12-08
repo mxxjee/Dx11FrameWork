@@ -157,7 +157,9 @@
     <ClInclude Include="..\Public\CFloor.h" />
     <ClInclude Include="..\Public\CIInteractable.h" />
     <ClInclude Include="..\Public\CInteractionObject.h" />
+    <ClInclude Include="..\Public\CInteraction_Lawn.h" />
     <ClInclude Include="..\Public\CInteraction_Manager.h" />
+    <ClInclude Include="..\Public\CInteraction_Rock.h" />
     <ClInclude Include="..\Public\CLevelDebugWindow.h" />
     <ClInclude Include="..\Public\CLevel_Town.h" />
     <ClInclude Include="..\Public\CLevel_Loading.h" />
@@ -235,7 +237,9 @@
     <ClCompile Include="..\Private\CFloor.cpp" />
     <ClCompile Include="..\Private\CIInteractable.cpp" />
     <ClCompile Include="..\Private\CInteractionObject.cpp" />
+    <ClCompile Include="..\Private\CInteraction_Lawn.cpp" />
     <ClCompile Include="..\Private\CInteraction_Manager.cpp" />
+    <ClCompile Include="..\Private\CInteraction_Rock.cpp" />
     <ClCompile Include="..\Private\CLevelDebugWindow.cpp" />
     <ClCompile Include="..\Private\CLevel_Town.cpp" />
     <ClCompile Include="..\Private\CLevel_Loading.cpp" />

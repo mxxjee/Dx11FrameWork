@@ -22,6 +22,8 @@ public:
 	bool		m_bPrevRange = false;		//이전프레임
 	bool		m_bPrevInteracting = false;	//이전프레임의 상호작용상태(Exit/Enter판단위해서)
 
+protected:
+	string			m_SceneName = "";
 };
 NS_END
 

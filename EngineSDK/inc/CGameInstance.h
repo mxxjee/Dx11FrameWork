@@ -80,6 +80,8 @@ public:
 	HRESULT Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _wstring & strPrototypeTag,
 		_uint iLayerLevelIndex, const _wstring & strLayerTag, void* pArg = nullptr);
 
+					//레이어 생성
+	HRESULT Make_New_Layer(_uint iLayerLevelIndex, const _wstring & strLayerTag);
 
 	void        Update_Priority_Static(_float fTimeDelta);
 	void        Update_Static(_float fTimeDelta);

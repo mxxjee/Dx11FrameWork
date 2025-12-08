@@ -1,6 +1,6 @@
 #pragma once
 #include "CContainerObject.h"
-
+#include "CIInteractable.h"
 namespace Engine
 {
     class CCollider_Base;
@@ -10,7 +10,7 @@ namespace Engine
 
 NS_BEGIN(Client)
 class CInteractionObject :
-    public CContainerObject
+    public CContainerObject,public CIInteractable
 {
 public:
     typedef struct Interaction_DESC : CGameObject::GAMEOBJECT_DESC
@@ -25,6 +25,8 @@ public:
         _wstring                ModelName;
         void*                   BodyDesc = nullptr;
         bool                    bAnimated = false;      //애님을 사용하는 메쉬인지
+
+        string                  SceneName = "";
 
     }Interaction_DESC;
 
@@ -68,6 +70,24 @@ private:
 
 private:
     _uint       m_iState = 0;
+
+
+    // CIInteractable을(를) 통해 상속됨
+    virtual bool IsInteratable() override;
+
+    virtual void Enter_InteractRange() override;
+
+    virtual void Stay_InteractRange(_float fTimeDelta) override;
+
+    virtual void Exit_InteractRange() override;
+
+    virtual void Enter_Interaction() override;
+
+    virtual void Stay_Interaction(_float fTimeDelta) override;
+
+    virtual void Exit_Interaction() override;
+
+    virtual _int Get_Interaction_Priority() override;
 
 };
 NS_END

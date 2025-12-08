@@ -34,6 +34,8 @@ public:
     //이미생성한 것을 추가하는 함수
     HRESULT     Add_GameObject_To_Layer(_uint iLayerLevelIndex, const _wstring& strLayerTag,CGameObject* pObject);
 
+    //레이어를 생성하는 함수
+    HRESULT    Make_New_Layer(_uint iLayerLevelIndex, const _wstring& strLayerTag);
 
     const unordered_map<_wstring, CLayer*>& Get_Layers(_uint iLevel);
     

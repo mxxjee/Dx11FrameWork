@@ -3,18 +3,28 @@
 #include "CTerrain.h"
 #include "CBody.h"
 #include "CGameInstance.h"
+#include "CInteraction_Manager.h"
+#include "CBounding_AABB.h"
+#include "CBoxColliderComponent.h"
+
+
+unordered_map<size_t, vector<DefaultInteractionData>> CMapLoader::m_sceneInteractbles = {};
+
+
+
+USING(Client)
 
 HRESULT CMapLoader::Load_Town()
 {
     Load_Terrain("../../Resource/Data/Map/Final_Town.json");
     Load_NavMesh(LEVEL_ID::TOWN, "../../Resource/Data/Map/Terrain21_Nav.dat");
-
+    Load_Interaction("Level_Town", "../../Resource/Data/Map/Interaction3.json");
     return S_OK;
 }
 
 
 
-///////////////////
+///////////////////읽어와서 구조체만 모아둠.
 void CMapLoader::Load_Terrain(const string& LoadPath)
 {
     vector<tagLoadTerrainData> LoadDatas = CGameInstance::GetInstance()->Load_Terrains_Runtime(LoadPath);
@@ -63,7 +73,87 @@ void CMapLoader::Load_NavMesh(LEVEL_ID LevelID,const string& LoadPath)
 #endif
 }
 
-void CMapLoader::Load_Interaction(LEVEL_ID LevelID, const string& LoadPath)
+void CMapLoader::Load_Interaction(string LevelName, const string& LoadPath)
 {
-    
+    size_t hashKey = hash<string>()(LevelName);
+
+    CInteraction_Manager::GetInstance()->Load_Data(LevelName, m_sceneInteractbles[hashKey], LoadPath);
+
+ 
+
+
 }
+
+HRESULT CMapLoader::Make_Object_By_LoadData(string SceneName, CLayer* pLayer)
+{
+
+    
+    
+    size_t hashKey = hash<string>()(SceneName);
+    vector< DefaultInteractionData> Infos = m_sceneInteractbles[hashKey];
+    CheckTrueResult(Infos.empty(), E_FAIL);
+
+    CGameInstance* pGameInstance = CGameInstance::GetInstance();
+    _uint SceneID = 0;
+
+
+    if (SceneName == "Level_Town")
+        SceneID = ENUM_TO_UINT(LEVEL_ID::TOWN);
+
+
+
+    for (auto& Info : Infos)
+    {
+        CInteractionObject::Interaction_DESC Desc;
+        Desc.eInteractionType = ENUM_TO_UINT(InteractionType::OBJECT);
+        Desc.eInteract_Object_Type = Info.InteractionType;
+
+        Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+        Desc.ModelName = StringToWString(Info.ModelName);
+
+        Desc.SceneName = SceneName;
+        Desc.bAnimated = false;
+
+        CTransform::TRANSFORM_DESC TransDesc;
+        TransDesc.vLocalPosition = _float4(Info.vPos.x, Info.vPos.y, Info.vPos.z, 1.f);
+        TransDesc.vLocalRotation = _float4(Info.vRotation.x, Info.vRotation.y, Info.vRotation.z, 0.f);
+        TransDesc.vLocalScale = _float4(Info.vScale.x, Info.vScale.y, Info.vScale.z, 1.f);
+        Desc.TransformDesc = &TransDesc;
+
+
+        CBoxColliderComponent::COLLIDER_DESC ColDesc;
+        ColDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::INTERACTION);
+        CBounding_AABB::BOUNDING_AABB_DESC aabbDesc;
+        aabbDesc.vCenter = Info.ColliderCenter;
+        aabbDesc.Extents = Info.ColliderExtent;
+        ColDesc.m_BoundingDesc = &aabbDesc;
+        Desc.pColliderComp = &ColDesc;
+
+        wstring ProtoTag = L"";
+
+        switch (Interact_Object_Type(Desc.eInteract_Object_Type))
+        {
+        case Interact_Object_Type::LAWN:
+            ProtoTag = L"Interaction_Lawn";
+            break;
+
+
+        case Interact_Object_Type::ROCK:
+            ProtoTag = L"Interaction_Rock";
+            break;
+
+        }
+       if(FAILED(pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+            PROTO_OBJ_NAME(ProtoTag),
+            SceneID,
+            L"Interaction_Layer", &Desc)))
+            return E_FAIL;
+
+
+        
+
+    }
+
+    return S_OK;
+}
+

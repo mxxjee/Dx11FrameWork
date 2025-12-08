@@ -7,6 +7,8 @@
 #include "CBoxColliderComponent.h"
 #include "CAnimBody.h"
 
+#include "CInteraction_Manager.h"
+
 USING(Client)
 CInteractionObject::CInteractionObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CContainerObject(pDevice,pContext)
@@ -29,6 +31,15 @@ HRESULT CInteractionObject::Initialize_Prototype()
 HRESULT CInteractionObject::Initialize_Copytype(void* pArg)
 {
     /*부모 컴포넌트 값세팅 */
+    Interaction_DESC* pDesc = static_cast<Interaction_DESC*>(pArg);
+
+
+    m_eRenderGroup = pDesc->eRenderGroup;
+    m_eInteractionType = pDesc->eInteractionType;
+    m_eInteractionType = pDesc->eInteract_Object_Type;
+    m_SceneName = pDesc->SceneName;
+
+
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
@@ -39,10 +50,6 @@ HRESULT CInteractionObject::Initialize_Copytype(void* pArg)
     if (FAILED(Ready_PartObjects(pArg)))
         return E_FAIL;
 
-    Interaction_DESC* pDesc = static_cast<Interaction_DESC*>(pArg);
-    
-    m_eInteractionType = pDesc->eInteractionType;
-    m_eInteractionType = pDesc->eInteract_Object_Type;
 
 
     return S_OK;
@@ -63,6 +70,8 @@ void CInteractionObject::Update(_float fTimeDelta)
 void CInteractionObject::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
+    m_pCollider->Update_Collider(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
+
 }
 
 void CInteractionObject::Update_Render(_float fTimeDelta)
@@ -75,6 +84,11 @@ void CInteractionObject::Update_Render(_float fTimeDelta)
 HRESULT CInteractionObject::Render()
 {
     __super::Render();
+    if (CGameInstance::m_bDrawDebug)
+    {
+        m_pCollider->Render();
+    }
+
 
     return S_OK;
 }
@@ -112,6 +126,11 @@ CGameObject* CInteractionObject::Clone(void* pArg)
 
 void CInteractionObject::Free()
 {
+    __super::Free();
+
+    Safe_Release(m_pCollider);
+    Safe_Release(m_pBody);
+
 }
 
 HRESULT CInteractionObject::Ready_Components(void* pArg)
@@ -173,4 +192,38 @@ HRESULT CInteractionObject::Ready_PartObjects(void* pArg)
     }
     
     return S_OK;
+}
+
+bool CInteractionObject::IsInteratable()
+{
+    return false;
+}
+
+void CInteractionObject::Enter_InteractRange()
+{
+}
+
+void CInteractionObject::Stay_InteractRange(_float fTimeDelta)
+{
+}
+
+void CInteractionObject::Exit_InteractRange()
+{
+}
+
+void CInteractionObject::Enter_Interaction()
+{
+}
+
+void CInteractionObject::Stay_Interaction(_float fTimeDelta)
+{
+}
+
+void CInteractionObject::Exit_Interaction()
+{
+}
+
+_int CInteractionObject::Get_Interaction_Priority()
+{
+    return _int();
 }

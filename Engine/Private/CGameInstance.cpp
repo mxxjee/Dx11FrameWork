@@ -367,6 +367,12 @@ HRESULT CGameInstance::Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _ws
 	return m_pObjectManager->Add_GameObject_To_Layer(iProtoLevelIndex,strPrototypeTag,iLayerLevelIndex,strLayerTag,pArg);
 }
 
+HRESULT CGameInstance::Make_New_Layer(_uint iLayerLevelIndex, const _wstring& strLayerTag)
+{
+
+	return m_pObjectManager->Make_New_Layer(iLayerLevelIndex,strLayerTag);
+}
+
 void CGameInstance::Update_Priority_Static(_float fTimeDelta)
 {
 	CheckNull(m_pObjectManager);

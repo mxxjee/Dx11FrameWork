@@ -87,9 +87,6 @@ private:
     GameEvent       Exit_Interaction_Event;
 
 
-private:
-    string      m_SceneName = "";
-
 };
 
 NS_END

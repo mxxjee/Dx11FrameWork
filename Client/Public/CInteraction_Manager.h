@@ -1,6 +1,7 @@
 #pragma once
 #include "CBase.h"
 #include "Client_Defines.h"
+#include "CInteractionObject.h"
 
 NS_BEGIN(Client)
 class CIInteractable;
@@ -15,8 +16,9 @@ private:
     virtual ~CInteraction_Manager() = default;
 
 public:
-    void        RegisterInteractable(string SceneName,CIInteractable* pObj);
-    void        UnRegisterInteractable(string SceneName, const CIInteractable* pObj);
+                //Interactionobject생성시에 불러주기
+    void        RegisterInteractable(CIInteractable* pObj);
+    void        UnRegisterInteractable(const CIInteractable* pObj);
 
     void        Update(_float fTimeDelta);
     bool        OnInteractKeyPresed();      //A키 눌렀을때 호출
@@ -27,26 +29,16 @@ public:
     CIInteractable*              Get_CurrentTarget() { return m_pCurrentTarget; }
 public:
     virtual void                Free() override;
-    HRESULT                     Set_MainInteratables(string SceneName);
-
 public:
-    HRESULT                 Load_Data(string SceneName, const string& LoadPath);
-
+    HRESULT                 Load_Data(string SceneName, vector< DefaultInteractionData>	&	Infos ,const string& LoadPath);
+    
+                                                   
 private:
-    CIInteractable*              Find_Object(string SceneName,const CIInteractable* pObj);
-    vector<CIInteractable*>*    Find_InteractionObjects_By_SceneName(string SceneName);
-
-private:
-    HRESULT                     Create_Object_By_LoadData(string SceneName, vector<DefaultInteractionData>& Infos);
+    CIInteractable*              Find_Object(const CIInteractable* pObj);
 
 private:
     CIInteractable*              m_pCurrentTarget = nullptr;
-    list<CIInteractable*>        m_InteractableObjects;  //필드에 존재하는 모든 상호작용한 오브젝트들을 등록
-
-
-private:                //키값 : 씬 이름을 hash함수를 통해 size_t로 바꾼거
-    UMap<size_t , vector<CIInteractable*>> m_sceneInteractbles;
-    vector<CIInteractable*>*                MainInteractbles=nullptr;
+    list<CIInteractable*>        m_InteractableObjects;  //현재 레벨에 맞는, 필드에 존재하는 모든 상호작용한 오브젝트들을 등록
 
 
 };
