@@ -284,6 +284,8 @@
     <ClInclude Include="..\Public\CVIBuffer.h" />
     <ClInclude Include="..\Public\CVIBuffer_CustomTerrain.h" />
     <ClInclude Include="..\Public\CVIBuffer_Model.h" />
+    <ClInclude Include="..\Public\CVIBuffer_Particle.h" />
+    <ClInclude Include="..\Public\CVIBuffer_Particle_Rect.h" />
     <ClInclude Include="..\Public\CVIBuffer_Rect.h" />
     <ClInclude Include="..\Public\CVIBuffer_Terrain.h" />
     <ClInclude Include="..\Public\CVIBuffer_Triangle.h" />
@@ -438,6 +440,8 @@
     <ClCompile Include="..\Private\CVIBuffer.cpp" />
     <ClCompile Include="..\Private\CVIBuffer_CustomTerrain.cpp" />
     <ClCompile Include="..\Private\CVIBuffer_Model.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer_Particle.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer_Particle_Rect.cpp" />
     <ClCompile Include="..\Private\CVIBuffer_Rect.cpp" />
     <ClCompile Include="..\Private\CVIBuffer_Terrain.cpp" />
     <ClCompile Include="..\Private\CVIBuffer_Triangle.cpp" />

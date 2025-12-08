@@ -30,6 +30,7 @@ public:
     HRESULT                 Ready_Layer_Monster(const _wstring& strLayerTag);
 
     HRESULT                 Ready_Layer_NPC(const _wstring& strLayerTag);
+    HRESULT                 Ready_Layer_Particle(const _wstring& strLayerTag);
 
 public:
     virtual void        OnEnter() override;           //씬 진입시 매번호출

@@ -225,18 +225,24 @@ CBounding_Mesh::BOUNDING_MESH_DESC  CMapObject_Manager::Generate_Collider_By_Int
     switch ((CMapInteractObject::InteractionType)i)
     {
     case CMapInteractObject::InteractionType::ROCK:
-        MeshDesc.vCenter = _float3(0.f, 1.f, 0.f);
-        MeshDesc.Extents = _float3(0.7f, 0.7f, 0.7f);
+        MeshDesc.vCenter = _float3(0.f, 0.4f, 0.f);
+        MeshDesc.Extents = _float3(1.f, 0.5f, 1.f);
+        break;
+
+    case CMapInteractObject::InteractionType::CAVEROCK:
+        MeshDesc.vCenter = _float3(0.f, 0.3f, 0.f);
+        MeshDesc.Extents = _float3(1.f, 0.7f,1.f);
         break;
 
 
     case CMapInteractObject::InteractionType::LAWN:
-        MeshDesc.Extents = _float3(0.5f, 0.5f, 0.5f);
+        MeshDesc.Extents = _float3(1.f, 0.7f,1.f);
         break;
 
 
     case CMapInteractObject::InteractionType::GRASS:
-        MeshDesc.Extents = _float3(0.5f, 0.5f, 0.5f);
+        MeshDesc.vCenter = _float3(0.f, 0.4f, 0.f);
+        MeshDesc.Extents = _float3(1.2f, 1.f, 1.f);
         break;
 
 

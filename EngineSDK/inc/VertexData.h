@@ -94,4 +94,25 @@ typedef struct ENGINE_DLL  tagEditMesh
 }EDITMESH;
 
 
+////////////For Instancing///////////
+typedef struct tagVertexInstance
+{
+	XMFLOAT4		vRight;
+	XMFLOAT4		vUp;
+	XMFLOAT4		vLook;
+	XMFLOAT4		vTranslation;
+	XMFLOAT2		vLifeTime;			//셰이더에서 이를 사용하기위해서 구조체의 멤버로 씀
+
+
+
+}VTXPARTICLE;
+
+//인스턴싱 기법을 사용하는 정점들은 vertex구조체 + instance구조체를 한번에 던진다.
+//고로 Input_element_desc도 함꼐정의
+typedef  struct ENGINE_DLL tagVertexPosTexParticle
+{
+	static const unsigned int iNumElements = { 7 };
+	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
+}VTXPOSTEX_PARTICLE;
+
 NS_END

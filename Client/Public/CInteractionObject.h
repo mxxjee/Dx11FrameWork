@@ -15,7 +15,9 @@ class CInteractionObject :
 public:
     typedef struct Interaction_DESC : CGameObject::GAMEOBJECT_DESC
     {
-        _uint                   eInteractionType = 0;
+        _uint                   eInteractionType = 0;//InteractionType: OBJECT or NPC
+        _uint                   eInteract_Object_Type = 0;      //CAVEROCK.ROCK.LAWN..
+
         _uint                   eRenderGroup = 0;
         _uint                   eCollisionGroup = 0;
 
@@ -56,7 +58,9 @@ public:
 
 
 private:
-    _uint                   m_eInteractionType = 0; //인터렉션타입
+    _uint                   m_eInteractionType = 10; //인터렉션타입 (10 : OBJECT)
+    _uint                   m_eInteractionObjectType = 0;//오브젝트중에 어떤 종류ㅇ니지 (rock/lawn..등)
+
     CCollider_Base*         m_pCollider = nullptr; //    콜라이더 정보
     CBody*                  m_pBody = nullptr;
     _uint                   m_eRenderGroup = 0;

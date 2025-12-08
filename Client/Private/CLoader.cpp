@@ -21,6 +21,7 @@
 #include "CBoxColliderComponent.h"
 #include "CSphereColliderComponent.h"
 #include "COBBColliderComponent.h"
+#include "CVIBuffer_Particle_Rect.h"
 
 
 ///////////////GameObject//////////////////////
@@ -49,6 +50,7 @@
 #include "CAnimBody.h"
 #include "CAnimModelObject.h"
 #include "CStaticModelObject.h"
+#include "CSnow.h"
 
 
 
@@ -266,6 +268,13 @@ HRESULT CLoader::Register_Shaders()
         "DefaultTechnique");
     m_pGameInstance->Register_Shader(L"VtxAnimMesh", pInstance);
 
+    
+    pInstance = CShader::Create(m_pDevice,
+        m_pDeviceContext, tagVertexPosTexParticle::desc, L"../../Resource/Shader/Shader_VtxPosTex_Particle.hlsl",
+        "DefaultTechnique");
+    m_pGameInstance->Register_Shader(L"VtxPosTexParticle", pInstance);
+
+
 
     return S_OK;
 }
@@ -294,6 +303,10 @@ HRESULT CLoader::Register_Textures()
 
     pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Mask.bmp", 1);
     if (FAILED(m_pGameInstance->Register_Texture(L"Mask", pTexture)))
+        return E_FAIL;
+
+    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Particle/Snow/Snow.png", 1);
+    if (FAILED(m_pGameInstance->Register_Texture(L"Snow", pTexture)))
         return E_FAIL;
 
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Logo/", L".dds");
@@ -353,6 +366,18 @@ HRESULT CLoader::Register_Components()
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Terrain"), CVIBuffer_Terrain::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Height.bmp"))))
+        return E_FAIL;
+
+
+    CVIBuffer_Particle_Rect::PARTICLE_RECT_DESC	SnowDesc{};
+    SnowDesc.iNumInstance = 8000;
+    SnowDesc.vCenter = _float3(0.f, 0.f, 0.f);
+    SnowDesc.vSize = _float2(0.1f, 0.3f);
+    SnowDesc.vRange = _float3(130.f, 1.f, 130.f);
+    SnowDesc.vSpeed = _float2(2.f, 5.f);
+    SnowDesc.vLifeTime = _float2(3.f, 5.f);
+    SnowDesc.isLoop = true;
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Particle_Rect"), CVIBuffer_Particle_Rect::Create(m_pDevice, m_pDeviceContext,&SnowDesc))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"UI"), CUIComponent::Create(m_pDevice, m_pDeviceContext))))
@@ -476,6 +501,10 @@ HRESULT CLoader::Register_GameObjects()
         return E_FAIL;
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Moriblin_Weapon", CMMoriblin_Weapon::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    ////////Particles
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Snow", CSnow::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     return S_OK;

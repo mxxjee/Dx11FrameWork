@@ -39,6 +39,10 @@ HRESULT CInteractionObject::Initialize_Copytype(void* pArg)
     if (FAILED(Ready_PartObjects(pArg)))
         return E_FAIL;
 
+    Interaction_DESC* pDesc = static_cast<Interaction_DESC*>(pArg);
+    
+    m_eInteractionType = pDesc->eInteractionType;
+    m_eInteractionType = pDesc->eInteract_Object_Type;
 
 
     return S_OK;

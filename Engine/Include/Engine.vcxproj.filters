@@ -421,6 +421,12 @@
     <Filter Include="03.GameObject\PartObject\Body\StaticBody">
       <UniqueIdentifier>{25614e8b-cd89-40de-9486-94d831cc72e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\VIBuffer\VIBuffer_Particle">
+      <UniqueIdentifier>{0a6ada42-0365-4afc-8e91-012cef8acd11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\VIBuffer\VIBuffer_Particle\VIBuffer_Particle_Rect">
+      <UniqueIdentifier>{76e664ff-9332-4e7e-9cc2-d5ea2b671976}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -828,6 +834,10 @@
     <ClInclude Include="..\Public\CStaticBody.h">
       <Filter>03.GameObject\PartObject\Body\StaticBody</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CVIBuffer_Particle.h">
+      <Filter>05.Component\VIBuffer\VIBuffer_Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CVIBuffer_Particle_Rect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -1191,5 +1201,9 @@
     <ClCompile Include="..\Private\CStaticBody.cpp">
       <Filter>03.GameObject\PartObject\Body\StaticBody</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CVIBuffer_Particle.cpp">
+      <Filter>05.Component\VIBuffer\VIBuffer_Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CVIBuffer_Particle_Rect.cpp" />
   </ItemGroup>
 </Project>

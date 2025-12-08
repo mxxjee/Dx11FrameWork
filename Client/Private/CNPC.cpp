@@ -25,6 +25,7 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
         return E_FAIL;
 
     NPC_DESC* pNpcDesc = static_cast<NPC_DESC*>(pArg);
+    m_SceneName = pNpcDesc->SceneName;
 
 
     CAnimBody::ANIMBODY_DESC BodyDesc;
@@ -49,6 +50,7 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
 
 
     m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player"));
+    CInteraction_Manager::GetInstance()->RegisterInteractable(m_SceneName, dynamic_cast<CIInteractable*>(this));
 
 
     Ready_Events();
@@ -263,7 +265,7 @@ CGameObject* CNPC::Clone(void* pArg)
 void CNPC::Free()
 {
     Safe_Release(m_pNavigationCom);
-    CInteraction_Manager::GetInstance()->UnRegisterInteractable(this);
+    CInteraction_Manager::GetInstance()->UnRegisterInteractable(m_SceneName,this);
     __super::Free();
    
 }

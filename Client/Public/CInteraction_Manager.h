@@ -29,9 +29,15 @@ public:
     virtual void                Free() override;
     HRESULT                     Set_MainInteratables(string SceneName);
 
+public:
+    HRESULT                 Load_Data(string SceneName, const string& LoadPath);
+
 private:
     CIInteractable*              Find_Object(string SceneName,const CIInteractable* pObj);
     vector<CIInteractable*>*    Find_InteractionObjects_By_SceneName(string SceneName);
+
+private:
+    HRESULT                     Create_Object_By_LoadData(string SceneName, vector<DefaultInteractionData>& Infos);
 
 private:
     CIInteractable*              m_pCurrentTarget = nullptr;
@@ -40,7 +46,7 @@ private:
 
 private:                //키값 : 씬 이름을 hash함수를 통해 size_t로 바꾼거
     UMap<size_t , vector<CIInteractable*>> m_sceneInteractbles;
-    vector<CIInteractable*>*                MainInteractbles;
+    vector<CIInteractable*>*                MainInteractbles=nullptr;
 
 
 };

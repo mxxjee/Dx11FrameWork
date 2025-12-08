@@ -148,6 +148,7 @@ namespace Engine
 		MODEL,
 		NAVIGATION,
 		GRAVITYCOM,
+		PARTICLE,
 		UI
 	};
 

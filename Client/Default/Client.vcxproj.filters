@@ -218,6 +218,7 @@
     <ClInclude Include="..\Public\CInteractionObject.h">
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CSnow.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -471,6 +472,18 @@
     <Filter Include="02.GameObjects\00.WorldObjects\02.InteractionObject">
       <UniqueIdentifier>{a6125283-5b1e-4114-a068-4680692df159}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Rock">
+      <UniqueIdentifier>{b365ed05-9f34-4469-8483-c5fe2c83e2ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\98.Effect">
+      <UniqueIdentifier>{3872f103-3055-4862-b659-a240d9c4cf2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\98.Effect\Particle">
+      <UniqueIdentifier>{5ee46fa5-842d-4feb-acb9-d4c7ce564fd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\98.Effect\Particle\Snow">
+      <UniqueIdentifier>{50cd7236-7f73-4178-85c9-509b0cbd2d6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -669,6 +682,7 @@
     <ClCompile Include="..\Private\CInteractionObject.cpp">
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CSnow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -695,6 +709,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\..\Resource\Shader\Shader_VtxPos.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\Shader_VtxPosTex_Particle.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

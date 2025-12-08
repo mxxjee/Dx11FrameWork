@@ -62,3 +62,8 @@ void CMapLoader::Load_NavMesh(LEVEL_ID LevelID,const string& LoadPath)
     pGameInstance->Set_NavMeshShader(pGameInstance->Find_Shader(L"VtxPos"));
 #endif
 }
+
+void CMapLoader::Load_Interaction(LEVEL_ID LevelID, const string& LoadPath)
+{
+    
+}

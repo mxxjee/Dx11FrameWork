@@ -55,6 +55,10 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_UI(L"UI_Layer")))
         return E_FAIL;
 
+
+    if (FAILED(Ready_Layer_Particle(L"Particle_Layer")))
+        return E_FAIL;
+
     return S_OK;
 }
 
@@ -424,6 +428,8 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
     pDesc.ObjTag = L"NPC_Richard";
     pDesc.pTarget = nullptr;
     pDesc.ModelName = L"RichardAnim";
+    pDesc.SceneName = "Level_Town";
+
 
     pDesc.TransformDesc = &pTransDesc;
 
@@ -435,8 +441,22 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
 
     }
 
-    CInteraction_Manager::GetInstance()->RegisterInteractable(dynamic_cast<CIInteractable*>(pNpc_Richard));
 
+    return S_OK;
+}
+
+HRESULT CLevel_Town::Ready_Layer_Particle(const _wstring& strLayerTag)
+{
+    CGameObject::GAMEOBJECT_DESC Desc;
+    CTransform::TRANSFORM_DESC TransDesc;
+
+    Desc.TransformDesc = &TransDesc;
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"Snow"),
+        ENUM_TO_UINT(LEVEL_ID::TOWN),
+        strLayerTag,&Desc)))
+        return E_FAIL;
     return S_OK;
 }
 

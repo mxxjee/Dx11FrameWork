@@ -18,7 +18,7 @@ namespace Client
                     
 
 	enum class LEVEL_ID {STATIC,LOGO,LOADING,TOWN,UI,MAPTOOL,END};
-	enum class COLLISION_GROUP{PLAYER,PLAYER_WEAPON,MONSTER,MONSTER_WEAPON,TRIGGER,END};
+	enum class COLLISION_GROUP{PLAYER,PLAYER_WEAPON,MONSTER,MONSTER_WEAPON,INTERACTION,TRIGGER,END};
 	enum class RENDERGROUP {PRIORITY,NONALPHA,ALPHA, PRIORITY_MINIMAP,WORLD_UI_MINIMAP,UI,END};
 	//enum class LEV
 }
@@ -149,6 +149,13 @@ enum InteractionType
 	END
 };
 
+enum Interact_Object_Type
+{
+	CAVEROCK,
+	ROCK,
+	LAWN,
+	GRASS
+};
 using namespace Client;
 using namespace std;
 

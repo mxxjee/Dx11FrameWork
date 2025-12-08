@@ -27,7 +27,7 @@
 
 
 #include "CMapInteractObject.h"
-
+#include "CSnow.h"
 
 
 
@@ -254,6 +254,10 @@ HRESULT CLoader::Register_Textures()
     if (FAILED(m_pGameInstance->Register_Texture(L"Terrain", pTexture)))
         return E_FAIL;
 
+    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Particle/Snow/Snow.png", 1);
+    if (FAILED(m_pGameInstance->Register_Texture(L"Snow", pTexture)))
+
+        return E_FAIL;
     return S_OK;
 }
 

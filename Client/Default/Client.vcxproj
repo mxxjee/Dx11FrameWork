@@ -210,6 +210,7 @@
     <ClInclude Include="..\Public\CPlayer_Body.h" />
     <ClInclude Include="..\Public\CPlayer_Shield.h" />
     <ClInclude Include="..\Public\CPlayer_Sword.h" />
+    <ClInclude Include="..\Public\CSnow.h" />
     <ClInclude Include="..\Public\CStateDebugWindow.h" />
     <ClInclude Include="..\Public\CTerrain.h" />
     <ClInclude Include="..\Public\CUI_Interactable.h">
@@ -287,6 +288,7 @@
     <ClCompile Include="..\Private\CPlayer_Body.cpp" />
     <ClCompile Include="..\Private\CPlayer_Shield.cpp" />
     <ClCompile Include="..\Private\CPlayer_Sword.cpp" />
+    <ClCompile Include="..\Private\CSnow.cpp" />
     <ClCompile Include="..\Private\CStateDebugWindow.cpp" />
     <ClCompile Include="..\Private\CTerrain.cpp" />
     <ClCompile Include="..\Private\CUI_Interactable.cpp">
@@ -359,6 +361,11 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\Shader_VtxPosTex_Particle.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
