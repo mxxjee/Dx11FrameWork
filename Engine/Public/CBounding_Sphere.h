@@ -29,6 +29,9 @@ private:
     BoundingSphere* m_pDesc = { nullptr };
     // 월드행렬을 가공한 상태의 바운딩sphere
 
+public:
+    bool        Compute_PushOut_SphereSphere(CBounding* pOther, _float3& vOut);
+
 
 #ifdef _DEBUG
 public:

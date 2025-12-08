@@ -51,6 +51,26 @@ bool CBoxColliderComponent::Intersects_Ray(_vector origin, _vector rayDir, _floa
 
 }
 
+bool CBoxColliderComponent::Push_Collision(CCollider_Base* pOther, _float3& vOutPush)
+{
+    COLLIDER_TYPE eOtherType = pOther->Get_Type();
+    CBounding_AABB* pAABB = static_cast<CBounding_AABB*>(m_pBounding);
+    bool bResult = false;
+
+    switch (eOtherType)
+    {
+    case Engine::COLLIDER_TYPE::AABB:
+        bResult= pAABB->Compute_PushOut_AABBAABB(pOther->Get_Bounding(), vOutPush);
+        break;
+
+    default:
+        break;
+    }
+
+
+    return bResult;
+}
+
 
 void CBoxColliderComponent::Set_OffSet(_float3 vOffset)
 {

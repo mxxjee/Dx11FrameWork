@@ -306,6 +306,15 @@ void CTransform::RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDel
 	AddRotation(vRotation);
 }
 
+void CTransform::AddPosition(_float3 vPos)
+{
+	_vector vCurPos = Get_State(STATE::POSITION);
+	_vector vMovePower = XMLoadFloat3(&vPos);
+
+	Set_State(STATE::POSITION, vCurPos + vMovePower);
+
+}
+
 bool CTransform::IsFront(_vector vDir)
 {
 	//나의 룩벡터와 vDir을 내적한 결과가

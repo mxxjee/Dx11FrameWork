@@ -189,10 +189,15 @@ void CMainApp::Set_Collision_Rules()
 {
 	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
 	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER_WEAPON), true);
-	
+	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), true);
+
+
 	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
 	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON), ENUM_TO_UINT(COLLISION_GROUP::MONSTER_WEAPON), true);
 	
+
+	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), ENUM_TO_UINT(COLLISION_GROUP::PLAYER), true);
+
 }
 
 void CMainApp::Update_Priority(_float fTimeDelta)

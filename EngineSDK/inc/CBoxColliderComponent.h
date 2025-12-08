@@ -20,6 +20,10 @@ public:
     bool            Intersects_Ray(_vector origin, _vector rayDir, _float & Dist, class CTransform* pTransform);
 
 public:
+    bool       Push_Collision(CCollider_Base* pOther, _float3& vOutPush);
+
+
+public:
     void            Set_OffSet(_float3 vOffset);
     void            Set_Size(_float3 vSize);
 public:

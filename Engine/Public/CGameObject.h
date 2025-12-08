@@ -69,7 +69,7 @@ public:
     virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther) {};
     virtual     void    OnCollisionStay(_uint iGroup, CCollider_Base* pOther) {};
     virtual     void    OnCollisionExit(_uint iGroup, CCollider_Base* pOther){};
-
+    virtual     void    PushOut(_float3 vOutPush);
 protected:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };

@@ -53,6 +53,26 @@ bool CSphereColliderComponent::Intersects_Ray(_vector origin, _vector rayDir, _f
 
 }
 
+bool CSphereColliderComponent::Push_Collision(CCollider_Base* pOther, _float3& vOutPush)
+{
+    COLLIDER_TYPE eOtherType = pOther->Get_Type();
+    CBounding_Sphere* pSphere = static_cast<CBounding_Sphere*>(m_pBounding);
+    bool bResult = false;
+
+    switch (eOtherType)
+    {
+    case Engine::COLLIDER_TYPE::AABB:
+        bResult = pSphere->Compute_PushOut_SphereSphere(pOther->Get_Bounding(), vOutPush);
+        break;
+
+    default:
+        break;
+    }
+
+
+    return bResult;
+}
+
 CSphereColliderComponent* CSphereColliderComponent::Clone(void* pArg)
 {
     CSphereColliderComponent* pInstance = new CSphereColliderComponent(*this);

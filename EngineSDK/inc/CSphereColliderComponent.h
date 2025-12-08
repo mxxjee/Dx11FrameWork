@@ -20,6 +20,9 @@ public:
     bool            Intersects_Ray(_vector origin, _vector rayDir, _float& Dist, CTransform* pTransform);
 
 public:
+    bool       Push_Collision(CCollider_Base* pOther, _float3& vOutPush);
+
+public:
     static CSphereColliderComponent* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual CSphereColliderComponent* Clone(void* pArg);
     virtual void Free() override;

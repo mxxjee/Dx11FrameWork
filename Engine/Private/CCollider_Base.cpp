@@ -83,19 +83,50 @@ bool CCollider_Base::Intersect(CCollider_Base* pOther)
     return m_isColl;
 }
 void CCollider_Base::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
-{
+{                    
+    if (!m_bTrigger)
+    {
+        _float3 vOut;
+        if (Push_Collision(pOther, vOut))
+        {
+            CGameObject* pOtherOwner = pOther->Get_Owner();
+            pOtherOwner->PushOut(vOut);
+        }
+    }
+
+
     if (m_pOwner)
         m_pOwner->OnCollisionEnter(iGroup,pOther);
  
 }
 void CCollider_Base::OnCollision(_uint iGroup, CCollider_Base* pOther)
 {
+    if (!m_bTrigger)
+    {
+        _float3 vOut;
+        if (Push_Collision(pOther, vOut))
+        {
+            CGameObject* pOtherOwner = pOther->Get_Owner();
+            pOtherOwner->PushOut(vOut);
+        }
+    }
+
     if (m_pOwner)
         m_pOwner->OnCollisionStay(iGroup,pOther);
 }
 
 void CCollider_Base::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
 {
+    if (!m_bTrigger)
+    {
+        _float3 vOut;
+        if (Push_Collision(pOther, vOut))
+        {
+            CGameObject* pOtherOwner = pOther->Get_Owner();
+            pOtherOwner->PushOut(vOut);
+        }
+    }
+
     if (m_pOwner)
         m_pOwner->OnCollisionExit(iGroup,pOther);
 }

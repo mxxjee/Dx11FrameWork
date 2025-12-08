@@ -17,7 +17,9 @@ public:
 public:
     virtual HRESULT        Update_Collider(XMMATRIX    WorldMatrix);
     bool            Intersects_Ray(_vector origin, _vector rayDir, _float & Dist, class CTransform* pTransform);
-
+ 
+public:
+    bool       Push_Collision(CCollider_Base* pOther, _float3& vOutPush) { return false; }
 public:
     void            Set_OffSet(_float3 vOffset);
     void            Set_Size(_float3 vSize);

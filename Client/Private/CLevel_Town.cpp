@@ -524,13 +524,37 @@ void CLevel_Town::OnEnter()
         if(pInteractable)
             CInteraction_Manager::GetInstance()->RegisterInteractable(pInteractable);
     }
+
+    CLayer* pNPCLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), L"NPC_Layer");
+    for (auto& pObj : pNPCLayer->Get_ObjList())
+    {
+        CIInteractable* pInteractable = dynamic_cast<CIInteractable*>(pObj);
+        if (pInteractable)
+            CInteraction_Manager::GetInstance()->RegisterInteractable(pInteractable);
+    }
 }
 
 void CLevel_Town::OnResume()
 {
+  
     //씬이 다시시작행슬때 메인 상호작용오브ㅈ게트들 설정
-    //CInteraction_Manager::GetInstance()->Set_MainInteratables("Level_Town");
-    int A=0;
+     //////현재씬의 itneraction 등록
+    CLayer* pInteractionLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), L"Interaction_Layer");
+    for (auto& pObj : pInteractionLayer->Get_ObjList())
+    {
+        CIInteractable* pInteractable = dynamic_cast<CIInteractable*>(pObj);
+        if (pInteractable)
+            CInteraction_Manager::GetInstance()->RegisterInteractable(pInteractable);
+    }
+
+    CLayer* pNPCLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), L"NPC_Layer");
+    for (auto& pObj : pNPCLayer->Get_ObjList())
+    {
+        CIInteractable* pInteractable = dynamic_cast<CIInteractable*>(pObj);
+        if (pInteractable)
+            CInteraction_Manager::GetInstance()->RegisterInteractable(pInteractable);
+    }
+ 
 }
 
 void CLevel_Town::OnPause()
@@ -543,7 +567,7 @@ void CLevel_Town::OnPause()
 
 void CLevel_Town::OnExit()
 {
-    int A=0;
+    CInteraction_Manager::GetInstance()->Clear();
 
 }
 

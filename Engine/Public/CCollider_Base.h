@@ -40,6 +40,10 @@ public:
     void        OnCollision(_uint iGroup,CCollider_Base* pOther);
     void        OnCollisionExit(_uint iGroup,CCollider_Base* pOther);
 
+
+public:
+    virtual bool       Push_Collision(CCollider_Base* pOther, _float3& vOutPush)=0;
+
 public:
     virtual _float3         Get_MaxBound(_vector vCenter);
     virtual _float3         Get_MinBound(_vector vCenter);

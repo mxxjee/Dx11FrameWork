@@ -10,6 +10,8 @@ protected:
     CInteraction_Rock(const CInteraction_Rock& rhs);
     virtual ~CInteraction_Rock() = default;
 
+public:
+    virtual HRESULT     Initialize_Copytype(void* pArg); /*사본 객체가 생성될때 부르는 Initialize*/
 
 public:
     static CInteraction_Rock* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);

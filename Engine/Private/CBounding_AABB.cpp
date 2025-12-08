@@ -72,6 +72,55 @@ bool CBounding_AABB::Intersect(COLLIDER_TYPE eType, CBounding* pOther)
     return false;
 }
 
+
+bool CBounding_AABB::Compute_PushOut_AABBAABB(CBounding* pOther, _float3& vOut)
+{
+    CBounding_AABB* pOtherBound = static_cast<CBounding_AABB*>(pOther);
+    BoundingBox* pOtherDesc = pOtherBound->Get_Desc();
+
+    //중심거리차이
+    _float3 delta = {
+        m_pDesc->Center.x - pOtherDesc->Center.x,
+        m_pDesc->Center.y - pOtherDesc->Center.y,
+        m_pDesc->Center.z - pOtherDesc->Center.z,
+    };
+
+    //축마다 겹침정도 파악하기
+    _float3 Overlap = {
+        (m_pDesc->Extents.x + pOtherDesc->Extents.x) - fabs(delta.x),
+        (m_pDesc->Extents.y + pOtherDesc->Extents.y) - fabs(delta.y),
+        (m_pDesc->Extents.z + pOtherDesc->Extents.z) - fabs(delta.z),
+
+    };
+
+    vOut = { 0.f,0.f,0.f };
+
+    //가장 작은 축구하기
+    if (Overlap.x < Overlap.y && Overlap.x < Overlap.z)
+    {
+        vOut.x = (delta.x > 0 ? -Overlap.x : Overlap.x);
+    }
+
+    else if (Overlap.y < Overlap.z)
+    {
+        vOut.y = (delta.y > 0 ? -Overlap.y : Overlap.y);
+    }
+
+    else
+    {
+        vOut.z = (delta.z > 0 ? -Overlap.z : Overlap.z);
+    }
+
+    return true;
+}
+
+bool CBounding_AABB::Compute_PushOut_AABBSphere(CBounding* pOther, _float3& vOut)
+{
+    return false;
+}
+
+
+
 _float3 CBounding_AABB::Get_MaxBound(_vector vCenter)
 {
     _float3 fCenter;

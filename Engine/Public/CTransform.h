@@ -101,6 +101,7 @@ public:
     void    ScaleLerp(_vector vTargetScale, float fLerpSpeed, float fTimeDelta);
     void    RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDelta);
 
+    void    AddPosition(_float3 vPos);
     ////////////앞뒤 판별,vDir =캐릭터에서 목표물로 향하는 방향벡터
     bool    IsFront(_vector vDir);
 

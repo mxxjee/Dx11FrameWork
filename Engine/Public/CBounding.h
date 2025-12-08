@@ -26,6 +26,7 @@ public:
     virtual _float3         Get_MaxBound(_vector vCenter) = 0;
     virtual _float3         Get_MinBound(_vector vCenter) = 0;
 
+
 #ifdef _DEBUG
 public:
     virtual HRESULT         Render(PrimitiveBatch<VertexPositionColor>* pBatch,_bool isColl) = 0;

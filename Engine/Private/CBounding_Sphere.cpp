@@ -40,7 +40,32 @@ bool CBounding_Sphere::Intersects_Ray(_vector origin, _vector rayDir, _float& Di
     return m_pDesc->Intersects(origin, rayDir, Dist);
 
 }
+
+bool CBounding_Sphere::Compute_PushOut_SphereSphere(CBounding* pOther, _float3& vOut)
+{
+    CBounding_Sphere *pOtherBound = static_cast<CBounding_Sphere*>(pOther);
+    BoundingSphere* pOtherDesc = pOtherBound->Get_Desc();
+
+    _vector cA = XMLoadFloat3(&m_pDesc->Center);
+    _vector cB = XMLoadFloat3(&pOtherDesc->Center);
+
+    _vector delta = cA - cB;
+    float dist = XMVectorGetX(XMVector3Length(delta));
+    float minDist = m_pDesc->Radius + pOtherDesc->Radius;
+
+    if (dist >= minDist || dist == 0.0f)
+        return false;
+  
+    float fOverlap = minDist - dist;
+    XMVECTOR dir = XMVector3Normalize(delta);
+
+    XMVECTOR push = dir * fOverlap;
+    XMStoreFloat3(&vOut, push);
+    return true;
+}
+
 #ifdef _DEBUG
+
 HRESULT CBounding_Sphere::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _bool isColl)
 {
     DX::Draw(pBatch, *m_pDesc, isColl == true ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f));

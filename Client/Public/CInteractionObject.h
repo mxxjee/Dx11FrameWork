@@ -59,7 +59,7 @@ public:
     virtual HRESULT     Ready_PartObjects(void* pArg);
 
 
-private:
+protected:
     _uint                   m_eInteractionType = 10; //인터렉션타입 (10 : OBJECT)
     _uint                   m_eInteractionObjectType = 0;//오브젝트중에 어떤 종류ㅇ니지 (rock/lawn..등)
 

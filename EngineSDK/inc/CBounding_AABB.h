@@ -22,6 +22,12 @@ public:
     bool            Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);
     virtual bool            Intersect(COLLIDER_TYPE eType, CBounding* pOther);
 
+
+public:
+    bool        Compute_PushOut_AABBAABB(CBounding* pOther, _float3& vOut);
+    bool        Compute_PushOut_AABBSphere(CBounding* pOther, _float3& vOut);
+
+public:
     BoundingBox* Get_Desc() { return m_pDesc; }
     BoundingBox* Get_OrignialDesc() { return m_pOriginalDesc; }
 public:

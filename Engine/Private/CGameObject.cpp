@@ -171,6 +171,12 @@ void CGameObject::Render_Transform_Imgui()
 
 }
 
+void CGameObject::PushOut(_float3 vOutPush)
+{
+    if (m_pTransformCom)
+        m_pTransformCom->AddPosition(vOutPush);
+}
+
 
 #endif //  _DEBUG
 
