@@ -116,7 +116,7 @@ void CCollider_Base::OnCollision(_uint iGroup, CCollider_Base* pOther)
 }
 
 void CCollider_Base::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
-{
+{/*
     if (!m_bTrigger)
     {
         _float3 vOut;
@@ -125,7 +125,7 @@ void CCollider_Base::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
             CGameObject* pOtherOwner = pOther->Get_Owner();
             pOtherOwner->PushOut(vOut);
         }
-    }
+    }*/
 
     if (m_pOwner)
         m_pOwner->OnCollisionExit(iGroup,pOther);
