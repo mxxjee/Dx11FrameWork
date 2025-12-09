@@ -45,7 +45,7 @@ public:
 public:
     //Body Update 시 Set_Animation할 애니메이션 설정
     void        Reserve_Animation(_wstring AnimKey, bool bLoop, bool immediately = false);
-
+    wstring     Get_CurrentAnimKey();
 protected:
     virtual HRESULT         Ready_Components(void* pArg);
 

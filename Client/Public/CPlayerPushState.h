@@ -35,6 +35,8 @@ private:
     bool        m_bChange = false;
     bool        m_bChangeState = false;
 
+    DIRECTION               m_ePrevDir = DIRECTION::END;        //이 상태진입햇을때의 누른키
+
 
 };
 

@@ -54,6 +54,9 @@ public:
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
+public:
+    _uint           Get_PreState() { return m_iPreState; }
+    _uint           Get_State() { return m_iState; }
 protected:
     _uint                   m_iState = {};
     _uint                   m_iPreState{};

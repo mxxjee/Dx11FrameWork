@@ -110,7 +110,7 @@ void CPlayer::Update(_float fTimeDelta)
    
     Update_Input(fTimeDelta);
     UpdateFlash(fTimeDelta);
-
+    Check_State(fTimeDelta);
    //State_Change();     //애니메이션 완료 이후에 어떻게 바꿔줄것인지
  /*   if (m_pNextState != nullptr)
     {
@@ -167,6 +167,8 @@ HRESULT CPlayer::Render()
   /*이제 각 파츠들이 rendergroup으로 들어가서 렌더한다.*/
 
 #ifdef _DEBUG
+ 
+
     if (CGameInstance::m_bDrawDebug)
     {
         m_pCollider->Render();
@@ -188,6 +190,31 @@ void CPlayer::Enter_State(int newState)
         OnDamageBehavior();
         break;
     }
+}
+
+void CPlayer::Check_State(float fTimeDelta)
+{
+
+    if (m_bPushEnable && m_Input.m_bisMove)
+    {
+        if (!m_ActionControl.m_bPush)
+        {
+            m_ActionControl.m_bPush = true;
+            m_pPushTarget = PushCandidateObject;//실제로 밀고있는 오브젝트
+            Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::PUSH));
+        }
+    }
+
+    switch ((PLAYER_STATE)m_iState)
+    {
+    case PLAYER_STATE::PUSH:
+        Push_Interaction_Behavior(fTimeDelta);
+        break;
+    }
+
+    
+        
+
 }
 
 void CPlayer::Update_Input(_float fTimeDelta)
@@ -313,6 +340,8 @@ void CPlayer::Normal_Movement(_float fTimeDelta)
    
     if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LeftArrow))
     {
+        m_InputDir = DIRECTION::LEFT;
+
         if (!m_ActionControl.m_bPush)
         {
             if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
@@ -323,9 +352,13 @@ void CPlayer::Normal_Movement(_float fTimeDelta)
             else
                 m_pTransformCom->Rotation(_float3(0.f, -90.f, 0.f));
         }
-        
+
         else
+        {
+
             m_pTransformCom->Rotation(_float3(0.f, -90.f, 0.f));
+        }
+
 
     }
 
@@ -333,6 +366,8 @@ void CPlayer::Normal_Movement(_float fTimeDelta)
 
     else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::RightArrow))
     {
+        m_InputDir = DIRECTION::RIGHT;
+
         if (!m_ActionControl.m_bPush)
         {
             if (m_pInputManager->IsKeyHeld(KeyCode::DownArrow))
@@ -346,18 +381,28 @@ void CPlayer::Normal_Movement(_float fTimeDelta)
         }
 
         else
+        {
+
             m_pTransformCom->Rotation(_float3(0.f, 90.f, 0.f));
-        
+
+        }
     }
 
 
     else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::DownArrow))
+    {
+        m_InputDir = DIRECTION::DOWN;
         m_pTransformCom->Rotation(_float3(0.f, 180.f, 0.f));
 
+    }
 
 
     else if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::UpArrow))
+    {
+        m_InputDir = DIRECTION::UP;
         m_pTransformCom->Rotation(_float3(0.f, 0.f, 0.f));
+
+    }
 
 
 
@@ -482,6 +527,11 @@ void CPlayer::Change_State(int newState)
     m_pCurState = m_States[newState];
     Enter_State(m_iState);
     m_pCurState->Enter(this);
+}
+
+wstring CPlayer::Get_CurrentAnimKey()
+{
+    return m_pAnimBody->Get_CurrentAnimKey();
 }
 
 void CPlayer::Set_VisibleMesh(const wstring& MeshName, bool bVisible)
@@ -670,6 +720,21 @@ void CPlayer::Damage_Behavior()
     m_pGameInstance->BroadCastEvent(L"OnHeartDamaged", &iHp);
     
 
+}
+
+void CPlayer::Push_Interaction_Behavior(_float fTimeDelta)
+{
+    CheckNull(m_pPushTarget);
+    _vector vOtherPos = m_pPushTarget->Get_Transform()->Get_State(STATE::POSITION);
+
+
+    float fDist = XMVectorGetX(XMVector3Length(m_pTransformCom->Get_State(STATE::POSITION) - vOtherPos));
+    if (fDist > 1.f)
+    {
+        m_bPushEnable = false;
+        Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
+        
+    }
 }
 
 
@@ -1134,7 +1199,7 @@ void CPlayer::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)
 
 
     case Client::COLLISION_GROUP::INTERACTION:
-        Check_Interaction_Collision(pOther);
+        Check_Interaction_Stay_Collision(pOther);
         break;
     default:
         break;
@@ -1187,7 +1252,25 @@ void CPlayer::Check_Interaction_Collision(CCollider_Base* pOther)
     {
     case Interact_Behavior_Type::PUSHABLE:
     case Interact_Behavior_Type::CARRYABLE:
-        m_ActionControl.m_bPush=true;
+        //여기서 방향벡터가 대각선이라면, push불가
+  
+    {
+
+        _float3 vLook;
+
+        XMStoreFloat3(&vLook, XMVector3Normalize(m_pTransformCom->Get_State(STATE::LOOK)));
+        bool isDiagonal = (fabs(vLook.x) > 0.1f && fabs(vLook.z) > 0.1f);
+
+        if (!isDiagonal)
+        {
+            if (!m_bPushEnable)
+            {
+                m_bPushEnable = true;
+                PushCandidateObject = pOtherOwner;
+            }
+        }
+    }
+        
         
         break;
     case END:
@@ -1197,10 +1280,14 @@ void CPlayer::Check_Interaction_Collision(CCollider_Base* pOther)
     }
 }
 
+void CPlayer::Check_Interaction_Stay_Collision(CCollider_Base* pOther)
+{
+ 
+}
+
 void CPlayer::Check_Interaction_ExitCollision(CCollider_Base* pOther)
 {
-    if (m_ActionControl.m_bPush)
-        m_ActionControl.m_bPush = false;
-
+    if (m_bPushEnable)
+        m_bPushEnable = false;
 
 }

@@ -157,6 +157,11 @@ void CAnimBody::Reserve_Animation(_wstring AnimKey, bool bLoop, bool immediately
 		m_pModel->Set_TransitionTime(m_fInitTransitionTime);
 }
 
+wstring CAnimBody::Get_CurrentAnimKey()
+{
+	return m_pModel->Get_CurrentAnimKey();
+}
+
 HRESULT CAnimBody::Ready_Components(void* pArg)
 {
 

@@ -67,6 +67,8 @@ public:
 
 private:
     void        Enter_State(int newState);
+    void        Check_State(float fTimeDelta);          //바로실행해야할것들 처리
+
     void        Update_Input(_float fTimeDelta);
     void        Update_Fall(_float fTimeDelta);     //셀타입에 따라서 떨어짐 체크
 
@@ -101,7 +103,7 @@ public:
     bool            Get_FixDir() { return m_ActionControl.m_bFixDir; }
 
     void            Reset_ActionControl() { m_ActionControl.Reset(); }
-
+    wstring         Get_CurrentAnimKey();
 
 public:
     //상태에따른 메쉬 비지블
@@ -127,6 +129,7 @@ public:
 
 public:
     void        Damage_Behavior();
+    void        Push_Interaction_Behavior(_float fTimeDelta);
 #ifdef _DEBUG
 public:
     virtual void            Render_Transform_Imgui() override;
@@ -148,6 +151,9 @@ public:
 private:
                     //길어질거같아서 함수로빼기
     void            Check_Interaction_Collision(CCollider_Base* pOther);
+
+    void            Check_Interaction_Stay_Collision(CCollider_Base* pOther);
+
     //길어질거같아서 함수로빼기
     void            Check_Interaction_ExitCollision(CCollider_Base* pOther);
 
@@ -176,7 +182,7 @@ public:
 #endif // _DEBUG
 
 private:
-            //Damage진입시 수행
+            //Damage진입시 수행Push_Behavior
     void    OnDamageBehavior();
     void    UpdateFlash(_float fTimeDelta); //피격시 깜빡거림 활성화
 
@@ -194,11 +200,16 @@ public:
     
     void    Set_Flash(bool b);
     void    Reset_Flash() { m_bFlash = false; m_fDamageTime = 0.f; }
+
+    DIRECTION       Get_PushDir() { return m_PushDir; }
+    DIRECTION       Get_CurDir() { return m_InputDir; }
+    void            Set_PushEnable(bool b) { m_bPushEnable = b; }
 private:
     float   m_fDamageTime = 0.f;
 
     bool    m_bFlash = false;   //피격시 깜빡거림
     bool    m_bCanCollision = true;
+    bool    m_bPushEnable = false;
     
 
 private:
@@ -211,7 +222,15 @@ private:
     float           m_fInitSpeed = 0.f;
     bool            m_bHitFront = false;
 
-    
+
+private:
+    //미는것에 대한 정보.,.
+    DIRECTION       m_InputDir = DIRECTION::END;
+    DIRECTION      m_PushDir = DIRECTION::END;
+
+    CGameObject*    PushCandidateObject = nullptr;
+    CGameObject*    m_pPushTarget = nullptr;//실제로 밀고있는 오브젝트
+
 };
 
 NS_END

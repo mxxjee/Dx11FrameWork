@@ -15,8 +15,13 @@ void CPlayerIdleState::Enter(CPlayer* pPlayer)
 	pPlayerInput = pPlayer->Get_Input();
 	pActionControl = pPlayer->Get_ActionControl();
 
+	if (pPlayer->Get_PreState() == ENUM_TO_UINT(CPlayer::PLAYER_STATE::PUSH))
+	{
+		pPlayer->Reserve_Animation_To_Body(L"Idle", true, true);
 
-	pPlayer->Reserve_Animation_To_Body(L"Idle", true);
+	}
+	else
+		pPlayer->Reserve_Animation_To_Body(L"Idle", true);
 
 	pPlayer->Reset_ActionControl();
 	pPlayer->Set_CanMove(true);
@@ -27,6 +32,12 @@ bool CPlayerIdleState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
 	if (__super::Update(pPlayer, fTimeDelta))
 		return false;
+
+	if (pPlayer->Get_CurrentAnimKey() == L"Idle")
+	{
+		if (pActionControl->m_bPush)
+			pActionControl->m_bPush = false;
+	}
 
 	if (pPlayerInput->m_bisAttack && pPlayer->Get_CanAttackEnable())
 	{
@@ -64,6 +75,8 @@ void CPlayerIdleState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 {
 	//if (pPlayer->Get_FixDir())
 	//	pPlayer->Set_FixDir(false);
+
+	
 
 }
 

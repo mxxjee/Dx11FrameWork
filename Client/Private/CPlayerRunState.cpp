@@ -27,11 +27,7 @@ bool CPlayerRunState::Update(CPlayer* pPlayer, _float fTimeDelta)
 	if (__super::Update(pPlayer, fTimeDelta))
 		return true;
 
-	if (pActionControl->m_bPush)
-	{
-		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::PUSH));
-		return true;
-	}
+
 
 	if (pPlayerInput->m_bisAttack && pPlayer->Get_CanAttackEnable())
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ATTACK));

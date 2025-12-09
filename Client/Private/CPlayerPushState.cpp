@@ -15,6 +15,7 @@ void CPlayerPushState::Enter(CPlayer* pPlayer)
     pPlayerInput = pPlayer->Get_Input();
     pActionControl = pPlayer->Get_ActionControl();
 
+    m_ePrevDir = pPlayer->Get_CurDir();
     pPlayer->Reserve_Animation_To_Body(L"push_st", false);
 
     m_ePhase = Phase::Start;
@@ -31,12 +32,11 @@ void CPlayerPushState::Enter(CPlayer* pPlayer)
 
 bool CPlayerPushState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
-    if (!pPlayerInput->m_bisMove)
+    /*if (!pPlayerInput->m_bisMove || m_ePrevDir!=pPlayer->Get_CurDir())
     {
-        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
         return true;
 
-    }
+    }*/
 
     Hold_Movement(pPlayer);
 
@@ -70,22 +70,7 @@ void CPlayerPushState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
     }
 
 
-    //스테이트 바꾸는 타이밍
-    switch (m_ePhase)
-    {
 
-        //루프일떄,
-    case Phase::Loop:
-        //원래는 키보드 떼면 탈출 or push오브젝트와 충돌하지않았을떄 or 완료싸인받았을떄(이벤트라서 끝남을 알릴수잉씀)
-        if (!pActionControl->m_bPush )
-        {
-            m_bChangeState = true;
-            m_eNextAnim = NextAnim::IDLE;
-        }
-
-        break;
-
-    }
 }
 
 void CPlayerPushState::Exit(CPlayer* pPlayer)

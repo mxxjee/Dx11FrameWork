@@ -59,8 +59,8 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_InteractionObject(L"Interaction_Layer")))
         return E_FAIL;
 
-   /* if (FAILED(Ready_Layer_Particle(L"Particle_Layer")))
-        return E_FAIL;*/
+    if (FAILED(Ready_Layer_Particle(L"Particle_Layer")))
+        return E_FAIL;
 
     return S_OK;
 }

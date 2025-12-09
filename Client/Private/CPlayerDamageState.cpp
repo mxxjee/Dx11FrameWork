@@ -15,6 +15,10 @@ void CPlayerDamageState::Enter(CPlayer* pPlayer)
     pPlayerInput = pPlayer->Get_Input();
     pActionControl = pPlayer->Get_ActionControl();
 
+    //특정 스테이트들 취소
+
+    pActionControl->m_bPush = false;
+
     //맞은방향 판별한거 가져오기
     if(pPlayer->Get_IsFront())
         pPlayer->Reserve_Animation_To_Body(L"dmg_f", false,true);
