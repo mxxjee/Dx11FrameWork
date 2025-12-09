@@ -5,7 +5,7 @@ namespace Engine
 {
     class CCollider_Base;
     class CBody;
-
+    class CNavigation;
 }
 
 NS_BEGIN(Client)
@@ -93,9 +93,24 @@ private:
 
     virtual _int Get_Interaction_Priority() override;
 
+public:
+    virtual void        Set_InteractionMode(bool b);
+    void                Set_ParentMatrix(const _float4x4* matrix) { m_pParentMatrix = matrix; }
+    void                Set_SocketMatrix(const _float4x4* matrix) { m_pSocketMatrix = matrix; }
+
+public:
+    void        Throw();
+
 protected:
     class     CPlayer* m_pPlayer = nullptr;
+    const _float4x4* m_pParentMatrix = { nullptr };
+    const _float4x4* m_pSocketMatrix = { nullptr };
 
+    bool            m_bInteraction = false;     //true일경우 interaction중
+    bool            m_bPhysics = false;
+
+    CNavigation*    m_pNavigationCom = nullptr;
+    _vector          m_velocity;
 };
 NS_END
 

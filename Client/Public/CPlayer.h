@@ -14,8 +14,10 @@ namespace Engine
     class CGravity;
     class CBoxColliderComponent;
 
+
 }
 NS_BEGIN(Client)
+class CInteractionObject;
 class CPlayerState;
 
 class CPlayer :
@@ -67,7 +69,7 @@ public:
 
 private:
     void        Enter_State(int newState);
-    void        Check_State(float fTimeDelta);          //바로실행해야할것들 처리
+    void        Update_State(float fTimeDelta);          //바로실행해야할것들 처리
 
     void        Update_Input(_float fTimeDelta);
     void        Update_Fall(_float fTimeDelta);     //셀타입에 따라서 떨어짐 체크
@@ -189,7 +191,7 @@ private:
 public:
     void    Shield_Hit_Behavior();  //쉴드 가드 중 맞았을때 행동
     void    Push_Behavior();        //밀리는 동작
-
+    bool    Set_CarryAndThrowState(CInteractionObject* pObj);
 private:
     PLAYER_INPUT        m_Input;
     ACTION_CONTROL      m_ActionControl;
@@ -227,6 +229,7 @@ private:
     DIRECTION       m_InputDir = DIRECTION::END;
     DIRECTION      m_PushDir = DIRECTION::END;
 
+    CInteractionObject*     m_CarryObject = nullptr;
 
 };
 

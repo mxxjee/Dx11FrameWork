@@ -52,11 +52,22 @@ HRESULT CCell::Ready_Components()
 
 _bool CCell::isIn(_fvector vResultPos, _int* pNeighborIndex)
 {
-   
+    _vector vResult= XMVectorSetY(vResultPos, 0.f);
+    _float3 pos;
+    XMStoreFloat3(&pos, vResult);
+
+
     for (int i = 0; i < ENUM_TO_UINT(LINE::END); ++i)
     {
         //시작지점에서부터 현재지점까지의 방향과
-        _vector		vDir = XMVector3Normalize(vResultPos - XMLoadFloat3(&m_CellInfo.m_vPoints[i]));
+   
+
+        _float3 start = m_CellInfo.m_vPoints[i];
+        start.y = 0.f;
+
+        _vector vDir = XMVector3Normalize(
+            XMVectorSet(pos.x - start.x, 0.f, pos.z - start.z, 0.f)
+        );
 
         //시작지점의 방향벡터를 내적했을때 양수이면 밖으로나간것임.
         if (0 < XMVectorGetX(XMVector3Dot(vDir, XMLoadFloat3(&m_CellInfo.m_vNormals[i]))))

@@ -6,6 +6,8 @@
 #include "CPlayer.h"
 #include "CShader.h"
 
+#include "CInteraction_Manager.h"
+
 
 
 
@@ -257,6 +259,15 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 		Event.Name = "PlayerFlash";
 		pAnim->AddNotify(10, Event);
 	}
+
+
+	pAnim = m_pModel->Find_Animation(L"carry");
+	if (pAnim)
+	{
+		Event.Name = "PlayerOnCarry";
+		pAnim->AddNotify(23, Event);
+
+	}
 	return S_OK;
 }
 
@@ -302,6 +313,22 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 			
 
 		});
+
+
+	// 프레임맞춰서 들게하기
+	m_pGameInstance->RegisterListners("PlayerOnCarry", [](const GameEvent& event)
+		{
+			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
+
+			CIInteractable* pObj =CInteraction_Manager::GetInstance()->Get_CurrentTarget();
+			if (pPlayer)
+				pPlayer->Set_CarryAndThrowState(dynamic_cast<CInteractionObject*>(pObj));
+
+
+
+
+		});
+
 
 	return S_OK;
 }

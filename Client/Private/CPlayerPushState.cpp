@@ -32,6 +32,12 @@ void CPlayerPushState::Enter(CPlayer* pPlayer)
 
 bool CPlayerPushState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
+    if (pActionControl->m_bCarry)
+    {
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::CARRY));
+        return true;
+    }
+
     if (!pPlayerInput->m_bisMove || m_ePrevDir!=pPlayer->Get_CurDir())
     {
         pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
@@ -44,11 +50,7 @@ bool CPlayerPushState::Update(CPlayer* pPlayer, _float fTimeDelta)
 
    
 
-    if (pActionControl->m_bCarry)
-    {
-        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::CARRY));
-        return true;
-    }
+   
 
     if (m_bChange)
         ChangePhase(pPlayer);

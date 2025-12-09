@@ -18,6 +18,7 @@
 #include "CPlayer_Sword.h"
 #include "CPlayer_Shield.h"
 
+#include "CInteractionObject.h"
 
 
 
@@ -110,7 +111,7 @@ void CPlayer::Update(_float fTimeDelta)
    
     Update_Input(fTimeDelta);
     UpdateFlash(fTimeDelta);
-    Check_State(fTimeDelta);
+    Update_State(fTimeDelta);
    //State_Change();     //애니메이션 완료 이후에 어떻게 바꿔줄것인지
  /*   if (m_pNextState != nullptr)
     {
@@ -192,7 +193,7 @@ void CPlayer::Enter_State(int newState)
     }
 }
 
-void CPlayer::Check_State(float fTimeDelta)
+void CPlayer::Update_State(float fTimeDelta)
 {
 
    
@@ -201,6 +202,10 @@ void CPlayer::Check_State(float fTimeDelta)
     {
     case PLAYER_STATE::PUSH:
         Push_Interaction_Behavior(fTimeDelta);
+        break;
+
+    case PLAYER_STATE::CARRY:
+
         break;
     }
 
@@ -1106,6 +1111,43 @@ void CPlayer::Push_Behavior()
 
     //ShieldHit애니메이션
     Shield_Hit_Behavior();
+}
+
+bool CPlayer::Set_CarryAndThrowState(CInteractionObject* pObj)
+{
+    CheckNullResult(pObj, false);
+
+    //들고있는경우에는 carry모드 , 아니라면 throwmode
+    if (m_ActionControl.m_bCarry)
+    {
+        Change_State(ENUM_TO_UINT(PLAYER_STATE::CARRY));
+        m_CarryObject = pObj;
+
+        pObj->Set_InteractionMode(true);
+        pObj->Set_ParentMatrix(m_pTransformCom->Get_WorldMatrixPtr());
+        pObj->Set_SocketMatrix(m_pBody->Get_SocketMatrix("itemA_L"));
+        return true;
+
+    }
+
+    else
+    { 
+        m_CarryObject->Throw();
+        pObj->Set_InteractionMode(false);
+
+        pObj->Set_ParentMatrix(nullptr);
+        pObj->Set_SocketMatrix(nullptr);
+
+  
+
+        //m_CarryObject = nullptr;
+
+        return false;
+    }
+   
+    
+
+    return true;
 }
 
 void CPlayer::UpdateFlash(_float fTimeDelta)

@@ -51,8 +51,8 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_NPC(L"NPC_Layer")))
         return E_FAIL;
 
-    if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
-        return E_FAIL;
+  /*  if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
+        return E_FAIL;*/
 
     if (FAILED(Ready_Layer_UI(L"UI_Layer")))
         return E_FAIL;

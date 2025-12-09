@@ -15,13 +15,8 @@ void CPlayerIdleState::Enter(CPlayer* pPlayer)
 	pPlayerInput = pPlayer->Get_Input();
 	pActionControl = pPlayer->Get_ActionControl();
 
-	if (pPlayer->Get_PreState() == ENUM_TO_UINT(CPlayer::PLAYER_STATE::PUSH))
-	{
-		pPlayer->Reserve_Animation_To_Body(L"Idle", true, true);
 
-	}
-	else
-		pPlayer->Reserve_Animation_To_Body(L"Idle", true);
+	pPlayer->Reserve_Animation_To_Body(L"Idle", true);
 
 	pPlayer->Reset_ActionControl();
 	pPlayer->Set_CanMove(true);

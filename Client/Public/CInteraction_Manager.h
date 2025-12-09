@@ -28,6 +28,7 @@ public:
     bool        Check_InteractiveType(InteractionType eType);
 public:
     CIInteractable*              Get_CurrentTarget() { return m_pCurrentTarget; }
+    void                        Reset_CurrentTarget() { m_pCurrentTarget = nullptr; }
 public:
     virtual void                Free() override;
 public:

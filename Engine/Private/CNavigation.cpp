@@ -18,7 +18,7 @@ CNavigation::CNavigation(const CNavigation& Prototype)
 
 void CNavigation::Set_CurrentIdx(_vector vWorldPos)
 {
-	int size = (int)m_Cells->size();
+ 	int size = (int)m_Cells->size();
 
 	_matrix Inverse = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pParentMatrix));
 	_vector vCellResultPos = XMVector3TransformCoord(vWorldPos, Inverse);
@@ -299,6 +299,20 @@ float CNavigation::DistanceSq(const _float3& a, const _float3& b)
 	_vector vDist = XMVector3Length(XMLoadFloat3(&a) - XMLoadFloat3(&b));
 
 	return XMVectorGetX(XMVector3LengthSq(vDist));
+}
+
+float CNavigation::GetHeight(_vector vWorldPos)
+{
+
+	Set_CurrentIdx(vWorldPos);
+
+	CCell* pCell = Get_Cell(m_iCurrentCellIndex);
+	CheckNullResult(pCell, 0.f);
+
+	_matrix Inverse = XMMatrixInverse(nullptr, XMLoadFloat4x4(m_pParentMatrix));
+	_vector vCellResultPos = XMVector3TransformCoord(vWorldPos, Inverse);
+
+	return pCell->Compute_Height(vCellResultPos);
 }
 
 const list<_vector>* CNavigation::Make_Route(_int iGoalIndex)

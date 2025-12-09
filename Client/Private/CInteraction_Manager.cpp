@@ -36,13 +36,18 @@ void CInteraction_Manager::UnRegisterInteractable(const CIInteractable* pObj)
 
 void CInteraction_Manager::Update(_float fTimeDelta)
 {
+	CheckNull(m_pMainPlayer);
+
 	CheckTrue(m_InteractableObjects.empty());
+	
 	//최적의 InteratableOBject를 찾아서 저장
 	CIInteractable* pBest = nullptr;
 
 	//전체 리스트를 돌면서 상호작용가능한 조건을 가지는 애들을 간추리기
 	for (auto pInteratable : m_InteractableObjects)
 	{
+		CheckTrue(m_pMainPlayer->Get_ActionControl()->m_bCarry)
+
 		if (!pInteratable)
 			continue;
 
@@ -96,6 +101,13 @@ bool CInteraction_Manager::OnInteractKeyPresed()
 		{
 			m_pCurrentTarget->Enter_Interaction();
 			m_pCurrentTarget->m_bPrevInteracting = true;
+			return true;
+		}
+
+		else
+		{
+			m_pCurrentTarget->Exit_Interaction();
+			m_pCurrentTarget->m_bPrevRange = false;
 			return true;
 		}
 

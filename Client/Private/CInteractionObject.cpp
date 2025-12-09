@@ -13,14 +13,19 @@
 #include "CBounding_AABB.h"
 #include "CBoxColliderComponent.h"
 
+#include "CNavigation.h"
+#include "CCell.h"
+
+
+
 USING(Client)
 CInteractionObject::CInteractionObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CContainerObject(pDevice,pContext)
+    :CContainerObject(pDevice, pContext)
 {
 }
 
 CInteractionObject::CInteractionObject(const CInteractionObject& rhs)
-    :CContainerObject(rhs)
+    : CContainerObject(rhs)
 {
 }
 
@@ -54,8 +59,11 @@ HRESULT CInteractionObject::Initialize_Copytype(void* pArg)
 
     if (FAILED(Ready_PartObjects(pArg)))
         return E_FAIL;
-    
+
     m_pPlayer = CInteraction_Manager::GetInstance()->Get_MainPlayer();
+
+    //vPos.m128_f32 0x00000070d30fd1a0 {21.9783173, 10.5500002, 28.0775661, 0.00000000}
+    m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
 
 
 
@@ -71,7 +79,30 @@ void CInteractionObject::Update(_float fTimeDelta)
 {
 
     __super::Update(fTimeDelta);
- 
+    if (m_bPhysics)
+    {
+        m_pTransformCom->UpdateImpulse(fTimeDelta, m_pNavigationCom);
+
+
+        _float3 Pos;
+        XMStoreFloat3(&Pos, m_pTransformCom->Get_State(STATE::POSITION));                   
+        Pos.y -= 9.8f * fTimeDelta;
+      
+        //현재셀의 지면높이가져오기 
+        _float CellY = m_pNavigationCom->GetHeight(XMLoadFloat3(&Pos));
+        if (Pos.y <= CellY)
+        {
+            m_pCollider->Set_Trigger(false);
+            m_bPhysics = false;
+            m_pTransformCom->Set_State(STATE::POSITION,
+                m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
+        }
+
+
+        else
+            m_pTransformCom->Set_State(STATE::POSITION, XMLoadFloat3(&Pos));
+
+    }
 }
 
 void CInteractionObject::Update_Late(_float fTimeDelta)
@@ -137,6 +168,7 @@ void CInteractionObject::Free()
 
     Safe_Release(m_pCollider);
     Safe_Release(m_pBody);
+    Safe_Release(m_pNavigationCom);
 
 }
 
@@ -160,6 +192,24 @@ HRESULT CInteractionObject::Ready_Components(void* pArg)
     )))
         return E_FAIL;
 
+
+    ///Navigation 생성
+    CComponent::COMPONENT_DESC Desc;
+    Desc.pOwner = this;
+
+    CComponent* pNavigation = dynamic_cast<Engine::CNavigation*>(m_pGameInstance->Clone_Prototype(
+        PROTOTYPE::COMPONENT,
+        0,
+        PROTO_COMPONENT_NAME(L"Navigation"),
+        &Desc)
+        );
+
+    if (FAILED(Add_Component(
+        COMPONENT_TYPE::NAVIGATION,
+        pNavigation,
+        reinterpret_cast<CComponent**>(&m_pNavigationCom)
+    )))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -197,8 +247,8 @@ HRESULT CInteractionObject::Ready_PartObjects(void* pArg)
         if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"StaticBody"), L"Part_Body", &pBodyDesc)))
             return E_FAIL;
     }
-    
-  
+
+
 
     return S_OK;
 }
@@ -210,8 +260,8 @@ bool CInteractionObject::IsInteratable()
 
 void CInteractionObject::Enter_InteractRange()
 {
-    
-  
+
+
 
 }
 
@@ -221,11 +271,13 @@ void CInteractionObject::Stay_InteractRange(_float fTimeDelta)
 
 void CInteractionObject::Exit_InteractRange()
 {
-   
+
 }
 
 void CInteractionObject::Enter_Interaction()
 {
+
+
 }
 
 void CInteractionObject::Stay_Interaction(_float fTimeDelta)
@@ -239,4 +291,38 @@ void CInteractionObject::Exit_Interaction()
 _int CInteractionObject::Get_Interaction_Priority()
 {
     return InteractionType::OBJECT;
+}
+
+void CInteractionObject::Set_InteractionMode(bool b)
+{
+    m_bInteraction = b;
+
+
+    if (b)
+    {
+        m_pCollider->Set_Trigger(b);
+
+    }
+
+
+}
+
+void CInteractionObject::Throw()
+{
+    CheckNull(m_pSocketMatrix);
+
+    _float3 ThrowDir;
+    CTransform* pTransform = m_pPlayer->Get_Transform();
+    CheckNull(pTransform);
+
+
+    _vector vDir = (pTransform->Get_State(STATE::LOOK) + m_pTransformCom->Get_State(STATE::UP));
+
+    XMStoreFloat3(&ThrowDir, vDir);
+
+    m_pTransformCom->AddImpulse(0.4f, ThrowDir, m_pNavigationCom);
+
+    m_pNavigationCom->Set_CurrentIdx(pTransform->Get_State(STATE::POSITION));
+    m_bPhysics = true;
+
 }

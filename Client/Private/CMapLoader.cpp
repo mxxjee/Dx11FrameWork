@@ -101,7 +101,7 @@ HRESULT CMapLoader::Make_Object_By_LoadData(string SceneName, CLayer* pLayer)
         SceneID = ENUM_TO_UINT(LEVEL_ID::TOWN);
 
 
-
+    int iIdx = 0;
     for (auto& Info : Infos)
     {
         CInteractionObject::Interaction_DESC Desc;
@@ -113,6 +113,7 @@ HRESULT CMapLoader::Make_Object_By_LoadData(string SceneName, CLayer* pLayer)
 
         Desc.SceneName = SceneName;
         Desc.bAnimated = false;
+        Desc.ObjTag = StringToWString(Info.ModelName) + to_wstring(iIdx);
 
         CTransform::TRANSFORM_DESC TransDesc;
         TransDesc.vLocalPosition = _float4(Info.vPos.x, Info.vPos.y, Info.vPos.z, 1.f);
@@ -156,6 +157,7 @@ HRESULT CMapLoader::Make_Object_By_LoadData(string SceneName, CLayer* pLayer)
             return E_FAIL;
 
 
+       ++iIdx;
         
 
     }
