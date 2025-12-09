@@ -42,8 +42,7 @@ private:
     //그룹별 충돌 테이블
     vector<vector<bool>>       m_CollisionTable;
 
-    //프레임별 충돌테이블
-    vector<vector<bool>>        m_PrevFrameCollision;
+
 
 };
 NS_END

@@ -203,13 +203,12 @@ public:
 
     DIRECTION       Get_PushDir() { return m_PushDir; }
     DIRECTION       Get_CurDir() { return m_InputDir; }
-    void            Set_PushEnable(bool b) { m_bPushEnable = b; }
 private:
     float   m_fDamageTime = 0.f;
 
     bool    m_bFlash = false;   //피격시 깜빡거림
     bool    m_bCanCollision = true;
-    bool    m_bPushEnable = false;
+
     
 
 private:
@@ -228,8 +227,6 @@ private:
     DIRECTION       m_InputDir = DIRECTION::END;
     DIRECTION      m_PushDir = DIRECTION::END;
 
-    CGameObject*    PushCandidateObject = nullptr;
-    CGameObject*    m_pPushTarget = nullptr;//실제로 밀고있는 오브젝트
 
 };
 

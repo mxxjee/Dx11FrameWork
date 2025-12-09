@@ -84,16 +84,7 @@ bool CCollider_Base::Intersect(CCollider_Base* pOther)
 }
 void CCollider_Base::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {                    
-    if (!m_bTrigger)
-    {
-        _float3 vOut;
-        if (Push_Collision(pOther, vOut))
-        {
-            CGameObject* pOtherOwner = pOther->Get_Owner();
-            pOtherOwner->PushOut(vOut);
-        }
-    }
-
+  
 
     if (m_pOwner)
         m_pOwner->OnCollisionEnter(iGroup,pOther);
@@ -101,32 +92,14 @@ void CCollider_Base::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 }
 void CCollider_Base::OnCollision(_uint iGroup, CCollider_Base* pOther)
 {
-    if (!m_bTrigger)
-    {
-        _float3 vOut;
-        if (Push_Collision(pOther, vOut))
-        {
-            CGameObject* pOtherOwner = pOther->Get_Owner();
-            pOtherOwner->PushOut(vOut);
-        }
-    }
+   
 
     if (m_pOwner)
         m_pOwner->OnCollisionStay(iGroup,pOther);
 }
 
 void CCollider_Base::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
-{/*
-    if (!m_bTrigger)
-    {
-        _float3 vOut;
-        if (Push_Collision(pOther, vOut))
-        {
-            CGameObject* pOtherOwner = pOther->Get_Owner();
-            pOtherOwner->PushOut(vOut);
-        }
-    }*/
-
+{
     if (m_pOwner)
         m_pOwner->OnCollisionExit(iGroup,pOther);
 }
@@ -182,4 +155,33 @@ void CCollider_Base::Free()
     
     Safe_Release(m_pBounding);
    
+}
+
+void CCollider_Base::RegisterCurrentCollision(CCollider_Base* pOther)
+{
+    CheckNull(pOther);
+    m_CurrCollisions.insert(pOther);
+
+}
+
+void CCollider_Base::ResolveEvents()
+{
+    for (auto* pOther : m_CurrCollisions)
+    {
+        if (m_PrevCollisions.find(pOther) == m_PrevCollisions.end())
+            OnCollisionEnter(pOther->Get_ColGroup(),pOther);
+        else
+            OnCollision(pOther->Get_ColGroup(), pOther);
+
+    }
+
+    // Exit
+    for (auto* pOther : m_PrevCollisions)
+    {
+        if (m_CurrCollisions.find(pOther) == m_CurrCollisions.end())
+            OnCollisionExit(pOther->Get_ColGroup(),pOther);
+    }
+
+    // swap
+    m_PrevCollisions = m_CurrCollisions;
 }

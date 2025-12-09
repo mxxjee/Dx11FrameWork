@@ -195,15 +195,7 @@ void CPlayer::Enter_State(int newState)
 void CPlayer::Check_State(float fTimeDelta)
 {
 
-    if (m_bPushEnable && m_Input.m_bisMove)
-    {
-        if (!m_ActionControl.m_bPush)
-        {
-            m_ActionControl.m_bPush = true;
-            m_pPushTarget = PushCandidateObject;//실제로 밀고있는 오브젝트
-            Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::PUSH));
-        }
-    }
+   
 
     switch ((PLAYER_STATE)m_iState)
     {
@@ -724,17 +716,8 @@ void CPlayer::Damage_Behavior()
 
 void CPlayer::Push_Interaction_Behavior(_float fTimeDelta)
 {
-    CheckNull(m_pPushTarget);
-    _vector vOtherPos = m_pPushTarget->Get_Transform()->Get_State(STATE::POSITION);
 
-
-    float fDist = XMVectorGetX(XMVector3Length(m_pTransformCom->Get_State(STATE::POSITION) - vOtherPos));
-    if (fDist > 1.f)
-    {
-        m_bPushEnable = false;
-        Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
-        
-    }
+    
 }
 
 
@@ -1263,10 +1246,9 @@ void CPlayer::Check_Interaction_Collision(CCollider_Base* pOther)
 
         if (!isDiagonal)
         {
-            if (!m_bPushEnable)
+            if (!m_ActionControl.m_bPush)
             {
-                m_bPushEnable = true;
-                PushCandidateObject = pOtherOwner;
+                m_ActionControl.m_bPush = true;
             }
         }
     }
@@ -1287,7 +1269,7 @@ void CPlayer::Check_Interaction_Stay_Collision(CCollider_Base* pOther)
 
 void CPlayer::Check_Interaction_ExitCollision(CCollider_Base* pOther)
 {
-    if (m_bPushEnable)
-        m_bPushEnable = false;
+    if (m_ActionControl.m_bPush)
+        m_ActionControl.m_bPush = false;
 
 }

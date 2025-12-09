@@ -32,11 +32,13 @@ void CPlayerPushState::Enter(CPlayer* pPlayer)
 
 bool CPlayerPushState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
-    /*if (!pPlayerInput->m_bisMove || m_ePrevDir!=pPlayer->Get_CurDir())
+    if (!pPlayerInput->m_bisMove || m_ePrevDir!=pPlayer->Get_CurDir())
     {
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
+        pActionControl->m_bPush = false;
         return true;
 
-    }*/
+    }
 
     Hold_Movement(pPlayer);
 

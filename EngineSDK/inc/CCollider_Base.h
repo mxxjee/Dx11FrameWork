@@ -7,6 +7,9 @@ class ENGINE_DLL CCollider_Base:
     public CComponent
 {
 public:
+    
+    using ColliderSet = unordered_set<CCollider_Base*>;
+
     typedef struct tagColliderDesc :CComponent::COMPONENT_DESC
     {
         _uint m_eColGroup = 0;
@@ -68,6 +71,11 @@ public:
 public:
     COLLIDER_TYPE   Get_Type() { return m_eType; }
     class CBounding*      Get_Bounding() { return m_pBounding; }
+    bool                Get_IsTrriger() { return m_bTrigger; }
+public:
+    virtual void BeginCollisionFrame() { m_CurrCollisions.clear(); }
+    void        RegisterCurrentCollision(CCollider_Base* pOther);
+    void        ResolveEvents();
 
 protected:
     COLLIDER_TYPE            m_eType;      //콜라이더 타입,어느충돌?
@@ -80,6 +88,11 @@ protected:
 
 protected:
     bool                    m_bTrigger = true;       //통과여부,false면 충돌시 밀어내기계산
+
+protected:
+    ColliderSet         m_PrevCollisions;       //지난 프레임 충돌한애들
+    ColliderSet         m_CurrCollisions;       //이번 프레임충돌한애들
+
 };
 NS_END
 

@@ -1,5 +1,6 @@
 #include "CCollision_Manager.h"
 #include "CCollider_Base.h"
+#include "CGameObject.h"
 
 CCollision_Manager::CCollision_Manager()
 {
@@ -11,16 +12,13 @@ HRESULT CCollision_Manager::Initialize(_uint MaxGroup)
 
     m_CollisionTable.resize(MaxGroup);
     m_pColliderGroups.resize(MaxGroup);
-    m_PrevFrameCollision.resize(MaxGroup);
-
+  
     for (_uint i = 0; i < MaxGroup; ++i)
         m_CollisionTable[i].resize(MaxGroup,false);
 
     for (_uint i = 0; i < MaxGroup; ++i)
         m_pColliderGroups[i].resize(MaxGroup, nullptr);
 
-    for (_uint i = 0; i < MaxGroup; ++i)
-        m_PrevFrameCollision[i].resize(MaxGroup, false);
 
     return S_OK;
 }
@@ -62,70 +60,87 @@ void CCollision_Manager::Set_Enable_Collision(_uint iSrcGroup, _uint iDstGroup, 
 
 void CCollision_Manager::Update_CollisionGroup(_float fTimeDelta)
 {
+    //프레임시작: 모ㅓㅓ든 collider begincollisionFrame()
     for (_uint i = 0; i < m_CollisionGroupMax; ++i)
     {
-            //중복검사 방지패턴
-        for (_uint j = i; j < m_CollisionGroupMax; ++j)
+        for (auto* Col : m_pColliderGroups[i])
         {
-            // 충돌규칙이 false라면, continue
-            if (!m_CollisionTable[i][j])
-                continue;
-
-            auto& SrcList = m_pColliderGroups[i];
-            auto& DstList = m_pColliderGroups[j];
-
-            for (auto& Src : SrcList)
-            {
-                for (auto& Dst : DstList)
-                {
-                    if (Src == Dst || !Src||!Dst)
-                        continue;
-
-                    if (!Src->Is_Active() || !Dst->Is_Active())
-                        continue;
-
-                     //이거 여기다 두니까 충돌 그룹 여러개 true하면 빨간색 표시 잘안됨
-                     //리셋이 계속되는듯..? /??? 
-                    Src->Reset_Collision();
-                    Dst->Reset_Collision();
-
-					if (Src->Intersect(Dst) && Dst->Intersect(Src))
-					{
-                        if (!m_PrevFrameCollision[i][j] && !m_PrevFrameCollision[j][i])
-                        {
-                            Src->OnCollisionEnter(j,Dst);
-                            Dst->OnCollisionEnter(i,Src);
-
-                            m_PrevFrameCollision[i][j] = true;
-                            m_PrevFrameCollision[j][i] = true;
-                        }
-
-                        else
-                        {
-                            Src->OnCollision(j,Dst);
-                            Dst->OnCollision(i,Src);
-                        }
-
-                        
-					}
-
-                    else
-                    {
-                        if (m_PrevFrameCollision[i][j] && m_PrevFrameCollision[j][i])
-                        {
-                            Src->OnCollisionExit(j,Dst);
-                            Dst->OnCollisionExit(i,Src);
-                        }
-
-                        m_PrevFrameCollision[i][j] = false;
-                        m_PrevFrameCollision[j][i] = false;
-
-                    }
-                }
-            }
+            if (Col && Col->Is_Active())
+                Col->BeginCollisionFrame();
 
         }
     }
+
+    ///밀기 수행
+    for (_uint g1 = 0; g1 < m_CollisionGroupMax; ++g1)
+    {
+        for (_uint g2 = g1; g2 < m_CollisionGroupMax; ++g2)
+        {
+            if (!m_CollisionTable[g1][g2])
+                continue;
+
+
+            auto& L1 = m_pColliderGroups[g1];
+            auto& L2 = m_pColliderGroups[g2];
+
+
+            for (auto* A : L1)
+            {
+                if (!A || !A->Is_Active())
+                    continue;
+
+                for (auto* B : L2)
+                { 
+                    if (!B || !B->Is_Active())
+                        continue;
+
+                    if (A == B)
+                        continue;
+
+                   
+                    if (g1 == g2 && A > B)
+                        continue;
+
+                    if(A->Intersect(B) && B->Intersect(A))
+                    {
+                        A->RegisterCurrentCollision(B);
+                        B->RegisterCurrentCollision(A);
+
+
+                        if (!A->Get_IsTrriger())
+                        {
+                            _float3 vOutA = {};
+                            if (A->Push_Collision(B, vOutA))
+                                B->Get_Owner()->PushOut(vOutA);
+                        }
+
+                        if(!B->Get_IsTrriger())
+                        {
+                            _float3  vOutB = {};
+                            if (B->Push_Collision(A, vOutB))
+                                A->Get_Owner()->PushOut(vOutB);
+                          
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    ///Event
+
+    for (_uint g = 0; g < m_CollisionGroupMax; g++)
+    {
+        for (auto* col : m_pColliderGroups[g])
+        {
+            if (col && col->Is_Active())
+                col->ResolveEvents();
+        }
+    }
+
+
+
+
 }
 
 CCollision_Manager* CCollision_Manager::Create(_uint MaxGroup)
