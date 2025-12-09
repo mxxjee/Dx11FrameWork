@@ -134,12 +134,18 @@ HRESULT CMapLoader::Make_Object_By_LoadData(string SceneName, CLayer* pLayer)
         switch (Interact_Object_Type(Desc.eInteract_Object_Type))
         {
         case Interact_Object_Type::LAWN:
+        {
+            Desc.fTargetDistance = 2.f;
             ProtoTag = L"Interaction_Lawn";
+        }
             break;
 
 
         case Interact_Object_Type::ROCK:
+        {
+            Desc.fTargetDistance = 3.f;
             ProtoTag = L"Interaction_Rock";
+        }
             break;
 
         }

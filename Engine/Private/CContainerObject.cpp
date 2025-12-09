@@ -87,11 +87,11 @@ void CContainerObject::Update_Render(_float fTimeDelta)
 
 HRESULT CContainerObject::Render()
 {
-   /* for (auto& pair : m_PartObjects)
+    for (auto& pair : m_PartObjects)
     {
         if (pair.second)
             pair.second->Render();
-    }*/
+    }
     return S_OK;
 }
 

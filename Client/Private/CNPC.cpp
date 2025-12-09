@@ -28,6 +28,7 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
 
     NPC_DESC* pNpcDesc = static_cast<NPC_DESC*>(pArg);
     m_SceneName = pNpcDesc->SceneName;
+    m_fTargetDistance = pNpcDesc->TalkRange;
 
 
     CAnimBody::ANIMBODY_DESC BodyDesc;
@@ -51,8 +52,8 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
 
 
 
-    m_pPlayer = dynamic_cast<CPlayer*>(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player"));
-   
+    m_pPlayer = CInteraction_Manager::GetInstance()->Get_MainPlayer();
+
 
     Ready_Events();
   
@@ -110,7 +111,7 @@ bool CNPC::IsInteratable()
        
         _float Distance = XMVectorGetX(XMVector3Length(PlayerPos - ownPos));
 
-        return Distance <= m_NpcDesc.TalkRange;
+        return Distance <= m_fTargetDistance;
 
     }
 

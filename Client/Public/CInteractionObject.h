@@ -9,6 +9,8 @@ namespace Engine
 }
 
 NS_BEGIN(Client)
+
+
 class CInteractionObject :
     public CContainerObject,public CIInteractable
 {
@@ -18,6 +20,7 @@ public:
         _uint                   eInteractionType = 0;//InteractionType: OBJECT or NPC
         _uint                   eInteract_Object_Type = 0;      //CAVEROCK.ROCK.LAWN..
 
+        _float                  fTargetDistance =13.f;        //인터렉션 하기우히ㅏㄴ 최소거리
         _uint                   eRenderGroup = 0;
         _uint                   eCollisionGroup = 0;
 
@@ -27,6 +30,7 @@ public:
         bool                    bAnimated = false;      //애님을 사용하는 메쉬인지
 
         string                  SceneName = "";
+        float                   InteractionPopUpRange = 2.f;    //플레이어가 이 안에 들어오면 interaction 가능한상태
 
     }Interaction_DESC;
 
@@ -88,6 +92,9 @@ private:
     virtual void Exit_Interaction() override;
 
     virtual _int Get_Interaction_Priority() override;
+
+protected:
+    class     CPlayer* m_pPlayer = nullptr;
 
 };
 NS_END

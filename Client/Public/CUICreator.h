@@ -1,0 +1,17 @@
+#pragma once
+#include "Client_Defines.h"
+
+namespace Engine
+{
+	class CGameInstance;
+}
+
+namespace UICreator
+{
+
+	HRESULT		Create_HeartGroup(wstring LayerTag);
+	HRESULT		Create_Interaction_UI(wstring LayerTag);
+
+	extern CGameInstance* m_pGameInstance;
+	
+}

@@ -1,6 +1,5 @@
 #include "CLevel_Town.h"
 #include "CLoader.h"
-#include "CGameInstance.h"
 #include "CBackGround.h"
 #include "CMainCamera.h"
 #include "CPerspectiveCameraComponent.h"
@@ -23,6 +22,8 @@
 #include "CInteraction_Manager.h"
 #include "CMapLoader.h"
 #include "CLayer.h"
+#include "CUICreator.h"
+
 
 
 USING(Client)
@@ -50,8 +51,8 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_NPC(L"NPC_Layer")))
         return E_FAIL;
 
-    //if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
-    //    return E_FAIL;
+    if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
+        return E_FAIL;
 
     if (FAILED(Ready_Layer_UI(L"UI_Layer")))
         return E_FAIL;
@@ -205,91 +206,13 @@ HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
 HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
 {
-    UIGroup     HeartGroup;
-    HeartGroup.Key = L"HeartGroup";
+   
+    if(FAILED(UICreator::Create_HeartGroup(strLayerTag)))
+        return E_FAIL;
 
-    for (int i = 0; i < 5; ++i)
-    {
-        CUI::tagUIDesc        Desc = {};
-
-        Desc.ObjTag = L"Hp_UI" + to_wstring(i);
-        Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
-        Desc.TextureKey = L"Hp";
-
-        Desc.iIdx = i;
-
-        Desc.fSizeX = 38.f;
-        Desc.fSizeY = 38.f;
-        Desc.fX = 50.f + (i * 45.f);
-        Desc.fY = 50.f;
-
-        CTransform::TRANSFORM_DESC TransDesc = {};
-        TransDesc.fRotationPerSec = 10.f;
-        TransDesc.fSpeedPerSec = 5.f;
-        Desc.TransformDesc = &TransDesc;
-
-        //AlphaAnim등록
-        CUIComponent::UICOMP_DESC UIDesc = {};
-    /*    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].fStart = _float4(Desc.fX, Desc.fY, 1.f, 1.f);
-        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].fTarget = _float4(Desc.fX - 10.f, Desc.fY, 1.f, 1.f);
-        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].m_fSpeed = 0.1f;
-        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].bLoop = true;*/
-
-        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].fStart = _float4(1.f, 0.f, 0.f, 0.f);
-        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].fTarget = _float4(0.f, 0.f, 0.f, 0.f);
-        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].m_fSpeed = 5.f;
-        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bLoop = false;
-        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bAutoDisable = true;
-
-        Desc.UICompDesc = &UIDesc;
-
-
-
-
-
-        CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &Desc);
-        if (pObj)
-        {
-            CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
-            if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), strLayerTag, pInstance)))
-                return E_FAIL;
-
-
-            HeartGroup.Objects.push_back(pInstance);
-
-        }
-
-    }
-
-    m_pGameInstance->Register_UIGroup(HeartGroup);
-    m_pGameInstance->RegisterEvent(L"OnHeartDamaged", [this](void* pData)
-        {
-            int* iHp = reinterpret_cast<int*>(pData);
-            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"HeartGroup");
-            if (pGroup)
-            {
-                for (auto& i : pGroup->Objects)
-                {
-                    CUI* pUI = dynamic_cast<CUI*>(i);
-                    if (pUI)
-                    {
-                        if (pUI->Get_Idx() == (*iHp)) 
-                        {
-                            pUI->Set_ActiveAnim(1, [pUI]()
-                                {
-                                    pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA);
-                                
-
-                                   // pUI->Get_UIComp()->PlayAnim(UIAnimType::POSITION);
-                                });
-
-
-                            pUI->OnActivated(false);
-                        }
-                    }
-                }
-            }
-        });
+    /////Interaction 관련 PopUp UI
+    if (FAILED(UICreator::Create_Interaction_UI(strLayerTag)))
+        return E_FAIL;
 
 
     ///////////////////Minimapquad생성
@@ -347,6 +270,10 @@ HRESULT CLevel_Town::Ready_Layer_Player(const _wstring& strLayerTag)
         ENUM_TO_UINT(LEVEL_ID::STATIC),
         strLayerTag, nullptr)))
         return E_FAIL;
+
+    CGameObject* pObj = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");
+    if(pObj)
+        CInteraction_Manager::GetInstance()->Set_MainPlayer(pObj);
 
     return S_OK;
 
@@ -505,11 +432,13 @@ void CLevel_Town::OnEnter()
     if (pWindow)
     {
         CGameObject* pObj = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");
+        
         if (pObj)
         {
             CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
-
             pWindow->Set_Player(pPlayer);
+   
+
         }
             
 

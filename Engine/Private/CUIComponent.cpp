@@ -167,7 +167,7 @@ void CUIComponent::Set_OwnerTransform(CTransform* ptransform)
 void CUIComponent::PlayAnim(UIAnimType _AnimType, _float4 vStart, _float4 vTarget, float fSpeed, bool bLoop,bool bAutoDisable)
 {
 	CheckTrue(_AnimType == UIAnimType::END);
-
+	CheckFalse(m_pUIOwner->Is_Active())
 	m_AnimInfo[ENUM_TO_UINT(_AnimType)].m_bRegister = true;
 
 	m_AnimInfo[ENUM_TO_UINT(_AnimType)].m_bPlay = true;

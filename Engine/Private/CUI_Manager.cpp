@@ -19,7 +19,8 @@ HRESULT CUI_Manager::Register_UIGroup(const UIGroup& Group, const _wstring& Key)
 
 	else
 	{
-		m_UIMap.emplace(FindKey, Group);
+		size_t Hash = hash<wstring>()(FindKey);
+		m_UIMap.emplace(Hash, Group);
 		for (auto& i : Group.Objects)
 			Safe_AddRef(i);
 
@@ -53,7 +54,8 @@ HRESULT CUI_Manager::RegisterEvent(const _wstring& Key, function<void(void*)> _f
 	if (pEvent)
 		return E_FAIL;
 
-	m_EventMap.emplace(Key, _function);
+	size_t Hash = hash<wstring>()(Key);
+	m_EventMap.emplace(Hash, _function);
 	return S_OK;
 }
 
@@ -87,7 +89,9 @@ HRESULT CUI_Manager::SetActiveGroup(const _wstring& Key, bool bActive)
 
 UIGroup* CUI_Manager::Get_UIGroup(const _wstring Key)
 {
-	auto iter = m_UIMap.find(Key);
+	size_t Hash = hash<wstring>()(Key);
+
+	auto iter = m_UIMap.find(Hash);
 	if (iter != m_UIMap.end())
 		return &(iter->second);
 
@@ -98,7 +102,9 @@ UIGroup* CUI_Manager::Get_UIGroup(const _wstring Key)
 
 function<void(void*)> CUI_Manager::Get_EventFunction(const _wstring& Key)
 {
-	auto iter = m_EventMap.find(Key);
+	size_t Hash = hash<wstring>()(Key);
+
+	auto iter = m_EventMap.find(Hash);
 	if (iter != m_EventMap.end())
 		return iter->second;
 

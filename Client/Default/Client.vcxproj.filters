@@ -225,6 +225,12 @@
     <ClInclude Include="..\Public\CInteraction_Lawn.h">
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Lawn</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUICreator.h">
+      <Filter>98.Utils\UICreator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CInteraction_TriggerBox.h">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\InteractionTrigger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -493,6 +499,15 @@
     <Filter Include="02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Lawn">
       <UniqueIdentifier>{853babcc-2290-4f0d-aced-2fd502c9cdca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="98.Utils">
+      <UniqueIdentifier>{7c09571b-8911-4f0c-a9eb-f1c9aca5751c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Utils\UICreator">
+      <UniqueIdentifier>{464f8e01-97ad-4e2c-bb4f-ec91c44c240d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\02.InteractionObject\InteractionTrigger">
+      <UniqueIdentifier>{1e8c2fc2-405f-4ff1-9d4a-f041b20d61b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -697,6 +712,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CInteraction_Lawn.cpp">
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Lawn</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Public\CUICreator.cpp">
+      <Filter>98.Utils\UICreator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CInteraction_TriggerBox.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\InteractionTrigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

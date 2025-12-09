@@ -1,13 +1,17 @@
 #include "CInteractionObject.h"
 #include "CGameInstance.h"
 #include "CBody.h"
+#include "CPlayer.h"
 
-#include "CCollider_Base.h"
-#include "CBounding_AABB.h"
-#include "CBoxColliderComponent.h"
+
 #include "CAnimBody.h"
 
 #include "CInteraction_Manager.h"
+#include "MathUtils.h"
+#include "CInteraction_TriggerBox.h"
+#include "CCollider_Base.h"
+#include "CBounding_AABB.h"
+#include "CBoxColliderComponent.h"
 
 USING(Client)
 CInteractionObject::CInteractionObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -38,6 +42,7 @@ HRESULT CInteractionObject::Initialize_Copytype(void* pArg)
     m_eInteractionType = pDesc->eInteractionType;
     m_eInteractionType = pDesc->eInteract_Object_Type;
     m_SceneName = pDesc->SceneName;
+    m_fTargetDistance = pDesc->fTargetDistance;
 
 
     if (FAILED(__super::Initialize_Copytype(pArg)))
@@ -49,6 +54,8 @@ HRESULT CInteractionObject::Initialize_Copytype(void* pArg)
 
     if (FAILED(Ready_PartObjects(pArg)))
         return E_FAIL;
+    
+    m_pPlayer = CInteraction_Manager::GetInstance()->Get_MainPlayer();
 
 
 
@@ -191,6 +198,8 @@ HRESULT CInteractionObject::Ready_PartObjects(void* pArg)
             return E_FAIL;
     }
     
+  
+
     return S_OK;
 }
 
@@ -201,6 +210,9 @@ bool CInteractionObject::IsInteratable()
 
 void CInteractionObject::Enter_InteractRange()
 {
+    
+  
+
 }
 
 void CInteractionObject::Stay_InteractRange(_float fTimeDelta)
@@ -209,6 +221,7 @@ void CInteractionObject::Stay_InteractRange(_float fTimeDelta)
 
 void CInteractionObject::Exit_InteractRange()
 {
+   
 }
 
 void CInteractionObject::Enter_Interaction()
@@ -225,5 +238,5 @@ void CInteractionObject::Exit_Interaction()
 
 _int CInteractionObject::Get_Interaction_Priority()
 {
-    return _int();
+    return InteractionType::OBJECT;
 }

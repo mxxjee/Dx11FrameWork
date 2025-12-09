@@ -52,6 +52,7 @@
 #include "CStaticModelObject.h"
 #include "CSnow.h"
 
+#include "CInteraction_TriggerBox.h"
 #include "CInteractionObject.h"
 #include "CInteraction_Lawn.h"
 #include "CInteraction_Rock.h"
@@ -314,6 +315,7 @@ HRESULT CLoader::Register_Textures()
         return E_FAIL;
 
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Logo/", L".dds");
+    m_pGameInstance->Load_Textures(L"../../Resource/UI/Interaction/", L".dds");
 
 
     return S_OK;
@@ -510,6 +512,9 @@ HRESULT CLoader::Register_GameObjects()
 
 
     /// /////////Interaction Objects
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Interaction_TriggerBox", CInteraction_TriggerBox::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"InteractionObject", CInteractionObject::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 

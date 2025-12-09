@@ -65,6 +65,7 @@ public:
 
 public:
     void        Reset_Collision() { m_isColl = false; }
+    bool        Is_Collision() { return m_isColl; }
     void        Set_Active(bool b) { m_bActive = b; }
     bool        Is_Active() { return m_bActive; }
     void        Set_Trigger(bool b) { m_bTrigger = b; }

@@ -27,6 +27,7 @@ public:
 protected:
 	string			m_SceneName = "";
 	Interact_Behavior_Type			m_BehaviorType=NONE;
+	_float							m_fTargetDistance;
 
 };
 NS_END

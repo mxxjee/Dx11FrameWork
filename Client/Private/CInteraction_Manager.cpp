@@ -3,7 +3,8 @@
 #include "CInput_Manager.h"
 #include "Client_Defines.h"
 #include "CInteractionObject.h"
-
+#include "CPlayer.h"
+#include "CGameInstance.h"
 
 USING(Client)
 IMPLEMENT_SINGLETON(CInteraction_Manager)
@@ -138,6 +139,13 @@ CIInteractable* CInteraction_Manager::Find_Object(const CIInteractable* pObj)
 
 
 	return nullptr;
+}
+
+void CInteraction_Manager::Set_MainPlayer(CGameObject* pObj)
+{
+	m_pMainPlayer=dynamic_cast<CPlayer*>(CGameInstance::GetInstance()->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player"));
+
+
 }
 
 
