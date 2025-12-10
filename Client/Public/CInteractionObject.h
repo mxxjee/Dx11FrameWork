@@ -111,6 +111,8 @@ protected:
 
     CNavigation*    m_pNavigationCom = nullptr;
     _vector          m_velocity;
+
+    _float3 Pos=_float3(0.f,0.f,0.f);
 };
 NS_END
 

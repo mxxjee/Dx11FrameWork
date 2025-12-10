@@ -29,6 +29,10 @@ protected:
 	Interact_Behavior_Type			m_BehaviorType=NONE;
 	_float							m_fTargetDistance;
 
+
+protected:
+	bool            m_bCall_Exit_Interaction = false;
+
 };
 NS_END
 

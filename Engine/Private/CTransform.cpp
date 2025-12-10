@@ -332,7 +332,7 @@ bool CTransform::IsFront(_vector vDir)
 
 }
 
-void CTransform::AddImpulse(float fPower, const _float3 direction, CNavigation* pNavigation)
+void CTransform::AddImpulse(float fPower, const _float3 direction, CNavigation* pNavigation, bool bApplyGravity)
 {
 	_float3 impulse;
 
@@ -345,13 +345,16 @@ void CTransform::AddImpulse(float fPower, const _float3 direction, CNavigation* 
 	m_bAddImpulse = true;
 
 	//즉시 1회적용
-	UpdateImpulse(0.f, pNavigation);
+	UpdateImpulse(0.f, pNavigation, bApplyGravity);
 }
 
-void CTransform::UpdateImpulse(_float fTimeDelta, CNavigation* pNavigation)
+void CTransform::UpdateImpulse(_float fTimeDelta, CNavigation* pNavigation, bool bApplyGravity)
 {
 	if (m_bAddImpulse)
 	{
+		if (bApplyGravity)
+			m_vVelocity = m_vVelocity + XMVectorSet(0.f, -0.98f * fTimeDelta, 0.f, 0.f);
+
 		_vector vPosition = Get_State(STATE::POSITION) + m_vVelocity;
 		if (pNavigation == nullptr || pNavigation->isMove(vPosition))
 			Set_State(STATE::POSITION, vPosition);

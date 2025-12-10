@@ -39,11 +39,12 @@ public:
 
     void        Set_Owner(CContainerObject* pOwner) { m_pOwner = pOwner; }
     CContainerObject* Get_Owner() { return m_pOwner; }
+    void        Set_ParentMatrix(const _float4x4* Matrix) { m_pParentMatrix = Matrix; }
 protected:
     const _float4x4* m_pParentMatrix = { nullptr };
     _float4x4       m_CombinedWorldMatrix = {};     //로컬 * parent matrix
 
-protected:
+public:
     //m_combineWorldMAtrix를 도출하는함수
     void    SetUp_CombinedWorldMatrix(_fmatrix ParentMatrix); 
 

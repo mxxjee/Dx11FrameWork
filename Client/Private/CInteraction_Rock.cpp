@@ -5,7 +5,9 @@
 #include "CBounding_AABB.h"
 #include "CBoxColliderComponent.h"
 
+#include "CNavigation.h"
 #include "CPlayer.h"
+#include "CBody.h"
 USING(Client)
 CInteraction_Rock::CInteraction_Rock(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CInteractionObject(pDevice,pContext)
@@ -65,22 +67,38 @@ void CInteraction_Rock::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
 
-    CheckNull(m_pSocketMatrix);
-    CheckNull(m_pParentMatrix);
+    if (m_bInteraction && m_pSocketMatrix)
+    {
+        _matrix SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix);
+        SocketMatrix.r[0] = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+        SocketMatrix.r[1] = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+        SocketMatrix.r[2] = XMVectorSet(0.f, 0.f, 1.f, 0.f);
 
-    _matrix SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix);
-    SocketMatrix.r[0] = XMVectorSet(1.f, 0.f, 0.f, 0.f);
-    SocketMatrix.r[1] = XMVectorSet(0.f, 1.f, 0.f, 0.f);
-    SocketMatrix.r[2] = XMVectorSet(0.f, 0.f, 1.f, 0.f);
 
+        //따라가려는 소켓매트릭스 x 원래 parent매트릿그
+        _matrix ParentMatrix = SocketMatrix * XMLoadFloat4x4(m_pParentMatrix);
+        _float4x4 WorldMat;
 
-    //따라가려는 소켓매트릭스 x 원래 parent매트릿그
-    _matrix ParentMatrix = SocketMatrix * XMLoadFloat4x4(m_pParentMatrix);
-    _float4x4 WorldMat;
+        XMStoreFloat4x4(&WorldMat, ParentMatrix);
+        m_pTransformCom->Set_WorldMatrix(WorldMat);
+
+    }
+
+    else
+    {
+       
+        _matrix ParentMatrix = XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr());
+        _float4x4 WorldMat;
+
+        XMStoreFloat4x4(&WorldMat, ParentMatrix);
+        m_pTransformCom->Set_WorldMatrix(WorldMat);
+
+        m_pBody->SetUp_CombinedWorldMatrix(ParentMatrix);
+    }
+        
     
-    XMStoreFloat4x4(&WorldMat, ParentMatrix);
-
-    m_pTransformCom->Set_WorldMatrix(WorldMat);
+   
+  
 }
 
 bool CInteraction_Rock::IsInteratable()
@@ -111,6 +129,7 @@ void CInteraction_Rock::Exit_InteractRange()
 void CInteraction_Rock::Enter_Interaction()
 {
     CheckTrue(m_pPlayer->Get_ActionControl()->m_bCarry);
+    m_bCall_Exit_Interaction = false;
 
     m_pPlayer->Get_ActionControl()->m_bCarry = true;
     m_pGameInstance->SetActiveGroup(L"Interaction_PopUp_Carry", false);
@@ -127,7 +146,10 @@ void CInteraction_Rock::Exit_Interaction()
 {
     //인터렉션 취소(A한번 더누름)
 
-    m_pPlayer->Get_ActionControl()->m_bCarry = false;
+    CheckTrue(m_bCall_Exit_Interaction);
+    m_bCall_Exit_Interaction = true;
+
+   m_pPlayer->Get_ActionControl()->m_bCarry = false;
     m_pPlayer->Set_CarryAndThrowState(this);
 
 }

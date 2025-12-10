@@ -100,10 +100,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,
             /*60프레임마다 증가하는 타이머*/
             pGameInstance->Compute_TimeDelta(L"Timer_60");
 
-            pMainApp->Update_Priority(pGameInstance->Get_TimeDelta(L"Timer_60"));
-            pMainApp->Update(pGameInstance->Get_TimeDelta(L"Timer_60"));
-            pMainApp->Update_Late(pGameInstance->Get_TimeDelta(L"Timer_60"));
-            pMainApp->Update_Render(pGameInstance->Get_TimeDelta(L"Timer_60"));
+            float TimeDelta = pGameInstance->Get_TimeDelta(L"Timer_60");
+
+            pMainApp->Update_Priority(TimeDelta);
+            pMainApp->Update(TimeDelta);
+            pMainApp->Update_Late(TimeDelta);
+            pMainApp->Update_Render(TimeDelta);
             
             pMainApp->Render();
             

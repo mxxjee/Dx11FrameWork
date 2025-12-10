@@ -266,7 +266,7 @@ HRESULT CNPC::Ready_Resource(void* pArg)
 
 
     return S_OK;
-}
+} 
 
 void CNPC::Ready_Events()
 {
@@ -275,8 +275,8 @@ void CNPC::Ready_Events()
 
     //_float3(0.f, 3.f, -2.f)
     Payload.Floats["Float_X"] = 0.f;
-    Payload.Floats["Float_Y"] = 3.f;
-    Payload.Floats["Float_Z"] = -2.f;
+    Payload.Floats["Float_Y"] = 5.f;
+    Payload.Floats["Float_Z"] = -4.f;
     Payload.Ptrs["NPC"] = this;
 
     Enter_Interaction_Event.Payload = Payload;

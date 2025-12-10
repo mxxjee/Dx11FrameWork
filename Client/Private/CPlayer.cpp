@@ -1132,15 +1132,10 @@ bool CPlayer::Set_CarryAndThrowState(CInteractionObject* pObj)
 
     else
     { 
+
         m_CarryObject->Throw();
         pObj->Set_InteractionMode(false);
-
-        pObj->Set_ParentMatrix(nullptr);
-        pObj->Set_SocketMatrix(nullptr);
-
-  
-
-        //m_CarryObject = nullptr;
+        m_CarryObject = nullptr;
 
         return false;
     }

@@ -72,42 +72,49 @@ HRESULT CInteractionObject::Initialize_Copytype(void* pArg)
 
 void CInteractionObject::Update_Priority(_float fTimeDelta)
 {
+   
+
     __super::Update_Priority(fTimeDelta);
 }
 
 void CInteractionObject::Update(_float fTimeDelta)
 {
-
+    
     __super::Update(fTimeDelta);
-    if (m_bPhysics)
-    {
-        m_pTransformCom->UpdateImpulse(fTimeDelta, m_pNavigationCom);
+	if (m_bPhysics)
+	{
+		m_pTransformCom->UpdateImpulse(fTimeDelta, nullptr,true);
+         
+         /*XMStoreFloat3(&Pos, m_pTransformCom->Get_State(STATE::POSITION));
+         Pos.y -= 9.8f * 0.016f;*/
+        
+         ////현재셀의 지면높이가져오기 
+        
+        XMStoreFloat3(&Pos, m_pTransformCom->Get_State(STATE::POSITION));
 
-
-        _float3 Pos;
-        XMStoreFloat3(&Pos, m_pTransformCom->Get_State(STATE::POSITION));                   
-        Pos.y -= 9.8f * fTimeDelta;
-      
-        //현재셀의 지면높이가져오기 
-        _float CellY = m_pNavigationCom->GetHeight(XMLoadFloat3(&Pos));
-        if (Pos.y <= CellY)
-        {
-            m_pCollider->Set_Trigger(false);
-            m_bPhysics = false;
-            m_pTransformCom->Set_State(STATE::POSITION,
-                m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
-        }
-
-
-        else
-            m_pTransformCom->Set_State(STATE::POSITION, XMLoadFloat3(&Pos));
-
-    }
+         m_pNavigationCom->Set_CurrentIdx(XMLoadFloat3(&Pos));
+        
+         _float CellY = m_pNavigationCom->GetHeight(XMLoadFloat3(&Pos));
+         if (Pos.y <= CellY)
+         {
+             //m_pCollider->Set_Trigger(false);
+             m_bPhysics = false;
+             Pos.y = CellY;
+             m_pTransformCom->Set_State(STATE::POSITION,
+                 m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
+        
+             return;
+         }
+        
+        
+	}
 }
 
 void CInteractionObject::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
+
+  
     m_pCollider->Update_Collider(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
 
 }
@@ -233,6 +240,7 @@ HRESULT CInteractionObject::Ready_PartObjects(void* pArg)
         if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"AnimBody"), L"Part_Body", &pAnimBodyDesc)))
             return E_FAIL;
 
+        m_pBody = dynamic_cast<CBody*>(Find_PartObject(L"Part_Body"));
     }
 
     //아니라면 .static body할당
@@ -246,6 +254,7 @@ HRESULT CInteractionObject::Ready_PartObjects(void* pArg)
 
         if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"StaticBody"), L"Part_Body", &pBodyDesc)))
             return E_FAIL;
+        m_pBody = dynamic_cast<CBody*>(Find_PartObject(L"Part_Body"));
     }
 
 
@@ -276,7 +285,7 @@ void CInteractionObject::Exit_InteractRange()
 
 void CInteractionObject::Enter_Interaction()
 {
-
+    m_bCall_Exit_Interaction = false;
 
 }
 
@@ -286,6 +295,8 @@ void CInteractionObject::Stay_Interaction(_float fTimeDelta)
 
 void CInteractionObject::Exit_Interaction()
 {
+    CheckTrue(m_bCall_Exit_Interaction);
+    m_bCall_Exit_Interaction = true;
 }
 
 _int CInteractionObject::Get_Interaction_Priority()
@@ -320,9 +331,10 @@ void CInteractionObject::Throw()
 
     XMStoreFloat3(&ThrowDir, vDir);
 
-    m_pTransformCom->AddImpulse(0.4f, ThrowDir, m_pNavigationCom);
+    m_pSocketMatrix = nullptr;
 
+    m_pTransformCom->AddImpulse(0.4f, ThrowDir, nullptr,true);
     m_pNavigationCom->Set_CurrentIdx(pTransform->Get_State(STATE::POSITION));
     m_bPhysics = true;
-
+    XMStoreFloat3(&Pos, m_pTransformCom->Get_State(STATE::POSITION));
 }

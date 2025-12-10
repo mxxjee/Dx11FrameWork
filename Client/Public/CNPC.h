@@ -25,7 +25,7 @@ public:
     {
         string ScriptName="";      //파싱할 스크립트이름
         wstring ModelName = L"";
-        float TalkRange=2.f;            //플레이어가 이 거리 안으로 들어오면 상호작용가능
+        float TalkRange=5.f;            //플레이어가 이 거리 안으로 들어오면 상호작용가능
         string SceneName = "";      //현재 이 nPc가 존재하는 씬이름
         int NPC_ID=0; 
     }NPC_DESC;
