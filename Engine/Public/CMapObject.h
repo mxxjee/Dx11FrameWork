@@ -42,6 +42,7 @@ public:
     void        Update_Late(_float fTimeDelta);
     void        Update_Render(_float fTimeDelta);
 
+    virtual void        OnDestroy() {};
 
     virtual HRESULT Render();
 

@@ -125,6 +125,24 @@ HRESULT CAssetListWindow::Create_Folders()
     }
     m_FolderMap.emplace(L"Trigger", TriggerFolder);
 
+    //포지션들
+    vector<CFolder*>    PositionFolder;
+    CFolder::tagFolderDesc PositionDesc;
+    strcpy_s(PositionDesc.Name, MAX_PATH, "Position");
+    PositionDesc.Size = ImVec2(60.f, 60.f);
+    PositionDesc.iIdx = PositionFolder.size();
+    PositionDesc.Category = "Position";
+    pInstance = CFolder::Create(m_pDevice, m_pContext, &PositionDesc);
+    if (pInstance)
+    {
+        if (FAILED(pInstance->Initialize(&PositionDesc)))
+            return E_FAIL;
+
+        PositionFolder.push_back(pInstance);
+
+    }
+    m_FolderMap.emplace(L"Position", PositionFolder);
+
     return S_OK;
 
 }
@@ -160,6 +178,10 @@ HRESULT CAssetListWindow::Set_AssetList()
 
     if (FAILED(Create_Triggers()))
         return E_FAIL;
+
+    if (FAILED(Create_Positions()))
+        return E_FAIL;
+    
     return S_OK;
 }
 
@@ -388,6 +410,31 @@ HRESULT CAssetListWindow::Create_Triggers()
     return S_OK;
 }
 
+HRESULT CAssetListWindow::Create_Positions()
+{
+    ///Trigger들
+    wstring Names[] = { L"MapPosition"};
+    int Size = sizeof(Names) / sizeof(Names[0]);
+
+    CFolder* pFolder = Get_Folder("Position");
+    CheckNullResult(pFolder, E_FAIL);
+    for (int i = 0; i < Size; ++i)
+    {
+
+        AssetInfo Info;
+        Info.ObjType = MapObjType::TRIGGER;
+        Info.TexKey = Names[i];
+        Info.FullPath = L"../../";
+
+        pFolder->Add_Info(Info);
+
+
+
+    }
+    return S_OK;
+    return S_OK;
+}
+
 void CAssetListWindow::Show_Grid(const string& Category,int FieldNum)
 {
     CheckTrue(Category == "");
@@ -424,6 +471,14 @@ void CAssetListWindow::Show_Grid(const string& Category,int FieldNum)
         auto iter = m_FolderMap.find(L"Trigger");
         if (iter != m_FolderMap.end())
             Target = (iter->second)[FieldNum]->get_vector();
+    }
+
+    else if (Category == "Position")
+    {
+        auto iter = m_FolderMap.find(L"Position");
+        if (iter != m_FolderMap.end())
+            Target = (iter->second)[FieldNum]->get_vector();
+
     }
     else
         Target = &TileImages;

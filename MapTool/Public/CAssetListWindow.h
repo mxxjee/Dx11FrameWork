@@ -43,9 +43,12 @@ public:
 
 private:
     HRESULT       Create_TerrainFile();
+
     HRESULT       Create_TileFile();
     HRESULT       Create_ModelFile();
     HRESULT       Create_Triggers();
+
+    HRESULT       Create_Positions();
 
 
 private:

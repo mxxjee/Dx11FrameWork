@@ -4,6 +4,7 @@
 
 NS_BEGIN(Engine)
 class CMapRoomTrigger;
+class CMapPosition;
 
 class ENGINE_DLL CMapRoom :
     public CMapModel
@@ -25,6 +26,11 @@ public:
 public:
     int Add_RoomTrigger(CMapRoomTrigger* pTrigger);
     void Remove_RoomTrigger(_uint iIdx);
+
+
+    int Add_Position(CMapPosition* pPos);
+    void Remove_Position(_uint iIdx);
+
 private:
     string      RoomName = "";
 
@@ -33,6 +39,8 @@ public:
 
 private:
     vector<CMapRoomTrigger*> RoomTriggers;
+    vector< CMapPosition*> MapPositions;
+
     _uint               iIdx = 0;
 
 

@@ -2,6 +2,7 @@
 #include "CMapLayer.h"
 #include "CMapRoomTrigger.h"
 #include "CModel.h"
+#include "CMapPosition.h"
 
 CMapRoom::CMapRoom(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CMapModel(pDevice,pContext)
@@ -69,7 +70,11 @@ void CMapRoom::Save_To_Json(const string& filePath)
 
     }
     //Triggerbox부터 저장
-    
+    for (auto& pPos : MapPositions)
+    {
+        j["RoomTriggers"].push_back(pPos->Get_Info().ToJson());
+
+    }
 
 
 
@@ -90,6 +95,24 @@ void CMapRoom::Remove_RoomTrigger(_uint iIdx)
     {
         RoomTriggers[i]->Set_Idx(i);
        
+    }
+}
+
+int CMapRoom::Add_Position(CMapPosition* pPos)
+{
+    CheckNullResult(pPos, -1);
+
+    MapPositions.push_back(pPos);
+    return MapPositions.size() - 1;
+}
+
+void CMapRoom::Remove_Position(_uint iIdx)
+{
+    MapPositions.erase(MapPositions.begin() + iIdx);
+    for (int i = 0; i < MapPositions.size(); ++i)
+    {
+        MapPositions[i]->Set_Idx(i);
+
     }
 }
 

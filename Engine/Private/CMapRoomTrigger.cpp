@@ -153,3 +153,15 @@ void CMapRoomTrigger::Free()
 
     
 }
+
+void CMapRoomTrigger::OnDestory()
+{
+    
+    CheckNull(pOwner);
+    
+    
+    CMapRoom* pRoom = dynamic_cast<CMapRoom*>(pOwner);
+    CheckNull(pRoom);
+    pRoom->Remove_RoomTrigger(m_idx);
+    
+}

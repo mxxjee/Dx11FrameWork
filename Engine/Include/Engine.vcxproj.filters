@@ -439,6 +439,9 @@
     <Filter Include="998.MapTool\Object\MapTrigger\RoomTrigger">
       <UniqueIdentifier>{59ee1fc4-e5ea-48af-8d07-eb703740d0b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="998.MapTool\Object\MapPosition">
+      <UniqueIdentifier>{ff349792-9d31-4789-a27d-944aab948e39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -870,6 +873,9 @@
     <ClInclude Include="..\Public\Parsing_RoomInfo.h">
       <Filter>998.MapTool</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CMapPosition.h">
+      <Filter>998.MapTool\Object\MapPosition</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -1250,6 +1256,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMapRoomTrigger.cpp">
       <Filter>998.MapTool\Object\MapTrigger\RoomTrigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapPosition.cpp">
+      <Filter>998.MapTool\Object\MapPosition</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

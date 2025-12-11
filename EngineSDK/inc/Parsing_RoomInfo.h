@@ -21,3 +21,27 @@ struct ENGINE_DLL NPCInfo
 
 
 };
+
+struct ENGINE_DLL PositionInfo
+{
+	string TargetName = "";
+	_float3 vPos;
+
+	json ToJson() const
+	{
+		json j;
+		j["Target"] = TargetName;
+		j["Pos"] = { vPos.x,vPos.y,vPos.z };
+	
+
+		return j;
+	}
+
+	static PositionInfo	LoadJson(const json& j)
+	{
+		PositionInfo Info;
+		Info.vPos = _float3(j["Pos"][0], j["Pos"][1], j["Pos"][2]);
+		Info.TargetName = j["Target"];
+		return Info;
+	}
+};

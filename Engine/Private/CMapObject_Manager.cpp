@@ -68,13 +68,19 @@ void CMapObject_Manager::Update(_float fTimeDelta)
     if (!m_bAblePicking)
         Set_AblePicking(true);
 
-    if (CInput_Manager::GetInstance()->IsMouseButtonPressed(0)|| m_pImguiManager->Get_MapToolMode() == MapToolMode::NAVMESH)
+    if(m_pImguiManager->Get_MapToolMode() == MapToolMode::NAVMESH)
         Check_Picking();
 
+    else if (m_pImguiManager->Get_MapToolMode() == MapToolMode::EDIT)
+    {
+        if (CInput_Manager::GetInstance()->IsMouseButtonPressed(0))
+            Check_Picking();
+
+    }
     if (m_pSelectedObject)
         m_pSelectedObject->Update_SelectMode(fTimeDelta);
-        
-    
+
+
     //Active_SelectionMode(fTimeDelta);
 
 
@@ -84,6 +90,7 @@ void CMapObject_Manager::Update(_float fTimeDelta)
 void CMapObject_Manager::Update_Late(_float fTimeDelta)
 {
    
+  
 
 
     for (auto& pair : m_Layers)
@@ -91,6 +98,9 @@ void CMapObject_Manager::Update_Late(_float fTimeDelta)
         pair.second->Update_Late(fTimeDelta);
     }
     
+
+   
+
 }
 
 void CMapObject_Manager::Update_Render(_float fTimeDelta)
@@ -118,8 +128,7 @@ void CMapObject_Manager::Check_Picking()
     CMapObject* pObj = nullptr;
     CMapObject* pPickObj = nullptr;
 
-   
-    Ray ray;
+
     for (auto& pair : m_Layers)
     {
         if (pair.second)
@@ -333,7 +342,7 @@ CMapLayer* CMapObject_Manager::Get_Layer_By_MapObjType(MapObjType eType)
 
 }
 
-HRESULT CMapObject_Manager::Save_InteractionData(const string& filePath, _uint iNum)
+HRESULT CMapObject_Manager::Save_RoomData(const string& filePath, _uint iNum)
 {
     CMapLayer* pLayer = Find_MapLayer(L"Room_Layer");
     if (pLayer)
@@ -342,7 +351,7 @@ HRESULT CMapObject_Manager::Save_InteractionData(const string& filePath, _uint i
     return S_OK;
 }
 
-HRESULT CMapObject_Manager::Save_RoomData(const string& filePath, _uint iNum)
+HRESULT CMapObject_Manager::Save_InteractionData(const string& filePath, _uint iNum)
 {
     CMapLayer* pLayer = Find_MapLayer(L"Interaction_Layer");
     if (pLayer)

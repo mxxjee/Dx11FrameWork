@@ -64,7 +64,6 @@
 
 
 
-
 USING(Client)
 CLoader::CLoader(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
     :m_pDevice{_pDevice},

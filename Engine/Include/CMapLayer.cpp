@@ -131,6 +131,7 @@ void CMapLayer::RequestDestroy(CMapObject* pObj)
 {
     // m_DestroyQueue에 추가한다.
     pObj->Set_Active(false);
+    pObj->OnDestroy();
     m_DestroyQueue.push(pObj);
 }
 

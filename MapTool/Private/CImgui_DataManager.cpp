@@ -343,6 +343,7 @@ HRESULT CImgui_DataManager::Create_Model()
 
 	case MapObjType::POSITION:
 		LayerTag = L"Position_Layer";
+		ProtoTag = L"MapPosition";
 		break;
 
 

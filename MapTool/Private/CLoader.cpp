@@ -30,6 +30,8 @@
 
 #include "CMapRoom.h"
 #include "CMapRoomTrigger.h"
+#include "CMapPosition.h"
+
 
 
 
@@ -177,6 +179,10 @@ HRESULT CLoader::Loading_MapTool()
 
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"RoomTrigger"), CMapRoomTrigger::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapPosition"), CMapPosition::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     m_isFinished = true;

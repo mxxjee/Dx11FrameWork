@@ -392,8 +392,14 @@ void CTransform::OnInspectorUI()
 	_float3 vPos;
 	XMStoreFloat3(&vPos, Get_State(STATE::POSITION));
 
+	
+
 	if (ImGui::DragFloat3("Position", &vPos.x, 0.1f))
-		Set_State(STATE::POSITION, XMLoadFloat3(&vPos));
+	{
+		_float4 vFinalPos = _float4(vPos.x, vPos.y, vPos.z, 1.f);
+		Set_State(STATE::POSITION, XMLoadFloat4(&vFinalPos));
+	}
+		
 
 	ImGui::Spacing();
 
