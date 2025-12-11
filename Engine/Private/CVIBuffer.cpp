@@ -15,7 +15,8 @@ CVIBuffer::CVIBuffer(const CVIBuffer& Prototype)
     m_iIndexStride(Prototype.m_iIndexStride),
     m_iNumVertexBuffers(Prototype.m_iNumVertexBuffers),
     m_iNumIndexBuffers(Prototype.m_iNumIndexBuffers),
-    m_pVertexPositions(Prototype.m_pVertexPositions)
+    m_pVertexPositions(Prototype.m_pVertexPositions),
+    m_ePrimitiveType(Prototype.m_ePrimitiveType)
 {
   
 

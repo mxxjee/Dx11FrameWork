@@ -183,6 +183,7 @@ public:
 #pragma region Pipeline
 public:
 	void		Set_Transform(_uint CameraType, D3DTS eTransformMatrix, _fmatrix TransformMatrix);
+	void		Set_CamPosition(_uint CameraType, const _float4& Position);
 
 	//뷰,투영을 골라서 바인드가능
 	HRESULT Bind_PipeLineMatrix(class CShader* pShader, const _char * pConstant, _uint iCameraType, D3DTS eTransformMatrix);

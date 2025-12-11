@@ -153,6 +153,7 @@
     <ClInclude Include="..\Public\CBackGround.h" />
     <ClInclude Include="..\Public\CButton.h" />
     <ClInclude Include="..\Public\CCameraDebugWindow.h" />
+    <ClInclude Include="..\Public\CExplosion.h" />
     <ClInclude Include="..\Public\CFadeScreen.h" />
     <ClInclude Include="..\Public\CFloor.h" />
     <ClInclude Include="..\Public\CIInteractable.h" />
@@ -235,6 +236,7 @@
     <ClCompile Include="..\Private\CBackGround.cpp" />
     <ClCompile Include="..\Private\CButton.cpp" />
     <ClCompile Include="..\Private\CCameraDebugWindow.cpp" />
+    <ClCompile Include="..\Private\CExplosion.cpp" />
     <ClCompile Include="..\Private\CFadeScreen.cpp" />
     <ClCompile Include="..\Private\CFloor.cpp" />
     <ClCompile Include="..\Private\CIInteractable.cpp" />
@@ -369,6 +371,11 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\Shader_VtxPos_Particle.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="..\..\Resource\Shader\Shader_VtxPosTex_Particle.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>

@@ -22,6 +22,7 @@ public:
         _float2     vSpeed = {};    //파티클 움직이리 속도
         _float2     vLifeTime = {}; //파티클 생명시간
         _bool       isLoop = {};    //루프여부
+        _float3     vPivot = {};        //spread 피봇
     }PARTICLE_DESC;
 
 
@@ -40,7 +41,7 @@ public:
 
 public:
     void        Drop(_float fTimeDelta);        //파티클을 위에서 아래로 내려오게하는 기능함수
-    
+    void        Spread(_float fTimeDelta);
 protected:
     ComPtr<ID3D11Buffer>        m_pVBInstance = { nullptr };        //추가적인 버퍼. 
     D3D11_BUFFER_DESC           m_InstanceBufferDesc = {};
@@ -53,7 +54,7 @@ protected:
     _uint                   m_iInstanceVertexStride = {};       //인스턴스 하나당 버텍스size
     _float*                 m_pSpeeds = { nullptr };
     _bool                  m_isLoop = { false };
-
+    _float3                 m_vPivot = {};
 
 
 public:

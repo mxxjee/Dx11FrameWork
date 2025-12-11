@@ -218,7 +218,6 @@
     <ClInclude Include="..\Public\CInteractionObject.h">
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CSnow.h" />
     <ClInclude Include="..\Public\CInteraction_Rock.h">
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Rock</Filter>
     </ClInclude>
@@ -231,6 +230,10 @@
     <ClInclude Include="..\Public\CInteraction_TriggerBox.h">
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\InteractionTrigger</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CSnow.h">
+      <Filter>02.GameObjects\98.Effect\Particle\Snow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CExplosion.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -508,6 +511,9 @@
     <Filter Include="02.GameObjects\00.WorldObjects\02.InteractionObject\InteractionTrigger">
       <UniqueIdentifier>{1e8c2fc2-405f-4ff1-9d4a-f041b20d61b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\98.Effect\Particle\Explosion">
+      <UniqueIdentifier>{c84750c3-690f-4ed6-83cc-30466c76ecd2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -706,7 +712,6 @@
     <ClCompile Include="..\Private\CInteractionObject.cpp">
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CSnow.cpp" />
     <ClCompile Include="..\Private\CInteraction_Rock.cpp">
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Rock</Filter>
     </ClCompile>
@@ -719,6 +724,10 @@
     <ClCompile Include="..\Private\CInteraction_TriggerBox.cpp">
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\InteractionTrigger</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CSnow.cpp">
+      <Filter>02.GameObjects\98.Effect\Particle\Snow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CExplosion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -745,6 +754,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\..\Resource\Shader\Shader_VtxPos.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\Shader_VtxPos_Particle.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\..\Resource\Shader\Shader_VtxPosTex_Particle.hlsl">

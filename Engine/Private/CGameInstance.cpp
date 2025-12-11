@@ -626,6 +626,12 @@ void CGameInstance::Set_Transform(_uint CameraType, D3DTS eTransformMatrix, _fma
 
 }
 
+void CGameInstance::Set_CamPosition(_uint CameraType, const _float4& Position)
+{
+	return m_pPipeLine->Set_CamPosition(CameraType, Position);
+
+}
+
 HRESULT CGameInstance::Bind_PipeLineMatrix(CShader* pShader, const _char* pConstant, _uint iCameraType, D3DTS eTransformMatrix)
 {
 	CheckNullResult(m_pPipeLine,E_FAIL);

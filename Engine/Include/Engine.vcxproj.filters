@@ -424,7 +424,10 @@
     <Filter Include="05.Component\VIBuffer\VIBuffer_Particle">
       <UniqueIdentifier>{0a6ada42-0365-4afc-8e91-012cef8acd11}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05.Component\VIBuffer\VIBuffer_Particle\VIBuffer_Particle_Rect">
+    <Filter Include="05.Component\VIBuffer\VIBuffer_Particle\Point">
+      <UniqueIdentifier>{f8789f18-80f1-4126-82ad-0b94ab122d10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Component\VIBuffer\VIBuffer_Particle\Rect">
       <UniqueIdentifier>{76e664ff-9332-4e7e-9cc2-d5ea2b671976}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -837,7 +840,12 @@
     <ClInclude Include="..\Public\CVIBuffer_Particle.h">
       <Filter>05.Component\VIBuffer\VIBuffer_Particle</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CVIBuffer_Particle_Rect.h" />
+    <ClInclude Include="..\Public\CVIBuffer_Particle_Point.h">
+      <Filter>05.Component\VIBuffer\VIBuffer_Particle\Point</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CVIBuffer_Particle_Rect.h">
+      <Filter>05.Component\VIBuffer\VIBuffer_Particle\Rect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -1204,6 +1212,11 @@
     <ClCompile Include="..\Private\CVIBuffer_Particle.cpp">
       <Filter>05.Component\VIBuffer\VIBuffer_Particle</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CVIBuffer_Particle_Rect.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer_Particle_Point.cpp">
+      <Filter>05.Component\VIBuffer\VIBuffer_Particle\Point</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CVIBuffer_Particle_Rect.cpp">
+      <Filter>05.Component\VIBuffer\VIBuffer_Particle\Rect</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

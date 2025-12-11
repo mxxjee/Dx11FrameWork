@@ -16,6 +16,12 @@ void CPipeLine::Set_Transform(_uint CameraType, D3DTS eTransformMatrix, _fmatrix
 
 }
 
+void CPipeLine::Set_CamPosition(_uint CameraType, const _float4& Position)
+{
+
+	m_PipeDatas[CameraType].m_vCamPosition = Position;
+}
+        
 HRESULT CPipeLine::Bind_PipeLineMatrix(CShader* pShader, const _char* pConstant, _uint iCameraType, D3DTS eTransformMatrix)
 {
 	return pShader->Bind_Matrix(pConstant,m_PipeDatas[ENUM_TO_UINT(iCameraType)].m_TransformMatrices[ENUM_TO_UINT(eTransformMatrix)]);
@@ -67,8 +73,6 @@ void CPipeLine::Update()
 			XMStoreFloat4x4(&Data.m_TransformInverseMatrices[j], XMMatrixInverse(nullptr, XMLoadFloat4x4(&Data.m_TransformMatrices[j])));
 
 		}
-
-		memcpy(&Data.m_vCamPosition, &Data.m_TransformMatrices[ENUM_TO_UINT(D3DTS::VIEW)].m[3], sizeof(_float4));
 	}
 }
 

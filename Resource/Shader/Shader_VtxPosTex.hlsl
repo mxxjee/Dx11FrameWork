@@ -232,7 +232,7 @@ technique11 DefaultTechnique
         //이 pass가 선택되면 VertexShader는 이렇게 컴파일하세요.
                                 //버전 , 진입함수 설정
         VertexShader = compile vs_5_0 VS_MAIN();
-
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
 
     }
@@ -240,14 +240,14 @@ technique11 DefaultTechnique
     pass SaveSlot
     {
         VertexShader = compile vs_5_0 VS_MAIN();
-
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SaveSlot();
     }
 
     pass Logo
     {
         VertexShader = compile vs_5_0 VS_MAIN();
-
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_Logo();
     }
 
@@ -255,7 +255,7 @@ technique11 DefaultTechnique
     {
                                                                
         VertexShader = compile vs_5_0 VS_MAIN();
-
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_BRIGHT();
 
     }
@@ -265,6 +265,7 @@ technique11 DefaultTechnique
     {
                                                                
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MINIMAP();
 
     }
@@ -274,36 +275,42 @@ technique11 DefaultTechnique
     pass softBright
     {
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SoftBright();
     }
 
     pass Invert
     {
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_InvertColor();
     }
 
     pass RadialBright
     {
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_RadialBright();
     }
 
     pass Threshold
     {
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_THRESHOLD();
     }
 
     pass Blur
     {
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_GuasianBlur();
     }
 
     pass Select
     {
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_Selected();
     }
 }

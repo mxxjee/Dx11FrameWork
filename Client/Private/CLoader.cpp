@@ -22,6 +22,8 @@
 #include "CSphereColliderComponent.h"
 #include "COBBColliderComponent.h"
 #include "CVIBuffer_Particle_Rect.h"
+#include "CVIBuffer_Particle_Point.h"
+
 
 
 ///////////////GameObject//////////////////////
@@ -50,12 +52,15 @@
 #include "CAnimBody.h"
 #include "CAnimModelObject.h"
 #include "CStaticModelObject.h"
+
 #include "CSnow.h"
+#include "CExplosion.h"
 
 #include "CInteraction_TriggerBox.h"
 #include "CInteractionObject.h"
 #include "CInteraction_Lawn.h"
 #include "CInteraction_Rock.h"
+
 
 
 
@@ -278,8 +283,12 @@ HRESULT CLoader::Register_Shaders()
         m_pDeviceContext, tagVertexPosTexParticle::desc, L"../../Resource/Shader/Shader_VtxPosTex_Particle.hlsl",
         "DefaultTechnique");
     m_pGameInstance->Register_Shader(L"VtxPosTexParticle", pInstance);
+    
 
-
+    pInstance = CShader::Create(m_pDevice,
+        m_pDeviceContext, tagVertexPosParticle::desc, L"../../Resource/Shader/Shader_VtxPos_Particle.hlsl",
+        "DefaultTechnique");
+    m_pGameInstance->Register_Shader(L"VtxPosParticle", pInstance);
 
     return S_OK;
 }
@@ -385,6 +394,21 @@ HRESULT CLoader::Register_Components()
     SnowDesc.isLoop = true;
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Particle_Rect"), CVIBuffer_Particle_Rect::Create(m_pDevice, m_pDeviceContext,&SnowDesc))))
         return E_FAIL;
+
+
+
+    CVIBuffer_Particle_Point::PARTICLE_DESC	ExploDesc{};
+    ExploDesc.iNumInstance = 800;
+    ExploDesc.vCenter = _float3(0.f, 0.f, 0.f);
+    ExploDesc.vSize = _float2(0.05f, 0.15f);
+    ExploDesc.vRange = _float3(0.5f, 0.5f, 0.5f);
+    ExploDesc.vSpeed = _float2(2.f, 5.f);
+    ExploDesc.vLifeTime = _float2(1.f, 1.5f);
+    ExploDesc.isLoop = true;
+    ExploDesc.vPivot = _float3(0.f, -0.5f, 0.f);
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Particle_Point"), CVIBuffer_Particle_Point::Create(m_pDevice, m_pDeviceContext, &ExploDesc))))
+        return E_FAIL;
+
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"UI"), CUIComponent::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
@@ -528,6 +552,8 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Snow", CSnow::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Explosion", CExplosion::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
     return S_OK;
 }
 

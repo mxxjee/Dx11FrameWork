@@ -50,6 +50,8 @@ void CCamera_Base::Update_PipeLine()
 {
     //pipeline에게 정보업데이트
     m_pGameInstance->Set_Transform(ENUM_TO_UINT(m_eCameraType), D3DTS::VIEW, m_pTransformCom->Get_WorldInverse(TransformScope::WORLD));
+    
+    m_pGameInstance->Set_CamPosition(ENUM_TO_UINT(m_eCameraType), Get_CameraPosition());
 
     if (m_bPerspective)
         m_pGameInstance->Set_Transform(ENUM_TO_UINT(m_eCameraType), D3DTS::PROJ, XMMatrixPerspectiveFovLH(XMConvertToRadians(m_fFovy), (m_fWidth/m_fHeight), m_fNearZ, m_fFarZ));
@@ -183,6 +185,14 @@ HRESULT CCamera_Base::Ready_Resource(void* pArg)
         return E_FAIL;
 
     return S_OK;    
+}
+
+_float4 CCamera_Base::Get_CameraPosition()
+{
+    _float4 vPos;
+    XMStoreFloat4(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+    return vPos;
 }
 
 void CCamera_Base::Make_Planes()

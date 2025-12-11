@@ -148,7 +148,7 @@ technique11 DefaultTechnique
         //이 pass가 선택되면 VertexShader는 이렇게 컴파일하세요.
                                 //버전 , 진입함수 설정
         VertexShader = compile vs_5_0 VS_MAIN();
-
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
 
     }
@@ -158,6 +158,7 @@ technique11 DefaultTechnique
     pass face_low__MI_eye
     {
         VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
 
     }

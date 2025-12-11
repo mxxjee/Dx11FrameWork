@@ -104,6 +104,7 @@ public:
     const _float    Get_Near() { return m_fNearZ; }
     const _float    Get_Far() { return m_fFarZ; }
 
+    _float4         Get_CameraPosition();
 
 private:
     void            Make_Planes();

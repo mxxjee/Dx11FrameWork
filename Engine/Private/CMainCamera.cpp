@@ -81,8 +81,9 @@ HRESULT CMainCamera::Render()
 void CMainCamera::Update_PipeLine()
 {
 	//pipeline에게 정보업데이트
-	m_pGameInstance->Set_Transform(ENUM_TO_UINT(m_eCameraType), D3DTS::VIEW, ViewMatrix);
 
+	m_pGameInstance->Set_Transform(ENUM_TO_UINT(m_eCameraType), D3DTS::VIEW, ViewMatrix);
+	m_pGameInstance->Set_CamPosition(ENUM_TO_UINT(m_eCameraType), Get_CameraPosition());
 	m_pGameInstance->Set_Transform(ENUM_TO_UINT(m_eCameraType), D3DTS::PROJ, XMMatrixPerspectiveFovLH(XMConvertToRadians(m_fFovy), (m_fWidth / m_fHeight), m_fNearZ, m_fFarZ));
 
 }

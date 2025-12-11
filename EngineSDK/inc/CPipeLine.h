@@ -27,6 +27,7 @@ private:
 
 public:
 	void		Set_Transform(_uint CameraType, D3DTS eTransformMatrix, _fmatrix TransformMatrix);
+	void		Set_CamPosition(_uint CameraType,const _float4& Position);
 public:
 	//뷰,투영을 골라서 바인드가능
 	HRESULT Bind_PipeLineMatrix(class CShader* pShader, const _char* pConstant, _uint iCameraType,D3DTS eTransformMatrix);
@@ -52,6 +53,7 @@ public:
 	_matrix					Get_ViewProjMatrix(_uint CameraType);
 
 	const _float4&			Get_CamPosition(_uint CameraType);
+
 private:
 	vector<PIPE_DATA>		m_PipeDatas;
 

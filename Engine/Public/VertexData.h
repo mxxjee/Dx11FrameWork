@@ -115,4 +115,11 @@ typedef  struct ENGINE_DLL tagVertexPosTexParticle
 	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
 }VTXPOSTEX_PARTICLE;
 
+
+typedef struct ENGINE_DLL tagVertexPosParticle
+{
+	static const unsigned int		iNumElements = { 6 };
+	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
+}VTXPOS_PARTICLE;
+
 NS_END

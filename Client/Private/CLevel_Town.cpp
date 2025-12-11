@@ -23,6 +23,7 @@
 #include "CMapLoader.h"
 #include "CLayer.h"
 #include "CUICreator.h"
+#include "CExplosion.h"
 
 
 
@@ -392,6 +393,9 @@ HRESULT CLevel_Town::Ready_Layer_Particle(const _wstring& strLayerTag)
     CGameObject::GAMEOBJECT_DESC Desc;
     CTransform::TRANSFORM_DESC TransDesc;
 
+    CPlayer* pPlayer = CInteraction_Manager::GetInstance()->Get_MainPlayer();
+
+    XMStoreFloat4(&TransDesc.vLocalPosition, pPlayer->Get_Transform()->Get_State(STATE::POSITION));
     Desc.TransformDesc = &TransDesc;
 
     if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
@@ -399,6 +403,15 @@ HRESULT CLevel_Town::Ready_Layer_Particle(const _wstring& strLayerTag)
         ENUM_TO_UINT(LEVEL_ID::TOWN),
         strLayerTag,&Desc)))
         return E_FAIL;
+
+
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"Explosion"),
+        ENUM_TO_UINT(LEVEL_ID::TOWN),
+        strLayerTag, &Desc)))
+        return E_FAIL;
+
     return S_OK;
 }
 
