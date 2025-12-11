@@ -28,12 +28,12 @@ public:
 
 public:
     void    RequestDestroy(CMapObject* pObj);//DestroyQue에 추가하라는 작업
-
     void    ProcessDestroy();       //DestroyQue를 비우는작업
     
 public:
     void        Set_AblePicking(bool b) { m_bAblePicking = b; }
     HRESULT     Save_Data(const string& filePath, _uint iNum);
+    HRESULT     Save_RoomData(_uint iRoomNum);
     HRESULT     Load_Data(const string& LoadPath,vector<DefaultInteractionData>& Infos);
 private:
     list<CMapObject*>      m_ObjList;

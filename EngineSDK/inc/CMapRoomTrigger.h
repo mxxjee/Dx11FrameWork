@@ -39,6 +39,7 @@ public:
     RoomTrigger     Get_Info() { return m_tInfo; }
     void            Set_Idx(_uint i) { m_idx = i; }
     virtual         void OnDestory();
+    json            Save_Data();
 private:
     CMapObject* pOwner = nullptr;
     string  m_NextRoomID = "";

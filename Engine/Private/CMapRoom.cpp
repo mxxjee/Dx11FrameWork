@@ -56,27 +56,40 @@ void CMapRoom::Free()
 
 }
 
-void CMapRoom::Save_To_Json(const string& filePath)
+void CMapRoom::Save_To_Json(json& Json)
 {
-    //NPC
-    json j;
+
+    json jRoomData;
+
     
 
-    j["RoomName"] = RoomName;
- 
+    _float3 vPos;
+    XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+    jRoomData["RoomName"] = RoomName;
+    jRoomData["Position"] = { vPos.x,vPos.y,vPos.z };
+
     for (auto& pTrigger : RoomTriggers)
     {
-        j["RoomTriggers"].push_back(pTrigger->Get_Info().ToJson());
+        jRoomData["RoomTriggers"].push_back(pTrigger->Save_Data());
 
     }
     //Triggerbox부터 저장
     for (auto& pPos : MapPositions)
     {
-        j["RoomTriggers"].push_back(pPos->Get_Info().ToJson());
+        jRoomData["MapPositions"].push_back(pPos->Save_Data());
 
     }
 
+    string FinalPath = "../../Resource/Data/Map/Room/"+ RoomName + "_room" + ".json";
 
+    ofstream	file(FinalPath);
+    file << std::setw(4) << jRoomData;
+
+    file.close();
+
+
+    MSG_BOX("Save Complete");
 
 }
 

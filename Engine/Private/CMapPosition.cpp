@@ -81,7 +81,6 @@ void CMapPosition::Save_To_Json(json& Json)
 void CMapPosition::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
-    XMStoreFloat3(&Info.vPos, m_pTransformCom->Get_State(STATE::POSITION));
    
 }
 
@@ -107,6 +106,13 @@ void CMapPosition::OnDestroy()
     CMapRoom* pRoom = dynamic_cast<CMapRoom*>(pOwner);
     CheckNull(pRoom);
     pRoom->Remove_Position(m_idx);
+}
+
+json CMapPosition::Save_Data()
+{
+    XMStoreFloat3(&Info.vPos, m_pTransformCom->Get_State(STATE::POSITION));
+
+    return Info.ToJson();
 }
 
 

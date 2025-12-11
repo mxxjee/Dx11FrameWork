@@ -107,42 +107,8 @@ bool CMapTrigger::Is_Picked(_vector Origin, _vector Dir, float& Dist)
 
 }
 
-void CMapTrigger::Save_To_Json(json& Json)
-{
-  
-    _float3 vPos, vRotation, vScale;
-
-    XMStoreFloat3(&vPos, m_pTransformCom->Get_State(STATE::POSITION));
-    vScale = m_pTransformCom->Get_Scale_ByFloat3();
-    vRotation = m_pTransformCom->Get_Rotation_ByEular();
-
-    json Transform;
-
-    json position = json::array();
-    position.push_back(vPos.x);
-    position.push_back(vPos.y);
-    position.push_back(vPos.z);
-    Transform["Position"] = position;
 
 
-
-    json scale = json::array();
-    scale.push_back(vScale.x);
-    scale.push_back(vScale.y);
-    scale.push_back(vScale.z);
-    Transform["Scale"] = scale;
-
-
-
-    json Rotation = json::array();
-    Rotation.push_back(vRotation.x);
-    Rotation.push_back(vRotation.y);
-    Rotation.push_back(vRotation.z);
-    Transform["Rotation"] = Rotation;
-
-    Json["Transform"] = Transform;
-
-}
 
 void CMapTrigger::Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation)
 {

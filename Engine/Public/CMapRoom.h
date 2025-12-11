@@ -20,7 +20,7 @@ public:
     virtual void Free() override;
 
 public:
-    void        Save_To_Json(const string& filePath);
+    void        Save_To_Json(json& Json);
     void        Set_RoomName(string roomName) { RoomName = roomName; }
 
 public:

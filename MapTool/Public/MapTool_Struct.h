@@ -13,6 +13,7 @@ struct SaveFilePath
 	vector<string>			m_TerrainSaveFiles;		//이미 저장된 세이브파일들의 경로.
 	vector<string>			m_NavSaveFiles;		//이미 저장된 세이브파일들의 경로.
 	vector<string>			m_InteractionFiles;		//이미 저장된 세이브파일들의 경로.
+	vector<string>			m_RoomFiles;		//이미 저장된 세이브파일들의 경로.
 
 
 			
@@ -20,12 +21,14 @@ struct SaveFilePath
 	vector<string>              m_SaveTerrainFileNames;
 	vector<string>				m_SaveNavFileNames;
 	vector<string>				m_SaveInteractionFileNames;
+	vector<string>				m_SaveRoomFileNames;
 
 
 
 	vector<const char*>         m_TerrainSaveFileNamesStr;
 	vector<const char*>			m_NavSaveFileNamesStr;
 	vector<const char*>			m_InteractionSaveFileNamesStr;
+	vector<const char*>			m_RoomSaveFileNamesStr;
 
 
 
@@ -40,9 +43,11 @@ struct LoadFilePath
 	string				m_CurrentLoadTerrainFilePath="";		//로드 시 현재 읽어온 경로. 덮어쓰기 일 경우 이를 이용
 	string				m_CurrentLoadNavFilePath = "";
 	string				m_CurrentLoadInteractionFilePath = "";
+	string				m_CurrentLoadRoomFilePath = "";
 
 	
 	int					LoadTerarinFileIdx = 0;//Terrain용
 	int					LoadNavFileIdx = 0;//navmesh용
 	int					LoadInteractionFileIdx = 0;//Interaction용
+	int					LoadRoomFileIdx = 0;//Interaction용
 };

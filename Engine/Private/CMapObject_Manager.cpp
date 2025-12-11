@@ -342,11 +342,11 @@ CMapLayer* CMapObject_Manager::Get_Layer_By_MapObjType(MapObjType eType)
 
 }
 
-HRESULT CMapObject_Manager::Save_RoomData(const string& filePath, _uint iNum)
+HRESULT CMapObject_Manager::Save_RoomData(_uint iRoomNum)
 {
     CMapLayer* pLayer = Find_MapLayer(L"Room_Layer");
     if (pLayer)
-        pLayer->Save_Data(filePath, iNum);
+        pLayer->Save_RoomData(iRoomNum);
 
     return S_OK;
 }

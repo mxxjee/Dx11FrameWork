@@ -32,7 +32,7 @@ public:
 public:
     virtual void Imgui_Render_Properties(_float3 * vScale, _float3 * vPosition, _float3 * vRotation) override;
     virtual void        OnDestroy();
-
+    json            Save_Data();
 private:
     CMapObject* pOwner = nullptr;
     PositionInfo Info;

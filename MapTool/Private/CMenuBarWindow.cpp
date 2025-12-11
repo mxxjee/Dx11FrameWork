@@ -131,6 +131,7 @@ void CMenuBarWindow::Update_Menu()
     Show_NavListBox();
     Show_TextBox();
     Show_InteractionBox();
+    Show_RoomBox();
 }
 
 void CMenuBarWindow::Show_SaveMenu()
@@ -171,6 +172,8 @@ void CMenuBarWindow::Show_SaveMenu()
        }
 
 #pragma endregion
+
+#pragma region SaveNavMesh
         if (ImGui::MenuItem("Save_NavMesh","Ctrl+S"))
         {
             if (m_pImgui_DataManager->IsLoadedNav())
@@ -195,6 +198,9 @@ void CMenuBarWindow::Show_SaveMenu()
             if (FAILED(m_pImgui_DataManager->Update_SaveFiles()))
                 return;
         }
+#pragma endregion
+
+#pragma region Save_Interaction
         ////////////////////////
         if (ImGui::MenuItem("Save_Interaction", "Ctrl+S"))
         {
@@ -219,12 +225,27 @@ void CMenuBarWindow::Show_SaveMenu()
             if (FAILED(m_pImgui_DataManager->Update_SaveFiles()))
                 return;
             }
+#pragma endregion
+
+        ////////////////////////////////////////
+         ////////////////////////
+        if (ImGui::MenuItem("Save_Room", "Ctrl+S"))
+        {
+            
+            //반드시 방 모델이름으로 저장
+			if (FAILED(m_pMapObject_Manager->Save_RoomData(2)))
+				return;
+
+			//Refresh SaveFileList
+			if (FAILED(m_pImgui_DataManager->Update_SaveFiles()))
+				return;
+        }
 
 
             ImGui::EndMenu();
         }
 
-
+#pragma endregion
 }
 
 
@@ -281,6 +302,12 @@ void CMenuBarWindow::Show_LoadMenu()
         if (ImGui::MenuItem("Load_Interaction", "Ctrl+L"))
         {
             m_bInteractionOpen = true;
+
+        }
+
+        if (ImGui::MenuItem("Load_Room", "Ctrl+L"))
+        {
+            m_bRoomOpen = true;
 
         }
 
@@ -390,6 +417,36 @@ void CMenuBarWindow::Show_InteractionBox()
         }
         m_LoadFilePath.m_CurrentLoadInteractionFilePath = m_SaveFilePath.m_InteractionFiles[m_LoadFilePath.LoadInteractionFileIdx];
         m_pImgui_DataManager->Set_LoadFilePath(m_LoadFilePath);
+
+
+    }
+
+    ImGui::End();
+}
+
+void CMenuBarWindow::Show_RoomBox()
+{
+    CheckFalse(m_bRoomOpen);
+
+    ImGui::Begin("RoomFileList", &m_bRoomOpen);
+
+
+    if (ImGui::ListBox("RoomFileList", &m_LoadFilePath.LoadRoomFileIdx, m_SaveFilePath.m_RoomSaveFileNamesStr.data(), m_SaveFilePath.m_RoomSaveFileNamesStr.size()))
+    {
+        m_bLoad = true;
+
+
+        CMapObject_Manager::GetInstance()->Set_SelectObject(nullptr);
+
+        //불러오기 및 덮어쓰기를위한 경로갱신
+        if (FAILED(m_pImgui_DataManager->Load_InteractionData(m_SaveFilePath.m_InteractionFiles[m_LoadFilePath.LoadInteractionFileIdx])))
+        {
+            ImGui::End();
+            MSG_BOX("Nothing to Load!, Empty");
+            return;
+        }
+        //m_LoadFilePath.m_CurrentLoadInteractionFilePath = m_SaveFilePath.m_InteractionFiles[m_LoadFilePath.LoadInteractionFileIdx];
+        //m_pImgui_DataManager->Set_LoadFilePath(m_LoadFilePath);
 
 
     }

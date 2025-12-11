@@ -422,7 +422,7 @@ HRESULT CAssetListWindow::Create_Positions()
     {
 
         AssetInfo Info;
-        Info.ObjType = MapObjType::TRIGGER;
+        Info.ObjType = MapObjType::POSITION;
         Info.TexKey = Names[i];
         Info.FullPath = L"../../";
 

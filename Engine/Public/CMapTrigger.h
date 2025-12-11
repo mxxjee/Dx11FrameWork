@@ -31,7 +31,7 @@ public:
 public:
     //픽킹 확인
     bool            Is_Picked(_vector Origin, _vector Dir, float& Dist);
-    virtual void Save_To_Json(json& Json) override;
+
 
 public:
     virtual void Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation) override;

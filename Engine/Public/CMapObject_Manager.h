@@ -61,7 +61,8 @@ public:
     HRESULT         Save_InteractionData(const string& filePath, _uint iNum = 0);
     HRESULT         Load_InteractionData(const string& filePath, vector<DefaultInteractionData>& Datas);
          
-    HRESULT         Save_RoomData(const string& filePath, _uint iNum = 0);
+ 
+    HRESULT         Save_RoomData(_uint iRoomNum = 1);
    // HRESULT         Load_RoomData(const string& filePath, vector<DefaultInteractionData>& Datas);
 
 public:

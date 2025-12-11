@@ -20,7 +20,7 @@
 
 #include "CMapRoom.h"
 #include "CMapTrigger.h"
-
+#include "CMapPosition.h"
 
 
 USING(Engine)
@@ -224,6 +224,8 @@ HRESULT CImgui_DataManager::Create_MapObject()
 	case MapObjType::TRIGGER:
 		return Create_Trigger();
 
+	case MapObjType::POSITION:
+		return Create_Position();
 	default:
 		return Create_Model();
 		break;
@@ -341,10 +343,7 @@ HRESULT CImgui_DataManager::Create_Model()
 
 		break;
 
-	case MapObjType::POSITION:
-		LayerTag = L"Position_Layer";
-		ProtoTag = L"MapPosition";
-		break;
+
 
 
 	case MapObjType::ROOM:
@@ -405,6 +404,31 @@ HRESULT CImgui_DataManager::Create_Trigger()
 	return S_OK;
 }
 
+HRESULT CImgui_DataManager::Create_Position()
+{
+	CMapPosition::MapObject_DESC Desc;
+	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+	Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
+	Desc.ObjType = m_PlaceObjInfo.ObjType;
+
+	
+	//타입에 맞게 레이어에 넣어주기.
+	wstring LayerTag = L"Position_Layer";
+	wstring ProtoTag = L"MapPosition";		//L"MapOBstalce" , "MapTile", "MapPosition", "MapTrigger"
+
+
+
+	if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc)))
+		return E_FAIL;
+
+
+
+	m_pPlaceObject = m_pMapObject_Manager->Find_MapObject(LayerTag, Desc.ObjTag);
+
+
+	return S_OK;
+}
+
 MapObjType CImgui_DataManager::Get_ObjType_From_Path(const wstring& path)
 {
 	if (path.find(L"Obstacle"))
@@ -422,16 +446,19 @@ HRESULT CImgui_DataManager::Update_SaveFiles()
 	m_SaveFilePath.m_TerrainSaveFiles.clear();
 	m_SaveFilePath.m_NavSaveFiles.clear();
 	m_SaveFilePath.m_InteractionFiles.clear();
+	m_SaveFilePath.m_RoomFiles.clear();
 
 
 	m_SaveFilePath.m_SaveTerrainFileNames.clear();
 	m_SaveFilePath.m_SaveNavFileNames.clear();
 	m_SaveFilePath.m_SaveInteractionFileNames.clear();
+	m_SaveFilePath.m_SaveRoomFileNames.clear();
 
 
 	m_SaveFilePath.m_TerrainSaveFileNamesStr.clear();
 	m_SaveFilePath.m_NavSaveFileNamesStr.clear();
 	m_SaveFilePath.m_InteractionSaveFileNamesStr.clear();
+	m_SaveFilePath.m_RoomSaveFileNamesStr.clear();
 
 
 
@@ -448,6 +475,13 @@ HRESULT CImgui_DataManager::Update_SaveFiles()
 			{
 				m_SaveFilePath.m_InteractionFiles.push_back(fullPath);    // 경로 저장
 				m_SaveFilePath.m_SaveInteractionFileNames.push_back(fileName);
+
+			}
+
+			else if (path.find("_room") != string::npos)
+			{
+				m_SaveFilePath.m_RoomFiles.push_back(fullPath);    // 경로 저장
+				m_SaveFilePath.m_SaveRoomFileNames.push_back(fileName);
 
 			}
 
@@ -496,6 +530,11 @@ HRESULT CImgui_DataManager::Update_SaveFiles()
 	for (auto& name : m_SaveFilePath.m_SaveInteractionFileNames)
 		m_SaveFilePath.m_InteractionSaveFileNamesStr.push_back(name.c_str());
 	
+
+	m_SaveFilePath.m_InteractionSaveFileNamesStr.reserve(m_SaveFilePath.m_RoomFiles.size());
+	for (auto& name : m_SaveFilePath.m_SaveRoomFileNames)
+		m_SaveFilePath.m_RoomSaveFileNamesStr.push_back(name.c_str());
+
 	return S_OK;
 }
 

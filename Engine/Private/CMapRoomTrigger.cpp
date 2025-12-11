@@ -4,6 +4,7 @@
 #include "CMapRoom.h"
 #include "CCollider_Base.h"
 #include "CBounding_AABB.h"
+#include "MathUtils.h"
 #include "CInput_Manager.h"
 
 
@@ -68,10 +69,8 @@ void CMapRoomTrigger::Update_Late(_float fTimeDelta)
     __super::Update_Late(fTimeDelta);
 
     CheckNull(pAABB);
-    m_tInfo.vCenter = pAABB->Get_OrignialDesc()->Center;
-    m_tInfo.vExtents = pAABB->Get_OrignialDesc()->Extents;
-
- 
+  
+    
     
 }
 
@@ -91,6 +90,8 @@ HRESULT CMapRoomTrigger::Render()
 void CMapRoomTrigger::Save_To_Json(json& Json)
 {
    
+
+
 }
 
 void CMapRoomTrigger::Update_SelectMode(float _fTimeDelta)
@@ -113,10 +114,10 @@ void CMapRoomTrigger::Imgui_Render_Properties(_float3* vScale, _float3* vPositio
 
 
     char buf[128];
-    strcpy_s(buf, m_NextRoomID.c_str());
+    strcpy_s(buf, m_tInfo.m_NextRoomID.c_str());
 
     if (ImGui::InputText("NextRoom", buf, sizeof(buf)))
-        m_NextRoomID = buf;
+        m_tInfo.m_NextRoomID = buf;
 
 }
 
@@ -164,4 +165,16 @@ void CMapRoomTrigger::OnDestory()
     CheckNull(pRoom);
     pRoom->Remove_RoomTrigger(m_idx);
     
+}
+
+json CMapRoomTrigger::Save_Data()
+{
+    XMStoreFloat3(&m_tInfo.vPos, m_pTransformCom->Get_State(STATE::POSITION));
+    m_tInfo.vScale = m_pTransformCom->Get_Scale_ByFloat3();
+    m_tInfo.vRotation = MathUtils::QuaternionToEuler(m_pTransformCom->Get_SRT(SRTType::ROTATION));
+
+    m_tInfo.vCenter = pAABB->Get_OrignialDesc()->Center;
+    m_tInfo.vExtents = pAABB->Get_OrignialDesc()->Extents;
+
+    return m_tInfo.ToJson();
 }

@@ -180,6 +180,22 @@ HRESULT CMapLayer::Save_Data(const string& filePath, _uint iNum)
     return S_OK;
 }
 
+HRESULT CMapLayer::Save_RoomData(_uint iRoomNum)
+{
+    json j;//각자 내부에서 알아서저장할거므로 그냥 던지기위한 값 
+    int idx = 0;
+    for (auto iter = m_ObjList.begin(); iter != m_ObjList.end(); ++iter)
+    {
+        
+        (*iter)->Save_To_Json(j);
+        if (idx == iRoomNum-1)
+            break;
+    }
+    return S_OK;
+}
+
+
+
 HRESULT CMapLayer::Load_Data(const string& LoadPath, vector<DefaultInteractionData>& Infos)
 {
     /*기존 리스트를 비우고 로드한다.*/
