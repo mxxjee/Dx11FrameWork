@@ -77,6 +77,7 @@ private:
     HRESULT             Create_MapTerrain();
     HRESULT             Create_MapInteraction();
     HRESULT             Create_Model();
+    HRESULT             Create_Trigger();
 
 
 

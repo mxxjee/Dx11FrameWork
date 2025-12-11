@@ -150,6 +150,19 @@ HRESULT CBounding_AABB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _boo
 
     return S_OK;
 }
+void CBounding_AABB::OnInspectorUI()
+{
+    ImGui::DragFloat("Center X", &m_pOriginalDesc->Center.x,0.1f);
+    ImGui::DragFloat("Center Y", &m_pOriginalDesc->Center.y, 0.1f);
+    ImGui::DragFloat("Center Z", &m_pOriginalDesc->Center.z, 0.1f);
+
+
+
+    ImGui::DragFloat("Extents X", &m_pOriginalDesc->Extents.x, 0.1f);
+    ImGui::DragFloat("Extents Y", &m_pOriginalDesc->Extents.y, 0.1f);
+    ImGui::DragFloat("Extents Z", &m_pOriginalDesc->Extents.z, 0.1f);
+
+}
 #endif // DEBUG
 
 

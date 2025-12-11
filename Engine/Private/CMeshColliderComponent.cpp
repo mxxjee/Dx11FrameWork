@@ -123,6 +123,12 @@ CMeshColliderComponent* CMeshColliderComponent::Create(ComPtr<ID3D11Device> pDev
     return pInstance;
 }
 
+void CMeshColliderComponent::OnInspectorUI()
+{
+    m_pBounding->OnInspectorUI();
+    ImGui::Checkbox("Trigger", &m_bTrigger);
+}
+
 
 bool CMeshColliderComponent::Intersect(CCollider_Base* pOther)
 {

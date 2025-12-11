@@ -26,6 +26,11 @@ public:
 public:
     void            Set_OffSet(_float3 vOffset);
     void            Set_Size(_float3 vSize);
+
+#ifdef _DEBUG
+    virtual void OnInspectorUI();
+#endif // _DEBUG
+
 public:
     static CBoxColliderComponent* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual CBoxColliderComponent* Clone(void* pArg);

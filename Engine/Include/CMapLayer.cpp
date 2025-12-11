@@ -79,7 +79,21 @@ CMapObject* CMapLayer::Find_GameObject(const _wstring& Tag)
     return nullptr;
 }
 
-CMapObject* CMapLayer::Check_Picking(HWND g_hWnd, ComPtr<ID3D11DeviceContext> Context, _float4x4& Proj, _float4x4& View, float& Dist)
+CMapObject* CMapLayer::Find_GameObject(_uint iIdx)
+{
+    _uint TargetIdx = 0;
+
+    for (auto& i : m_ObjList)
+    {
+        if (TargetIdx==iIdx)
+            return i;
+
+        ++TargetIdx;
+    }
+    return nullptr;
+}
+
+CMapObject* CMapLayer::Check_Picking(_float3& vWorld,  HWND g_hWnd, ComPtr<ID3D11DeviceContext> Context, _float4x4& Proj, _float4x4& View, float& Dist)
 {
     CheckTrueResult(m_ObjList.empty(),nullptr);
     CheckFalseResult(m_bAblePicking, nullptr);
@@ -98,6 +112,8 @@ CMapObject* CMapLayer::Check_Picking(HWND g_hWnd, ComPtr<ID3D11DeviceContext> Co
             {
                 fMinDist = fDist;
                 pPickedObj = obj;
+                XMStoreFloat3(&vWorld, ray.Origin + ray.Dir * fDist);
+
             }
         }
 

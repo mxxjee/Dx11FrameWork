@@ -223,12 +223,15 @@
     <ClInclude Include="..\Public\CMapQuad.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\CMapRoom.h" />
+    <ClInclude Include="..\Public\CMapRoomTrigger.h" />
     <ClInclude Include="..\Public\CMapTerrain.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CMapToolCell.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\CMapTrigger.h" />
     <ClInclude Include="..\Public\CMaterial.h" />
     <ClInclude Include="..\Public\CMaterial_Manager.h" />
     <ClInclude Include="..\Public\CMeshColliderComponent.h">
@@ -312,6 +315,8 @@
     <ClInclude Include="..\Public\imstb_truetype.h" />
     <ClInclude Include="..\Public\MathUtils.h" />
     <ClInclude Include="..\Public\ModelData.h" />
+    <ClInclude Include="..\Public\Parsing_RoomInfo.h" />
+    <ClInclude Include="..\Public\Parsing_TriggerInfo.h" />
     <ClInclude Include="..\Public\VertexData.h" />
   </ItemGroup>
   <ItemGroup>
@@ -382,12 +387,15 @@
     <ClCompile Include="..\Private\CMapQuad.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\CMapRoom.cpp" />
+    <ClCompile Include="..\Private\CMapRoomTrigger.cpp" />
     <ClCompile Include="..\Private\CMapTerrain.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CMapToolCell.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\CMapTrigger.cpp" />
     <ClCompile Include="..\Private\CMaterial.cpp" />
     <ClCompile Include="..\Private\CMaterial_Manager.cpp" />
     <ClCompile Include="..\Private\CMeshColliderComponent.cpp">

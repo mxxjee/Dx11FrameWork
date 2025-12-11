@@ -89,6 +89,41 @@ HRESULT CAssetListWindow::Create_Folders()
     }
     m_FolderMap.emplace(L"Interaction", ObjectFolder);
 
+    //Room오브젝트들 폴더
+    vector<CFolder*>    RoomFolder;
+    CFolder::tagFolderDesc RoomDesc;
+    strcpy_s(RoomDesc.Name, MAX_PATH, "Room");
+    RoomDesc.Size = ImVec2(60.f, 60.f);
+    RoomDesc.iIdx = RoomFolder.size();
+    RoomDesc.Category = "Room";
+    pInstance = CFolder::Create(m_pDevice, m_pContext, &RoomDesc);
+    if (pInstance)
+    {
+        if (FAILED(pInstance->Initialize(&RoomDesc)))
+            return E_FAIL;
+
+        RoomFolder.push_back(pInstance);
+
+    }
+    m_FolderMap.emplace(L"Room", RoomFolder);
+
+    //트리거들
+    vector<CFolder*>    TriggerFolder;
+    CFolder::tagFolderDesc TriggerDesc;
+    strcpy_s(TriggerDesc.Name, MAX_PATH, "Trigger");
+    TriggerDesc.Size = ImVec2(60.f, 60.f);
+    TriggerDesc.iIdx = TriggerFolder.size();
+    TriggerDesc.Category = "Trigger";
+    pInstance = CFolder::Create(m_pDevice, m_pContext, &TriggerDesc);
+    if (pInstance)
+    {
+        if (FAILED(pInstance->Initialize(&TriggerDesc)))
+            return E_FAIL;
+
+        TriggerFolder.push_back(pInstance);
+
+    }
+    m_FolderMap.emplace(L"Trigger", TriggerFolder);
 
     return S_OK;
 
@@ -121,6 +156,9 @@ HRESULT CAssetListWindow::Set_AssetList()
 
 
     if (FAILED(Create_ModelFile()))
+        return E_FAIL;
+
+    if (FAILED(Create_Triggers()))
         return E_FAIL;
     return S_OK;
 }
@@ -299,6 +337,54 @@ HRESULT CAssetListWindow::Create_ModelFile()
         }
     }
 
+    ///Room들
+    wstring RoomModelNames[] = { L"Mamasha_room"};
+    int RoomSize = sizeof(RoomModelNames) / sizeof(RoomModelNames[0]);
+
+    CFolder* pRoomFolder = Get_Folder("Room");
+    CheckNullResult(pRoomFolder, E_FAIL);
+    for (int i = 0; i < RoomSize; ++i)
+    {
+        CModel* pModel = pGameInstance->Find_Model(RoomModelNames[i]);
+        if (pModel)
+        {
+            const ModelData modelData = pModel->Get_ModelData();
+            AssetInfo Info;
+            wstring Key = modelData.name.substr(0, modelData.name.size() - 1);
+            string Result = WStringToUTF8(Key);
+            Info.ObjType = MapObjType::ROOM;
+            Info.TexKey = modelData.name;
+            Info.FullPath = modelData.ResourcePath;
+
+            pRoomFolder->Add_Info(Info);
+
+
+        }
+    }
+    return S_OK;
+}
+
+HRESULT CAssetListWindow::Create_Triggers()
+{
+    ///Trigger들
+    wstring TriggerNames[] = { L"RoomTrigger",L"EventTrigger"};
+    int TriggerSize = sizeof(TriggerNames) / sizeof(TriggerNames[0]);
+
+    CFolder* pTriggerFolder = Get_Folder("Trigger");
+    CheckNullResult(pTriggerFolder, E_FAIL);
+    for (int i = 0; i < TriggerSize; ++i)
+    {
+
+		AssetInfo Info;
+		Info.ObjType = MapObjType::TRIGGER;
+		Info.TexKey = TriggerNames[i];
+		Info.FullPath = L"../../";
+
+		pTriggerFolder->Add_Info(Info);
+
+
+       
+    }
     return S_OK;
 }
 
@@ -322,6 +408,20 @@ void CAssetListWindow::Show_Grid(const string& Category,int FieldNum)
     else if (Category == "Interaction")
     {
         auto iter = m_FolderMap.find(L"Interaction");
+        if (iter != m_FolderMap.end())
+            Target = (iter->second)[FieldNum]->get_vector();
+    }
+
+    else if (Category == "Room")
+    {
+        auto iter = m_FolderMap.find(L"Room");
+        if (iter != m_FolderMap.end())
+            Target = (iter->second)[FieldNum]->get_vector();
+    }
+
+    else if (Category == "Trigger")
+    {
+        auto iter = m_FolderMap.find(L"Trigger");
         if (iter != m_FolderMap.end())
             Target = (iter->second)[FieldNum]->get_vector();
     }

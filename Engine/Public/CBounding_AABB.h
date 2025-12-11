@@ -40,7 +40,7 @@ private:
 #ifdef _DEBUG
 public:
     virtual HRESULT         Render(PrimitiveBatch<VertexPositionColor>* pBatch, _bool isColl) override;
-
+    virtual void        OnInspectorUI();
 #endif // DEBUG
 
 

@@ -30,8 +30,8 @@ HRESULT CObjectInspectorWindow::Initialize(void* pArg)
     if (FAILED(__super::Initialize(pArg)))
         return E_FAIL;
 
-    if (FAILED(Create_Widgets()))
-        return E_FAIL;
+  /*  if (FAILED(Create_Widgets()))
+        return E_FAIL;*/
 
     return S_OK;
 }
@@ -45,14 +45,14 @@ void CObjectInspectorWindow::Update()
     ImGui::Begin(m_WindowTitle.c_str(), &m_bOpen);
   
 
-    if (pSelectObject)
+    /*if (pSelectObject)
     {
         if (m_bRotationDirty)
         {
             pSelectObject->Get_Transform()->Rotation(vRotation);
             m_bRotationDirty = false;
         }
-    }
+    }*/
     Update_SelectObject();
     m_fMoveSpeed = m_pMapObject_Manager->Get_MoveSpeed();
 
@@ -295,75 +295,5 @@ void CObjectInspectorWindow::Update_SelectObject()
     {
         ppSelectObject->Imgui_Render_Properties(&vScale, &vPosition, &vRotation);
 
-        if (CImGui_Manager::GetInstance()->Get_MapToolMode() != MapToolMode::NAVMESH)
-        {
-            for (int i = 0; i < 3; ++i)
-            {
-                if (ScaleInput[i])
-                    ScaleInput[i]->Set_Active(true);
-            }
-
-            for (int i = 0; i < 3; ++i)
-            {
-                if (PositionInput[i])
-                    PositionInput[i]->Set_Active(true);
-            }
-
-            for (int i = 0; i < 3; ++i)
-            {
-                if (RotationInput[i])
-                    RotationInput[i]->Set_Active(true);
-            }
-
-        }
-
-        else
-        {
-            //선택된게 없으면 모두비활성화.
-            for (int i = 0; i < 3; ++i)
-            {
-                if (ScaleInput[i])
-                    ScaleInput[i]->Set_Active(false);
-            }
-
-            //선택된게 없으면 모두비활성화.
-            for (int i = 0; i < 3; ++i)
-            {
-                if (PositionInput[i])
-                    PositionInput[i]->Set_Active(false);
-            }
-
-            //선택된게 없으면 모두비활성화.
-            for (int i = 0; i < 3; ++i)
-            {
-                if (RotationInput[i])
-                    RotationInput[i]->Set_Active(false);
-            }
-        }
-      
-    }
-
-    else
-    {
-        //선택된게 없으면 모두비활성화.
-        for (int i = 0; i < 3; ++i)
-        {
-            if (ScaleInput[i])
-                ScaleInput[i]->Set_Active(false);
-        }
-
-        //선택된게 없으면 모두비활성화.
-        for (int i = 0; i < 3; ++i)
-        {
-            if (PositionInput[i])
-                PositionInput[i]->Set_Active(false);
-        }
-
-        //선택된게 없으면 모두비활성화.
-        for (int i = 0; i < 3; ++i)
-        {
-            if (RotationInput[i])
-                RotationInput[i]->Set_Active(false);
-        }
     }
 }

@@ -47,7 +47,7 @@ public:
 
 public:
                 //픽킹 확인
-    bool            Is_Picked(_vector Origin, _vector Dir, float& Dist);
+    virtual bool            Is_Picked(_vector Origin, _vector Dir, float& Dist);
 
 public:
     virtual HRESULT     Ready_Component(void* pArg);

@@ -40,6 +40,12 @@ public:
 protected:
     ComPtr<ID3D11Device>    m_pDevice = nullptr;
     ComPtr<ID3D11DeviceContext> m_pContext = nullptr;
+
+public:
+#ifdef _DEBUG
+    virtual void        OnInspectorUI() {};
+#endif // _DEBUG
+
 public:
     virtual void Free() override;
 

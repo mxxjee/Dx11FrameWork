@@ -61,6 +61,8 @@ public:
     HRESULT         Save_InteractionData(const string& filePath, _uint iNum = 0);
     HRESULT         Load_InteractionData(const string& filePath, vector<DefaultInteractionData>& Datas);
          
+    HRESULT         Save_RoomData(const string& filePath, _uint iNum = 0);
+   // HRESULT         Load_RoomData(const string& filePath, vector<DefaultInteractionData>& Datas);
 
 public:
     wstring         Generate_UniqueTag(MapObjType Type, const wstring& baseName);
@@ -104,10 +106,14 @@ protected:
     BoundingSphere      m_Sphere;
     IMapEditable* m_pSelectedObject = { nullptr };
 
+public:
+    _float3             Get_PickingWorldPos() { return PickingWolrdPos; }
 private:
     float           m_fMoveSpeed = 5;
     bool            m_bAblePicking = true;
     bool            m_bDestroy = false;
+    _float3         PickingWolrdPos;     //terrain픽킹한 월드좌표
+
 };
 
 

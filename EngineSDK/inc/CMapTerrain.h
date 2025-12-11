@@ -67,7 +67,7 @@ public:
 public:
     // IMapEditable을(를) 통해 상속됨
     virtual void OnSeletected(bool bSelected) override;
-
+    virtual void		Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation);//Imgui창 Inspector Render
     virtual void Save_To_Json(json& Json) override;
     virtual void Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta);
     virtual void Update_SelectMode(float _fTimeDelta);
@@ -86,7 +86,6 @@ private:
 
 
     // IMapEditable을(를) 통해 상속됨
-    virtual void Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation) override;
     virtual void Fix_Y(_float Y);
 
 private:

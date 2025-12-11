@@ -82,6 +82,16 @@ void CBoxColliderComponent::Set_Size(_float3 vSize)
     return dynamic_cast<CBounding_AABB*>(m_pBounding)->Set_Size(vSize);
 }
 
+#ifdef _DEBUG
+void CBoxColliderComponent::OnInspectorUI()
+{
+    m_pBounding->OnInspectorUI();
+    ImGui::Checkbox("Trigger", &m_bTrigger);
+}
+#endif // _DEBUG
+
+
+
 
 
 CBoxColliderComponent* CBoxColliderComponent::Clone(void* pArg)

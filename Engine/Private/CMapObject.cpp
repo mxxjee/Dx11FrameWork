@@ -9,6 +9,7 @@
 #include "CInput_Manager.h"
 #include "CMapLayer.h"
 #include "CBounding_AABB.h"
+#include "CImGui_Manager.h"
 
 
 
@@ -71,12 +72,12 @@ void CMapObject::Update(_float fTimeDelta)
 	
 	pColliderComp->Update_Collider(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
 
-	if (m_bSelected)
+	/*if (m_bSelected)
 		m_passName = "Select";
 
 	else
 		m_passName = "Default";
-	
+	*/
 
 }
 
@@ -172,11 +173,11 @@ void CMapObject::Free()
 void CMapObject::OnSeletected(bool bSelected)
 {
 	m_bSelected = bSelected;
-	if (m_bSelected)
+	/*if (m_bSelected)
 		m_passName = "Select";
 
 	else
-		m_passName = "Default";
+		m_passName = "Default";*/
 
 }
 
@@ -251,14 +252,11 @@ void CMapObject::Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _f
 	}
 	ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "Type: %s", Type.c_str());
 
-	(*vScale).x = m_pTransformCom->Get_Scale_ByFloat3().x;
-	(*vScale).y = m_pTransformCom->Get_Scale_ByFloat3().y;
-	(*vScale).z = m_pTransformCom->Get_Scale_ByFloat3().z;
+	if(m_pTransformCom)
+		m_pTransformCom->OnInspectorUI();
 
-	XMStoreFloat3(vPosition, m_pTransformCom->Get_State(STATE::POSITION));
-
-	*vRotation = MathUtils::QuaternionToEuler(m_pTransformCom->Get_SRT(SRTType::ROTATION));
-
+	if(pColliderComp)
+		pColliderComp->OnInspectorUI();
 }
 
 void CMapObject::Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta)
@@ -293,7 +291,11 @@ void CMapObject::Update_SelectMode(float _fTimeDelta)
 		
 		CMapLayer* pTargetLayer = m_pMapObject_Manager->Get_Layer_By_MapObjType(m_eObjType);
 		if (pTargetLayer)
+		{
 			pTargetLayer->RequestDestroy(this);
+			CImGui_Manager::GetInstance()->Reset_Window("Inspector");
+
+		}
 
 		CMapObject_Manager::GetInstance()->Set_SelectObject(nullptr);
 	}

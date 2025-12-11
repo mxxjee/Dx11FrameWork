@@ -30,7 +30,9 @@ public:
 
 
     virtual HRESULT Render();
-public:
+
+
+
     virtual HRESULT                     Ready_Component(void* pArg);
     HRESULT                     Ready_Resources(void* pArg);
     HRESULT                     Bind_ShaderResources();

@@ -21,9 +21,10 @@ public:
 
     const list<CMapObject*>& Get_ObjList() { return m_ObjList; }
     CMapObject* Find_GameObject(const _wstring& Tag);
+    CMapObject* Find_GameObject(_uint iIdx);
 
    
-    CMapObject*        Check_Picking(HWND g_hWnd, ComPtr<ID3D11DeviceContext> Context, _float4x4& Proj, _float4x4& View,float& Dist);
+    CMapObject*        Check_Picking(_float3& vWorld,HWND g_hWnd, ComPtr<ID3D11DeviceContext> Context, _float4x4& Proj, _float4x4& View,float& Dist);
 
 public:
     void    RequestDestroy(CMapObject* pObj);//DestroyQue에 추가하라는 작업

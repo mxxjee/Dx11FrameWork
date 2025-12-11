@@ -430,6 +430,15 @@
     <Filter Include="05.Component\VIBuffer\VIBuffer_Particle\Rect">
       <UniqueIdentifier>{76e664ff-9332-4e7e-9cc2-d5ea2b671976}</UniqueIdentifier>
     </Filter>
+    <Filter Include="998.MapTool\Object\MapModel\MapRoom">
+      <UniqueIdentifier>{b62a6cd1-e322-4d45-8912-e39645bc7a88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="998.MapTool\Object\MapTrigger">
+      <UniqueIdentifier>{5c9f5525-96cf-4ede-95e2-9990ea864718}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="998.MapTool\Object\MapTrigger\RoomTrigger">
+      <UniqueIdentifier>{59ee1fc4-e5ea-48af-8d07-eb703740d0b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -846,6 +855,21 @@
     <ClInclude Include="..\Public\CVIBuffer_Particle_Rect.h">
       <Filter>05.Component\VIBuffer\VIBuffer_Particle\Rect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CMapRoom.h">
+      <Filter>998.MapTool\Object\MapModel\MapRoom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapTrigger.h">
+      <Filter>998.MapTool\Object\MapTrigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapRoomTrigger.h">
+      <Filter>998.MapTool\Object\MapTrigger\RoomTrigger</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Parsing_TriggerInfo.h">
+      <Filter>998.MapTool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\Parsing_RoomInfo.h">
+      <Filter>998.MapTool</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -1217,6 +1241,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\CVIBuffer_Particle_Rect.cpp">
       <Filter>05.Component\VIBuffer\VIBuffer_Particle\Rect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapRoom.cpp">
+      <Filter>998.MapTool\Object\MapModel\MapRoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapTrigger.cpp">
+      <Filter>998.MapTool\Object\MapTrigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapRoomTrigger.cpp">
+      <Filter>998.MapTool\Object\MapTrigger\RoomTrigger</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

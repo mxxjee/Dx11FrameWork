@@ -294,7 +294,7 @@ void CMenuBarWindow::Show_ModeMenu()
     if (ImGui::MenuItem("NavMeshMode", "Ctrl+N"))
     {
         CImGui_Manager::GetInstance()->Set_MapToolMode(MapToolMode::NAVMESH);
-        CMapObject_Manager::GetInstance()->Set_SelectObject(nullptr);
+      
     }
 
     if (ImGui::MenuItem("EditMode", "Ctrl+E"))

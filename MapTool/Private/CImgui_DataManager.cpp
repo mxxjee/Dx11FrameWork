@@ -18,7 +18,8 @@
 #include "CMapLayer.h"
 #include "CMeshColliderComponent.h"
 
-
+#include "CMapRoom.h"
+#include "CMapTrigger.h"
 
 
 
@@ -138,19 +139,19 @@ void CImgui_DataManager::Update_MouseInput()
 			if (CTerrain_Base* pBase = m_pGameInstance->Check_Picking())
 			{
 				vTargetPos = m_pGameInstance->Get_PickingWorldPos();
-				OutputDebugString(L"TerrainPicking\n");
+				//OutputDebugString(L"TerrainPicking\n");
 			}
 
 			else if (m_pGrid_Manager->IsCollisionWithGrid())
 			{
 				vTargetPos = m_pGrid_Manager->Get_GridPickingWorldPos();
-				OutputDebugString(L"GridPicking\n");
+				//OutputDebugString(L"GridPicking\n");
 			}
 
 			else
 			{
 				vTargetPos = m_pGrid_Manager->Get_MouseWorldPos();
-				OutputDebugString(L"WorldPicking\n");
+				//OutputDebugString(L"WorldPicking\n");
 			}
 		}
 
@@ -159,13 +160,12 @@ void CImgui_DataManager::Update_MouseInput()
 			if (m_pGrid_Manager->IsCollisionWithGrid())
 			{
 				vTargetPos = m_pGrid_Manager->Get_GridPickingWorldPos();
-				OutputDebugString(L"GridPicking\n");
 			}
 
 			else
 			{
 				vTargetPos = m_pGrid_Manager->Get_MouseWorldPos();
-				OutputDebugString(L"WorldPicking\n");
+				//OutputDebugString(L"WorldPicking\n");
 			}
 		}
 		
@@ -220,6 +220,9 @@ HRESULT CImgui_DataManager::Create_MapObject()
 	case MapObjType::INTERACTION:
 		return Create_MapInteraction();
 		break;
+
+	case MapObjType::TRIGGER:
+		return Create_Trigger();
 
 	default:
 		return Create_Model();
@@ -305,6 +308,12 @@ HRESULT CImgui_DataManager::Create_Model()
 	CModel::MODEL_DSC modelDesc;
 	Desc.modelDesc = &modelDesc;
 
+	CMeshColliderComponent::COLLIDER_DESC desc;
+	CBounding_Mesh::BOUNDING_MESH_DESC MeshDesc;
+	MeshDesc.Extents = {11.f,11.f,11.f };
+	desc.m_BoundingDesc = &MeshDesc;
+	Desc.ColliderComponent = &desc;
+
 
 	////드래그생성이라면,위치가 따로존재함
 	//if (bDrag)
@@ -336,9 +345,11 @@ HRESULT CImgui_DataManager::Create_Model()
 		LayerTag = L"Position_Layer";
 		break;
 
-	case MapObjType::TRIGGER:
-		LayerTag = L"Trigger_Layer";
-		break;
+
+	case MapObjType::ROOM:
+		LayerTag = L"Room_Layer";
+		ProtoTag = L"MapRoom";
+		
 
 	default:
 		break;
@@ -349,6 +360,43 @@ HRESULT CImgui_DataManager::Create_Model()
 		return E_FAIL;
 
 	
+
+	m_pPlaceObject = m_pMapObject_Manager->Find_MapObject(LayerTag, Desc.ObjTag);
+
+
+	return S_OK;
+}
+
+HRESULT CImgui_DataManager::Create_Trigger()
+{
+	CMapTrigger::MapObject_DESC Desc;
+	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+	Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
+	Desc.ObjType = m_PlaceObjInfo.ObjType;
+
+
+
+	//타입에 맞게 레이어에 넣어주기.
+	wstring LayerTag = L"";
+	wstring ProtoTag = L"";			//L"MapOBstalce" , "MapTile", "MapPosition", "MapTrigger"
+
+	switch (m_PlaceObjInfo.ObjType)
+	{
+
+	case MapObjType::TRIGGER:
+		LayerTag = L"Trigger_Layer";
+		ProtoTag = m_PlaceObjInfo.TexKey;
+		break;
+
+	default:
+		break;
+	}
+
+
+	if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc)))
+		return E_FAIL;
+
+
 
 	m_pPlaceObject = m_pMapObject_Manager->Find_MapObject(LayerTag, Desc.ObjTag);
 

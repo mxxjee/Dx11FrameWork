@@ -56,7 +56,7 @@ HRESULT CLevel_Editor::Initialize(LevelArgs& args)
 		return E_FAIL;
 
 
-	if (FAILED(Ready_Layer_Enviroment(L"Enviroment_Layer")))
+	if (FAILED(Ready_Layer_Enviroment(L"Envirloment_Layer")))
 		return E_FAIL;
 
 	if (FAILED(Ready_Layer_Player(L"Player_Layer")))
@@ -95,6 +95,7 @@ void CLevel_Editor::Update_Late(_float fTimeDelta)
 
 	case MapToolMode::NAVMESH:
 		Terrain_Picking_WorldPos();
+		Room_Picking_WorldPos();
 		break;
 
 	}
@@ -311,6 +312,45 @@ void CLevel_Editor::Terrain_Picking_WorldPos()
 		
 	}
 
+}
+
+void CLevel_Editor::Room_Picking_WorldPos()
+{
+	ImGuiIO& io = ImGui::GetIO();
+	CheckTrue(io.WantCaptureMouse);
+
+	CheckTrue(m_pMapObject_Manager->Get_SelectObject() == nullptr);
+
+	//삼각형Fix상태
+	CNavMeshEdit_Manager::GetInstance()->Set_FixCell(CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LShift));
+	CNavMeshEdit_Manager::GetInstance()->Set_FixEdge(CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::Alt));
+	//Tab.누르면 네이버생성
+	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Tab))
+		CNavMeshEdit_Manager::GetInstance()->SetUp_Neighbors();
+
+
+
+	if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LControl))
+	{
+		if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Z))
+			CNavMeshEdit_Manager::GetInstance()->Ctrl_Z();
+
+	}
+
+	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::C))
+		CNavMeshEdit_Manager::GetInstance()->Clear_Points();
+	else
+	{
+
+		//그냥 이어찍기..
+		_float3 vObjectPickingPos = m_pMapObject_Manager->Get_PickingWorldPos();
+		vObjectPickingPos.y += 0.05f;
+		CNavMeshEdit_Manager::GetInstance()->Set_DrawPoint(vObjectPickingPos, CInput_Manager::GetInstance()->IsMouseButtonPressed(0));
+
+
+
+
+	}
 }
 
 

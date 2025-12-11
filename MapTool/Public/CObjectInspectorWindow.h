@@ -31,6 +31,8 @@ public:
 private:
     HRESULT     Create_Widgets();
 
+public:
+    virtual void    Reset() { pSelectObject = nullptr; }       //리셋하고싶은 값 리셋하기
 
 public:
     static CObjectInspectorWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);

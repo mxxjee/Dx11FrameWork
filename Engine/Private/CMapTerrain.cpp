@@ -9,6 +9,7 @@
 #include "CMapObject_Manager.h"
 #include "CBounding_Mesh.h"
 #include "CCollider_Base.h"
+#include "CImGui_Manager.h"
 
 
 
@@ -354,6 +355,8 @@ void CMapTerrain::Update_SelectMode(float _fTimeDelta)
     if (m_pInputManager->IsKeyPressed(KeyCode::Delete))
     {
         m_pGameInstance->RequestDestroy(this);
+        CImGui_Manager::GetInstance()->Reset_Window("Inspector");
+
         CMapObject_Manager::GetInstance()->Set_SelectObject(nullptr);
     }
 
@@ -421,15 +424,7 @@ void CMapTerrain::Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _
     }
     ImGui::TextColored(ImVec4(0.f, 1.f, 0.f, 1.f), "Type: %s", Type.c_str());
 
-    (*vScale).x = m_pTransformCom->Get_Scale_ByFloat3().x;
-    (*vScale).y = m_pTransformCom->Get_Scale_ByFloat3().y;
-    (*vScale).z = m_pTransformCom->Get_Scale_ByFloat3().z;
-
-    XMStoreFloat3(vPosition, m_pTransformCom->Get_State(STATE::POSITION));
-
-    *vRotation = m_pTransformCom->Get_Rotation_ByEular();
-    ImGui::TextColored(ImVec4(0.f, 1.f, 1.f, 1.f), "Index[z][x]:[%d][%d]", (int)m_TerrainChunk.iIdxZX.x, (int)m_TerrainChunk.iIdxZX.y);
-
+    m_pTransformCom->OnInspectorUI();
 }
 
 void CMapTerrain::Fix_Y(_float Y)

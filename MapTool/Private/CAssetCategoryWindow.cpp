@@ -75,6 +75,48 @@ HRESULT CAssetCategoryWindow::Create_Widgets()
     if (FAILED(Add_Widgets<CImgui_Button>(&InteractionButtonDesc)))
         return E_FAIL;
 
+    CImgui_Button::ImguiButton_Desc RoomButtonDesc;
+    RoomButtonDesc.Tag = "Room";
+    RoomButtonDesc.Label = "Room";
+    RoomButtonDesc.m_RelativePos = ImVec2(10, 130);
+    RoomButtonDesc.callback = [this]()
+    {
+        m_pImgui_DataManager->Send_SelectedCategory("Room");
+        m_pImgui_DataManager->Send_SelectedIdx(-1);//초기화
+
+    };
+
+
+    if (FAILED(Add_Widgets<CImgui_Button>(&RoomButtonDesc)))
+        return E_FAIL;
+
+    CImgui_Button::ImguiButton_Desc TriggerButtonDesc;
+    TriggerButtonDesc.Tag = "Trigger";
+    TriggerButtonDesc.Label = "Trigger";
+    TriggerButtonDesc.m_RelativePos = ImVec2(10, 150);
+    TriggerButtonDesc.callback = [this]()
+    {
+        m_pImgui_DataManager->Send_SelectedCategory("Trigger");
+        m_pImgui_DataManager->Send_SelectedIdx(-1);//초기화
+
+    };
+    if (FAILED(Add_Widgets<CImgui_Button>(&TriggerButtonDesc)))
+        return E_FAIL;
+
+    CImgui_Button::ImguiButton_Desc PositionButtonDesc;
+    PositionButtonDesc.Tag = "Position";
+    PositionButtonDesc.Label = "Position";
+    PositionButtonDesc.m_RelativePos = ImVec2(10, 170);
+    PositionButtonDesc.callback = [this]()
+    {
+        m_pImgui_DataManager->Send_SelectedCategory("Position");
+        m_pImgui_DataManager->Send_SelectedIdx(-1);//초기화
+
+    };
+
+    if (FAILED(Add_Widgets<CImgui_Button>(&PositionButtonDesc)))
+        return E_FAIL;
+
     return S_OK;
 }
 

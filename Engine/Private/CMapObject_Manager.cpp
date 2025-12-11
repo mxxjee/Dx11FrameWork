@@ -68,7 +68,7 @@ void CMapObject_Manager::Update(_float fTimeDelta)
     if (!m_bAblePicking)
         Set_AblePicking(true);
 
-    if (CInput_Manager::GetInstance()->IsMouseButtonPressed(0))
+    if (CInput_Manager::GetInstance()->IsMouseButtonPressed(0)|| m_pImguiManager->Get_MapToolMode() == MapToolMode::NAVMESH)
         Check_Picking();
 
     if (m_pSelectedObject)
@@ -119,12 +119,15 @@ void CMapObject_Manager::Check_Picking()
     CMapObject* pPickObj = nullptr;
 
    
+    Ray ray;
     for (auto& pair : m_Layers)
     {
         if (pair.second)
         {
+            
             float fDist = 0;
-            pObj = pair.second->Check_Picking(m_EngineDesc.hWnd,m_pContext,Proj,View, fDist);
+            
+            pObj = pair.second->Check_Picking(PickingWolrdPos,m_EngineDesc.hWnd,m_pContext,Proj,View, fDist);
             
             if (pObj)
             {
@@ -132,6 +135,7 @@ void CMapObject_Manager::Check_Picking()
                 {
                     MinDist = fDist;
                     pPickObj = pObj;
+                   
                 }
 
             }
@@ -143,7 +147,6 @@ void CMapObject_Manager::Check_Picking()
     {
         Set_SelectObject(pPickObj);
         Set_AblePicking(false);
-
     }
 }
 
@@ -309,6 +312,10 @@ CMapLayer* CMapObject_Manager::Get_Layer_By_MapObjType(MapObjType eType)
     case MapObjType::INTERACTION:
         LayerTag = L"Interaction_Layer";
         break;
+
+    case MapObjType::ROOM:
+        LayerTag = L"Room_Layer";
+        break;
     default:
         break;
     }
@@ -328,11 +335,21 @@ CMapLayer* CMapObject_Manager::Get_Layer_By_MapObjType(MapObjType eType)
 
 HRESULT CMapObject_Manager::Save_InteractionData(const string& filePath, _uint iNum)
 {
+    CMapLayer* pLayer = Find_MapLayer(L"Room_Layer");
+    if (pLayer)
+        pLayer->Save_Data(filePath, iNum);
+
+    return S_OK;
+}
+
+HRESULT CMapObject_Manager::Save_RoomData(const string& filePath, _uint iNum)
+{
     CMapLayer* pLayer = Find_MapLayer(L"Interaction_Layer");
     if (pLayer)
         pLayer->Save_Data(filePath, iNum);
 
     return S_OK;
+
 }
 
 HRESULT CMapObject_Manager::Load_InteractionData(const string& filePath, vector<DefaultInteractionData>& Datas)
@@ -419,6 +436,7 @@ void CMapObject_Manager::Set_SelectObject(IMapEditable* pSelectedObject)
     /*±³Ã¼*/
     m_pSelectedObject = pSelectedObject;
 
+  
     CheckNull(m_pSelectedObject);
     m_pSelectedObject->OnSeletected(true);
 

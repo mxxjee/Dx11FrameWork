@@ -386,6 +386,38 @@ bool CTransform::IsInSight(_float SightFov, _vector vToTargetDir)
 
 }
 
+#ifdef _DEBUG
+void CTransform::OnInspectorUI()
+{
+	_float3 vPos;
+	XMStoreFloat3(&vPos, Get_State(STATE::POSITION));
+
+	if (ImGui::DragFloat3("Position", &vPos.x, 0.1f))
+		Set_State(STATE::POSITION, XMLoadFloat3(&vPos));
+
+	ImGui::Spacing();
+
+	_float3 vScale = Get_Scale_ByFloat3();
+	if (ImGui::DragFloat3("Scale", &vScale.x, 0.1f))
+		Set_Scale(_float4(vScale.x, vScale.y, vScale.z, 1.f));
+	ImGui::Spacing();
+
+	_float3 vRotation= MathUtils::QuaternionToEuler(Get_SRT(SRTType::ROTATION));
+
+	if (ImGui::DragFloat3("Rotation", &vRotation.x, 0.1f))
+		Rotation(vRotation);
+
+
+
+	
+
+
+
+}
+#endif // _DEBUG
+
+
+
 
 
 HRESULT CTransform::Bind_ShaderResource(CShader* pShader, const string& Variable)

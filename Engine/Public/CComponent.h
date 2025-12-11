@@ -38,6 +38,10 @@ public:
     virtual CComponent* Clone(void* pArg) = 0;
     virtual void Free() override;
 
+#ifdef _DEBUG
+    virtual void OnInspectorUI() {}
+#endif // _DEBUG
+
 protected:
     class CGameObject* m_pOwner = nullptr;
 };

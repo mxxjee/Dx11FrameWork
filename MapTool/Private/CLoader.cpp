@@ -27,9 +27,9 @@
 
 
 #include "CMapInteractObject.h"
-#include "CSnow.h"
 
-
+#include "CMapRoom.h"
+#include "CMapRoomTrigger.h"
 
 
 
@@ -172,6 +172,13 @@ HRESULT CLoader::Loading_MapTool()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapInteraction"), CMapInteractObject::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MapRoom"), CMapRoom::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"RoomTrigger"), CMapRoomTrigger::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
     m_isFinished = true;
     return S_OK;
 }
@@ -238,6 +245,7 @@ HRESULT    CLoader::Register_Models()
     m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/LinkAnim/LinkAnim.json", RotateYMatrix);
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle/", PreMatrix);
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Object/", XMMatrixIdentity());
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Rooms/", XMMatrixIdentity());
 
     return S_OK;
 }
