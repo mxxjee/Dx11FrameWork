@@ -77,6 +77,11 @@ CGameObject* CLayer::Find_GameObject(const wstring& Tag)
     }
     return nullptr;
 }
+void CLayer::Clear()
+{
+    for (auto& obj : m_ObjList)
+        Safe_Release(obj);
+}
 void CLayer::RequestDestroy(CGameObject* pObj)
 {
     queue<CGameObject*> temp = m_DestroyQueue;

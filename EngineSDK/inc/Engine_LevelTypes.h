@@ -13,7 +13,7 @@ namespace Engine
 		unsigned int m_iLevelID = 0;
 		LEVELSTATE	m_eState = { LEVELSTATE::ACTIVE };
 		LEVELFLAG  m_eFlag = { LEVELFLAG::NORMAL };
-
+		bool		m_bCached = true;			//캐싱될경우 true(지우지않음), 캐싱필요없을경우(나가면 바로지울경우 (지움))
 		//int         roomId = 0;
 
 	};

@@ -15,7 +15,7 @@ HRESULT CLevel_Manager::Level_Changer(_uint iSceneID, LevelArgs& args)
 	CLevel* top = nullptr;
 	
 
-	CLevel* pNewLevel = m_pGameInstance->Create_Level(iSceneID, args);
+	CLevel* pNewLevel = Find_And_CreateLevel(iSceneID, args);
 	CheckNullResult(pNewLevel, E_FAIL);
 
 	
@@ -152,12 +152,49 @@ void CLevel_Manager::Overlay_Level(_uint iSceneID, CLevel* pNewLevel)
 	//m_pCurrentLevel->Clear();  //ADD : Level->Clear()
 }
 
+CLevel* CLevel_Manager::Find_And_CreateLevel(_uint iSceneID, LevelArgs& _Arg)
+{
+	CLevel* pLevel = Find_Cached(iSceneID);
+	if (pLevel)
+	{
+		return pLevel;
+	}
+
+	//캐싱된거 ㅔ없을경우,. 생성
+	pLevel = m_pGameInstance->Create_Level(iSceneID, _Arg);
+
+
+	//캐싱하는 맵일경우
+	if (pLevel->Is_Cached())
+	{
+		Safe_AddRef(pLevel);
+		m_Cached.emplace(iSceneID, pLevel);
+		
+	}
+
+	return pLevel;
+
+}
+
+CLevel* CLevel_Manager::Find_Cached(_uint iSceneID)
+{
+	auto iter = m_Cached.find(iSceneID);
+	if (iter == m_Cached.end())
+		return nullptr;
+
+	return iter->second;
+}
+
 void CLevel_Manager::Pop_Level()
 {
 	CheckTrue(m_Stack.empty());
 
 	m_Stack.back()->OnExit();
-	m_tDestroy.push_back(m_Stack.back());
+
+	//캐싱하지않는 맵이라면 삭제떄리자
+	if(!m_Stack.back()->Is_Cached())
+		m_tDestroy.push_back(m_Stack.back());
+
 	m_Stack.pop_back();
 	
 	if (!m_Stack.empty())
@@ -207,7 +244,10 @@ void CLevel_Manager::PopIfTransient()
 	{
 		m_pGameInstance->Clear(m_iCurrentLevelID);
 		m_Stack.back()->OnExit();
-		m_tDestroy.push_back(m_Stack.back());
+
+		if(!m_Stack.back()->Is_Cached())
+			m_tDestroy.push_back(m_Stack.back());
+
 		m_Stack.pop_back();
 	}
 }
@@ -227,10 +267,18 @@ void CLevel_Manager::Free()
 		Safe_Release(i);
 	}
 
+
 	for (auto& i : m_tDestroy)
 	{
 		Safe_Release(i);
 	}
+
+	for (auto& pair : m_Cached)
+	{
+		if(pair.second)
+			Safe_Release(pair.second);
+	}
+
 
 	m_Stack.clear();
 	m_tDestroy.clear();

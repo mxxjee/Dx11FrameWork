@@ -234,6 +234,12 @@
       <Filter>02.GameObjects\98.Effect\Particle\Snow</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CExplosion.h" />
+    <ClInclude Include="..\Public\CLevel_NPCRoom.h">
+      <Filter>01.Levels\NPCRoom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRoom_Manager.h">
+      <Filter>96.Managers\RoomManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -514,6 +520,15 @@
     <Filter Include="02.GameObjects\98.Effect\Particle\Explosion">
       <UniqueIdentifier>{c84750c3-690f-4ed6-83cc-30466c76ecd2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\03.Triggers">
+      <UniqueIdentifier>{9513320d-b50c-424f-8b82-741ecf8c2fc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\NPCRoom">
+      <UniqueIdentifier>{81ff27d2-5b70-4c00-9164-f7e687f3683e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Managers\RoomManager">
+      <UniqueIdentifier>{c180cd7b-79ef-45e0-82c5-a635a93f1ece}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -728,6 +743,12 @@
       <Filter>02.GameObjects\98.Effect\Particle\Snow</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CExplosion.cpp" />
+    <ClCompile Include="..\Private\CLevel_NPCRoom.cpp">
+      <Filter>01.Levels\NPCRoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRoom_Manager.cpp">
+      <Filter>96.Managers\RoomManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

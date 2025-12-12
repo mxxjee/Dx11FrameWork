@@ -259,6 +259,7 @@ void CMainApp::Register_Levels()
 	CheckNull(pGameInstance);
 	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOGO), [this](LevelArgs& args)->CLevel*
 		{
+			args.m_bCached = false;
 			return CLevel_Logo::Create(m_pDevice, m_pContext,args);
 		});
 
@@ -275,6 +276,7 @@ void CMainApp::Register_Levels()
 
 	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOADING), [this](LevelArgs& args)->CLevel*
 		{
+			args.m_bCached = false;
 			return CLevel_Loading::Create(m_pDevice, m_pContext, args);
 		});
 

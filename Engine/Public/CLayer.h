@@ -23,6 +23,8 @@ public:
     CGameObject* Find_GameObject(const wstring& Tag);
 
 public:
+    void        Clear();
+public:
     void            RequestDestroy(CGameObject* pObj);
     void            ProcessDestory();
 private:

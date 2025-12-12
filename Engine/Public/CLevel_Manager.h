@@ -50,6 +50,11 @@ private:
     void            ReplaceTop_Level(_uint iSceneID, CLevel* pNewLevel);
     void            Push_Level(_uint iSceneID, CLevel* pNewLevel);
     void            Overlay_Level(_uint iSceneID, CLevel* pNewLevel);
+    
+public:
+    CLevel* Find_And_CreateLevel(_uint iSceneID, LevelArgs& _Arg);
+    CLevel* Find_Cached(_uint iSceneID);
+
 
 
 public:
@@ -66,6 +71,8 @@ private:
     //지연삭제를 위한 STL
     vector<CLevel*>         m_tDestroy;        
 
+    //캐시 씬(현재는 NPC를위함)
+    UMap<_uint,CLevel*>         m_Cached;
 private:
     virtual void Free();
 
