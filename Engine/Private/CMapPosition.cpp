@@ -27,6 +27,10 @@ HRESULT CMapPosition::Initialize_Copytype(void* pArg)
 
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
+
+    MapPositionDesc* pDesc = static_cast<MapPositionDesc*>(pArg);
+    Info.TargetName = pDesc->TargetName;
+
     CMapLayer* pLayer = CMapObject_Manager::GetInstance()->Get_Layer_By_MapObjType(MapObjType::ROOM);
     CheckNullResult(pLayer, E_FAIL);
 

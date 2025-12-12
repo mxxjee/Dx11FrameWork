@@ -130,9 +130,10 @@ HRESULT CMapObject::Ready_Component(void* pArg)
 		AABBDesc.Extents = { 0.3f,0.3f,0.3f };
 		XMStoreFloat3(&AABBDesc.vCenter, m_pTransformCom->Get_State(STATE::POSITION));
 		colDesc.m_BoundingDesc = &AABBDesc;
+		pDesc->ColliderComponent = &colDesc;
 	}
 	
-	pDesc->ColliderComponent = &colDesc;
+
 	CComponent* pCollider = dynamic_cast<CBoxColliderComponent*>(m_pGameInstance->Clone_Prototype
 	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"BoxColliderComponent"), pDesc->ColliderComponent));
 

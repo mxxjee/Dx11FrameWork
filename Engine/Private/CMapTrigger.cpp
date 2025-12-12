@@ -154,7 +154,7 @@ HRESULT CMapTrigger::Ready_Component(void* pArg)
             PROTOTYPE::COMPONENT,
             0,
             PROTO_COMPONENT_NAME(L"BoxColliderComponent"),
-            &ColDesc));
+            pDesc->ColliderComponent));
 
         if (FAILED(Add_Component(
             COMPONENT_TYPE::BOX_COLLIDER,

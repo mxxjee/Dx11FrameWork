@@ -439,7 +439,7 @@ void CMenuBarWindow::Show_RoomBox()
         CMapObject_Manager::GetInstance()->Set_SelectObject(nullptr);
 
         //불러오기 및 덮어쓰기를위한 경로갱신
-        if (FAILED(m_pImgui_DataManager->Load_InteractionData(m_SaveFilePath.m_InteractionFiles[m_LoadFilePath.LoadInteractionFileIdx])))
+        if (FAILED(m_pImgui_DataManager->Load_Roomdata(m_SaveFilePath.m_RoomFiles[m_LoadFilePath.LoadRoomFileIdx])))
         {
             ImGui::End();
             MSG_BOX("Nothing to Load!, Empty");

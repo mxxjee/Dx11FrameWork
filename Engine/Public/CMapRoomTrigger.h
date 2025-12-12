@@ -8,6 +8,11 @@ class CBounding_AABB;
 class ENGINE_DLL CMapRoomTrigger :
     public CMapTrigger
 {
+public:
+    struct RoomTriggerDesc : public CMapTrigger::MapObject_DESC
+    {
+        string nextroomID = "";
+    };
 protected:
     CMapRoomTrigger(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CMapRoomTrigger(const CMapObject& rhs);

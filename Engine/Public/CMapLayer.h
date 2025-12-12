@@ -31,10 +31,15 @@ public:
     void    ProcessDestroy();       //DestroyQue를 비우는작업
     
 public:
+    void        Clear_Layer();
+public:
     void        Set_AblePicking(bool b) { m_bAblePicking = b; }
     HRESULT     Save_Data(const string& filePath, _uint iNum);
     HRESULT     Save_RoomData(_uint iRoomNum);
-    HRESULT     Load_Data(const string& LoadPath,vector<DefaultInteractionData>& Infos);
+    
+    HRESULT     Load_InteractionData(const string& LoadPath,vector<DefaultInteractionData>& Infos);
+    HRESULT     Load_RoomData(const string& LoadPath, vector<DefaultInteractionData>& Infos);
+
 private:
     list<CMapObject*>      m_ObjList;
     queue<CMapObject*>      m_DestroyQueue;

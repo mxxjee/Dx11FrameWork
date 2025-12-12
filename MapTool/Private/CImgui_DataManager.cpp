@@ -19,8 +19,12 @@
 #include "CMeshColliderComponent.h"
 
 #include "CMapRoom.h"
-#include "CMapTrigger.h"
+#include "CMapRoomTrigger.h"
 #include "CMapPosition.h"
+
+#include "CBounding_AABB.h"
+#include "CBoxColliderComponent.h"
+
 
 
 USING(Engine)
@@ -369,7 +373,7 @@ HRESULT CImgui_DataManager::Create_Model()
 
 HRESULT CImgui_DataManager::Create_Trigger()
 {
-	CMapTrigger::MapObject_DESC Desc;
+	CMapRoomTrigger::RoomTriggerDesc Desc;
 	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
 	Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
 	Desc.ObjType = m_PlaceObjInfo.ObjType;
@@ -406,7 +410,7 @@ HRESULT CImgui_DataManager::Create_Trigger()
 
 HRESULT CImgui_DataManager::Create_Position()
 {
-	CMapPosition::MapObject_DESC Desc;
+	CMapPosition::MapPositionDesc Desc;
 	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
 	Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
 	Desc.ObjType = m_PlaceObjInfo.ObjType;
@@ -549,6 +553,102 @@ HRESULT CImgui_DataManager::Load_InteractionData(const string& filePath)
 
 
 	
+	return S_OK;
+}
+
+HRESULT CImgui_DataManager::Load_Roomdata(const string& filePath)
+{
+	RoomInfo roomInfo;
+
+	if (FAILED(m_pMapObject_Manager->Load_RoomData(filePath, roomInfo)))
+		return E_FAIL;
+
+	  //생성
+    CMapRoom::MAPMODEL_DESC RoomDesc;
+    CModel::MODEL_DSC  modelDesc;
+    RoomDesc.modelDesc = &modelDesc;
+    RoomDesc.modelName = StringToWString((roomInfo.RoomName));
+    RoomDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+    RoomDesc.ObjType = MapObjType::ROOM;
+    RoomDesc.ObjTag =m_pMapObject_Manager->Generate_UniqueTag(MapObjType::ROOM, RoomDesc.modelName);
+
+	CTransform::TRANSFORM_DESC TransDesc;
+	TransDesc.vLocalPosition = _float4(roomInfo.vPos.x,
+		roomInfo.vPos.y,
+		roomInfo.vPos.z,
+		1.f);
+
+	RoomDesc.TransformDesc = &TransDesc;
+
+	wstring ProtoTag = L"MapRoom";
+	wstring LayerTag = L"Room_Layer";
+
+    if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &RoomDesc)))
+        return E_FAIL;
+
+
+	/////////pos생성
+	for (auto& pos : roomInfo.m_Positions)
+	{
+		CMapPosition::MapPositionDesc Desc;
+		Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+		Desc.ObjType = MapObjType::POSITION;
+		Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(MapObjType::POSITION,L"MapPosition");
+
+		CTransform::TRANSFORM_DESC transDesc;
+		transDesc.vLocalPosition = _float4(pos.vPos.x, pos.vPos.y, pos.vPos.z, 1.f);
+
+		Desc.TransformDesc = &transDesc;
+
+
+
+		//타입에 맞게 레이어에 넣어주기.
+		wstring LayerTag = L"Position_Layer";
+		wstring ProtoTag = L"MapPosition";		//L"MapOBstalce" , "MapTile", "MapPosition", "MapTrigger"
+
+
+
+		if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc)))
+			return E_FAIL;
+	}
+
+
+	//trigger생성
+	for (auto& Trigger : roomInfo.m_RoomTriggers)
+	{
+		CMapRoomTrigger::RoomTriggerDesc Desc;
+		Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+		Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(MapObjType::TRIGGER, L"RoomTrigger");
+		Desc.ObjType = m_PlaceObjInfo.ObjType;
+		Desc.nextroomID = Trigger.m_NextRoomID;
+
+		CTransform::TRANSFORM_DESC transDesc;
+		transDesc.vLocalPosition = _float4(Trigger.vPos.x, Trigger.vPos.y, Trigger.vPos.z, 1.f);
+		transDesc.vLocalScale = _float4(Trigger.vScale.x, Trigger.vScale.y, Trigger.vScale.z, 1.f);
+		transDesc.vLocalRotation = _float4(Trigger.vRotation.x, Trigger.vRotation.y, Trigger.vRotation.z, 1.f);
+		Desc.TransformDesc = &transDesc;
+
+		CBoxColliderComponent::COLLIDER_DESC colDesc;
+		CBounding_AABB::BOUNDING_AABB_DESC AABBDesc;
+		AABBDesc.Extents = Trigger.vExtents;
+		AABBDesc.vCenter = Trigger.vCenter;
+
+		colDesc.m_BoundingDesc = &AABBDesc;
+		Desc.ColliderComponent = &colDesc;
+
+
+		//타입에 맞게 레이어에 넣어주기.
+		wstring LayerTag = L"Trigger_Layer";
+		wstring ProtoTag = L"RoomTrigger";			//L"MapOBstalce" , "MapTile", "MapPosition", "MapTrigger"
+
+
+
+		if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc)))
+			return E_FAIL;
+
+	}
+	
+
 	return S_OK;
 }
 

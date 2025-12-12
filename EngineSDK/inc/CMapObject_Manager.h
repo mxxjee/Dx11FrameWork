@@ -1,6 +1,7 @@
 #pragma once
 #include "CBase.h"
 #include "CBounding_Mesh.h"
+#include "Parsing_RoomInfo.h"
 
 NS_BEGIN(Engine)
 
@@ -63,7 +64,8 @@ public:
          
  
     HRESULT         Save_RoomData(_uint iRoomNum = 1);
-   // HRESULT         Load_RoomData(const string& filePath, vector<DefaultInteractionData>& Datas);
+    HRESULT         Load_RoomData(const string& filePath,
+                                            RoomInfo& Info);
 
 public:
     wstring         Generate_UniqueTag(MapObjType Type, const wstring& baseName);

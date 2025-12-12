@@ -1,17 +1,13 @@
 #pragma once
 #include "Engine_Define.h"
+#include "Parsing_TriggerInfo.h"
 
-struct ENGINE_DLL RoomInfo
+
+
+struct ENGINE_DLL LoadRoomInfo
 {
-	string RoomName = "";
-	_float3 vPos;
-	_float3 vScale;
-	_float3 vRotation;
-
-
 
 };
-
 struct ENGINE_DLL NPCInfo
 {
 	string ModelName = "";
@@ -44,4 +40,17 @@ struct ENGINE_DLL PositionInfo
 		Info.TargetName = j["Target"];
 		return Info;
 	}
+};
+
+
+struct ENGINE_DLL RoomInfo
+{
+	string RoomName = "";
+	_float3 vPos;
+	_float3 vScale;
+	_float3 vRotation;
+
+	vector<PositionInfo>		m_Positions;
+	vector<RoomTrigger>			m_RoomTriggers;
+
 };

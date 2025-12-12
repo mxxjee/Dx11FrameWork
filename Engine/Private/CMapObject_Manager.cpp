@@ -15,8 +15,16 @@
 #include "CModel.h"
 #include "CMeshColliderComponent.h"
 
+#include "Parsing_TriggerInfo.h"
+
+
+#include "CMapRoom.h"
+#include "CMapRoomTrigger.h"
+#include "CMapTrigger.h"
+
 
 IMPLEMENT_SINGLETON(CMapObject_Manager)
+
 
 CMapObject_Manager::CMapObject_Manager()
 {
@@ -351,6 +359,64 @@ HRESULT CMapObject_Manager::Save_RoomData(_uint iRoomNum)
     return S_OK;
 }
 
+HRESULT CMapObject_Manager::Load_RoomData(const string& filePath, RoomInfo& Info)
+{
+    m_pSelectedObject = nullptr;
+
+
+    /////////////읽어서 생성하기
+    ifstream file(filePath);
+    json jRoomData = json::parse(file);
+
+
+    Info.RoomName = jRoomData["RoomName"].get<string>();
+    Info.vPos = _float3(jRoomData["Position"][0].get<float>(),
+                                jRoomData["Position"][1].get<float>(),
+                                jRoomData["Position"][2].get<float>());
+
+
+
+	for (auto& pPosition : jRoomData["MapPositions"])
+	{
+        Info.m_Positions.push_back(PositionInfo::LoadJson(pPosition));
+
+	}
+
+	for (auto& pTriggers : jRoomData["RoomTriggers"])
+	{
+        Info.m_RoomTriggers.push_back(RoomTrigger::LoadJson(pTriggers));
+
+	}
+
+ 
+    ////생성
+    //CMapRoom::MAPMODEL_DESC RoomDesc;
+    //CModel::MODEL_DSC  modelDesc;
+    //RoomDesc.modelDesc = &modelDesc;
+    //RoomDesc.modelName = StringToWString((roomInfo.RoomName));
+    //RoomDesc.eRenderGroup = 0;
+    //RoomDesc.ObjType = MapObjType::ROOM;
+    //RoomDesc.ObjTag = Generate_UniqueTag(MapObjType::ROOM, RoomDesc.modelName);
+
+    //wstring ProtoTag=L""
+    //if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc)))
+    //    return E_FAIL;
+
+
+
+    //CTransform::TRANSFORM_DESC TransDesc;
+    //TransDesc.vLocalPosition = _float4(roomInfo.vPos.x,
+    //    roomInfo.vPos.y,
+    //    roomInfo.vPos.z,
+    //    1.f);
+
+
+    
+    return S_OK;
+    
+
+}
+
 HRESULT CMapObject_Manager::Save_InteractionData(const string& filePath, _uint iNum)
 {
     CMapLayer* pLayer = Find_MapLayer(L"Interaction_Layer");
@@ -373,7 +439,7 @@ HRESULT CMapObject_Manager::Load_InteractionData(const string& filePath, vector<
 
     }
     
-    pLayer->Load_Data(filePath,Datas);
+    pLayer->Load_InteractionData(filePath,Datas);
 
     return S_OK;
 }

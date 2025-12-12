@@ -108,6 +108,7 @@ public:
 public:
     HRESULT       Update_SaveFiles();       //저장된 파일들을 모두 검사하여 경로를벡터에담는다.
     HRESULT       Load_InteractionData(const string& filePath);
+    HRESULT      Load_Roomdata(const string& filePath);
 
 private:
     //로드한정보따라서 내부적으로 생성

@@ -106,7 +106,8 @@ void CRenderer::RenderGroupObjects(_uint eGroup)
 		wchar_t buffer[128];
 		swprintf_s(buffer, L"Priority: %d\n", iter.size());
 
-		OutputDebugString(buffer);
+		OutputDebugStri
+		 ng(buffer);
 	}*/
 		
 }

@@ -156,6 +156,12 @@ void CMapLayer::ProcessDestroy()
     }
 }
 
+void CMapLayer::Clear_Layer()
+{
+    for (auto& pObj : m_ObjList)
+        Safe_Release(pObj);
+}
+
 HRESULT CMapLayer::Save_Data(const string& filePath, _uint iNum)
 {
     json jInteraction;
@@ -196,7 +202,7 @@ HRESULT CMapLayer::Save_RoomData(_uint iRoomNum)
 
 
 
-HRESULT CMapLayer::Load_Data(const string& LoadPath, vector<DefaultInteractionData>& Infos)
+HRESULT CMapLayer::Load_InteractionData(const string& LoadPath, vector<DefaultInteractionData>& Infos)
 {
     /*기존 리스트를 비우고 로드한다.*/
     for (auto& i : m_ObjList)

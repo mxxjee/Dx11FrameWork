@@ -264,6 +264,7 @@
     <ClInclude Include="..\Public\CQuad.h" />
     <ClInclude Include="..\Public\CRenderer.h" />
     <ClInclude Include="..\Public\CRenderState_Manager.h" />
+    <ClInclude Include="..\Public\CRenderTarget.h" />
     <ClInclude Include="..\Public\CScreenQuad.h" />
     <ClInclude Include="..\Public\CScreenShot_Manager.h" />
     <ClInclude Include="..\Public\CShader.h" />
@@ -273,6 +274,7 @@
     </ClInclude>
     <ClInclude Include="..\Public\CStaticBody.h" />
     <ClInclude Include="..\Public\CStaticModelObject.h" />
+    <ClInclude Include="..\Public\CTarget_Manager.h" />
     <ClInclude Include="..\Public\CTerrain_Base.h" />
     <ClInclude Include="..\Public\CTerrain_Manager.h" />
     <ClInclude Include="..\Public\CTexture.h" />
@@ -427,6 +429,7 @@
     <ClCompile Include="..\Private\CQuad.cpp" />
     <ClCompile Include="..\Private\CRenderer.cpp" />
     <ClCompile Include="..\Private\CRenderState_Manager.cpp" />
+    <ClCompile Include="..\Private\CRenderTarget.cpp" />
     <ClCompile Include="..\Private\CScreenQuad.cpp" />
     <ClCompile Include="..\Private\CScreenShot_Manager.cpp" />
     <ClCompile Include="..\Private\CShader.cpp" />
@@ -436,6 +439,7 @@
     </ClCompile>
     <ClCompile Include="..\Private\CStaticBody.cpp" />
     <ClCompile Include="..\Private\CStaticModelObject.cpp" />
+    <ClCompile Include="..\Private\CTarget_Manager.cpp" />
     <ClCompile Include="..\Private\CTerrain_Base.cpp" />
     <ClCompile Include="..\Private\CTerrain_Manager.cpp" />
     <ClCompile Include="..\Private\CTexture.cpp" />

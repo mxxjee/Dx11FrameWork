@@ -442,6 +442,12 @@
     <Filter Include="998.MapTool\Object\MapPosition">
       <UniqueIdentifier>{ff349792-9d31-4789-a27d-944aab948e39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\20.RenderTargets">
+      <UniqueIdentifier>{646276ea-5a80-436d-89e0-687d5c8de6ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.System\20.RenderTargets\RenderTarget">
+      <UniqueIdentifier>{1e80a376-55f7-440f-929b-53f09c4a5bde}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -876,6 +882,10 @@
     <ClInclude Include="..\Public\CMapPosition.h">
       <Filter>998.MapTool\Object\MapPosition</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CRenderTarget.h">
+      <Filter>00.System\20.RenderTargets\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CTarget_Manager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -1260,5 +1270,9 @@
     <ClCompile Include="..\Private\CMapPosition.cpp">
       <Filter>998.MapTool\Object\MapPosition</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CRenderTarget.cpp">
+      <Filter>00.System\20.RenderTargets\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTarget_Manager.cpp" />
   </ItemGroup>
 </Project>

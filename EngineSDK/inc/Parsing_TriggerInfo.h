@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine_Define.h"
 
+
 struct ENGINE_DLL TriggerInfo
 {
 
@@ -17,7 +18,6 @@ class CMapObjet;
 
 struct ENGINE_DLL RoomTrigger : TriggerInfo
 {
-	CMapObject* pOwner = nullptr;
 	string	m_NextRoomID = "";
 
 	json ToJson() const 
@@ -42,7 +42,7 @@ struct ENGINE_DLL RoomTrigger : TriggerInfo
 		Info.vRotation = _float3(j["Rotation"][0], j["Rotation"][1], j["Rotation"][2]);
 		
 		
-		Info.vCenter = _float3(j["Collider_Center"][0], j["Collider_CenterPos"][1], j["Collider_Center"][2]);
+		Info.vCenter = _float3(j["Collider_Center"][0], j["Collider_Center"][1], j["Collider_Center"][2]);
 		Info.vExtents = _float3(j["Collider_Extents"][0], j["Collider_Extents"][1], j["Collider_Extents"][2]);
 		Info.m_NextRoomID = string(j["NextRoomID"]);
 

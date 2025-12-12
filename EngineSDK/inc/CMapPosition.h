@@ -8,7 +8,12 @@ class CCollider_Base;
 class ENGINE_DLL CMapPosition :
     public CMapObject
 {
-protected:
+public:
+    struct MapPositionDesc : public CMapObject::MapObject_DESC
+    {
+        string TargetName = "";
+    };
+    protected:
     CMapPosition(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CMapPosition(const CMapObject& rhs);
     virtual ~CMapPosition() = default;

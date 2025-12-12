@@ -32,7 +32,8 @@ HRESULT CMapRoomTrigger::Initialize_Copytype(void* pArg)
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
-    m_tInfo.pOwner = this;
+    RoomTriggerDesc* pDesc = static_cast<RoomTriggerDesc*>(pArg);
+    m_tInfo.m_NextRoomID = pDesc->nextroomID;
 
     CMapLayer* pLayer=CMapObject_Manager::GetInstance()->Get_Layer_By_MapObjType(MapObjType::ROOM);
     CheckNullResult(pLayer,E_FAIL);
