@@ -34,6 +34,7 @@ public:
     _vector SetUp_OnNavigation(_fvector vWorldPos);     //네브메쉬 평면을 타게함.
     _uint    Get_CurrentCellType();
 
+    void        Set_MainCell();
 public:
                 //현재 셀부터 반경내의 Radius만큼 랜덤한 cell을 담는다.
     void        Get_RandomCells(_vector vPos, _float fRadius, vector<int>* vecInt);

@@ -6,6 +6,8 @@
 #include "CMapObject_Manager.h"
 #include "CNavMeshEdit_Manager.h"
 #include "MapTool_Defines.h"
+#include "CMapLayer.h"
+
 
 USING(MapTool)
 
@@ -321,7 +323,17 @@ void CMenuBarWindow::Show_ModeMenu()
     if (ImGui::MenuItem("NavMeshMode", "Ctrl+N"))
     {
         CImGui_Manager::GetInstance()->Set_MapToolMode(MapToolMode::NAVMESH);
-      
+        m_pMapObject_Manager->Set_SelectObject(nullptr);
+
+        //트리거,포지션 object들모두 seactive시키기
+
+        CMapLayer* pTriggerLayer = m_pMapObject_Manager->Get_Layer_By_MapObjType(MapObjType::TRIGGER);
+        pTriggerLayer->Set_AblePicking(false);
+
+        CMapLayer* pPositionLayer = m_pMapObject_Manager->Get_Layer_By_MapObjType(MapObjType::POSITION);
+        pPositionLayer->Set_AblePicking(false);
+
+
     }
 
     if (ImGui::MenuItem("EditMode", "Ctrl+E"))

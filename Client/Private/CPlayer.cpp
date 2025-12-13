@@ -650,6 +650,12 @@ void CPlayer::Respawn()
     }
 }
 
+void CPlayer::Change_MainNavMesh()
+{
+    if (m_pNavigationCom)
+        m_pNavigationCom->Set_MainCell();
+}
+
 CPlayer* CPlayer::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
     CPlayer* pInstance = new CPlayer(_pDevice, _pDeviceContext);

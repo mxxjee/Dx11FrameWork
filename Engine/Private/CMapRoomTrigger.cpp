@@ -49,7 +49,7 @@ HRESULT CMapRoomTrigger::Initialize_Copytype(void* pArg)
     m_idx=pRoom->Add_RoomTrigger(this);
 
     pAABB = dynamic_cast<CBounding_AABB*>(pColliderComp->Get_Bounding());
-
+    m_bAblePicking = false;
     return S_OK;
 }
 

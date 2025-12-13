@@ -75,6 +75,7 @@ private:
     UMap<_uint,CLevel*>         m_Cached;
 private:
     virtual void Free();
+    bool        m_bLoading = false;     //로딩씬에있는지여부, 로딩씬의 exit가불리고 일반씬 enter직전에 true만들어주기
 
 };
 NS_END

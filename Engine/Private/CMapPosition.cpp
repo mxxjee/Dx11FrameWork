@@ -43,7 +43,7 @@ HRESULT CMapPosition::Initialize_Copytype(void* pArg)
     CheckNullResult(pRoom, E_FAIL);
 
     m_idx = pRoom->Add_Position(this);
-
+    m_bAblePicking = false;
 
     return S_OK;
 }

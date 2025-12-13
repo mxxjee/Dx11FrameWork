@@ -101,10 +101,51 @@ void CLevel_NPCRoom::OnEnter()
     m_pGameInstance->Emit(Event);
     CheckNull(pFadeScreen);
     pFadeScreen->PlayFadeOut();
+
+    pPlayer->Change_MainNavMesh();
+
+
+    //씬이 다시시작행슬때 메인 상호작용오브ㅈ게트들 설정
+    //////현재씬의 itneraction 등록
+    CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::ROOM));
+
+
 }
 
 void CLevel_NPCRoom::OnResume(_uint iPreLevel)
 {
+    CRoom_Manager::GetInstance()->Switch_Room(CRoom_Manager::GetInstance()->Get_RequestRoom());
+
+    _float4 vSpawnPos = CRoom_Manager::GetInstance()->Get_SpawnPosition();
+    CPlayer* pPlayer = CInteraction_Manager::GetInstance()->Get_MainPlayer();
+    CheckNull(pPlayer);
+
+    pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMLoadFloat4(&vSpawnPos));
+
+
+    ////GameEvent (카메라 조절)
+    GameEvent Event;
+    EventPayload payload;
+    Event.Payload = payload;
+
+    Event.Payload.Ptrs["Player"] = pPlayer;
+    Event.Payload.Floats["OffSet_X"] = 0.f;
+    Event.Payload.Floats["OffSet_Y"] = 9.f;
+    Event.Payload.Floats["OffSet_Z"] = -4.f;
+
+    Event.Name = "Enter_NPCRoom";
+
+    m_pGameInstance->Emit(Event);
+    CheckNull(pFadeScreen);
+    pFadeScreen->PlayFadeOut();
+
+    pPlayer->Change_MainNavMesh();
+
+
+    //씬이 다시시작행슬때 메인 상호작용오브ㅈ게트들 설정
+    //////현재씬의 itneraction 등록
+    CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::ROOM));
+
 }
 
 void CLevel_NPCRoom::OnPause(_uint iNextLevel)

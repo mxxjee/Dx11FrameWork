@@ -40,6 +40,10 @@ HRESULT CCamera_Manager::Initialize()
 			CheckNull(pCameraBase);
 
 			pCameraBase->Set_Target(pNpc);
+
+			//오프셋 줌인 전 기록해놓기
+			pCameraBase->Set_PrevOffset(pCameraBase->Get_Offset());
+
 			pCameraBase->Set_Offset(_float3(
 				evt.Payload.Floats.at("Float_X"),
 				evt.Payload.Floats.at("Float_Y"),
@@ -56,7 +60,7 @@ HRESULT CCamera_Manager::Initialize()
 			CheckNull(pPlayer);
 
 			pCameraBase->Set_Target(pPlayer);
-			pCameraBase->Set_Offset(pCameraBase->Get_InitOffset());
+			pCameraBase->Set_Offset(pCameraBase->Get_PrevOffset());
 
 		});
 
@@ -70,6 +74,7 @@ HRESULT CCamera_Manager::Initialize()
 
 	m_pGameInstance->RegisterListners("Init_Camera", [this](const GameEvent& evt)
 		{
+
 			CGameObject* pPlayer = static_cast<CGameObject*>(evt.Payload.Ptrs.at("Player"));
 			CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(Get_MainCamera());
 
@@ -104,7 +109,7 @@ HRESULT CCamera_Manager::Initialize()
 
 			pCameraBase->Set_Offset(OffSet);
 			pCameraBase->Set_Target(pPlayer,true);
-			
+
 
 		});
 

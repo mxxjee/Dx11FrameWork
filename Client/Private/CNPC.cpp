@@ -56,7 +56,10 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
 
 
     Ready_Events();
-  
+    if (m_pNavigationCom)
+    {
+        m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
+    }
     return S_OK;
 }
 
@@ -74,7 +77,7 @@ void CNPC::Update(_float fTimeDelta)
 void CNPC::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
-    m_pTransformCom->Set_State(STATE::POSITION,
+     m_pTransformCom->Set_State(STATE::POSITION,
         m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
 
    
@@ -293,6 +296,19 @@ void CNPC::Ready_Events()
 }
 
 
+
+CNPC* CNPC::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex, void* pArg)
+{
+    CNPC* pInstance = new CNPC(_pDevice, _pDeviceContex);
+    if (FAILED(pInstance->Initialize_Prototype(pArg)))
+    {
+        MSG_BOX("Failed to Create :CNPC ");
+        Safe_Release(pInstance);
+
+    }
+
+    return pInstance;
+}
 
 CGameObject* CNPC::Clone(void* pArg)
 {

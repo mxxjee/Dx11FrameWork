@@ -107,11 +107,19 @@ HRESULT CMapObject::Render()
 bool CMapObject::Is_Picked(_vector Origin, _vector Dir, float& Dist)
 {
 	CheckNullResult(pColliderComp, false);
+	CheckFalseResult(m_bAblePicking,false);
+
 
 	bool Result= pColliderComp->Intersects_Ray(Origin, Dir, Dist,m_pTransformCom);
 
 
 	return Result;
+}
+
+void CMapObject::Set_Active(bool _b)
+{
+	m_bActive = _b;
+	pColliderComp->Set_Active(false);
 }
 
 HRESULT CMapObject::Ready_Component(void* pArg)

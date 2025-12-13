@@ -87,6 +87,8 @@ public:
    
 
     void        Set_Offset(_float3 Offset) { m_vOffset = Offset; }
+    void        Set_PrevOffset(_float3 PreOffset) { m_vPreOffSet = PreOffset; }
+
     void       Set_Fovy(_float Fov) { m_fFovy = Fov; }
     void      Set_Near(float fNear) { m_fNearZ=fNear; }
     void       Set_Far(float fFar) { m_fFarZ=fFar; }
@@ -103,7 +105,7 @@ public:
     const _float    Get_Fovy() { return m_fFovy; }
     const _float    Get_Near() { return m_fNearZ; }
     const _float    Get_Far() { return m_fFarZ; }
-
+    const _float3& Get_PrevOffset() { return m_vPreOffSet; }
     _float4         Get_CameraPosition();
 
 private:
@@ -142,6 +144,8 @@ protected:
     _float			m_fNearZ{}, m_fFarZ{};
     _float3         m_vOffset;
     _float3         m_vInitOffset;
+    _float3         m_vPreOffSet;
+
 
     bool            m_bPerspective = true;
 

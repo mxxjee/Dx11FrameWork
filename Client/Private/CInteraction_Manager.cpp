@@ -5,6 +5,7 @@
 #include "CInteractionObject.h"
 #include "CPlayer.h"
 #include "CGameInstance.h"
+#include "CLayer.h"
 
 USING(Client)
 IMPLEMENT_SINGLETON(CInteraction_Manager)
@@ -134,6 +135,42 @@ bool CInteraction_Manager::Check_InteractiveType(InteractionType eType)
 	return m_pCurrentTarget->Get_Interaction_Priority() == (int)eType;
 }
 
+void CInteraction_Manager::Change_Scene(_uint iLevelID)
+{
+	CLayer* pInteractionLayer = m_pGameInstance->Find_Layer(iLevelID, L"Interaction_Layer");
+	if (pInteractionLayer)
+	{
+		for (auto& pObj : pInteractionLayer->Get_ObjList())
+		{
+			CIInteractable* pInteractable = dynamic_cast<CIInteractable*>(pObj);
+			if (pInteractable)
+				CInteraction_Manager::GetInstance()->RegisterInteractable(pInteractable);
+		}
+	}
+	
+
+	CLayer* pNPCLayer = m_pGameInstance->Find_Layer(iLevelID, L"NPC_Layer");
+	if (pNPCLayer)
+	{
+		for (auto& pObj : pNPCLayer->Get_ObjList())
+		{
+			CIInteractable* pInteractable = dynamic_cast<CIInteractable*>(pObj);
+			if (pInteractable)
+				CInteraction_Manager::GetInstance()->RegisterInteractable(pInteractable);
+		}
+	}
+	
+
+}
+
+HRESULT CInteraction_Manager::Initialize()
+{
+	m_pGameInstance = CGameInstance::GetInstance();
+	Safe_AddRef(m_pGameInstance);
+
+	return S_OK;
+}
+
 
 
 CIInteractable* CInteraction_Manager::Find_Object(const CIInteractable* pObj)
@@ -166,6 +203,7 @@ void CInteraction_Manager::Free()
 
 	m_pCurrentTarget = nullptr;
 	m_InteractableObjects.clear();
+	Safe_Release(m_pGameInstance);
 
 	__super::Free();
 }

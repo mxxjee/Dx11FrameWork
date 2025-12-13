@@ -24,6 +24,7 @@ HRESULT CChannel::Initialize(CModel* pModel, json& Json, const char* AnimFilePat
 	
 	int BinaryOffSet = ChannelData["BinaryOffset"].get<int>();
 	int BinarySize = ChannelData["BinarySize"].get<int>();
+
 	
 
 	m_KeyFrames.resize(m_iNumKeyFrames);

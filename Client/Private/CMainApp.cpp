@@ -96,6 +96,10 @@ HRESULT CMainApp::Initialize()
 
 HRESULT CMainApp::Initialize_Cilent()
 {
+	if (FAILED(CInteraction_Manager::GetInstance()->Initialize()))
+		return E_FAIL;
+
+
 	CreateSamplerStates();
 	CreateBlendStates();
 	CreateRasterizerStates();
@@ -163,6 +167,33 @@ HRESULT CMainApp::Initialize_Cilent()
 		{
 
 			CGameInstance::m_bDrawDebug = !CGameInstance::m_bDrawDebug;
+
+
+		});
+
+
+	pGameInstance->Register_HotKey(KeyCode::C, true, false, false, [this]()
+		{
+
+			if (iTargetCameraIdx == 1)
+				iTargetCameraIdx = 0;
+			else
+				++iTargetCameraIdx;
+
+			iTargetCameraIdx = MathUtils::Clamp(iTargetCameraIdx, 0, 1);
+
+			switch (iTargetCameraIdx)
+			{
+			case 0:
+				CGameInstance::GetInstance()->Set_MainCamera(CAMERA_TYPE::TARGET);
+				break;
+
+			case 1:
+				CGameInstance::GetInstance()->Set_MainCamera(CAMERA_TYPE::FREE);
+
+				break;
+			}
+
 
 
 		});

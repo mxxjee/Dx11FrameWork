@@ -68,6 +68,7 @@ private:
 
 private:
 	CImGui_Manager* pImGui_Manager = { nullptr };
+	int iTargetCameraIdx = 0;
 };
 
 NS_END

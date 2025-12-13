@@ -49,6 +49,7 @@ public:
 public:
                 //픽킹 확인
     virtual bool            Is_Picked(_vector Origin, _vector Dir, float& Dist);
+    virtual void    Set_Active(bool _b);
 
 public:
     virtual HRESULT     Ready_Component(void* pArg);
@@ -94,6 +95,9 @@ public:
 
 private:
     class CInput_Manager* m_pInputManager = { nullptr };
+
+protected:
+    bool        m_bAblePicking = true;
 
 };
 

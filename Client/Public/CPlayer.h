@@ -83,7 +83,7 @@ private:
     void        Ladder_Movement(_float fTimeDelta);
     void        Normal_Movement(_float fTimeDelta);
     void        Hold_Movement(_float fTimeDelta);
-
+    
 public:     
     //상태값, update돌릴 state  클래스 변경
     virtual void            Change_State(int newState);
@@ -121,6 +121,7 @@ public:
 
 public:
     void        Respawn();
+    void        Change_MainNavMesh();
 public:
     static CPlayer* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;

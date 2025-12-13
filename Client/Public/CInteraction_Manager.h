@@ -3,9 +3,15 @@
 #include "Client_Defines.h"
 #include "CInteractionObject.h"
 
+namespace Engine
+{
+    class CGameInstance;
+}
+
 NS_BEGIN(Client)
 class CIInteractable;
 class CPlayer;
+
 
  class CInteraction_Manager :
     public CBase
@@ -26,6 +32,11 @@ public:
     void        Clear();                //씬넘어가면 반드시호출해서 비우자.
 
     bool        Check_InteractiveType(InteractionType eType);
+
+    void        Change_Scene(_uint iLevelID);
+
+    HRESULT         Initialize();
+
 public:
     CIInteractable*              Get_CurrentTarget() { return m_pCurrentTarget; }
     void                        Reset_CurrentTarget() { m_pCurrentTarget = nullptr; }
@@ -47,6 +58,7 @@ public:
     CPlayer*    Get_MainPlayer() { return m_pMainPlayer; }
 private:
     CPlayer*            m_pMainPlayer = nullptr;
+    CGameInstance*      m_pGameInstance = nullptr;
 };
 NS_END
 

@@ -5,7 +5,7 @@
 namespace Engine
 {
     class CCollider_Base;
-
+    class CNavigation;
 }
 
 NS_BEGIN(Client)
@@ -74,7 +74,7 @@ private:
     void            Ready_Events();
 
 public:
-    static CNPC* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex, void* pArg) {};
+    static CNPC* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex, void* pArg);
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 

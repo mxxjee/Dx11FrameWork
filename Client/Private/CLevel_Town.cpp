@@ -154,29 +154,6 @@ void CLevel_Town::Update_Late(_float fTimeDelta)
 
     }
 
-    /*카메라 변경 테스트*/
-   if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::C))
-   {
-       if (iTargetIdx == 1)
-           iTargetIdx = 0;
-       else
-           ++iTargetIdx;
-
-       iTargetIdx = MathUtils::Clamp(iTargetIdx, 0, 1);
-
-       switch (iTargetIdx)
-       {
-       case 0:
-           m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
-           break;
-
-       case 1:
-           m_pGameInstance->Set_MainCamera(CAMERA_TYPE::FREE);
-
-           break;
-       }
-
-   }
 
 }
 
@@ -485,21 +462,8 @@ void CLevel_Town::OnEnter()
     
 
     //////현재씬의 itneraction 등록
-    CLayer* pInteractionLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), L"Interaction_Layer");
-    for (auto& pObj : pInteractionLayer->Get_ObjList())
-    {
-        CIInteractable* pInteractable = dynamic_cast<CIInteractable*>(pObj);
-        if(pInteractable)
-            CInteraction_Manager::GetInstance()->RegisterInteractable(pInteractable);
-    }
+    CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::TOWN));
 
-    CLayer* pNPCLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), L"NPC_Layer");
-    for (auto& pObj : pNPCLayer->Get_ObjList())
-    {
-        CIInteractable* pInteractable = dynamic_cast<CIInteractable*>(pObj);
-        if (pInteractable)
-            CInteraction_Manager::GetInstance()->RegisterInteractable(pInteractable);
-    }
 
     CheckNull(pFadeScreen);
     pFadeScreen->PlayFadeOut();
@@ -510,22 +474,10 @@ void CLevel_Town::OnResume(_uint iPreLevel)
   
     //씬이 다시시작행슬때 메인 상호작용오브ㅈ게트들 설정
      //////현재씬의 itneraction 등록
-    CLayer* pInteractionLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), L"Interaction_Layer");
-    for (auto& pObj : pInteractionLayer->Get_ObjList())
-    {
-        CIInteractable* pInteractable = dynamic_cast<CIInteractable*>(pObj);
-        if (pInteractable)
-            CInteraction_Manager::GetInstance()->RegisterInteractable(pInteractable);
-    }
+    CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::TOWN));
 
-    CLayer* pNPCLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), L"NPC_Layer");
-    for (auto& pObj : pNPCLayer->Get_ObjList())
-    {
-        CIInteractable* pInteractable = dynamic_cast<CIInteractable*>(pObj);
-        if (pInteractable)
-            CInteraction_Manager::GetInstance()->RegisterInteractable(pInteractable);
-    }
     
+
 
     //카메라돌려놓기이벤트 실행
     CPlayer* pPlayer = CInteraction_Manager::GetInstance()->Get_MainPlayer();
@@ -556,8 +508,9 @@ void CLevel_Town::OnResume(_uint iPreLevel)
         break;
     }
 
-
-    int A = 0;
+    //NavMesh돌려놓기
+    m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::TOWN));
+    pPlayer->Change_MainNavMesh();
 }
  
 

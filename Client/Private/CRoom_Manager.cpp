@@ -12,6 +12,8 @@
 #include "CNPC.h"
 #include "CNPC_Richard.h"
 
+#include "CNavMesh_Manager.h"
+
 
 
 
@@ -131,7 +133,14 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
         pOutPackage->EnvObjs.push_back(pRoom);
 
     }
+    //Navmesh읽어오기
+    string NavFile = jRoomData["NavData"];
+    if (FAILED(m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::ROOM), NavFile)))
+        return E_FAIL;
 
+    m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::ROOM));
+
+    
     ///Trigger생성
     vector<RoomTrigger> TriggerInfos;
     for (auto& pTriggers : jRoomData["RoomTriggers"])
@@ -174,30 +183,33 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
         PositionIfos.push_back(PositionInfo::LoadJson(pTriggers));
     }
 
+    //모델이름불러온다.
+    vector<string>  NPCModelNames;
+    for (auto& ModelName : jRoomData["NPC_ModelNames"])
+        NPCModelNames.push_back(ModelName);
+
+
     for (auto& PosInfo : PositionIfos)
     {
         if (PosInfo.TargetName == "Player_SpawnPoint")
             m_vSpawnPosition = _float4(PosInfo.vPos.x, PosInfo.vPos.y, PosInfo.vPos.z, 1.f);
 
-        else if (PosInfo.TargetName == "NPC_SpawnPoint")
+        else 
         {
-            //NPC소환.(일단 임시로 리차드)
-            CNPC::NPC_DESC pDesc;
-
-            CTransform::TRANSFORM_DESC pTransDesc;
-            pTransDesc.vLocalPosition = _float4(PosInfo.vPos.x, PosInfo.vPos.y, PosInfo.vPos.z,1.f);
-            pDesc.ObjTag = L"NPC_"+WRoomName;
-            pDesc.pTarget = nullptr;
-            pDesc.ModelName = L"RichardAnim";
-            pDesc.SceneName =RoomName;
-
-            CNPC* pNpc_Richard = CNPC_Richard::Create(m_pDevice, m_pContext, &pDesc);
-            if (pNpc_Richard)
+            for (auto& ModelName : NPCModelNames)
             {
-                Safe_AddRef(pNpc_Richard);
-                pOutPackage->NPCs.push_back(pNpc_Richard);
+                if (PosInfo.TargetName.find(ModelName) != string::npos)
+                {
+                    _float3 vSpawnPos = PosInfo.vPos;
+                    
+                    //NPC소환.(일단 임시로 리차드)
+                    if (FAILED(Load_NPC(RoomName,StringToWString(ModelName), vSpawnPos, pOutPackage)))
+                        return E_FAIL;
 
+                }
+              
             }
+           
         }
     }
 
@@ -240,6 +252,34 @@ void CRoom_Manager::Enter_Room(RoomPackage* pPackage)
     }
 
     m_strCurrentRoomID = pPackage->m_RoomName;
+
+}
+
+HRESULT CRoom_Manager::Load_NPC(const string& RoomName, const wstring& ModelName, _float3 vPos, RoomPackage* pOut)
+{
+
+    CNPC::NPC_DESC pDesc;
+
+    CTransform::TRANSFORM_DESC pTransDesc;
+    pTransDesc.vLocalPosition = _float4(vPos.x, vPos.y,vPos.z, 1.f);
+    pTransDesc.vLocalRotation = _float4(0.f, 180.f, 0.f, 1.f);
+    pDesc.ObjTag = L"NPC_" + ModelName;
+    pDesc.pTarget = nullptr;
+    pDesc.ModelName = ModelName;
+    pDesc.SceneName = RoomName;
+
+    pDesc.TransformDesc = &pTransDesc;
+
+
+    CNPC* pNpc = CNPC::Create(m_pDevice, m_pContext, &pDesc);
+    if (pNpc)
+    {
+        Safe_AddRef(pNpc);
+        pOut->NPCs.push_back(pNpc);
+        return S_OK;
+    }
+   
+    return E_FAIL;
 
 }
 

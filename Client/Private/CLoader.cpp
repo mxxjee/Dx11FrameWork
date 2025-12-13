@@ -366,6 +366,7 @@ HRESULT CLoader::Register_Models()
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/LinkAnim", matrix);
   
     _matrix NPCmatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
+    
     _matrix GreenZolMatrix = XMMatrixScaling(0.7f, 0.7f, 0.7f);
     GreenZolMatrix = XMMatrixMultiply(GreenZolMatrix,XMMatrixRotationY(XMConvertToRadians(180.f)));
 
@@ -383,8 +384,12 @@ HRESULT CLoader::Register_Models()
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy/MoriblinSword", MoriblinSwordMatrix);
 
 
-    
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC", NPCmatrix);
+    _matrix DadMatrix = XMMatrixScaling(1.2f, 1.2f, 1.2f);
+    DadMatrix = XMMatrixMultiply(DadMatrix, NPCmatrix);
+
+    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Dad/Dad.json", DadMatrix);
+    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Mom/Mom.json", DadMatrix);
+    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/RichardAnim/RichardAnim.json", NPCmatrix);
 
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle/", PreMatrix);

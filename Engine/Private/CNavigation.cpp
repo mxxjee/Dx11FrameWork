@@ -245,6 +245,11 @@ _uint CNavigation::Get_CurrentCellType()
 	return ENUM_TO_UINT((*m_Cells)[m_iCurrentCellIndex]->Get_CurrentCellType());
 }
 
+void CNavigation::Set_MainCell()
+{
+	m_Cells = m_pGameInstance->Get_MainCells();
+}
+
 void CNavigation::Get_RandomCells(_vector vPos,_float fRadius, vector<int>* vecInt)
 {
 	_float3 vTargetCenter;
