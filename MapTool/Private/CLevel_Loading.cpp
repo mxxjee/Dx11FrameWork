@@ -92,12 +92,12 @@ void CLevel_Loading::OnEnter()
     int A = 0;
 }
 
-void CLevel_Loading::OnResume()
+void CLevel_Loading::OnResume(_uint iPreLevel)
 {
     int A = 0;
 }
 
-void CLevel_Loading::OnPause()
+void CLevel_Loading::OnPause(_uint iNextLevel)
 {
     int A = 0;
 

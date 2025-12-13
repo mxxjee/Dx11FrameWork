@@ -1,29 +1,37 @@
-{   "NPC_ModelNames": [
+{  "NPC_ModelNames": [
         "Mesh_Mamasha.x",
         "Mesh_Warrior.x"
     ],
     "MapPositions": [
         {
             "Pos": [
-                11.2,
-                0.5,
-                7.3
+                11.223825454711914,
+                0.0,
+                7.88350248336792
             ],
             "Target": "NPC_SpawnPoint"
         },
         {
             "Pos": [
-                12.6,
-                0.3,
-                3.39
+                8.898971557617188,
+                0.0,
+                2.7366623878479004
             ],
             "Target": "Player_SpawnPoint"
+        },
+        {
+            "Pos": [
+                14.474275588989258,
+                0.0,
+                8.271577835083008
+            ],
+            "Target": "NPC_SpawnPoint2"
         }
     ],
     "Position": [
-        12.6,
+        12.600000381469727,
         0.0,
-        6.6
+        6.599999904632568
     ],
     "RoomName": "Mamasha_room",
     "RoomTriggers": [
@@ -36,13 +44,13 @@
             "Collider_Extents": [
                 1.5,
                 2.0,
-                1.2
+                1.2000000476837158
             ],
             "NextRoomID": "Level_Town",
             "Pos": [
-                8.9,
-                0.3,
-                2.9
+                8.899999618530273,
+                0.30000001192092896,
+                2.9000000953674316
             ],
             "Rotation": [
                 -0.0,

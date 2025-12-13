@@ -26,6 +26,7 @@
 #include "CExplosion.h"
 
 #include "CRoom_Manager.h"
+#include "CFadeScreen.h"
 
 
 
@@ -65,6 +66,9 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
 
    /* if (FAILED(Ready_Layer_Particle(L"Particle_Layer")))
         return E_FAIL;*/
+
+    UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
+    pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Objects[0]);
 
  
     return S_OK;
@@ -496,6 +500,9 @@ void CLevel_Town::OnEnter()
         if (pInteractable)
             CInteraction_Manager::GetInstance()->RegisterInteractable(pInteractable);
     }
+
+    CheckNull(pFadeScreen);
+    pFadeScreen->PlayFadeOut();
 }
 
 void CLevel_Town::OnResume(_uint iPreLevel)
@@ -528,7 +535,7 @@ void CLevel_Town::OnResume(_uint iPreLevel)
     Event.Payload = payload;
 
     Event.Payload.Ptrs["Player"] = pPlayer;
-    Event.Name = "Enter_NPCRoom";
+    Event.Name = "Init_Camera";
 
     m_pGameInstance->Emit(Event);
     LEVEL_ID PrevID = (LEVEL_ID)iPreLevel;
@@ -538,7 +545,10 @@ void CLevel_Town::OnResume(_uint iPreLevel)
     case Client::LEVEL_ID::ROOM:
         m_pGameInstance->Set_EnalbeUpdateRender(true);
         m_pGameInstance->Set_EnableUpdate(true);
+        CheckNull(pFadeScreen);
+        pFadeScreen->PlayFadeOut();
        break;
+
     case Client::LEVEL_ID::UI:
         break;
 
@@ -564,6 +574,8 @@ void CLevel_Town::OnPause(_uint iNextLevel)
     case Client::LEVEL_ID::ROOM:
         m_pGameInstance->Set_EnalbeUpdateRender(false);
         m_pGameInstance->Set_EnableUpdate(false);
+        CheckNull(pFadeScreen);
+        pFadeScreen->PlayFadeIn();
         break;
     case Client::LEVEL_ID::UI:
         break;

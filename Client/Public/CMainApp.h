@@ -61,7 +61,7 @@ public:
 
 private:
 	 CGameInstance* pGameInstance;
-	 _float4		ClearColor = COLOR_PINK;
+	 _float4		ClearColor = COLOR_BLACK;
 
 	vector<RenderStates>			m_RenderStates;
 

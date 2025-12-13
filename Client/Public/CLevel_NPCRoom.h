@@ -3,6 +3,7 @@
 #include "Client_Defines.h"
 
 NS_BEGIN(Client)
+class CFadeScreen;
 class CLevel_NPCRoom :
     public CLevel
 {
@@ -30,6 +31,9 @@ public:
 public:
     static  CLevel_NPCRoom* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs & args);
     virtual     void        Free();
+
+private:
+    CFadeScreen* pFadeScreen = nullptr;
 
 
 

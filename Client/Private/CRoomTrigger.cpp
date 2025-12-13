@@ -38,17 +38,19 @@ void CRoomTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
     CGameObject* pOwner = pOther->Get_Owner();
 
     CheckNull(pOwner);
-    //switch (COLLISION_GROUP(iGroup))
-    //{
+    switch (COLLISION_GROUP(iGroup))
+    {
   
-    ////case Client::COLLISION_GROUP::PLAYER:
-    ////    if (m_NextRoomKey == "Level_Town")
+    case Client::COLLISION_GROUP::PLAYER:
+        if (m_NextRoomKey == "Level_Town")
+            m_pGameInstance->Pop_Level();
+      
 
-    ////    else
-    ////        CRoom_Manager::GetInstance()->Switch_Room(m_NextRoomKey);
-    ////    break;
+        else
+            CRoom_Manager::GetInstance()->Switch_Room(m_NextRoomKey);
+        break;
 
-    //}
+    }
 }
 
 void CRoomTrigger::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)

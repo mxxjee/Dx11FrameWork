@@ -97,7 +97,7 @@ void CInteractionObject::Update(_float fTimeDelta)
          _float CellY = m_pNavigationCom->GetHeight(XMLoadFloat3(&Pos));
          if (Pos.y <= CellY)
          {
-             //m_pCollider->Set_Trigger(false);
+             m_pCollider->Set_Trigger(false);
              m_bPhysics = false;
              Pos.y = CellY;
              m_pTransformCom->Set_State(STATE::POSITION,

@@ -6,6 +6,8 @@
 #include "CInteraction_Manager.h"
 #include "CPlayer.h"
 #include "CMainCamera.h"
+#include "CFadeScreen.h"
+
 
 USING(Client)
 CLevel_NPCRoom::CLevel_NPCRoom(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -39,6 +41,9 @@ HRESULT CLevel_NPCRoom::Initialize(LevelArgs& args)
 
     if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, LightDesc)))
         return E_FAIL;
+
+    UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
+    pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Objects[0]);
 
 
     return S_OK;
@@ -87,10 +92,15 @@ void CLevel_NPCRoom::OnEnter()
     Event.Payload = payload;
 
     Event.Payload.Ptrs["Player"] = pPlayer;
+    Event.Payload.Floats["OffSet_X"] = 0.f;
+    Event.Payload.Floats["OffSet_Y"] = 9.f;
+    Event.Payload.Floats["OffSet_Z"] = -4.f;
+
     Event.Name = "Enter_NPCRoom";
 
     m_pGameInstance->Emit(Event);
-
+    CheckNull(pFadeScreen);
+    pFadeScreen->PlayFadeOut();
 }
 
 void CLevel_NPCRoom::OnResume(_uint iPreLevel)

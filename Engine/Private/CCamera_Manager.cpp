@@ -93,17 +93,23 @@ HRESULT CCamera_Manager::Initialize()
 			CGameObject* pPlayer = static_cast<CGameObject*>(evt.Payload.Ptrs.at("Player"));
 			CMainCamera* pCameraBase = dynamic_cast<CMainCamera*>(Get_MainCamera());
 			
+			_float3 OffSet = _float3(evt.Payload.Floats.at("OffSet_X"),
+				evt.Payload.Floats.at("OffSet_Y"),
+				evt.Payload.Floats.at("OffSet_Z"));
+
+
 			CheckNull(pCameraBase);
 			CheckNull(pPlayer);
 			
 
-			pCameraBase->Set_Offset(_float3(0.f, 7.f, -3.f));
+			pCameraBase->Set_Offset(OffSet);
 			pCameraBase->Set_Target(pPlayer,true);
 			
 
 		});
 
 	return S_OK;
+
 }
 
 void CCamera_Manager::RegisterCamera(CAMERA_TYPE eType, CGameObject* pObj)

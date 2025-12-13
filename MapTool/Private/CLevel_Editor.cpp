@@ -395,11 +395,11 @@ void CLevel_Editor::OnEnter()
 
 }
 
-void CLevel_Editor::OnResume()
+void CLevel_Editor::OnResume(_uint iPreLevel)
 {
 }
 
-void CLevel_Editor::OnPause()
+void CLevel_Editor::OnPause(_uint iNextLevel)
 {
 }
 

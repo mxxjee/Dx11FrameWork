@@ -375,6 +375,9 @@ HRESULT CLoader::Register_Models()
     _matrix PreMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
     PreMatrix = XMMatrixMultiply(PreMatrix, XMMatrixRotationX(XMConvertToRadians(-180.f)));
 
+    _matrix RoomMatrix = XMMatrixScaling(1.1f, 1.1f, 1.1f);
+
+
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy/ZolGreenAnim", GreenZolMatrix);
     
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy/MoriblinSword", MoriblinSwordMatrix);
@@ -388,7 +391,7 @@ HRESULT CLoader::Register_Models()
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Object/", XMMatrixIdentity());
 
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Rooms/", XMMatrixIdentity());
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Rooms/", RoomMatrix);
 
 
     return S_OK;

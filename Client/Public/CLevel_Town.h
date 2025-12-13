@@ -4,6 +4,8 @@
 #include "Client_Defines.h"
 
 NS_BEGIN(Client)
+class CFadeScreen;
+
 class CLevel_Town final :
     public CLevel
 {
@@ -44,6 +46,7 @@ public:
     virtual     void        Free();
 private:
     int iTargetIdx = 0;
+    CFadeScreen* pFadeScreen = nullptr;
 
 };
 NS_END

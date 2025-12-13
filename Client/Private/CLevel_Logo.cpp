@@ -363,20 +363,20 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
 
     CBase* pFadeScreenImg = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FadeScreen"), &FadeScreenDesc);
     pFadeScreen = dynamic_cast<CFadeScreen*>(pFadeScreenImg);
-    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO), strLayerTag, pFadeScreen)))
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), strLayerTag, pFadeScreen)))
         return E_FAIL;
 
    
     pFadeScreen->Set_AutoTime(1.5f);
-
+    pFadeScreen->Set_AutoMode(true);
    
     pFadeScreen->Set_Active(false);
     FadeScrcreenGroup.Objects.push_back(pFadeScreen);
 
     m_pGameInstance->Register_UIGroup(FadeScrcreenGroup);
-    m_pGameInstance->RegisterEvent(L"PlayFadeIn", [this](void* pData)
+    m_pGameInstance->RegisterEvent(L"PlayFadeIn", [](void* pData)
         {
-            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"FadeScreenGroup");
             if (pGroup)
             {
                 for (auto& i : pGroup->Objects)
@@ -385,7 +385,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
                     CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(i);
                     if (pFadeScreen)
                     {
-                        pFadeScreen->Set_AutoMode(true);
+                        
                         pFadeScreen->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 8.f, false,false);
                     }
                 }
@@ -394,7 +394,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
 
     m_pGameInstance->RegisterEvent(L"PlayFadeOut", [this](void* pData)
         {
-            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"FadeScreenGroup");
             if (pGroup)
             {
                 for (auto& i : pGroup->Objects)
@@ -446,7 +446,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
             //args.loadingChangeType = LEVELCHANGETYPE::PUSH;
             args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
-
+            pFadeScreen->Set_AutoMode(false);
             if (FAILED(m_pGameInstance->Level_Changer(
                 ENUM_TO_UINT(LEVEL_ID::LOADING),
                 args)))
@@ -543,9 +543,9 @@ void CLevel_Logo::OnEnter()
 
 
     //페이드스크린이벤트 추가설정..
-    m_pGameInstance->RegisterEvent(L"FadeOutEnd", [this](void* pData)
+    m_pGameInstance->RegisterEvent(L"FadeOutEnd", [](void* pData)
         {
-            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"ButtonSlotGroup");
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"ButtonSlotGroup");
             if (pGroup)
             {
                 for (auto& i : pGroup->Objects)
@@ -604,6 +604,7 @@ void CLevel_Logo::OnPause(_uint iNextLevel)
 
 void CLevel_Logo::OnExit()
 {
+
     pFadeScreen->PlayFadeIn();
 
 
