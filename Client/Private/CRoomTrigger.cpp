@@ -3,6 +3,10 @@
 #include "Client_Defines.h"
 #include "CRoom_Manager.h"
 #include "CBoxColliderComponent.h"
+#include "CGameManager.h"
+#include "CPlayer.h"
+
+
 USING(Client)
 CRoomTrigger::CRoomTrigger(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CTrigger_Box(pDevice,pContext)
@@ -66,11 +70,12 @@ CGameObject* CRoomTrigger::Clone(void* pArg)
 
 void CRoomTrigger::Free()
 {
+    __super::Free();
 }
 
 void CRoomTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {
-
+    
     CGameObject* pOwner = pOther->Get_Owner();
 
     CheckNull(pOwner);
@@ -83,8 +88,34 @@ void CRoomTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
       
 
         else
-            CRoom_Manager::GetInstance()->Switch_Room(m_NextRoomKey);
-        break;
+        {
+             CRoom_Manager::GetInstance()->Request_Room(m_NextRoomKey);
+
+             CGameManager* pGameManager = CGameManager::GetInstance();
+
+             CPlayer* pPlayer = pGameManager->Get_MainPlayer();
+             CheckNull(pPlayer);
+
+             _vector vPos = pPlayer->Get_Transform()->Get_State(STATE::POSITION);
+             _float4 pPlayerPos;
+             XMStoreFloat4(&pPlayerPos, vPos);
+             pPlayerPos.z -= 3.f;
+             CGameManager::GetInstance()->Set_LastPosition(pPlayerPos);
+
+
+             LevelArgs args;
+             args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
+             args.changeType = LEVELCHANGETYPE::PUSH;
+             args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+             args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
+
+             if (FAILED(m_pGameInstance->Level_Changer(
+                 ENUM_TO_UINT(LEVEL_ID::LOADING),
+                 args)))
+                 return;
+             }
+             break;
 
     }
 }

@@ -166,7 +166,7 @@ void CInteraction_Manager::Change_Scene(_uint iLevelID)
 HRESULT CInteraction_Manager::Initialize()
 {
 	m_pGameInstance = CGameInstance::GetInstance();
-
+	Safe_AddRef(m_pGameInstance);
 
 	return S_OK;
 }

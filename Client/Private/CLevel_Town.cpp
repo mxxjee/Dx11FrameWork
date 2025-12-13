@@ -30,6 +30,7 @@
 #include "CRoom_Manager.h"
 #include "CFadeScreen.h"
 
+#include "CRoomTrigger.h"
 
 
 USING(Client)
@@ -43,6 +44,7 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
 {
     __super::Initialize(args);
 
+    m_pGameManager = CGameManager::GetInstance();
     if (FAILED(Ready_Lights()))
         return E_FAIL;
 
@@ -68,6 +70,10 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
 
    /* if (FAILED(Ready_Layer_Particle(L"Particle_Layer")))
         return E_FAIL;*/
+
+    if (FAILED(Ready_Layer_Trigger(L"Trigger_Layer")))
+        return E_FAIL;
+
 
     UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
     pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Objects[0]);
@@ -280,7 +286,7 @@ HRESULT CLevel_Town::Ready_Layer_Player(const _wstring& strLayerTag)
     CGameObject* pObj = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");
     if (pObj)
     {
-        CGameManager::GetInstance()->Set_MainPlayer(pObj);
+        m_pGameManager->Set_MainPlayer(pObj);
         CInteraction_Manager::GetInstance()->Set_MainPlayer(pObj);
 
     }
@@ -401,7 +407,7 @@ HRESULT CLevel_Town::Ready_Layer_Particle(const _wstring& strLayerTag)
     CGameObject::GAMEOBJECT_DESC Desc;
     CTransform::TRANSFORM_DESC TransDesc;
 
-    CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+    CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
 
     XMStoreFloat4(&TransDesc.vLocalPosition, pPlayer->Get_Transform()->Get_State(STATE::POSITION));
     Desc.TransformDesc = &TransDesc;
@@ -420,6 +426,42 @@ HRESULT CLevel_Town::Ready_Layer_Particle(const _wstring& strLayerTag)
         strLayerTag, &Desc)))
         return E_FAIL;
 
+    return S_OK;
+}
+
+HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
+{
+    /// <summary>
+    /// 썡으로배치..
+    wstring TriggerTags[] = { L"mamasha_House1",L"mamasha_House2",L"MeowMeowHouse",L"UlriraHouse" };
+    string NextKeys[] = { "Mamasha_room","Mamasha_room","MeowMeowHouse","UlriraHouse" };
+
+    _float4 TriggerPos[] = {
+        _float4(30.75f,12.86f,51.f,1.f),
+        _float4(33.66f,12.86f,51.f,1.f),
+        _float4(12.86,10.5,27.f,1.f),
+        _float4(14.98f,10.f,16.f,1.f)
+
+    };
+
+    size_t Size = sizeof(TriggerTags) / sizeof(TriggerTags[0]);
+    for (size_t i = 0; i <Size ; ++i)
+    {
+        CRoomTrigger::RoomTriggerDesc RoomTriggerDesc;
+        RoomTriggerDesc.vCenter = _float3(0.f, 0.f, 0.f);
+        RoomTriggerDesc.vExtents = _float3(0.8f,0.5f, 0.8f);
+        RoomTriggerDesc.ObjTag = L"Trigger" + TriggerTags[i];
+        RoomTriggerDesc.m_nextKey = NextKeys[i];
+
+        CTransform::TRANSFORM_DESC TransDesc;
+        TransDesc.vLocalPosition = _float4(TriggerPos[i].x, TriggerPos[i].y, TriggerPos[i].z, 1.f);
+        RoomTriggerDesc.TransformDesc = &TransDesc;
+
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"RoomTrigger"), ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, &RoomTriggerDesc)))
+            return E_FAIL;
+
+
+    }
     return S_OK;
 }
 
@@ -487,7 +529,7 @@ void CLevel_Town::OnResume(_uint iPreLevel)
 
 
     //카메라돌려놓기이벤트 실행
-    CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+    CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
 
     GameEvent Event;
     EventPayload payload;
@@ -517,6 +559,7 @@ void CLevel_Town::OnResume(_uint iPreLevel)
 
     //NavMesh돌려놓기
     m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::TOWN));
+    pPlayer->Get_Transform()->Set_State(STATE::POSITION, m_pGameManager->Get_LastPosition_By_Vector());
     pPlayer->Change_MainNavMesh();
 
     __super::OnResume(iPreLevel);

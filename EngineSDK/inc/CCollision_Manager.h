@@ -3,6 +3,7 @@
 /*콜라이더에 대한 타입에 대한 충돌 비교를 bool로 저장*/
 NS_BEGIN(Engine)
 class CCollider_Base;
+class CGameInstance;
 
 class CCollision_Manager :
     public CBase
@@ -41,7 +42,7 @@ private:
 
     //그룹별 충돌 테이블
     vector<vector<bool>>       m_CollisionTable;
-
+    CGameInstance* m_pGameInstance;
 
 
 };

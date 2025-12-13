@@ -1,6 +1,8 @@
 #include "CCollision_Manager.h"
 #include "CCollider_Base.h"
 #include "CGameObject.h"
+#include "CGameInstance.h"
+
 
 CCollision_Manager::CCollision_Manager()
 {
@@ -9,6 +11,8 @@ CCollision_Manager::CCollision_Manager()
 HRESULT CCollision_Manager::Initialize(_uint MaxGroup)
 {
     m_CollisionGroupMax = MaxGroup;
+
+    m_pGameInstance = CGameInstance::GetInstance();
 
     m_CollisionTable.resize(MaxGroup);
     m_pColliderGroups.resize(MaxGroup);
@@ -60,6 +64,8 @@ void CCollision_Manager::Set_Enable_Collision(_uint iSrcGroup, _uint iDstGroup, 
 
 void CCollision_Manager::Update_CollisionGroup(_float fTimeDelta)
 {
+    CheckTrue(m_pGameInstance->Get_IsLoading());
+
     //프레임시작: 모ㅓㅓ든 collider begincollisionFrame()
     for (_uint i = 0; i < m_CollisionGroupMax; ++i)
     {

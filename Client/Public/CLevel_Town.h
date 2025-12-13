@@ -5,6 +5,7 @@
 
 NS_BEGIN(Client)
 class CFadeScreen;
+class CGameManager;
 
 class CLevel_Town final :
     public CLevel
@@ -35,6 +36,7 @@ public:
     HRESULT                 Ready_Layer_InteractionObject(const _wstring& strLayerTag);
 
     HRESULT                 Ready_Layer_Particle(const _wstring& strLayerTag);
+    HRESULT                 Ready_Layer_Trigger(const _wstring& strLayerTag);
 
 public:
     virtual void        OnEnter() override;           //씬 진입시 매번호출
@@ -47,6 +49,7 @@ public:
 private:
     int iTargetIdx = 0;
     CFadeScreen* pFadeScreen = nullptr;
+    CGameManager* m_pGameManager = nullptr;
 
 };
 NS_END
