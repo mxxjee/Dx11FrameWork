@@ -61,6 +61,10 @@
 #include "CInteraction_Lawn.h"
 #include "CInteraction_Rock.h"
 
+#include "CRoom.h"
+#include "CRoomTrigger.h"
+
+
 
 
 
@@ -130,9 +134,15 @@ HRESULT CLoader::Loading()
         Loading_Town();
         break;
 
+
     case LEVEL_ID::UI:
         Loading_UI();
         break;
+
+    case LEVEL_ID::ROOM:
+        Loading_Room();
+        break;
+
     case Client::LEVEL_ID::END:
         break;
 
@@ -162,11 +172,6 @@ HRESULT CLoader::Loading_Town()
     }
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
 
-    _matrix PreMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
-    PreMatrix = XMMatrixMultiply(PreMatrix, XMMatrixRotationX(XMConvertToRadians(-180.f)));
-
-
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle/", PreMatrix);
 
 
     lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
@@ -222,6 +227,28 @@ HRESULT CLoader::Loading_Logo()
 }
 
 HRESULT CLoader::Loading_UI()
+{
+    lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
+    for (size_t i = 0; i < 88899999; i++)
+    {
+        int a = 10;
+    }
+    lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
+    for (size_t i = 0; i < 88889999; i++)
+    {
+        int a = 10;
+    }
+    lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
+    for (size_t i = 0; i < 88889999; i++)
+    {
+        int a = 10;
+    }
+    lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
+    m_isFinished = true;
+    return S_OK;
+}
+
+HRESULT CLoader::Loading_Room()
 {
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
     for (size_t i = 0; i < 88899999; i++)
@@ -344,7 +371,10 @@ HRESULT CLoader::Register_Models()
 
 
     _matrix MoriblinSwordMatrix= XMMatrixRotationY(XMConvertToRadians(180.f));
-    
+
+    _matrix PreMatrix = XMMatrixScaling(0.01f, 0.01f, 0.01f);
+    PreMatrix = XMMatrixMultiply(PreMatrix, XMMatrixRotationX(XMConvertToRadians(-180.f)));
+
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy/ZolGreenAnim", GreenZolMatrix);
     
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy/MoriblinSword", MoriblinSwordMatrix);
@@ -353,20 +383,13 @@ HRESULT CLoader::Register_Models()
     
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC", NPCmatrix);
 
+
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle/", PreMatrix);
+
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Object/", XMMatrixIdentity());
 
-    
-    // m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle");
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Rooms/", XMMatrixIdentity());
 
-   
-    //if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Fiona_Model"), CModel::Create(m_pDevice, m_pDeviceContext,XMMatrixIdentity(), "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Fiona/Fiona.json"))))
-    //    return E_FAIL;
-
-    //if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Field_03P2_Model"), CModel::Create(m_pDevice, m_pDeviceContext, XMMatrixIdentity(), "C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle/Field_03P2/Field_03P2.json"))))
-    //    return E_FAIL;
-
-    //if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Link2_Model"), CModel::Create(m_pDevice, m_pDeviceContext, preMatrix,"C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Link2/Link2.json"))))
-    //    return E_FAIL;
 
     return S_OK;
 }
@@ -546,6 +569,16 @@ HRESULT CLoader::Register_GameObjects()
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Interaction_Lawn", CInteraction_Lawn::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
+    
+    /////////Rooms
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Room", CRoom::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"RoomTrigger", CRoomTrigger::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+
+
 
     ////////Particles
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Snow", CSnow::Create(m_pDevice, m_pDeviceContext))))
@@ -553,6 +586,9 @@ HRESULT CLoader::Register_GameObjects()
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Explosion", CExplosion::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
+
+
+
     return S_OK;
 }
 

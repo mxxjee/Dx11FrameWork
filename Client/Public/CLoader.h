@@ -33,6 +33,7 @@ private:
     HRESULT        Loading_Town();
     HRESULT        Loading_Logo();
     HRESULT        Loading_UI();//원래 UI는 로딩이없지만, 테스트용
+    HRESULT        Loading_Room();
 
     /// load resource //
     HRESULT         Register_Shaders();

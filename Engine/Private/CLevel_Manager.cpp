@@ -132,7 +132,11 @@ void CLevel_Manager::Push_Level(_uint iSceneID, CLevel* pNewLevel)
 	/*가장 위에거만 update돌아감,render도 X,지우기 X*/
 	if (!m_Stack.empty())
 	{
-		m_Stack.back()->OnPause();
+		_uint iNextLevelID = iSceneID;
+		if (pNewLevel->Get_Flag() == LEVELFLAG::TRANSIENT)
+			iNextLevelID = pNewLevel->Get_NextLevelID();
+
+		m_Stack.back()->OnPause(iNextLevelID);
 		m_Stack.back()->Set_State(LEVELSTATE::HIDDEN);
 	}
 
@@ -146,7 +150,7 @@ void CLevel_Manager::Overlay_Level(_uint iSceneID, CLevel* pNewLevel)
 	/*가장 위에거만 update돌아감,render는 수행m,지우기 X*/
 	if (!m_Stack.empty())
 	{
-		m_Stack.back()->OnPause();
+		m_Stack.back()->OnPause(iSceneID);
 		m_Stack.back()->Set_State(LEVELSTATE::PAUSE);
 	}
 	//m_pCurrentLevel->Clear();  //ADD : Level->Clear()
@@ -189,6 +193,8 @@ void CLevel_Manager::Pop_Level()
 {
 	CheckTrue(m_Stack.empty());
 
+	CLevel* pLevel = m_Stack.back();
+
 	m_Stack.back()->OnExit();
 
 	//캐싱하지않는 맵이라면 삭제떄리자
@@ -200,7 +206,7 @@ void CLevel_Manager::Pop_Level()
 	if (!m_Stack.empty())
 	{
 		m_Stack.back()->Set_State(LEVELSTATE::ACTIVE);
-		m_Stack.back()->OnResume();
+		m_Stack.back()->OnResume(pLevel->Get_LevelID());
 
 	}
 

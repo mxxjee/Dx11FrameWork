@@ -38,7 +38,7 @@
       <Filter>999.ImguiObject\ObjectInspectorWindow</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayer.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CFloor.h">
       <Filter>02.GameObjects\00.WorldObjects\Floor</Filter>
@@ -56,13 +56,13 @@
       <Filter>02.GameObjects\00.WorldObjects\Terrain</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMonster.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayer_Body.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Body</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_Body</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMonster_Body.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_Body</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_Body</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CBackGround.h">
       <Filter>02.GameObjects\99.UI\00.Panel\00.Title\Logo</Filter>
@@ -75,46 +75,46 @@
       <Filter>02.GameObjects\99.UI\01.Interatable</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerIdleState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Idle</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Idle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerRunState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Run</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Run</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerAttackState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Attack</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Attack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\PlayerStates.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerHoldAttackState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Attack\Hold_Attack</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Attack\Hold_Attack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerHoldShield.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Shield</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Shield</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerSlashShieldState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Slash_Shield</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Slash_Shield</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerJumpState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Jump</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Jump</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerLadderState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Ladder</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Ladder</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerPushState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Push</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Push</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CStateDebugWindow.h">
       <Filter>999.ImguiObject\StateDebugWindow</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerStateGetItem.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\GetItem</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\GetItem</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerCarryState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Carry</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Carry</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CNPC.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC</Filter>
@@ -126,10 +126,10 @@
       <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Richard</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerTalkState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Talk</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Talk</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerFallState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Fall</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Fall</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CIInteractable.h">
       <Filter>96.Managers\InteractionManager\IInteractable</Filter>
@@ -141,76 +141,76 @@
       <Filter>99.Defines\Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CM_GreenZol.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\GreenZol</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMonsterState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMonsterIdleState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Idle</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Idle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMonsterIntroState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Intro</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Intro</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMGreenZolIntroState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\Intro</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\GreenZol\State\Intro</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\MonsterStates.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMonsterWalkState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Walk</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Walk</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMGreenZolJumpAttackState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\JumpAttack</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\GreenZol\State\JumpAttack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMGreenZolHideState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\Hide</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\GreenZol\State\Hide</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMonsterDeadState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Dead</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Dead</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CWeapon.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_Weapon\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayer_Sword.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Sword</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_Weapon\Weapon\Sword</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\Client_Defines.h">
       <Filter>99.Defines\Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayer_Shield.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Shield</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_Weapon\Weapon\Shield</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPlayerDamageState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Damage</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Damage</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CM_MoriblinSword.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMonsterDamageState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Damage</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Damage</Filter>
     </ClInclude>
     <ClInclude Include="..\Private\CMMoriblinSwordIdleState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Idle</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\State\Idle</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMMoriblinSwordDetectState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Detect</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\State\Detect</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMonsterRunState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Run</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Run</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMonsterAttackState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Attack</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Attack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMMoriblin_Weapon.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\CMMoriblin_Weapon</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\CMMoriblin_Weapon</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMMoriblinSwordGuardState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Guard</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\State\Guard</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMMoriblinAttackState.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Attack</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\State\Attack</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CMapLoader.h">
       <Filter>96.Managers\MapLoader</Filter>
@@ -239,6 +239,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\CRoom_Manager.h">
       <Filter>96.Managers\RoomManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRoom.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\01.Room</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CTrigger_Box.h">
+      <Filter>02.GameObjects\00.WorldObjects\03.Triggers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CRoomTrigger.h">
+      <Filter>02.GameObjects\00.WorldObjects\03.Triggers\RoomTrigger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -313,18 +322,6 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models">
       <UniqueIdentifier>{e3e289ab-529a-49e5-aab4-ae2d29a6bfdb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player">
-      <UniqueIdentifier>{0bc6481b-f5a7-4dd4-92ed-61f25bc7866a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster">
-      <UniqueIdentifier>{84f24ddd-dcdc-4617-a248-0b502ed78e54}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_Body">
-      <UniqueIdentifier>{48726482-2b17-45b1-a849-c5ee4c22575c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_Body">
-      <UniqueIdentifier>{f6ad8bf3-5193-4418-88f0-eee303566e6e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.Levels\Town">
       <UniqueIdentifier>{5c22a0cf-3e92-4977-9bf2-9333bd90cfec}</UniqueIdentifier>
     </Filter>
@@ -343,44 +340,8 @@
     <Filter Include="02.GameObjects\99.UI\01.Interatable">
       <UniqueIdentifier>{a966a2d5-6135-4bbb-a716-e73a97db61be}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State">
-      <UniqueIdentifier>{6852ff6c-f108-4f99-ab8d-2c98a4245b2a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Idle">
-      <UniqueIdentifier>{729c0d6f-20a4-421a-b309-508e819002bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Run">
-      <UniqueIdentifier>{2a915547-1fe7-4c36-b9fc-a7107450d680}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Attack">
-      <UniqueIdentifier>{b3632364-223d-44e1-b575-815828a2a487}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Attack\Hold_Attack">
-      <UniqueIdentifier>{fede2b32-44c4-4003-9439-e5d914ee74d0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Shield">
-      <UniqueIdentifier>{f1021beb-43a2-44fc-a77c-d22ab05ec93a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Slash_Shield">
-      <UniqueIdentifier>{ec12d736-c24f-495d-8dce-1a3791a5a05b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Jump">
-      <UniqueIdentifier>{ff59c47c-5473-466d-8d63-6ec7d4ef8964}</UniqueIdentifier>
-    </Filter>
     <Filter Include="999.ImguiObject\StateDebugWindow">
       <UniqueIdentifier>{6ab44262-a02c-4247-bb34-497a5487308f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Ladder">
-      <UniqueIdentifier>{3857c3d9-a4f7-4997-b34f-06da772f4d4e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Push">
-      <UniqueIdentifier>{68d866b4-7233-4ab5-b063-54192174190b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\GetItem">
-      <UniqueIdentifier>{0be55c6a-e911-4772-b0e4-266c01537c6a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Talk">
-      <UniqueIdentifier>{2140fabe-20b1-4c44-aea6-d6ec9c7bf548}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\00.NPC">
       <UniqueIdentifier>{0d451426-9d6f-4ec6-a7f8-b85d9b209d49}</UniqueIdentifier>
@@ -394,9 +355,6 @@
     <Filter Include="96.Managers">
       <UniqueIdentifier>{7593bdbe-1406-47e5-82ff-82555a127faf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Fall">
-      <UniqueIdentifier>{d7515672-cc63-43f8-92a0-c624e8900066}</UniqueIdentifier>
-    </Filter>
     <Filter Include="96.Managers\InteractionManager">
       <UniqueIdentifier>{31978036-772b-4334-9de7-5f727757d93e}</UniqueIdentifier>
     </Filter>
@@ -408,84 +366,6 @@
     </Filter>
     <Filter Include="99.Defines\Utils">
       <UniqueIdentifier>{6fe0b4bb-d7e3-4259-8b91-a6d25e146b80}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol">
-      <UniqueIdentifier>{9c7f0ff6-b7b6-4e4e-b97b-ebd6642bb7cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State">
-      <UniqueIdentifier>{1fd50713-f30a-466e-9faf-229a35386f06}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Idle">
-      <UniqueIdentifier>{51eb9977-4c78-4d2c-8480-11a31edf57c7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Intro">
-      <UniqueIdentifier>{defb2b35-493d-44ab-9ab3-74b7d584612a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State">
-      <UniqueIdentifier>{aa3a9a72-b009-49b8-96fb-a1e2cba5dbdd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\Intro">
-      <UniqueIdentifier>{61f0663f-292d-42d7-87f2-769bd1f1caf2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Walk">
-      <UniqueIdentifier>{7394bdf0-3c4a-4b9b-bea1-143d047f7884}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\JumpAttack">
-      <UniqueIdentifier>{707e386a-9dd9-4aeb-beae-eb1bb26e7071}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\Hide">
-      <UniqueIdentifier>{4b462099-1d21-4fd2-aba7-0ce2b90a7ad3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Dead">
-      <UniqueIdentifier>{fcde0cd1-0c87-4cef-a396-73c3e082fb88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon">
-      <UniqueIdentifier>{0bc7a364-6528-442b-b598-e22a45800038}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon">
-      <UniqueIdentifier>{3644965f-ce1a-4422-9271-a4445de18abd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Sword">
-      <UniqueIdentifier>{d1c24f9b-4e65-40d9-a9a6-6da7a414ff01}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Shield">
-      <UniqueIdentifier>{1bdfffe0-dec8-4dc5-9ee1-6ce578d00c13}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Damage">
-      <UniqueIdentifier>{2a81e5ff-bfd7-4e77-bca3-5fcc345383cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword">
-      <UniqueIdentifier>{8aae687a-cf5b-40b9-b602-ca614be21fee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Damage">
-      <UniqueIdentifier>{3f319939-2aaf-482b-b3d7-10b1833ddac6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State">
-      <UniqueIdentifier>{e84dd3f2-918f-4606-89fa-c159418f5dd0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Carry">
-      <UniqueIdentifier>{360d42cd-f7de-477e-bbcb-a56fab47421e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Idle">
-      <UniqueIdentifier>{6301634c-3d2d-405a-9ea6-5e8c28ce2fe7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Detect">
-      <UniqueIdentifier>{3990ad52-ee77-4b3f-b73c-b3022041d30c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Run">
-      <UniqueIdentifier>{a5417400-35c7-4042-bff9-bea1d5613261}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Attack">
-      <UniqueIdentifier>{470ce81a-eb58-44e9-8714-d789db727ca8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\CMMoriblin_Weapon">
-      <UniqueIdentifier>{041cd987-7b4f-44aa-9648-6c9a6ee3fc0d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Guard">
-      <UniqueIdentifier>{f9365590-54f0-40e2-a851-a194747fe713}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Attack">
-      <UniqueIdentifier>{cbfa7bf0-8652-437c-9ab7-f5b8dbdabf6b}</UniqueIdentifier>
     </Filter>
     <Filter Include="96.Managers\MapLoader">
       <UniqueIdentifier>{1b2bbf5f-e0c0-4e28-88ac-099e95827850}</UniqueIdentifier>
@@ -529,6 +409,144 @@
     <Filter Include="96.Managers\RoomManager">
       <UniqueIdentifier>{c180cd7b-79ef-45e0-82c5-a635a93f1ece}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\01.Room">
+      <UniqueIdentifier>{377664f8-0346-47f6-80c4-79889a28c071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors">
+      <UniqueIdentifier>{f3f297d8-6c64-4393-8401-38e79a255192}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player">
+      <UniqueIdentifier>{0bc6481b-f5a7-4dd4-92ed-61f25bc7866a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_Body">
+      <UniqueIdentifier>{48726482-2b17-45b1-a849-c5ee4c22575c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State">
+      <UniqueIdentifier>{6852ff6c-f108-4f99-ab8d-2c98a4245b2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Idle">
+      <UniqueIdentifier>{729c0d6f-20a4-421a-b309-508e819002bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Run">
+      <UniqueIdentifier>{2a915547-1fe7-4c36-b9fc-a7107450d680}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Attack">
+      <UniqueIdentifier>{b3632364-223d-44e1-b575-815828a2a487}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Attack\Hold_Attack">
+      <UniqueIdentifier>{fede2b32-44c4-4003-9439-e5d914ee74d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Shield">
+      <UniqueIdentifier>{f1021beb-43a2-44fc-a77c-d22ab05ec93a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Slash_Shield">
+      <UniqueIdentifier>{ec12d736-c24f-495d-8dce-1a3791a5a05b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Jump">
+      <UniqueIdentifier>{ff59c47c-5473-466d-8d63-6ec7d4ef8964}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Ladder">
+      <UniqueIdentifier>{3857c3d9-a4f7-4997-b34f-06da772f4d4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Push">
+      <UniqueIdentifier>{68d866b4-7233-4ab5-b063-54192174190b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\GetItem">
+      <UniqueIdentifier>{0be55c6a-e911-4772-b0e4-266c01537c6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Talk">
+      <UniqueIdentifier>{2140fabe-20b1-4c44-aea6-d6ec9c7bf548}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Fall">
+      <UniqueIdentifier>{d7515672-cc63-43f8-92a0-c624e8900066}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Damage">
+      <UniqueIdentifier>{2a81e5ff-bfd7-4e77-bca3-5fcc345383cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_Weapon">
+      <UniqueIdentifier>{0bc7a364-6528-442b-b598-e22a45800038}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_Weapon\Weapon">
+      <UniqueIdentifier>{3644965f-ce1a-4422-9271-a4445de18abd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_Weapon\Weapon\Sword">
+      <UniqueIdentifier>{d1c24f9b-4e65-40d9-a9a6-6da7a414ff01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_Weapon\Weapon\Shield">
+      <UniqueIdentifier>{1bdfffe0-dec8-4dc5-9ee1-6ce578d00c13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster">
+      <UniqueIdentifier>{84f24ddd-dcdc-4617-a248-0b502ed78e54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_Body">
+      <UniqueIdentifier>{f6ad8bf3-5193-4418-88f0-eee303566e6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\GreenZol">
+      <UniqueIdentifier>{9c7f0ff6-b7b6-4e4e-b97b-ebd6642bb7cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\GreenZol\State">
+      <UniqueIdentifier>{aa3a9a72-b009-49b8-96fb-a1e2cba5dbdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\GreenZol\State\Intro">
+      <UniqueIdentifier>{61f0663f-292d-42d7-87f2-769bd1f1caf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\GreenZol\State\JumpAttack">
+      <UniqueIdentifier>{707e386a-9dd9-4aeb-beae-eb1bb26e7071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\GreenZol\State\Hide">
+      <UniqueIdentifier>{4b462099-1d21-4fd2-aba7-0ce2b90a7ad3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State">
+      <UniqueIdentifier>{1fd50713-f30a-466e-9faf-229a35386f06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Idle">
+      <UniqueIdentifier>{51eb9977-4c78-4d2c-8480-11a31edf57c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Intro">
+      <UniqueIdentifier>{defb2b35-493d-44ab-9ab3-74b7d584612a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Walk">
+      <UniqueIdentifier>{7394bdf0-3c4a-4b9b-bea1-143d047f7884}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Dead">
+      <UniqueIdentifier>{fcde0cd1-0c87-4cef-a396-73c3e082fb88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Damage">
+      <UniqueIdentifier>{3f319939-2aaf-482b-b3d7-10b1833ddac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Run">
+      <UniqueIdentifier>{a5417400-35c7-4042-bff9-bea1d5613261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Attack">
+      <UniqueIdentifier>{470ce81a-eb58-44e9-8714-d789db727ca8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword">
+      <UniqueIdentifier>{8aae687a-cf5b-40b9-b602-ca614be21fee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\State">
+      <UniqueIdentifier>{e84dd3f2-918f-4606-89fa-c159418f5dd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\State\Idle">
+      <UniqueIdentifier>{6301634c-3d2d-405a-9ea6-5e8c28ce2fe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\State\Detect">
+      <UniqueIdentifier>{3990ad52-ee77-4b3f-b73c-b3022041d30c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\State\Guard">
+      <UniqueIdentifier>{f9365590-54f0-40e2-a851-a194747fe713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\State\Attack">
+      <UniqueIdentifier>{cbfa7bf0-8652-437c-9ab7-f5b8dbdabf6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\CMMoriblin_Weapon">
+      <UniqueIdentifier>{041cd987-7b4f-44aa-9648-6c9a6ee3fc0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Carry">
+      <UniqueIdentifier>{360d42cd-f7de-477e-bbcb-a56fab47421e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\03.Triggers\RoomTrigger">
+      <UniqueIdentifier>{22e26b52-6aed-4bfe-a07f-f3fbe29afcf8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -556,7 +574,7 @@
       <Filter>999.ImguiObject\ObjectInspectorWindow</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayer.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CFloor.cpp">
       <Filter>02.GameObjects\00.WorldObjects\Floor</Filter>
@@ -577,13 +595,13 @@
       <Filter>02.GameObjects\00.WorldObjects\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMonster.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayer_Body.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Body</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_Body</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMonster_Body.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_Body</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_Body</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CBackGround.cpp">
       <Filter>02.GameObjects\99.UI\00.Panel\00.Title\Logo</Filter>
@@ -596,43 +614,43 @@
       <Filter>02.GameObjects\99.UI\01.Interatable</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerIdleState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Idle</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Idle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerRunState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Run</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Run</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerAttackState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Attack</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerHoldAttackState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Attack\Hold_Attack</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Attack\Hold_Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerHoldShield.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Shield</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Shield</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerSlashShieldState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Slash_Shield</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Slash_Shield</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerJumpState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Jump</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Jump</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerLadderState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Ladder</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Ladder</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerPushState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Push</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Push</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CStateDebugWindow.cpp">
       <Filter>999.ImguiObject\StateDebugWindow</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerStateGetItem.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\GetItem</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\GetItem</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerCarryState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Carry</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Carry</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CNPC.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC</Filter>
@@ -644,10 +662,10 @@
       <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Richard</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerTalkState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Talk</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Talk</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerFallState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Fall</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Fall</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CIInteractable.cpp">
       <Filter>96.Managers\InteractionManager\IInteractable</Filter>
@@ -656,70 +674,70 @@
       <Filter>96.Managers\InteractionManager</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CM_GreenZol.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\GreenZol</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMonsterState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMonsterIdleState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Idle</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Idle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMonsterIntroState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Intro</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Intro</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMGreenZolIntroState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\Intro</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\GreenZol\State\Intro</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMonsterWalkState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Walk</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Walk</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMGreenZolJumpAttackState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\JumpAttack</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\GreenZol\State\JumpAttack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMGreenZolHideState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\GreenZol\State\Hide</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\GreenZol\State\Hide</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMonsterDeadState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Dead</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Dead</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CWeapon.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_Weapon\Weapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayer_Sword.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Sword</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_Weapon\Weapon\Sword</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayer_Shield.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_Weapon\Weapon\Shield</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_Weapon\Weapon\Shield</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CPlayerDamageState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Player\Player_State\Damage</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Damage</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMonsterDamageState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Damage</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Damage</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CM_MoriblinSword.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMMoriblinSwordIdleState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Idle</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\State\Idle</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMMoriblinSwordDetectState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Detect</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\State\Detect</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMonsterRunState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Run</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Run</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMonsterAttackState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\Monster_State\Attack</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Monster_State\Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMMoriblin_Weapon.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\CMMoriblin_Weapon</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\CMMoriblin_Weapon</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMMoriblinSwordGuardState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Guard</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\State\Guard</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMMoriblinAttackState.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\Monster\MoriblinSword\State\Attack</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\MoriblinSword\State\Attack</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMapLoader.cpp">
       <Filter>96.Managers\MapLoader</Filter>
@@ -748,6 +766,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\CRoom_Manager.cpp">
       <Filter>96.Managers\RoomManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRoom.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\01.Room</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTrigger_Box.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\03.Triggers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CRoomTrigger.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\03.Triggers\RoomTrigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

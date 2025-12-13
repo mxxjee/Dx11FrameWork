@@ -588,12 +588,12 @@ void CLevel_Logo::OnEnter()
 
 }
 
-void CLevel_Logo::OnResume()
+void CLevel_Logo::OnResume(_uint iPreLevel)
 {
 
 }
 
-void CLevel_Logo::OnPause()
+void CLevel_Logo::OnPause(_uint iNextLevel)
 {
     /*2회 호출막기..*/
     if (Get_State() == LEVELSTATE::HIDDEN || Get_State() == LEVELSTATE::PAUSE)

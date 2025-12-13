@@ -11,6 +11,7 @@
 #include "CLevel_Town.h"
 #include "CLevel_Loading.h"
 #include "CLevel_UI.h"
+#include "CLevel_NPCRoom.h"
 
 
 #include "CImGui_Manager.h"
@@ -28,6 +29,7 @@
 
 #include "CTransform.h"
 #include "CCameraComponent.h"
+#include "CRoom_Manager.h"
 
 
 USING(Client)
@@ -280,7 +282,10 @@ void CMainApp::Register_Levels()
 			return CLevel_Loading::Create(m_pDevice, m_pContext, args);
 		});
 
-
+	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::ROOM), [this](LevelArgs& args)->CLevel*
+		{
+			return CLevel_NPCRoom::Create(m_pDevice, m_pContext, args);
+		});
 
 }
 
@@ -331,7 +336,7 @@ void CMainApp::Free()
 	Safe_Release(pImGui_Manager);
 #endif
 
-	
+	CRoom_Manager::GetInstance()->DestroyInstance();
 	CInput_Manager::GetInstance()->DestroyInstance();
 	pGameInstance->Release_Engine();
 

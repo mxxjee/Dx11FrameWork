@@ -74,8 +74,7 @@ HRESULT CLight_Manager::Bind_Lights(CShader* pShader)
 
     }
 
-    if(m_PointLightNum >0)
-        Bind_Point_Light(pShader);
+     Bind_Point_Light(pShader);
 
     return S_OK;
 }

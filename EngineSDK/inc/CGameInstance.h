@@ -240,6 +240,7 @@ public:
 	CTerrain_Base*				Check_Picking();
 	Triangle*					PickTerrain(const _wstring& Key);
 	void						Set_EnableUpdate(bool b);
+	void						Set_EnalbeUpdateRender(bool b);
 
 	HRESULT						Save_All_Terrains(const string& path, int iNum=-1);
 	HRESULT             Load_Terrains_MapTool(const string& LoadPath);

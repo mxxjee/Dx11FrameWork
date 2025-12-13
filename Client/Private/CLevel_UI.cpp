@@ -68,11 +68,11 @@ void CLevel_UI::OnEnter()
 	}
 }
 
-void CLevel_UI::OnResume()
+void CLevel_UI::OnResume(_uint iPreLevel)
 {
 }
 
-void CLevel_UI::OnPause()
+void CLevel_UI::OnPause(_uint iNextLevel)
 {
 }
 

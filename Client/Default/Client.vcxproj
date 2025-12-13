@@ -215,10 +215,13 @@
     <ClInclude Include="..\Public\CPlayer_Body.h" />
     <ClInclude Include="..\Public\CPlayer_Shield.h" />
     <ClInclude Include="..\Public\CPlayer_Sword.h" />
+    <ClInclude Include="..\Public\CRoom.h" />
+    <ClInclude Include="..\Public\CRoomTrigger.h" />
     <ClInclude Include="..\Public\CRoom_Manager.h" />
     <ClInclude Include="..\Public\CSnow.h" />
     <ClInclude Include="..\Public\CStateDebugWindow.h" />
     <ClInclude Include="..\Public\CTerrain.h" />
+    <ClInclude Include="..\Public\CTrigger_Box.h" />
     <ClInclude Include="..\Public\CUICreator.h" />
     <ClInclude Include="..\Public\CUI_Interactable.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -300,10 +303,13 @@
     <ClCompile Include="..\Private\CPlayer_Body.cpp" />
     <ClCompile Include="..\Private\CPlayer_Shield.cpp" />
     <ClCompile Include="..\Private\CPlayer_Sword.cpp" />
+    <ClCompile Include="..\Private\CRoom.cpp" />
+    <ClCompile Include="..\Private\CRoomTrigger.cpp" />
     <ClCompile Include="..\Private\CRoom_Manager.cpp" />
     <ClCompile Include="..\Private\CSnow.cpp" />
     <ClCompile Include="..\Private\CStateDebugWindow.cpp" />
     <ClCompile Include="..\Private\CTerrain.cpp" />
+    <ClCompile Include="..\Private\CTrigger_Box.cpp" />
     <ClCompile Include="..\Private\CUI_Interactable.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

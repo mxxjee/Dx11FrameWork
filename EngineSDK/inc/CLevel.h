@@ -26,8 +26,8 @@ public:
    
 public:
     virtual void        OnEnter() {};           //씬 처음 진입시 호출
-    virtual void        OnResume() {};              //pause되었다가 active되었을때 호출
-    virtual void        OnPause() {};               //pause되었을때 호출
+    virtual void        OnResume(_uint iPreLevel) {};              //pause되었다가 active되었을때 호출
+    virtual void        OnPause(_uint iNextLevel) {};               //pause되었을때 호출, 다음 씬의 아이디를 받을수있음
     virtual void        OnExit() {};        //자원 정리 함수
 
 public:
@@ -42,6 +42,7 @@ public:
     const   LEVELFLAG&      Get_Flag() const { return m_eLevelArgs.m_eFlag; }
 
     _uint                   Get_LevelID() const { return m_eLevelArgs.m_iLevelID; }
+    _uint                   Get_NextLevelID() const { return m_eLevelArgs.iNextLevelID; }
 protected:
     class CGameInstance*            m_pGameInstance = { nullptr };
     ComPtr<ID3D11Device>            m_pDevice;

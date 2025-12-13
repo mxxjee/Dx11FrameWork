@@ -124,7 +124,7 @@ void CTerrain_Manager::Update_Late(_float fTimeDelta)
 void CTerrain_Manager::Update_Render(_float fTimeDelta)
 {
 
-	CheckFalse(m_bUpdate);
+	CheckFalse(m_bUpdateRender);
 	CCamera_Base* pMaincamera = m_pGameInstance->Get_MainCamera();
 	CCamera_Base* pMiniMapCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
 

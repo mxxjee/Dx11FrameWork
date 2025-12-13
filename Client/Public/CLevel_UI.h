@@ -23,8 +23,8 @@ public:
 
 public:
     virtual void        OnEnter() override;           //씬 진입시 매번호출
-    virtual void        OnResume() override;              //pause되었다가 active되었을때 호출
-    virtual void        OnPause() override;               //pause되었을때 호출
+    virtual void        OnResume(_uint iPreLevel) override;              //pause되었다가 active되었을때 호출
+    virtual void        OnPause(_uint iNextLevel) override;               //pause되었을때 호출
     virtual void        OnExit() override;
 
 public:

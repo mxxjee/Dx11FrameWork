@@ -10,6 +10,8 @@
 
 #include "CShader.h"
 #include "CConstantBuffer.h"
+#include "CMainCamera.h"
+
 
 
 
@@ -33,6 +35,9 @@ HRESULT CCamera_Manager::Initialize()
 		{
 			CGameObject* pNpc = static_cast<CGameObject*>(evt.Payload.Ptrs.at("NPC"));
 			CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(Get_MainCamera());
+			
+			CheckNull(pNpc);
+			CheckNull(pCameraBase);
 
 			pCameraBase->Set_Target(pNpc);
 			pCameraBase->Set_Offset(_float3(
@@ -47,6 +52,9 @@ HRESULT CCamera_Manager::Initialize()
 			CGameObject* pPlayer = static_cast<CGameObject*>(evt.Payload.Ptrs.at("Player"));
 			CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(Get_MainCamera());
 			
+			CheckNull(pCameraBase);
+			CheckNull(pPlayer);
+
 			pCameraBase->Set_Target(pPlayer);
 			pCameraBase->Set_Offset(pCameraBase->Get_InitOffset());
 
@@ -65,10 +73,36 @@ HRESULT CCamera_Manager::Initialize()
 			CGameObject* pPlayer = static_cast<CGameObject*>(evt.Payload.Ptrs.at("Player"));
 			CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(Get_MainCamera());
 
-			pCameraBase->Set_Target(pPlayer);
+			CheckNull(pCameraBase);
+			CheckNull(pPlayer);
+
+			CMainCamera* pMainCamera = dynamic_cast<CMainCamera*>(pCameraBase);
+			if (pMainCamera)
+				pMainCamera->Set_Target(pPlayer, true);
+
+			else
+				pCameraBase->Set_Target(pPlayer);
+
+
 			pCameraBase->Set_Offset(pCameraBase->Get_InitOffset());
 
 		});
+
+	m_pGameInstance->RegisterListners("Enter_NPCRoom", [this](const GameEvent& evt)
+		{
+			CGameObject* pPlayer = static_cast<CGameObject*>(evt.Payload.Ptrs.at("Player"));
+			CMainCamera* pCameraBase = dynamic_cast<CMainCamera*>(Get_MainCamera());
+			
+			CheckNull(pCameraBase);
+			CheckNull(pPlayer);
+			
+
+			pCameraBase->Set_Offset(_float3(0.f, 7.f, -3.f));
+			pCameraBase->Set_Target(pPlayer,true);
+			
+
+		});
+
 	return S_OK;
 }
 

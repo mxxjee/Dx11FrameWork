@@ -70,6 +70,10 @@ void CLevelDebugWindow::Update()
                 case LEVEL_ID::UI:
                     LevelName = "UI";
                     break;
+
+                case LEVEL_ID::ROOM:
+                    LevelName = "Room";
+                    break;
                 }
 
                 if (ImGui::CollapsingHeader(LevelName.c_str()))

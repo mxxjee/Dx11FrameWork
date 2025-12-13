@@ -21,6 +21,7 @@ struct ENGINE_DLL NPCInfo
 struct ENGINE_DLL PositionInfo
 {
 	string TargetName = "";
+
 	_float3 vPos;
 
 	json ToJson() const

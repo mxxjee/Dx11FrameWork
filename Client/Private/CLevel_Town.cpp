@@ -25,6 +25,8 @@
 #include "CUICreator.h"
 #include "CExplosion.h"
 
+#include "CRoom_Manager.h"
+
 
 
 USING(Client)
@@ -64,6 +66,7 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
    /* if (FAILED(Ready_Layer_Particle(L"Particle_Layer")))
         return E_FAIL;*/
 
+ 
     return S_OK;
 }
 
@@ -83,6 +86,25 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
             ENUM_TO_UINT(LEVEL_ID::UI),
             args)))
             return;
+    }
+
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
+    {
+        CRoom_Manager::GetInstance()->Request_Room("Mamasha_room");
+
+        LevelArgs args;
+        args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
+        args.changeType = LEVELCHANGETYPE::PUSH;
+        args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
+
+        if (FAILED(m_pGameInstance->Level_Changer(
+            ENUM_TO_UINT(LEVEL_ID::LOADING),
+            args)))
+            return;
+
+
     }
 }
 
@@ -476,7 +498,7 @@ void CLevel_Town::OnEnter()
     }
 }
 
-void CLevel_Town::OnResume()
+void CLevel_Town::OnResume(_uint iPreLevel)
 {
   
     //씬이 다시시작행슬때 메인 상호작용오브ㅈ게트들 설정
@@ -496,14 +518,61 @@ void CLevel_Town::OnResume()
         if (pInteractable)
             CInteraction_Manager::GetInstance()->RegisterInteractable(pInteractable);
     }
- 
-}
+    
 
-void CLevel_Town::OnPause()
+    //카메라돌려놓기이벤트 실행
+    CPlayer* pPlayer = CInteraction_Manager::GetInstance()->Get_MainPlayer();
+
+    GameEvent Event;
+    EventPayload payload;
+    Event.Payload = payload;
+
+    Event.Payload.Ptrs["Player"] = pPlayer;
+    Event.Name = "Enter_NPCRoom";
+
+    m_pGameInstance->Emit(Event);
+    LEVEL_ID PrevID = (LEVEL_ID)iPreLevel;
+    switch (PrevID)
+    {
+
+    case Client::LEVEL_ID::ROOM:
+        m_pGameInstance->Set_EnalbeUpdateRender(true);
+        m_pGameInstance->Set_EnableUpdate(true);
+       break;
+    case Client::LEVEL_ID::UI:
+        break;
+
+    default:
+        break;
+    }
+
+
+    int A = 0;
+}
+ 
+
+void CLevel_Town::OnPause(_uint iNextLevel)
 {
     /*2회 호출막기..*/
     if (Get_State() == LEVELSTATE::HIDDEN || Get_State() == LEVELSTATE::PAUSE)
         return;
+    LEVEL_ID NextlevelID = (LEVEL_ID)iNextLevel;
+    
+    switch (NextlevelID)
+    {
+ 
+    case Client::LEVEL_ID::ROOM:
+        m_pGameInstance->Set_EnalbeUpdateRender(false);
+        m_pGameInstance->Set_EnableUpdate(false);
+        break;
+    case Client::LEVEL_ID::UI:
+        break;
+ 
+    default:
+        break;
+    }
+
+    
     int A=0;
 }
 

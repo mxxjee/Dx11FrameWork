@@ -740,6 +740,11 @@ void CGameInstance::Set_EnableUpdate(bool b)
 	return m_pTerrainManager->Set_EnableUpdate(b);
 }
 
+void CGameInstance::Set_EnalbeUpdateRender(bool b)
+{
+	return m_pTerrainManager->Set_EnalbeUpdateRender(b);
+}
+
 _float3 CGameInstance::Get_PickingWorldPos()
 {
 	return m_pTerrainManager->Get_PickingWorldPos();

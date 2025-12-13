@@ -17,7 +17,7 @@ namespace Client
 	static const unsigned int g_iWinSizeY = 720;
                     
 
-	enum class LEVEL_ID {STATIC,LOGO,LOADING,TOWN,UI,MAPTOOL,END};
+	enum class LEVEL_ID {STATIC,LOGO,LOADING,TOWN,ROOM,UI,MAPTOOL,END};
 	enum class COLLISION_GROUP{PLAYER,PLAYER_WEAPON,MONSTER,MONSTER_WEAPON,INTERACTION,TRIGGER,END};
 	enum class RENDERGROUP {PRIORITY,NONALPHA,ALPHA, PRIORITY_MINIMAP,WORLD_UI_MINIMAP,UI,END};
 	//enum class LEV
@@ -163,6 +163,42 @@ enum Interact_Behavior_Type
 	PUSHABLE,
 	CARRYABLE,
 	Interact_Behavior_Type_END
+};
+
+
+//////////////////RoomPackage///////
+namespace Engine
+{
+	class CGameObject;
+}
+struct RoomPackage
+{
+	string			m_RoomName = "";
+	list< CGameObject*> EnvObjs;		//맵 오브젝트들
+	list<CGameObject*>	 NPCs;
+	list<CGameObject*>	Triggers;
+
+
+	RoomPackage() {};
+
+	~RoomPackage()
+	{
+		for (auto& pObj : EnvObjs)
+			Safe_Release(pObj);
+
+		for (auto& pObj : NPCs)
+			Safe_Release(pObj);
+
+		for (auto& pObj : Triggers)
+			Safe_Release(pObj);
+
+		EnvObjs.clear();
+		NPCs.clear();
+		Triggers.clear();
+
+
+
+	}
 };
 using namespace Client;
 using namespace std;
