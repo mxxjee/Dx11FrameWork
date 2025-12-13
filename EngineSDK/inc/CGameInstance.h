@@ -51,6 +51,8 @@ public:
 	class CLevel* Get_CurrentLevel();
 	const vector<CLevel*>* Get_LevelStack();
 	_uint           Get_CurrentLevelID();
+	bool			Get_IsLoading();
+	void			Set_IsLoading(bool b);
 #pragma endregion
 
 #pragma region LevelFactory

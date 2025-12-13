@@ -92,7 +92,7 @@ HRESULT CLevel_Loading::Ready_UI_Layer()
 
 void CLevel_Loading::OnEnter()
 {
-    int A = 0;
+    m_pGameInstance->Set_IsLoading(true);
 }
 
 void CLevel_Loading::OnResume(_uint iPreLevel)
@@ -108,8 +108,7 @@ void CLevel_Loading::OnPause(_uint iNextLevel)
 
 void CLevel_Loading::OnExit()
 {
-    int A = 0;
-
+  
 }
 
 

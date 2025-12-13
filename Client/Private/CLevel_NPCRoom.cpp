@@ -7,6 +7,7 @@
 #include "CPlayer.h"
 #include "CMainCamera.h"
 #include "CFadeScreen.h"
+#include "CGameManager.h"
 
 
 USING(Client)
@@ -80,10 +81,15 @@ void CLevel_NPCRoom::OnEnter()
     CRoom_Manager::GetInstance()->Switch_Room(CRoom_Manager::GetInstance()->Get_RequestRoom());
 
     _float4 vSpawnPos = CRoom_Manager::GetInstance()->Get_SpawnPosition();
-    CPlayer* pPlayer = CInteraction_Manager::GetInstance()->Get_MainPlayer();
-    CheckNull(pPlayer);
+    m_pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+    CheckNull(m_pPlayer);
 
-    pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMLoadFloat4(&vSpawnPos));
+
+    m_pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMLoadFloat4(&vSpawnPos));
+    m_pPlayer->Get_Transform()->Rotation(_float3(0.f, 0.f, 0.f));
+
+    m_pPlayer->Change_MainNavMesh();
+ 
 
  
     ////GameEvent (카메라 조절)
@@ -91,7 +97,7 @@ void CLevel_NPCRoom::OnEnter()
     EventPayload payload;
     Event.Payload = payload;
 
-    Event.Payload.Ptrs["Player"] = pPlayer;
+    Event.Payload.Ptrs["Player"] = m_pPlayer;
     Event.Payload.Floats["OffSet_X"] = 0.f;
     Event.Payload.Floats["OffSet_Y"] = 9.f;
     Event.Payload.Floats["OffSet_Z"] = -4.f;
@@ -102,25 +108,26 @@ void CLevel_NPCRoom::OnEnter()
     CheckNull(pFadeScreen);
     pFadeScreen->PlayFadeOut();
 
-    pPlayer->Change_MainNavMesh();
+  
 
 
     //씬이 다시시작행슬때 메인 상호작용오브ㅈ게트들 설정
     //////현재씬의 itneraction 등록
     CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::ROOM));
 
-
+    __super::OnEnter();
 }
 
 void CLevel_NPCRoom::OnResume(_uint iPreLevel)
 {
+    
     CRoom_Manager::GetInstance()->Switch_Room(CRoom_Manager::GetInstance()->Get_RequestRoom());
 
-    _float4 vSpawnPos = CRoom_Manager::GetInstance()->Get_SpawnPosition();
-    CPlayer* pPlayer = CInteraction_Manager::GetInstance()->Get_MainPlayer();
-    CheckNull(pPlayer);
+    CheckNull(m_pPlayer);
+    m_pPlayer->Change_MainNavMesh();
 
-    pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMLoadFloat4(&vSpawnPos));
+    _float4 vSpawnPos = CRoom_Manager::GetInstance()->Get_SpawnPosition();
+    m_pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMLoadFloat4(&vSpawnPos));
 
 
     ////GameEvent (카메라 조절)
@@ -128,7 +135,7 @@ void CLevel_NPCRoom::OnResume(_uint iPreLevel)
     EventPayload payload;
     Event.Payload = payload;
 
-    Event.Payload.Ptrs["Player"] = pPlayer;
+    Event.Payload.Ptrs["Player"] = m_pPlayer;
     Event.Payload.Floats["OffSet_X"] = 0.f;
     Event.Payload.Floats["OffSet_Y"] = 9.f;
     Event.Payload.Floats["OffSet_Z"] = -4.f;
@@ -139,13 +146,14 @@ void CLevel_NPCRoom::OnResume(_uint iPreLevel)
     CheckNull(pFadeScreen);
     pFadeScreen->PlayFadeOut();
 
-    pPlayer->Change_MainNavMesh();
+  
 
 
     //씬이 다시시작행슬때 메인 상호작용오브ㅈ게트들 설정
     //////현재씬의 itneraction 등록
     CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::ROOM));
 
+    __super::OnResume(iPreLevel);
 }
 
 void CLevel_NPCRoom::OnPause(_uint iNextLevel)

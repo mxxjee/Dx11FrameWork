@@ -55,6 +55,10 @@ void CTrigger_Box::Update_Late(_float fTimeDelta)
 void CTrigger_Box::Update_Render(_float fTimeDelta)
 {
 	__super::Update_Render(fTimeDelta);
+#ifdef _DEBUG
+	m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::NONALPHA),this);
+#endif // _DEBUG
+
 }
 
 HRESULT CTrigger_Box::Render()
@@ -86,7 +90,9 @@ HRESULT CTrigger_Box::Ready_Components(void* pArg)
 		&ColDesc)
 		);
 	
+	CheckNullResult(pBoxCollider, E_FAIL);
 
+	pBoxCollider->Set_Owner(this);
 
 	return S_OK;
 }

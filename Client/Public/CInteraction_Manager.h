@@ -55,7 +55,6 @@ private:
 
 public:
     void        Set_MainPlayer(CGameObject* pObj);
-    CPlayer*    Get_MainPlayer() { return m_pMainPlayer; }
 private:
     CPlayer*            m_pMainPlayer = nullptr;
     CGameInstance*      m_pGameInstance = nullptr;

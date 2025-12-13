@@ -166,7 +166,7 @@ void CInteraction_Manager::Change_Scene(_uint iLevelID)
 HRESULT CInteraction_Manager::Initialize()
 {
 	m_pGameInstance = CGameInstance::GetInstance();
-	Safe_AddRef(m_pGameInstance);
+
 
 	return S_OK;
 }
@@ -193,7 +193,7 @@ CIInteractable* CInteraction_Manager::Find_Object(const CIInteractable* pObj)
 void CInteraction_Manager::Set_MainPlayer(CGameObject* pObj)
 {
 	m_pMainPlayer=dynamic_cast<CPlayer*>(CGameInstance::GetInstance()->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player"));
-
+	Safe_AddRef(m_pMainPlayer);
 
 }
 
@@ -203,6 +203,8 @@ void CInteraction_Manager::Free()
 
 	m_pCurrentTarget = nullptr;
 	m_InteractableObjects.clear();
+
+	Safe_Release(m_pMainPlayer);
 	Safe_Release(m_pGameInstance);
 
 	__super::Free();

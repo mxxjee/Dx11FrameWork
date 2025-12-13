@@ -216,6 +216,8 @@ void CPlayer::Update_State(float fTimeDelta)
 
 void CPlayer::Update_Input(_float fTimeDelta)
 {
+    CheckTrue(m_pGameInstance->Get_IsLoading());
+
     if (m_ActionControl.m_bCanAttack)
         m_Input.m_bisAttack = m_pInputManager->IsKeyHeld(KeyCode::B);
     else
@@ -653,7 +655,11 @@ void CPlayer::Respawn()
 void CPlayer::Change_MainNavMesh()
 {
     if (m_pNavigationCom)
+    {
         m_pNavigationCom->Set_MainCell();
+        m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
+
+    }
 }
 
 CPlayer* CPlayer::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)

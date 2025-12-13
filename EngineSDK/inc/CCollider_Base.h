@@ -69,8 +69,11 @@ public:
     void        Set_Active(bool b) { m_bActive = b; }
     bool        Is_Active() { return m_bActive; }
     void        Set_Trigger(bool b) { m_bTrigger = b; }
+    void        Set_ColGroup(_uint i) { m_eColGroup = i; }
+
 public:
     COLLIDER_TYPE   Get_Type() { return m_eType; }
+
     class CBounding*      Get_Bounding() { return m_pBounding; }
     bool                Get_IsTrriger() { return m_bTrigger; }
 public:

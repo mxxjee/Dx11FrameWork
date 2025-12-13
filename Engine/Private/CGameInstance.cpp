@@ -299,6 +299,15 @@ _uint CGameInstance::Get_CurrentLevelID()
 {
 	return m_pLevelManager->Get_CurrentLevelID();
 }
+bool CGameInstance::Get_IsLoading()
+{
+	return m_pLevelManager->Get_IsLoading();
+
+}
+void CGameInstance::Set_IsLoading(bool b)
+{
+	return m_pLevelManager->Set_IsLoading(b);
+}
 #pragma endregion
 
 #pragma region LevelFactory

@@ -20,6 +20,8 @@
 #include "CIInteractable.h"
 
 #include "CInteraction_Manager.h"
+#include "CGameManager.h"
+
 #include "CMapLoader.h"
 #include "CLayer.h"
 #include "CUICreator.h"
@@ -94,7 +96,7 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
 
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
     {
-        CRoom_Manager::GetInstance()->Request_Room("Mamasha_room");
+       /* CRoom_Manager::GetInstance()->Request_Room("Mamasha_room");
 
         LevelArgs args;
         args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
@@ -106,7 +108,7 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
         if (FAILED(m_pGameInstance->Level_Changer(
             ENUM_TO_UINT(LEVEL_ID::LOADING),
             args)))
-            return;
+            return;*/
 
 
     }
@@ -276,9 +278,12 @@ HRESULT CLevel_Town::Ready_Layer_Player(const _wstring& strLayerTag)
         return E_FAIL;
 
     CGameObject* pObj = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");
-    if(pObj)
+    if (pObj)
+    {
+        CGameManager::GetInstance()->Set_MainPlayer(pObj);
         CInteraction_Manager::GetInstance()->Set_MainPlayer(pObj);
 
+    }
     return S_OK;
 
 }
@@ -396,7 +401,7 @@ HRESULT CLevel_Town::Ready_Layer_Particle(const _wstring& strLayerTag)
     CGameObject::GAMEOBJECT_DESC Desc;
     CTransform::TRANSFORM_DESC TransDesc;
 
-    CPlayer* pPlayer = CInteraction_Manager::GetInstance()->Get_MainPlayer();
+    CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
 
     XMStoreFloat4(&TransDesc.vLocalPosition, pPlayer->Get_Transform()->Get_State(STATE::POSITION));
     Desc.TransformDesc = &TransDesc;
@@ -421,6 +426,7 @@ HRESULT CLevel_Town::Ready_Layer_Particle(const _wstring& strLayerTag)
 
 void CLevel_Town::OnEnter()
 {
+    __super::OnEnter();
     m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
     CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");
 
@@ -472,6 +478,7 @@ void CLevel_Town::OnEnter()
 void CLevel_Town::OnResume(_uint iPreLevel)
 {
   
+ 
     //씬이 다시시작행슬때 메인 상호작용오브ㅈ게트들 설정
      //////현재씬의 itneraction 등록
     CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::TOWN));
@@ -480,7 +487,7 @@ void CLevel_Town::OnResume(_uint iPreLevel)
 
 
     //카메라돌려놓기이벤트 실행
-    CPlayer* pPlayer = CInteraction_Manager::GetInstance()->Get_MainPlayer();
+    CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
 
     GameEvent Event;
     EventPayload payload;
@@ -511,6 +518,9 @@ void CLevel_Town::OnResume(_uint iPreLevel)
     //NavMesh돌려놓기
     m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::TOWN));
     pPlayer->Change_MainNavMesh();
+
+    __super::OnResume(iPreLevel);
+
 }
  
 

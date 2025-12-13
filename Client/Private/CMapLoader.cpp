@@ -17,7 +17,7 @@ USING(Client)
 HRESULT CMapLoader::Load_Town()
 {
     Load_Terrain("../../Resource/Data/Map/Final_Town.json");
-    Load_NavMesh(LEVEL_ID::TOWN, "../../Resource/Data/Map/Terrain14_Nav.dat");
+    Load_NavMesh(LEVEL_ID::TOWN, "../../Resource/Data/Map/Terrain8_Nav.dat");
     Load_Interaction("Level_Town", "../../Resource/Data/Map/Interaction3.json");
     return S_OK;
 }

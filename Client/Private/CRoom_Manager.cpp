@@ -111,6 +111,7 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
                                 jRoomData["Position"][2].get<float>(),
                                 1.f);
 
+ 
     wstring WRoomName = StringToWString(RoomName);
     RoomDesc.ObjTag = WRoomName + L"_Room";
     
@@ -118,6 +119,7 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
     BodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
     BodyDesc.modelName = WRoomName;
     RoomDesc.BodyDesc = &BodyDesc;
+
 
     CTransform::TRANSFORM_DESC TransDesc;
     TransDesc.vLocalPosition = vRoomPos;
@@ -155,6 +157,7 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
         RoomTriggerDesc.vCenter = pTriggerInfo.vCenter;
         RoomTriggerDesc.vExtents = pTriggerInfo.vExtents;
         RoomTriggerDesc.ObjTag = L"Trigger" + to_wstring(TriggeriIdx);
+        RoomTriggerDesc.m_nextKey = pTriggerInfo.m_NextRoomID;
 
         CTransform::TRANSFORM_DESC TransDesc;
         TransDesc.vLocalPosition = _float4(pTriggerInfo.vPos.x, pTriggerInfo.vPos.y, pTriggerInfo.vPos.z, 1.f);

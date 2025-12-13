@@ -2,6 +2,7 @@
 #include "CCollider_Base.h"
 #include "Client_Defines.h"
 #include "CRoom_Manager.h"
+#include "CBoxColliderComponent.h"
 USING(Client)
 CRoomTrigger::CRoomTrigger(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CTrigger_Box(pDevice,pContext)
@@ -29,7 +30,42 @@ HRESULT CRoomTrigger::Initialize_Copytype(void* pArg)
     RoomTriggerDesc* pDesc = static_cast<RoomTriggerDesc*>(pArg);
     m_NextRoomKey = pDesc->m_nextKey;
 
+
+    CheckNullResult (pBoxCollider,S_OK);
+    pBoxCollider->Set_ColGroup(ENUM_TO_UINT(COLLISION_GROUP::TRIGGER));
+    pBoxCollider->Set_Owner(this);
     return S_OK;
+}
+
+CRoomTrigger* CRoomTrigger::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex)
+{
+    CRoomTrigger* pInstance = new CRoomTrigger(_pDevice, _pDeviceContex);
+    if (FAILED(pInstance->Initialize_Prototype()))
+    {
+        MSG_BOX("Failed to Create :CRoomTrigger ");
+        Safe_Release(pInstance);
+
+    }
+
+
+
+    return pInstance;
+}
+
+CGameObject* CRoomTrigger::Clone(void* pArg)
+{
+    CRoomTrigger* pInstance = new CRoomTrigger(*this);
+    if (FAILED(pInstance->Initialize_Copytype(pArg)))
+    {
+        MSG_BOX("Failed to Cloned :CRoomTrigger ");
+        Safe_Release(pInstance);
+
+    }
+    return pInstance;
+}
+
+void CRoomTrigger::Free()
+{
 }
 
 void CRoomTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)

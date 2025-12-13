@@ -25,8 +25,8 @@ public:
     virtual void        Render();         //씬의 렌더.
    
 public:
-    virtual void        OnEnter() {};           //씬 처음 진입시 호출
-    virtual void        OnResume(_uint iPreLevel) {};              //pause되었다가 active되었을때 호출
+    virtual void        OnEnter();           //씬 처음 진입시 호출
+    virtual void        OnResume(_uint iPreLevel);              //pause되었다가 active되었을때 호출
     virtual void        OnPause(_uint iNextLevel) {};               //pause되었을때 호출, 다음 씬의 아이디를 받을수있음
     virtual void        OnExit() {};        //자원 정리 함수
 

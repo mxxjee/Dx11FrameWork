@@ -8,6 +8,7 @@
 #include "CNavigation.h"
 #include "CBoxColliderComponent.h"
 #include "CBounding_AABB.h"
+#include "CGameManager.h"
 
 
 USING(Client)
@@ -52,7 +53,7 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
 
 
 
-    m_pPlayer = CInteraction_Manager::GetInstance()->Get_MainPlayer();
+    m_pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
 
 
     Ready_Events();

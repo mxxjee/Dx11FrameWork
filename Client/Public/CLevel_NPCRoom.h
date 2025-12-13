@@ -4,6 +4,7 @@
 
 NS_BEGIN(Client)
 class CFadeScreen;
+class CPlayer;
 class CLevel_NPCRoom :
     public CLevel
 {
@@ -35,7 +36,7 @@ public:
 private:
     CFadeScreen* pFadeScreen = nullptr;
 
-
+    CPlayer* m_pPlayer = nullptr;
 
 
 };

@@ -39,6 +39,7 @@ public:
     _uint           Get_CurrentLevelID() {return m_iCurrentLevelID;}
     const vector<CLevel*>* Get_LevelStack() { return &m_Stack; }
     void            Pop_Level();
+    bool            Get_IsLoading() { return m_bLoading; }
 
       
 
@@ -54,6 +55,7 @@ private:
 public:
     CLevel* Find_And_CreateLevel(_uint iSceneID, LevelArgs& _Arg);
     CLevel* Find_Cached(_uint iSceneID);
+    void        Set_IsLoading(bool b) { m_bLoading = b; }
 
 
 

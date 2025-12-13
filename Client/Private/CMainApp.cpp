@@ -7,6 +7,8 @@
 #include "CUI.h"
 #include "CCamera_Base.h"
 
+#include "CGameManager.h"
+
 #include "CLevel_Logo.h"
 #include "CLevel_Town.h"
 #include "CLevel_Loading.h"
@@ -378,6 +380,7 @@ void CMainApp::Free()
 
 	Safe_Release(pGameInstance);
 	CInteraction_Manager::GetInstance()->DestroyInstance();
+	CGameManager::GetInstance()->DestroyInstance();
 }
 
 void CMainApp::CreateSamplerStates()

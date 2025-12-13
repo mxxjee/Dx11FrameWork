@@ -249,6 +249,9 @@
     <ClInclude Include="..\Public\CRoomTrigger.h">
       <Filter>02.GameObjects\00.WorldObjects\03.Triggers\RoomTrigger</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CGameManager.h">
+      <Filter>96.Managers\GameManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -547,6 +550,9 @@
     <Filter Include="02.GameObjects\00.WorldObjects\03.Triggers\RoomTrigger">
       <UniqueIdentifier>{22e26b52-6aed-4bfe-a07f-f3fbe29afcf8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96.Managers\GameManager">
+      <UniqueIdentifier>{36667b53-8147-4dd2-aa24-e78d661444a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -775,6 +781,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CRoomTrigger.cpp">
       <Filter>02.GameObjects\00.WorldObjects\03.Triggers\RoomTrigger</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGameManager.cpp">
+      <Filter>96.Managers\GameManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

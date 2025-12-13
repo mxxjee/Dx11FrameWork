@@ -13,6 +13,8 @@
 #include "CBounding_AABB.h"
 #include "CBoxColliderComponent.h"
 
+#include "CGameManager.h"
+
 #include "CNavigation.h"
 #include "CCell.h"
 
@@ -60,7 +62,7 @@ HRESULT CInteractionObject::Initialize_Copytype(void* pArg)
     if (FAILED(Ready_PartObjects(pArg)))
         return E_FAIL;
 
-    m_pPlayer = CInteraction_Manager::GetInstance()->Get_MainPlayer();
+    m_pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
 
     //vPos.m128_f32 0x00000070d30fd1a0 {21.9783173, 10.5500002, 28.0775661, 0.00000000}
     m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
