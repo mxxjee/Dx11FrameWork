@@ -236,6 +236,7 @@ HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
     MinimapDesc.fSizeY = 150;
     MinimapDesc.fX = g_iWinSizeX - 100;
     MinimapDesc.fY = 100;
+    MinimapDesc.m_iLevelID = m_iLevelID;
 
     CTransform::TRANSFORM_DESC MinimapTransDesc = {};
     MinimapDesc.TransformDesc = &MinimapTransDesc;
@@ -253,6 +254,7 @@ HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
     Desc.ObjTag = L"Player_Marker";
     Desc.TextureKey = L"Player_Marker";
     Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP);
+    Desc.m_iLevelID = m_iLevelID;
 
 
     CTransform::TRANSFORM_DESC TransDesc = {};
@@ -309,6 +311,7 @@ HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
     desc.iAttack = 10;
     desc.MaxHp = 1;
     desc.fActionRange = 10.f;
+    desc.m_iLevelID = m_iLevelID;
 
     desc.ObjTag = L"CM_GreenZol" + to_wstring(0);
     CTransform::TRANSFORM_DESC TransDesc = {};
@@ -336,6 +339,7 @@ HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
     CMonster_Body::MONSTER_BODY_DESC MoriblinbodyDesc;
     MoriblinbodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
     MoriblinbodyDesc.modelName = L"MoriblinSword";
+    MoriblinbodyDesc.m_iLevelID = m_iLevelID;
 
     Moriblindesc.BodyDesc = &MoriblinbodyDesc;
 
@@ -343,6 +347,7 @@ HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
     Moriblindesc.iAttack = 10;
     Moriblindesc.MaxHp = 3;
     Moriblindesc.fActionRange = 3.f;
+    Moriblindesc.m_iLevelID = m_iLevelID;
 
     Moriblindesc.ObjTag = L"MoriblinSword" + to_wstring(0);
     CTransform::TRANSFORM_DESC MoriblinTransDesc = {};
@@ -374,6 +379,7 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
     pDesc.pTarget = nullptr;
     pDesc.ModelName = L"RichardAnim";
     pDesc.SceneName = "Level_Town";
+    pDesc.m_iLevelID = m_iLevelID;
 
 
     pDesc.TransformDesc = &pTransDesc;
@@ -405,6 +411,8 @@ HRESULT CLevel_Town::Ready_Layer_InteractionObject(const _wstring& strLayerTag)
 HRESULT CLevel_Town::Ready_Layer_Particle(const _wstring& strLayerTag)
 {
     CGameObject::GAMEOBJECT_DESC Desc;
+    Desc.m_iLevelID = m_iLevelID;
+
     CTransform::TRANSFORM_DESC TransDesc;
 
     CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
@@ -452,6 +460,7 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
         RoomTriggerDesc.vExtents = _float3(0.8f,0.5f, 0.8f);
         RoomTriggerDesc.ObjTag = L"Trigger" + TriggerTags[i];
         RoomTriggerDesc.m_nextKey = NextKeys[i];
+        RoomTriggerDesc.m_iLevelID = m_iLevelID;
 
         CTransform::TRANSFORM_DESC TransDesc;
         TransDesc.vLocalPosition = _float4(TriggerPos[i].x, TriggerPos[i].y, TriggerPos[i].z, 1.f);
@@ -520,6 +529,7 @@ void CLevel_Town::OnEnter()
 void CLevel_Town::OnResume(_uint iPreLevel)
 {
   
+ 
  
     //씬이 다시시작행슬때 메인 상호작용오브ㅈ게트들 설정
      //////현재씬의 itneraction 등록

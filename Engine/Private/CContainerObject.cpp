@@ -107,6 +107,8 @@ HRESULT CContainerObject::Add_PartObject(_uint iPrototypeLevelIdx, const _wstrin
 
     pPartObject->Set_Tag(strPartObjTag);
     pPartObject->Set_Owner(this);
+    pPartObject->Set_SceneID(m_iSceneID);
+
     m_PartObjects.emplace(strPartObjTag, pPartObject);
     return S_OK;
 }

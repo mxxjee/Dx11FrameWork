@@ -97,6 +97,7 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
         
     
     Change_State(IDLE);
+    m_iSceneID = ENUM_TO_UINT(LEVEL_ID::STATIC);
 
     return S_OK;
 }
@@ -781,7 +782,7 @@ HRESULT CPlayer::Ready_Components(void* pArg)
 
     CCollider_Base::COLLIDER_DESC pColliderDesc;
     pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::PLAYER);
-
+    pColliderDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::STATIC);
 
     CBounding_AABB::BOUNDING_AABB_DESC CollDesc;
     CollDesc.vCenter = { 0.f,0.5f,0.f };
@@ -818,6 +819,7 @@ HRESULT CPlayer::Ready_PartObjects(void* pArg)
     {
         CBody::BODY_DESC* pBodyDesc = static_cast<CBody::BODY_DESC*>(pModelDesc->BodyDesc);
         pBodyDesc->pOwner = this;
+        pBodyDesc->m_iLevelID = ENUM_TO_UINT(LEVEL_ID::STATIC);
 
         if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Player_Body"), L"Part_Body", pBodyDesc)))
             return E_FAIL;
@@ -834,6 +836,7 @@ HRESULT CPlayer::Ready_PartObjects(void* pArg)
     SWordDesc.pOwner = this;
     SWordDesc.pSocketMatrix = m_pBody->Get_SocketMatrix("itemA_L");
     SWordDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
+    SWordDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::STATIC);
 
     if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Player_Sword"), L"Player_Sword", &SWordDesc)))
         return E_FAIL;
@@ -844,6 +847,7 @@ HRESULT CPlayer::Ready_PartObjects(void* pArg)
     ShieldDesc.pOwner = this;
     ShieldDesc.pSocketMatrix = m_pBody->Get_SocketMatrix("root");
     ShieldDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
+    ShieldDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::STATIC);
 
     if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Player_Shield"), L"Player_Shield", &ShieldDesc)))
         return E_FAIL;

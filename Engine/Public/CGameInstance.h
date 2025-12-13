@@ -324,11 +324,11 @@ public:
 
 #pragma region CollisionManager
 		// 콜라이더 등록
-	 HRESULT     Register_Collider(class CCollider_Base* pCollider);
+	 HRESULT     Register_Collider(class CCollider_Base* pCollider, _uint iSceneID);
 		
 	 //객체 삭제 시 호출해줘야함. 콜라이더 등록해제
-	 HRESULT     UnRegister_Collider(CCollider_Base* pCollider);
-
+	 HRESULT     UnRegister_Collider(CCollider_Base* pCollider, _uint iSceneID);
+	 void		Clear_SceneColliders(_uint iSceneID);
 
 		//각 그룹간의 충돌 설정 
 	 void        Set_Enable_Collision(_uint iSrcGroup, _uint iDstGroup, bool bEnable);

@@ -73,6 +73,7 @@ HRESULT CObject_Manager::Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _
 	{
 		pLayer = CLayer::Create();
 		pLayer->Add_GameObject(pCloneObj);
+		pCloneObj->Set_SceneID(iLayerLevelIndex);
 		m_Layers[iLayerLevelIndex].emplace(strLayerTag, pLayer);
 
 	}
@@ -91,6 +92,7 @@ HRESULT CObject_Manager::Add_GameObject_To_Layer(_uint iLayerLevelIndex, const _
 	{
 		pLayer = CLayer::Create();
 		pLayer->Add_GameObject(pObject);
+		pObject->Set_SceneID(iLayerLevelIndex);
 		m_Layers[iLayerLevelIndex].emplace(strLayerTag, pLayer);
 
 	}

@@ -34,6 +34,8 @@ HRESULT CMMoriblin_Weapon::Initialize_Copytype(void* pArg)
     m_fRadius = pDesc->fRadius;
     m_vOffSet = pDesc->vOffSet;
     m_AnimKey = pDesc->AnimKey;
+    m_iSceneID = pDesc->m_iLevelID;
+
 
 
     if(FAILED(Ready_Components(pArg)))
@@ -81,6 +83,7 @@ HRESULT CMMoriblin_Weapon::Ready_Components(void* pArg)
     CCollider_Base::COLLIDER_DESC pColliderDesc;
     pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::MONSTER_WEAPON);
     pColliderDesc.pOwner = this;
+    pColliderDesc.m_iLevelID = m_iSceneID;
 
 	CBounding_Sphere::BOUNDING_SPHERE_DESC      CollDesc{};
     CollDesc.fRadius = m_fRadius;

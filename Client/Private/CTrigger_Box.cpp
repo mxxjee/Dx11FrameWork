@@ -82,6 +82,7 @@ HRESULT CTrigger_Box::Ready_Components(void* pArg)
 	aabbDesc.vCenter = pTriggerDesc->vCenter;
 	aabbDesc.Extents = pTriggerDesc->vExtents;
 	ColDesc.m_BoundingDesc = &aabbDesc;
+	ColDesc.m_iLevelID = m_iSceneID;
 
 	pBoxCollider= dynamic_cast<CBoxColliderComponent*>(m_pGameInstance->Clone_Prototype(
 		PROTOTYPE::COMPONENT,

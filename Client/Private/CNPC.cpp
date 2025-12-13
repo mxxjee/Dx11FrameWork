@@ -38,6 +38,7 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
     BodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
     BodyDesc.pParentState = &m_iState;
     BodyDesc.ObjTag = pNpcDesc->ObjTag + L"_body";
+    BodyDesc.m_iLevelID = m_iSceneID;
 
     pNpcDesc->BodyDesc = &BodyDesc;
 
@@ -218,6 +219,7 @@ HRESULT CNPC::Ready_Components(void* pArg)
 
     ColDesc.m_BoundingDesc = &AABBDesc;
     ColDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::INTERACTION);
+    ColDesc.m_iLevelID = m_iSceneID;
 
     CComponent* pCollider = dynamic_cast<CBoxColliderComponent*>(m_pGameInstance->Clone_Prototype(
         PROTOTYPE::COMPONENT,
@@ -245,6 +247,8 @@ HRESULT CNPC::Ready_PartObjects(void* pArg)
     if (pModelDesc)
     {
         CBody::BODY_DESC* pBodyDesc = static_cast<CBody::BODY_DESC*>(pModelDesc->BodyDesc);
+        pBodyDesc->m_iLevelID = m_iSceneID;
+
         if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"NPC_Body"), L"Part_Body", pBodyDesc)))
             return E_FAIL;
 

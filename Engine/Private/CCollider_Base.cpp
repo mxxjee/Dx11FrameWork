@@ -58,7 +58,7 @@ HRESULT CCollider_Base::Initialize_Copytype(void* pArg)
         m_eColGroup = pDesc->m_eColGroup;
 
     if(m_pGameInstance->Get_EngineDesc().eEngineMode==EngineMode::CLIENT)
-        m_pGameInstance->Register_Collider(this);
+        m_pGameInstance->Register_Collider(this,pDesc->m_iLevelID);
 
 
 

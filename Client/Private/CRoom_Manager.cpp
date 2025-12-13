@@ -158,6 +158,7 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
         RoomTriggerDesc.vExtents = pTriggerInfo.vExtents;
         RoomTriggerDesc.ObjTag = L"Trigger" + to_wstring(TriggeriIdx);
         RoomTriggerDesc.m_nextKey = pTriggerInfo.m_NextRoomID;
+        RoomTriggerDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
 
         CTransform::TRANSFORM_DESC TransDesc;
         TransDesc.vLocalPosition = _float4(pTriggerInfo.vPos.x, pTriggerInfo.vPos.y, pTriggerInfo.vPos.z, 1.f);
@@ -271,6 +272,7 @@ HRESULT CRoom_Manager::Load_NPC(const string& RoomName, const wstring& ModelName
     pDesc.ModelName = ModelName;
     pDesc.SceneName = RoomName;
 
+    pDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
     pDesc.TransformDesc = &pTransDesc;
 
 

@@ -939,16 +939,21 @@ void CGameInstance::RegisterListners(const string& CBName, EventCallBack Callbac
 
 }
 
-HRESULT CGameInstance::Register_Collider(CCollider_Base* pCollider)
+HRESULT CGameInstance::Register_Collider(CCollider_Base* pCollider, _uint iSceneID)
 {
 	CheckNullResult(m_pCollisionManager, E_FAIL);
-	return m_pCollisionManager->Register_Collider(pCollider);
+	return m_pCollisionManager->Register_Collider(pCollider, iSceneID);
 }
 
-HRESULT CGameInstance::UnRegister_Collider(CCollider_Base* pCollider)
+HRESULT CGameInstance::UnRegister_Collider(CCollider_Base* pCollider, _uint iSceneID)
 {
 	CheckNullResult(m_pCollisionManager, E_FAIL);
-	return m_pCollisionManager->UnRegister_Collider(pCollider);
+	return m_pCollisionManager->UnRegister_Collider(pCollider, iSceneID);
+}
+
+void CGameInstance::Clear_SceneColliders(_uint iSceneID)
+{
+	return m_pCollisionManager->Clear_SceneColliders(iSceneID);
 }
 
 void CGameInstance::Set_Enable_Collision(_uint iSrcGroup, _uint iDstGroup, bool bEnable)

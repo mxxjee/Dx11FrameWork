@@ -35,13 +35,14 @@ public:
 
                 //캐시비우기
     void            Clear_Cache();
-
+    void            Reset_CurrentRoomID() { m_strCurrentRoomID = ""; }
 private:                                //룸이름+.json을 로드한 후 pacakge의 값을채운다.
     HRESULT         Load_Room_From_Json(const string& strRoomName, RoomPackage* pOutPackage);
     void             Clear_Room();  //방 switch 시 퇴장처리
     void             Enter_Room(RoomPackage* pPackage); //방 switch 시 입장(실제적인 오브젝트 설정)
     HRESULT           Load_NPC(const string& RoomName,const wstring& ModelName, _float3 vPos, RoomPackage* pOut);
 
+ 
 private:
     CLayer*         m_pEnviromentLayer = nullptr;       //Level_Room의 enviromnetlayer(참조)
     CLayer*         m_pNPCLayer= nullptr;               //Level_Room의 NPClayer(참조)

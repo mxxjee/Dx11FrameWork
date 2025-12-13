@@ -99,7 +99,7 @@ void CRoomTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
              _vector vPos = pPlayer->Get_Transform()->Get_State(STATE::POSITION);
              _float4 pPlayerPos;
              XMStoreFloat4(&pPlayerPos, vPos);
-             pPlayerPos.z -= 3.f;
+             pPlayerPos.z -= 1.2f;
              CGameManager::GetInstance()->Set_LastPosition(pPlayerPos);
 
 

@@ -14,6 +14,7 @@ public:
     {
         _uint m_eColGroup = 0;
         void* m_BoundingDesc = nullptr;
+        _uint m_iLevelID = 3;
 
     }COLLIDER_DESC;
 protected:

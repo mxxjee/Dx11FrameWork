@@ -215,7 +215,7 @@ HRESULT CM_GreenZol::Ready_Component(void* pArg)
 	//////////////Boxcollider√ﬂ∞°
 	CCollider_Base::COLLIDER_DESC pColliderDesc;
 	pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::MONSTER);
-
+	pColliderDesc.m_iLevelID = m_iLevelID;
 
 	CBounding_AABB::BOUNDING_AABB_DESC CollDesc;
 	CollDesc.vCenter = { 0.f,0.5f,0.f };

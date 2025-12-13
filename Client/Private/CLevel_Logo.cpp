@@ -246,6 +246,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     BackGroundDesc.ObjTag = L"Title_Background";
     BackGroundDesc.TextureKey = L"Title";
     BackGroundDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+    BackGroundDesc.m_iLevelID = m_iLevelID;
 
     BackGroundDesc.fSizeX = g_iWinSizeX;
     BackGroundDesc.fSizeY = g_iWinSizeY;
@@ -274,6 +275,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     Title_Desc.ObjTag = L"Title";
     Title_Desc.TextureKey = L"Logo_White";
     Title_Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+    Title_Desc.m_iLevelID = m_iLevelID;
 
     Title_Desc.fSizeX = 1092*0.7f;
     Title_Desc.fSizeY = 546 * 0.7f;
@@ -306,6 +308,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     Logo_MaskDesc.passName = "Logo";
     Logo_MaskDesc.TextureKey = L"Logo_Mask";
     Logo_MaskDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+    Logo_MaskDesc.m_iLevelID = m_iLevelID;
 
     Logo_MaskDesc.fSizeX = 1092 * 0.7f;
     Logo_MaskDesc.fSizeY = 546 * 0.7f;
@@ -348,6 +351,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     FadeScreenDesc.ObjTag = L"FadeScreen";
     FadeScreenDesc.TextureKey = L"Black";
     FadeScreenDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+    FadeScreenDesc.m_iLevelID = m_iLevelID;
 
     FadeScreenDesc.fSizeX = g_iWinSizeX;
     FadeScreenDesc.fSizeY = g_iWinSizeY;
@@ -425,6 +429,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
         CButton::tagButtonDesc Button_Desc = {};
         Button_Desc.ObjTag = L"Title";
         Button_Desc.passName = "SaveSlot";
+        Button_Desc.m_iLevelID = m_iLevelID;
 
         Button_Desc.TextureKey = L"SaveSlot";
         Button_Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
@@ -678,10 +683,10 @@ void CLevel_Logo::Create_MainCamera()
     Desc.fHeight = (float)g_iWinSizeY;
     Desc.fFovy = 60.f;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
     Desc.fNear = 0.1f;
+    Desc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::STATIC);
 
 
-
-    Desc.vOffset= _float3(0.f, 7.f, -6.f);
+    Desc.vOffset= _float3(0.f, 8.5f, -7.f);
     Desc.fFar = 100.f;
     Desc.pTarget = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Player_Layer", L"Player");
 
@@ -689,7 +694,7 @@ void CLevel_Logo::Create_MainCamera()
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
-    TransDesc.vLocalRotation = {50.f,0.f,0.f,1.f };
+    TransDesc.vLocalRotation = {52.f,0.f,0.f,1.f };
     TransDesc.vLocalScale = { 1.f,1.f,1.f,1.f };
     Desc.TransformDesc = &TransDesc;
 
@@ -713,6 +718,7 @@ void CLevel_Logo::Create_UICamera()
     UIDesc.fNear = 0.1f;
     UIDesc.fFar = 1.f;
     UIDesc.m_bDynamic = false;
+    UIDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::STATIC);
 
     UIDesc.fWidth = (float)g_iWinSizeX;
     UIDesc.fHeight = (float)g_iWinSizeY;
@@ -738,6 +744,7 @@ void CLevel_Logo::Create_FreeCamera()
     Desc.fHeight = (float)g_iWinSizeY;
     Desc.fNear = 0.1f;
     Desc.fFar = 1000.f;
+    Desc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::STATIC);
 
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
@@ -763,6 +770,7 @@ void CLevel_Logo::Create_MiniMapCamera()
 
     Desc.fWidth = (float)20.f;
     Desc.fHeight = (float)20.f;
+    Desc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::STATIC);
 
 
     Desc.fNear = 0.1f;

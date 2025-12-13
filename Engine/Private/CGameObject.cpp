@@ -39,6 +39,8 @@ HRESULT CGameObject::Initialize_Copytype(void* pArg)
     if (FAILED(Ready_Resource(pArg)))
         return E_FAIL;
 
+
+
     return S_OK;
 }
 
@@ -69,6 +71,8 @@ HRESULT CGameObject::Render()
 HRESULT CGameObject::Ready_Components(void* pArg)
 {
     GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+
+    
     CTransform::TRANSFORM_DESC tempDesc;   // 임시 생성용
     CComponent::COMPONENT_DESC* compDesc = nullptr;
 
@@ -94,6 +98,8 @@ HRESULT CGameObject::Ready_Components(void* pArg)
         reinterpret_cast<CComponent**>(&m_pTransformCom)
     )))
         return E_FAIL;
+
+    m_iSceneID = pDesc->m_iLevelID;
 
     return S_OK;
 }

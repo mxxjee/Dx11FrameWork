@@ -113,6 +113,7 @@ HRESULT CM_MoriblinSword::Ready_Component(void* pArg)
 	//////////////Boxcollider추가
 	CCollider_Base::COLLIDER_DESC pColliderDesc;
 	pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::MONSTER);
+	pColliderDesc.m_iLevelID = m_iLevelID;
 
 	CBounding_AABB::BOUNDING_AABB_DESC CollDesc;
 	CollDesc.vCenter = { 0.f,0.5f,0.f };
@@ -169,6 +170,7 @@ HRESULT CM_MoriblinSword::Ready_WeaponColliders()
 	SwordDesc.AnimKey = L"";	//단지 튕겨내기
 	SwordDesc.fRadius = 0.3f;
 	SwordDesc.vOffSet= _float3(0.f, 0.f, 0.f);
+	SwordDesc.m_iLevelID = m_iLevelID;
 
 	if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Moriblin_Weapon"), L"Moriblin_Sword", &SwordDesc)))
 		return E_FAIL;
@@ -180,6 +182,7 @@ HRESULT CM_MoriblinSword::Ready_WeaponColliders()
 	ShieldDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
 	ShieldDesc.AnimKey = L"guard";	//가드애니메이션
 	ShieldDesc.fRadius = 0.2f;
+	ShieldDesc.m_iLevelID = m_iLevelID;
 
 	if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Moriblin_Weapon"), L"Moriblin_Shield", &ShieldDesc)))
 		return E_FAIL;

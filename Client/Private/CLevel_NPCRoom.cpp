@@ -79,8 +79,10 @@ void CLevel_NPCRoom::Render()
 void CLevel_NPCRoom::OnEnter()
 {
     CRoom_Manager::GetInstance()->Switch_Room(CRoom_Manager::GetInstance()->Get_RequestRoom());
+    m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::ROOM));
 
     _float4 vSpawnPos = CRoom_Manager::GetInstance()->Get_SpawnPosition();
+   
     m_pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
     CheckNull(m_pPlayer);
 
@@ -122,6 +124,7 @@ void CLevel_NPCRoom::OnResume(_uint iPreLevel)
 {
     
     CRoom_Manager::GetInstance()->Switch_Room(CRoom_Manager::GetInstance()->Get_RequestRoom());
+    m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::ROOM));
 
     CheckNull(m_pPlayer);
     m_pPlayer->Change_MainNavMesh();
@@ -158,10 +161,13 @@ void CLevel_NPCRoom::OnResume(_uint iPreLevel)
 
 void CLevel_NPCRoom::OnPause(_uint iNextLevel)
 {
+ /*   if (iNextLevel != ENUM_TO_UINT(LEVEL_ID::UI))
+        CRoom_Manager::GetInstance()->Reset_CurrentRoomID();*/
 }
 
 void CLevel_NPCRoom::OnExit()
 {
+   /* CRoom_Manager::GetInstance()->Reset_CurrentRoomID();*/
 }
 
 CLevel_NPCRoom* CLevel_NPCRoom::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)

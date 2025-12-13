@@ -14,6 +14,7 @@ public:
         _wstring ObjTag;
         class CGameObject* pTarget = nullptr;
         void* TransformDesc = nullptr;
+        _uint m_iLevelID = 3;
     }GAMEOBJECT_DESC;
 
 protected:
@@ -70,6 +71,9 @@ public:
     virtual     void    OnCollisionStay(_uint iGroup, CCollider_Base* pOther) {};
     virtual     void    OnCollisionExit(_uint iGroup, CCollider_Base* pOther){};
     virtual     void    PushOut(_float3 vOutPush);
+
+public:
+    void        Set_SceneID(_uint iSceneID) { m_iSceneID = iSceneID; }
 protected:
     ComPtr<ID3D11Device> m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };
@@ -87,6 +91,8 @@ public:
     virtual CGameObject* Clone(void* pArg)=0;
     virtual void    Free() override;
 
+protected:
+    _uint       m_iSceneID = 0;     //자신이 생성된 씬아이디
 
 };
 NS_END

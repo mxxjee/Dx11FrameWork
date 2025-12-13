@@ -276,6 +276,7 @@ HRESULT CMonster::Ready_PartObjects(void* pArg)
     {
         CBody::BODY_DESC* pBodyDesc = static_cast<CBody::BODY_DESC*>(pModelDesc->BodyDesc);
         pBodyDesc->ObjTag = tag + L"_Body";
+        pBodyDesc->m_iLevelID = m_iSceneID;
 
         if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Monster_Body"), L"Part_Body", pBodyDesc)))
             return E_FAIL;
@@ -392,7 +393,7 @@ void CMonster::Free()
 {
     
     Safe_Release(m_pNavigationCom);
-    m_pGameInstance->UnRegister_Collider(m_pCollider);
+    m_pGameInstance->UnRegister_Collider(m_pCollider,m_iLevelID);
     for (auto& pair : m_States)
     {
         if (pair.second)

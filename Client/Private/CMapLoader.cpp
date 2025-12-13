@@ -107,6 +107,7 @@ HRESULT CMapLoader::Make_Object_By_LoadData(string SceneName, CLayer* pLayer)
         CInteractionObject::Interaction_DESC Desc;
         Desc.eInteractionType = ENUM_TO_UINT(InteractionType::OBJECT);
         Desc.eInteract_Object_Type = Info.InteractionType;
+        Desc.m_iLevelID = SceneID;
 
         Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
         Desc.ModelName = StringToWString(Info.ModelName);
@@ -128,7 +129,9 @@ HRESULT CMapLoader::Make_Object_By_LoadData(string SceneName, CLayer* pLayer)
         aabbDesc.vCenter = Info.ColliderCenter;
         aabbDesc.Extents = Info.ColliderExtent;
         ColDesc.m_BoundingDesc = &aabbDesc;
+        ColDesc.m_iLevelID = SceneID;
         Desc.pColliderComp = &ColDesc;
+
 
         wstring ProtoTag = L"";
 

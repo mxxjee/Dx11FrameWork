@@ -94,6 +94,8 @@ void CLevel::OnResume(_uint iPreLevel)
 void CLevel::Free()
 {
     __super::Free();
+    
+    m_pGameInstance->Clear_SceneColliders(m_iLevelID);
     Safe_Release(m_pGameInstance);
 
 }
