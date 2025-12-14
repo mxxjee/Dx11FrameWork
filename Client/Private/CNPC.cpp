@@ -9,12 +9,17 @@
 #include "CBoxColliderComponent.h"
 #include "CBounding_AABB.h"
 #include "CGameManager.h"
-
+#include "CDialogue_Manager.h"
+#include "CQuest_Manager.h"
 
 USING(Client)
 CNPC::CNPC(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CAnimModelObject(pDevice, pContext)
+    :CAnimModelObject(pDevice, pContext),
+    m_pDialogue_Manager(CDialogue_Manager::GetInstance()),
+    m_pQuest_Manager(CQuest_Manager::GetInstance())
 {
+    Safe_AddRef(m_pDialogue_Manager);
+    Safe_AddRef(m_pQuest_Manager);
 }
 
 CNPC::CNPC(const CNPC& rhs)
@@ -62,6 +67,9 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
     {
         m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
     }
+
+    DialogueTag = string(tag.begin(), tag.end());
+
     return S_OK;
 }
 
@@ -150,11 +158,11 @@ void CNPC::Enter_Interaction()
     m_pAnimBody->Reserve_Animation(L"talk", true);
 
     m_pGameInstance->Emit(Enter_Interaction_Event);
-    /*CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(m_pGameInstance->Get_MainCamera());
 
 
-    pCameraBase->Set_Target(this);
-    pCameraBase->Set_Offset(_float3(0.f, 3.f, -2.f));*/
+    m_pDialogue_Manager->StartDialogue(DialogueTag);
+
+   
 }
 
 void CNPC::Stay_Interaction(_float fTimeDelta)
@@ -163,14 +171,14 @@ void CNPC::Stay_Interaction(_float fTimeDelta)
 
     m_pPlayer->Get_Transform()->LookAtSmooth(m_pTransformCom->Get_State(STATE::POSITION), 5.f, fTimeDelta);
 
-    if (m_fTime >= 3.f)
-    {
-        Exit_Interaction();
-        m_fTime = 0.f;
-        
-        m_bPrevInteracting = false;
-        m_bPrevRange = false;
-    }
+    //if (m_fTime >= 3.f)
+    //{
+    //    Exit_Interaction();
+    //    m_fTime = 0.f;
+    //    
+    //    m_bPrevInteracting = false;
+    //    m_bPrevRange = false;
+    //}
 
 }
 
@@ -180,6 +188,9 @@ void CNPC::Exit_Interaction()
     m_pPlayer->Get_ActionControl()->m_bTalk = false;
     m_pAnimBody->Reserve_Animation(L"wait", true);
 
+    m_bPrevRange = false;
+    m_bPrevInteracting = false;
+
     m_pGameInstance->Emit(Exit_Interaction_Event);
 
     //CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(m_pGameInstance->Get_MainCamera());
@@ -187,6 +198,12 @@ void CNPC::Exit_Interaction()
 
     //pCameraBase->Set_Target(m_pPlayer);
     //pCameraBase->Set_Offset(pCameraBase->Get_InitOffset());
+}
+
+void CNPC::Pressed_InteractionKey()
+{
+    if (!m_pDialogue_Manager->AdvanceDialogueStep())
+        Exit_Interaction();
 }
 
 HRESULT CNPC::Ready_Components(void* pArg)
@@ -324,7 +341,8 @@ void CNPC::Free()
 {
     Safe_Release(m_pNavigationCom);
     Safe_Release(m_pCollider);
-
+    Safe_Release(m_pDialogue_Manager);
+    Safe_Release(m_pQuest_Manager);
      __super::Free();
    
 }

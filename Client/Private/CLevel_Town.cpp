@@ -31,7 +31,7 @@
 #include "CFadeScreen.h"
 
 #include "CRoomTrigger.h"
-
+#include "CQuest_Manager.h"
 
 USING(Client)
 
@@ -78,7 +78,10 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
     UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
     pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Objects[0]);
 
- 
+    if(FAILED(CQuest_Manager::GetInstance()->Initialize()))
+        return E_FAIL;
+
+
     return S_OK;
 }
 
@@ -102,7 +105,7 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
 
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
     {
-       /* CRoom_Manager::GetInstance()->Request_Room("Mamasha_room");
+        CRoom_Manager::GetInstance()->Request_Room("Mamasha_room");
 
         LevelArgs args;
         args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
@@ -114,7 +117,7 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
         if (FAILED(m_pGameInstance->Level_Changer(
             ENUM_TO_UINT(LEVEL_ID::LOADING),
             args)))
-            return;*/
+            return;
 
 
     }

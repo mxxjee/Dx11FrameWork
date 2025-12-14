@@ -165,6 +165,66 @@ enum Interact_Behavior_Type
 	Interact_Behavior_Type_END
 };
 
+/////Quest관련///////
+//각 퀘스트에 대한 플레이어 진행상태
+enum class QuestState : _uint
+{
+	NONE = 0,//퀘스트없음
+	ACTIVE = 1,	//진행중
+	COMPLETABLE = 2,		//완료가능(NPC에게 전달)
+	COMPLETED = 3			//완료됨(보상까지받고난 완벽한 완료)
+
+
+};
+
+enum class QuestType {COLLECT_ITEM, KILL_MONSTER,VISIT_LOCATION,ACTION};
+
+
+//퀘스트에 필요한 오브젝트 관련 데이터 정의
+//만약 오브젝트의 종류를 여러개 가져오는 퀘스트일경우,
+//오브젝트 당 하나로 이걸 정의
+
+
+
+////////NPC_Dialogues/////////
+enum class Dialog_Action_Timing { ON_START, ON_FINISH };		//대화할떄 이벤트 시작 타이밍(대화 나오고 바로시작할건지, 대화끝나고 시작할건지)
+
+
+
+
+//1. DialogueStep->UI에 표시할 하나의 블럭
+struct DialogueStep
+{
+	string strSpeaker = "";//대화의 주체(모델이름 혹은 태그)
+	wstring strText = L"";		//UI에 표시할 텍스트
+
+	Dialog_Action_Timing actionTiming= Dialog_Action_Timing::ON_START;
+	string strActionCommand = "";		//내릴 명령(이벤트 이름, 이벤트버스 통해처리)
+
+};
+
+////2. 챕터단위
+struct DialogueChapter
+{
+	string ChapterID="";
+	vector<DialogueStep>		steps;			//순차적으로 진행될 대화블럭
+
+	_uint	iQuestOffered = 0;			//이 챕터 이후 제공할 퀘스트번호 (어떤퀘스트인지?)
+	_uint	iQuestRequiredToUnlock = 0;			//(완료판단)다음 영구챕터로 넘어갈 조건ㄱ퀘스트 ID? 영구챕터 : 다음에 말을 걸었을때 시작할 챕터번호
+
+	size_t iCurrentStepIndex = 0;				//현재 이 챕터에서 실행되고잇는 dialogeustep[idx]
+
+	string strNextPermanentChapterID="";			//퀘스트 넘어가면 수행할 다음 챕터
+};
+
+
+//한 NPC의 모든 챕터데이터
+struct NPC_DialogueScript
+{
+	string strModelID;
+	UMap<string, DialogueChapter>		Chapters;			//Key :Chaptername
+
+};
 
 //////////////////RoomPackage///////
 namespace Engine

@@ -1,0 +1,98 @@
+{
+  "NPCScripts": [
+    {
+      "ModelID": "NPC_Mom",
+      "Chapters": [
+        {
+          "ChapterID": "Q1001_START",
+          "iQuestOffered": 1001,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "Q1001_ACTIVE_PERM",
+          "Steps": [
+            {
+              "Speaker": "NPC_Mom",
+              "Text": "파싱테스트입니다.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "NPC_Mom",
+              "Text": "대사가 잘넘어가고있나요?\n 띄어쓰기도 잘 되고 있나요?",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "NPC_Mom",
+              "Text": "액션도 잘 나오고있나요?",
+              "strActionCommand": "PLAY_ANIM:NPC_BOW",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "NPC_Mom",
+              "Text": "돌을 한번들어보세요.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1001_ACTIVE_PERM",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "Steps": [
+            {
+              "Speaker": "NPC_Mom",
+              "Text": "아직 다 수행하지않은거같아요.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "NPC_Mom",
+              "Text": "다 하고나서 말걸어주세요.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1001_COMPLETABLE_READY",
+          "iQuestRequiredToUnlock": 1001,
+          "strNextPermanentChapterID": "Q1001_DONE",
+          "Steps": [
+            {
+              "Speaker": "NPC_Mom",
+              "Text": "퀘스트를 완료하셨네요.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "NPC_Mom",
+              "Text": "완전한 퀘스트 완료 처리합니다.",
+              "strActionCommand": "GIVE_ITEM:9001:1000",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1001_DONE",
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "NPC_Mom",
+              "Text": "이제 이 퀘스트는 완전히 끝입니다.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "NPC_Mom",
+              "Text": "이제 계속 말걸어도 이 대화가 반복됩니다.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

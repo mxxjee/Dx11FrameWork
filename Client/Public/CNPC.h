@@ -9,8 +9,10 @@ namespace Engine
 }
 
 NS_BEGIN(Client)
+class CDialogue_Manager;
 class CPlayer;
 class CNavigation;
+class CQuest_Manager;
 
 class CNPC :
     public CAnimModelObject, public CIInteractable
@@ -64,7 +66,7 @@ public:
     virtual void    Exit_Interaction();
 
     virtual _int	Get_Interaction_Priority() { return InteractionType::NPC; }//우선순위 젤높음
-
+    virtual void	Pressed_InteractionKey();
 private:
     HRESULT         Ready_Components(void* pArg);
     virtual HRESULT     Ready_PartObjects(void* pArg);
@@ -93,7 +95,11 @@ private:
     GameEvent       Enter_Interaction_Event;
     GameEvent       Exit_Interaction_Event;
 
+protected:
+    CDialogue_Manager* m_pDialogue_Manager = nullptr;
+    CQuest_Manager* m_pQuest_Manager = nullptr;
 
+    string DialogueTag = "";
 };
 
 NS_END

@@ -33,6 +33,11 @@
 #include "CCameraComponent.h"
 #include "CRoom_Manager.h"
 
+#include "CQuest_Manager.h"
+#include "CDialogue_Manager.h"
+
+
+
 
 USING(Client)
 
@@ -101,12 +106,14 @@ HRESULT CMainApp::Initialize_Cilent()
 	if (FAILED(CInteraction_Manager::GetInstance()->Initialize()))
 		return E_FAIL;
 
+	if (FAILED(CDialogue_Manager::GetInstance()->Initialize()))
+		return E_FAIL;
 
 	CreateSamplerStates();
 	CreateBlendStates();
 	CreateRasterizerStates();
 	CreateDepthStencilStates();
-
+	
 
 	//렌더그룹 관련 초기화
 	if(FAILED(pGameInstance->Initialize_Renderer(ENUM_TO_UINT(RENDERGROUP::END))))
@@ -264,7 +271,9 @@ void CMainApp::Update(_float fTimeDelta)
 
 void CMainApp::Update_Late(float fTimeDelta)
 {
+
 	pGameInstance->LateUpdate_Engine(fTimeDelta);
+	CQuest_Manager::GetInstance()->Update(fTimeDelta);
 }
 
 void CMainApp::Update_Render(float fTimeDelta)
@@ -368,7 +377,9 @@ void CMainApp::Free()
 #ifdef _DEBUG
 	Safe_Release(pImGui_Manager);
 #endif
-
+	
+	CDialogue_Manager::GetInstance()->DestroyInstance();
+	CQuest_Manager::GetInstance()->DestroyInstance();
 	CRoom_Manager::GetInstance()->DestroyInstance();
 	CInput_Manager::GetInstance()->DestroyInstance();
 	pGameInstance->Release_Engine();

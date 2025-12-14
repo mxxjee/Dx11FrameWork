@@ -150,9 +150,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Private\CMMoriblinSwordIdleState.h" />
+    <ClInclude Include="..\Public\CAction_Condition.h" />
     <ClInclude Include="..\Public\CBackGround.h" />
     <ClInclude Include="..\Public\CButton.h" />
     <ClInclude Include="..\Public\CCameraDebugWindow.h" />
+    <ClInclude Include="..\Public\CDialogue_Manager.h" />
     <ClInclude Include="..\Public\CExplosion.h" />
     <ClInclude Include="..\Public\CFadeScreen.h" />
     <ClInclude Include="..\Public\CFloor.h" />
@@ -171,6 +173,7 @@
     <ClInclude Include="..\Public\CLevel_UI.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\CLoader.h" />
+    <ClInclude Include="..\Public\CLocation_Condition.h" />
     <ClInclude Include="..\Public\CMainApp.h" />
     <ClInclude Include="..\Public\CMapLoader.h" />
     <ClInclude Include="..\Public\CMGreenZolHideState.h" />
@@ -216,6 +219,8 @@
     <ClInclude Include="..\Public\CPlayer_Body.h" />
     <ClInclude Include="..\Public\CPlayer_Shield.h" />
     <ClInclude Include="..\Public\CPlayer_Sword.h" />
+    <ClInclude Include="..\Public\CQuestCondition.h" />
+    <ClInclude Include="..\Public\CQuest_Manager.h" />
     <ClInclude Include="..\Public\CRoom.h" />
     <ClInclude Include="..\Public\CRoomTrigger.h" />
     <ClInclude Include="..\Public\CRoom_Manager.h" />
@@ -230,6 +235,7 @@
     </ClInclude>
     <ClInclude Include="..\Public\CWeapon.h" />
     <ClInclude Include="..\Public\GlobalGameEvent.h" />
+    <ClInclude Include="..\Public\ItemCollect_Condition.h" />
     <ClInclude Include="..\Public\MonsterStates.h" />
     <ClInclude Include="..\Public\PlayerStates.h" />
     <ClInclude Include="Client.h" />
@@ -239,9 +245,11 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\CAction_Condition.cpp" />
     <ClCompile Include="..\Private\CBackGround.cpp" />
     <ClCompile Include="..\Private\CButton.cpp" />
     <ClCompile Include="..\Private\CCameraDebugWindow.cpp" />
+    <ClCompile Include="..\Private\CDialogue_Manager.cpp" />
     <ClCompile Include="..\Private\CExplosion.cpp" />
     <ClCompile Include="..\Private\CFadeScreen.cpp" />
     <ClCompile Include="..\Private\CFloor.cpp" />
@@ -259,6 +267,7 @@
     <ClCompile Include="..\Private\CLevel_Logo.cpp" />
     <ClCompile Include="..\Private\CLevel_UI.cpp" />
     <ClCompile Include="..\Private\CLoader.cpp" />
+    <ClCompile Include="..\Private\CLocation_Condition.cpp" />
     <ClCompile Include="..\Private\CMainApp.cpp" />
     <ClCompile Include="..\Private\CMapLoader.cpp" />
     <ClCompile Include="..\Private\CMGreenZolHideState.cpp" />
@@ -305,6 +314,8 @@
     <ClCompile Include="..\Private\CPlayer_Body.cpp" />
     <ClCompile Include="..\Private\CPlayer_Shield.cpp" />
     <ClCompile Include="..\Private\CPlayer_Sword.cpp" />
+    <ClCompile Include="..\Private\CQuestCondition.cpp" />
+    <ClCompile Include="..\Private\CQuest_Manager.cpp" />
     <ClCompile Include="..\Private\CRoom.cpp" />
     <ClCompile Include="..\Private\CRoomTrigger.cpp" />
     <ClCompile Include="..\Private\CRoom_Manager.cpp" />
@@ -317,6 +328,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CWeapon.cpp" />
+    <ClCompile Include="..\Private\ItemCollect_Condition.cpp" />
     <ClCompile Include="..\Public\CUICreator.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="CScreenFilter.cpp" />

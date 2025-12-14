@@ -252,6 +252,24 @@
     <ClInclude Include="..\Public\CGameManager.h">
       <Filter>96.Managers\GameManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CDialogue_Manager.h">
+      <Filter>96.Managers\DialogueManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQuest_Manager.h">
+      <Filter>96.Managers\QuestManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQuestCondition.h">
+      <Filter>96.Managers\QuestManager\QuestCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CAction_Condition.h">
+      <Filter>96.Managers\QuestManager\QuestCondition\ActionCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\ItemCollect_Condition.h">
+      <Filter>96.Managers\QuestManager\QuestCondition\CollectItemCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLocation_Condition.h">
+      <Filter>96.Managers\QuestManager\QuestCondition\LocationCondition</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -553,6 +571,24 @@
     <Filter Include="96.Managers\GameManager">
       <UniqueIdentifier>{36667b53-8147-4dd2-aa24-e78d661444a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96.Managers\DialogueManager">
+      <UniqueIdentifier>{3ae72a06-c12a-4a7e-9fcb-611c2fa76371}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Managers\QuestManager">
+      <UniqueIdentifier>{ad0c7e9d-7bab-4572-b750-bfcb4cd7760e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Managers\QuestManager\QuestCondition">
+      <UniqueIdentifier>{d7b19bed-b019-41b9-8082-f23ab6219d94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Managers\QuestManager\QuestCondition\ActionCondition">
+      <UniqueIdentifier>{6a688150-6240-4499-92ae-f42214fa7c81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Managers\QuestManager\QuestCondition\CollectItemCondition">
+      <UniqueIdentifier>{ca4b7942-1f7b-4a52-b9fa-b835e93e01a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Managers\QuestManager\QuestCondition\LocationCondition">
+      <UniqueIdentifier>{7fee44f3-f134-4ca3-8cda-0f47c781b25c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -784,6 +820,24 @@
     </ClCompile>
     <ClCompile Include="..\Private\CGameManager.cpp">
       <Filter>96.Managers\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CDialogue_Manager.cpp">
+      <Filter>96.Managers\DialogueManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQuest_Manager.cpp">
+      <Filter>96.Managers\QuestManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQuestCondition.cpp">
+      <Filter>96.Managers\QuestManager\QuestCondition</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAction_Condition.cpp">
+      <Filter>96.Managers\QuestManager\QuestCondition\ActionCondition</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\ItemCollect_Condition.cpp">
+      <Filter>96.Managers\QuestManager\QuestCondition\CollectItemCondition</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLocation_Condition.cpp">
+      <Filter>96.Managers\QuestManager\QuestCondition\LocationCondition</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -64,10 +64,33 @@ namespace Engine
 		return result;
 	}
 
-	inline std::wstring StringToWString(const string& str)
-	{
-		return wstring(str.begin(), str.end());
+	//inline std::wstring StringToWString(const string& str)
+	//{
+	//	return wstring(str.begin(), str.end());
 
+	//}
+
+	inline std::wstring StringToWString(const std::string& utf8)
+	{
+		if (utf8.empty())
+			return L"";
+
+		int size = MultiByteToWideChar(
+			CP_UTF8, 0,
+			utf8.c_str(),
+			(int)utf8.size(),
+			nullptr, 0);
+
+		std::wstring wstr(size, 0);
+
+		MultiByteToWideChar(
+			CP_UTF8, 0,
+			utf8.c_str(),
+			(int)utf8.size(),
+			&wstr[0],
+			size);
+
+		return wstr;
 	}
 }
 #endif // Engine_Function_h__

@@ -15,6 +15,7 @@ public:
 	virtual void	Stay_Interaction(_float fTimeDelta) =0;
 	virtual void	Exit_Interaction()=0;
 
+	virtual void	Pressed_InteractionKey() {}
 	virtual _int	Get_Interaction_Priority()=0;	//여러개의 interaction이 존재할떄, 우선순위
 
 public:

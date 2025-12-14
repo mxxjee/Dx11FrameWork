@@ -98,6 +98,7 @@ bool CInteraction_Manager::OnInteractKeyPresed()
 		if (!m_pCurrentTarget)
 			return false;
 
+
 		if (!m_pCurrentTarget->m_bPrevInteracting)
 		{
 			m_pCurrentTarget->Enter_Interaction();
@@ -107,11 +108,16 @@ bool CInteraction_Manager::OnInteractKeyPresed()
 
 		else
 		{
-			m_pCurrentTarget->Exit_Interaction();
-			m_pCurrentTarget->m_bPrevRange = false;
-			return true;
+			if (m_pCurrentTarget->Get_Interaction_Priority() != ENUM_TO_UINT(InteractionType::NPC))
+			{
+				m_pCurrentTarget->Exit_Interaction();
+				m_pCurrentTarget->m_bPrevRange = false;
+				return true;
+			}
+
 		}
 
+		m_pCurrentTarget->Pressed_InteractionKey();
 
 	}
 	
