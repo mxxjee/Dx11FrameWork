@@ -65,6 +65,7 @@ public:
 
 
 public:
+#ifdef _DEBUG
     // IMapEditable을(를) 통해 상속됨
     virtual void OnSeletected(bool bSelected) override;
     virtual void		Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation);//Imgui창 Inspector Render
@@ -72,6 +73,13 @@ public:
     virtual void Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta);
     virtual void Update_SelectMode(float _fTimeDelta);
 
+    // IMapEditable을(를) 통해 상속됨
+    virtual void Show_Gizmo() override;
+
+
+    // IMapEditable을(를) 통해 상속됨
+    virtual void Fix_Y(_float Y);
+#endif
 protected:
     CModel* m_pModel = nullptr;
     CMeshColliderComponent* m_pMeshCollidercomponent=nullptr;
@@ -81,12 +89,6 @@ private:
     bool                         m_bCanPicking = true;
 
 
-    // IMapEditable을(를) 통해 상속됨
-    virtual void Show_Gizmo() override;
-
-
-    // IMapEditable을(를) 통해 상속됨
-    virtual void Fix_Y(_float Y);
 
 private:
     class CInput_Manager* m_pInputManager = nullptr;

@@ -59,6 +59,8 @@ public:
 public:
     void        Set_Select(bool _bSelect) { m_bSelected = _bSelect; }
     virtual     void    Free() override;
+    // CGameObject을(를) 통해 상속됨
+    virtual CGameObject* Clone(void* pArg) override;
 
 
 protected:
@@ -73,31 +75,31 @@ protected:
 
 
 public:
-    CMapObject_Manager*         m_pMapObject_Manager = nullptr;
-
+#ifdef _DEBUG
+    
     // IMapEditable을(를) 통해 상속됨
     virtual void OnSeletected(bool bSelected) override;
     virtual void Save_To_Json(json& Json) override;
 
     // IMapEditable을(를) 통해 상속됨
     virtual void Show_Gizmo() override;
-
-    // CGameObject을(를) 통해 상속됨
-    virtual CGameObject* Clone(void* pArg) override;
+#endif
 
 
 public:
+#ifdef _DEBUG
     // IMapEditable을(를) 통해 상속됨
     virtual void Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation) override;
     virtual void Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta);
     virtual void Fix_Y(_float Y);
     virtual void Update_SelectMode(float _fTimeDelta);
-
+#endif
 private:
     class CInput_Manager* m_pInputManager = { nullptr };
 
 protected:
     bool        m_bAblePicking = true;
+    CMapObject_Manager* m_pMapObject_Manager = nullptr;
 
 };
 

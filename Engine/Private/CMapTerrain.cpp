@@ -260,7 +260,7 @@ bool CMapTerrain::Is_Picked(_vector Origin, _vector Dir, float& Dist)
 
     return Result;
 }
-
+#ifdef _DEBUG
 void CMapTerrain::OnSeletected(bool bSelected)
 {
     m_bSelected = bSelected;
@@ -437,3 +437,4 @@ void CMapTerrain::Fix_Y(_float Y)
     m_pTransformCom->Set_State(STATE::POSITION,
         XMVectorSetY(vPos, Y));
 }
+#endif

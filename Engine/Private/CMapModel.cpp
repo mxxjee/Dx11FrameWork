@@ -96,9 +96,10 @@ HRESULT CMapModel::Render()
 
     }
 
+#ifdef _DEBUG
     if (m_pGameInstance->m_bDrawDebug)
         pColliderComp->Render();
-
+#endif
     return S_OK;
 }
 

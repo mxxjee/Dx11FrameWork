@@ -108,7 +108,11 @@ PS_OUT_BACKBUFFER PS_MAIN_COMBINED(PS_IN In)
     
     vector vShade = g_ShadeTexture.Sample(DefaultSampler, In.vTexcoord);
     
-    Out.vColor = vDiffuse*vShade;
+    float4 color = vDiffuse*vShade;
+    color = pow(saturate(color), 1.0 / 1.2);
+
+    Out.vColor = color;
+    
     return Out;
     
 }

@@ -34,6 +34,8 @@ HRESULT CBounding_Mesh::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _boo
     /*Render X*/
     return S_OK;
 }
+#endif
+
 _float3 CBounding_Mesh::Get_MaxBound(_vector vCenter)
 {
     return _float3(0.f,0.f,0.f);
@@ -42,7 +44,7 @@ _float3 CBounding_Mesh::Get_MinBound(_vector vCenter)
 {
     return _float3(0.f, 0.f, 0.f);
 }
-#endif
+
 
 CBounding_Mesh* CBounding_Mesh::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const BOUNDING_DESC* pInitialDesc)
 {

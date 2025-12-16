@@ -98,9 +98,10 @@ void CMapObject::Update_Render(_float fTimeDelta)
 HRESULT CMapObject::Render()
 {
 	__super::Render();
+#ifdef _DEBUG
 	if (m_pGameInstance->m_bDrawDebug)
 		pColliderComp->Render();
-
+#endif
 	return S_OK;
 }
 
@@ -178,7 +179,7 @@ void CMapObject::Free()
 	Safe_Release(pColliderComp);
 
 }
-
+#ifdef _DEBUG
 void CMapObject::OnSeletected(bool bSelected)
 {
 	m_bSelected = bSelected;
@@ -221,13 +222,6 @@ void CMapObject::Show_Gizmo()
 
 
 }
-
-CGameObject* CMapObject::Clone(void* pArg)
-{
-	return nullptr;
-}
-
-
 
 void CMapObject::Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation)
 {
@@ -338,4 +332,11 @@ void CMapObject::Update_SelectMode(float _fTimeDelta)
 
 	}
 }
+#endif
 
+
+
+CGameObject* CMapObject::Clone(void* pArg)
+{
+	return nullptr;
+}

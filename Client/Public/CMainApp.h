@@ -40,11 +40,13 @@ private:
 	
 
 private:
+#ifdef _DEBUG
 	/////////////////Create ImguiWindow/////////////////
 	void		CreateLevelDebugWindow();
 	void		CreateObjectDebugWindow();
 	void		CreateCameraDebugWindow();
 	void		CreateStateDebugWindow();
+#endif
 
 private:
 	ComPtr<ID3D11Device> m_pDevice;

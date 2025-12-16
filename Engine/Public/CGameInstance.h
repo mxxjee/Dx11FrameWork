@@ -107,12 +107,14 @@ public:
 	void            Clear_RenderGroups();
 	int             Get_RenderGroupCount();
 
-	void			Render_Debug();
+
 	void			Bind_And_Render_Lights();
 	void			Bind_Rect_Matricies();
 	void			Render_Combined();
 
 #ifdef _DEBUG
+	void			Render_Debug();
+
 	HRESULT Add_DebugComponent(class CComponent* pComponent);
 #endif
 #pragma endregion

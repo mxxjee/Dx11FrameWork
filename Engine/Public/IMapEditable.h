@@ -5,21 +5,22 @@
 NS_BEGIN(Engine)
 class ENGINE_DLL IMapEditable
 {
+
 public:
-	virtual void OnSeletected(bool bSelected) = 0;
-	virtual void Save_To_Json(json& Json) = 0;
+	virtual void OnSeletected(bool bSelected) {};
+	virtual void Save_To_Json(json& Json) {};
 	MapObjType Get_ObjType() { return m_eObjType; }
 
 
-	virtual void		Imgui_Render_Properties(_float3* vScale,_float3* vPosition,_float3* vRotation)=0;//Imguiâ Inspector Render
-	virtual void		Show_Gizmo() = 0;
+
+	virtual void		Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation) {};//Imguiâ Inspector Render
+	virtual void		Show_Gizmo() {};
 
 
-	virtual void Edit_Move(DIRECTION eDir,float fSpeed,float _fTimeDelta)=0;
-	virtual void Fix_Y(_float Y)=0;
+	virtual void Edit_Move(DIRECTION eDir, float fSpeed, float _fTimeDelta) {};
+	virtual void Fix_Y(_float Y) {};
 
 	virtual void Update_SelectMode(float _fTimeDelta) {};
-
 
 protected:
 	bool			m_bSelected = false;

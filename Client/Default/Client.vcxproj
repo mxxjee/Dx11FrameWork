@@ -153,7 +153,9 @@
     <ClInclude Include="..\Public\CAction_Condition.h" />
     <ClInclude Include="..\Public\CBackGround.h" />
     <ClInclude Include="..\Public\CButton.h" />
-    <ClInclude Include="..\Public\CCameraDebugWindow.h" />
+    <ClInclude Include="..\Public\CCameraDebugWindow.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\CDialogue_Manager.h" />
     <ClInclude Include="..\Public\CExplosion.h" />
     <ClInclude Include="..\Public\CFadeScreen.h" />
@@ -165,7 +167,9 @@
     <ClInclude Include="..\Public\CInteraction_Manager.h" />
     <ClInclude Include="..\Public\CInteraction_Rock.h" />
     <ClInclude Include="..\Public\CInteraction_TriggerBox.h" />
-    <ClInclude Include="..\Public\CLevelDebugWindow.h" />
+    <ClInclude Include="..\Public\CLevelDebugWindow.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\CLevel_NPCRoom.h" />
     <ClInclude Include="..\Public\CLevel_Town.h" />
     <ClInclude Include="..\Public\CLevel_Loading.h" />
@@ -198,7 +202,9 @@
     <ClInclude Include="..\Public\CNPC.h" />
     <ClInclude Include="..\Public\CNPC_Body.h" />
     <ClInclude Include="..\Public\CNPC_Richard.h" />
-    <ClInclude Include="..\Public\CObjectDebugWindow.h" />
+    <ClInclude Include="..\Public\CObjectDebugWindow.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\CPanel.h" />
     <ClInclude Include="..\Public\CPlayer.h" />
     <ClInclude Include="..\Public\CPlayerAttackState.h" />
@@ -225,7 +231,9 @@
     <ClInclude Include="..\Public\CRoomTrigger.h" />
     <ClInclude Include="..\Public\CRoom_Manager.h" />
     <ClInclude Include="..\Public\CSnow.h" />
-    <ClInclude Include="..\Public\CStateDebugWindow.h" />
+    <ClInclude Include="..\Public\CStateDebugWindow.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\CTerrain.h" />
     <ClInclude Include="..\Public\CTrigger_Box.h" />
     <ClInclude Include="..\Public\CUICreator.h" />
@@ -248,7 +256,9 @@
     <ClCompile Include="..\Private\CAction_Condition.cpp" />
     <ClCompile Include="..\Private\CBackGround.cpp" />
     <ClCompile Include="..\Private\CButton.cpp" />
-    <ClCompile Include="..\Private\CCameraDebugWindow.cpp" />
+    <ClCompile Include="..\Private\CCameraDebugWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\CDialogue_Manager.cpp" />
     <ClCompile Include="..\Private\CExplosion.cpp" />
     <ClCompile Include="..\Private\CFadeScreen.cpp" />
@@ -260,7 +270,9 @@
     <ClCompile Include="..\Private\CInteraction_Manager.cpp" />
     <ClCompile Include="..\Private\CInteraction_Rock.cpp" />
     <ClCompile Include="..\Private\CInteraction_TriggerBox.cpp" />
-    <ClCompile Include="..\Private\CLevelDebugWindow.cpp" />
+    <ClCompile Include="..\Private\CLevelDebugWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\CLevel_NPCRoom.cpp" />
     <ClCompile Include="..\Private\CLevel_Town.cpp" />
     <ClCompile Include="..\Private\CLevel_Loading.cpp" />
@@ -293,7 +305,9 @@
     <ClCompile Include="..\Private\CNPC.cpp" />
     <ClCompile Include="..\Private\CNPC_Body.cpp" />
     <ClCompile Include="..\Private\CNPC_Richard.cpp" />
-    <ClCompile Include="..\Private\CObjectDebugWindow.cpp" />
+    <ClCompile Include="..\Private\CObjectDebugWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\CPanel.cpp" />
     <ClCompile Include="..\Private\CPlayer.cpp" />
     <ClCompile Include="..\Private\CPlayerAttackState.cpp" />
@@ -320,7 +334,9 @@
     <ClCompile Include="..\Private\CRoomTrigger.cpp" />
     <ClCompile Include="..\Private\CRoom_Manager.cpp" />
     <ClCompile Include="..\Private\CSnow.cpp" />
-    <ClCompile Include="..\Private\CStateDebugWindow.cpp" />
+    <ClCompile Include="..\Private\CStateDebugWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\CTerrain.cpp" />
     <ClCompile Include="..\Private\CTrigger_Box.cpp" />
     <ClCompile Include="..\Private\CUI_Interactable.cpp">
@@ -387,6 +403,7 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
     </FxCompile>
     <FxCompile Include="..\..\Resource\Shader\Shader_VtxPosTex.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
@@ -400,11 +417,17 @@
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
     <FxCompile Include="..\..\Resource\Shader\Shader_VtxPosTex_Particle.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

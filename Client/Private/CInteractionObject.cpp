@@ -247,6 +247,9 @@ HRESULT CInteractionObject::Ready_PartObjects(void* pArg)
             return E_FAIL;
 
         m_pBody = dynamic_cast<CBody*>(Find_PartObject(L"Part_Body"));
+
+        if(m_pBody)
+            Safe_AddRef(m_pBody);
     }
 
     //아니라면 .static body할당
@@ -261,6 +264,8 @@ HRESULT CInteractionObject::Ready_PartObjects(void* pArg)
         if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"StaticBody"), L"Part_Body", &pBodyDesc)))
             return E_FAIL;
         m_pBody = dynamic_cast<CBody*>(Find_PartObject(L"Part_Body"));
+        if (m_pBody)
+            Safe_AddRef(m_pBody);
     }
 
 

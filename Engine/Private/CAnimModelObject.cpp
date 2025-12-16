@@ -93,7 +93,7 @@ void CAnimModelObject::Render_CurrentState_Animation()
         pCurrentAnim->Get_CurrentFrame(pCurrentAnim->Get_CurrentTrackPoistion()));
     ImGui::PopStyleColor();
 }
-#endif
+
 string CAnimModelObject::Convert_String_To_Enum(_uint eState)
 {
     string StateDebugStr = "";
@@ -118,6 +118,8 @@ string CAnimModelObject::Convert_String_To_Enum(_uint eState)
 
     return StateDebugStr;
 }
+
+#endif
 CAnimModelObject* CAnimModelObject::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
     CAnimModelObject* pInstance = new CAnimModelObject(_pDevice, _pDeviceContext);

@@ -462,10 +462,6 @@ int CGameInstance::Get_RenderGroupCount()
 	return m_pRenderer->Get_RenderGroupCount();
 }
 
-void CGameInstance::Render_Debug()
-{
-	return m_pRenderer->Render_Debug();
-}
 
 void CGameInstance::Bind_And_Render_Lights()
 {
@@ -482,11 +478,19 @@ void CGameInstance::Render_Combined()
 	return m_pRenderer->Render_Combined();
 }
 
+
+#ifdef _DEBUG
+void CGameInstance::Render_Debug()
+{
+	return m_pRenderer->Render_Debug();
+}
+
+
 HRESULT CGameInstance::Add_DebugComponent(CComponent* pComponent)
 {
 	return m_pRenderer->Add_DebugComponent((pComponent));
 }
-
+#endif
 HRESULT CGameInstance::Get_Buffer(ComPtr<ID3D11Texture2D>* pBuffer, UINT iFlag)
 {
 	return m_pGraphicDev->Get_Buffer(pBuffer,iFlag);
@@ -1069,6 +1073,7 @@ HRESULT CGameInstance::Unbind_RT_ShaderResource(const _wstring& strTargetTag, CS
 	return m_pTarget_Manager->Unbind_RT_ShaderResource(strTargetTag,pShader,pConstantName);
 }
 
+#ifdef _DEBUG
 HRESULT CGameInstance::Ready_RT_Debug(const _wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY)
 {
 	CheckNullResult(m_pTarget_Manager, E_FAIL);
@@ -1082,7 +1087,7 @@ HRESULT CGameInstance::Debug_RT_Render(const _wstring& strMRTTag, CShader* pShad
 	return m_pTarget_Manager->Render(strMRTTag, pShader, pVIBuffer);
 
 }
-
+#endif
 
 void CGameInstance::Release_Engine()
 {

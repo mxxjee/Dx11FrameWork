@@ -59,11 +59,13 @@ void CMapTrigger::Update_Render(_float fTimeDelta)
 
 HRESULT CMapTrigger::Render()
 {
+#ifdef _DEBUG
     if (CGameInstance::m_bDrawDebug)
     {
         if (pColliderComp)
             pColliderComp->Render();
     }
+#endif
     return S_OK;
 }
 
@@ -109,13 +111,13 @@ bool CMapTrigger::Is_Picked(_vector Origin, _vector Dir, float& Dist)
 
 
 
-
+#ifdef _DEBUG
 void CMapTrigger::Imgui_Render_Properties(_float3* vScale, _float3* vPosition, _float3* vRotation)
 {
     __super::Imgui_Render_Properties(vScale, vPosition, vRotation);
     
 }
-
+#endif
 HRESULT CMapTrigger::Ready_Component(void* pArg)
 {
     MapObject_DESC* Desc = static_cast<MapObject_DESC*>(pArg);

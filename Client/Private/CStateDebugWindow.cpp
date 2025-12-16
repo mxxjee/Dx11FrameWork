@@ -3,7 +3,7 @@
 #include "CPlayer.h"
 #include "CImgui_Checkbox.h"
 
-
+#ifdef _DEBUG
 USING(Client)
 CStateDebugWindow::CStateDebugWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CImgui_Window(pDevice,pContext)
@@ -76,3 +76,4 @@ CStateDebugWindow* CStateDebugWindow::Create(ComPtr<ID3D11Device> pDevice, ComPt
 void CStateDebugWindow::Free()
 {
 }
+#endif // _DEBUG

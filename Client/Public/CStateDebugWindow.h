@@ -1,4 +1,5 @@
 #pragma once
+#ifdef _DEBUG
 #include "CImgui_Window.h"
 #include "Client_Defines.h"
 
@@ -46,3 +47,4 @@ private:
 };
 NS_END
 
+#endif // _DEBUG

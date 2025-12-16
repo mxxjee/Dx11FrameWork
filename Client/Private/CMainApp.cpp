@@ -480,6 +480,8 @@ void CMainApp::Free()
 
 #pragma endregion
 
+
+#ifdef _DEBUG
 void CMainApp::CreateLevelDebugWindow()
 {
 	CImgui_Window::IMGUIWINDOW_DESC Desc;
@@ -517,6 +519,7 @@ void CMainApp::CreateCameraDebugWindow()
 
 }
 
+
 void CMainApp::CreateStateDebugWindow()
 {
 	CImgui_Window::IMGUIWINDOW_DESC Desc;
@@ -531,5 +534,5 @@ void CMainApp::CreateStateDebugWindow()
 }
 
 
-
+#endif
 

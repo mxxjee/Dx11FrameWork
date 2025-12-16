@@ -59,8 +59,8 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_NPC(L"NPC_Layer")))
         return E_FAIL;
 
-    //if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
-    //    return E_FAIL;  
+    if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
+        return E_FAIL;  
 
     if (FAILED(Ready_Layer_UI(L"UI_Layer")))
         return E_FAIL;
@@ -504,6 +504,7 @@ void CLevel_Town::OnEnter()
     }
 
 
+#ifdef _DEBUG
     CStateDebugWindow* pWindow = dynamic_cast<CStateDebugWindow*>(CImGui_Manager::GetInstance()->Find_Window("StateDebugWindow"));
     if (pWindow)
     {
@@ -519,7 +520,7 @@ void CLevel_Town::OnEnter()
             
 
     }
-    
+#endif
 
     //////현재씬의 itneraction 등록
     CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::TOWN));

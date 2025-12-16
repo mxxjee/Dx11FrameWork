@@ -176,7 +176,7 @@ void CGameObject::Render_Transform_Imgui()
 
 
 }
-
+#endif //  _DEBUG
 void CGameObject::PushOut(_float3 vOutPush)
 {
     if (m_pTransformCom)
@@ -184,7 +184,7 @@ void CGameObject::PushOut(_float3 vOutPush)
 }
 
 
-#endif //  _DEBUG
+
 
 void CGameObject::Free()
 {
