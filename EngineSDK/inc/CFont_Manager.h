@@ -1,6 +1,7 @@
 #pragma once
 #include "CBase.h"
 
+/*SpriteFont를 관리한다.*/
 NS_BEGIN(Engine)
 class CFont_Manager final:
     public CBase
@@ -13,13 +14,9 @@ private:
 public:
 	HRESULT Initialize();
 	HRESULT Add_Font(const _wstring& strFontTag, const _tchar* pFontFilePath);
-	HRESULT Draw_Text(const _wstring& strFontTag, const _tchar* pText, const _float2& vPosition, _fvector vColor);
-
-
-
-private:
-	class CFont* Find_Font(const _wstring& strFontTag);
-
+public:
+	class SpriteFont* Find_Font(const _wstring& strFontTag);
+	SpriteBatch* Get_Batch() { return m_pBatch; }
 public:
 	static CFont_Manager* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
 
@@ -29,7 +26,7 @@ private:
 	ComPtr<ID3D11Device> m_pDevice = { nullptr };
 	ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };
 	SpriteBatch* m_pBatch = { nullptr };
-	map<const _wstring, class CFont*>		m_Fonts;
+	map<const _wstring, class SpriteFont*>		m_Fonts;
 
 };
 

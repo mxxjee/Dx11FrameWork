@@ -7,9 +7,6 @@
     <ClInclude Include="framework.h">
       <Filter>9999.Default</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>9999.Default</Filter>
-    </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>9999.Default</Filter>
     </ClInclude>
@@ -269,6 +266,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\CLocation_Condition.h">
       <Filter>96.Managers\QuestManager\QuestCondition\LocationCondition</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>9999.Default</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CFontUI.h">
+      <Filter>02.GameObjects\99.UI\02.Font</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -589,6 +592,9 @@
     <Filter Include="96.Managers\QuestManager\QuestCondition\LocationCondition">
       <UniqueIdentifier>{7fee44f3-f134-4ca3-8cda-0f47c781b25c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.UI\02.Font">
+      <UniqueIdentifier>{a46854be-9167-4b2b-835c-24cf74895794}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -838,6 +844,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CLocation_Condition.cpp">
       <Filter>96.Managers\QuestManager\QuestCondition\LocationCondition</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CFontUI.cpp">
+      <Filter>02.GameObjects\99.UI\02.Font</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

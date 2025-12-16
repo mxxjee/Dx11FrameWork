@@ -11,6 +11,7 @@ namespace UICreator
 
 	HRESULT		Create_HeartGroup(wstring LayerTag);
 	HRESULT		Create_Interaction_UI(wstring LayerTag);
+	HRESULT		Create_Interaction_TalkUI(wstring LayerTag);
 
 	extern CGameInstance* m_pGameInstance;
 	

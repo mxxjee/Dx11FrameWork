@@ -1014,10 +1014,16 @@ HRESULT CGameInstance::Add_Font(const _wstring& strFontTag, const _tchar* pFontF
 	return m_pFont_Manager->Add_Font(strFontTag, pFontFilePath);
 }
 
-HRESULT CGameInstance::Draw_Text(const _wstring& strFontTag, const _tchar* pText, const _float2& vPosition, _fvector vColor)
+SpriteFont* CGameInstance::Find_Font(const _wstring& strFontTag)
 {
-	return m_pFont_Manager->Draw_Text(strFontTag, pText, vPosition, vColor);
+	return m_pFont_Manager->Find_Font(strFontTag);
 }
+
+SpriteBatch* CGameInstance::Get_Batch()
+{
+	return m_pFont_Manager->Get_Batch();
+}
+
 
 HRESULT CGameInstance::Invoke(float _fTime, float _finterval, bool _bRepeat, bool _bCancelled, std::function<void()> cb, CGameObject* pOwner)
 {

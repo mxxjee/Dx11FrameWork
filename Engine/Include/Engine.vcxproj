@@ -176,7 +176,7 @@
     <ClInclude Include="..\Public\CContainerObject.h" />
     <ClInclude Include="..\Public\CEventBus_Manager.h" />
     <ClInclude Include="..\Public\CFolder.h" />
-    <ClInclude Include="..\Public\CFont.h" />
+    <ClInclude Include="..\Public\CFontComponent.h" />
     <ClInclude Include="..\Public\CFont_Manager.h" />
     <ClInclude Include="..\Public\CGravity.h" />
     <ClInclude Include="..\Public\CHotKey_Manager.h" />
@@ -346,7 +346,7 @@
     <ClCompile Include="..\Private\CContainerObject.cpp" />
     <ClCompile Include="..\Private\CEventBus_Manager.cpp" />
     <ClCompile Include="..\Private\CFolder.cpp" />
-    <ClCompile Include="..\Private\CFont.cpp" />
+    <ClCompile Include="..\Private\CFontComponent.cpp" />
     <ClCompile Include="..\Private\CFont_Manager.cpp" />
     <ClCompile Include="..\Private\CGravity.cpp" />
     <ClCompile Include="..\Private\CHotKey_Manager.cpp" />

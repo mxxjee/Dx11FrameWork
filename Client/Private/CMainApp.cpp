@@ -207,10 +207,12 @@ HRESULT CMainApp::Initialize_Cilent()
 
 HRESULT CMainApp::Ready_Fonts()
 {
-	//¸¼Àº°íµñÀ¸·Î Å×½ºÆ®
-	if (FAILED(pGameInstance->Add_Font(TEXT("Font_Default"), TEXT("../..//Resource/Fonts/156ex.spritefont"))))
+
+	if (FAILED(pGameInstance->Add_Font(TEXT("Zelda_Default"), TEXT("../../Resource/Fonts/Zelda_Default.spritefont"))))
 		return E_FAIL;
 
+	if (FAILED(pGameInstance->Add_Font(TEXT("Dialogue_Default"), TEXT("../../Resource/Fonts/Dialogue_Default.spritefont"))))
+		return E_FAIL;
 	return S_OK;
 }
 

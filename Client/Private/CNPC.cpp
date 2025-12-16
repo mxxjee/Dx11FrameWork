@@ -140,6 +140,11 @@ bool CNPC::IsInteratable()
 void CNPC::Enter_InteractRange()
 {
     //말걸기 UI 활성화..
+    _vector ShowPos = MathUtils::WorldToScreen(m_pTransformCom->Get_State(STATE::POSITION),
+        m_pGameInstance->Get_ViewMatrix(0), m_pGameInstance->Get_ProjMatrix(0), g_iWinSizeX, g_iWinSizeY);
+
+
+    m_pGameInstance->BroadCastEvent(L"OnTalkUIShow", (void*)&ShowPos);
 
 }
 
@@ -156,6 +161,7 @@ void CNPC::Stay_InteractRange(_float fTimeDelta)
 
 void CNPC::Exit_InteractRange()
 {
+    m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", (void*)nullptr);
 }
 
 void CNPC::Enter_Interaction()
@@ -191,6 +197,8 @@ void CNPC::Stay_Interaction(_float fTimeDelta)
 void CNPC::Exit_Interaction()
 {
     m_bTalking = false;
+    m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide", nullptr);
+
     m_pPlayer->Get_ActionControl()->m_bTalk = false;
     m_pAnimBody->Reserve_Animation(L"wait", true);
 

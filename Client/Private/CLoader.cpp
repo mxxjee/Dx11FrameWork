@@ -9,6 +9,8 @@
 #include "CMinimapQuad.h"
 #include "CScreenQuad.h"
 #include "CButton.h"
+#include "CFontUI.h"
+
 
 ///////////////Component//////////////////////
 #include "CNavigation.h"
@@ -23,6 +25,7 @@
 #include "COBBColliderComponent.h"
 #include "CVIBuffer_Particle_Rect.h"
 #include "CVIBuffer_Particle_Point.h"
+#include "CFontComponent.h"
 
 
 
@@ -351,6 +354,7 @@ HRESULT CLoader::Register_Textures()
 
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Logo/", L".dds");
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Interaction/", L".dds");
+    m_pGameInstance->Load_Textures(L"../../Resource/UI/NPC/", L".dds");
 
 
     return S_OK;
@@ -462,7 +466,8 @@ HRESULT CLoader::Register_Components()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"OBBCollider"), COBBColliderComponent::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-   
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Font"), CFontComponent::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
     return S_OK;
 }
 
@@ -546,6 +551,8 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Button", CButton::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"FontUI", CFontUI::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
     ////////////////Monsters//////////////////
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Monster", CMonster::Create(m_pDevice, m_pDeviceContext))))

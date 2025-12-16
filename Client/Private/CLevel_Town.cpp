@@ -33,6 +33,7 @@
 #include "CRoomTrigger.h"
 #include "CQuest_Manager.h"
 
+#include "CFontUI.h"
 USING(Client)
 
 CLevel_Town::CLevel_Town(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -139,6 +140,12 @@ void CLevel_Town::Update(const _float fTimeDelta)
 
     }
 
+    /*if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::A))
+        m_pGameInstance->BroadCastEvent(L"OnDialogueUIShow",nullptr);
+
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::B))
+        m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide",nullptr);*/
+
     return;
 
 }
@@ -228,8 +235,11 @@ HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
     /////Interaction 관련 PopUp UI
     if (FAILED(UICreator::Create_Interaction_UI(strLayerTag)))
         return E_FAIL;
+    /////Interaction 관련 PopUp UI
+    if (FAILED(UICreator::Create_Interaction_TalkUI(strLayerTag)))
+        return E_FAIL;
 
-
+#pragma region MinimapQuad
     ///////////////////Minimapquad생성
     CUI::tagUIDesc        MinimapDesc = {};
     MinimapDesc.ObjTag = L"MinimapQuad";
@@ -273,8 +283,216 @@ HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
         ENUM_TO_UINT(LEVEL_ID::TOWN),
         strLayerTag, &Desc)))
         return E_FAIL;
+#pragma endregion
+
+#pragma region NPC_DialogueBox
+    UIGroup NPC_DialogueBox;
+    NPC_DialogueBox.Key = L"NPC_DialogueBox";
+
+#pragma region 박스만들기
+    _float OriginY = (g_iWinSizeY >> 1) + 100.f;
+
+    CUI::tagUIDesc        DialogueBoxDesc = {};
+
+    DialogueBoxDesc.ObjTag = L"DialogueBox";
+    DialogueBoxDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+    DialogueBoxDesc.TextureKey = L"DialogueBox";
+
+    DialogueBoxDesc.iIdx = 0;
+
+    DialogueBoxDesc.fSizeX = 600.f;
+    DialogueBoxDesc.fSizeY = 250.f * 0.8f;
+    DialogueBoxDesc.fX = g_iWinSizeX >> 1;
+    DialogueBoxDesc.fY = OriginY;
 
 
+    TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    DialogueBoxDesc.TransformDesc = &TransDesc;
+
+    //AlphaAnim등록
+    CUIComponent::UICOMP_DESC  UIDesc = {};
+    DialogueBoxDesc.UICompDesc = &UIDesc;
+
+    CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &DialogueBoxDesc);
+    if (pObj)
+    {
+        CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), strLayerTag, pInstance)))
+            return E_FAIL;
+
+
+        NPC_DialogueBox.Objects.push_back(pInstance);
+
+    }
+#pragma endregion
+#pragma region 말하는 폰트만들기
+    ///폰트먼저만들기
+    CFontUI::FONTUI_DESC FontUIDesc;
+    FontUIDesc.FontName = L"Dialogue_Default";
+    FontUIDesc.vDefaultFontColor = _float4(1.f, 1.f, 1.f, 0.5f);
+    FontUIDesc.ObjTag = L"Dialogue_Text";
+    FontUIDesc.fSizeX = 0.5f;
+    FontUIDesc.fSizeY = 0.5f;
+
+    FontUIDesc.fX = DialogueBoxDesc.fX;
+    FontUIDesc.fY = OriginY+400.f;
+
+    FontUIDesc.Depth = 0.5f-(0.01f);
+
+    FontUIDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+    TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    FontUIDesc.TransformDesc = &TransDesc;
+
+    UIDesc = {};
+    FontUIDesc.UICompDesc = &UIDesc;
+
+    pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FontUI"), &FontUIDesc);
+    CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), strLayerTag, pInstance)))
+        return E_FAIL;
+
+
+    NPC_DialogueBox.Objects.push_back(pInstance);
+
+
+    wstring Text = L"안녕하세요";
+
+    //폰트 이벤트 바인딩
+    CGameInstance::GetInstance()->RegisterEvent(L"UpdateNPCText", [](void* pData)
+        {
+            wstring* Text = static_cast<wstring*>(pData);
+
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"NPC_DialogueBox");
+            if (pGroup)
+            {
+                for (auto& pObj : pGroup->Objects)
+                {
+                    if (pObj->Get_Tag() == L"Dialogue_Text")
+                    {
+                        CFontUI* pText = dynamic_cast<CFontUI*>(pObj);
+                        if (pText)
+                            pText->Set_Text(*Text);
+                    }
+                }
+            }
+        });
+#pragma endregion
+#pragma region 이름폰트만들기
+
+    CFontUI::FONTUI_DESC NameUIDesc;
+
+    NameUIDesc.FontName = L"Zelda_Default";
+    NameUIDesc.vDefaultFontColor = _float4(0.8f, 0.8f, 0.8f, 1.f);
+    NameUIDesc.ObjTag = L"Dialogue_Text_Name";
+    NameUIDesc.fSizeX = 0.4f;
+    NameUIDesc.fSizeY = 0.4f;
+  
+    NameUIDesc.fX = DialogueBoxDesc.fX - (DialogueBoxDesc.fX*0.3f);
+    NameUIDesc.fY = OriginY+100.f;
+
+    NameUIDesc.Depth = 0.5f - (0.01f);
+
+    NameUIDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+    TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    NameUIDesc.TransformDesc = &TransDesc;
+
+    UIDesc = {};
+    NameUIDesc.UICompDesc = &UIDesc;
+
+    pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FontUI"), &NameUIDesc);
+    pInstance = dynamic_cast<CGameObject*>(pObj);
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), strLayerTag, pInstance)))
+        return E_FAIL;
+
+
+    NPC_DialogueBox.Objects.push_back(pInstance);
+
+
+    //폰트 이벤트 바인딩
+    CGameInstance::GetInstance()->RegisterEvent(L"UpdateNPCName", [](void* pData)
+        {
+            wstring* Text = static_cast<wstring*>(pData);
+
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"NPC_DialogueBox");
+            if (pGroup)
+            {
+                for (auto& pObj : pGroup->Objects)
+                {
+                    if (pObj->Get_Tag() == L"Dialogue_Text_Name")
+                    {
+                        CFontUI* pText = dynamic_cast<CFontUI*>(pObj);
+                        if (pText)
+                            pText->Set_Text(*Text);
+                    }
+                }
+            }
+        });
+
+
+
+#pragma endregion
+
+    m_pGameInstance->Register_UIGroup(NPC_DialogueBox);
+    m_pGameInstance->SetActiveGroup(L"NPC_DialogueBox", false);
+
+
+
+#pragma region 대화상자 등장/끝 이벤트
+    m_pGameInstance->RegisterEvent(L"OnDialogueUIShow", [](void* pData)
+        {
+          
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"NPC_DialogueBox");
+            if (pGroup)
+            {
+                for (auto& i : pGroup->Objects)
+                {
+                    CUI* pUI = dynamic_cast<CUI*>(i);
+                    if (pUI)
+                    {
+
+                        pUI->Set_ActiveAnim(0, [pUI]()
+                            {
+                                pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 10.f, false, false);
+                            });
+
+                        if (!pUI->Is_Active())
+                            pUI->OnActivated(true);
+
+                    }
+                }
+            }
+        });
+
+    m_pGameInstance->RegisterEvent(L"OnDialogueUIHide", [](void* pData)
+        {
+
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"NPC_DialogueBox");
+            if (pGroup)
+            {
+                for (auto& i : pGroup->Objects)
+                {
+                    CUI* pUI = dynamic_cast<CUI*>(i);
+                    if (pUI)
+                    {
+                    
+                    pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 10.f, false, true);
+                   
+
+                    }
+                }
+            }
+        });
+
+
+#pragma endregion
     return S_OK;
 
 }
@@ -383,6 +601,7 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
     pDesc.ModelName = L"RichardAnim";
     pDesc.SceneName = "Level_Town";
     pDesc.m_iLevelID = m_iLevelID;
+    pDesc.TalkRange = 2.f;
 
 
     pDesc.TransformDesc = &pTransDesc;
@@ -525,9 +744,15 @@ void CLevel_Town::OnEnter()
     //////현재씬의 itneraction 등록
     CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::TOWN));
 
-
+    
     CheckNull(pFadeScreen);
     pFadeScreen->PlayFadeOut();
+
+    wstring Text = L"안녕하세요";
+    wstring NameText = L"마마샤";
+
+    CGameInstance::GetInstance()->BroadCastEvent(L"UpdateNPCText", &Text);
+    CGameInstance::GetInstance()->BroadCastEvent(L"UpdateNPCName", &NameText);
 }
 
 void CLevel_Town::OnResume(_uint iPreLevel)

@@ -1,6 +1,7 @@
 #include "CDialogue_Manager.h"
 #include "CQuest_Manager.h"
 #include <iostream>
+#include "CGameInstance.h"
 
 IMPLEMENT_SINGLETON(CDialogue_Manager)
 
@@ -29,6 +30,8 @@ void CDialogue_Manager::StartDialogue(string strModelID)
 
         //인덱스초기화
         m_pActiveChapter->iCurrentStepIndex = 0;
+
+        CGameInstance::GetInstance()->BroadCastEvent(L"OnDialogueUIShow", nullptr);
 
         //첫번째문장실행
         AdvanceDialogueStep();
@@ -124,7 +127,7 @@ bool CDialogue_Manager::AdvanceDialogueStep()
         ExecuteActionCommand(CurrentStep.strActionCommand, CurrentStep.actionTiming); 
     
     m_CurrentWstr = CurrentStep.strText;
-    OutputDebugString(m_CurrentWstr.c_str());
+    CGameInstance::GetInstance()->BroadCastEvent(L"UpdateNPCText", &m_CurrentWstr);
 
 
     pChapter->iCurrentStepIndex++;

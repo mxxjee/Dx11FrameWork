@@ -350,8 +350,8 @@ public:
 
 #pragma region FontManager
 	 HRESULT Add_Font(const _wstring& strFontTag, const _tchar* pFontFilePath);
-	 HRESULT Draw_Text(const _wstring& strFontTag, const _tchar* pText, const _float2& vPosition, _fvector vColor = XMVectorSet(1.f, 1.f, 1.f, 1.f));
-
+	 class	SpriteFont* Find_Font(const _wstring& strFontTag);
+	 SpriteBatch* Get_Batch();
 #pragma endregion
 
 

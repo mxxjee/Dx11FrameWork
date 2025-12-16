@@ -451,6 +451,9 @@
     <Filter Include="98.ShaderFiles">
       <UniqueIdentifier>{49cfbd80-e3ad-421b-b7f0-a7c9bbfa9a93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Component\Font">
+      <UniqueIdentifier>{70723663-a481-426d-b255-697c25eba865}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -834,9 +837,6 @@
     <ClInclude Include="..\Public\CFont_Manager.h">
       <Filter>00.System\18.Font</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CFont.h">
-      <Filter>00.System\18.Font\Font</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CMapInteractObject.h">
       <Filter>998.MapTool\Object\MapInteractionObj</Filter>
     </ClInclude>
@@ -889,6 +889,9 @@
       <Filter>00.System\20.RenderTargets\RenderTarget</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CTarget_Manager.h" />
+    <ClInclude Include="..\Public\CFontComponent.h">
+      <Filter>05.Component\Font</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -1228,9 +1231,6 @@
     <ClCompile Include="..\Private\CFont_Manager.cpp">
       <Filter>00.System\18.Font</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CFont.cpp">
-      <Filter>00.System\18.Font\Font</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CMapInteractObject.cpp">
       <Filter>998.MapTool\Object\MapInteractionObj</Filter>
     </ClCompile>
@@ -1277,6 +1277,9 @@
       <Filter>00.System\20.RenderTargets\RenderTarget</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CTarget_Manager.cpp" />
+    <ClCompile Include="..\Private\CFontComponent.cpp">
+      <Filter>05.Component\Font</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resource\Shader\Engine_Shader_Defines.hlsli">

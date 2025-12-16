@@ -155,7 +155,8 @@ namespace Engine
 		NAVIGATION,
 		GRAVITYCOM,
 		PARTICLE,
-		UI
+		UI,
+		FONT
 	};
 
 	enum class D3DTS { VIEW, PROJ, END };
