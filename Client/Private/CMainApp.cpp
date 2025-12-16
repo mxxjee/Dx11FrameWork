@@ -377,6 +377,13 @@ void CMainApp::Free()
 
 	Safe_Release(pGameInstance);
 	CInteraction_Manager::GetInstance()->DestroyInstance();
+
+	if (m_pContext)
+	{
+		m_pContext->ClearState();
+		m_pContext->Flush();
+	}
+
 	CGameManager::GetInstance()->DestroyInstance();
 }
 

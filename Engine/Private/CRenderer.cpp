@@ -274,7 +274,17 @@ HRESULT CRenderer::Add_DebugComponent(CComponent* pComponent)
 
 void CRenderer::Bind_And_Render_Lights()
 {
-	
+	ID3D11ShaderResourceView* nullSRVs[16] = { nullptr };
+	m_pContext->VSSetShaderResources(0, 16, nullSRVs); // Vertex Shader
+	m_pContext->PSSetShaderResources(0, 16, nullSRVs); // Pixel Shader
+	// 필요하다면 GS, DS, HS 등 다른 쉐이더 단계도 추가
+
+	// 2. 모든 Unordered Access View (UAV) 해제 (Compute Shader를 쓴다면 필요)
+	// m_pContext->CSSetUnorderedAccessViews(0, 1, nullptr, nullptr); 
+
+	// 3. 모든 Render Target View (RTV) 및 Depth Stencil View (DSV) 해제
+	//    (Begin_MRT가 처리하지만, 명시적으로 비우는 것도 안전합니다.)
+
 
 	if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_LightAcc"))))
 		return;

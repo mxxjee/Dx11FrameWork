@@ -39,6 +39,8 @@ HRESULT CTarget_Manager::Add_MRT(const _wstring& strMRTTag, const _wstring& strT
     }
     else
         pMRTList->push_back(pRenderTarget);
+
+  
     return S_OK;
 }
 
@@ -50,7 +52,7 @@ HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag)
     CheckNullResult(pMRTList, E_FAIL);
 
     //현재 ㅏㅂ인딩되어있는 백버퍼를 저장한다.
-    m_pContext->OMGetRenderTargets(1, m_pBackBuffer.GetAddressOf(), m_pDSV.GetAddressOf());
+    m_pContext->OMGetRenderTargets(1, m_pBackBuffer.ReleaseAndGetAddressOf(), m_pDSV.ReleaseAndGetAddressOf());
 
     ID3D11RenderTargetView* pRTVs[8] = { nullptr };
     _uint   iNumRenderTargets = { };
@@ -62,19 +64,15 @@ HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag)
     }
     
     m_pContext->OMSetRenderTargets(iNumRenderTargets, pRTVs, m_pDSV.Get());
+    
 
     return S_OK;
 }
 
 HRESULT CTarget_Manager::End_MRT()
 {
-    ID3D11RenderTargetView* pRenderTargets[8] = {
-         m_pBackBuffer.Get()
-    };
-
-    m_pContext->OMSetRenderTargets(8, pRenderTargets, m_pDSV.Get());
-
-
+    ID3D11RenderTargetView* pRTV = m_pBackBuffer.Get();
+    m_pContext->OMSetRenderTargets(1, &pRTV, m_pDSV.Get());
     return S_OK;
 }
 
@@ -162,4 +160,7 @@ void CTarget_Manager::Free()
     m_MRTs.clear();
 
 
+
+
+ 
 }
