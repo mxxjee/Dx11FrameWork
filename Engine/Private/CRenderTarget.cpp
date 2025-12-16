@@ -42,18 +42,25 @@ HRESULT CRenderTarget::Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT ePixe
     return S_OK;
 }
 
+void CRenderTarget::Clear()
+{
+    m_pContext->ClearRenderTargetView(m_pRTV.Get(), reinterpret_cast<_float*>(&m_vClearColor));
+}
+
 #ifdef _DEBUG
 HRESULT CRenderTarget::Ready_Debug(_float fX, _float fY, _float fSizeX, _float fSizeY)
 {
-    _uint      iNumViewPots = {};
+    _uint      iNumViewPots = 1;
     D3D11_VIEWPORT      ViewPortDesc = {};
 
 
     m_pContext->RSGetViewports(&iNumViewPots, &ViewPortDesc);
 
 
-    XMStoreFloat4x4(&m_WorldMatrix, XMMatrixScaling(fSizeX, fSizeY, 1.f) * XMMatrixTranslation(fX - ViewPortDesc.Width * 0.5f,
-        -fY + ViewPortDesc.Height * 0.5f , 0));
+    XMStoreFloat4x4(&m_WorldMatrix,
+        XMMatrixScaling(fSizeX, fSizeY, 1.f) *
+        XMMatrixTranslation(fX - ViewPortDesc.Width * 0.5f, -fY + ViewPortDesc.Height * 0.5f, 0.f)
+    );
    return S_OK;
 }
 
@@ -65,7 +72,7 @@ HRESULT CRenderTarget::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
     if (FAILED(pShader->Bind_SRV("g_Texture",m_pSRV)))
         return E_FAIL;
 
-    if (FAILED(pShader->Begin("Default")))
+    if (FAILED(pShader->Begin("Debug")))
         return E_FAIL;
 
     if (FAILED(pVIBuffer->Render()))
@@ -75,6 +82,11 @@ HRESULT CRenderTarget::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 #endif // _DEBUG
 
 
+
+HRESULT CRenderTarget::Bind_ShaderResource(CShader* pShader, const _char* pConstantName)
+{
+    return pShader->Bind_SRV(pConstantName,m_pSRV);
+}
 
 CRenderTarget* CRenderTarget::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
 {

@@ -100,13 +100,19 @@ void CNPC::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
     m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::NONALPHA), this);
-
+    
+#ifdef _DEBUG
+    if (CGameInstance::m_bDrawDebug)
+    {
+        if (m_pGameInstance->Add_DebugComponent(m_pCollider))
+            return;
+    }
+#endif
 }
 
 HRESULT CNPC::Render()
 {
-    if (m_pGameInstance->m_bDrawDebug)
-        m_pCollider->Render();
+  
 
     return S_OK;
 }

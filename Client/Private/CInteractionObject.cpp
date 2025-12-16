@@ -126,15 +126,19 @@ void CInteractionObject::Update_Render(_float fTimeDelta)
     __super::Update_Render(fTimeDelta);
     m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(m_eRenderGroup), this);
 
+#ifdef _DEBUG
+    if (CGameInstance::m_bDrawDebug)
+    {
+        if (FAILED(m_pGameInstance->Add_DebugComponent(m_pCollider)))
+            return;
+    }
+#endif
 }
 
 HRESULT CInteractionObject::Render()
 {
     __super::Render();
-    if (CGameInstance::m_bDrawDebug)
-    {
-        m_pCollider->Render();
-    }
+   
 
 
     return S_OK;

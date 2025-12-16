@@ -1,5 +1,7 @@
 #include "CTarget_Manager.h"
 #include "CRenderTarget.h"
+#include "CShader.h"
+
 
 CTarget_Manager::CTarget_Manager(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :m_pDevice(pDevice),m_pContext(pContext)
@@ -15,7 +17,7 @@ HRESULT CTarget_Manager::Add_RenderTarget(const _wstring& strTargetTag, _uint iW
     CRenderTarget* pNewRenderTarget = CRenderTarget::Create(m_pDevice, m_pContext, iWidth, iHeight, ePixelFormat, vClearColor);
     CheckNullResult(pNewRenderTarget, E_FAIL);
 
-    m_RenderTargets.emplace(strTargetTag, pRenderTarget);
+    m_RenderTargets.emplace(strTargetTag, pNewRenderTarget);
 
     return S_OK;
 }
@@ -35,24 +37,27 @@ HRESULT CTarget_Manager::Add_MRT(const _wstring& strMRTTag, const _wstring& strT
         MRTList.push_back(pRenderTarget);
         m_MRTs.emplace(strMRTTag, MRTList);
     }
-
+    else
+        pMRTList->push_back(pRenderTarget);
     return S_OK;
 }
 
 HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag)
 {
+    m_pContext->PSSetShader(nullptr, nullptr, 0);
     //내가 지정한 멀티렌더타겟안에있는 타겟들을 순서대로 장치에 동시에 바인딩한다
     list<CRenderTarget*>*     pMRTList = Find_MRT(strMRTTag);
     CheckNullResult(pMRTList, E_FAIL);
 
     //현재 ㅏㅂ인딩되어있는 백버퍼를 저장한다.
-    m_pContext->OMGetRenderTargets(0, &m_pBackBuffer, &m_pDSV);
+    m_pContext->OMGetRenderTargets(1, m_pBackBuffer.GetAddressOf(), m_pDSV.GetAddressOf());
 
     ID3D11RenderTargetView* pRTVs[8] = { nullptr };
     _uint   iNumRenderTargets = { };
 
     for (auto& RenderTarget : *pMRTList)
     {
+        RenderTarget->Clear();
         pRTVs[iNumRenderTargets++] = RenderTarget->Get_RTV().Get();
     }
     
@@ -69,10 +74,16 @@ HRESULT CTarget_Manager::End_MRT()
 
     m_pContext->OMSetRenderTargets(8, pRenderTargets, m_pDSV.Get());
 
-    Safe_Release(m_pBackBuffer);
-    Safe_Release(m_pDSV);
 
     return S_OK;
+}
+
+HRESULT CTarget_Manager::Bind_RT_ShaderResource(const _wstring& strTargetTag, CShader* pShader, const _char* pConstantName)
+{
+    CRenderTarget* pRenderTarget = Find_RenderTarget(strTargetTag);
+    CheckNullResult(pRenderTarget, E_FAIL);
+
+    return pRenderTarget->Bind_ShaderResource(pShader,pConstantName);
 }
 
 #ifdef  _DEBUG
@@ -113,6 +124,15 @@ CRenderTarget* CTarget_Manager::Find_RenderTarget(const _wstring& strTargetTag)
     return iter->second;
 }
 
+HRESULT CTarget_Manager::Unbind_RT_ShaderResource(const _wstring& strTargetTag, CShader* pShader, const _char* pConstantName)
+{
+    CRenderTarget* pRenderTarget = Find_RenderTarget(strTargetTag);
+    CheckNullResult(pRenderTarget, E_FAIL);
+    ComPtr<ID3D11ShaderResourceView> pNullSRV = nullptr;
+    // (2) 해당 쉐이더 변수에 NULL을 바인딩하여 해제합니다.
+    return pShader->Bind_SRV(pConstantName, pNullSRV); // 핵심: nullptr을 넘긴다!
+}
+
 list<class CRenderTarget*>* CTarget_Manager::Find_MRT(const _wstring& strMRTTag)
 {
     auto    iter = m_MRTs.find(strMRTTag);
@@ -131,12 +151,15 @@ void CTarget_Manager::Free()
 {
     __super::Free();
 
+    
     for (auto& Pair : m_MRTs)
     {
         for (auto& pRenderTarget : Pair.second)
             Safe_Release(pRenderTarget);
         Pair.second.clear();
     }
+
     m_MRTs.clear();
+
 
 }

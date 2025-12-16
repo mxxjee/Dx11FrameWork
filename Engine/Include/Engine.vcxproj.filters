@@ -448,6 +448,9 @@
     <Filter Include="00.System\20.RenderTargets\RenderTarget">
       <UniqueIdentifier>{1e80a376-55f7-440f-929b-53f09c4a5bde}</UniqueIdentifier>
     </Filter>
+    <Filter Include="98.ShaderFiles">
+      <UniqueIdentifier>{49cfbd80-e3ad-421b-b7f0-a7c9bbfa9a93}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -1274,5 +1277,15 @@
       <Filter>00.System\20.RenderTargets\RenderTarget</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CTarget_Manager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Resource\Shader\Engine_Shader_Defines.hlsli">
+      <Filter>98.ShaderFiles</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\Resource\Shader\Shader_Deferred.hlsl">
+      <Filter>98.ShaderFiles</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

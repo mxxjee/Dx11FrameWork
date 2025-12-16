@@ -26,6 +26,7 @@
 #include "CCollision_Manager.h"
 #include "CFont_Manager.h"
 #include "CTimerTask_Manager.h"
+#include "CTarget_Manager.h"
 
 ////////////////Add-Ons////////////////
 #include "CShader.h"
@@ -161,6 +162,11 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 
 	m_pTimerTask_Manager = CTimerTask_Manager::Create();
 	CheckNullResult(m_pTimerTask_Manager, E_FAIL);
+
+	/*·»´õÅ¸°Ù¸Å´ÏÀú*/
+	m_pTarget_Manager = CTarget_Manager::Create(*pDevice,*pContext);
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+
 
 	return S_OK;
 }
@@ -455,6 +461,32 @@ int CGameInstance::Get_RenderGroupCount()
 {
 	return m_pRenderer->Get_RenderGroupCount();
 }
+
+void CGameInstance::Render_Debug()
+{
+	return m_pRenderer->Render_Debug();
+}
+
+void CGameInstance::Bind_And_Render_Lights()
+{
+	return m_pRenderer->Bind_And_Render_Lights();
+}
+
+void CGameInstance::Bind_Rect_Matricies()
+{
+	return m_pRenderer->Bind_Rect_Matricies();
+}
+
+void CGameInstance::Render_Combined()
+{
+	return m_pRenderer->Render_Combined();
+}
+
+HRESULT CGameInstance::Add_DebugComponent(CComponent* pComponent)
+{
+	return m_pRenderer->Add_DebugComponent((pComponent));
+}
+
 HRESULT CGameInstance::Get_Buffer(ComPtr<ID3D11Texture2D>* pBuffer, UINT iFlag)
 {
 	return m_pGraphicDev->Get_Buffer(pBuffer,iFlag);
@@ -830,6 +862,16 @@ CLight* CGameInstance::Get_Light(_uint iLevelID, _uint iIndex)
 	return m_pLightManager->Get_Light(iLevelID,iIndex);
 }
 
+HRESULT CGameInstance::Bind_Directional_Light(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer, const LIGHT_DESC* pLightDesc)
+{
+	return m_pLightManager->Bind_Directional_Light(pShader, pVIBuffer,pLightDesc);
+}
+
+void CGameInstance::Render_LightManager(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	return m_pLightManager->Render(pShader, pVIBuffer);
+}
+
 
 #pragma region Model_Manager
 HRESULT CGameInstance::Register_Model(const _wstring& Tag, CModel* pInstance)
@@ -991,9 +1033,60 @@ HRESULT CGameInstance::CancelTaskOf(CGameObject* pOwner)
 	return m_pTimerTask_Manager->CancelTaskOf(pOwner);
 }
 
+HRESULT CGameInstance::Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
+{
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+	return m_pTarget_Manager->Add_RenderTarget(strTargetTag,iWidth, iHeight, ePixelFormat,vClearColor);
+}
+
+HRESULT CGameInstance::Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag)
+{
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+	return m_pTarget_Manager->Add_MRT(strMRTTag, strTargetTag);
+
+}
+
+HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag)
+{
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+	return m_pTarget_Manager->Begin_MRT(strMRTTag);
+}
+
+HRESULT CGameInstance::End_MRT()
+{
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+	return m_pTarget_Manager->End_MRT();
+}
+
+HRESULT CGameInstance::Bind_RT_ShaderResource(const _wstring& strTargetTag, CShader* pShader, const _char* pConstantName)
+{
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+	return m_pTarget_Manager->Bind_RT_ShaderResource(strTargetTag, pShader, pConstantName);
+}
+
+HRESULT CGameInstance::Unbind_RT_ShaderResource(const _wstring& strTargetTag, CShader* pShader, const _char* pConstantName)
+{
+	return m_pTarget_Manager->Unbind_RT_ShaderResource(strTargetTag,pShader,pConstantName);
+}
+
+HRESULT CGameInstance::Ready_RT_Debug(const _wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY)
+{
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+	return m_pTarget_Manager->Ready_Debug(strTargetTag, fX, fY, fSizeX,fSizeY);
+
+}
+
+HRESULT CGameInstance::Debug_RT_Render(const _wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+	return m_pTarget_Manager->Render(strMRTTag, pShader, pVIBuffer);
+
+}
+
 
 void CGameInstance::Release_Engine()
 {
+	Safe_Release(m_pTarget_Manager);
 	Safe_Release(m_pTimerTask_Manager);
 
 	Safe_Release(m_pFont_Manager);

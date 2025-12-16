@@ -106,6 +106,15 @@ public:
 	void            Render_Group(_uint eType);
 	void            Clear_RenderGroups();
 	int             Get_RenderGroupCount();
+
+	void			Render_Debug();
+	void			Bind_And_Render_Lights();
+	void			Bind_Rect_Matricies();
+	void			Render_Combined();
+
+#ifdef _DEBUG
+	HRESULT Add_DebugComponent(class CComponent* pComponent);
+#endif
 #pragma endregion
 
 #pragma region GraphicDevice
@@ -266,7 +275,8 @@ public:
 	HRESULT					 Bind_Lights(class CShader* pShader);
 	class CLight*			Get_Light(_uint iLevelID, _uint iIndex);
 
-
+	HRESULT					Bind_Directional_Light(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer, const LIGHT_DESC* pLightDesc);
+	void					Render_LightManager(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
 #pragma endregion
 
 #pragma region Model_Manager
@@ -349,6 +359,31 @@ public:
 	 HRESULT         CancelTaskOf(CGameObject* pOwner);
 
 #pragma endregion
+
+#pragma region Target_Manager
+	 //렌더타겟을 등록하는함수
+	 HRESULT Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
+
+	 //MRT : RenderTarget들을 그룹으로묶어 한번에 바인딩
+	 HRESULT Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
+
+	 //MRT를 찾아서 바인딩
+	 HRESULT Begin_MRT(const _wstring& strMRTTag);
+
+	 //다시 복원
+	 HRESULT End_MRT();
+
+
+	 //쉐이더에 렌더타겟의 SRV를바인딩
+	 HRESULT Bind_RT_ShaderResource(const _wstring& strTargetTag, class CShader* pShader, const _char* pConstantName);
+	 HRESULT Unbind_RT_ShaderResource(const _wstring& strTargetTag, CShader* pShader, const _char* pConstantName);
+
+#ifdef _DEBUG
+	 HRESULT Ready_RT_Debug(const _wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY);
+	 HRESULT Debug_RT_Render(const _wstring& strMRTTag, class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
+
+#endif
+#pragma endregion
  private:
 	 class CLevel_Manager* m_pLevelManager = { nullptr };
 	 class CTimer_Manager* m_pTimerManager = { nullptr };
@@ -377,6 +412,9 @@ public:
 	 class CCollision_Manager* m_pCollisionManager = { nullptr };
 	 class CFont_Manager* m_pFont_Manager = { nullptr };
 	 class CTimerTask_Manager* m_pTimerTask_Manager = { nullptr };
+
+
+	 class CTarget_Manager* m_pTarget_Manager = { nullptr };
 
 private:
 	vector<D3D11_VIEWPORT>          m_ViewPorts;

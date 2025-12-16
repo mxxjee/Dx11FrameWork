@@ -4,7 +4,7 @@
 HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 #include "Default.hlsli"
 #include "Shader_Light.hlsli"
-
+#include "Engine_Shader_Defines.hlsli"
 
 
 vector g_vMaterialAmbient = vector(0.3f, 0.3f, 0.3f, 1.f);
@@ -42,7 +42,11 @@ struct PS_IN
     float4 vWorldPos : TEXCOORD1;
 };
 
-
+struct PS_OUT
+{
+    vector vDiffuse : SV_TARGET0;
+    vector vNormal : SV_TARGET1;
+};
 
 
 
@@ -72,62 +76,68 @@ VS_OUT VS_MAIN(VS_IN In)
 }
 
 //이후 RS단계에서 GPU가 내부적으로 w나누기 수행
-float4 PS_MAIN(PS_IN Input) : SV_Target0
+PS_OUT PS_MAIN(PS_IN Input) : SV_Target0
 {
-    float4 fDiffuseColor, fAmbientColor, fSpeculrColor;
-    
+    PS_OUT Out;
     //////////////////Direction_Light에 대한 연산///////////////////////////////////
+    
     //DiffuseColor
-    float4 TmpColor = g_DiffuseTexture[0].Sample(sampler0, Input.vTexcoord * 5.f);
-    float4 SrvColor = g_DiffuseTexture[1].Sample(sampler0, Input.vTexcoord*5.f);
-    
-    //전체영역 사용, 타일X
-    float4 MaskColor = g_MaskTexture.Sample(sampler0, Input.vTexcoord);
-    
-    //Maskmap의 흰색부분 = 풀, 검은색 부분 = 흙
-    float4 MtrlDiffuseColor = SrvColor * MaskColor + TmpColor * (1 - MaskColor);
+    Out.vDiffuse = g_DiffuseTexture[0].Sample(DefaultSampler, Input.vTexcoord * 5.f);
+    Out.vNormal = vector(Input.vNormal.xyz * 0.5f + 0.5f, 0.f);
     
     
-    //음영값 (diffuse 세기)
-    float fShade = Compute_Shade(g_vLightDirection, Input.vNormal);
+    return Out;
+    
+    
+    //float4 SrvColor = g_DiffuseTexture[1].Sample(DefaultSampler, Input.vTexcoord * 5.f);
+    
+    ////전체영역 사용, 타일X
+    //float4 MaskColor = g_MaskTexture.Sample(sampler0, Input.vTexcoord);
+    
+    ////Maskmap의 흰색부분 = 풀, 검은색 부분 = 흙
+    //float4 MtrlDiffuseColor = SrvColor * MaskColor + TmpColor * (1 - MaskColor);
+    
+    
+    ////음영값 (diffuse 세기)
+    //float fShade = Compute_Shade(g_vLightDirection, Input.vNormal);
     
   
-    //specular 세기 = 반사벡터를 구해서  카메라 시야벡터 * (-1)와 내적
-    float fSpecular = Compute_Specular(g_vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition,50);
+    ////specular 세기 = 반사벡터를 구해서  카메라 시야벡터 * (-1)와 내적
+    //float fSpecular = Compute_Specular(g_vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition,50);
     
  
-    fDiffuseColor = g_vLightDiffuse * MtrlDiffuseColor * saturate(fShade + (g_vLightAmbient * g_vMaterialAmbient));
-    fAmbientColor = float4(0, 0, 0, 0);
+    //fDiffuseColor = g_vLightDiffuse * MtrlDiffuseColor * saturate(fShade + (g_vLightAmbient * g_vMaterialAmbient));
+    //fAmbientColor = float4(0, 0, 0, 0);
 
-    fSpeculrColor = g_vLightSpecular * g_vMaterialSpecular * fSpecular;
-
-    
+    //fSpeculrColor = g_vLightSpecular * g_vMaterialSpecular * fSpecular;
 
     
-    ////////////////////점 조명에 대한 연산/////////////////////
-    for (int i = 0; i < g_PointLightNum; ++i)
-    {
-        //1.어디방향으로 빛이오는지 계산하자.
-        vector vLightDirection = g_vPL_Position[i] - Input.vWorldPos;
-        float Distance = length(vLightDirection);
+
+    
+    //////////////////////점 조명에 대한 연산/////////////////////
+    //for (int i = 0; i < g_PointLightNum; ++i)
+    //{
+    //    //1.어디방향으로 빛이오는지 계산하자.
+    //    vector vLightDirection = g_vPL_Position[i] - Input.vWorldPos;
+    //    float Distance = length(vLightDirection);
         
-        float fShade = Compute_Shade(vLightDirection, Input.vNormal);
-        float fAttenuation =Compute_Attenuation(g_vPL_Range[i].r, Distance);
-        float fSpecular = Compute_Specular(vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition,50);
+    //    float fShade = Compute_Shade(vLightDirection, Input.vNormal);
+    //    float fAttenuation =Compute_Attenuation(g_vPL_Range[i].r, Distance);
+    //    float fSpecular = Compute_Specular(vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition,50);
         
         
-        ///이거 이상함.
-        fDiffuseColor += g_vPL_Diffuse[i] * MtrlDiffuseColor * fShade * fAttenuation;
-        //fAmbientColor +=(g_vPL_Ambient[i] * g_vMaterialAmbient);
-        //fSpeculrColor += g_vPL_Specular[i] * g_vMaterialSpecular * fSpecular;
+    //    ///이거 이상함.
+    //    fDiffuseColor += g_vPL_Diffuse[i] * MtrlDiffuseColor * fShade * fAttenuation;
+    //    //fAmbientColor +=(g_vPL_Ambient[i] * g_vMaterialAmbient);
+    //    //fSpeculrColor += g_vPL_Specular[i] * g_vMaterialSpecular * fSpecular;
         
 
-    }
+    //}
   
     
     
-    float4 ResultColor = fDiffuseColor + fAmbientColor + fSpeculrColor;
-    return saturate(ResultColor);
+    //float4 ResultColor = fDiffuseColor + fAmbientColor + fSpeculrColor;
+    //return saturate(ResultColor);
 
 }
 
@@ -141,6 +151,11 @@ technique11 DefaultTechnique
     VertexShader는 이걸쓰고, PixelShader는 이걸쓸거에요.*/
     pass Default
     {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+
         //이 pass가 선택되면 VertexShader는 이렇게 컴파일하세요.
                                 //버전 , 진입함수 설정
         VertexShader = compile vs_5_0 VS_MAIN();

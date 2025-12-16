@@ -15,6 +15,7 @@ public:
     void            Set_LightDesc(const LIGHT_DESC& NewDesc) {m_LightDesc = NewDesc;}
 public:
     HRESULT         Initialize(const LIGHT_DESC& LightDesc);
+    void            Render(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
 
 private:
     LIGHT_DESC      m_LightDesc{};

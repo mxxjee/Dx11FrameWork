@@ -84,10 +84,10 @@ HRESULT CMainApp::Initialize()
 #ifdef _DEBUG
 	pImGui_Manager->Init(g_hWnd, m_pDevice.Get(), m_pContext.Get());
 
-	CreateLevelDebugWindow();
-	CreateObjectDebugWindow();
-	CreateCameraDebugWindow();
-	CreateStateDebugWindow();
+	//CreateLevelDebugWindow();
+	//CreateObjectDebugWindow();
+	//CreateCameraDebugWindow();
+	//CreateStateDebugWindow();
 
 #endif
 	pImGui_Manager->Set_MapToolMode(MapToolMode::END);
@@ -109,23 +109,10 @@ HRESULT CMainApp::Initialize_Cilent()
 	if (FAILED(CDialogue_Manager::GetInstance()->Initialize()))
 		return E_FAIL;
 
-	CreateSamplerStates();
-	CreateBlendStates();
-	CreateRasterizerStates();
-	CreateDepthStencilStates();
-	
 
 	//렌더그룹 관련 초기화
 	if(FAILED(pGameInstance->Initialize_Renderer(ENUM_TO_UINT(RENDERGROUP::END))))
 		return E_FAIL;
-
-	//각 렌더그룹에맞는 세팅값등록
-	for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
-	{
-		if (FAILED(pGameInstance->Register_RenderStates(i, m_RenderStates[i])))
-			return E_FAIL;
-
-	}
 	
 
 	//렌더타입에 맞는 정렬함수 등록
@@ -344,7 +331,6 @@ HRESULT CMainApp::Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)
 	args.loadingChangeType = LEVELCHANGETYPE::PUSH;
 	args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
-
 	if(FAILED(pGameInstance->Level_Changer(ENUM_TO_UINT(LEVEL_ID::LOADING),args)))
 		return E_FAIL;
 
@@ -394,104 +380,105 @@ void CMainApp::Free()
 	CGameManager::GetInstance()->DestroyInstance();
 }
 
-void CMainApp::CreateSamplerStates()
-{
-	m_RenderStates.resize(ENUM_TO_UINT(RENDERGROUP::END));
+#pragma region 예전 RenderState들
+//void CMainApp::CreateSamplerStates()
+//{
+//	m_RenderStates.resize(ENUM_TO_UINT(RENDERGROUP::END));
+//
+//	D3D11_SAMPLER_DESC desc;
+//	memset(&desc, 0, sizeof(desc));
+//	desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+//	desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+//	desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+//	desc.BorderColor[0] = 0.0f;
+//	desc.BorderColor[1] = 0.0f;
+//	desc.BorderColor[2] = 0.0f;
+//	desc.BorderColor[3] = 0.0f;
+//
+//
+//	desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+//	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+//	desc.MaxAnisotropy = 16;
+//	desc.MaxLOD = FLT_MAX;
+//	desc.MinLOD = FLT_MIN;
+//	desc.MipLODBias = 0.0f;
+//
+//	for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP); ++i)
+//		m_pDevice->CreateSamplerState(&desc, m_RenderStates[i]._samplerState.GetAddressOf());
+//
+//	for (int i = ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP); i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+//		m_pDevice->CreateSamplerState(&desc, m_RenderStates[i]._samplerState.GetAddressOf());
+//
+//}
+//
+//void CMainApp::CreateBlendStates()
+//{
+//	D3D11_BLEND_DESC desc;
+//	memset(&desc, 0, sizeof(desc));
+//	desc.AlphaToCoverageEnable = false;
+//	desc.IndependentBlendEnable = false;
+//
+//	desc.RenderTarget[0].BlendEnable = FALSE;
+//	desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+//	desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+//	desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+//	desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+//	desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+//	desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+//	desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+//
+//	m_pDevice->CreateBlendState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._BlendState.GetAddressOf());
+//	m_pDevice->CreateBlendState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::NONALPHA)]._BlendState.GetAddressOf());
+//
+//	desc.RenderTarget[0].BlendEnable = TRUE;
+//
+//	for (int i = ENUM_TO_UINT(RENDERGROUP::ALPHA); i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+//		m_pDevice->CreateBlendState(&desc, m_RenderStates[i]._BlendState.GetAddressOf());
+//
+//
+//}
+//
+//void CMainApp::CreateRasterizerStates()
+//{
+//	D3D11_RASTERIZER_DESC desc;
+//	memset(&desc, 0, sizeof(desc));
+//
+//	desc.FillMode = D3D11_FILL_SOLID;//WIREFRAME of SOLID
+//	desc.CullMode = D3D11_CULL_NONE;//CULLMODE: 반시계 컬링
+//	desc.FrontCounterClockwise = false;
+//	desc.DepthClipEnable = true;
+//
+//	for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::UI); ++i)
+//		m_pDevice->CreateRasterizerState(&desc, m_RenderStates[i]._rasterizerState.GetAddressOf());
+//
+//	desc.DepthClipEnable = false;
+//	m_pDevice->CreateRasterizerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::UI)]._rasterizerState.GetAddressOf());
+//}
+//
+//void CMainApp::CreateDepthStencilStates()
+//{
+//
+//	D3D11_DEPTH_STENCIL_DESC desc = CD3D11_DEPTH_STENCIL_DESC(D3D11_DEFAULT);
+//
+//	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._DepthStencilState.GetAddressOf());
+//	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::NONALPHA)]._DepthStencilState.GetAddressOf());
+//	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP)]._DepthStencilState.GetAddressOf());
+//	//깊이 테스트여부
+//	desc.DepthEnable = true;
+//
+//	//깊이 기록여부
+//	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+//	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::ALPHA)]._DepthStencilState.GetAddressOf());
+//
+//	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP)]._DepthStencilState.GetAddressOf());
+//
+//	desc.DepthEnable = false;
+//	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+//	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::UI)]._DepthStencilState.GetAddressOf());
+//
+//}
 
-	D3D11_SAMPLER_DESC desc;
-	memset(&desc, 0, sizeof(desc));
-	desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-	desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
-	desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
-	desc.BorderColor[0] = 0.0f;
-	desc.BorderColor[1] = 0.0f;
-	desc.BorderColor[2] = 0.0f;
-	desc.BorderColor[3] = 0.0f;
-
-
-	desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-	desc.MaxAnisotropy = 16;
-	desc.MaxLOD = FLT_MAX;
-	desc.MinLOD = FLT_MIN;
-	desc.MipLODBias = 0.0f;
-
-	for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP); ++i)
-		m_pDevice->CreateSamplerState(&desc, m_RenderStates[i]._samplerState.GetAddressOf());
-
-	for (int i = ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP); i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
-		m_pDevice->CreateSamplerState(&desc, m_RenderStates[i]._samplerState.GetAddressOf());
-
-}
-
-void CMainApp::CreateBlendStates()
-{
-	D3D11_BLEND_DESC desc;
-	memset(&desc, 0, sizeof(desc));
-	desc.AlphaToCoverageEnable = false;
-	desc.IndependentBlendEnable = false;
-
-	desc.RenderTarget[0].BlendEnable = FALSE;
-	desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-	desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-	desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-	m_pDevice->CreateBlendState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._BlendState.GetAddressOf());
-	m_pDevice->CreateBlendState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::NONALPHA)]._BlendState.GetAddressOf());
-
-	desc.RenderTarget[0].BlendEnable = TRUE;
-
-	for (int i = ENUM_TO_UINT(RENDERGROUP::ALPHA); i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
-		m_pDevice->CreateBlendState(&desc, m_RenderStates[i]._BlendState.GetAddressOf());
-
-
-}
-
-void CMainApp::CreateRasterizerStates()
-{
-	D3D11_RASTERIZER_DESC desc;
-	memset(&desc, 0, sizeof(desc));
-
-	desc.FillMode = D3D11_FILL_SOLID;//WIREFRAME of SOLID
-	desc.CullMode = D3D11_CULL_NONE;//CULLMODE: 반시계 컬링
-	desc.FrontCounterClockwise = false;
-	desc.DepthClipEnable = true;
-
-	for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::UI); ++i)
-		m_pDevice->CreateRasterizerState(&desc, m_RenderStates[i]._rasterizerState.GetAddressOf());
-
-	desc.DepthClipEnable = false;
-	m_pDevice->CreateRasterizerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::UI)]._rasterizerState.GetAddressOf());
-}
-
-void CMainApp::CreateDepthStencilStates()
-{
-
-	D3D11_DEPTH_STENCIL_DESC desc = CD3D11_DEPTH_STENCIL_DESC(D3D11_DEFAULT);
-
-	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._DepthStencilState.GetAddressOf());
-	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::NONALPHA)]._DepthStencilState.GetAddressOf());
-	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP)]._DepthStencilState.GetAddressOf());
-	//깊이 테스트여부
-	desc.DepthEnable = true;
-
-	//깊이 기록여부
-	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::ALPHA)]._DepthStencilState.GetAddressOf());
-
-	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP)]._DepthStencilState.GetAddressOf());
-
-	desc.DepthEnable = false;
-	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::UI)]._DepthStencilState.GetAddressOf());
-
-}
-
-
+#pragma endregion
 
 void CMainApp::CreateLevelDebugWindow()
 {

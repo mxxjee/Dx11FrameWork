@@ -33,11 +33,6 @@ public:
 	void	Render();
 
 
-private:
-	void    CreateSamplerStates();
-	void    CreateBlendStates();
-	void    CreateRasterizerStates();
-	void    CreateDepthStencilStates();
 
 private:
 	void			Register_Levels();
@@ -61,7 +56,7 @@ public:
 
 private:
 	 CGameInstance* pGameInstance;
-	 _float4		ClearColor = COLOR_BLACK;
+	 _float4		ClearColor = COLOR_BLUE;
 
 	vector<RenderStates>			m_RenderStates;
 

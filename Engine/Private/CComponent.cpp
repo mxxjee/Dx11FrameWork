@@ -31,6 +31,7 @@ HRESULT CComponent::Initialize_Copytype(void* pArg)
 }
 
 
+
 void CComponent::Free()
 {
 	Safe_Release(m_pGameInstance);

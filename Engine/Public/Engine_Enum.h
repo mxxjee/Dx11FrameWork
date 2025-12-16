@@ -37,6 +37,12 @@ namespace Engine
 	/*Nomral : 그냥 일반씬
 	TRANSIENT : 1회 후 바로 삭제되는 씬 (일회용 씬)*/
 
+	enum class RENDERGROUP { PRIORITY, NONALPHA, LIGHT, COMBINED,NONLIGHT, ALPHA,
+		PRIORITY_MINIMAP, WORLD_UI_MINIMAP, UI, END };
+	/*LIGHT/COMBINED - 후처리 함수때문에 만든그룹
+	NONLIGHT - 후처리에 들어가지않고 빛연산을 안해도되는 그룹*/
+
+
 
 	enum class PROTOTYPE
 	{

@@ -40,6 +40,12 @@ public:
     virtual CGameObject* Clone(void* pArg);
     virtual void    Free() override;
 
+public:
+    //렌더그룹 렌더 전 설정할것들, RTV변경등.
+    virtual void        PreRenderGroup(_uint iRenderGroup);
+
+    //렌더그룹 렌더 후 설정할것들. 다시돌려놓기 등.
+    virtual void        PostRenderGroup(_uint iRenderGroup);
 
 private:
     long                    m_ScreenWidth = {};

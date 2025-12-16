@@ -15,7 +15,7 @@ public:
 public:
                             //텍스처2D의 사이즈와 픽셀포맷, 클리어컬러 지정
     HRESULT Initialize(_uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
-
+    void        Clear();
 #ifdef _DEBUG
 public:
                     //디버그로 띄울 사각형 UI 크기설정
@@ -23,7 +23,7 @@ public:
     HRESULT     Render(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
 #endif // _DEBUG
 
-
+    HRESULT      Bind_ShaderResource(class CShader* pShader, const _char* pConstantName);
 public:
     static CRenderTarget* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
     virtual void Free() override;

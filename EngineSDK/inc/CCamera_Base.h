@@ -93,6 +93,12 @@ public:
     void      Set_Near(float fNear) { m_fNearZ=fNear; }
     void       Set_Far(float fFar) { m_fFarZ=fFar; }
 
+public:
+                        //렌더그룹 렌더 전 설정할것들, RTV변경등.
+    virtual void        PreRenderGroup(_uint iRenderGroup) {};
+
+                            //렌더그룹 렌더 후 설정할것들. 다시돌려놓기 등.
+    virtual void        PostRenderGroup(_uint iRenderGroup) {};
 
 public:
     //카메라의 get함수들

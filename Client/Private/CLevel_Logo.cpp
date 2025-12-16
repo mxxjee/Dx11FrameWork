@@ -529,7 +529,9 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
         pMinimapCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::NONALPHA), false);
         pMinimapCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::UI), false);
         pMinimapCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::PRIORITY), false);
-    
+        pMinimapCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::LIGHT), false);
+        pMinimapCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::COMBINED), false);
+     
     }
     
 

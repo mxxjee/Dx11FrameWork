@@ -68,18 +68,25 @@ void CWeapon::Update_Render(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::NONALPHA), this);
 
-}
-
-HRESULT CWeapon::Render()
-{
 #ifdef _DEBUG
     if (CGameInstance::m_bDrawDebug)
     {
         for (auto& i : m_pCollider)
-            i->Render();
+        {
+            if (FAILED(m_pGameInstance->Add_DebugComponent(i)))
+                return;
+        }
+        
     }
 
+
 #endif
+}
+
+HRESULT CWeapon::Render()
+{
+
+  
     return S_OK;
 }
 

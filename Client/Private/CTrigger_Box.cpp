@@ -56,17 +56,20 @@ void CTrigger_Box::Update_Render(_float fTimeDelta)
 {
 	__super::Update_Render(fTimeDelta);
 #ifdef _DEBUG
-	m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::NONALPHA),this);
+
+	if (CGameInstance::m_bDrawDebug)
+	{
+		if (m_pGameInstance->Add_DebugComponent(pBoxCollider))
+			return;
+	}
+
 #endif // _DEBUG
 
 }
 
 HRESULT CTrigger_Box::Render()
 {
-#ifdef _DEBUG
-	if (pBoxCollider)
-		pBoxCollider->Render();
-#endif // _DEBUG
+
 
 
 	return S_OK;

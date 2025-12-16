@@ -4,7 +4,7 @@
 HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 #include "Default.hlsli"
 #include "Shader_Light.hlsli"
-
+#include "Engine_Shader_Defines.hlsli"
 
 
 vector g_vMaterialAmbient = vector(0.3f, 0.3f, 0.3f, 1.f);
@@ -104,6 +104,10 @@ technique11 DefaultTechnique
     VertexShader는 이걸쓰고, PixelShader는 이걸쓸거에요.*/
     pass Default
     {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         //이 pass가 선택되면 VertexShader는 이렇게 컴파일하세요.
                                 //버전 , 진입함수 설정
         VertexShader = compile vs_5_0 VS_MAIN();
@@ -114,6 +118,10 @@ technique11 DefaultTechnique
 
     pass Select
     {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_Select();

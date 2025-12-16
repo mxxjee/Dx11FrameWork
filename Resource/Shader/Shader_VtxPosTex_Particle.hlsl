@@ -4,7 +4,7 @@
 HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 #include "Default.hlsli"
 #include "Shader_Light.hlsli"
-
+#include "Engine_Shader_Defines.hlsli"
 
 struct VS_IN
 {
@@ -63,10 +63,10 @@ VS_OUT VS_MAIN(VS_IN In)
 }
 
 //이후 RS단계에서 GPU가 내부적으로 w나누기 수행
-PS_OUT PS_MAIN(PS_IN Input) : SV_Target0
+PS_OUT PS_MAIN(PS_IN Input)
 {
     PS_OUT Out;
-    float4 color = texture0.Sample(sampler0, Input.vTexcoord);
+    float4 color = texture0.Sample(DefaultSampler, Input.vTexcoord);
 
     //alphatest
     if(color.a<=0.3f)
@@ -89,6 +89,10 @@ technique11 DefaultTechnique
     VertexShader는 이걸쓰고, PixelShader는 이걸쓸거에요.*/
     pass Default
     {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         //이 pass가 선택되면 VertexShader는 이렇게 컴파일하세요.
                                 //버전 , 진입함수 설정
         VertexShader = compile vs_5_0 VS_MAIN();

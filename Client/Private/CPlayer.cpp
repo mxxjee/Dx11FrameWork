@@ -162,22 +162,26 @@ void CPlayer::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
     m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::NONALPHA), this);
+
+#ifdef _DEBUG
+
+    if (CGameInstance::m_bDrawDebug)
+    {
+        if(FAILED(m_pGameInstance->Add_DebugComponent(m_pCollider)))
+            return;
+
+        if (FAILED(m_pGameInstance->Add_DebugComponent(m_pNavigationCom)))
+            return;
+    }
+  
+
+#endif
 }
 
 HRESULT CPlayer::Render()
 {
   /*이제 각 파츠들이 rendergroup으로 들어가서 렌더한다.*/
 
-#ifdef _DEBUG
- 
-
-    if (CGameInstance::m_bDrawDebug)
-    {
-        m_pCollider->Render();
-        m_pNavigationCom->Render();
-    }
-        
-#endif
 
     return S_OK;
 } 

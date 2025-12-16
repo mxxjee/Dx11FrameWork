@@ -10,6 +10,8 @@
 #include "CCamera_Base.h"
 #include "CStaticBody.h"
 
+#include "CModel.h"
+#include "CMeshComponent.h"
 
 
 USING(Client)
@@ -87,16 +89,40 @@ void CTerrain::Update_Render(_float fTimeDelta)
 {
     if (Is_Visible())
     {
-        m_pBody->Update_Render(fTimeDelta);
-        m_pGameInstance->Add_RenderObject(m_eRenderGroup, this);
+        m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::NONALPHA), this);
+      
     }
     
 }
 
 HRESULT CTerrain::Render()
 {
+    CAMERA_TYPE eType = m_pGameInstance->Get_RenderCamera()->Get_CameraType();
+    string PassName = "";
 
-   
+    switch (eType)
+    {
+    case CAMERA_TYPE::MINIMAP:
+        PassName = "Minimap";
+        break;
+
+
+    case CAMERA_TYPE::TARGET:
+    case CAMERA_TYPE::FREE:
+        PassName = "Default";
+        break;
+
+    }
+ 
+    CModel* pModel = m_pBody->Get_Model();
+    CheckNullResult(pModel,E_FAIL);
+
+    for (auto& Mesh : pModel->Get_Meshs())
+    {
+        Mesh.second->Set_PassName(PassName);
+    }
+
+    m_pBody->Render();
 
     return S_OK;
 }
@@ -162,13 +188,14 @@ void CTerrain::Free()
 
 void CTerrain::Update_Render_MiniMapPriority()
 {
+    /*미니맵시에는 다른 패스사용해서? 타겟하나로만 그리게해야함*/
     CCamera_Base* pMiniMapCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
     CheckNull(pMiniMapCamera);
 
     if (pMiniMapCamera)
     {
         if (pMiniMapCamera->IsInDistance(m_TerrainChunk.vCenter))
-            m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP), m_pBody);
+            m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP), this);
 
     }
    

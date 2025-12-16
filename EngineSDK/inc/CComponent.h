@@ -28,6 +28,11 @@ public:
     class CGameObject* Get_Owner() { return m_pOwner; }
     void               Set_Owner(class CGameObject* pObj) { m_pOwner = pObj; }
 
+public:
+    virtual HRESULT             Render() { return S_OK; }
+
+
+
 protected:
     ComPtr<ID3D11Device> m_pDevice = nullptr;
     ComPtr<ID3D11DeviceContext> m_pContext = nullptr;

@@ -4,7 +4,7 @@
 HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 #include "Default.hlsli"
 #include "Shader_Light.hlsli"
-
+#include "Engine_Shader_Defines.hlsli"
 
 
 float4 g_TintColor = float4(1.0, 0.871, 0.722, 0.529);
@@ -208,7 +208,7 @@ float4 PS_Logo(PS_IN In) : SV_Target0
 
 float4 PS_SaveSlot(PS_IN In) : SV_Target0
 {
-    float4 color = texture0.Sample(sampler0, In.vTexcoord);
+    float4 color = texture0.Sample(DefaultSampler, In.vTexcoord);
     float WhiteLevel = saturate((color.r + color.g + color.b) / 3.f);
     
     
@@ -229,6 +229,10 @@ technique11 DefaultTechnique
     VertexShader는 이걸쓰고, PixelShader는 이걸쓸거에요.*/
     pass Default
     {
+        SetRasterizerState(RS_UI);
+        SetDepthStencilState(DSS_UI, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         //이 pass가 선택되면 VertexShader는 이렇게 컴파일하세요.
                                 //버전 , 진입함수 설정
         VertexShader = compile vs_5_0 VS_MAIN();
@@ -239,6 +243,10 @@ technique11 DefaultTechnique
 
     pass SaveSlot
     {
+        SetRasterizerState(RS_UI);
+        SetDepthStencilState(DSS_UI, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SaveSlot();
@@ -246,6 +254,10 @@ technique11 DefaultTechnique
 
     pass Logo
     {
+        SetRasterizerState(RS_UI);
+        SetDepthStencilState(DSS_UI, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_Logo();
@@ -253,7 +265,11 @@ technique11 DefaultTechnique
 
     pass Brightness
     {
-                                                               
+                 
+        SetRasterizerState(RS_UI);
+        SetDepthStencilState(DSS_UI, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_BRIGHT();
@@ -263,6 +279,10 @@ technique11 DefaultTechnique
 
     pass Minimap
     {
+        SetRasterizerState(RS_UI);
+        SetDepthStencilState(DSS_UI, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
                                                                
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
@@ -274,6 +294,10 @@ technique11 DefaultTechnique
 //////////////////
     pass softBright
     {
+        SetRasterizerState(RS_UI);
+        SetDepthStencilState(DSS_UI, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_SoftBright();
@@ -281,6 +305,10 @@ technique11 DefaultTechnique
 
     pass Invert
     {
+        SetRasterizerState(RS_UI);
+        SetDepthStencilState(DSS_UI, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_InvertColor();
@@ -288,6 +316,10 @@ technique11 DefaultTechnique
 
     pass RadialBright
     {
+        SetRasterizerState(RS_UI);
+        SetDepthStencilState(DSS_UI, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_RadialBright();
@@ -295,6 +327,10 @@ technique11 DefaultTechnique
 
     pass Threshold
     {
+        SetRasterizerState(RS_UI);
+        SetDepthStencilState(DSS_UI, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_THRESHOLD();
@@ -302,6 +338,10 @@ technique11 DefaultTechnique
 
     pass Blur
     {
+        SetRasterizerState(RS_UI);
+        SetDepthStencilState(DSS_UI, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_GuasianBlur();
@@ -309,6 +349,10 @@ technique11 DefaultTechnique
 
     pass Select
     {
+        SetRasterizerState(RS_UI);
+        SetDepthStencilState(DSS_UI, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_Selected();

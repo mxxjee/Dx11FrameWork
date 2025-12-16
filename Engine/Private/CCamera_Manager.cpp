@@ -205,27 +205,32 @@ void CCamera_Manager::Render_Cameras()
 		//모든셰이더에게 이 카메라의 뷰,투영,카메라위치를 바인딩한다.
 		m_pGameInstance->Update_CamBuffer(ENUM_TO_UINT(m_pRenderCamera->Get_CameraType()));
 		//m_pGameInstance->Bind_CamBuffer();		//전역 상수버퍼 바인드
-		m_pGameInstance->Bind_GlobalLightData();
+		//m_pGameInstance->Bind_GlobalLightData();
 
 
 		//각 카메라가 렌더할 렌더그룹을 접근해서 Render()호출
 		vector<uint8_t> RenderMask = m_pRenderCamera->Get_RenderMask();
 		for (int i = 0; i < RenderMask.size(); ++i)
 		{
+			m_pRenderCamera->PreRenderGroup(i);
+
 			if (RenderMask[i])
 				m_pGameInstance->Render_Group(i);
 
+			m_pRenderCamera->PostRenderGroup(i);
 		}
 
 
-
- 		
 		m_pRenderCamera->UnBind_RenderTarget();
 		UnbindAllShaderResources(m_pContext.Get());   // 혹시 모를 잔여 바인딩 제거(HAZARD오류 방지)
 	}
 
 	
-	
+#ifdef _DEBUG
+
+	m_pGameInstance->Render_Debug();
+
+#endif
 	m_pGameInstance->Clear_RenderGroups();
 }
 

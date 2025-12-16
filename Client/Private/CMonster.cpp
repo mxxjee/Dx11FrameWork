@@ -120,6 +120,13 @@ void CMonster::Update_Render(_float fTimeDelta)
     {
         __super::Update_Render(fTimeDelta);
         m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::NONALPHA), this);
+
+#ifdef _DEBUG
+        if (m_pGameInstance->m_bDrawDebug)
+            if (FAILED(m_pGameInstance->Add_DebugComponent(m_pCollider)))
+                return;
+
+#endif
     }
 
 }
@@ -128,11 +135,7 @@ HRESULT CMonster::Render()
 {
     __super::Render();
 
-#ifdef _DEBUG
-    if (m_pGameInstance->m_bDrawDebug)
-        m_pCollider->Render();
 
-#endif
 
 
     return S_OK;

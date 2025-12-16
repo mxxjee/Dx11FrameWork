@@ -166,4 +166,46 @@ void CFreeCamera::Free()
 
 }
 
+void CFreeCamera::PreRenderGroup(_uint iRenderGroup)
+{
+   /* switch ((RENDERGROUP)iRenderGroup)
+    {
+    case RENDERGROUP::NONALPHA:
+        if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_GameObject"))))
+            return;
+
+        break;
+
+    case RENDERGROUP::LIGHT:
+        if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_LightAcc"))))
+            return;
+
+        m_pGameInstance->Bind_And_Render_Lights();
+
+        break;
+
+    case RENDERGROUP::COMBINED:
+        m_pGameInstance->Render_Combined();
+        break;
+    default:
+        break;
+    }*/
+}
+
+void CFreeCamera::PostRenderGroup(_uint iRenderGroup)
+{
+   /* switch ((RENDERGROUP)iRenderGroup)
+    {
+    case RENDERGROUP::NONALPHA:
+    case RENDERGROUP::LIGHT:
+        if (FAILED(m_pGameInstance->End_MRT()))
+            return;
+        break;
+
+
+    default:
+        break;
+    }*/
+}
+
 

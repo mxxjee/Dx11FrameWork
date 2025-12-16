@@ -11,6 +11,11 @@ HRESULT CLight::Initialize(const LIGHT_DESC& LightDesc)
     return S_OK;
 }
 
+void CLight::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+    
+}
+
 CLight* CLight::Create(const LIGHT_DESC& LightDesc)
 {
     CLight* pInstance = new CLight();
