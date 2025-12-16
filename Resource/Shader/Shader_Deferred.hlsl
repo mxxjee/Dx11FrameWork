@@ -15,6 +15,9 @@ Texture2D   g_NormalTexture;
 matrix g_ViewMatrix;
 matrix g_ProjMatrix;
 
+
+vector g_vMtrlAmbient = vector(1.f, 1.f, 1.f, 1.f);
+
 struct VS_IN
 {
     float3 vPosition : POSITION;
@@ -88,9 +91,9 @@ PS_OUT_LIGHT PS_MAIN_DIRECTIONAL(PS_IN In)
     /* 0~1 -> -1~1 */
     float4 vNormal = float4(vNormalDesc.xyz * 2.f - 1.f, 0.f);
       
-    
-    float4 vDir = float4(1.f, -1.f, 1.f, 0.f);
-    Out.vShade = max(dot(normalize(vDir) * -1.f, vNormal), 0.f);
+
+    vector vShade = max(dot(normalize(g_vLightDirection) * -1.f, vNormal), 0.f) + (g_vLightAmbient * g_vMtrlAmbient);
+    Out.vShade = g_vLightDiffuse * saturate(vShade);
     
     return Out;
     
@@ -120,7 +123,7 @@ technique11 DefaultTechnique
     pass Debug
     {
         SetRasterizerState(RS_UI);
-        SetDepthStencilState(DSS_UI, 0);
+        SetDepthStencilState(DSS_Default, 0);
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         //이 pass가 선택되면 VertexShader는 이렇게 컴파일하세요.
@@ -163,7 +166,7 @@ technique11 DefaultTechnique
     pass Combined
     {
         SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_NONE, 0);
         SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         //이 pass가 선택되면 VertexShader는 이렇게 컴파일하세요.

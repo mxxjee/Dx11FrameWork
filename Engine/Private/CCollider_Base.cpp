@@ -122,9 +122,14 @@ HRESULT CCollider_Base::Render()
 {
     CheckFalseResult(m_bActive,E_FAIL);
 
+    CCamera_Base* pMainCamera = m_pGameInstance->Get_MainCamera();
+    CheckNullResult(pMainCamera,E_FAIL);
+
+    m_pContext->GSSetShader(nullptr, nullptr, 0);
+
     m_pEffect->SetWorld(XMMatrixIdentity());
-    m_pEffect->SetView(XMLoadFloat4x4(&m_pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(m_pGameInstance->Get_RenderCamera()->Get_CameraType()))));
-    m_pEffect->SetProjection(XMLoadFloat4x4(&m_pGameInstance->Get_ProjMatrix(ENUM_TO_UINT(m_pGameInstance->Get_RenderCamera()->Get_CameraType()))));
+    m_pEffect->SetView(XMLoadFloat4x4(&m_pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(pMainCamera->Get_CameraType()))));
+    m_pEffect->SetProjection(XMLoadFloat4x4(&m_pGameInstance->Get_ProjMatrix(ENUM_TO_UINT(pMainCamera->Get_CameraType()))));
 
     m_pEffect->Apply(m_pContext.Get());
     m_pContext->IASetInputLayout(m_pInputLayout);

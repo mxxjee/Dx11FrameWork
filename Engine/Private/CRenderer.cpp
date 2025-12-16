@@ -224,6 +224,7 @@ void CRenderer::Free()
 #ifdef _DEBUG
 void CRenderer::Render_Debug()
 {
+	CheckFalse(CGameInstance::m_bDrawDebug);
 
 	for (auto& pComp : m_DebugComponents)
 		if (nullptr != pComp)

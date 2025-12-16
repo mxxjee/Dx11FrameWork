@@ -63,8 +63,6 @@ public:
  
 
 
-
-
 protected:
     virtual HRESULT         Ready_Components(void *pArg);
     virtual HRESULT         Ready_Resource(void* pArg);

@@ -15,6 +15,8 @@ HRESULT CFont::Initialize(const _tchar* pFontFilePath)
 
 HRESULT CFont::Draw_Text(SpriteBatch* pBatch, const _tchar* pText, const _float2& vPosition, _fvector vColor)
 {
+	m_pContext->GSSetShader(nullptr, nullptr, 0);
+
     m_pFont->DrawString(pBatch, pText, vPosition, vColor);
 
     return S_OK;

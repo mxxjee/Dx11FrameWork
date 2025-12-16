@@ -119,14 +119,14 @@ void CLight_Manager::Add_LightValue(const LIGHT_DESC* LightDesc)
 HRESULT CLight_Manager::Bind_Directional_Light(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer, const LIGHT_DESC* pLightDesc)
 {
 
-    //m_DirectionLightBuffer.g_vLightDirection = pLightDesc->vDirection;
-    //m_DirectionLightBuffer.g_vLightDiffuse = pLightDesc->vDiffuse;
-    //m_DirectionLightBuffer.g_vLightAmbient = pLightDesc->vAmbient;
-    //m_DirectionLightBuffer.g_vLightSpecular = pLightDesc->vSpecular;
+    m_DirectionLightBuffer.g_vLightDirection = pLightDesc->vDirection;
+    m_DirectionLightBuffer.g_vLightDiffuse = pLightDesc->vDiffuse;
+    m_DirectionLightBuffer.g_vLightAmbient = pLightDesc->vAmbient;
+    m_DirectionLightBuffer.g_vLightSpecular = pLightDesc->vSpecular;
   
-    //pShader->Bind_RawValue("g_PointLightNum", &m_PointLightNum, sizeof(int));
+    pShader->Bind_RawValue("g_PointLightNum", &m_PointLightNum, sizeof(int));
 
-    //CGameInstance::GetInstance()->CopyData_Buffer("DirectionLightBuffer", &m_DirectionLightBuffer, sizeof(m_DirectionLightBuffer));
+    CGameInstance::GetInstance()->CopyData_Buffer("DirectionLightBuffer", &m_DirectionLightBuffer, sizeof(m_DirectionLightBuffer));
 
     pShader->Begin("DirectionalLight");
     pVIBuffer->Bind_Resource();
@@ -147,7 +147,7 @@ HRESULT CLight_Manager::Bind_Point_Light(CShader* pShader)
 void CLight_Manager::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 {
     m_iLevelID = CGameInstance::GetInstance()->Get_CurrentLevelID();
-    //CheckNull(m_DirectionalLights[m_iLevelID]);
+    CheckNull(m_DirectionalLights[m_iLevelID]);
 
     Bind_Directional_Light(pShader, pVIBuffer, m_DirectionalLights[m_iLevelID]->Get_LightDesc());
    
