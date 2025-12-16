@@ -54,14 +54,6 @@ HRESULT CFontComponent::Render()
 {
     m_pContext->GSSetShader(nullptr, nullptr, 0);
 
-    ID3D11BlendState* pPrevBS = nullptr;
-    float fPrevBlendFactor[4] = {};
-    UINT uPrevSampleMask = 0;
-
-    m_pContext->OMGetBlendState(&pPrevBS, fPrevBlendFactor, &uPrevSampleMask);
-
-
-    m_pContext->OMSetBlendState(BS_AlphaBlend.Get(), nullptr, 0xFFFFFFFF);
 
     m_pBatch->Begin();
 
@@ -75,8 +67,7 @@ HRESULT CFontComponent::Render()
 
     m_pBatch->End();
 
-    m_pContext->OMSetBlendState(pPrevBS, fPrevBlendFactor, uPrevSampleMask);
-    
+  
 
     return S_OK;
 }
