@@ -24,7 +24,7 @@ float Compute_Attenuation(float Range, float Distance)
 {
     //거리가 멀수록 0에 가깝게.
     //감쇠식 다른걸로 수정해도될듯?
-    float rangeAtt = saturate(1 - (Distance * Distance) / (Range * Range));
+    float rangeAtt = saturate(Range - (Distance) / (Range));
 
     return rangeAtt;
 }

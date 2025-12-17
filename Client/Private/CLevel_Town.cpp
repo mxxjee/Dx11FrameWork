@@ -189,8 +189,8 @@ HRESULT CLevel_Town::Ready_Lights()
     LIGHT_DESC      LightDesc{};
     LightDesc.eType = LIGHT::DIRECTIONAL;
     LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-    LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-    LightDesc.vAmbient = _float4(1.f,1.f,1.f, 1.f);
+    LightDesc.vDiffuse = _float4(1.f, 1.f,1.f, 1.f);
+    LightDesc.vAmbient = _float4(0.5f,0.5f,0.5f, 1.f);
     LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
     if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, LightDesc)))
@@ -198,18 +198,18 @@ HRESULT CLevel_Town::Ready_Lights()
 
 
     ////////////說除 薄褻貲 纔蝶お//////////
-    LIGHT_DESC       RedLight;
-    RedLight.eType = LIGHT::POINT;
+    //LIGHT_DESC       RedLight;
+    //RedLight.eType = LIGHT::POINT;
 
-    RedLight.vDiffuse = _float4(10.f, 0.f, 0.f, 1.f);//說除儀
-    RedLight.fRange = _float4(10.f, 0.f, 0.f, 1.f);
-    RedLight.vPosition = _float4(0.f, 3.f, 0.f, 1.f);
-    RedLight.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
-    RedLight.vAmbient = _float4(1.f, 1.f, 1.f, 1.f);
+    //RedLight.vDiffuse = _float4(1.f, 0.f, 0.f, 1.f);
+    //RedLight.fRange = _float4(10.f, 0.f, 0.f, 1.f);
+    //RedLight.vPosition = _float4(30.f, 10.f, 24.f, 1.f);
+    //RedLight.vSpecular = RedLight.vDiffuse;
+    //RedLight.vAmbient = _float4(0.1f, 0.3f, 0.1f, 1.f);
 
 
-    if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, RedLight)))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, RedLight)))
+    //    return E_FAIL;
 
 
     return S_OK;

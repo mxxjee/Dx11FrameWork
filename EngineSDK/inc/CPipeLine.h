@@ -37,7 +37,11 @@ public:
 
 	HRESULT Bind_PipeLineInverseMatrix(class CShader* pShader, const _char* pConstant, _uint iCameraType,D3DTS eTransformMatrix);
 	
-
+	//역행렬 구해오기
+	const _float4x4* Get_InverseTransform(_uint iCameraType, D3DTS eTransformMatrix)
+	{
+		return &m_PipeDatas[ENUM_TO_UINT(iCameraType)].m_TransformInverseMatrices[(ENUM_TO_UINT(eTransformMatrix))];
+	}
 public:
 	/*상수버퍼에 던질 구조체 업데이트*/
 	HRESULT Update_CamBuffer(_uint CameraType);

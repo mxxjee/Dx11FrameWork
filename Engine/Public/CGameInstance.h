@@ -206,6 +206,8 @@ public:
 
 	HRESULT Bind_PipeLineInverseMatrix(class CShader* pShader, const _char * pConstant, _uint iCameraType, D3DTS eTransformMatrix);
 	
+	const _float4x4* Get_InverseTransform(_uint iCameraType, D3DTS eTransformMatrix);
+
 	HRESULT Update_CamBuffer(_uint CameraType);
 	HRESULT Bind_CamBuffer();
 

@@ -39,11 +39,11 @@ struct VS_IN
 //픽셀셰이더에서 normal써야함(빛연산 때매) 그니까 normal추가해주자.
 struct VS_OUT
 {
-    float4 vPosition : SV_POSITION;
+    float4 vPosition : SV_POSITION;     // 얘는 PS단계 전 W나누기를 자동으로 수행한다.(완전한 NDC공간)
     float4 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
-    
+    float4 vProjPos : TEXCOORD2;        //따로 W나누기를 수행하지 않으므로 투영행렬만 곱한결과 저장
 };
 
 struct PS_IN
@@ -52,6 +52,8 @@ struct PS_IN
     float4 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
+    float4 vProjPos : TEXCOORD2;
+    
 };
 
 
@@ -59,7 +61,7 @@ struct PS_OUT
 {
     vector vDiffuse : SV_TARGET0;
     vector vNormal : SV_TARGET1;
-    
+    vector vDepth : SV_TARGET2;
 };
 
 /*버텍스 셰이더 단계의 함수
@@ -92,9 +94,11 @@ VS_OUT VS_MAIN(VS_IN In)
 
     Out.vTexcoord = In.vTexcoord;
     Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
+    Out.vProjPos = Out.vPosition;
+    
     
     //sdfsdf
-   
+    
     return Out;
     
 
@@ -121,6 +125,11 @@ PS_OUT PS_MAIN(PS_IN Input)
     if (flash > 0.5)
         discard;
     
+    /*Depth_RenderTarget에 기록하자*/
+    
+    Out.vDepth = float4(Input.vProjPos.z / Input.vProjPos.w, ///0~1사이 
+                        Input.vPosition.w, //월드 z, 
+                        0.f, 0.f);
    
     return Out;
     

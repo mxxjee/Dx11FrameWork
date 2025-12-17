@@ -60,23 +60,7 @@ HRESULT CLight_Manager::Bind_Lights(CShader* pShader)
     //현재 씬에있는 조명데이터 싹가져와
     //활성화 되어있는 애들만 셰이더에 보내자.
     
-  /*  Clear_PointLightBuffer();
 
-    for (auto& pLight : m_Lights[m_iLevelID])
-    {
-        if (!pLight || !pLight->IsActive())
-            continue;
-
-        const LIGHT_DESC* desc = pLight->Get_LightDesc();
-    
-
-        
-        Add_LightValue(desc);
-        m_PointLightNum += 1;
-
-    }
-
-     Bind_Point_Light(pShader);*/
 
     return S_OK;
 }
@@ -124,8 +108,7 @@ HRESULT CLight_Manager::Bind_Directional_Light(class CShader* pShader, class CVI
     m_DirectionLightBuffer.g_vLightAmbient = pLightDesc->vAmbient;
     m_DirectionLightBuffer.g_vLightSpecular = pLightDesc->vSpecular;
   
-    pShader->Bind_RawValue("g_PointLightNum", &m_PointLightNum, sizeof(int));
-
+   
     CGameInstance::GetInstance()->CopyData_Buffer("DirectionLightBuffer", &m_DirectionLightBuffer, sizeof(m_DirectionLightBuffer));
 
     pShader->Begin("DirectionalLight");
@@ -135,12 +118,31 @@ HRESULT CLight_Manager::Bind_Directional_Light(class CShader* pShader, class CVI
     return S_OK;
 }
 
-HRESULT CLight_Manager::Bind_Point_Light(CShader* pShader)
+HRESULT CLight_Manager::Bind_Point_Light(CShader* pShader, class CVIBuffer_Rect* pVIBuffer)
 {
-   
+   Clear_PointLightBuffer();
+
+   for (auto& pLight : m_Lights[m_iLevelID])
+   {
+       if (!pLight || !pLight->IsActive())
+           continue;
+
+       const LIGHT_DESC* desc = pLight->Get_LightDesc();
+
+
+
+       Add_LightValue(desc);
+       m_PointLightNum += 1;
+
+   }
+
+   pShader->Bind_RawValue("g_PointLightNum", &m_PointLightNum, sizeof(int));
+
     CGameInstance::GetInstance()->CopyData_Buffer("PointLightBuffer", &m_LightValues, sizeof(m_LightValues));
 
-
+    pShader->Begin("PointLight");
+    pVIBuffer->Bind_Resource();
+    pVIBuffer->Render();
     return S_OK;
 }
 
@@ -153,7 +155,7 @@ void CLight_Manager::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
    
 
     ////점조명 렌더..
-    //for(auto& pLight: m_Lights[m_iLevelID])
+    Bind_Point_Light(pShader,pVIBuffer);
 
 }
 

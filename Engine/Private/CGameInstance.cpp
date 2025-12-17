@@ -695,6 +695,11 @@ HRESULT CGameInstance::Bind_PipeLineInverseMatrix(CShader* pShader, const _char*
 	return m_pPipeLine->Bind_PipeLineInverseMatrix(pShader, pConstant, iCameraType, eTransformMatrix);
 }
 
+const _float4x4* CGameInstance::Get_InverseTransform(_uint iCameraType, D3DTS eTransformMatrix)
+{
+	return m_pPipeLine->Get_InverseTransform(iCameraType, eTransformMatrix);
+}
+
 HRESULT CGameInstance::Update_CamBuffer(_uint CameraType)
 {
 	CheckNullResult(m_pPipeLine, E_FAIL);

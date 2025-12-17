@@ -28,7 +28,7 @@ public:
     void            Add_LightValue(const LIGHT_DESC* LightDesc);
 public:
     HRESULT         Bind_Directional_Light(class CShader* pShader,class CVIBuffer_Rect* pVIBuffer,const LIGHT_DESC* pLightDesc);
-    HRESULT         Bind_Point_Light(class CShader* pShader);
+    HRESULT         Bind_Point_Light(class CShader* pShader,class CVIBuffer_Rect* pVIBuffer);
     void            Render(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
 
 public:

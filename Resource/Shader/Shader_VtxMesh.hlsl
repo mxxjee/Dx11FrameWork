@@ -37,6 +37,7 @@ struct VS_OUT
     float4 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
+    float4 vProjPos : TEXCOORD2;
 };
 
 struct PS_IN
@@ -45,12 +46,15 @@ struct PS_IN
     float4 vNormal : NORMAL;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
+    float4 vProjPos : TEXCOORD2;
 };
 
 struct PS_OUT
 {
     vector vDiffuse : SV_TARGET0;
     vector vNormal : SV_TARGET1;
+    vector VDepth : SV_TARGET2;
+    
 };
 
 struct MINIMAP_OUT
@@ -77,6 +81,7 @@ VS_OUT VS_MAIN(VS_IN In)
 
     Out.vTexcoord = In.vTexcoord;
     Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
+    Out.vProjPos = Out.vPosition;
     
     //sdfsdf
    
@@ -95,6 +100,8 @@ PS_OUT PS_MAIN(PS_IN Input)
    
     Out.vDiffuse = vMtrlDiffuse;
     Out.vNormal = vector(Input.vNormal.xyz * 0.5f + 0.5f, 0.f);
+    Out.VDepth = vector(Input.vProjPos.z / Input.vProjPos.w,
+                        Input.vProjPos.w, 0.f, 0.f);
     
     return Out;
     
