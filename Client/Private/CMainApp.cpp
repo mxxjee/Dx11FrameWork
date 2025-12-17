@@ -213,6 +213,9 @@ HRESULT CMainApp::Ready_Fonts()
 
 	if (FAILED(pGameInstance->Add_Font(TEXT("Dialogue_Default"), TEXT("../../Resource/Fonts/Dialogue_Default.spritefont"))))
 		return E_FAIL;
+
+	if (FAILED(pGameInstance->Add_Font(TEXT("Dialogue_DefaultBold"), TEXT("../../Resource/Fonts/Dialogue_DefaultBold.spritefont"))))
+		return E_FAIL;
 	return S_OK;
 }
 

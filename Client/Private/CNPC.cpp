@@ -11,6 +11,8 @@
 #include "CGameManager.h"
 #include "CDialogue_Manager.h"
 #include "CQuest_Manager.h"
+#include "CInteraction_TriggerBox.h"
+
 
 USING(Client)
 CNPC::CNPC(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -47,8 +49,6 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
 
     pNpcDesc->BodyDesc = &BodyDesc;
 
-    if (FAILED(Ready_PartObjects(pArg)))
-        return E_FAIL;
 
 
     if (FAILED(Ready_Resource(pArg)))
@@ -58,6 +58,8 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
         return E_FAIL;
 
 
+    if (FAILED(Ready_PartObjects(pArg)))
+        return E_FAIL;
 
     m_pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
 
@@ -119,21 +121,8 @@ HRESULT CNPC::Render()
 
 bool CNPC::IsInteratable()
 {
-    CheckNullResult(m_pPlayer, false);
-
-    CTransform* pPlayerTrans = m_pPlayer->Get_Transform();
-    if (pPlayerTrans)
-    {
-        _vector PlayerPos = pPlayerTrans->Get_State(STATE::POSITION,TransformScope::WORLD);
-        _vector ownPos = m_pTransformCom->Get_State(STATE::POSITION, TransformScope::WORLD);
-
-       
-        _float Distance = XMVectorGetX(XMVector3Length(PlayerPos - ownPos));
-
-        return Distance <= m_fTargetDistance;
-
-    }
-
+    CheckNullResult(m_pTriggerBox, false);
+    return m_pTriggerBox->Is_Collision();
     return false;
 }
 
@@ -289,6 +278,30 @@ HRESULT CNPC::Ready_PartObjects(void* pArg)
         
         if (m_pBody)
             m_pAnimBody = dynamic_cast<CAnimBody*>(m_pBody);
+    }
+
+
+    ///이벤트감지용 트리거
+    tagNPC_Desc* pNpcDesc = static_cast<tagNPC_Desc*>(pArg);
+
+    CInteraction_TriggerBox::tagInteractionTriggerBoxDesc TriggerDesc;
+    TriggerDesc.ObjTag = pNpcDesc->ObjTag + L"Trigger_Box";
+    TriggerDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
+    TriggerDesc.pOwner = this;
+    TriggerDesc.m_iLevelID = m_iSceneID;
+    CBounding_AABB* pAABB = dynamic_cast<CBounding_AABB*>(m_pCollider->Get_Bounding());
+
+    if (pAABB)
+    {
+        BoundingBox* pBoundingBox = pAABB->Get_OrignialDesc();
+        TriggerDesc.vCenter = pBoundingBox->Center;
+
+        XMStoreFloat3(&TriggerDesc.vExtents, XMLoadFloat3(&pBoundingBox->Extents) + XMVectorSet(0.6f, 0.6f, 0.6f, 0.f));
+        if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Interaction_TriggerBox"), L"Part_TriggerBox", &TriggerDesc)))
+            return E_FAIL;
+
+        m_pTriggerBox = dynamic_cast<CInteraction_TriggerBox*>(Find_PartObject(L"Part_TriggerBox"));
+
     }
     return S_OK;
 }

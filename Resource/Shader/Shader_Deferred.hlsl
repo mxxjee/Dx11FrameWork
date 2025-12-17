@@ -112,7 +112,7 @@ PS_OUT_LIGHT PS_MAIN_DIRECTIONAL(PS_IN In)
     vector vShade = max(dot(normalize(g_vLightDirection) * -1.f, vNormal), 0.f) + (g_vLightAmbient * g_vMtrlAmbient);
 
     Out.vShade = g_vLightDiffuse * saturate(vShade);
-
+    
     
 
     

@@ -198,18 +198,18 @@ HRESULT CLevel_Town::Ready_Lights()
 
 
     ////////////빨간 점조명 테스트//////////
-    //LIGHT_DESC       RedLight;
-    //RedLight.eType = LIGHT::POINT;
+    LIGHT_DESC       RedLight;
+    RedLight.eType = LIGHT::POINT;
 
-    //RedLight.vDiffuse = _float4(1.f, 0.f, 0.f, 1.f);
-    //RedLight.fRange = _float4(10.f, 0.f, 0.f, 1.f);
-    //RedLight.vPosition = _float4(30.f, 10.f, 24.f, 1.f);
-    //RedLight.vSpecular = RedLight.vDiffuse;
-    //RedLight.vAmbient = _float4(0.1f, 0.3f, 0.1f, 1.f);
+    RedLight.vDiffuse = _float4(1.f, 0.f, 0.f, 1.f);
+    RedLight.fRange = _float4(10.f, 0.f, 0.f, 1.f);
+    RedLight.vPosition = _float4(30.f, 10.f, 24.f, 1.f);
+    RedLight.vSpecular = RedLight.vDiffuse;
+    RedLight.vAmbient = _float4(0.1f, 0.3f, 0.1f, 1.f);
 
 
-    //if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, RedLight)))
-    //    return E_FAIL;
+    if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, RedLight)))
+        return E_FAIL;
 
 
     return S_OK;
@@ -290,13 +290,13 @@ HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
     NPC_DialogueBox.Key = L"NPC_DialogueBox";
 
 #pragma region 박스만들기
-    _float OriginY = (g_iWinSizeY >> 1) + 100.f;
+    _float OriginY = (g_iWinSizeY >> 1) + 200.f;
 
     CUI::tagUIDesc        DialogueBoxDesc = {};
 
     DialogueBoxDesc.ObjTag = L"DialogueBox";
     DialogueBoxDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
-    DialogueBoxDesc.TextureKey = L"DialogueBox";
+    DialogueBoxDesc.TextureKey = L"DialogueBox_3";
 
     DialogueBoxDesc.iIdx = 0;
 
@@ -330,14 +330,14 @@ HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
 #pragma region 말하는 폰트만들기
     ///폰트먼저만들기
     CFontUI::FONTUI_DESC FontUIDesc;
-    FontUIDesc.FontName = L"Dialogue_Default";
+    FontUIDesc.FontName = L"Dialogue_DefaultBold";
     FontUIDesc.vDefaultFontColor = _float4(1.f, 1.f, 1.f, 0.5f);
     FontUIDesc.ObjTag = L"Dialogue_Text";
     FontUIDesc.fSizeX = 0.5f;
     FontUIDesc.fSizeY = 0.5f;
 
-    FontUIDesc.fX = DialogueBoxDesc.fX - 100.f;
-    FontUIDesc.fY = OriginY-500.f;
+    FontUIDesc.fX = DialogueBoxDesc.fX+25.f;
+    FontUIDesc.fY = OriginY+600.f;
 
     FontUIDesc.Depth = 0.5f-(0.01f);
 
@@ -393,7 +393,7 @@ HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
     NameUIDesc.fSizeY = 0.4f;
   
     NameUIDesc.fX = DialogueBoxDesc.fX - (DialogueBoxDesc.fX*0.35f);
-    NameUIDesc.fY = OriginY-25.f;
+    NameUIDesc.fY = OriginY+300.f;
 
     NameUIDesc.Depth = 0.5f - (0.01f);
 
@@ -438,6 +438,43 @@ HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
 
 
 
+#pragma endregion
+
+#pragma region arrow icon
+    CUI::tagUIDesc        ArrowIconDesc = {};
+
+    ArrowIconDesc.ObjTag = L"Dialogue_Arrow_Icon";
+    ArrowIconDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+    ArrowIconDesc.TextureKey = L"Dialogue_Arrow";
+
+    ArrowIconDesc.iIdx = 0;
+
+    ArrowIconDesc.fSizeX = 72 * 0.8f;
+    ArrowIconDesc.fSizeY = 54 * 0.8f;
+    ArrowIconDesc.fX = g_iWinSizeX >> 1;
+    ArrowIconDesc.fY = OriginY+200.f;
+
+
+    TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    ArrowIconDesc.TransformDesc = &TransDesc;
+
+    //AlphaAnim등록
+    UIDesc = {};
+    ArrowIconDesc.UICompDesc = &UIDesc;
+
+    pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &ArrowIconDesc);
+    if (pObj)
+    {
+        CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), strLayerTag, pInstance)))
+            return E_FAIL;
+
+
+        NPC_DialogueBox.Objects.push_back(pInstance);
+
+    }
 #pragma endregion
 
     m_pGameInstance->Register_UIGroup(NPC_DialogueBox);

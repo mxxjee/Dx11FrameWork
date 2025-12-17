@@ -2,6 +2,8 @@
 #include "CFont_Manager.h"
 #include "CGameInstance.h"
 #include "MathUtils.h"
+#include "ColorUtils.h"
+
 
 CFontComponent::CFontComponent(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CComponent(pDevice,pContext)
@@ -48,6 +50,11 @@ HRESULT CFontComponent::Initialize_Copytype(void* pArg)
 void CFontComponent::Set_Text(wstring _Text)
 {
     m_pText = _Text;
+
+    //텍스트 사이즈 측정
+    m_vSize = m_pFont->MeasureString(m_pText.c_str());
+
+    m_Origin = _float2(XMVectorGetX(m_vSize) * 0.5f, 0.f);
 }
 
 HRESULT CFontComponent::Render()
@@ -55,14 +62,27 @@ HRESULT CFontComponent::Render()
     m_pContext->GSSetShader(nullptr, nullptr, 0);
 
 
-    m_pBatch->Begin();
 
+
+    m_pBatch->Begin();
+    
+    /*가독성을 위한 그림자*/
+    m_pFont->DrawString(m_pBatch,
+        m_pText.c_str(),
+        _float2(m_vPosition.x+3.f,m_vPosition.y+3.f),
+        XMVectorSet(0.f,0.f,0.f,1.f),
+        m_fRotation,
+        m_Origin,
+        m_vScale);
+
+
+    /*원래 텍스트*/
     m_pFont->DrawString(m_pBatch, 
         m_pText.c_str(), 
         m_vPosition,
         XMLoadFloat4(&m_vColor),
         m_fRotation,
-        _float2(0.f,0.f),
+        m_Origin,
         m_vScale);
 
     m_pBatch->End();

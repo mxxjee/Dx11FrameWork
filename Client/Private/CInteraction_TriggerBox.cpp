@@ -85,6 +85,7 @@ HRESULT CInteraction_TriggerBox::Ready_Component(void* pArg)
 	CCollider_Base::COLLIDER_DESC pColliderDesc;
 	pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::TRIGGER);
 	pColliderDesc.pOwner = this;
+	pColliderDesc.m_iLevelID = pDesc->m_iLevelID;
 
 	CBounding_AABB::BOUNDING_AABB_DESC      CollDesc{};
 	CollDesc.Extents = pDesc->vExtents;

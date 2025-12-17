@@ -48,6 +48,10 @@ private:
     _float4     m_vColor;
     _float      m_vScale;
     _float      m_fRotation = 0;
+
+    _vector     m_vSize;
+    _float2     m_Origin;
+
 private:
     SpriteBatch* m_pBatch = { nullptr };
     SpriteFont* m_pFont = { nullptr };

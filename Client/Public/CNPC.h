@@ -100,6 +100,10 @@ protected:
     CQuest_Manager* m_pQuest_Manager = nullptr;
 
     string DialogueTag = "";
+
+    class     CInteraction_TriggerBox* m_pTriggerBox = nullptr;
+
+
 };
 
 NS_END
