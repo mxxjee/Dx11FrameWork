@@ -336,8 +336,8 @@ HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
     FontUIDesc.fSizeX = 0.5f;
     FontUIDesc.fSizeY = 0.5f;
 
-    FontUIDesc.fX = DialogueBoxDesc.fX;
-    FontUIDesc.fY = OriginY+400.f;
+    FontUIDesc.fX = DialogueBoxDesc.fX - 100.f;
+    FontUIDesc.fY = OriginY-500.f;
 
     FontUIDesc.Depth = 0.5f-(0.01f);
 
@@ -392,8 +392,8 @@ HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
     NameUIDesc.fSizeX = 0.4f;
     NameUIDesc.fSizeY = 0.4f;
   
-    NameUIDesc.fX = DialogueBoxDesc.fX - (DialogueBoxDesc.fX*0.3f);
-    NameUIDesc.fY = OriginY+100.f;
+    NameUIDesc.fX = DialogueBoxDesc.fX - (DialogueBoxDesc.fX*0.35f);
+    NameUIDesc.fY = OriginY-25.f;
 
     NameUIDesc.Depth = 0.5f - (0.01f);
 

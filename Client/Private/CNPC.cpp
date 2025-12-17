@@ -168,6 +168,8 @@ void CNPC::Enter_Interaction()
 {
     m_bTalking = true;
     m_pAnimBody->Reserve_Animation(L"talk", true);
+    m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", (void*)nullptr);
+
 
     m_pGameInstance->Emit(Enter_Interaction_Event);
 

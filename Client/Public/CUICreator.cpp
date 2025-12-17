@@ -117,8 +117,8 @@ HRESULT UICreator::Create_Interaction_UI(wstring LayerTag)
 
         Desc.iIdx = 0;
 
-        Desc.fSizeX = 200.f*0.8f;
-        Desc.fSizeY = 90.f*0.8f;
+        Desc.fSizeX = 200.f*0.7f;
+        Desc.fSizeY = 90.f*0.7f;
         Desc.fX = g_iWinSizeX >> 1;
         Desc.fY = g_iWinSizeY >> 1;
         Desc.Depth = 0.5f - (0.01f * i);
@@ -220,8 +220,8 @@ HRESULT UICreator::Create_Interaction_TalkUI(wstring LayerTag)
 
         Desc.iIdx = 0;
 
-        Desc.fSizeX = 200.f * 0.8f;
-        Desc.fSizeY = 90.f * 0.8f;
+        Desc.fSizeX = 200.f * 0.7f;
+        Desc.fSizeY = 90.f * 0.7f;
         Desc.fX = g_iWinSizeX >> 1;
         Desc.fY = g_iWinSizeY >> 1;
         Desc.Depth = 0.5f - (0.01f * i);
