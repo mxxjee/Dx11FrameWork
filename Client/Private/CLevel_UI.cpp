@@ -22,7 +22,7 @@ HRESULT CLevel_UI::Initialize(LevelArgs& args)
 void CLevel_UI::Update_Priority(_float fTimeDelta)
 {
 	__super::Update_Priority(fTimeDelta);
-	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
+	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::P))
 		m_pGameInstance->Pop_Level() ;
 
 	/*if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::P))

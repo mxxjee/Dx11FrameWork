@@ -320,6 +320,7 @@
     <ClInclude Include="..\Public\ModelData.h" />
     <ClInclude Include="..\Public\Parsing_RoomInfo.h" />
     <ClInclude Include="..\Public\Parsing_TriggerInfo.h" />
+    <ClInclude Include="..\Public\UIGroup.h" />
     <ClInclude Include="..\Public\VertexData.h" />
   </ItemGroup>
   <ItemGroup>

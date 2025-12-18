@@ -43,8 +43,9 @@ HRESULT CLevel_NPCRoom::Initialize(LevelArgs& args)
     if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, LightDesc)))
         return E_FAIL;
 
+
     UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
-    pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Objects[0]);
+    pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Find(L"FadeScreen"));
 
 
     return S_OK;

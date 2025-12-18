@@ -1,7 +1,7 @@
 #pragma once
 #include "CBase.h"
 #include "Engine_LevelTypes.h"
-
+#include "UIGroup.h"
 
 /*엔진의 모든 매니저들을 관리한다.
 1. 엔진의 모든 매니저들을 업데이트/렌더한다.

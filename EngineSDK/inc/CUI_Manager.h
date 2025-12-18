@@ -1,11 +1,13 @@
 #pragma once
 #include "CBase.h"
+#include "UIGroup.h"
 
 /*UI 들의 생명주기는 관리하지않음. -> 이는 objectmanager에서 관리
 UI들의 그룹화 + 이벤트를 등록하고, 이벤트를 broadcast해주는 역할*/
 
 NS_BEGIN(Engine)
-class CGameObject;
+
+
 
 class CUI_Manager :
     public CBase

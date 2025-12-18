@@ -10,6 +10,7 @@ NS_BEGIN(Engine)
 
 class CLayer;
 class CGameInstance;
+class CGameObject;
 
 class CObject_Manager final :
     public CBase

@@ -112,11 +112,12 @@ void CLevel_Logo::Update(const _float fTimeDelta)
 
 
     UIGroup* pButtonGroup = m_pGameInstance->Get_UIGroup(L"ButtonSlotGroup");
+    int i = 0;
     if (pButtonGroup)
     {
-        for (int i = 0; i < pButtonGroup->Objects.size(); ++i)
+        for (auto& pair : pButtonGroup->Objects)
         {
-            CGameObject* pTarget = pButtonGroup->Objects[i];
+            CGameObject* pTarget = pair.second;
             if (pTarget)
             {
                 CButton* pButton = dynamic_cast<CButton*>(pTarget);
@@ -128,11 +129,13 @@ void CLevel_Logo::Update(const _float fTimeDelta)
 
                     else
                         pButton->Set_Hover(false);
+                    ++i;
                 }
 
+
             }
-            
         }
+  
         
     }
 
@@ -299,7 +302,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     CGameObject*    pInstance= dynamic_cast<CGameObject*>(pLogoObj);
     if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO), strLayerTag, pInstance)))
         return E_FAIL;
-    LogoGroup.Objects.push_back(pInstance);
+    LogoGroup.push_back(pInstance);
 
 
     /////////¸¶½ºÅ©
@@ -326,12 +329,12 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO), strLayerTag, pInstance2)))
         return E_FAIL;
 
-    LogoGroup.Objects.push_back(pInstance2);
+    LogoGroup.push_back(pInstance2);
     m_pGameInstance->Register_UIGroup(LogoGroup);
 
     for (auto& i : LogoGroup.Objects)
     {
-        CUI* pUI = dynamic_cast<CUI*>(i);
+        CUI* pUI = dynamic_cast<CUI*>(i.second);
         if (pUI)
             pUI->Set_ActiveAnim(0,[pUI]()
                 {
@@ -375,7 +378,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     pFadeScreen->Set_AutoMode(true);
    
     pFadeScreen->Set_Active(false);
-    FadeScrcreenGroup.Objects.push_back(pFadeScreen);
+    FadeScrcreenGroup.push_back(pFadeScreen);
 
     m_pGameInstance->Register_UIGroup(FadeScrcreenGroup);
     m_pGameInstance->RegisterEvent(L"PlayFadeIn", [](void* pData)
@@ -385,8 +388,9 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
             {
                 for (auto& i : pGroup->Objects)
                 {
-                    i->Set_Active(true);
-                    CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(i);
+                    
+                    i.second->Set_Active(true);
+                    CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(i.second);
                     if (pFadeScreen)
                     {
                         
@@ -403,8 +407,8 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
             {
                 for (auto& i : pGroup->Objects)
                 {
-                    i->Set_Active(true);
-                    CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(i);
+                    i.second->Set_Active(true);
+                    CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(i.second);
                     if (pFadeScreen)
                     {
                         pFadeScreen->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 8.f, false,false);
@@ -470,7 +474,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
         if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO), strLayerTag, pInstance)))
             return E_FAIL;
 
-        ButtonSlotGroup.Objects.push_back(pInstance);
+        ButtonSlotGroup.push_back(pInstance);
 
     }
   
@@ -557,7 +561,7 @@ void CLevel_Logo::OnEnter()
             {
                 for (auto& i : pGroup->Objects)
                 {
-                    i->Set_Active(true);
+                    i.second->Set_Active(true);
                 }
             }
         });

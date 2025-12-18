@@ -49,12 +49,30 @@ HRESULT CFontComponent::Initialize_Copytype(void* pArg)
 
 void CFontComponent::Set_Text(wstring _Text)
 {
+    m_TypingStr = L"";
     m_pText = _Text;
 
     //텍스트 사이즈 측정
     m_vSize = m_pFont->MeasureString(m_pText.c_str());
-
     m_Origin = _float2(XMVectorGetX(m_vSize) * 0.5f, 0.f);
+
+
+    //첫글자부터 하나씩
+    if (m_bTypingEffect)
+    {
+        m_iTargetIdx = 0;
+        m_iTotalIndx = (_uint)_Text.length();
+        m_bPlay = true;
+        PlayTyping();
+
+        if (m_StartFunction)
+            m_StartFunction();
+
+    }
+
+    else
+        m_TypingStr = _Text;
+
 }
 
 HRESULT CFontComponent::Render()
@@ -68,7 +86,7 @@ HRESULT CFontComponent::Render()
     
     /*가독성을 위한 그림자*/
     m_pFont->DrawString(m_pBatch,
-        m_pText.c_str(),
+        m_TypingStr.c_str(),
         _float2(m_vPosition.x+3.f,m_vPosition.y+3.f),
         XMVectorSet(0.f,0.f,0.f,1.f),
         m_fRotation,
@@ -78,7 +96,7 @@ HRESULT CFontComponent::Render()
 
     /*원래 텍스트*/
     m_pFont->DrawString(m_pBatch, 
-        m_pText.c_str(), 
+        m_TypingStr.c_str(),
         m_vPosition,
         XMLoadFloat4(&m_vColor),
         m_fRotation,
@@ -92,23 +110,35 @@ HRESULT CFontComponent::Render()
     return S_OK;
 }
 
-void CFontComponent::Update(XMMATRIX WorldMatrix, _float alpha)
+void CFontComponent::Update(XMMATRIX WorldMatrix, _float alpha,_float fTimeDelta)
 {
-    
+
     _float4x4 fWorldMat;
     XMStoreFloat4x4(&fWorldMat, WorldMatrix);
 
     tagEngine_Desc EngineDesc = m_pGameInstance->Get_EngineDesc();
 
-  
-    
-    _vector  vPos=MathUtils::WorldToScreen(XMVectorSet(fWorldMat._41, fWorldMat._42, fWorldMat._43, 1.f),
+
+
+    _vector  vPos = MathUtils::WorldToScreen(XMVectorSet(fWorldMat._41, fWorldMat._42, fWorldMat._43, 1.f),
         m_pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::TARGET)),
         m_pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::TARGET)),
         EngineDesc.iWinSizeX, EngineDesc.iWinSizeY);
 
     m_vPosition = _float2(XMVectorGetX(vPos), XMVectorGetY(vPos));
     m_vColor.w = alpha;
+
+    if (m_bPlay)
+    {
+        m_fAccTime += fTimeDelta;
+        if (m_fAccTime >= m_fTime)
+        {
+            m_fAccTime = 0.f;
+            PlayTyping();
+        }
+    }
+
+  
 }
 
 CFontComponent* CFontComponent::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -171,3 +201,28 @@ HRESULT CFontComponent::Create_BS_AlphaBlend()
 
 
 }
+
+void CFontComponent::PlayTyping()
+{
+    CheckFalse(m_pOwner->Is_Active());
+    CheckFalse(m_bTypingEffect);
+
+
+    if (m_iTargetIdx == m_iTotalIndx)
+    {
+        m_bPlay = false;
+        if (m_EndFunction)
+            m_EndFunction();
+
+        return;
+    }
+
+
+    m_TypingStr += m_pText[m_iTargetIdx];
+    ++m_iTargetIdx;
+
+   
+
+
+}
+

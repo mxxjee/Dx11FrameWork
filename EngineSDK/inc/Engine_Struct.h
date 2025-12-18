@@ -99,13 +99,7 @@ namespace Engine
 	}LIGHT_DESC;
 
 
-	struct UIGroup
-	{
-		_wstring Key;       //그룹이름
-		vector<class CGameObject*>        Objects;        //그룹요소들
-		bool        isActive = true;                //활성화 여부
-	};
-
+	
 	struct Ray
 	{
 		_vector Origin;		//시작점

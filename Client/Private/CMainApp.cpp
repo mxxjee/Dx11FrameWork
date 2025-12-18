@@ -84,10 +84,10 @@ HRESULT CMainApp::Initialize()
 #ifdef _DEBUG
 	pImGui_Manager->Init(g_hWnd, m_pDevice.Get(), m_pContext.Get());
 
-	//CreateLevelDebugWindow();
-	//CreateObjectDebugWindow();
-	//CreateCameraDebugWindow();
-	//CreateStateDebugWindow();
+	CreateLevelDebugWindow();
+	CreateObjectDebugWindow();
+	CreateCameraDebugWindow();
+	CreateStateDebugWindow();
 
 #endif
 	pImGui_Manager->Set_MapToolMode(MapToolMode::END);

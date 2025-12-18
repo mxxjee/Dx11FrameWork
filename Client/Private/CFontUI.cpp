@@ -50,7 +50,7 @@ void CFontUI::Update_Late(_float fTimeDelta)
 	CheckNull(m_pFontComp);
 
 
-	m_pFontComp->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()), m_vARGB.x);
+	m_pFontComp->Update(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()), m_vARGB.x,fTimeDelta);
 
 
 }
@@ -67,6 +67,21 @@ HRESULT CFontUI::Render()
 		m_pFontComp->Render();
 
 	return S_OK;
+}
+
+void CFontUI::Set_FontStartFunction(function<void()> func)
+{
+	CheckNull(m_pFontComp);
+	CheckNull(func);
+	m_pFontComp->Set_StartFunction(func);
+
+}
+
+void CFontUI::Set_FontEndFunction(function<void()> func)
+{
+	CheckNull(m_pFontComp);
+	CheckNull(func);
+	m_pFontComp->Set_EndFunction(func);
 }
 
 void CFontUI::Set_Text(const wstring& Text)
@@ -94,6 +109,8 @@ HRESULT CFontUI::Ready_Component(void* pArg)
 		return E_FAIL;
 
 	
+	m_pFontComp->Set_TypingEffect(pDesc->m_bUseTypingEffect);
+	m_pFontComp->Set_TypingTime(pDesc->m_fTypingTime);
 
 	return S_OK;
 }

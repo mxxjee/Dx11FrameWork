@@ -2,6 +2,7 @@
 #include "CUI.h"
 #include "CGameInstance.h"
 #include "MathUtils.h"
+#include "CFontUI.h"
 
 
 CGameInstance* UICreator::m_pGameInstance = CGameInstance::GetInstance();
@@ -58,7 +59,7 @@ HRESULT UICreator::Create_HeartGroup(wstring LayerTag)
                 return E_FAIL;
 
 
-            HeartGroup.Objects.push_back(pInstance);
+            HeartGroup.push_back(pInstance);
 
         }
 
@@ -73,7 +74,7 @@ HRESULT UICreator::Create_HeartGroup(wstring LayerTag)
             {
                 for (auto& i : pGroup->Objects)
                 {
-                    CUI* pUI = dynamic_cast<CUI*>(i);
+                    CUI* pUI = dynamic_cast<CUI*>(i.second);
                     if (pUI)
                     {
                         if (pUI->Get_Idx() == (*iHp))
@@ -140,7 +141,7 @@ HRESULT UICreator::Create_Interaction_UI(wstring LayerTag)
                 return E_FAIL;
 
 
-            Interaction_PopUP_CarryGroup.Objects.push_back(pInstance);
+            Interaction_PopUP_CarryGroup.push_back(pInstance);
 
         }
     }
@@ -160,7 +161,7 @@ HRESULT UICreator::Create_Interaction_UI(wstring LayerTag)
             {
                 for (auto& i : pGroup->Objects)
                 {
-                    CUI* pUI = dynamic_cast<CUI*>(i);
+                    CUI* pUI = dynamic_cast<CUI*>(i.second);
                     if (pUI)
                     {
                         
@@ -188,7 +189,7 @@ HRESULT UICreator::Create_Interaction_UI(wstring LayerTag)
             {
                 for (auto& i : pGroup->Objects)
                 {
-                    CUI* pUI = dynamic_cast<CUI*>(i);
+                    CUI* pUI = dynamic_cast<CUI*>(i.second);
                     if (pUI)
                     {
                      pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f),  20.f, false, true);
@@ -243,7 +244,7 @@ HRESULT UICreator::Create_Interaction_TalkUI(wstring LayerTag)
                 return E_FAIL;
 
 
-            Interaction_PopUP_TalkGroup.Objects.push_back(pInstance);
+            Interaction_PopUP_TalkGroup.push_back(pInstance);
 
         }
     }
@@ -263,7 +264,7 @@ HRESULT UICreator::Create_Interaction_TalkUI(wstring LayerTag)
             {
                 for (auto& i : pGroup->Objects)
                 {
-                    CUI* pUI = dynamic_cast<CUI*>(i);
+                    CUI* pUI = dynamic_cast<CUI*>(i.second);
                     if (pUI)
                     {
 
@@ -291,7 +292,7 @@ HRESULT UICreator::Create_Interaction_TalkUI(wstring LayerTag)
             {
                 for (auto& i : pGroup->Objects)
                 {
-                    CUI* pUI = dynamic_cast<CUI*>(i);
+                    CUI* pUI = dynamic_cast<CUI*>(i.second);
                     if (pUI)
                     {
                         pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 20.f, false, true);
@@ -300,5 +301,321 @@ HRESULT UICreator::Create_Interaction_TalkUI(wstring LayerTag)
                 }
             }
         });
+    return S_OK;
+}
+
+HRESULT UICreator::Create_NPC_Dialogue_UI(wstring LayerTag)
+{
+#pragma region NPC_DialogueBox
+    UIGroup NPC_DialogueBox;
+    NPC_DialogueBox.Key = L"NPC_DialogueBox";
+
+#pragma region 박스만들기
+    _float OriginY = (g_iWinSizeY >> 1) + 200.f;
+
+    CUI::tagUIDesc        DialogueBoxDesc = {};
+
+    DialogueBoxDesc.ObjTag = L"DialogueBox";
+    DialogueBoxDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+    DialogueBoxDesc.TextureKey = L"DialogueBox_3";
+
+    DialogueBoxDesc.iIdx = 0;
+
+    DialogueBoxDesc.fSizeX = 600.f;
+    DialogueBoxDesc.fSizeY = 250.f * 0.8f;
+    DialogueBoxDesc.fX = g_iWinSizeX >> 1;
+    DialogueBoxDesc.fY = OriginY;
+
+
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    DialogueBoxDesc.TransformDesc = &TransDesc;
+
+    //AlphaAnim등록
+    CUIComponent::UICOMP_DESC  UIDesc = {};
+    DialogueBoxDesc.UICompDesc = &UIDesc;
+
+    CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &DialogueBoxDesc);
+    if (pObj)
+    {
+        CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+            return E_FAIL;
+
+
+        NPC_DialogueBox.push_back(pInstance);
+
+    }
+#pragma endregion
+#pragma region 말하는 폰트만들기
+    ///폰트먼저만들기
+    CFontUI::FONTUI_DESC FontUIDesc;
+    FontUIDesc.FontName = L"Dialogue_DefaultBold";
+    FontUIDesc.vDefaultFontColor = _float4(1.f, 1.f, 1.f, 0.5f);
+    FontUIDesc.ObjTag = L"Dialogue_Text";
+    FontUIDesc.fSizeX = 0.5f;
+    FontUIDesc.fSizeY = 0.5f;
+    FontUIDesc.m_bUseTypingEffect = true;
+
+    FontUIDesc.fX = DialogueBoxDesc.fX + 25.f;
+    FontUIDesc.fY = OriginY + 600.f;
+
+    FontUIDesc.Depth = 0.5f - (0.01f);
+
+    FontUIDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+    TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    FontUIDesc.TransformDesc = &TransDesc;
+
+    UIDesc = {};
+    FontUIDesc.UICompDesc = &UIDesc;
+
+    pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FontUI"), &FontUIDesc);
+    CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+        return E_FAIL;
+
+
+    NPC_DialogueBox.push_back(pInstance);
+
+
+    wstring Text = L"안녕하세요";
+
+    //폰트 이벤트 바인딩
+    CGameInstance::GetInstance()->RegisterEvent(L"UpdateNPCText", [](void* pData)
+        {
+            wstring* Text = static_cast<wstring*>(pData);
+
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"NPC_DialogueBox");
+            if (pGroup)
+            {
+                CGameObject* pObj = pGroup->Find(L"Dialogue_Text");
+                CheckNull(pObj);
+
+                CFontUI* pText = dynamic_cast<CFontUI*>(pObj);
+                CheckNull(pText);
+                pText->Set_Text(*Text);
+              
+            }
+        });
+#pragma endregion
+#pragma region 이름폰트만들기
+
+    CFontUI::FONTUI_DESC NameUIDesc;
+
+    NameUIDesc.FontName = L"Zelda_Default";
+    NameUIDesc.vDefaultFontColor = _float4(0.8f, 0.8f, 0.8f, 1.f);
+    NameUIDesc.ObjTag = L"Dialogue_Text_Name";
+    NameUIDesc.fSizeX = 0.4f;
+    NameUIDesc.fSizeY = 0.4f;
+
+    NameUIDesc.fX = DialogueBoxDesc.fX - (DialogueBoxDesc.fX * 0.35f);
+    NameUIDesc.fY = OriginY + 300.f;
+
+    NameUIDesc.Depth = 0.5f - (0.01f);
+
+    NameUIDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+    TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    NameUIDesc.TransformDesc = &TransDesc;
+
+    UIDesc = {};
+    NameUIDesc.UICompDesc = &UIDesc;
+
+    pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FontUI"), &NameUIDesc);
+    pInstance = dynamic_cast<CGameObject*>(pObj);
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+        return E_FAIL;
+
+
+    NPC_DialogueBox.push_back(pInstance);
+
+
+    //폰트 이벤트 바인딩
+    CGameInstance::GetInstance()->RegisterEvent(L"UpdateNPCName", [](void* pData)
+        {
+            wstring* Text = static_cast<wstring*>(pData);
+
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"NPC_DialogueBox");
+            if (pGroup)
+            {
+                CGameObject* pObj = pGroup->Find(L"Dialogue_Text_Name");
+                CheckNull(pObj);
+
+                CFontUI* pText = dynamic_cast<CFontUI*>(pObj);
+                CheckNull(pText);
+                pText->Set_Text(*Text);
+
+            }
+            
+   
+        });
+
+
+
+#pragma endregion
+
+#pragma region arrow icon
+    CUI::tagUIDesc        ArrowIconDesc = {};
+
+    ArrowIconDesc.ObjTag = L"Dialogue_Arrow";
+    ArrowIconDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+    ArrowIconDesc.TextureKey = L"Dialogue_Arrow";
+
+    ArrowIconDesc.iIdx = 0;
+
+    ArrowIconDesc.fSizeX = 72 * 0.8f;
+    ArrowIconDesc.fSizeY = 54 * 0.8f;
+    ArrowIconDesc.fX = g_iWinSizeX >> 1;
+    ArrowIconDesc.fY = OriginY + 100.f;
+
+
+    TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    ArrowIconDesc.TransformDesc = &TransDesc;
+
+    //AlphaAnim등록
+    UIDesc = {};
+    ArrowIconDesc.UICompDesc = &UIDesc;
+
+    pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &ArrowIconDesc);
+    if (pObj)
+    {
+        CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+            return E_FAIL;
+
+
+        NPC_DialogueBox.push_back(pInstance);
+
+    }
+#pragma endregion
+
+    m_pGameInstance->Register_UIGroup(NPC_DialogueBox);
+    m_pGameInstance->SetActiveGroup(L"NPC_DialogueBox", false);
+
+
+
+#pragma region 대화상자 등장/끝 이벤트
+    m_pGameInstance->RegisterEvent(L"OnDialogueUIShow", [](void* pData)
+        {
+
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"NPC_DialogueBox");
+            if (pGroup)
+            {
+                for (auto& pair : pGroup->Objects)
+                {
+                    CGameObject* pObj = pair.second;
+                    if (pObj->Get_Tag() == L"Dialogue_Arrow")
+                        continue;
+
+                    CUI* pUI = dynamic_cast<CUI*>(pObj);
+                    CheckNull(pUI);
+
+                    pUI->Set_ActiveAnim(0, [pUI]()
+                        {
+                            pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 10.f, false, false);
+                        });
+
+                    if (!pUI->Is_Active())
+                        pUI->OnActivated(true);
+                }
+              
+            }
+        });
+
+    m_pGameInstance->RegisterEvent(L"OnDialogueUIHide", [](void* pData)
+        {
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"NPC_DialogueBox");
+            if (pGroup)
+            {
+                for (auto& pair : pGroup->Objects)
+                {
+  
+                    CUI* pUI = dynamic_cast<CUI*>(pair.second);
+                    if (pair.second->Get_Tag().find(L"Text") != wstring::npos)
+                        pair.second->Set_Active(false);
+
+
+                    CheckNull(pUI);
+
+                 
+                    pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 10.f, false, true);
+                      
+
+                }
+
+            }
+        });
+  
+    /*대화모두 출력후 화살표나오는 이벤트*/
+    m_pGameInstance->RegisterEvent(L"OnDialogueArrowShow", [](void* pData)
+        {
+
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"NPC_DialogueBox");
+            if (pGroup)
+            {
+                CGameObject* pObj = pGroup->Find(L"Dialogue_Arrow");
+                CheckNull(pObj);
+                
+                CUI* pUI = dynamic_cast<CUI*>(pObj);
+                CheckNull(pUI);
+
+                pUI->Set_ActiveAnim(0, [pUI]()
+                    {
+                        pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 10.f, true, false, true);
+                    });
+                if (!pUI->Is_Active())
+                    pUI->OnActivated(true);
+            }
+        });
+
+    m_pGameInstance->RegisterEvent(L"OnDialogueArrowHide", [](void* pData)
+        {
+
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"NPC_DialogueBox");
+            if (pGroup)
+            {
+                CGameObject* pObj = pGroup->Find(L"Dialogue_Arrow");
+                CheckNull(pObj);
+
+                CUI* pUI = dynamic_cast<CUI*>(pObj);
+                CheckNull(pUI);
+
+              
+               pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 10.f, false, true, false);
+                  
+ 
+            }
+        });
+
+#pragma endregion
+
+
+   //화살표이벤트 연결
+    CGameObject* pTarget = NPC_DialogueBox.Find(L"Dialogue_Text");
+    CheckNullResult(pTarget,E_FAIL);
+
+    CFontUI* pFontUI = dynamic_cast<CFontUI*>(pTarget);
+    CheckNullResult(pFontUI,E_FAIL);
+
+    //대화텍스트출력다됐을때, arrow 활성화ㅐ
+    pFontUI->Set_FontEndFunction([]()
+        {
+            CGameInstance::GetInstance()->BroadCastEvent(L"OnDialogueArrowShow",nullptr);
+        });
+
+    pFontUI->Set_FontStartFunction([]()
+        {
+            CGameInstance::GetInstance()->BroadCastEvent(L"OnDialogueArrowHide",nullptr);
+        });
+
+
     return S_OK;
 }

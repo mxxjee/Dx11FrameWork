@@ -22,7 +22,9 @@ HRESULT CUI_Manager::Register_UIGroup(const UIGroup& Group, const _wstring& Key)
 		size_t Hash = hash<wstring>()(FindKey);
 		m_UIMap.emplace(Hash, Group);
 		for (auto& i : Group.Objects)
-			Safe_AddRef(i);
+		{
+			Safe_AddRef(i.second);
+		}
 
 	}
 
@@ -39,7 +41,7 @@ HRESULT CUI_Manager::AddUIToGroup(const _wstring& Key, CGameObject* pGameObject)
 
 	else
 	{
-		pGroup->Objects.push_back(pGameObject);
+		pGroup->push_back(pGameObject);
 		Safe_AddRef(pGameObject);
 	}
 
@@ -75,13 +77,19 @@ HRESULT CUI_Manager::SetActiveGroup(const _wstring& Key, bool bActive)
 	if (!pGroup)
 		return E_FAIL;
 
-	for (auto& i : pGroup->Objects)
+	for (auto& pair : pGroup->Objects)
 	{
-		CUI* pUI = dynamic_cast<CUI*>(i);
+		if (pair.second)
+		{
+			CUI* pUI = dynamic_cast<CUI*>(pair.second);
 
-		//활성/비활성화에 따른 이벤트호출
-		if (pUI)
-			pUI->OnActivated(bActive);
+			//활성/비활성화에 따른 이벤트호출
+			if (pUI)
+				pUI->OnActivated(bActive);
+
+			
+		}
+		
 	}
 
 	return S_OK;
@@ -121,8 +129,11 @@ void CUI_Manager::Free()
 {
 	for (auto& pair : m_UIMap)
 	{
-		for (auto& i :pair.second.Objects)
-			Safe_Release(i);
+		for (auto& i : pair.second.Objects)
+		{
+			Safe_Release(i.second);
+
+		}
 			
 	}
 }

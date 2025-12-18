@@ -164,7 +164,7 @@ void CUIComponent::Set_OwnerTransform(CTransform* ptransform)
 
 
 
-void CUIComponent::PlayAnim(UIAnimType _AnimType, _float4 vStart, _float4 vTarget, float fSpeed, bool bLoop,bool bAutoDisable)
+void CUIComponent::PlayAnim(UIAnimType _AnimType, _float4 vStart, _float4 vTarget, float fSpeed, bool bLoop,bool bAutoDisable, bool bPingPong)
 {
 	CheckTrue(_AnimType == UIAnimType::END);
 	CheckFalse(m_pUIOwner->Is_Active())
@@ -180,6 +180,8 @@ void CUIComponent::PlayAnim(UIAnimType _AnimType, _float4 vStart, _float4 vTarge
 	m_AnimInfo[ENUM_TO_UINT(_AnimType)].bLoop = bLoop;
 
 	m_AnimInfo[ENUM_TO_UINT(_AnimType)].bAutoDisable = bAutoDisable;
+	m_AnimInfo[ENUM_TO_UINT(_AnimType)].bPingpong = bPingPong;
+
 
 	/*오너의 애니메이션타입 추가.*/
 	Set_AnimFlag(_AnimType);
@@ -258,7 +260,19 @@ void CUIComponent::Check_LoopAnimation(UIAnimType eType, UIAnimInfo& Info, _floa
 			fabs(vCurrent.z - Info.fTarget.z) < Epslion)
 		{
 			if (Info.bLoop)
+			{
+				if (Info.bPingpong)
+				{
+					_float4 vTmp = Info.fStart;
+					Info.fStart = Info.fTarget;
+					Info.fTarget = Info.fStart;
+
+				}
+
 				Apply_StartValue(eType, Info);
+
+			}
+				
 
 			else
 			{
@@ -279,7 +293,18 @@ void CUIComponent::Check_LoopAnimation(UIAnimType eType, UIAnimInfo& Info, _floa
 		if (fabs(vCurrent.x - Info.fTarget.x) < Epslion)
 		{
 			if (Info.bLoop)
+			{
+				if (Info.bPingpong)
+				{
+					_float vTmp = Info.fStart.x;
+					Info.fStart.x = Info.fTarget.x;
+					Info.fTarget.x = vTmp;
+
+				}
+
 				Apply_StartValue(eType, Info);
+			}
+				
 
 			else
 			{

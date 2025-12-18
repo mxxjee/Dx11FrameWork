@@ -16,6 +16,9 @@ public:
         wstring FontName;
         _float4 vDefaultFontColor = _float4(0.f, 0.f, 0.f, 1.f);//기본색 검은색
         _float  fRotation = 0.f;
+        bool    m_bUseTypingEffect = false;
+        _float  m_fTypingTime = 0.05f;
+
     }FONTUI_DESC;
 protected:
     CFontUI(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
@@ -34,6 +37,9 @@ public:
 
     virtual HRESULT Render() override;
 
+public:
+    void        Set_FontStartFunction(function<void()> func);
+    void        Set_FontEndFunction(function<void()> func);
 public:
     void            Set_Text(const wstring& Text);
     HRESULT         Ready_Component(void* pArg);
