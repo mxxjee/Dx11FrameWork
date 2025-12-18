@@ -76,7 +76,7 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
  
     //////////////////Direction_Light에 대한 연산///////////////////////////////////
     //DiffuseColor
-    float4 fDiffuseColor = g_DiffuseTexture.Sample(sampler0, Input.vTexcoord);
+    float4 fDiffuseColor = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
     clip(fDiffuseColor.a-0.1f);
        
     return fDiffuseColor;
@@ -88,7 +88,7 @@ float4 PS_Select(PS_IN Input) : SV_Target0
  
     //////////////////Direction_Light에 대한 연산///////////////////////////////////
     //DiffuseColor
-    float4 fDiffuseColor = g_DiffuseTexture.Sample(sampler0, Input.vTexcoord);
+    float4 fDiffuseColor = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
 
     return float4(1.0f, 0.f, 0.f, 0.5f)*fDiffuseColor;
 
@@ -125,6 +125,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_Select();
+    }
+
+    pass WireFrame
+    {
+        SetRasterizerState(RS_WireFrame);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN();
     }
 
     

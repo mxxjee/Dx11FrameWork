@@ -77,6 +77,9 @@ private:
 public:
     HRESULT         Add_DebugComponent(CComponent* pComponent);
 #endif
+
+private:
+    ENGINE_DESC m_EngineDesc;
 };
 
 NS_END

@@ -471,6 +471,7 @@
     <ClCompile Include="..\Private\imgui_impl_win32.cpp" />
     <ClCompile Include="..\Private\imgui_tables.cpp" />
     <ClCompile Include="..\Private\imgui_widgets.cpp" />
+    <ClCompile Include="..\Private\UIGroup.cpp" />
     <ClCompile Include="..\Public\IMapEditable.cpp" />
     <ClCompile Include="..\Public\VertexData.cpp" />
     <ClCompile Include="CMapLayer.cpp">

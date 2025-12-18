@@ -80,7 +80,7 @@ private:
 
 private:
     class CGameInstance* m_pGameInstance = nullptr;
-
+    ENGINE_DESC m_EngineDesc;
 };
 NS_END
 

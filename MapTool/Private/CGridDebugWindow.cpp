@@ -48,7 +48,7 @@ void CGridDebugWindow::Render()
 {
 }
 
-void CGridDebugWindow::Set_MapTerrain(CGameObject* pObj)
+void CGridDebugWindow::Set_MapTerrain(Engine::CGameObject* pObj)
 {
     if (pObj)
     {

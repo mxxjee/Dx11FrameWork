@@ -11,6 +11,7 @@ namespace Engine
     class CMapObject_Manager;
     class CGameInstance;
     class CTerrain_Manager;
+    class CGameObject;
 }
 NS_BEGIN(MapTool)
 

@@ -7,6 +7,7 @@ namespace Engine
     class CImgui_InputInt;
     class CGameInstance;
     class CCamera_Base;
+    class CGameObject;
 }
 
 
@@ -27,7 +28,7 @@ public:
     virtual void Render() override;
 
 public:
-    void        Set_MapTerrain(class CGameObject* pObj);
+    void        Set_MapTerrain(class Engine::CGameObject* pObj);
 private:
     HRESULT     Create_Widgets();
 

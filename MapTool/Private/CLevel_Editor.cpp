@@ -161,7 +161,7 @@ HRESULT CLevel_Editor::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
 
 	pDesc.ShaderName = L"Default";
-	pDesc.passName = "Default";
+	pDesc.passName = "Grid";
 	pDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
 
 

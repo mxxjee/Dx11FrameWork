@@ -1286,6 +1286,9 @@
     <ClCompile Include="..\Private\CFontComponent.cpp">
       <Filter>05.Component\Font</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\UIGroup.cpp">
+      <Filter>00.System\09.UI\UIGroup</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Resource\Shader\Engine_Shader_Defines.hlsli">

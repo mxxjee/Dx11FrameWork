@@ -29,6 +29,12 @@ RasterizerState RS_UI
     DepthClipEnable = false;
 };
 
+RasterizerState RS_WireFrame
+{
+    FillMode = WIREFRAME;
+    CullMode = NONE;
+};
+
 RasterizerState RS_Sky
 {
     FillMode = Solid;

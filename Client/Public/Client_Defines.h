@@ -233,9 +233,9 @@ namespace Engine
 struct RoomPackage
 {
 	string			m_RoomName = "";
-	list< CGameObject*> EnvObjs;		//맵 오브젝트들
-	list<CGameObject*>	 NPCs;
-	list<CGameObject*>	Triggers;
+	list<Engine::CGameObject*> EnvObjs;		//맵 오브젝트들
+	list<Engine::CGameObject*>	 NPCs;
+	list<Engine::CGameObject*>	Triggers;
 
 
 	RoomPackage() {};

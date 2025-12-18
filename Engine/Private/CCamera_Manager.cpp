@@ -25,6 +25,7 @@ CCamera_Manager::CCamera_Manager(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11Dev
 
 HRESULT CCamera_Manager::Initialize()
 {
+	m_EngineDesc = CGameInstance::GetInstance()->Get_EngineDesc();
 	for (int i = 0; i < ENUM_TO_UINT(CAMERA_TYPE::END); ++i)
 		m_Cameras[i] = nullptr;
 
@@ -212,12 +213,15 @@ void CCamera_Manager::Render_Cameras()
 		vector<uint8_t> RenderMask = m_pRenderCamera->Get_RenderMask();
 		for (int i = 0; i < RenderMask.size(); ++i)
 		{
-			m_pRenderCamera->PreRenderGroup(i);
+
+			if (m_EngineDesc.eEngineMode == EngineMode::CLIENT)
+				m_pRenderCamera->PreRenderGroup(i);
 
 			if (RenderMask[i])
 				m_pGameInstance->Render_Group(i);
 
-			m_pRenderCamera->PostRenderGroup(i);
+			if (m_EngineDesc.eEngineMode == EngineMode::CLIENT)
+				m_pRenderCamera->PostRenderGroup(i);
 		}
 
 
@@ -228,7 +232,8 @@ void CCamera_Manager::Render_Cameras()
 	
 #ifdef _DEBUG
 
-	m_pGameInstance->Render_Debug();
+	if(m_EngineDesc.eEngineMode == EngineMode::CLIENT)
+		m_pGameInstance->Render_Debug();
 
 #endif
 	m_pGameInstance->Clear_RenderGroups();

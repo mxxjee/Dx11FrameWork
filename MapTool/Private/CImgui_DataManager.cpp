@@ -250,7 +250,7 @@ HRESULT CImgui_DataManager::Create_MapTerrain()
 	wstring LayerTag = L"Terrain_Layer";
 	wstring ProtoTag = L"MapTerrain";
 
-	CGameObject* pCloneObj = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), &Desc));
+	Engine::CGameObject* pCloneObj = dynamic_cast<Engine::CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), &Desc));
 	if (pCloneObj)
 	{
 		CTerrain_Base* pTerrain = dynamic_cast<CTerrain_Base*>(pCloneObj);

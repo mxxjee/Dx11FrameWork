@@ -20,6 +20,8 @@ CRenderer::CRenderer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> p
 
 HRESULT CRenderer::Initialize(_uint RenderGroupCount)
 {
+	m_EngineDesc = CGameInstance::GetInstance()->Get_EngineDesc();
+
 	m_RenderMaxCount = RenderGroupCount;
 
 	m_RenderGroups.resize(m_RenderMaxCount);
@@ -89,18 +91,23 @@ HRESULT CRenderer::Initialize(_uint RenderGroupCount)
 
 	CheckNullResult(m_pVIBuffer, E_FAIL);
 
+	
 #ifdef _DEBUG
-	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Diffuse"), 150.f, 150.f, 300.f, 300.f)))
-		return E_FAIL;
+	if (m_EngineDesc.eEngineMode == EngineMode::CLIENT)
+	{
+		if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Diffuse"), 150.f, 150.f, 300.f, 300.f)))
+			return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Normal"), 150.f, 450.f, 300.f, 300.f)))
-		return E_FAIL;
+		if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Normal"), 150.f, 450.f, 300.f, 300.f)))
+			return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shade"), 450.f, 150.f, 300.f, 300.f)))
-		return E_FAIL;
+		if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shade"), 450.f, 150.f, 300.f, 300.f)))
+			return E_FAIL;
 
-	if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Specular"), 450.f, 450.f, 300.f, 300.f)))
-		return E_FAIL;
+		if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Specular"), 450.f, 450.f, 300.f, 300.f)))
+			return E_FAIL;
+	}
+	
 
 #endif // _DEBUG
 
