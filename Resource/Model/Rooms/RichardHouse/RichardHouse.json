@@ -1,0 +1,756 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RH_bed_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_RH_bed_01",
+            "Normal": "MI_RH_bed_01_nml.png",
+            "OPACITY": "MI_RH_bed_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_CandleStick_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_CandleStick_01",
+            "Normal": "MI_CandleStick_01_nml.png",
+            "OPACITY": "MI_CandleStick_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RH_bed_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_RH_bed_01",
+            "Normal": "MI_RH_bed_01_nml.png",
+            "OPACITY": "MI_RH_bed_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RH_book_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_RH_book_01",
+            "Normal": "MI_RH_book_01_nml.png",
+            "OPACITY": "MI_RH_book_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RichardH_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_RichardH_01",
+            "Normal": "MI_RichardH_01_nml.png",
+            "OPACITY": "MI_RichardH_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RichardH_bucket_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_RichardH_bucket_01",
+            "Normal": "MI_RichardH_bucket_01_nml.png",
+            "OPACITY": "MI_RichardH_bucket_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RichardH_fanu_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_RichardH_fanu_01",
+            "Normal": "MI_RichardH_fanu_01_nml.png",
+            "OPACITY": "MI_RichardH_fanu_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RichardH_fanu_02_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_RichardH_fanu_02",
+            "Normal": "MI_RichardH_fanu_02_nml.png",
+            "OPACITY": "MI_RichardH_fanu_02_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RichardH_floor_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_RichardH_floor_01",
+            "Normal": "MI_RichardH_floor_01_nml.png",
+            "OPACITY": "MI_RichardH_floor_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RichardH_grass_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_RichardH_grass_01",
+            "Normal": "MI_RichardH_grass_01_nml.png",
+            "OPACITY": "MI_RichardH_grass_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RichardH_kago_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_RichardH_kago_01",
+            "Normal": "MI_RichardH_kago_01_nml.png",
+            "OPACITY": "MI_RichardH_kago_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RichardH_komono_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_RichardH_komono_01",
+            "Normal": "MI_RichardH_komono_01_nml.png",
+            "OPACITY": "MI_RichardH_komono_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RichardH_obj_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_RichardH_obj_01",
+            "Normal": "MI_RichardH_obj_01_nml.png",
+            "OPACITY": "MI_RichardH_obj_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RH_slope_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_RH_slope_01",
+            "Normal": "MI_RH_slope_01_nml.png",
+            "OPACITY": "MI_RH_slope_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RH_stair_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_RH_stair_01",
+            "Normal": "MI_RH_stair_01_nml.png",
+            "OPACITY": "MI_RH_stair_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RichardH_tile_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_RichardH_tile_01",
+            "Normal": "MI_RichardH_tile_01_nml.png",
+            "OPACITY": "MI_RichardH_tile_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_RichardH_tile_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_f_water_a_01",
+            "Normal": "",
+            "OPACITY": "",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 17,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 60,
+            "MaterialName": "MI_RH_bed_01",
+            "MeshIdx": 0,
+            "Name": "dai__MI_RH_bed_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 28
+        },
+        {
+            "IBPath": "Mesh_1.ib",
+            "IndexCount": 2466,
+            "MaterialName": "MI_CandleStick_01",
+            "MeshIdx": 1,
+            "Name": "fanu__MI_CandleStick_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_1.vb",
+            "VertexCount": 708
+        },
+        {
+            "IBPath": "Mesh_2.ib",
+            "IndexCount": 2484,
+            "MaterialName": "MI_RH_bed_01",
+            "MeshIdx": 2,
+            "Name": "fanu__MI_RH_bed_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_2.vb",
+            "VertexCount": 613
+        },
+        {
+            "IBPath": "Mesh_3.ib",
+            "IndexCount": 3060,
+            "MaterialName": "MI_RH_book_01",
+            "MeshIdx": 3,
+            "Name": "fanu__MI_RH_book_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_3.vb",
+            "VertexCount": 1110
+        },
+        {
+            "IBPath": "Mesh_4.ib",
+            "IndexCount": 7146,
+            "MaterialName": "MI_RichardH_01",
+            "MeshIdx": 4,
+            "Name": "fanu__MI_RichardH_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_4.vb",
+            "VertexCount": 2364
+        },
+        {
+            "IBPath": "Mesh_5.ib",
+            "IndexCount": 5202,
+            "MaterialName": "MI_RichardH_bucket_01",
+            "MeshIdx": 5,
+            "Name": "fanu__MI_RichardH_bucket_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_5.vb",
+            "VertexCount": 1335
+        },
+        {
+            "IBPath": "Mesh_6.ib",
+            "IndexCount": 4080,
+            "MaterialName": "MI_RichardH_fanu_01",
+            "MeshIdx": 6,
+            "Name": "fanu__MI_RichardH_fanu_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_6.vb",
+            "VertexCount": 1405
+        },
+        {
+            "IBPath": "Mesh_7.ib",
+            "IndexCount": 1890,
+            "MaterialName": "MI_RichardH_fanu_02",
+            "MeshIdx": 7,
+            "Name": "fanu__MI_RichardH_fanu_02",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_7.vb",
+            "VertexCount": 507
+        },
+        {
+            "IBPath": "Mesh_8.ib",
+            "IndexCount": 378,
+            "MaterialName": "MI_RichardH_floor_01",
+            "MeshIdx": 8,
+            "Name": "fanu__MI_RichardH_floor_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_8.vb",
+            "VertexCount": 126
+        },
+        {
+            "IBPath": "Mesh_9.ib",
+            "IndexCount": 1908,
+            "MaterialName": "MI_RichardH_grass_01",
+            "MeshIdx": 9,
+            "Name": "fanu__MI_RichardH_grass_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_9.vb",
+            "VertexCount": 493
+        },
+        {
+            "IBPath": "Mesh_10.ib",
+            "IndexCount": 2676,
+            "MaterialName": "MI_RichardH_kago_01",
+            "MeshIdx": 10,
+            "Name": "fanu__MI_RichardH_kago_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_10.vb",
+            "VertexCount": 600
+        },
+        {
+            "IBPath": "Mesh_11.ib",
+            "IndexCount": 3468,
+            "MaterialName": "MI_RichardH_komono_01",
+            "MeshIdx": 11,
+            "Name": "fanu__MI_RichardH_komono_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_11.vb",
+            "VertexCount": 776
+        },
+        {
+            "IBPath": "Mesh_12.ib",
+            "IndexCount": 3249,
+            "MaterialName": "MI_RichardH_obj_01",
+            "MeshIdx": 12,
+            "Name": "fanu__MI_RichardH_obj_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_12.vb",
+            "VertexCount": 997
+        },
+        {
+            "IBPath": "Mesh_13.ib",
+            "IndexCount": 36,
+            "MaterialName": "MI_RH_slope_01",
+            "MeshIdx": 13,
+            "Name": "model__MI_RH_slope_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_13.vb",
+            "VertexCount": 18
+        },
+        {
+            "IBPath": "Mesh_14.ib",
+            "IndexCount": 150,
+            "MaterialName": "MI_RH_stair_01",
+            "MeshIdx": 14,
+            "Name": "model__MI_RH_stair_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_14.vb",
+            "VertexCount": 72
+        },
+        {
+            "IBPath": "Mesh_15.ib",
+            "IndexCount": 72,
+            "MaterialName": "MI_RichardH_tile_01",
+            "MeshIdx": 15,
+            "Name": "model__MI_RichardH_tile_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_15.vb",
+            "VertexCount": 27
+        },
+        {
+            "IBPath": "Mesh_16.ib",
+            "IndexCount": 36,
+            "MaterialName": "MI_f_water_a_01",
+            "MeshIdx": 16,
+            "Name": "water__MI_f_water_a_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_16.vb",
+            "VertexCount": 13
+        }
+    ],
+    "ModelName": "RichardHouse"
+}

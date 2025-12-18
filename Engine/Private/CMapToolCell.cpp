@@ -155,7 +155,7 @@ HRESULT CMapToolCell::Render()
     if (m_pShader->Bind_Vector("g_Color", g_Color))
         return E_FAIL;
 
-    if (FAILED(m_pShader->Begin("Default")))
+    if (FAILED(m_pShader->Begin(m_passName)))
         return E_FAIL;
 
     if (FAILED(m_pVIBufferCom->Bind_Resource()))
@@ -382,7 +382,7 @@ string CMapToolCell::Convert_String_To_Type(CellType eType)
 
 HRESULT CMapToolCell::Set_WireFrameMode()
 {
-    m_pCurrentRS = m_pWireframeRS;
+    m_passName = "WireFrame";
 
 
     return S_OK;
@@ -390,7 +390,7 @@ HRESULT CMapToolCell::Set_WireFrameMode()
 
 HRESULT CMapToolCell::Set_SolidMode()
 {
-    m_pCurrentRS = m_pSolidRS;
+    m_passName = "Default";
 
 
     return S_OK;

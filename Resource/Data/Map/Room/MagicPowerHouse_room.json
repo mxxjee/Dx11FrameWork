@@ -1,0 +1,30 @@
+{
+  "NPC_ModelNames": [
+    "Witch"
+  ],
+  "NavData": "../../Resource/Data/Map/Room/Mamasha_room_Nav.dat",
+  "MapPositions": [
+    {
+      "Pos": [
+        12.635936737060547,
+        0.0,
+        4.411994934082031
+      ],
+      "Target": "Player_SpawnPoint"
+    },
+    {
+      "Pos": [
+        12.572551727294922,
+        0.800000011920929,
+        7.84372615814209
+      ],
+      "Target": "Witch_SpawnPoint"
+    }
+  ],
+  "Position": [
+    12.600000381469727,
+    0.0,
+    6.599999904632568
+  ],
+  "RoomName": "MagicPowerHouse"
+}

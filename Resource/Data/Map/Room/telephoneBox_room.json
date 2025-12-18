@@ -1,0 +1,49 @@
+{
+  "NavData": "../../Resource/Data/Map/Room/telephoneBox_room_Nav.dat",
+  "MapPositions": [
+    {
+      "Pos": [
+        12.608985900878906,
+        0.0,
+        6.551767349243164
+      ],
+      "Target": "Interaction_Telephone"
+    }
+  ],
+  "Position": [
+    12.600000381469727,
+    0.0,
+    5.850034236907959
+  ],
+  "RoomName": "telephoneBox",
+  "RoomTriggers": [
+    {
+      "Collider_Center": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Collider_Extents": [
+        1.5,
+        1.5,
+        1.0
+      ],
+      "NextRoomID": "Level_Town",
+      "Pos": [
+        12.500465393066406,
+        0.0,
+        0.7690747380256653
+      ],
+      "Rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "Scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ]
+}

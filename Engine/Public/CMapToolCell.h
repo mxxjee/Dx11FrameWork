@@ -111,6 +111,7 @@ private:
 
 private:
     _float4     g_Color;
+    string m_passName = "WireFrame";
 };
 
 NS_END

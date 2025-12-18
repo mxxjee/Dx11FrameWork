@@ -1,0 +1,316 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "Black.png",
+            "METALNESS": "",
+            "MaterialName": "MI_DungeonRoof_01",
+            "Normal": "",
+            "OPACITY": "",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_s1_f_floor_a_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_s1_f_floor_a_01",
+            "Normal": "",
+            "OPACITY": "MI_s1_f_floor_a_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_s1_f_stair_u_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_s1_f_stair_u_01",
+            "Normal": "",
+            "OPACITY": "MI_s1_f_stair_u_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_s1_w_wall_a_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_s1_w_wall_a_01",
+            "Normal": "MI_s1_w_wall_a_01_nml.png",
+            "OPACITY": "MI_s1_w_wall_a_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_s1_w_wall_a_06_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_s1_w_wall_a_06",
+            "Normal": "MI_s1_w_wall_a_06_nml.png",
+            "OPACITY": "MI_s1_w_wall_a_06_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_s1_w_wall_c_03_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_s1_w_wall_c_03",
+            "Normal": "MI_s1_w_wall_c_03_nml.png",
+            "OPACITY": "MI_s1_w_wall_c_03_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "Black.png",
+            "METALNESS": "",
+            "MaterialName": "black",
+            "Normal": "",
+            "OPACITY": "",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 7,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 6,
+            "MaterialName": "MI_DungeonRoof_01",
+            "MeshIdx": 0,
+            "Name": "RichardCave_02A1__MI_DungeonRoof_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 4
+        },
+        {
+            "IBPath": "Mesh_1.ib",
+            "IndexCount": 138,
+            "MaterialName": "MI_s1_f_floor_a_01",
+            "MeshIdx": 1,
+            "Name": "RichardCave_02A1__MI_s1_f_floor_a_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_1.vb",
+            "VertexCount": 39
+        },
+        {
+            "IBPath": "Mesh_2.ib",
+            "IndexCount": 330,
+            "MaterialName": "MI_s1_f_stair_u_01",
+            "MeshIdx": 2,
+            "Name": "RichardCave_02A1__MI_s1_f_stair_u_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_2.vb",
+            "VertexCount": 206
+        },
+        {
+            "IBPath": "Mesh_3.ib",
+            "IndexCount": 2559,
+            "MaterialName": "MI_s1_w_wall_a_01",
+            "MeshIdx": 3,
+            "Name": "RichardCave_02A1__MI_s1_w_wall_a_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_3.vb",
+            "VertexCount": 667
+        },
+        {
+            "IBPath": "Mesh_4.ib",
+            "IndexCount": 579,
+            "MaterialName": "MI_s1_w_wall_a_06",
+            "MeshIdx": 4,
+            "Name": "RichardCave_02A1__MI_s1_w_wall_a_06",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_4.vb",
+            "VertexCount": 127
+        },
+        {
+            "IBPath": "Mesh_5.ib",
+            "IndexCount": 21,
+            "MaterialName": "MI_s1_w_wall_c_03",
+            "MeshIdx": 5,
+            "Name": "RichardCave_02A1__MI_s1_w_wall_c_03",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_5.vb",
+            "VertexCount": 9
+        },
+        {
+            "IBPath": "Mesh_6.ib",
+            "IndexCount": 204,
+            "MaterialName": "black",
+            "MeshIdx": 6,
+            "Name": "RichardCave_02A1__black",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_6.vb",
+            "VertexCount": 56
+        }
+    ],
+    "ModelName": "RichardCave_02A"
+}

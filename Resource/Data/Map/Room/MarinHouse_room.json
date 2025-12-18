@@ -1,0 +1,61 @@
+{
+  "NPC_ModelNames": [
+    "Marin",
+    "Tarin"
+  ],
+  "NavData": "../../Resource/Data/Map/Room/MarinHouse_room_Nav.dat",
+  "MapPositions": [
+    {
+      "Pos": [
+        13.208671569824219,
+        0.0,
+        8.164026260375977
+      ],
+      "Target": "Marin_SpawnPoint"
+    },
+    {
+      "Pos": [
+        14.830904006958008,
+        0.0,
+        7.013763427734375
+      ],
+      "Target": "Tarin_SpawnPoint"
+    }
+  ],
+  "Position": [
+    12.600000381469727,
+    0.0,
+    6.5
+  ],
+  "RoomName": "MarinHouse",
+  "RoomTriggers": [
+    {
+      "Collider_Center": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Collider_Extents": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "NextRoomID": "Level_Town",
+      "Pos": [
+        12.567767143249512,
+        0.0,
+        1.2241829633712769
+      ],
+      "Rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "Scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ]
+}

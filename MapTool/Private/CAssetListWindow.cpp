@@ -360,7 +360,8 @@ HRESULT CAssetListWindow::Create_ModelFile()
     }
 
     ///Roomµé
-    wstring RoomModelNames[] = { L"Mamasha_room"};
+    wstring RoomModelNames[] = { L"Mamasha_room",L"MagicPowerHouse",L"MarinHouse",L"telephoneBox",
+                                L"RichardCave_01A",L"RichardCave_01B",L"RichardCave_01C",L"RichardCave_02A",L"RichardHouse"};
     int RoomSize = sizeof(RoomModelNames) / sizeof(RoomModelNames[0]);
 
     CFolder* pRoomFolder = Get_Folder("Room");
