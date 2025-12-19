@@ -3,6 +3,24 @@
     "RichardAnim"
   ],
   "NavData": "../../Resource/Data/Map/Room/RichardHouse_room_Nav.dat",
+  "MapPositions": [
+    {
+      "Pos": [
+        12.483410835266113,
+        -2.384185791015625e-07,
+        3.50042724609375
+      ],
+      "Target": "Player_SpawnPoint"
+    },
+    {
+      "Pos": [
+        9.873880386352539,
+        -2.384185791015625e-07,
+        5.339585304260254
+      ],
+      "Target": "Richard_SpawnPoint"
+    }
+  ],
   "Position": [
     12.600000381469727,
     0.0,
@@ -26,6 +44,34 @@
         14.766273498535156,
         -0.30000001192092896,
         7.600333213806152
+      ],
+      "Rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "Scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    {
+      "Collider_Center": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Collider_Extents": [
+        1.5,
+        1.0,
+        1.0
+      ],
+      "NextRoomID": "Level_Town",
+      "Pos": [
+        12.645169258117676,
+        0.0,
+        1.5133097171783447
       ],
       "Rotation": [
         -0.0,

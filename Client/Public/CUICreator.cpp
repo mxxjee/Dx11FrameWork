@@ -619,3 +619,59 @@ HRESULT UICreator::Create_NPC_Dialogue_UI(wstring LayerTag)
 
     return S_OK;
 }
+
+HRESULT UICreator::Create_Loading_UI(wstring LayerTag)
+{
+    CUI::tagUIDesc        Desc = {};
+
+    Desc.ObjTag = L"Loading_UI";
+    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+    Desc.TextureKey = L"loadingUI";
+
+    Desc.iIdx = 0;
+
+    Desc.fSizeX = 320.f*0.7f;
+    Desc.fSizeY = 320.f * 0.7f;
+    Desc.fX = 1100.f;
+    Desc.fY = 600.f;
+
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    Desc.TransformDesc = &TransDesc;
+
+    //AlphaAnimµî·Ï
+    CUIComponent::UICOMP_DESC UIDesc = {};
+    /*    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].fStart = _float4(Desc.fX, Desc.fY, 1.f, 1.f);
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].fTarget = _float4(Desc.fX - 10.f, Desc.fY, 1.f, 1.f);
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].m_fSpeed = 0.1f;
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].bLoop = true;*/
+
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].fStart = _float4(1.f, 0.f, 0.f, 0.f);
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].fTarget = _float4(0.f, 0.f, 0.f, 0.f);
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].m_fSpeed = 5.f;
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bLoop = true;
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bAutoDisable = false;
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bPingpong = true;
+
+    Desc.UICompDesc = &UIDesc;
+
+
+
+
+
+    CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &Desc);
+    if (pObj)
+    {
+        CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOADING), LayerTag, pInstance)))
+            return E_FAIL;
+
+        CUI* pUI = dynamic_cast<CUI*>(pObj);
+        if (pUI)
+            pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA);
+
+    }
+
+    return S_OK;
+}

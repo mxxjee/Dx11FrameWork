@@ -78,6 +78,22 @@ vector<CCell*>* CNavMesh_Manager::Find_Cells(_uint iLevelIdx)
 	return nullptr;
 }
 
+void CNavMesh_Manager::Reset_NaveMesh(_uint iLevelIdx)
+{
+	vector<CCell*>* FindCells = Find_Cells(iLevelIdx);
+	CheckNull(FindCells);
+
+	for (auto& pCell : *FindCells)
+		Safe_Release(pCell);
+
+	FindCells->clear();
+	auto iter = m_LevelCells.find(iLevelIdx);
+	m_LevelCells.erase(iter);
+
+
+
+}
+
 void CNavMesh_Manager::Set_MainCells(_uint LevelID)
 {
 	vector<CCell*>* Target = Find_Cells(LevelID);

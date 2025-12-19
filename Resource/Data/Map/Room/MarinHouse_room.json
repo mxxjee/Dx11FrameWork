@@ -20,6 +20,14 @@
         7.013763427734375
       ],
       "Target": "Tarin_SpawnPoint"
+    },
+    {
+      "Pos": [
+        12.45,
+        0.0,
+        3.15
+      ],
+      "Target": "Player_SpawnPoint"
     }
   ],
   "Position": [

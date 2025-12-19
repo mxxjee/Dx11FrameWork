@@ -17,7 +17,7 @@ namespace Client
 	static const unsigned int g_iWinSizeY = 720;
                     
 
-	enum class LEVEL_ID {STATIC,LOGO,LOADING,TOWN,ROOM,UI,MAPTOOL,END};
+	enum class LEVEL_ID {STATIC,LOGO,LOADING,SPAWN,TOWN,ROOM,UI,MAPTOOL,END};
 	enum class COLLISION_GROUP{PLAYER,PLAYER_WEAPON,MONSTER,MONSTER_WEAPON,INTERACTION,TRIGGER,END};
 	//enum class LEV
 }
@@ -257,6 +257,18 @@ struct RoomPackage
 
 
 
+	}
+
+	void Set_Active(bool b)
+	{
+		for (auto& pObj : EnvObjs)
+			pObj->Set_Active(b);
+
+		for (auto& pObj : NPCs)
+			pObj->Set_Active(b);
+
+		for (auto& pObj : Triggers)
+			pObj->Set_Active(b);
 	}
 };
 using namespace Client;

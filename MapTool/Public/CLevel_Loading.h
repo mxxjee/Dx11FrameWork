@@ -18,7 +18,7 @@ public:
     virtual void            Update_Priority(_float fTimeDelta);
     virtual void            Update(const _float fTimeDelta) override;        //æ¿¿« æ˜µ•¿Ã∆Æ
     virtual void            Update_Late(_float fTimeDelta);
-
+  
     
     
     virtual void        Render() override;         //æ¿¿« ∑ª¥ı.

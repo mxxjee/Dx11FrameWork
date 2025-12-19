@@ -35,8 +35,21 @@ public:
 
     virtual void Free() override;
 
+public:
+    bool        Is_FirstSpawn() { return m_bFirstSpawn; }
+
+public:
+    void        Set_FirstLoading(bool b) { m_bFirstLoading = b; }
+    bool        Get_IsFirstLoading() { return m_bFirstLoading; }
+
+
 private:
     CPlayer* m_pMainPlayer=nullptr;
     _float4  vLastPosition;
+    
+
+    bool        m_bFirstSpawn = true;//첫시작일떄를 의미
+    bool        m_bFirstLoading = true;//첫 로딩임을 의미
+
 };
 NS_END

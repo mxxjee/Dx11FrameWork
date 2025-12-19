@@ -33,6 +33,7 @@ public:
     vector<CCell*>*     Find_Cells(_uint iLevelIdx);
     void                Set_ParentMatrix(_float4x4* pParent) { m_pParentMatrix = pParent; }
     void                Set_DrawDebug(bool b) { m_bDrawDebug = b; }
+    void                Reset_NaveMesh(_uint iLevelIdx);
 
 public:
     //레벨아이디로 들어온 셀들을 메인셀로 설정한다. 레벨 onenter마다 부르기? 

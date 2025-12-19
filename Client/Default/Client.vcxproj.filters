@@ -273,6 +273,9 @@
     <ClInclude Include="..\Public\CFontUI.h">
       <Filter>02.GameObjects\99.UI\02.Font</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CLevel_Spawn.h">
+      <Filter>01.Levels\Spawn</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -595,6 +598,9 @@
     <Filter Include="02.GameObjects\99.UI\02.Font">
       <UniqueIdentifier>{a46854be-9167-4b2b-835c-24cf74895794}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\Spawn">
+      <UniqueIdentifier>{fc139c08-7a82-4096-b6cd-ae835c64798a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -847,6 +853,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CFontUI.cpp">
       <Filter>02.GameObjects\99.UI\02.Font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_Spawn.cpp">
+      <Filter>01.Levels\Spawn</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

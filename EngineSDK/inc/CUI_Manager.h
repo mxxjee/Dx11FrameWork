@@ -44,7 +44,7 @@ public:
     virtual void        Free() override;
 
 private:
-    UMap<size_t, UIGroup>     m_UIMap;
+    UMap<size_t, UIGroup*>     m_UIMap;
     UMap<size_t, function<void(void*)>> m_EventMap;
 
 

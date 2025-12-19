@@ -6,6 +6,19 @@
 #include "CLevel_Logo.h"
 
 #include "CInput_Manager.h"
+#include "CUICreator.h"
+#include "CCamera_Base.h"
+
+#include "CGameManager.h"
+#include "CUIComponent.h"
+#include "CQuad.h"
+#include "CTransform.h"
+#include "CPanel.h"
+#include "CVIBuffer_Rect.h"
+#include "CUICamera.h"
+
+
+
 
 
 
@@ -30,6 +43,11 @@ HRESULT CLevel_Loading::Initialize(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeTyp
     m_eChangeType = eChangeType;
 
     Set_Flag(LEVELFLAG::TRANSIENT);
+
+    Ready_Prototypes();
+        
+
+    Create_UICamera();
 
     //로딩할동안 보여줄 UI생성
     if (FAILED(Ready_UI_Layer()))
@@ -86,6 +104,8 @@ void CLevel_Loading::Render()
 HRESULT CLevel_Loading::Ready_UI_Layer()
 {
     //UI 요소 추가.
+    if (FAILED(UICreator::Create_Loading_UI(L"UI_Layer")))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -135,4 +155,77 @@ void CLevel_Loading::Free()
     Safe_Release(m_pLoader);
 
 
+}
+
+void CLevel_Loading::Ready_Prototypes()
+{
+
+    CheckFalse(CGameManager::GetInstance()->Get_IsFirstLoading());
+
+    //필요한 컴포넌트 및 오브젝트 먼저 원형생성
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Transform"), CTransform::Create(m_pDevice, m_pContext))))
+        return;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"UICamera", CUICamera::Create(m_pDevice, m_pContext))))
+        return;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"UI"), CUIComponent::Create(m_pDevice, m_pContext))))
+        return;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Quad", CQuad::Create(m_pDevice, m_pContext))))
+        return;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Panel", CPanel::Create(m_pDevice, m_pContext))))
+        return;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
+        return;
+
+
+    m_pGameInstance->Load_Textures(L"../../Resource/UI/Loading/", L".dds");
+
+    CGameManager::GetInstance()->Set_FirstLoading(false);
+
+    return;
+}
+
+void CLevel_Loading::Create_UICamera()
+{
+    CCamera_Base* pUICam=m_pGameInstance->Find_Camera(CAMERA_TYPE::UI);
+    if (!pUICam)
+    {
+        CCamera_Base::CAMERABASE_DESC UIDesc = {};
+        UIDesc.ObjTag = L"UICamera";
+
+
+
+        UIDesc.eCameraType = CAMERA_TYPE::UI;
+        UIDesc.eCameraFlag = CAMERA_FLAG::NONE;
+        UIDesc.fNear = 0.1f;
+        UIDesc.fFar = 1.f;
+        UIDesc.m_bDynamic = false;
+        UIDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::STATIC);
+
+        UIDesc.fWidth = (float)g_iWinSizeX;
+        UIDesc.fHeight = (float)g_iWinSizeY;
+
+        CTransform::TRANSFORM_DESC TransDesc = {};
+        TransDesc.fRotationPerSec = 10.f;
+        TransDesc.fSpeedPerSec = 5.f;
+        UIDesc.TransformDesc = &TransDesc;
+
+
+        CGameObject* pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"UICamera"), &UIDesc));
+        m_pGameInstance->RegisterCamera(CAMERA_TYPE::UI, pInstance);
+
+        CCamera_Base* pUICam = m_pGameInstance->Find_Camera(CAMERA_TYPE::UI);
+        if (pUICam)
+        {
+            pUICam->Set_RenderAllRenderMask(false);
+            pUICam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::UI), true);
+
+        }
+
+    }
 }

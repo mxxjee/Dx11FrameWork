@@ -73,6 +73,8 @@ void CButton::Update_Render(_float fTimeDelta)
 
 HRESULT CButton::Render()
 {
+    CheckFalseResult(m_bActive,E_FAIL);
+
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
 

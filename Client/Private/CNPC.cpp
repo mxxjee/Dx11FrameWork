@@ -296,7 +296,7 @@ HRESULT CNPC::Ready_PartObjects(void* pArg)
         BoundingBox* pBoundingBox = pAABB->Get_OrignialDesc();
         TriggerDesc.vCenter = pBoundingBox->Center;
 
-        XMStoreFloat3(&TriggerDesc.vExtents, XMLoadFloat3(&pBoundingBox->Extents) + XMVectorSet(0.6f, 0.6f, 0.6f, 0.f));
+        XMStoreFloat3(&TriggerDesc.vExtents, XMLoadFloat3(&pBoundingBox->Extents) + XMVectorSet(1.f, 1.f, 1.f, 0.f));
         if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Interaction_TriggerBox"), L"Part_TriggerBox", &TriggerDesc)))
             return E_FAIL;
 

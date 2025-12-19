@@ -431,7 +431,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     for (int i = 0; i < 3; ++i)
     {
         CButton::tagButtonDesc Button_Desc = {};
-        Button_Desc.ObjTag = L"Title";
+        Button_Desc.ObjTag = L"SaveSlot"+to_wstring(i);
         Button_Desc.passName = "SaveSlot";
         Button_Desc.m_iLevelID = m_iLevelID;
 
@@ -470,15 +470,16 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
 
 
         CBase* pSlotObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Button"), &Button_Desc);
-        CGameObject* pInstance = dynamic_cast<CGameObject*>(pSlotObj);
-        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO), strLayerTag, pInstance)))
+        CGameObject* ppSlotObj = dynamic_cast<CGameObject*>(pSlotObj);
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO), strLayerTag, ppSlotObj)))
             return E_FAIL;
 
-        ButtonSlotGroup.push_back(pInstance);
+        ButtonSlotGroup.push_back(ppSlotObj);
 
     }
   
     m_pGameInstance->Register_UIGroup(ButtonSlotGroup);
+    m_pGameInstance->SetActiveGroup(ButtonSlotGroup.Key, false);
 
 
     return S_OK;
@@ -491,7 +492,7 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
     Create_MainCamera();
 
     /////////////////UICameraonenter
-    Create_UICamera();
+   // Create_UICamera();
 
     Create_FreeCamera();
    
@@ -517,13 +518,13 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
     }
 
 
-    CCamera_Base* pUICam = m_pGameInstance->Find_Camera(CAMERA_TYPE::UI);
-    if (pUICam)
-    {
-        pUICam->Set_RenderAllRenderMask(false);
-        pUICam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::UI), true);
-        
-    }
+    //CCamera_Base* pUICam = m_pGameInstance->Find_Camera(CAMERA_TYPE::UI);
+    //if (pUICam)
+    //{
+    //    pUICam->Set_RenderAllRenderMask(false);
+    //    pUICam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::UI), true);
+    //    
+    //}
 
 
     CCamera_Base* pMinimapCam = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
@@ -552,7 +553,7 @@ void CLevel_Logo::OnEnter()
     m_pGameInstance->SetActiveGroup(L"LogoGroup", true);
     m_pGameInstance->SetActiveGroup(L"ButtonSlotGroup", false);
 
-
+ 
     //페이드스크린이벤트 추가설정..
     m_pGameInstance->RegisterEvent(L"FadeOutEnd", [](void* pData)
         {
@@ -714,29 +715,7 @@ void CLevel_Logo::Create_MainCamera()
 
 void CLevel_Logo::Create_UICamera()
 {
-    CCamera_Base::CAMERABASE_DESC UIDesc = {};
-    UIDesc.ObjTag = L"UICamera";
-    
-
-
-    UIDesc.eCameraType = CAMERA_TYPE::UI;
-    UIDesc.eCameraFlag = CAMERA_FLAG::NONE;
-    UIDesc.fNear = 0.1f;
-    UIDesc.fFar = 1.f;
-    UIDesc.m_bDynamic = false;
-    UIDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::STATIC);
-
-    UIDesc.fWidth = (float)g_iWinSizeX;
-    UIDesc.fHeight = (float)g_iWinSizeY;
-
-    CTransform::TRANSFORM_DESC TransDesc = {};
-    TransDesc.fRotationPerSec = 10.f;
-    TransDesc.fSpeedPerSec = 5.f;
-    UIDesc.TransformDesc = &TransDesc;
-
-
-    CGameObject* pInstance = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"UICamera"), &UIDesc));
-    m_pGameInstance->RegisterCamera(CAMERA_TYPE::UI , pInstance);
+   /*로딩맨처음에 생성으로 바꾸기*/
 }
 
 void CLevel_Logo::Create_FreeCamera()

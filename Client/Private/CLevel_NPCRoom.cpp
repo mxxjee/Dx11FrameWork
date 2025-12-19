@@ -8,6 +8,7 @@
 #include "CMainCamera.h"
 #include "CFadeScreen.h"
 #include "CGameManager.h"
+#include "CNavMesh_Manager.h"
 
 
 USING(Client)
@@ -148,7 +149,7 @@ void CLevel_NPCRoom::OnResume(_uint iPreLevel)
 
     m_pGameInstance->Emit(Event);
     CheckNull(pFadeScreen);
-    pFadeScreen->PlayFadeOut();
+  //  pFadeScreen->PlayFadeOut();
 
   
 
@@ -169,6 +170,8 @@ void CLevel_NPCRoom::OnPause(_uint iNextLevel)
 void CLevel_NPCRoom::OnExit()
 {
    /* CRoom_Manager::GetInstance()->Reset_CurrentRoomID();*/
+  
+
 }
 
 CLevel_NPCRoom* CLevel_NPCRoom::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)

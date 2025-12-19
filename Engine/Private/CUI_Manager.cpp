@@ -19,12 +19,15 @@ HRESULT CUI_Manager::Register_UIGroup(const UIGroup& Group, const _wstring& Key)
 
 	else
 	{
+		pGroup = new UIGroup;
+
 		size_t Hash = hash<wstring>()(FindKey);
-		m_UIMap.emplace(Hash, Group);
 		for (auto& i : Group.Objects)
 		{
-			Safe_AddRef(i.second);
+			pGroup->push_back(i.second);
 		}
+		m_UIMap.emplace(Hash, pGroup);
+		
 
 	}
 
@@ -101,7 +104,7 @@ UIGroup* CUI_Manager::Get_UIGroup(const _wstring Key)
 
 	auto iter = m_UIMap.find(Hash);
 	if (iter != m_UIMap.end())
-		return &(iter->second);
+		return (iter->second);
 
 
 
@@ -129,7 +132,8 @@ void CUI_Manager::Free()
 {
   	for (auto& pair : m_UIMap)
 	{
-		pair.second.Release();
-			
+		pair.second->Release();
+		delete pair.second;
+
 	}
 }

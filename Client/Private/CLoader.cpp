@@ -89,6 +89,7 @@ _uint APIENTRY ThreadMain(void* pArg)
     //m_iNextLevelID에 맞춰서 로딩수행
     if (FAILED(pLoader->Loading()))
         return 1;
+   
 
 
     return 0;
@@ -108,7 +109,6 @@ HRESULT CLoader::Initialize(LEVEL_ID iNextLevelID)
     m_hThred = (HANDLE)_beginthreadex(nullptr, 0, ThreadMain, this, 0, nullptr);
     if (m_hThred == 0)
         return E_FAIL;
-
 
     return S_OK;
 }
@@ -286,10 +286,6 @@ HRESULT CLoader::Register_Shaders()
 
 
 
-	pInstance = CShader::Create(m_pDevice,
-        m_pDeviceContext, VTXPOSTEX::desc, L"../../Resource/Shader/Shader_VtxPosTex.hlsl",
-		"DefaultTechnique");
-    m_pGameInstance->Register_Shader(L"Default", pInstance);
 
 	pInstance = CShader::Create(m_pDevice,
         m_pDeviceContext, VTXNORTEX::desc, L"../../Resource/Shader/Shader_VtxNorTex.hlsl",
@@ -414,11 +410,8 @@ HRESULT CLoader::Register_Models()
 
 HRESULT CLoader::Register_Components()
 {
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Transform"), CTransform::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
+
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Terrain"), CVIBuffer_Terrain::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Height.bmp"))))
         return E_FAIL;
@@ -449,9 +442,6 @@ HRESULT CLoader::Register_Components()
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Particle_Point"), CVIBuffer_Particle_Point::Create(m_pDevice, m_pDeviceContext, &ExploDesc))))
         return E_FAIL;
 
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"UI"), CUIComponent::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
 
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Navigation"), CNavigation::Create(m_pDevice, m_pDeviceContext))))
@@ -487,18 +477,13 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"MainCamera", CMainCamera::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"UICamera", CUICamera::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
+
 
     //Freecam Test용
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"FreeCamera", CFreeCamera::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Quad", CQuad::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
 
-    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Panel", CPanel::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Floor", CFloor::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;

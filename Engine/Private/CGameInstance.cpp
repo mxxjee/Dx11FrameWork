@@ -959,6 +959,10 @@ void CGameInstance::Set_DrawDebug(bool b)
 {
 	return m_pNavMeshManager->Set_DrawDebug(b);
 }
+void CGameInstance::Reset_NaveMesh(_uint iLevelIdx)
+{
+	return m_pNavMeshManager->Reset_NaveMesh(iLevelIdx);
+}
 #ifdef _DEBUG
 void CGameInstance::Set_NavMeshShader(CShader* pShader)
 {

@@ -172,6 +172,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CLevel_NPCRoom.h" />
+    <ClInclude Include="..\Public\CLevel_Spawn.h" />
     <ClInclude Include="..\Public\CLevel_Town.h" />
     <ClInclude Include="..\Public\CLevel_Loading.h" />
     <ClInclude Include="..\Public\CLevel_Logo.h" />
@@ -276,6 +277,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_NPCRoom.cpp" />
+    <ClCompile Include="..\Private\CLevel_Spawn.cpp" />
     <ClCompile Include="..\Private\CLevel_Town.cpp" />
     <ClCompile Include="..\Private\CLevel_Loading.cpp" />
     <ClCompile Include="..\Private\CLevel_Logo.cpp" />

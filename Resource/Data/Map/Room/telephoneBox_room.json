@@ -7,7 +7,15 @@
         0.0,
         6.551767349243164
       ],
-      "Target": "Interaction_Telephone"
+      "Target": "Interaction_Point"
+    },
+    {
+      "Pos": [
+        12.545333862304688,
+        2.384185791015625e-07,
+        2.8603925704956055
+      ],
+      "Target": "Player_SpawnPoint"
     }
   ],
   "Position": [

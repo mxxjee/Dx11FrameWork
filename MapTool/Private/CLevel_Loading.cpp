@@ -3,6 +3,7 @@
 #include "CGameInstance.h"
 
 #include "CLevel_Logo.h"
+#include "CUICreator.h"
 
 
 
@@ -83,7 +84,7 @@ void CLevel_Loading::Render()
 HRESULT CLevel_Loading::Ready_UI_Layer()
 {
     //UI 요소 추가.
-
+  
     return S_OK;
 }
 

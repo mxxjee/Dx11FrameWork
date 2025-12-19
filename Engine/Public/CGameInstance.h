@@ -319,6 +319,8 @@ public:
 	 void								Set_MainCells(_uint LevelID);
 	 vector<class CCell*>*				Get_MainCells();
 	 void								Set_DrawDebug(bool b);
+	 void								Reset_NaveMesh(_uint iLevelIdx);
+
 #ifdef _DEBUG
 	 void								Set_NavMeshShader(class CShader* pShader);
 	 HRESULT							    Render_NavMeshManager();

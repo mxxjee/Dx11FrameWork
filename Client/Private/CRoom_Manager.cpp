@@ -62,8 +62,10 @@ void CRoom_Manager::Switch_Room(const string& strRoomName)
     
     //재사용
     if (iter != m_mapCachedRooms.end())
+    {
         pNextPackage = iter->second;
-
+        pNextPackage->Set_Active(true);
+    }
     //새로운 로드
     else
     {
@@ -137,6 +139,7 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
     }
     //Navmesh읽어오기
     string NavFile = jRoomData["NavData"];
+    m_pGameInstance->Reset_NaveMesh(ENUM_TO_UINT(LEVEL_ID::ROOM));
     if (FAILED(m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::ROOM), NavFile)))
         return E_FAIL;
 
@@ -224,7 +227,7 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
 
 void CRoom_Manager::Clear_Room()
 {
-    if (m_pEnviromentLayer)
+  /*  if (m_pEnviromentLayer)
         m_pEnviromentLayer->Clear();
 
 
@@ -233,7 +236,15 @@ void CRoom_Manager::Clear_Room()
 
 
     if (m_pTriggerLayer)
-        m_pTriggerLayer->Clear();
+        m_pTriggerLayer->Clear();*/
+
+    for (auto& pair : m_mapCachedRooms)
+    {
+        if (pair.second)
+        {
+            pair.second->Set_Active(false);
+        }
+    }
 
 }
 

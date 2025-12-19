@@ -35,6 +35,9 @@ public:
     static  CLevel_Loading* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext,LevelArgs& args);
     virtual     void        Free();
 
+private:
+    void     Ready_Prototypes();
+    void        Create_UICamera();
 
 private:
     class CLoader* m_pLoader = { nullptr };

@@ -1,0 +1,264 @@
+#include "CLevel_Spawn.h"
+#include "CFadeScreen.h"
+#include "CRoom.h"
+#include "CStaticBody.h"
+#include "CNPC.h"
+#include "CTrigger_Box.h"
+#include "CRoomTrigger.h"
+#include "CGameInstance.h"
+#include "CMainCamera.h"
+#include "CInteraction_Manager.h"
+#include "CPlayer.h"
+#include "CGameManager.h"
+
+USING(Client)
+CLevel_Spawn::CLevel_Spawn(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
+    :CLevel(_pDevice,_pDeviceContext)
+{
+}
+
+HRESULT CLevel_Spawn::Initialize(LevelArgs& args)
+{
+    if(FAILED(__super::Initialize(args)))
+        return E_FAIL;
+
+    //룸세팅
+    if (FAILED(Ready_Layer_Enviroment(L"Enviroment_Layer")))
+        return E_FAIL;
+
+    if (FAILED(Ready_Layer_InteractionObject(L"Interaction_Layer")))
+        return E_FAIL;
+
+    if (FAILED(Ready_Layer_Trigger(L"Trigger_Layer")))
+        return E_FAIL;
+
+    UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
+    pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Find(L"FadeScreen"));
+
+
+
+    return S_OK;
+}
+
+void CLevel_Spawn::Update_Priority(_float fTimeDelta)
+{
+    __super::Update_Priority(fTimeDelta);
+}
+
+void CLevel_Spawn::Update(const _float fTimeDelta)
+{
+    __super::Update(fTimeDelta);
+
+}
+
+void CLevel_Spawn::Update_Late(_float fTimeDelta)
+{
+    __super::Update_Late(fTimeDelta);
+}
+
+void CLevel_Spawn::Render()
+{
+    wchar_t szTitle[256];
+    swprintf_s(szTitle, L"Town 씬입니다. FPS : %.1f", m_pGameInstance->Get_FPS(L"Timer_60"));
+
+    SetWindowText(g_hWnd, szTitle);
+}
+
+HRESULT CLevel_Spawn::Ready_Lights()
+{
+    LIGHT_DESC      LightDesc{};
+    LightDesc.eType = LIGHT::DIRECTIONAL;
+    LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+    LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+    LightDesc.vAmbient = _float4(0.5f, 0.5f, 0.5f, 1.f);
+    LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+
+    if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, LightDesc)))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CLevel_Spawn::Ready_Layer_Enviroment(const _wstring& strLayerTag)
+{
+    //룸읽기
+    CRoom::MODELOBJECT_DESC     RoomDesc;
+    RoomDesc.ObjTag = L"MarinHouse_Room";
+
+    CStaticBody::BODY_DESC  BodyDesc;
+    BodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+    BodyDesc.modelName = L"MarinHouse";
+    RoomDesc.BodyDesc = &BodyDesc;
+
+    CTransform::TRANSFORM_DESC TransDesc;
+    TransDesc.vLocalPosition = _float4(12.6f, 0.f, 6.5f,1.f);
+    RoomDesc.TransformDesc = &TransDesc;
+
+    CBase* pBaseRoom = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Room"), &RoomDesc);
+    CGameObject* pRoom = dynamic_cast<CGameObject*>(pBaseRoom);
+    if (pRoom)
+    {
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::SPAWN), strLayerTag, pRoom)))
+            return E_FAIL;
+
+        string NavFile ="../../Resource/Data/Map/Room/MarinHouse_room_Nav.dat";
+        if (FAILED(m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::SPAWN), NavFile)))
+            return E_FAIL;
+
+
+        m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::SPAWN));
+
+
+    }
+    return S_OK;
+}
+
+
+HRESULT CLevel_Spawn::Ready_Layer_NPC(const _wstring& strLayerTag)
+{
+#pragma region 마린 생성
+    CNPC::NPC_DESC pMarin_Desc;
+
+    CTransform::TRANSFORM_DESC pTransDesc;
+    pTransDesc.vLocalPosition = _float4(13.f, 0.f, 8.164f, 1.f);
+    pTransDesc.vLocalRotation = _float4(0.f, 180.f, 0.f, 1.f);
+
+    pMarin_Desc.ModelName = L"Marin";
+    pMarin_Desc.ObjTag = L"NPC_" + pMarin_Desc.ModelName;
+    pMarin_Desc.pTarget = nullptr;
+
+    pMarin_Desc.SceneName = "MarinHouse_Room";
+
+    pMarin_Desc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::SPAWN);
+    pMarin_Desc.TransformDesc = &pTransDesc;
+
+
+    CNPC* pMarin_Npc = CNPC::Create(m_pDevice, m_pContext, &pMarin_Desc);
+    if (pMarin_Npc)
+    {
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::SPAWN), strLayerTag, pMarin_Npc)))
+            return E_FAIL;
+
+    }
+#pragma endregion
+
+#pragma region 타린생성
+    CNPC::NPC_DESC pTarin_Desc;
+
+    pTransDesc = {};
+    pTransDesc.vLocalPosition = _float4(14.8f, 0.f, 7.013f, 1.f);
+    pTransDesc.vLocalRotation = _float4(0.f, 180.f, 0.f, 1.f);
+
+    pTarin_Desc.ModelName = L"Tarin";
+    pTarin_Desc.ObjTag = L"NPC_" + pMarin_Desc.ModelName;
+    pTarin_Desc.pTarget = nullptr;
+
+    pTarin_Desc.SceneName = "MarinHouse_Room";
+
+    pTarin_Desc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::SPAWN);
+    pTarin_Desc.TransformDesc = &pTransDesc;
+
+
+    CNPC* pTarin_Npc = CNPC::Create(m_pDevice, m_pContext, &pTarin_Desc);
+    if (pTarin_Npc)
+    {
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::SPAWN), strLayerTag, pTarin_Npc)))
+            return E_FAIL;
+
+    }
+#pragma endregion
+
+    
+    return S_OK;
+}
+
+HRESULT CLevel_Spawn::Ready_Layer_InteractionObject(const _wstring& strLayerTag)
+{
+    return S_OK;
+}
+
+HRESULT CLevel_Spawn::Ready_Layer_Trigger(const _wstring& strLayerTag)
+{
+    CRoomTrigger::RoomTriggerDesc RoomTriggerDesc;
+    RoomTriggerDesc.vCenter = _float3(0.f,0.f,0.f);
+    RoomTriggerDesc.vExtents = _float3(1.5f,1.0f,1.0f);
+    RoomTriggerDesc.ObjTag = L"Trigger" + 0;
+    RoomTriggerDesc.m_nextKey = "Level_Town";
+    RoomTriggerDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::SPAWN);
+
+    CTransform::TRANSFORM_DESC TransDesc;
+    TransDesc.vLocalPosition = _float4(12.56f, 0.f, 1.22f, 1.f);
+    //TransDesc.vLocalScale = _float4(pTriggerInfo.vScale.x, pTriggerInfo.vScale.y, pTriggerInfo.vScale.z, 1.f);
+
+    RoomTriggerDesc.TransformDesc = &TransDesc;
+    CBase* pBaseTrigger = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"RoomTrigger"), &RoomTriggerDesc);
+    CGameObject* pRoomTrigger = dynamic_cast<CGameObject*>(pBaseTrigger);
+    if (pRoomTrigger)
+    {
+
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::SPAWN), strLayerTag, pRoomTrigger)))
+            return E_FAIL;
+
+    }
+
+    return S_OK;
+}
+
+void CLevel_Spawn::OnEnter()
+{
+
+    __super::OnEnter();
+    m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
+    CPlayer* m_pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+
+    CGameObject* pMainCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
+    if (pMainCamera)
+    {
+        CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
+        CheckNull(ppMainCamera);
+        ppMainCamera->Set_Target(m_pPlayer, true);
+    }
+
+    //플레이어 위치
+    _float4 vSpawnPos = _float4(13.2f, 0.f, 8.f,1.f);
+    m_pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMLoadFloat4(&vSpawnPos));
+
+
+    m_pPlayer->Change_MainNavMesh();
+
+
+
+}
+
+void CLevel_Spawn::OnResume(_uint iPreLevel)
+{
+}
+
+void CLevel_Spawn::OnPause(_uint iNextLeve)
+{
+}
+
+void CLevel_Spawn::OnExit()
+{
+    CInteraction_Manager::GetInstance()->Clear();
+
+}
+
+CLevel_Spawn* CLevel_Spawn::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)
+{
+    CLevel_Spawn* pInstance = new CLevel_Spawn(_pDevice, _pDeviceContext);
+    if (FAILED(pInstance->Initialize(args)))
+    {
+        MSG_BOX("Failed to Create : CLevel_Spawn");
+        Safe_Release(pInstance);
+    }
+
+
+    return pInstance;
+}
+
+void CLevel_Spawn::Free()
+{
+    __super::Free();
+
+}

@@ -92,12 +92,16 @@ HRESULT CMainApp::Initialize()
 #endif
 	pImGui_Manager->Set_MapToolMode(MapToolMode::END);
 
+	CShader* pInstance = CShader::Create(m_pDevice,
+		m_pContext, VTXPOSTEX::desc, L"../../Resource/Shader/Shader_VtxPosTex.hlsl",
+		"DefaultTechnique");
+	CGameInstance::GetInstance()->Register_Shader(L"Default", pInstance);
+
 
 	if (FAILED(Start_Level(LEVEL_ID::LOGO,LEVELCHANGETYPE::REPLACETOP)))
 		return E_FAIL;
 
 
-	
 	return S_OK;
 }
 

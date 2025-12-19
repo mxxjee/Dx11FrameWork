@@ -84,6 +84,7 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
         return E_FAIL;
 
 
+    /*이후에 바로 Spawnscene으로 가기*/
     return S_OK;
 }
 
@@ -199,7 +200,7 @@ HRESULT CLevel_Town::Ready_Lights()
 
 
     //////////////빨간 점조명 테스트//////////
-    LIGHT_DESC       RedLight;
+ /*   LIGHT_DESC       RedLight;
     RedLight.eType = LIGHT::POINT;
 
     RedLight.vDiffuse = _float4(1.f, 0.f, 0.f, 1.f);
@@ -210,7 +211,7 @@ HRESULT CLevel_Town::Ready_Lights()
 
 
     if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, RedLight)))
-        return E_FAIL;
+        return E_FAIL;*/
 
 
     return S_OK;
@@ -459,14 +460,14 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 {
     /// <summary>
     /// 썡으로배치..
-    wstring TriggerTags[] = { L"mamasha_House1",L"mamasha_House2",L"MeowMeowHouse",L"UlriraHouse" };
-    string NextKeys[] = { "Mamasha_room","Mamasha_room","MeowMeowHouse","UlriraHouse" };
+    wstring TriggerTags[] = { L"mamasha_House1",L"mamasha_House2",L"TelephoneBox",L"MarinHouse" };
+    string NextKeys[] = { "Mamasha_room","Mamasha_room","telephoneBox","MarinHouse" };
 
     _float4 TriggerPos[] = {
         _float4(30.75f,12.86f,51.f,1.f),
         _float4(33.66f,12.86f,51.f,1.f),
-        _float4(12.86,10.5,27.f,1.f),
-        _float4(14.98f,10.f,16.f,1.f)
+        _float4(30.81f,10.5,15.746f,1.f),
+        _float4(30.63f,10.577f,27.19f,1.f)
 
     };
 
