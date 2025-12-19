@@ -133,6 +133,10 @@ HRESULT CLoader::Loading()
         Loading_Logo();
         break;
 
+    case Client::LEVEL_ID::SPAWN:
+        Loading_Spawn();
+        break;
+
     case Client::LEVEL_ID::TOWN:
         Loading_Town();
         break;
@@ -185,7 +189,7 @@ HRESULT CLoader::Loading_Town()
 
 
     lstrcpy(m_szFPS, TEXT("맵 로딩중입니다."));
-    Load_TownMapData();
+    //Load_TownMapData();
    
     lstrcpy(m_szFPS, TEXT("로딩완료!"));
 
@@ -269,6 +273,34 @@ HRESULT CLoader::Loading_Room()
         int a = 10;
     }
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
+    m_isFinished = true;
+    return S_OK;
+}
+
+HRESULT CLoader::Loading_Spawn()
+{
+    lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
+    for (size_t i = 0; i < 88899999; i++)
+    {
+        int a = 10;
+    }
+    lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
+
+
+
+    lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
+    for (size_t i = 0; i < 88889999; i++)
+    {
+        int a = 10;
+    }
+
+
+    lstrcpy(m_szFPS, TEXT("맵 로딩중입니다."));
+    Load_TownMapData();
+
+    lstrcpy(m_szFPS, TEXT("로딩완료!"));
+
+
     m_isFinished = true;
     return S_OK;
 }

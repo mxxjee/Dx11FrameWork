@@ -10,6 +10,8 @@
 #include "CInteraction_Manager.h"
 #include "CPlayer.h"
 #include "CGameManager.h"
+#include "CUICreator.h"
+
 
 USING(Client)
 CLevel_Spawn::CLevel_Spawn(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -19,12 +21,24 @@ CLevel_Spawn::CLevel_Spawn(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceCon
 
 HRESULT CLevel_Spawn::Initialize(LevelArgs& args)
 {
+    m_pGameManager = CGameManager::GetInstance();
+
     if(FAILED(__super::Initialize(args)))
         return E_FAIL;
 
     //·ë¼¼ÆÃ
     if (FAILED(Ready_Layer_Enviroment(L"Enviroment_Layer")))
         return E_FAIL;
+    
+    if (FAILED(Ready_Lights()))
+        return E_FAIL;
+
+    if(FAILED(Ready_Player_Static(L"Player_Layer")))
+        return E_FAIL;
+
+
+     if (FAILED(Ready_UI_Static(L"UI_Layer")))
+         return E_FAIL;
 
     if (FAILED(Ready_Layer_InteractionObject(L"Interaction_Layer")))
         return E_FAIL;
@@ -59,7 +73,7 @@ void CLevel_Spawn::Update_Late(_float fTimeDelta)
 void CLevel_Spawn::Render()
 {
     wchar_t szTitle[256];
-    swprintf_s(szTitle, L"Town ¾ÀÀÔ´Ï´Ù. FPS : %.1f", m_pGameInstance->Get_FPS(L"Timer_60"));
+    swprintf_s(szTitle, L"Spawn ¾ÀÀÔ´Ï´Ù. FPS : %.1f", m_pGameInstance->Get_FPS(L"Timer_60"));
 
     SetWindowText(g_hWnd, szTitle);
 }
@@ -204,10 +218,49 @@ HRESULT CLevel_Spawn::Ready_Layer_Trigger(const _wstring& strLayerTag)
     return S_OK;
 }
 
+HRESULT CLevel_Spawn::Ready_Player_Static(const _wstring& strLayerTag)
+{
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"Player"),
+        ENUM_TO_UINT(LEVEL_ID::STATIC),
+        strLayerTag, nullptr)))
+        return E_FAIL;
+
+    CGameObject* pObj = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");
+    if (pObj)
+    {
+        m_pGameManager->Set_MainPlayer(pObj);
+        CInteraction_Manager::GetInstance()->Set_MainPlayer(pObj);
+
+    }
+
+    return S_OK;
+}
+
+HRESULT CLevel_Spawn::Ready_UI_Static(const _wstring& strLayerTag)
+{
+    if (FAILED(UICreator::Create_HeartGroup(strLayerTag)))
+        return E_FAIL;
+
+    /////Interaction °ü·Ã PopUp UI
+    if (FAILED(UICreator::Create_Interaction_UI(strLayerTag)))
+        return E_FAIL;
+    /////Interaction °ü·Ã PopUp UI
+    if (FAILED(UICreator::Create_Interaction_TalkUI(strLayerTag)))
+        return E_FAIL;
+
+    if (FAILED(UICreator::Create_NPC_Dialogue_UI(strLayerTag)))
+        return E_FAIL;
+
+    return S_OK;
+}
+
 void CLevel_Spawn::OnEnter()
 {
 
     __super::OnEnter();
+
+
     m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
     CPlayer* m_pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
 
@@ -225,6 +278,9 @@ void CLevel_Spawn::OnEnter()
 
 
     m_pPlayer->Change_MainNavMesh();
+
+    CheckNull(pFadeScreen);
+    pFadeScreen->PlayFadeOut();
 
 
 

@@ -14,6 +14,7 @@
 #include "CLevel_Loading.h"
 #include "CLevel_UI.h"
 #include "CLevel_NPCRoom.h"
+#include "CLevel_Spawn.h"
 
 
 #include "CImGui_Manager.h"
@@ -311,6 +312,12 @@ void CMainApp::Register_Levels()
 	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::UI), [this](LevelArgs& args)->CLevel*
 		{
 			return CLevel_UI::Create(m_pDevice, m_pContext, args);
+		});
+
+	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::SPAWN), [this](LevelArgs& args)->CLevel*
+		{
+			args.m_bCached = false;
+			return CLevel_Spawn::Create(m_pDevice, m_pContext, args);
 		});
 
 

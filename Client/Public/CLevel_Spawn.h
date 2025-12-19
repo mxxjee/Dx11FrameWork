@@ -32,6 +32,10 @@ public:
     HRESULT                 Ready_Layer_InteractionObject(const _wstring & strLayerTag);
     HRESULT                 Ready_Layer_Trigger(const _wstring & strLayerTag);
 
+
+    HRESULT                 Ready_Player_Static(const _wstring& strLayerTag);
+    HRESULT                 Ready_UI_Static(const _wstring& strLayerTag);
+
 public:
     virtual void        OnEnter() override;           //씬 진입시 매번호출
     virtual void        OnResume(_uint iPreLevel) override;              //pause되었다가 active되었을때 호출

@@ -231,15 +231,15 @@ HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
 {
    
-    if(FAILED(UICreator::Create_HeartGroup(strLayerTag)))
-        return E_FAIL;
+    //if(FAILED(UICreator::Create_HeartGroup(strLayerTag)))
+    //    return E_FAIL;
 
-    /////Interaction 包访 PopUp UI
-    if (FAILED(UICreator::Create_Interaction_UI(strLayerTag)))
-        return E_FAIL;
-    /////Interaction 包访 PopUp UI
-    if (FAILED(UICreator::Create_Interaction_TalkUI(strLayerTag)))
-        return E_FAIL;
+    ///////Interaction 包访 PopUp UI
+    //if (FAILED(UICreator::Create_Interaction_UI(strLayerTag)))
+    //    return E_FAIL;
+    ///////Interaction 包访 PopUp UI
+    //if (FAILED(UICreator::Create_Interaction_TalkUI(strLayerTag)))
+    //    return E_FAIL;
 
 #pragma region MinimapQuad
     ///////////////////Minimapquad积己
@@ -297,7 +297,7 @@ HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
 HRESULT CLevel_Town::Ready_Layer_Player(const _wstring& strLayerTag)
 {
 
-    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+    /*if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
         PROTO_OBJ_NAME(L"Player"),
         ENUM_TO_UINT(LEVEL_ID::STATIC),
         strLayerTag, nullptr)))
@@ -309,7 +309,7 @@ HRESULT CLevel_Town::Ready_Layer_Player(const _wstring& strLayerTag)
         m_pGameManager->Set_MainPlayer(pObj);
         CInteraction_Manager::GetInstance()->Set_MainPlayer(pObj);
 
-    }
+    }*/
     return S_OK;
 
 }

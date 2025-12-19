@@ -450,7 +450,7 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
         {
             /*æ¿¿Ãµø*/
             LevelArgs args;
-            args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);
+            args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::SPAWN);
             args.changeType = LEVELCHANGETYPE::REPLACETOP;
             //args.loadingChangeType = LEVELCHANGETYPE::PUSH;
             args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
