@@ -41,7 +41,8 @@ public:
 public:
     void        Set_FirstLoading(bool b) { m_bFirstLoading = b; }
     bool        Get_IsFirstLoading() { return m_bFirstLoading; }
-
+    bool        Get_UseCutScene() { return m_bUseCutScene;
+    }
 
 private:
     CPlayer* m_pMainPlayer=nullptr;
@@ -50,6 +51,8 @@ private:
 
     bool        m_bFirstSpawn = true;//첫시작일떄를 의미
     bool        m_bFirstLoading = true;//첫 로딩임을 의미
+    bool        m_bUseCutScene = true;
+
 
 };
 NS_END

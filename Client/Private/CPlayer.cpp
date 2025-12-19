@@ -19,13 +19,16 @@
 #include "CPlayer_Shield.h"
 
 #include "CInteractionObject.h"
+#include "CGameManager.h"
 
 
 
 
 USING(Client)
 CPlayer::CPlayer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CAnimModelObject(pDevice,pContext),m_pInputManager(CInput_Manager::GetInstance())
+    :CAnimModelObject(pDevice,pContext),
+    m_pInputManager(CInput_Manager::GetInstance())
+   
 {
     Safe_AddRef(m_pInputManager);
 }
@@ -46,6 +49,7 @@ HRESULT CPlayer::Initialize_Prototype()
 
 HRESULT CPlayer::Initialize_Copytype(void* pArg)
 {
+    m_pGameManager=CGameManager::GetInstance();
     CModelObject::MODELOBJECT_DESC desc;
     CTransform::TRANSFORM_DESC TransDesc;
 
@@ -96,6 +100,7 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     }
         
     
+    
     Change_State(IDLE);
     m_iSceneID = ENUM_TO_UINT(LEVEL_ID::STATIC);
 
@@ -109,10 +114,15 @@ void CPlayer::Update_Priority(_float fTimeDelta)
 
 void CPlayer::Update(_float fTimeDelta)
 {
-   
-    Update_Input(fTimeDelta);
-    UpdateFlash(fTimeDelta);
-    Update_State(fTimeDelta);
+    /*컷씬중일땐 움직임x*/
+    if (!m_pGameManager->Get_UseCutScene())
+    {
+        Update_Input(fTimeDelta);
+        UpdateFlash(fTimeDelta);
+        Update_State(fTimeDelta);
+
+    }
+ 
    //State_Change();     //애니메이션 완료 이후에 어떻게 바꿔줄것인지
  /*   if (m_pNextState != nullptr)
     {

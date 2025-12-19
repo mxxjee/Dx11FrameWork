@@ -12,6 +12,10 @@
 #include "CGameManager.h"
 #include "CUICreator.h"
 
+#include "CAnimModelObject.h"
+#include "CModel_Bed.h"
+
+
 
 USING(Client)
 CLevel_Spawn::CLevel_Spawn(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -192,7 +196,26 @@ HRESULT CLevel_Spawn::Ready_Layer_NPC(const _wstring& strLayerTag)
 
 HRESULT CLevel_Spawn::Ready_Layer_InteractionObject(const _wstring& strLayerTag)
 {
+    CModel_Bed::MODELOBJECT_DESC     BedDesc;
+    BedDesc.ObjTag = L"Obj_Bed";
+
+
+    CTransform::TRANSFORM_DESC TransDesc;
+    TransDesc.vLocalPosition = _float4(10.25f, 0.f, 7.7f, 1.f);
+    BedDesc.TransformDesc = &TransDesc;
+
+    CBase* pBaseBed = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Model_Bed"), &BedDesc);
+    CGameObject* pBed = dynamic_cast<CGameObject*>(pBaseBed);
+    if (pBed)
+    {
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::SPAWN), strLayerTag, pBed)))
+            return E_FAIL;
+
+
+    }
     return S_OK;
+
+
 }
 
 HRESULT CLevel_Spawn::Ready_Layer_Trigger(const _wstring& strLayerTag)
@@ -277,7 +300,7 @@ void CLevel_Spawn::OnEnter()
     }
 
     //플레이어 위치
-    _float4 vSpawnPos = _float4(13.2f, 0.f, 8.f,1.f);
+    _float4 vSpawnPos = _float4(10.25f, 0.f, 7.7f,1.f);
     m_pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMLoadFloat4(&vSpawnPos));
 
 

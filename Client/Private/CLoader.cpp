@@ -66,7 +66,7 @@
 
 #include "CRoom.h"
 #include "CRoomTrigger.h"
-
+#include "CModel_Bed.h"
 
 
 
@@ -285,6 +285,8 @@ HRESULT CLoader::Loading_Spawn()
         int a = 10;
     }
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Model_Bed", CModel_Bed::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
 
 
@@ -436,6 +438,7 @@ HRESULT CLoader::Register_Models()
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Rooms/", RoomMatrix);
 
+    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Bed/Bed.json", XMMatrixIdentity());
 
     return S_OK;
 }

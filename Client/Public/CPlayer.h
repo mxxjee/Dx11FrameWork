@@ -19,6 +19,8 @@ namespace Engine
 NS_BEGIN(Client)
 class CInteractionObject;
 class CPlayerState;
+class CGameManager;
+
 
 class CPlayer :
     public CAnimModelObject
@@ -231,6 +233,9 @@ private:
     DIRECTION      m_PushDir = DIRECTION::END;
 
     CInteractionObject*     m_CarryObject = nullptr;
+
+private:
+    CGameManager* m_pGameManager = nullptr;
 
 };
 

@@ -189,6 +189,7 @@
     <ClInclude Include="..\Public\CMMoriblinSwordDetectState.h" />
     <ClInclude Include="..\Public\CMMoriblinSwordGuardState.h" />
     <ClInclude Include="..\Public\CMMoriblin_Weapon.h" />
+    <ClInclude Include="..\Public\CModel_Bed.h" />
     <ClInclude Include="..\Public\CMonster.h" />
     <ClInclude Include="..\Public\CMonsterAttackState.h" />
     <ClInclude Include="..\Public\CMonsterDamageState.h" />
@@ -294,6 +295,7 @@
     <ClCompile Include="..\Private\CMMoriblinSwordGuardState.cpp" />
     <ClCompile Include="..\Private\CMMoriblinSwordIdleState.cpp" />
     <ClCompile Include="..\Private\CMMoriblin_Weapon.cpp" />
+    <ClCompile Include="..\Private\CModel_Bed.cpp" />
     <ClCompile Include="..\Private\CMonster.cpp" />
     <ClCompile Include="..\Private\CMonsterAttackState.cpp" />
     <ClCompile Include="..\Private\CMonsterDamageState.cpp" />
