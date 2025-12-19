@@ -40,6 +40,10 @@ HRESULT CLevel_Spawn::Initialize(LevelArgs& args)
      if (FAILED(Ready_UI_Static(L"UI_Layer")))
          return E_FAIL;
 
+     if (FAILED(Ready_Layer_NPC(L"NPC_Layer")))
+         return E_FAIL;
+
+
     if (FAILED(Ready_Layer_InteractionObject(L"Interaction_Layer")))
         return E_FAIL;
 
@@ -278,6 +282,10 @@ void CLevel_Spawn::OnEnter()
 
 
     m_pPlayer->Change_MainNavMesh();
+
+    //////현재씬의 itneraction 등록
+    CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::SPAWN));
+
 
     CheckNull(pFadeScreen);
     pFadeScreen->PlayFadeOut();
