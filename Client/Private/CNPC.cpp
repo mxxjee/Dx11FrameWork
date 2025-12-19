@@ -12,6 +12,7 @@
 #include "CDialogue_Manager.h"
 #include "CQuest_Manager.h"
 #include "CInteraction_TriggerBox.h"
+#include "CGameManager.h"
 
 
 USING(Client)
@@ -71,6 +72,8 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
     }
 
     DialogueTag = string(tag.begin(), tag.end());
+    m_pGameManager = CGameManager::GetInstance();
+
 
     return S_OK;
 }
@@ -129,10 +132,11 @@ bool CNPC::IsInteratable()
 void CNPC::Enter_InteractRange()
 {
     //말걸기 UI 활성화..
+
     _vector ShowPos = MathUtils::WorldToScreen(m_pTransformCom->Get_State(STATE::POSITION),
         m_pGameInstance->Get_ViewMatrix(0), m_pGameInstance->Get_ProjMatrix(0), g_iWinSizeX, g_iWinSizeY);
 
-
+    CheckTrue(m_pGameManager->Get_UseCutScene());
     m_pGameInstance->BroadCastEvent(L"OnTalkUIShow", (void*)&ShowPos);
 
 }
@@ -296,7 +300,7 @@ HRESULT CNPC::Ready_PartObjects(void* pArg)
         BoundingBox* pBoundingBox = pAABB->Get_OrignialDesc();
         TriggerDesc.vCenter = pBoundingBox->Center;
 
-        XMStoreFloat3(&TriggerDesc.vExtents, XMLoadFloat3(&pBoundingBox->Extents) + XMVectorSet(1.f, 1.f, 1.f, 0.f));
+        XMStoreFloat3(&TriggerDesc.vExtents, XMLoadFloat3(&pBoundingBox->Extents) + XMVectorSet(pNpcDesc->TalkRange, pNpcDesc->TalkRange, pNpcDesc->TalkRange, 0.f));
         if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"Interaction_TriggerBox"), L"Part_TriggerBox", &TriggerDesc)))
             return E_FAIL;
 
@@ -347,6 +351,15 @@ void CNPC::Ready_Events()
 }
 
 
+
+void CNPC::Set_TalkRange(float f)
+{
+    CheckNull(m_pTriggerBox);
+
+    m_pTriggerBox->Set_Size(_float3(f, f, f));
+
+
+}
 
 CNPC* CNPC::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex, void* pArg)
 {

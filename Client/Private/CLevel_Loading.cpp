@@ -16,6 +16,8 @@
 #include "CPanel.h"
 #include "CVIBuffer_Rect.h"
 #include "CUICamera.h"
+#include "CFadeScreen.h"
+
 
 
 
@@ -46,12 +48,16 @@ HRESULT CLevel_Loading::Initialize(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeTyp
 
     Ready_Prototypes();
         
-
+                         
     Create_UICamera();
 
     //로딩할동안 보여줄 UI생성
     if (FAILED(Ready_UI_Layer()))
         return E_FAIL;
+
+    UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
+    pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Find(L"FadeScreen"));
+
 
     return S_OK;
 }
@@ -107,12 +113,18 @@ HRESULT CLevel_Loading::Ready_UI_Layer()
     if (FAILED(UICreator::Create_Loading_UI(L"UI_Layer")))
         return E_FAIL;
 
+
+
+
     return S_OK;
 }
 
 void CLevel_Loading::OnEnter()
 {
     m_pGameInstance->Set_IsLoading(true);
+    CheckNull(pFadeScreen);
+
+    pFadeScreen->PlayFadeIn();
 }
 
 void CLevel_Loading::OnResume(_uint iPreLevel)
@@ -128,7 +140,9 @@ void CLevel_Loading::OnPause(_uint iNextLevel)
 
 void CLevel_Loading::OnExit()
 {
-  
+    CheckNull(pFadeScreen);
+
+    pFadeScreen->PlayFadeOut();
 }
 
 
@@ -164,23 +178,10 @@ void CLevel_Loading::Ready_Prototypes()
 
     //필요한 컴포넌트 및 오브젝트 먼저 원형생성
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Transform"), CTransform::Create(m_pDevice, m_pContext))))
-        return;
-
+   
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"UICamera", CUICamera::Create(m_pDevice, m_pContext))))
         return;
 
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"UI"), CUIComponent::Create(m_pDevice, m_pContext))))
-        return;
-
-    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Quad", CQuad::Create(m_pDevice, m_pContext))))
-        return;
-
-    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Panel", CPanel::Create(m_pDevice, m_pContext))))
-        return;
-
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
-        return;
 
 
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Loading/", L".dds");

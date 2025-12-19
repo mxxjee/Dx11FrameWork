@@ -49,6 +49,7 @@ public:
         TALK,
         FALL,
         DAMANGE,
+        PRATFALL,   //컷신용
         END
     };
 
@@ -69,6 +70,9 @@ public:
 
     virtual HRESULT Render();
 
+public:
+    /*컷씬함수*/
+    void        EndCutScene();
 private:
     void        Enter_State(int newState);
     void        Update_State(float fTimeDelta);          //바로실행해야할것들 처리

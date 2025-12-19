@@ -4,6 +4,8 @@
 #include "Client_Defines.h"
 
 NS_BEGIN(Client)
+class CFadeScreen;
+
 class CLevel_Loading final :
     public CLevel
 {
@@ -43,6 +45,9 @@ private:
     class CLoader* m_pLoader = { nullptr };
     LEVEL_ID			m_eNextLevelID = { LEVEL_ID::END };
     LEVELCHANGETYPE     m_eChangeType = { LEVELCHANGETYPE::END };
+
+
+    CFadeScreen* pFadeScreen = nullptr;
 };
 NS_END
 

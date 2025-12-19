@@ -740,6 +740,10 @@ HRESULT CGameInstance::RegisterEvent(const _wstring& Key, function<void(void*)> 
 	CheckNullResult(m_pUIManager, E_FAIL);
 	return m_pUIManager->RegisterEvent(Key, _function);
 }
+HRESULT CGameInstance::UnRegisterEvent(const _wstring& Key)
+{
+	return m_pUIManager->UnRegisterEvent(Key);
+}
 HRESULT CGameInstance::BroadCastEvent(const _wstring& Key, void* pData)
 {
 	CheckNullResult(m_pUIManager, E_FAIL);

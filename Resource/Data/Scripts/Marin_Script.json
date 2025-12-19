@@ -1,0 +1,110 @@
+{
+  "NPCScripts": [
+    {
+      "ModelID": "NPC_Marin",
+      "Chapters": [
+        {
+          "ChapterID": "Q1001_START",
+          "iQuestOffered": 1001,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "Q1001_ACTIVE_PERM",
+          "Steps": [
+            {
+              "Speaker": "???",
+              "Text": "정신이 들어, 링크?",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "???",
+              "Text": "계속 앉아있길래 왜그러나했어.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "???",
+              "Text": "내가 누군지 모르겠다고?",
+              "strActionCommand": "PLAY_ANIM:NPC_BOW",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "???",
+              "Text": "마린이잖아 마린!",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "마린",
+              "Text": "여기가 어딘지도 모르겠다고?\n너 왜그래!",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "마린",
+              "Text": "여긴 코호린트 섬이야.\n넌 이 마을의 심부름꾼이고.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "마린",
+              "Text": "어서 일어나서 바깥으로 나가봐!\n사람들이 널 기다려.",
+              "strActionCommand": "EndCutScene",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1001_ACTIVE_PERM",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "Steps": [
+            {
+              "Speaker": "마린",
+              "Text": "바깥으로 나가야해.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1001_COMPLETABLE_READY",
+          "iQuestRequiredToUnlock": 1001,
+          "strNextPermanentChapterID": "Q1001_DONE",
+          "Steps": [
+            {
+              "Speaker": "NPC_Marin",
+              "Text": "퀘스트를 완료하셨네요.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "NPC_Marin",
+              "Text": "완전한 퀘스트 완료 처리합니다.",
+              "strActionCommand": "GIVE_ITEM:9001:1000",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1001_DONE",
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "NPC_Mom",
+              "Text": "이제 이 퀘스트는 완전히 끝입니다.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "NPC_Mom",
+              "Text": "이제 계속 말걸어도 이 대화가 반복됩니다.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

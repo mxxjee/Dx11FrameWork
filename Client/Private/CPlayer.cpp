@@ -100,8 +100,11 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     }
         
     
-    
-    Change_State(IDLE);
+    if (m_pGameManager->Get_UseCutScene())
+        Change_State(ENUM_TO_UINT(PLAYER_STATE::PRATFALL));
+
+    else
+        Change_State(IDLE);
     m_iSceneID = ENUM_TO_UINT(LEVEL_ID::STATIC);
 
     return S_OK;
@@ -115,6 +118,10 @@ void CPlayer::Update_Priority(_float fTimeDelta)
 void CPlayer::Update(_float fTimeDelta)
 {
     /*컷씬중일땐 움직임x*/
+    //무조건 a키.
+    m_Input.m_bInteract = CInteraction_Manager::GetInstance()->OnInteractKeyPresed();
+
+
     if (!m_pGameManager->Get_UseCutScene())
     {
         Update_Input(fTimeDelta);
@@ -197,6 +204,13 @@ HRESULT CPlayer::Render()
 } 
 
 
+void CPlayer::EndCutScene()
+{
+    //불변수 false만들고, 움직임가능하게 처리.
+    CheckNull(m_pGameManager);
+    m_pGameManager->Set_UseCutScene(false);
+}
+
 void CPlayer::Enter_State(int newState)
 {
     switch (CPlayer::PLAYER_STATE(newState))
@@ -264,9 +278,7 @@ void CPlayer::Update_Input(_float fTimeDelta)
         || m_pInputManager->IsKeyHeld(KeyCode::LeftArrow) || m_pInputManager->IsKeyHeld(KeyCode::RightArrow) && m_ActionControl.m_bCanMove;
 
 
-    //무조건 a키.
-    m_Input.m_bInteract = CInteraction_Manager::GetInstance()->OnInteractKeyPresed();
-
+    
     //a키 눌려서 타겟이있을대만 갱신
     if(m_Input.m_bInteract)
         m_ActionControl.m_bTalk = CInteraction_Manager::GetInstance()->Check_InteractiveType(InteractionType::NPC);
@@ -889,6 +901,7 @@ HRESULT CPlayer::Ready_States()
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::FALL), CPlayerFallState::Create());
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::DAMANGE), CPlayerDamageState::Create());
 
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::PRATFALL), CPlayerPratFallState::Create());
 
     /// <summary>
     /// 키 설정

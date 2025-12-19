@@ -34,6 +34,8 @@
 #include "CQuest_Manager.h"
 
 #include "CFontUI.h"
+#include "CCell.h"
+
 USING(Client)
 
 CLevel_Town::CLevel_Town(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -79,9 +81,6 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
     UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
     pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Find(L"FadeScreen"));
 
-
-    if(FAILED(CQuest_Manager::GetInstance()->Initialize()))
-        return E_FAIL;
 
 
     /*이후에 바로 Spawnscene으로 가기*/
@@ -222,7 +221,7 @@ HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 {
 
     m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::TOWN));
-    CGameInstance::GetInstance()->Set_EnableUpdate(true);
+    CGameInstance::GetInstance()->Set_EnalbeUpdateRender(true);
 
     return S_OK;
 }
@@ -286,9 +285,6 @@ HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
         strLayerTag, &Desc)))
         return E_FAIL;
 #pragma endregion
-
-    if(FAILED(UICreator::Create_NPC_Dialogue_UI(strLayerTag)))
-        return E_FAIL;
 
     return S_OK;
 
@@ -496,16 +492,35 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
 void CLevel_Town::OnEnter()
 {
-    __super::OnEnter();
-    m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
-    CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");
 
+    
+
+    __super::OnEnter();
+
+    m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
+
+    CPlayer* pPlayer=m_pGameManager->Get_MainPlayer();
+    CheckNull(pPlayer);
+
+    vector<CCell*>* m_Cells = m_pGameInstance->Get_MainCells();
+    if (m_Cells)
+    {
+         CCell* pSpawnCell = (*m_Cells)[0];
+        _vector vSpawnPoint = pSpawnCell->Get_CenterPos();
+
+      
+        pPlayer->Get_Transform()->Set_State(STATE::POSITION, vSpawnPoint);
+        pPlayer->Change_MainNavMesh();
+
+
+
+    }
 
     //미니맵 타겟 = 플레이어
     CCamera_Base* pMinimapCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
     if (pMinimapCamera)
     {
-        pMinimapCamera->Set_Target(pPlayerObject);
+        pMinimapCamera->Set_Target(pPlayer);
     }
 
 
@@ -516,7 +531,7 @@ void CLevel_Town::OnEnter()
     {
         CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
         CheckNull(ppMainCamera);
-        ppMainCamera->Set_Target(pPlayerObject, true);
+        ppMainCamera->Set_Target(pPlayer, true);
     }
 
 
@@ -545,11 +560,11 @@ void CLevel_Town::OnEnter()
     CheckNull(pFadeScreen);
     pFadeScreen->PlayFadeOut();
 
-    wstring Text = L"안녕하세요";
+  /*  wstring Text = L"안녕하세요";
     wstring NameText = L"마마샤";
 
     CGameInstance::GetInstance()->BroadCastEvent(L"UpdateNPCText", &Text);
-    CGameInstance::GetInstance()->BroadCastEvent(L"UpdateNPCName", &NameText);
+    CGameInstance::GetInstance()->BroadCastEvent(L"UpdateNPCName", &NameText);*/
 }
 
 void CLevel_Town::OnResume(_uint iPreLevel)
@@ -561,7 +576,9 @@ void CLevel_Town::OnResume(_uint iPreLevel)
      //////현재씬의 itneraction 등록
     CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::TOWN));
 
-    
+    CGameInstance::GetInstance()->Set_EnableUpdate(false);
+    CGameInstance::GetInstance()->Set_EnalbeUpdateRender(false);
+
 
 
     //카메라돌려놓기이벤트 실행
@@ -632,8 +649,8 @@ void CLevel_Town::OnPause(_uint iNextLevel)
 
 void CLevel_Town::OnExit()
 {
-    CInteraction_Manager::GetInstance()->Clear();
-
+    CInteraction_Manager::GetInstance()->Clear();                                                          
+    CGameInstance::GetInstance()->Set_EnalbeUpdateRender(false);
 }
 
 

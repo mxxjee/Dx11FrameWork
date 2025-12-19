@@ -71,8 +71,16 @@ HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag)
 
 HRESULT CTarget_Manager::End_MRT()
 {
+    ID3D11ShaderResourceView* nullSRV[16] = {};
+    m_pContext->VSSetShaderResources(0, 16, nullSRV);
+    m_pContext->PSSetShaderResources(0, 16, nullSRV);
+    m_pContext->GSSetShaderResources(0, 16, nullSRV);
+    m_pContext->CSSetShaderResources(0, 16, nullSRV);
+
+
     ID3D11RenderTargetView* pRTV = m_pBackBuffer.Get();
     m_pContext->OMSetRenderTargets(1, &pRTV, m_pDSV.Get());
+
     return S_OK;
 }
 

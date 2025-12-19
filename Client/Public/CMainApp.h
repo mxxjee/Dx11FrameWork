@@ -8,10 +8,13 @@
 namespace Engine
 {
 	class CGameInstance;
-	class CImGui_Manager;
+	class CImGui_Manager; 
+
 }
 
 NS_BEGIN(Client)
+class CFadeScreen;
+
 class CMainApp final : public CBase
 {
 private:
@@ -39,6 +42,9 @@ private:
 	HRESULT			Start_Level(LEVEL_ID iLevelID,LEVELCHANGETYPE eChangeType);
 	
 
+public:
+	void		Create_FadeScreen();
+
 private:
 #ifdef _DEBUG
 	/////////////////Create ImguiWindow/////////////////
@@ -57,7 +63,7 @@ public:
 	virtual void Free() override;
 
 private:
-	 CGameInstance* pGameInstance;
+	 CGameInstance* m_pGameInstance;
 	 _float4		ClearColor = COLOR_BLACK;
 
 	vector<RenderStates>			m_RenderStates;
@@ -66,6 +72,8 @@ private:
 private:
 	CImGui_Manager* pImGui_Manager = { nullptr };
 	int iTargetCameraIdx = 0;
+	CFadeScreen* pFadeScreen = nullptr;
+
 };
 
 NS_END

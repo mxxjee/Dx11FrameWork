@@ -25,6 +25,7 @@ HRESULT CUI_Manager::Register_UIGroup(const UIGroup& Group, const _wstring& Key)
 		for (auto& i : Group.Objects)
 		{
 			pGroup->push_back(i.second);
+
 		}
 		m_UIMap.emplace(Hash, pGroup);
 		
@@ -45,7 +46,6 @@ HRESULT CUI_Manager::AddUIToGroup(const _wstring& Key, CGameObject* pGameObject)
 	else
 	{
 		pGroup->push_back(pGameObject);
-		Safe_AddRef(pGameObject);
 	}
 
 
@@ -62,6 +62,21 @@ HRESULT CUI_Manager::RegisterEvent(const _wstring& Key, function<void(void*)> _f
 	size_t Hash = hash<wstring>()(Key);
 	m_EventMap.emplace(Hash, _function);
 	return S_OK;
+}
+
+HRESULT CUI_Manager::UnRegisterEvent(const _wstring& Key)
+{
+	function<void(void*)>		pEvent = Get_EventFunction(Key);
+	if (pEvent)
+	{
+		size_t Hash = hash<wstring>()(Key);
+		m_EventMap.erase(Hash);
+
+		return S_OK;
+	}
+
+	return E_FAIL;
+
 }
 
 HRESULT CUI_Manager::BroadCastEvent(const _wstring& Key, void* pData)

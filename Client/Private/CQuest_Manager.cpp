@@ -15,9 +15,19 @@ HRESULT CQuest_Manager::Initialize()
 {
 	LoadQuestDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Quests/Quests.json");
 
-	size_t Mom_HashKey = hash<string>()("NPC_Mom");
-	m_mapNPCChapterProgress[Mom_HashKey].BaseChapterID = "Q1001_START";		//대화시작챕터:START
-	m_mapNPCChapterProgress[Mom_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Mom_HashKey].BaseChapterID;		//대화시작챕터:START
+	//size_t Mom_HashKey = hash<string>()("NPC_Mom");
+	//m_mapNPCChapterProgress[Mom_HashKey].BaseChapterID = "Q1001_START";		//대화시작챕터:START
+	//m_mapNPCChapterProgress[Mom_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Mom_HashKey].BaseChapterID;		//대화시작챕터:START
+
+	
+	size_t Marin_HashKey = hash<string>()("NPC_Marin");
+	m_mapNPCChapterProgress[Marin_HashKey].BaseChapterID = "Q1001_START";		//대화시작챕터:START
+	m_mapNPCChapterProgress[Marin_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Marin_HashKey].BaseChapterID;		//대화시작챕터:START
+
+	size_t Tarin_HashKey = hash<string>()("NPC_Tarin");
+	m_mapNPCChapterProgress[Tarin_HashKey].BaseChapterID = "Q999_START";		//대화시작챕터:START
+	m_mapNPCChapterProgress[Tarin_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Marin_HashKey].BaseChapterID;		//대화시작챕터:START
+
 
 	return S_OK;
 }

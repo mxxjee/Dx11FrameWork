@@ -66,7 +66,7 @@
 
 #include "CRoom.h"
 #include "CRoomTrigger.h"
-#include "CModel_Bed.h"
+#include "CEventTrigger.h"
 
 
 
@@ -189,8 +189,8 @@ HRESULT CLoader::Loading_Town()
 
 
     lstrcpy(m_szFPS, TEXT("맵 로딩중입니다."));
-    //Load_TownMapData();
-   
+    Load_TownMapData();
+
     lstrcpy(m_szFPS, TEXT("로딩완료!"));
 
 
@@ -285,8 +285,6 @@ HRESULT CLoader::Loading_Spawn()
         int a = 10;
     }
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
-    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Model_Bed", CModel_Bed::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
 
 
 
@@ -298,7 +296,7 @@ HRESULT CLoader::Loading_Spawn()
 
 
     lstrcpy(m_szFPS, TEXT("맵 로딩중입니다."));
-    Load_TownMapData();
+
 
     lstrcpy(m_szFPS, TEXT("로딩완료!"));
 
@@ -571,8 +569,6 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"NPC_Body", CNPC_Body::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"FadeScreen", CFadeScreen::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Button", CButton::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
@@ -620,6 +616,8 @@ HRESULT CLoader::Register_GameObjects()
 
 
 
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"EventTrigger", CEventTrigger::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
     ////////Particles
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Snow", CSnow::Create(m_pDevice, m_pDeviceContext))))

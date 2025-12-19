@@ -2,6 +2,11 @@
 #include "CBase.h"
 #include "Client_Defines.h"
 
+namespace Engine
+{
+    class CGameInstance;
+
+}
 NS_BEGIN(Client)
 class CQuest_Manager;
 
@@ -26,6 +31,10 @@ public:
 
                 //대화진행시 호출되는함수(a)
     bool    AdvanceDialogueStep();     
+
+
+    //대화 이벤트 리스너 등록하기
+    void        Register_EventListner();
 
 
 public:
@@ -55,6 +64,12 @@ private:
 
 
     string      m_strActiveNPC = "";        //현재대화중 NPC
+    
     wstring     m_CurrentWstr = L"";
+    wstring     m_CurrentSpeaker = L"";
+
+private:
+    CGameInstance* m_pGameInstance = nullptr;
+
 };
 NS_END

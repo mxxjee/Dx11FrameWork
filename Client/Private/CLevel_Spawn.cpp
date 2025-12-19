@@ -4,7 +4,7 @@
 #include "CStaticBody.h"
 #include "CNPC.h"
 #include "CTrigger_Box.h"
-#include "CRoomTrigger.h"
+#include "CEventTrigger.h"
 #include "CGameInstance.h"
 #include "CMainCamera.h"
 #include "CInteraction_Manager.h"
@@ -14,6 +14,9 @@
 
 #include "CAnimModelObject.h"
 #include "CModel_Bed.h"
+#include "CQuest_Manager.h"
+
+#include "CLayer.h"
 
 
 
@@ -57,6 +60,9 @@ HRESULT CLevel_Spawn::Initialize(LevelArgs& args)
     UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
     pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Find(L"FadeScreen"));
 
+
+    if (FAILED(CQuest_Manager::GetInstance()->Initialize()))
+        return E_FAIL;
 
 
     return S_OK;
@@ -148,7 +154,7 @@ HRESULT CLevel_Spawn::Ready_Layer_NPC(const _wstring& strLayerTag)
     pMarin_Desc.ModelName = L"Marin";
     pMarin_Desc.ObjTag = L"NPC_" + pMarin_Desc.ModelName;
     pMarin_Desc.pTarget = nullptr;
-
+    pMarin_Desc.TalkRange = 3.f;
     pMarin_Desc.SceneName = "MarinHouse_Room";
 
     pMarin_Desc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::SPAWN);
@@ -161,6 +167,9 @@ HRESULT CLevel_Spawn::Ready_Layer_NPC(const _wstring& strLayerTag)
         if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::SPAWN), strLayerTag, pMarin_Npc)))
             return E_FAIL;
 
+        pMarin_Npc->Get_Transform()->Rotation(_float3(0.f, -90.f, 0.f));
+
+
     }
 #pragma endregion
 
@@ -171,9 +180,11 @@ HRESULT CLevel_Spawn::Ready_Layer_NPC(const _wstring& strLayerTag)
     pTransDesc.vLocalPosition = _float4(14.8f, 0.f, 7.013f, 1.f);
     pTransDesc.vLocalRotation = _float4(0.f, 180.f, 0.f, 1.f);
 
+    
     pTarin_Desc.ModelName = L"Tarin";
-    pTarin_Desc.ObjTag = L"NPC_" + pMarin_Desc.ModelName;
+    pTarin_Desc.ObjTag = L"NPC_" + pTarin_Desc.ModelName;
     pTarin_Desc.pTarget = nullptr;
+    pTarin_Desc.TalkRange = 0.5f;
 
     pTarin_Desc.SceneName = "MarinHouse_Room";
 
@@ -186,6 +197,8 @@ HRESULT CLevel_Spawn::Ready_Layer_NPC(const _wstring& strLayerTag)
     {
         if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::SPAWN), strLayerTag, pTarin_Npc)))
             return E_FAIL;
+        
+        pTarin_Npc->Get_Transform()->Rotation(_float3(0.f, -90.f, 0.f));
 
     }
 #pragma endregion
@@ -196,7 +209,7 @@ HRESULT CLevel_Spawn::Ready_Layer_NPC(const _wstring& strLayerTag)
 
 HRESULT CLevel_Spawn::Ready_Layer_InteractionObject(const _wstring& strLayerTag)
 {
-    CModel_Bed::MODELOBJECT_DESC     BedDesc;
+    /*CModel_Bed::MODELOBJECT_DESC     BedDesc;
     BedDesc.ObjTag = L"Obj_Bed";
 
 
@@ -212,7 +225,7 @@ HRESULT CLevel_Spawn::Ready_Layer_InteractionObject(const _wstring& strLayerTag)
             return E_FAIL;
 
 
-    }
+    }*/
     return S_OK;
 
 
@@ -220,24 +233,41 @@ HRESULT CLevel_Spawn::Ready_Layer_InteractionObject(const _wstring& strLayerTag)
 
 HRESULT CLevel_Spawn::Ready_Layer_Trigger(const _wstring& strLayerTag)
 {
-    CRoomTrigger::RoomTriggerDesc RoomTriggerDesc;
-    RoomTriggerDesc.vCenter = _float3(0.f,0.f,0.f);
-    RoomTriggerDesc.vExtents = _float3(1.5f,1.0f,1.0f);
-    RoomTriggerDesc.ObjTag = L"Trigger" + 0;
-    RoomTriggerDesc.m_nextKey = "Level_Town";
-    RoomTriggerDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::SPAWN);
+    CEventTrigger::EventTriggerDesc EventTriggerDesc;
+    EventTriggerDesc.vCenter = _float3(0.f,0.f,0.f);
+    EventTriggerDesc.vExtents = _float3(1.5f,1.0f,1.0f);
+    EventTriggerDesc.ObjTag = L"Trigger" + 0;
+    EventTriggerDesc.Func = [this]()
+    {
+        /*씬이동*/
+        LevelArgs args;
+        args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);
+        args.changeType = LEVELCHANGETYPE::REPLACETOP;
+        args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
+        //pFadeScreen->PlayFadeIn();
+
+
+        if (FAILED(CGameInstance::GetInstance()->Level_Changer(
+            ENUM_TO_UINT(LEVEL_ID::LOADING),
+            args)))
+            return;
+    };
+
+    EventTriggerDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::SPAWN);
 
     CTransform::TRANSFORM_DESC TransDesc;
     TransDesc.vLocalPosition = _float4(12.56f, 0.f, 1.22f, 1.f);
     //TransDesc.vLocalScale = _float4(pTriggerInfo.vScale.x, pTriggerInfo.vScale.y, pTriggerInfo.vScale.z, 1.f);
 
-    RoomTriggerDesc.TransformDesc = &TransDesc;
-    CBase* pBaseTrigger = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"RoomTrigger"), &RoomTriggerDesc);
-    CGameObject* pRoomTrigger = dynamic_cast<CGameObject*>(pBaseTrigger);
-    if (pRoomTrigger)
+    EventTriggerDesc.TransformDesc = &TransDesc;
+    CBase* pBaseTrigger = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), &EventTriggerDesc);
+    CGameObject* pEventTrigger = dynamic_cast<CGameObject*>(pBaseTrigger);
+    if (pEventTrigger)
     {
 
-        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::SPAWN), strLayerTag, pRoomTrigger)))
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::SPAWN), strLayerTag, pEventTrigger)))
             return E_FAIL;
 
     }
@@ -282,6 +312,22 @@ HRESULT CLevel_Spawn::Ready_UI_Static(const _wstring& strLayerTag)
     return S_OK;
 }
 
+void CLevel_Spawn::EndCutScene()
+{
+    CLayer* pNPCLayer = m_pGameInstance->Find_Layer(m_iLevelID, L"NPC_Layer");
+    CheckNull(pNPCLayer);
+
+
+    CGameObject* pMarin = pNPCLayer->Find_GameObject(L"NPC_Marin");
+    CheckNull(pMarin);
+
+    CNPC* pMarinNPC = dynamic_cast<CNPC*>(pMarin);
+    CheckNull(pMarinNPC);
+
+    pMarinNPC->Set_TalkRange(0.2f);
+
+}
+
 void CLevel_Spawn::OnEnter()
 {
 
@@ -293,7 +339,7 @@ void CLevel_Spawn::OnEnter()
 
     CGameObject* pMainCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
     if (pMainCamera)
-    {
+    {                        
         CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
         CheckNull(ppMainCamera);
         ppMainCamera->Set_Target(m_pPlayer, true);
@@ -302,16 +348,27 @@ void CLevel_Spawn::OnEnter()
     //플레이어 위치
     _float4 vSpawnPos = _float4(10.25f, 0.f, 7.7f,1.f);
     m_pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMLoadFloat4(&vSpawnPos));
+    m_pPlayer->Get_Transform()->Rotation(_float3(0.f, 90.f, 0.f));
 
 
     m_pPlayer->Change_MainNavMesh();
 
-    //////현재씬의 itneraction 등록
+    //////현재씬의 itneraction 등록 
     CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::SPAWN));
 
+    //1초후에 페이드아웃 
+    m_pGameInstance->Invoke(1.f, 0.f, false, false, []()
+        {
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"FadeScreenGroup");
+            CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Find(L"FadeScreen"));
 
-    CheckNull(pFadeScreen);
-    pFadeScreen->PlayFadeOut();
+            pFadeScreen->PlayFadeOut();
+
+        }, m_pPlayer);
+ 
+
+  
+
 
 
 
@@ -328,7 +385,7 @@ void CLevel_Spawn::OnPause(_uint iNextLeve)
 void CLevel_Spawn::OnExit()
 {
     CInteraction_Manager::GetInstance()->Clear();
-
+   
 }
 
 CLevel_Spawn* CLevel_Spawn::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)

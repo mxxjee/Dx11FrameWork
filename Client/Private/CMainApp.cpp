@@ -33,9 +33,14 @@
 #include "CTransform.h"
 #include "CCameraComponent.h"
 #include "CRoom_Manager.h"
+#include "CVIBuffer_Rect.h"
+
 
 #include "CQuest_Manager.h"
 #include "CDialogue_Manager.h"
+
+#include "CFadeScreen.h"
+
 
 
 
@@ -44,9 +49,9 @@ USING(Client)
 
 CMainApp::CMainApp()
 	:pImGui_Manager(CImGui_Manager::GetInstance()),
-	pGameInstance(CGameInstance::GetInstance())
+	m_pGameInstance(CGameInstance::GetInstance())
 {
-	Safe_AddRef(pGameInstance);
+	Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CMainApp::Initialize()
@@ -64,7 +69,7 @@ HRESULT CMainApp::Initialize()
 	desc.colGroupMax = ENUM_TO_UINT(COLLISION_GROUP::END);
 	desc.eEngineMode = EngineMode::CLIENT;
 
-	if(FAILED(pGameInstance->Initialize_Engine(desc,&m_pDevice,&m_pContext)))
+	if(FAILED(m_pGameInstance->Initialize_Engine(desc,&m_pDevice,&m_pContext)))
 		return E_FAIL;
 
 	if (FAILED(Initialize_Cilent()))
@@ -98,6 +103,8 @@ HRESULT CMainApp::Initialize()
 		"DefaultTechnique");
 	CGameInstance::GetInstance()->Register_Shader(L"Default", pInstance);
 
+	Create_FadeScreen();
+
 
 	if (FAILED(Start_Level(LEVEL_ID::LOGO,LEVELCHANGETYPE::REPLACETOP)))
 		return E_FAIL;
@@ -116,7 +123,7 @@ HRESULT CMainApp::Initialize_Cilent()
 
 
 	//렌더그룹 관련 초기화
-	if(FAILED(pGameInstance->Initialize_Renderer(ENUM_TO_UINT(RENDERGROUP::END))))
+	if(FAILED(m_pGameInstance->Initialize_Renderer(ENUM_TO_UINT(RENDERGROUP::END))))
 		return E_FAIL;
 	
 
@@ -153,18 +160,18 @@ HRESULT CMainApp::Initialize_Cilent()
 			return false;
 		};
 
-	if(FAILED(pGameInstance->Add_SortFunc(ENUM_TO_UINT(RENDERGROUP::ALPHA), AlphaSort)))
+	if(FAILED(m_pGameInstance->Add_SortFunc(ENUM_TO_UINT(RENDERGROUP::ALPHA), AlphaSort)))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_SortFunc(ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP), AlphaSort)))
+	if (FAILED(m_pGameInstance->Add_SortFunc(ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP), AlphaSort)))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_SortFunc(ENUM_TO_UINT(RENDERGROUP::UI), UISort)))
+	if (FAILED(m_pGameInstance->Add_SortFunc(ENUM_TO_UINT(RENDERGROUP::UI), UISort)))
 		return E_FAIL;
 
 #ifdef _DEBUG
 	//단축키등록
-	pGameInstance->Register_HotKey(KeyCode::D, true, false, false, []()
+	m_pGameInstance->Register_HotKey(KeyCode::D, true, false, false, []()
 		{
 
 			CGameInstance::m_bDrawDebug = !CGameInstance::m_bDrawDebug;
@@ -173,7 +180,7 @@ HRESULT CMainApp::Initialize_Cilent()
 		});
 
 
-	pGameInstance->Register_HotKey(KeyCode::C, true, false, false, [this]()
+	m_pGameInstance->Register_HotKey(KeyCode::C, true, false, false, [this]()
 		{
 
 			if (iTargetCameraIdx == 1)
@@ -213,40 +220,40 @@ HRESULT CMainApp::Initialize_Cilent()
 HRESULT CMainApp::Ready_Fonts()
 {
 
-	if (FAILED(pGameInstance->Add_Font(TEXT("Zelda_Default"), TEXT("../../Resource/Fonts/Zelda_Default.spritefont"))))
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Zelda_Default"), TEXT("../../Resource/Fonts/Zelda_Default.spritefont"))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Font(TEXT("Dialogue_Default"), TEXT("../../Resource/Fonts/Dialogue_Default.spritefont"))))
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Dialogue_Default"), TEXT("../../Resource/Fonts/Dialogue_Default.spritefont"))))
 		return E_FAIL;
 
-	if (FAILED(pGameInstance->Add_Font(TEXT("Dialogue_DefaultBold"), TEXT("../../Resource/Fonts/Dialogue_DefaultBold.spritefont"))))
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Dialogue_DefaultBold"), TEXT("../../Resource/Fonts/Dialogue_DefaultBold.spritefont"))))
 		return E_FAIL;
 	return S_OK;
 }
 
 void CMainApp::Set_Collision_Rules()
 {
-	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
-	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER_WEAPON), true);
-	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER_WEAPON), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), true);
 
-	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::TRIGGER), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::TRIGGER), true);
 
-	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
-	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON), ENUM_TO_UINT(COLLISION_GROUP::MONSTER_WEAPON), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON), ENUM_TO_UINT(COLLISION_GROUP::MONSTER_WEAPON), true);
 	
 
-	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), ENUM_TO_UINT(COLLISION_GROUP::PLAYER), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), ENUM_TO_UINT(COLLISION_GROUP::PLAYER), true);
 
 
-	pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::TRIGGER), ENUM_TO_UINT(COLLISION_GROUP::PLAYER), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::TRIGGER), ENUM_TO_UINT(COLLISION_GROUP::PLAYER), true);
 
 }
 
 void CMainApp::Update_Priority(_float fTimeDelta)
 {
 	CInput_Manager::GetInstance()->Update_Input();
-	pGameInstance->Update_Priority_Engine(fTimeDelta);
+	m_pGameInstance->Update_Priority_Engine(fTimeDelta);
 
 #ifdef _DEBUG
 	pImGui_Manager->Update_Priority();
@@ -258,7 +265,7 @@ void CMainApp::Update(_float fTimeDelta)
 	/*내 게임의 반복적인 작업 수행*/
 	
 	
-	pGameInstance->Update_Engine(fTimeDelta);
+	m_pGameInstance->Update_Engine(fTimeDelta);
 	CInteraction_Manager::GetInstance()->Update(fTimeDelta);
 #ifdef _DEBUG
 	pImGui_Manager->Update();
@@ -269,21 +276,21 @@ void CMainApp::Update(_float fTimeDelta)
 void CMainApp::Update_Late(float fTimeDelta)
 {
 
-	pGameInstance->LateUpdate_Engine(fTimeDelta);
+	m_pGameInstance->LateUpdate_Engine(fTimeDelta);
 	CQuest_Manager::GetInstance()->Update(fTimeDelta);
 }
 
 void CMainApp::Update_Render(float fTimeDelta)
 {
-	pGameInstance->Update_Render(fTimeDelta);
+	m_pGameInstance->Update_Render(fTimeDelta);
 }
 
 
 void CMainApp::Render()
 {
 	/*내 게임의 반복적인 렌더.*/
-	pGameInstance->Draw_Begin(&ClearColor);
-	pGameInstance->Draw();
+	m_pGameInstance->Draw_Begin(&ClearColor);
+	m_pGameInstance->Draw();
 
 #ifdef _DEBUG
 	pImGui_Manager->Render(m_pContext.Get());
@@ -291,43 +298,43 @@ void CMainApp::Render()
 
 #endif
 
-	pGameInstance->Draw_End();
+	m_pGameInstance->Draw_End();
 
 }
 
 void CMainApp::Register_Levels()
 {
-	CheckNull(pGameInstance);
-	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOGO), [this](LevelArgs& args)->CLevel*
+	CheckNull(m_pGameInstance);
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOGO), [this](LevelArgs& args)->CLevel*
 		{
 			args.m_bCached = false;
 			return CLevel_Logo::Create(m_pDevice, m_pContext,args);
 		});
 
-	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::TOWN), [this](LevelArgs& args)->CLevel*
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::TOWN), [this](LevelArgs& args)->CLevel*
 		{
 			return CLevel_Town::Create(m_pDevice, m_pContext, args);
 		});
 
-	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::UI), [this](LevelArgs& args)->CLevel*
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::UI), [this](LevelArgs& args)->CLevel*
 		{
 			return CLevel_UI::Create(m_pDevice, m_pContext, args);
 		});
 
-	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::SPAWN), [this](LevelArgs& args)->CLevel*
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::SPAWN), [this](LevelArgs& args)->CLevel*
 		{
 			args.m_bCached = false;
 			return CLevel_Spawn::Create(m_pDevice, m_pContext, args);
 		});
 
 
-	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOADING), [this](LevelArgs& args)->CLevel*
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOADING), [this](LevelArgs& args)->CLevel*
 		{
 			args.m_bCached = false;
 			return CLevel_Loading::Create(m_pDevice, m_pContext, args);
 		});
 
-	pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::ROOM), [this](LevelArgs& args)->CLevel*
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::ROOM), [this](LevelArgs& args)->CLevel*
 		{
 			return CLevel_NPCRoom::Create(m_pDevice, m_pContext, args);
 		});
@@ -347,11 +354,110 @@ HRESULT CMainApp::Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)
 	args.loadingChangeType = LEVELCHANGETYPE::PUSH;
 	args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
-	if(FAILED(pGameInstance->Level_Changer(ENUM_TO_UINT(LEVEL_ID::LOADING),args)))
+	if(FAILED(m_pGameInstance->Level_Changer(ENUM_TO_UINT(LEVEL_ID::LOADING),args)))
 		return E_FAIL;
 
 
 	return S_OK;
+}
+
+void CMainApp::Create_FadeScreen()
+{
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Transform"), CTransform::Create(m_pDevice, m_pContext))))
+		return;
+
+
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"UI"), CUIComponent::Create(m_pDevice, m_pContext))))
+		return;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
+		return;
+
+	if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Quad", CQuad::Create(m_pDevice, m_pContext))))
+		return;
+
+	if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Panel", CPanel::Create(m_pDevice, m_pContext))))
+		return;
+
+
+	if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"FadeScreen", CFadeScreen::Create(m_pDevice, m_pContext))))
+		return;
+
+
+#pragma region 페이드스크린
+	UIGroup FadeScrcreenGroup;
+	FadeScrcreenGroup.Key = L"FadeScreenGroup";
+
+	CUI::tagUIDesc FadeScreenDesc;
+	FadeScreenDesc.ObjTag = L"FadeScreen";
+	FadeScreenDesc.TextureKey = L"Black";
+	FadeScreenDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+	FadeScreenDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::STATIC);
+
+	FadeScreenDesc.fSizeX = g_iWinSizeX;
+	FadeScreenDesc.fSizeY = g_iWinSizeY;
+
+	FadeScreenDesc.fX = g_iWinSizeX >> 1;
+	FadeScreenDesc.fY = g_iWinSizeY >> 1;
+
+	CTransform::TRANSFORM_DESC TransDesc;
+
+	FadeScreenDesc.TransformDesc = &TransDesc;
+	CUIComponent::UICOMP_DESC FadeUIComp;
+	FadeScreenDesc.UICompDesc = &FadeUIComp;
+	FadeScreenDesc.Depth = 0.1f;
+
+	CBase* pFadeScreenImg = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FadeScreen"), &FadeScreenDesc);
+	pFadeScreen = dynamic_cast<CFadeScreen*>(pFadeScreenImg);
+	if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), L"UI_Layer", pFadeScreen)))
+		return;
+
+
+	pFadeScreen->Set_AutoTime(1.5f);
+	pFadeScreen->Set_AutoMode(true);
+
+	pFadeScreen->Set_Active(false);
+	FadeScrcreenGroup.push_back(pFadeScreen);
+
+	m_pGameInstance->Register_UIGroup(FadeScrcreenGroup);
+	m_pGameInstance->RegisterEvent(L"PlayFadeIn", [](void* pData)
+		{
+			UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"FadeScreenGroup");
+			if (pGroup)
+			{
+				for (auto& i : pGroup->Objects)
+				{
+
+					i.second->Set_Active(true);
+					CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(i.second);
+					if (pFadeScreen)
+					{
+
+						pFadeScreen->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 8.f, false, false);
+					}
+				}
+			}
+		});
+
+	m_pGameInstance->RegisterEvent(L"PlayFadeOut", [this](void* pData)
+		{
+			UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"FadeScreenGroup");
+			if (pGroup)
+			{
+				for (auto& i : pGroup->Objects)
+				{
+					i.second->Set_Active(true);
+					CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(i.second);
+					if (pFadeScreen)
+					{
+						pFadeScreen->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 8.f, false, false);
+
+					}
+				}
+			}
+		});
+
+#pragma endregion
 }
 
 CMainApp* CMainApp::Create()
@@ -384,14 +490,14 @@ void CMainApp::Free()
 	CQuest_Manager::GetInstance()->DestroyInstance();
 	CRoom_Manager::GetInstance()->DestroyInstance();
 	CInput_Manager::GetInstance()->DestroyInstance();
-	pGameInstance->Release_Engine();
+	m_pGameInstance->Release_Engine();
 
 
 
 
 	//자신의 리소스정리
 
-	Safe_Release(pGameInstance);
+	Safe_Release(m_pGameInstance);
 	CInteraction_Manager::GetInstance()->DestroyInstance();
 
 	if (m_pContext)

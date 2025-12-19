@@ -21,13 +21,15 @@ private:
 public:
     //새로운  UIGroup 구조체를 만들어서 등록
     HRESULT     Register_UIGroup(const UIGroup& Group,const _wstring& Key=L"");
-    
+
+
     //이미 매니저에 존재하는 그룹에 추가로 등록
     HRESULT     AddUIToGroup(const _wstring& Key, CGameObject* pGameObject);
 
     //이벤트 등록.. 
     HRESULT     RegisterEvent(const _wstring& Key, function<void(void*)> _function);
-    
+    HRESULT     UnRegisterEvent(const _wstring& Key);
+
 
     //이벤트 뿌리기 , pData=전달하고싶은 데이터들
     HRESULT     BroadCastEvent(const _wstring& Key, void* pData);

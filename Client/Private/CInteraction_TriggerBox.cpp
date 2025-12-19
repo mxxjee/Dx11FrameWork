@@ -115,6 +115,20 @@ void CInteraction_TriggerBox::Set_Active(bool _b)
 		pCol->Set_Active(_b);
 }
 
+void CInteraction_TriggerBox::Set_Size(_float3 vSize)
+{
+	CheckTrue(m_pCollider.empty());
+
+	for (auto& pCol : m_pCollider)
+	{
+		CBounding_AABB* Bound_AABB = dynamic_cast<CBounding_AABB*>(pCol->Get_Bounding());
+		CheckNull(Bound_AABB);
+
+		Bound_AABB->Set_Size(vSize);
+	}
+	
+}
+
 void CInteraction_TriggerBox::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {
 	CGameObject* pOwner = pOther->Get_Owner();

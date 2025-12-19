@@ -277,6 +277,12 @@
       <Filter>01.Levels\Spawn</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CModel_Bed.h" />
+    <ClInclude Include="..\Public\CPlayerPratFallState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\PratFall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CEventTrigger.h">
+      <Filter>02.GameObjects\00.WorldObjects\03.Triggers\EventTrigger</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -605,6 +611,12 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\03.NormalObj">
       <UniqueIdentifier>{79b595ed-9437-41ba-9c7b-acfcca895cdb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\PratFall">
+      <UniqueIdentifier>{43b5c68a-9bfe-4afb-9134-8f006e8387a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\03.Triggers\EventTrigger">
+      <UniqueIdentifier>{829f467d-cb0d-4dba-8618-393f741a3cc1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -862,6 +874,12 @@
       <Filter>01.Levels\Spawn</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CModel_Bed.cpp" />
+    <ClCompile Include="..\Private\CPlayerPratFallState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\PratFall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CEventTrigger.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\03.Triggers\EventTrigger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

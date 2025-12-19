@@ -194,7 +194,7 @@ enum class Dialog_Action_Timing { ON_START, ON_FINISH };		//대화할떄 이벤트 시작
 //1. DialogueStep->UI에 표시할 하나의 블럭
 struct DialogueStep
 {
-	string strSpeaker = "";//대화의 주체(모델이름 혹은 태그)
+	wstring strSpeaker = L"";//대화의 주체(모델이름 혹은 태그)
 	wstring strText = L"";		//UI에 표시할 텍스트
 
 	Dialog_Action_Timing actionTiming= Dialog_Action_Timing::ON_START;

@@ -40,9 +40,12 @@ public:
 
 public:
     void        Set_FirstLoading(bool b) { m_bFirstLoading = b; }
+    void        Set_UseCutScene(bool b) { m_bUseCutScene = b; }
+
     bool        Get_IsFirstLoading() { return m_bFirstLoading; }
     bool        Get_UseCutScene() { return m_bUseCutScene;
     }
+
 
 private:
     CPlayer* m_pMainPlayer=nullptr;

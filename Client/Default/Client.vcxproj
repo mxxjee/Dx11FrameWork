@@ -157,6 +157,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CDialogue_Manager.h" />
+    <ClInclude Include="..\Public\CEventTrigger.h" />
     <ClInclude Include="..\Public\CExplosion.h" />
     <ClInclude Include="..\Public\CFadeScreen.h" />
     <ClInclude Include="..\Public\CFloor.h" />
@@ -219,6 +220,7 @@
     <ClInclude Include="..\Public\CPlayerIdleState.h" />
     <ClInclude Include="..\Public\CPlayerJumpState.h" />
     <ClInclude Include="..\Public\CPlayerLadderState.h" />
+    <ClInclude Include="..\Public\CPlayerPratFallState.h" />
     <ClInclude Include="..\Public\CPlayerPushState.h" />
     <ClInclude Include="..\Public\CPlayerRunState.h" />
     <ClInclude Include="..\Public\CPlayerSlashShieldState.h" />
@@ -263,6 +265,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CDialogue_Manager.cpp" />
+    <ClCompile Include="..\Private\CEventTrigger.cpp" />
     <ClCompile Include="..\Private\CExplosion.cpp" />
     <ClCompile Include="..\Private\CFadeScreen.cpp" />
     <ClCompile Include="..\Private\CFloor.cpp" />
@@ -325,6 +328,7 @@
     <ClCompile Include="..\Private\CPlayerIdleState.cpp" />
     <ClCompile Include="..\Private\CPlayerJumpState.cpp" />
     <ClCompile Include="..\Private\CPlayerLadderState.cpp" />
+    <ClCompile Include="..\Private\CPlayerPratFallState.cpp" />
     <ClCompile Include="..\Private\CPlayerPushState.cpp" />
     <ClCompile Include="..\Private\CPlayerRunState.cpp" />
     <ClCompile Include="..\Private\CPlayerSlashShieldState.cpp" />

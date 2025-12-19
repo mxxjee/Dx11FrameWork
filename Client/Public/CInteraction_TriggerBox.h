@@ -41,6 +41,8 @@ private:
 public:
     virtual void    Set_Active(bool _b);
     bool            Is_Collision() { return m_bCollision; }
+    void            Set_Size(_float3 vSize);
+
 protected:
     vector<CCollider_Base*> m_pCollider = { nullptr };
 

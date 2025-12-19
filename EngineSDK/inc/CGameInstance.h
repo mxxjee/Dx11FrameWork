@@ -232,6 +232,7 @@ public:
 
 	//이벤트 등록.. 
 	HRESULT     RegisterEvent(const _wstring & Key, function<void(void*)> _function);
+	HRESULT     UnRegisterEvent(const _wstring& Key);
 
 
 	//이벤트 뿌리기 , pData=전달하고싶은 데이터들

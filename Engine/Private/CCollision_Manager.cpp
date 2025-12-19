@@ -220,6 +220,8 @@ void CCollision_Manager::CheckCollisionPair(const ColliderGroupList& L1, const C
 
 void CCollision_Manager::BeginEventOnGroups(const SceneColliderGroupList& Groups)
 {
+    CheckTrue(Groups.empty());
+
     for (std::vector<ColliderGroupList>::const_iterator groupIt = Groups.begin();
         groupIt != Groups.end(); ++groupIt)
     {
@@ -236,6 +238,9 @@ void CCollision_Manager::BeginEventOnGroups(const SceneColliderGroupList& Groups
 void CCollision_Manager::ResolveEventsOnGroups(const SceneColliderGroupList& Groups)
 {
     ///Event
+
+    CheckTrue(Groups.empty());
+
     for (std::vector<ColliderGroupList>::const_iterator groupIt = Groups.begin();
         groupIt != Groups.end(); ++groupIt)
     {

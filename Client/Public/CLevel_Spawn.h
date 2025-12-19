@@ -37,6 +37,9 @@ public:
     HRESULT                 Ready_UI_Static(const _wstring& strLayerTag);
 
 public:
+                //NPC의 talk거리 조절
+    void        EndCutScene();
+public:
     virtual void        OnEnter() override;           //씬 진입시 매번호출
     virtual void        OnResume(_uint iPreLevel) override;              //pause되었다가 active되었을때 호출
     virtual void        OnPause(_uint iNextLeve) override;               //pause되었을때 호출

@@ -2,6 +2,12 @@
 #include "CQuest_Manager.h"
 #include <iostream>
 #include "CGameInstance.h"
+#include "CEventBus_Manager.h"
+#include "CPlayer.h"
+#include "CGameManager.h"
+#include "CLevel_Spawn.h"
+
+
 
 IMPLEMENT_SINGLETON(CDialogue_Manager)
 
@@ -10,6 +16,13 @@ USING(Client)
 HRESULT CDialogue_Manager::Initialize()
 {
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Mom_Script.json");
+    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Marin_Script.json");
+    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Tarin_Script.json");
+
+    m_pGameInstance = CGameInstance::GetInstance();
+
+    Register_EventListner();
+
     return S_OK;
 }
 
@@ -127,7 +140,11 @@ bool CDialogue_Manager::AdvanceDialogueStep()
         ExecuteActionCommand(CurrentStep.strActionCommand, CurrentStep.actionTiming); 
     
     m_CurrentWstr = CurrentStep.strText;
+    m_CurrentSpeaker = CurrentStep.strSpeaker;
+
+    
     CGameInstance::GetInstance()->BroadCastEvent(L"UpdateNPCText", &m_CurrentWstr);
+    CGameInstance::GetInstance()->BroadCastEvent(L"UpdateNPCName", &m_CurrentSpeaker);
 
 
     pChapter->iCurrentStepIndex++;
@@ -135,11 +152,47 @@ bool CDialogue_Manager::AdvanceDialogueStep()
     return true;        //대화진행중
 }
 
+void CDialogue_Manager::Register_EventListner()
+{
+    CheckNull(m_pGameInstance);
+
+    m_pGameInstance->RegisterListners("EndCutScene", [this](const GameEvent& evt)
+        {
+            CGameObject* pPlayer = static_cast<CGameObject*>(evt.Payload.Ptrs.at("Player"));
+            CLevel* pCurrentLevel = m_pGameInstance->Get_CurrentLevel();
+            
+            CheckNull(pCurrentLevel);
+            CLevel_Spawn* pLevel_Spawn = dynamic_cast<CLevel_Spawn*>(pCurrentLevel);
+            CheckNull(pLevel_Spawn);
+
+            CPlayer* ppPlayer = dynamic_cast<CPlayer*>(pPlayer);
+            CheckNull(ppPlayer);
+
+            ppPlayer->EndCutScene();
+            pLevel_Spawn->EndCutScene();
+
+
+        });
+}
+
 void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, const Dialog_Action_Timing& strTiming)
 {
     if (strCommand.empty())
         return;
 
+    if (strCommand == "EndCutScene")
+    {
+        CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+        GameEvent Event;
+        EventPayload payload;
+        Event.Payload = payload;
+
+        Event.Payload.Ptrs["Player"] = pPlayer;
+        Event.Name = "EndCutScene";
+
+        m_pGameInstance->Emit(Event);
+
+    }
 
 }
 
@@ -222,7 +275,9 @@ void CDialogue_Manager::ParseDialogueChapter(const json& jChap, DialogueChapter&
         for (const auto& jStep : jChap.at("Steps"))
         {
             DialogueStep step;
-            step.strSpeaker = jStep.at("Speaker").get<string>();
+            
+            string strSpeaker = jStep.at("Speaker").get<string>();
+            step.strSpeaker = StringToWString(strSpeaker);
 
             string strText = jStep.at("Text").get<string>();
             step.strText = StringToWString(strText);

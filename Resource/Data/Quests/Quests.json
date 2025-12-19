@@ -2,8 +2,8 @@
   "Quests": [
     {
       "iQuestID": 1001,
-      "strTitle": "돌 들기",
-      "strDescription": "마을 광장으로 가는 길에 돌을 들어보세요.",
+      "strTitle": "집 나가기",
+      "strDescription": "문 밖으로 나가 광장으로 가세요.",
 
       "Conditions": [
         {
@@ -12,5 +12,6 @@
         }
       ]
     }
+
   ]
 }
