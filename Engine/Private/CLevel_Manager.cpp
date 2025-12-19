@@ -133,7 +133,7 @@ void CLevel_Manager::Push_Level(_uint iSceneID, CLevel* pNewLevel)
 	if (!m_Stack.empty())
 	{
 		_uint iNextLevelID = iSceneID;
-		if (pNewLevel->Get_Flag() == LEVELFLAG::TRANSIENT)
+ 		if (pNewLevel->Get_Flag() == LEVELFLAG::TRANSIENT)
 			iNextLevelID = pNewLevel->Get_NextLevelID();
 
 		m_Stack.back()->OnPause(iNextLevelID);
@@ -198,11 +198,13 @@ void CLevel_Manager::Pop_Level()
 	m_Stack.back()->OnExit();
 
 	//캐싱하지않는 맵이라면 삭제떄리자
-	if(!m_Stack.back()->Is_Cached())
-		m_tDestroy.push_back(m_Stack.back());
+	if (!m_Stack.back()->Is_Cached())
+		Safe_Release(pLevel);
+
 
 	m_Stack.pop_back();
 	
+
 	if (!m_Stack.empty())
 	{
 		m_Stack.back()->Set_State(LEVELSTATE::ACTIVE);
@@ -221,7 +223,6 @@ void CLevel_Manager::Clear_DestroyStack()
 
 			m_pGameInstance->Clear(level->Get_LevelID());
 			Safe_Release(level);
-
 		}
 
 
@@ -237,6 +238,8 @@ void CLevel_Manager::ActiveTop(CLevel* pNewLevel, LEVELCHANGETYPE eChangeType)
 	{
 		CLevel* top = m_Stack.back();
 		top->Set_State(LEVELSTATE::ACTIVE);
+
+
 		top->OnEnter();
 
 	}
@@ -248,11 +251,9 @@ void CLevel_Manager::PopIfTransient()
 {
 	if (m_Stack.back()->Get_Flag() == LEVELFLAG::TRANSIENT)
 	{
-		m_pGameInstance->Clear(m_iCurrentLevelID);
-		m_Stack.back()->OnExit();
-
-		if(!m_Stack.back()->Is_Cached())
-			m_tDestroy.push_back(m_Stack.back());
+		//캐싱하지않는 맵이라면 삭제떄리자
+		if (!m_Stack.back()->Is_Cached())
+			Safe_Release(m_Stack.back());
 
 		m_Stack.pop_back();
 	}
@@ -281,8 +282,11 @@ void CLevel_Manager::Free()
 
 	for (auto& pair : m_Cached)
 	{
-		if(pair.second)
-			Safe_Release(pair.second);
+		CLevel* pLevel = pair.second;
+		int RefCount = 0;
+
+		while (RefCount = Safe_Release(pLevel))
+			Safe_Release(pLevel);
 	}
 
 
