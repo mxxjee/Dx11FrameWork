@@ -92,22 +92,22 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
     __super::Update_Priority(fTimeDelta);
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::P))
     {
-        LevelArgs args;
-        args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
-        args.changeType = LEVELCHANGETYPE::PUSH;
-        //args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
+    //    LevelArgs args;
+    //    args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
+    //    args.changeType = LEVELCHANGETYPE::PUSH;
+    //    //args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+    //    args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
 
 
-        if (FAILED(m_pGameInstance->Level_Changer(
-            ENUM_TO_UINT(LEVEL_ID::UI),
-            args)))
-            return;
+    //    if (FAILED(m_pGameInstance->Level_Changer(
+    //        ENUM_TO_UINT(LEVEL_ID::UI),
+    //        args)))
+    //        return;
     }
 
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
     {
-        CRoom_Manager::GetInstance()->Request_Room("Mamasha_room");
+       /* CRoom_Manager::GetInstance()->Request_Room("Mamasha_room");
 
         LevelArgs args;
         args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
@@ -119,7 +119,7 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
         if (FAILED(m_pGameInstance->Level_Changer(
             ENUM_TO_UINT(LEVEL_ID::LOADING),
             args)))
-            return;
+            return;*/
 
 
     }

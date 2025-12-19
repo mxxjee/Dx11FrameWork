@@ -12,7 +12,7 @@ public:
 
 public:
     void push_back(class CGameObject* pObj);
-
+    void Release();
     class CGameObject* Find(const wstring& Key);
  
 };

@@ -127,13 +127,9 @@ CUI_Manager* CUI_Manager::Create()
 
 void CUI_Manager::Free()
 {
-	for (auto& pair : m_UIMap)
+  	for (auto& pair : m_UIMap)
 	{
-		for (auto& i : pair.second.Objects)
-		{
-			Safe_Release(i.second);
-
-		}
+		pair.second.Release();
 			
 	}
 }

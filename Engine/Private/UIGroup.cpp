@@ -5,7 +5,6 @@ void UIGroup::push_back(CGameObject* pObj)
 {
     CheckNull(pObj);
     size_t Hash = hash<wstring>()(pObj->Get_Tag());
-    Safe_AddRef(pObj);
     Objects.emplace(Hash, pObj);
 }
 
@@ -17,4 +16,14 @@ CGameObject* UIGroup::Find(const wstring& Key)
         return iter->second;
 
     return nullptr;
+}
+
+void UIGroup::Release()
+{
+    for (auto& pair : Objects)
+    {
+        Safe_Release(pair.second);
+    }
+    
+    Objects.clear();
 }
