@@ -34,6 +34,11 @@ HRESULT CQuest_Manager::Initialize()
 	m_mapNPCChapterProgress[Mom_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Mom_HashKey].BaseChapterID;		//대화시작챕터:START
 
 
+	size_t KidGreen_HashKey = hash<string>()("NPC_Kid_Green");
+	m_mapNPCChapterProgress[KidGreen_HashKey].BaseChapterID = "Q1002_START";		//대화시작챕터:START
+	m_mapNPCChapterProgress[KidGreen_HashKey].CurrentChapterID = m_mapNPCChapterProgress[KidGreen_HashKey].BaseChapterID;		//대화시작챕터:START
+
+
 	return S_OK;
 }
 

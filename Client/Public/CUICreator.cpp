@@ -357,6 +357,7 @@ HRESULT UICreator::Create_NPC_Dialogue_UI(wstring LayerTag)
     FontUIDesc.fSizeX = 0.5f;
     FontUIDesc.fSizeY = 0.5f;
     FontUIDesc.m_bUseTypingEffect = true;
+    FontUIDesc.vPosition = _float2(638.58f, 544.80f);
 
     FontUIDesc.fX = DialogueBoxDesc.fX + 25.f;
     FontUIDesc.fY = OriginY + 600.f;
@@ -411,6 +412,8 @@ HRESULT UICreator::Create_NPC_Dialogue_UI(wstring LayerTag)
     NameUIDesc.ObjTag = L"Dialogue_Text_Name";
     NameUIDesc.fSizeX = 0.4f;
     NameUIDesc.fSizeY = 0.4f;
+
+    NameUIDesc.vPosition = _float2(389.58f, 472.22f);
 
     NameUIDesc.fX = DialogueBoxDesc.fX - (DialogueBoxDesc.fX * 0.35f);
     NameUIDesc.fY = OriginY + 300.f;

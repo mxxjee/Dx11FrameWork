@@ -970,6 +970,10 @@ void CGameInstance::Reset_NaveMesh(_uint iLevelIdx)
 {
 	return m_pNavMeshManager->Reset_NaveMesh(iLevelIdx);
 }
+_vector CGameInstance::Get_CellPos_By_MainCells(_uint iIdx)
+{
+	return m_pNavMeshManager->Get_CellPos_By_MainCells(iIdx);
+}
 #ifdef _DEBUG
 void CGameInstance::Set_NavMeshShader(CShader* pShader)
 {

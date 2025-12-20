@@ -407,7 +407,7 @@ HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
 
 HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
 {
-    CNPC::NPC_DESC pDesc;
+   /* CNPC::NPC_DESC pDesc;
 
     CTransform::TRANSFORM_DESC pTransDesc;
     pTransDesc.vLocalPosition = { 30.642f,10.421f,23.642f,1.f };
@@ -427,8 +427,36 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
         if(FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, pNpc_Richard)))
         return E_FAIL;
 
-    }
+    }*/
 
+
+    //길거리에 있는 애기
+    CNPC::NPC_DESC pDesc;
+
+    CTransform::TRANSFORM_DESC pTransDesc;
+
+
+    _vector vPos = m_pGameInstance->Get_CellPos_By_MainCells(538);
+    XMStoreFloat4(&pTransDesc.vLocalPosition, vPos);
+    pTransDesc.vLocalRotation = _float4(0.f, 180.f, 0.f, 0.f);
+
+    pDesc.ObjTag = L"NPC_Kid_Green";
+    pDesc.pTarget = nullptr;
+    pDesc.ModelName = L"Kid_Green";
+    pDesc.SceneName = "Level_Town";
+    pDesc.m_iLevelID = m_iLevelID;
+    pDesc.TalkRange = 3.f;
+
+
+    pDesc.TransformDesc = &pTransDesc;
+
+    CNPC* pNpc_GreenKid = CNPC::Create(m_pDevice, m_pContext, &pDesc);
+    if (pNpc_GreenKid)
+    {
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, pNpc_GreenKid)))
+            return E_FAIL;
+
+    }
 
     return S_OK;
 }

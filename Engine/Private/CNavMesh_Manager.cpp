@@ -106,6 +106,14 @@ void CNavMesh_Manager::Set_MainCells(_uint LevelID)
 
 }
 
+_vector CNavMesh_Manager::Get_CellPos_By_MainCells(_uint iIdx)
+{
+	CheckTrueResult(m_MainCells->empty(), _vector());
+	CheckTrueResult(iIdx>m_MainCells->size(), _vector());
+
+	return (*m_MainCells)[iIdx]->Get_CenterPos();
+}
+
 CNavMesh_Manager* CNavMesh_Manager::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
 {
 	CNavMesh_Manager* pInstance = new CNavMesh_Manager(_pDevice, _pContext);

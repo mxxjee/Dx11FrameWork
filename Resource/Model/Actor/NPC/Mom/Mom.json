@@ -1640,11 +1640,11 @@
         },
         {
             "Ambient": "",
-            "Diffuse": "MI_mouth_alb.0.png",
+            "Diffuse": "MI_mouth_alb.3.png",
             "METALNESS": "",
             "MaterialName": "Mom_MI_mouth",
             "Normal": "MI_mouth_nml.png",
-            "OPACITY": "MI_mouth_alb.0.png",
+            "OPACITY": "",
             "Specular": ""
         },
         {

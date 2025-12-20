@@ -101,6 +101,8 @@ HRESULT CFontUI::Ready_Component(void* pArg)
 	pFontCompDesc.vDefaultFontColor = pDesc->vDefaultFontColor;
 	pFontCompDesc.fScale = pDesc->fSizeX;
 	pFontCompDesc.fRotation = pDesc->fRotation;
+	pFontCompDesc.vPosition = pDesc->vPosition;
+
 
 	m_pFontComp = dynamic_cast<CFontComponent*>(m_pGameInstance->Clone_Prototype
 	(PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"Font"), &pFontCompDesc));

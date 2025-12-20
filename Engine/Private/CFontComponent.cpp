@@ -42,6 +42,8 @@ HRESULT CFontComponent::Initialize_Copytype(void* pArg)
     m_vColor = pFontDesc->vDefaultFontColor;
     m_vScale = pFontDesc->fScale;
     m_fRotation = pFontDesc->fRotation;
+    m_vPosition = pFontDesc->vPosition;
+
 
     m_pText = L"";
     return S_OK;
@@ -120,12 +122,12 @@ void CFontComponent::Update(XMMATRIX WorldMatrix, _float alpha,_float fTimeDelta
 
 
 
-    _vector  vPos = MathUtils::WorldToScreen(XMVectorSet(fWorldMat._41, fWorldMat._42, fWorldMat._43, 1.f),
-        m_pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::TARGET)),
-        m_pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::TARGET)),
-        EngineDesc.iWinSizeX, EngineDesc.iWinSizeY);
+    //_vector  vPos = MathUtils::WorldToScreen(XMVectorSet(fWorldMat._41, fWorldMat._42, fWorldMat._43, 1.f),
+    //    m_pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::TARGET)),
+    //    m_pGameInstance->Get_ViewMatrix(ENUM_TO_UINT(CAMERA_TYPE::TARGET)),
+    //    EngineDesc.iWinSizeX, EngineDesc.iWinSizeY);
 
-    m_vPosition = _float2(XMVectorGetX(vPos), XMVectorGetY(vPos));
+    //m_vPosition = _float2(XMVectorGetX(vPos), XMVectorGetY(vPos));
     m_vColor.w = alpha;
 
     if (m_bPlay)

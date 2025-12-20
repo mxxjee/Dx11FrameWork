@@ -38,7 +38,8 @@ public:
 public:
     //레벨아이디로 들어온 셀들을 메인셀로 설정한다. 레벨 onenter마다 부르기? 
     void            Set_MainCells(_uint LevelID);
-    
+    _vector         Get_CellPos_By_MainCells(_uint iIdx);
+
 
 public:
     vector<CCell*>*   Get_MainCells() { return m_MainCells; }

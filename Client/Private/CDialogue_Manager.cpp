@@ -18,6 +18,7 @@ HRESULT CDialogue_Manager::Initialize()
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Mom_Script.json");
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Marin_Script.json");
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Tarin_Script.json");
+    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Kid_Green.json");
 
     m_pGameInstance = CGameInstance::GetInstance();
 

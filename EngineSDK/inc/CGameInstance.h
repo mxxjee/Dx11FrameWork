@@ -321,7 +321,7 @@ public:
 	 vector<class CCell*>*				Get_MainCells();
 	 void								Set_DrawDebug(bool b);
 	 void								Reset_NaveMesh(_uint iLevelIdx);
-
+	 _vector							Get_CellPos_By_MainCells(_uint iIdx);
 #ifdef _DEBUG
 	 void								Set_NavMeshShader(class CShader* pShader);
 	 HRESULT							    Render_NavMeshManager();

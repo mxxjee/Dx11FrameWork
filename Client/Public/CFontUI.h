@@ -19,6 +19,8 @@ public:
         bool    m_bUseTypingEffect = false;
         _float  m_fTypingTime = 0.05f;
 
+        _float2 vPosition = _float2(0.f, 0.f);
+
     }FONTUI_DESC;
 protected:
     CFontUI(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);

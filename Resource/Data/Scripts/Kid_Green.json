@@ -1,0 +1,90 @@
+{
+  "NPCScripts": [
+    {
+      "ModelID": "NPC_Kid_Green",
+
+      "Chapters": [
+        {
+          "ChapterID": "Q1002_START",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "텐텐",
+              "Text": "어? 아저씬 누구에요?",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "텐텐",
+              "Text": "바쁜데 말걸지마세요!!",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1002_ACTIVE_PERM",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "텐텐",
+              "Text": "어? 아저씬 누구에요?",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "텐텐",
+              "Text": "바쁜데 말걸지마세요!!",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1002_COMPLETABLE_READY",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "텐텐",
+              "Text": "어? 아저씬 누구에요?",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "텐텐",
+              "Text": "바쁜데 말걸지마세요!!",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1002_DONE",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "텐텐",
+              "Text": "숲속에서 아이를 구했다면서요!",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "텐텐",
+              "Text": "저도 크면 아저씨처럼 될 수 있어요?",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

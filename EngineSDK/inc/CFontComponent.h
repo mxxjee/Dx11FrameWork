@@ -12,6 +12,7 @@ public:
         _float4 vDefaultFontColor = _float4(0.f, 0.f, 0.f, 1.f);//기본색 검은색
         _float fScale = 10.f;
         _float fRotation = 0.f;
+        _float2 vPosition = _float2(0.f, 0.f);
     
     };
 
