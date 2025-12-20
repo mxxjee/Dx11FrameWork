@@ -47,8 +47,12 @@ HRESULT CRoom_Manager::Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11De
 
 void CRoom_Manager::Switch_Room(const string& strRoomName)
 {
-    //같은방이라면 로드x
-    CheckTrue(m_strCurrentRoomID == strRoomName);
+    //같은방이라면 네브메쉬요청만바꾼다.
+    if (m_strCurrentRoomID == strRoomName)
+    {
+        m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::ROOM));
+        return;
+    }
 
     /////기존꺼 지우기(퇴장처리)
     Clear_Room();
@@ -64,7 +68,26 @@ void CRoom_Manager::Switch_Room(const string& strRoomName)
     if (iter != m_mapCachedRooms.end())
     {
         pNextPackage = iter->second;
+       
+        m_pGameInstance->Reset_NaveMesh(ENUM_TO_UINT(LEVEL_ID::ROOM));
+        if (FAILED(m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::ROOM), pNextPackage->m_navMeshFile)))
+            return;
+        m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::ROOM));
+
+        m_vSpawnPosition = _float4(pNextPackage->m_vPlayerSpawnPoin.x,
+            pNextPackage->m_vPlayerSpawnPoin.y,
+            pNextPackage->m_vPlayerSpawnPoin.z,
+            1.f);
+                        
         pNextPackage->Set_Active(true);
+
+        //NPC의 메인셀 다시 설정
+        for (auto& pNpc : pNextPackage->NPCs)
+        {
+            CNPC* ppNpc = dynamic_cast<CNPC*>(pNpc);
+            ppNpc->Change_NavMesh();
+        }
+        
     }
     //새로운 로드
     else
@@ -81,7 +104,7 @@ void CRoom_Manager::Switch_Room(const string& strRoomName)
 
     }
 
-    Enter_Room(pNextPackage);
+    Enter_Room(pNextPackage,true);
 
 }
 
@@ -132,15 +155,15 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
     CGameObject* pRoom = dynamic_cast<CGameObject*>(pBaseRoom);
     if (pRoom)
     {
-        Safe_AddRef(pRoom);
+       // Safe_AddRef(pRoom);
         pOutPackage->m_RoomName = RoomName;
         pOutPackage->EnvObjs.push_back(pRoom);
 
     }
     //Navmesh읽어오기
-    string NavFile = jRoomData["NavData"];
+    pOutPackage->m_navMeshFile = jRoomData["NavData"];
     m_pGameInstance->Reset_NaveMesh(ENUM_TO_UINT(LEVEL_ID::ROOM));
-    if (FAILED(m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::ROOM), NavFile)))
+    if (FAILED(m_pGameInstance->Load_NavMesh(ENUM_TO_UINT(LEVEL_ID::ROOM), pOutPackage->m_navMeshFile)))
         return E_FAIL;
 
     m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::ROOM));
@@ -173,7 +196,7 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
         CGameObject* pRoomTrigger = dynamic_cast<CGameObject*>(pBaseTrigger);
         if (pRoomTrigger)
         {
-            Safe_AddRef(pRoomTrigger);
+            //Safe_AddRef(pRoomTrigger);
             pOutPackage->Triggers.push_back(pRoomTrigger);
 
         }
@@ -199,18 +222,21 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
     for (auto& PosInfo : PositionIfos)
     {
         if (PosInfo.TargetName == "Player_SpawnPoint")
+        {
+            pOutPackage->m_vPlayerSpawnPoin = _float3(PosInfo.vPos.x, PosInfo.vPos.y, PosInfo.vPos.z);
             m_vSpawnPosition = _float4(PosInfo.vPos.x, PosInfo.vPos.y, PosInfo.vPos.z, 1.f);
 
+        }
         else 
         {
             for (auto& ModelName : NPCModelNames)
             {
                 if (PosInfo.TargetName.find(ModelName) != string::npos)
                 {
-                    _float3 vSpawnPos = PosInfo.vPos;
+                    _float3 NPCPos= PosInfo.vPos;
                     
                     //NPC소환.(일단 임시로 리차드)
-                    if (FAILED(Load_NPC(RoomName,StringToWString(ModelName), vSpawnPos, pOutPackage)))
+                    if (FAILED(Load_NPC(RoomName,StringToWString(ModelName), NPCPos, pOutPackage)))
                         return E_FAIL;
 
                 }
@@ -227,7 +253,7 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
 
 void CRoom_Manager::Clear_Room()
 {
-  /*  if (m_pEnviromentLayer)
+    if (m_pEnviromentLayer)
         m_pEnviromentLayer->Clear();
 
 
@@ -236,7 +262,8 @@ void CRoom_Manager::Clear_Room()
 
 
     if (m_pTriggerLayer)
-        m_pTriggerLayer->Clear();*/
+        m_pTriggerLayer->Clear();
+
 
     for (auto& pair : m_mapCachedRooms)
     {
@@ -248,22 +275,26 @@ void CRoom_Manager::Clear_Room()
 
 }
 
-void CRoom_Manager::Enter_Room(RoomPackage* pPackage)
+void CRoom_Manager::Enter_Room(RoomPackage* pPackage, bool bCached)
 {
     for (auto& pObj : pPackage->EnvObjs)
     {
         m_pEnviromentLayer->Add_GameObject(pObj);
+        Safe_AddRef(pObj);
+        
     }
 
     for (auto& pObj : pPackage->NPCs)
     {
         m_pNPCLayer->Add_GameObject(pObj);
+        Safe_AddRef(pObj);
     }
 
 
     for (auto& pObj : pPackage->Triggers)
     {
         m_pTriggerLayer->Add_GameObject(pObj);
+        Safe_AddRef(pObj);
     }
 
     m_strCurrentRoomID = pPackage->m_RoomName;
@@ -290,7 +321,7 @@ HRESULT CRoom_Manager::Load_NPC(const string& RoomName, const wstring& ModelName
     CNPC* pNpc = CNPC::Create(m_pDevice, m_pContext, &pDesc);
     if (pNpc)
     {
-        Safe_AddRef(pNpc);
+        //Safe_AddRef(pNpc);
         pOut->NPCs.push_back(pNpc);
         return S_OK;
     }

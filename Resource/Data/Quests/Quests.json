@@ -7,8 +7,20 @@
 
       "Conditions": [
         {
-          "Type": "ACTION",
-          "State": "CARRY"
+          "Type": "LOCATION",
+          "State": "GO_TOWN"
+        }
+      ]
+    },
+    {
+      "iQuestID": 1002,
+      "strTitle": "아이 찾아주기",
+      "strDescription": "숲으로 가 아이를 찾아보세요.",
+
+      "Conditions": [
+        {
+          "Type": "LOCATION",
+          "State": "GO_TOWN"
         }
       ]
     }

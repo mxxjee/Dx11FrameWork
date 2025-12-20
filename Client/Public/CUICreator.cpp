@@ -351,7 +351,7 @@ HRESULT UICreator::Create_NPC_Dialogue_UI(wstring LayerTag)
 #pragma region 말하는 폰트만들기
     ///폰트먼저만들기
     CFontUI::FONTUI_DESC FontUIDesc;
-    FontUIDesc.FontName = L"Dialogue_DefaultBold";
+    FontUIDesc.FontName = L"Dialogue_Default";
     FontUIDesc.vDefaultFontColor = _float4(1.f, 1.f, 1.f, 0.5f);
     FontUIDesc.ObjTag = L"Dialogue_Text";
     FontUIDesc.fSizeX = 0.5f;

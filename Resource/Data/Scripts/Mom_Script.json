@@ -4,89 +4,77 @@
       "ModelID": "NPC_Mom",
       "Chapters": [
         {
-          "ChapterID": "Q1001_START",
-          "iQuestOffered": 1001,
+          "ChapterID": "Q1002_START",
+          "iQuestOffered": 1002,
           "iQuestRequiredToUnlock": 0,
           "strNextPermanentChapterID": "Q1001_ACTIVE_PERM",
           "Steps": [
             {
-              "Speaker": "NPC_Mom",
-              "Text": "파싱테스트입니다.",
+              "Speaker": "마마샤",
+              "Text": "어서와요, 링크! 당신을 찾고 있었어요.",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             },
             {
-              "Speaker": "NPC_Mom",
-              "Text": "대사가 잘넘어가고있나요?\n 띄어쓰기도 잘 되고 있나요?",
+              "Speaker": "마마샤",
+              "Text": "아…혹시 제 아이를 보지 못했나요?",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             },
             {
-              "Speaker": "NPC_Mom",
-              "Text": "액션도 잘 나오고있나요?",
+              "Speaker": "마마샤",
+              "Text": "아침까진 집 근처에 있었는데...\n숲 쪽으로 간 것 같아요.",
               "strActionCommand": "PLAY_ANIM:NPC_BOW",
               "actionTiming": "ON_START"
             },
             {
-              "Speaker": "NPC_Mom",
-              "Text": "돌을 한번들어보세요.",
+              "Speaker": "마마샤",
+              "Text": "부탁이에요...\n숲에서 아이를 찾아주세요.",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             }
           ]
         },
         {
-          "ChapterID": "Q1001_ACTIVE_PERM",
+          "ChapterID": "Q1002_ACTIVE_PERM",
           "iQuestOffered": 0,
           "iQuestRequiredToUnlock": 0,
           "Steps": [
             {
-              "Speaker": "NPC_Mom",
-              "Text": "아직 다 수행하지않은거같아요.",
+              "Speaker": "마마샤",
+              "Text": "숲이에요...\n숲에서 분명 무슨 일이 생겼을 거예요.",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             },
             {
-              "Speaker": "NPC_Mom",
-              "Text": "다 하고나서 말걸어주세요.",
+              "Speaker": "마마샤",
+              "Text": "반드시 찾아주세요....",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             }
           ]
         },
         {
-          "ChapterID": "Q1001_COMPLETABLE_READY",
-          "iQuestRequiredToUnlock": 1001,
-          "strNextPermanentChapterID": "Q1001_DONE",
+          "ChapterID": "Q1002_COMPLETABLE_READY",
+          "iQuestRequiredToUnlock": 1002,
+          "strNextPermanentChapterID": "Q2001_DONE",
           "Steps": [
             {
-              "Speaker": "NPC_Mom",
-              "Text": "퀘스트를 완료하셨네요.",
+              "Speaker": "마마샤",
+              "Text": "정말… 정말 고마워요.\n이 은혜는 잊지 않을게요.",
               "strActionCommand": "",
-              "actionTiming": "ON_FINISH"
-            },
-            {
-              "Speaker": "NPC_Mom",
-              "Text": "완전한 퀘스트 완료 처리합니다.",
-              "strActionCommand": "GIVE_ITEM:9001:1000",
               "actionTiming": "ON_FINISH"
             }
           ]
         },
         {
-          "ChapterID": "Q1001_DONE",
+          "ChapterID": "Q1002_DONE",
           "iQuestRequiredToUnlock": 0,
           "strNextPermanentChapterID": "",
           "Steps": [
             {
-              "Speaker": "NPC_Mom",
-              "Text": "이제 이 퀘스트는 완전히 끝입니다.",
-              "strActionCommand": "",
-              "actionTiming": "ON_FINISH"
-            },
-            {
-              "Speaker": "NPC_Mom",
-              "Text": "이제 계속 말걸어도 이 대화가 반복됩니다.",
+              "Speaker": "마마샤",
+              "Text": "당신은 최고의 마을 방범대에요!",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             }

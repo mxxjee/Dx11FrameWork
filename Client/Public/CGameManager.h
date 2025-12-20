@@ -54,7 +54,7 @@ private:
 
     bool        m_bFirstSpawn = true;//첫시작일떄를 의미
     bool        m_bFirstLoading = true;//첫 로딩임을 의미
-    bool        m_bUseCutScene = false;
+    bool        m_bUseCutScene = true;
 
 
 };

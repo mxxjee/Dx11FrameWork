@@ -388,3 +388,13 @@ void CNPC::Free()
      __super::Free();
    
 }
+
+void CNPC::Change_NavMesh()
+{
+    if (m_pNavigationCom)
+    {
+        m_pNavigationCom->Set_MainCell();
+        m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
+
+    }
+}

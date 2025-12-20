@@ -50,6 +50,14 @@ HRESULT CLevel_Manager::Level_Changer(_uint iSceneID, LevelArgs& args)
 	ActiveTop(pNewLevel, eTargetType);
 	m_iCurrentLevelID = iSceneID;
 
+	if (pNewLevel->Is_Cached())
+	{
+		auto iter = m_Cached.find(iSceneID);
+		if(iter==m_Cached.end())
+			m_Cached.emplace(iSceneID, pNewLevel);
+	}
+
+
 
 	return S_OK;
 }
@@ -172,8 +180,10 @@ CLevel* CLevel_Manager::Find_And_CreateLevel(_uint iSceneID, LevelArgs& _Arg)
 	if (pLevel->Is_Cached())
 	{
 		Safe_AddRef(pLevel);
-		m_Cached.emplace(iSceneID, pLevel);
 		
+		//Onenter처리이후에 넣자. 다음에 onresume나와야하니까
+		//m_Cached.emplace(iSceneID, pLevel);
+
 	}
 
 	return pLevel;
@@ -232,6 +242,16 @@ void CLevel_Manager::Clear_DestroyStack()
 
 void CLevel_Manager::ActiveTop(CLevel* pNewLevel, LEVELCHANGETYPE eChangeType)
 {
+	
+	_uint iPreLevel = 0;
+	
+	if (!m_Stack.empty())
+	{
+		if (m_Stack.back())
+			iPreLevel = m_Stack.back()->Get_LevelID();
+
+	}
+
 	m_Stack.push_back(pNewLevel);
 
 	if (!m_Stack.empty())
@@ -239,8 +259,12 @@ void CLevel_Manager::ActiveTop(CLevel* pNewLevel, LEVELCHANGETYPE eChangeType)
 		CLevel* top = m_Stack.back();
 		top->Set_State(LEVELSTATE::ACTIVE);
 
+		auto iter = m_Cached.find(pNewLevel->Get_LevelID());
+		if (iter==m_Cached.end())
+			top->OnEnter();
 
-		top->OnEnter();
+		else
+			top->OnResume(iPreLevel);
 
 	}
 	

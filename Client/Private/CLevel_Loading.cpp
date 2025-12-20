@@ -143,6 +143,7 @@ void CLevel_Loading::OnExit()
     CheckNull(pFadeScreen);
 
     pFadeScreen->PlayFadeOut();
+    m_pGameInstance->Set_IsLoading(false);
 }
 
 

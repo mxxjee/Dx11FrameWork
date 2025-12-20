@@ -81,6 +81,8 @@ void CLayer::Clear()
 {
     for (auto& obj : m_ObjList)
         Safe_Release(obj);
+
+    m_ObjList.clear();
 }
 void CLayer::RequestDestroy(CGameObject* pObj)
 {

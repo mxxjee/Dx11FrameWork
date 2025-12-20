@@ -236,6 +236,8 @@ struct RoomPackage
 	list<Engine::CGameObject*> EnvObjs;		//맵 오브젝트들
 	list<Engine::CGameObject*>	 NPCs;
 	list<Engine::CGameObject*>	Triggers;
+	string			m_navMeshFile = "";
+	_float3			m_vPlayerSpawnPoin=_float3(0.f,0.f,0.f);
 
 
 	RoomPackage() {};

@@ -29,6 +29,11 @@ HRESULT CQuest_Manager::Initialize()
 	m_mapNPCChapterProgress[Tarin_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Marin_HashKey].BaseChapterID;		//대화시작챕터:START
 
 
+	size_t Mom_HashKey = hash<string>()("NPC_Mom");
+	m_mapNPCChapterProgress[Mom_HashKey].BaseChapterID = "Q1002_START";		//대화시작챕터:START
+	m_mapNPCChapterProgress[Mom_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Mom_HashKey].BaseChapterID;		//대화시작챕터:START
+
+
 	return S_OK;
 }
 
@@ -200,6 +205,14 @@ std::function<void()>    CQuest_Manager::Make_Reward_Function(_uint iQuestID)
 		};
 
 		break;
+
+	case 1002:
+		return[]()
+		{
+			OutputDebugString(L"Make_Reward_By_1002");
+		};
+
+		break;
 	}
 }
 
@@ -286,6 +299,17 @@ CQuestCondition* CQuest_Manager::Make_Condition_From_Json(const json& json_cond)
 		if (State == "CARRY")
 		{
 			return new CAction_Condition(pPlayer,ENUM_TO_UINT(CPlayer::PLAYER_STATE::CARRY));
+		}
+	}
+
+	else if (strType == "LOCATION")
+	{
+		string State = json_cond.at("State").get<string>();
+		CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+
+		if (State == "GO_TOWN")
+		{
+			return new CLocation_Condition(ENUM_TO_UINT(LEVEL_ID::TOWN));
 		}
 	}
 

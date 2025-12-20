@@ -108,9 +108,9 @@ HRESULT CCamera_Base::Bind_RenderTarget()
 
     m_pContext->OMSetRenderTargets(0, nullptr, nullptr);
 
-    //Ä«¸Þ¶ó ·»´õÅ¸°Ù ¹ÙÀÎµù
-    ID3D11ShaderResourceView* nullSRV[1] = {};
-    m_pContext->PSSetShaderResources(0, 1, nullSRV);
+  //Ä«¸Þ¶ó ·»´õÅ¸°Ù ¹ÙÀÎµù
+    //ID3D11ShaderResourceView* nullSRV[2] = {};
+    //m_pContext->PSSetShaderResources(0, 2, nullSRV);
 
     m_pContext->OMSetRenderTargets(1, m_tRenderTarget.RTV.GetAddressOf(), m_tRenderTarget.DSV.Get());
 
@@ -126,8 +126,8 @@ HRESULT CCamera_Base::UnBind_RenderTarget()
         return S_OK;
 
     
-    ID3D11RenderTargetView* nullRTV[1] = { nullptr };
-    m_pContext->OMSetRenderTargets(1, nullRTV, nullptr);
+    ID3D11RenderTargetView* nullRTV[8] = { nullptr };
+    m_pContext->OMSetRenderTargets(8, nullRTV, nullptr);
     m_pContext->OMSetRenderTargets(0, nullptr, nullptr);
     
     return S_OK;

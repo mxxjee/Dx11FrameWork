@@ -5,6 +5,7 @@
 #include "CBoxColliderComponent.h"
 #include "CGameManager.h"
 #include "CPlayer.h"
+#include "CNavMesh_Manager.h"
 
 
 USING(Client)
@@ -75,7 +76,8 @@ void CRoomTrigger::Free()
 
 void CRoomTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {
-    
+    CheckTrue(m_pGameInstance->Get_IsLoading());
+
     CGameObject* pOwner = pOther->Get_Owner();
 
     CheckNull(pOwner);
@@ -84,8 +86,10 @@ void CRoomTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
   
     case Client::COLLISION_GROUP::PLAYER:
         if (m_NextRoomKey == "Level_Town")
+        {
             m_pGameInstance->Pop_Level();
-      
+           // m_pGameInstance->Set_IsLoading(true);
+        }
 
         else
         {
@@ -116,6 +120,8 @@ void CRoomTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
                  return;
              }
              break;
+
+             m_pGameInstance->Clear_SceneColliders(ENUM_TO_UINT(LEVEL_ID::ROOM));
 
     }
 }

@@ -612,7 +612,9 @@ void CLevel_Town::OnResume(_uint iPreLevel)
     pPlayer->Change_MainNavMesh();
 
     __super::OnResume(iPreLevel);
+    m_pGameInstance->Set_IsLoading(false);
 
+    
 }
  
 

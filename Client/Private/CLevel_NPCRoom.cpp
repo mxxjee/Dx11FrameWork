@@ -81,8 +81,7 @@ void CLevel_NPCRoom::Render()
 void CLevel_NPCRoom::OnEnter()
 {
     CRoom_Manager::GetInstance()->Switch_Room(CRoom_Manager::GetInstance()->Get_RequestRoom());
-    m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::ROOM));
-
+    
     _float4 vSpawnPos = CRoom_Manager::GetInstance()->Get_SpawnPosition();
    
     m_pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
@@ -91,7 +90,6 @@ void CLevel_NPCRoom::OnEnter()
 
     m_pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMLoadFloat4(&vSpawnPos));
     m_pPlayer->Get_Transform()->Rotation(_float3(0.f, 0.f, 0.f));
-
     m_pPlayer->Change_MainNavMesh();
  
 
@@ -113,26 +111,29 @@ void CLevel_NPCRoom::OnEnter()
     pFadeScreen->PlayFadeOut();
 
   
-
-
+  
     //씬이 다시시작행슬때 메인 상호작용오브ㅈ게트들 설정
     //////현재씬의 itneraction 등록
     CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::ROOM));
 
     __super::OnEnter();
+
+    m_pGameInstance->Set_IsLoading(false);
+
+
 }
 
 void CLevel_NPCRoom::OnResume(_uint iPreLevel)
 {
     
     CRoom_Manager::GetInstance()->Switch_Room(CRoom_Manager::GetInstance()->Get_RequestRoom());
-    m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::ROOM));
-
+ 
     CheckNull(m_pPlayer);
-    m_pPlayer->Change_MainNavMesh();
-
+ 
     _float4 vSpawnPos = CRoom_Manager::GetInstance()->Get_SpawnPosition();
     m_pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMLoadFloat4(&vSpawnPos));
+    m_pPlayer->Change_MainNavMesh();
+
 
 
     ////GameEvent (카메라 조절)
@@ -149,7 +150,7 @@ void CLevel_NPCRoom::OnResume(_uint iPreLevel)
 
     m_pGameInstance->Emit(Event);
     CheckNull(pFadeScreen);
-  //  pFadeScreen->PlayFadeOut();
+   pFadeScreen->PlayFadeOut();
 
   
 
@@ -170,7 +171,8 @@ void CLevel_NPCRoom::OnPause(_uint iNextLevel)
 void CLevel_NPCRoom::OnExit()
 {
    /* CRoom_Manager::GetInstance()->Reset_CurrentRoomID();*/
-  
+    //m_pGameInstance->Clear_SceneColliders(m_iLevelID);
+
 
 }
 

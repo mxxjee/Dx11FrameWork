@@ -39,7 +39,7 @@ public:
 private:                                //룸이름+.json을 로드한 후 pacakge의 값을채운다.
     HRESULT         Load_Room_From_Json(const string& strRoomName, RoomPackage* pOutPackage);
     void             Clear_Room();  //방 switch 시 퇴장처리
-    void             Enter_Room(RoomPackage* pPackage); //방 switch 시 입장(실제적인 오브젝트 설정)
+    void             Enter_Room(RoomPackage* pPackage,bool bCached); //방 switch 시 입장(실제적인 오브젝트 설정)
     HRESULT           Load_NPC(const string& RoomName,const wstring& ModelName, _float3 vPos, RoomPackage* pOut);
 
  

@@ -93,6 +93,8 @@ protected:
     bool        m_bTalking = false;
     float       m_fTime = 0.f;//임시로 Exit조건 시간으로두기
 
+public:
+    void        Change_NavMesh();
 private:
     GameEvent       Enter_Interaction_Event;
     GameEvent       Exit_Interaction_Event;
