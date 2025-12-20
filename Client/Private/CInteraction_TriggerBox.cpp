@@ -83,7 +83,7 @@ HRESULT CInteraction_TriggerBox::Ready_Component(void* pArg)
 	INTERACTION_TRIGGER_DESC* pDesc = static_cast<INTERACTION_TRIGGER_DESC*>(pArg);
 
 	CCollider_Base::COLLIDER_DESC pColliderDesc;
-	pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::TRIGGER);
+	pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::INTERACTION);
 	pColliderDesc.pOwner = this;
 	pColliderDesc.m_iLevelID = pDesc->m_iLevelID;
 

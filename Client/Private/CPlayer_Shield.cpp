@@ -85,6 +85,7 @@ HRESULT CPlayer_Shield::Ready_Components(void* pArg)
 
     CCollider_Base::COLLIDER_DESC pColliderDesc;
     pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON);
+    pColliderDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::STATIC);
 
     
     CBounding_OBB::BOUNDING_OBB_DESC CollDesc;

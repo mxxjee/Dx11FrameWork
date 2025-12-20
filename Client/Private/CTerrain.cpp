@@ -188,7 +188,7 @@ void CTerrain::Free()
 
 void CTerrain::Update_Render_MiniMapPriority()
 {
-    /*미니맵시에는 다른 패스사용해서? 타겟하나로만 그리게해야함*/
+    ///*미니맵시에는 다른 패스사용해서? 타겟하나로만 그리게해야함*/
     CCamera_Base* pMiniMapCamera = m_pGameInstance->Find_Camera(CAMERA_TYPE::MINIMAP);
     CheckNull(pMiniMapCamera);
 

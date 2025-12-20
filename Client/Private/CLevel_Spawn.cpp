@@ -17,6 +17,7 @@
 #include "CQuest_Manager.h"
 
 #include "CLayer.h"
+#include "CInput_Manager.h"
 
 
 
@@ -76,6 +77,22 @@ void CLevel_Spawn::Update_Priority(_float fTimeDelta)
 void CLevel_Spawn::Update(const _float fTimeDelta)
 {
     __super::Update(fTimeDelta);
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
+    {
+        LevelArgs args;
+        args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);
+        args.changeType = LEVELCHANGETYPE::REPLACETOP;
+        args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
+        //pFadeScreen->PlayFadeIn();
+
+
+        if (FAILED(CGameInstance::GetInstance()->Level_Changer(
+            ENUM_TO_UINT(LEVEL_ID::LOADING),
+            args)))
+            return;
+    }
 
 }
 
@@ -385,7 +402,8 @@ void CLevel_Spawn::OnPause(_uint iNextLeve)
 void CLevel_Spawn::OnExit()
 {
     CInteraction_Manager::GetInstance()->Clear();
-   
+    m_pGameInstance->Clear_SceneColliders(m_iLevelID);
+
 }
 
 CLevel_Spawn* CLevel_Spawn::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)

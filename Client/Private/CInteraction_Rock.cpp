@@ -45,6 +45,7 @@ HRESULT CInteraction_Rock::Ready_PartObjects(void* pArg)
     TriggerDesc.ObjTag = pDesc->ObjTag + L"Trigger_Box";
     TriggerDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
     TriggerDesc.pOwner = this;
+    TriggerDesc.m_iLevelID = m_iSceneID;
 
     CBounding_AABB* pAABB = dynamic_cast<CBounding_AABB*>(m_pCollider->Get_Bounding());
 

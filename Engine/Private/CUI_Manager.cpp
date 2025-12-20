@@ -20,10 +20,13 @@ HRESULT CUI_Manager::Register_UIGroup(const UIGroup& Group, const _wstring& Key)
 	else
 	{
 		pGroup = new UIGroup;
+		pGroup->Key = Key;
+
 
 		size_t Hash = hash<wstring>()(FindKey);
 		for (auto& i : Group.Objects)
 		{
+			Safe_AddRef(i.second);
 			pGroup->push_back(i.second);
 
 		}

@@ -94,7 +94,8 @@ void CTerrain_Manager::Update_Late(_float fTimeDelta)
 	
 
 	CheckFalse(m_bUpdate);
-
+	
+#ifdef _DEBUG
 	if (m_pImguiManager->Get_MapToolMode() == MapToolMode::EDIT)
 	{
 		if (CInput_Manager::GetInstance()->IsMouseButtonPressed(0))
@@ -102,11 +103,13 @@ void CTerrain_Manager::Update_Late(_float fTimeDelta)
 			m_pPickTerrain = Check_Picking();
 		}
 
-		
+		else if (m_pImguiManager->Get_MapToolMode() == MapToolMode::NAVMESH)
+			m_pPickTerrain = Check_Picking();
+
+
 	}
-			
-	else if (m_pImguiManager->Get_MapToolMode() == MapToolMode::NAVMESH)
-		m_pPickTerrain = Check_Picking();
+#endif
+
 
 	for (auto& pair : m_TerrainMap)
 	{

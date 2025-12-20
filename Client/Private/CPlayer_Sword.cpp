@@ -95,6 +95,8 @@ HRESULT CPlayer_Sword::Ready_Components(void* pArg)
 	CCollider_Base::COLLIDER_DESC pColliderDesc;
 	pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON);
 	pColliderDesc.pOwner = this;
+	pColliderDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::STATIC);
+
 
 	for (int i = 0; i < CollisionPos::END; ++i)
 	{

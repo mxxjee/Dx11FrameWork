@@ -559,12 +559,8 @@ void CLevel_Town::OnEnter()
     
     CheckNull(pFadeScreen);
     pFadeScreen->PlayFadeOut();
+    CGameInstance::GetInstance()->Set_EnalbeUpdateRender(true);
 
-  /*  wstring Text = L"¾È³çÇÏ¼¼¿ä";
-    wstring NameText = L"¸¶¸¶»þ";
-
-    CGameInstance::GetInstance()->BroadCastEvent(L"UpdateNPCText", &Text);
-    CGameInstance::GetInstance()->BroadCastEvent(L"UpdateNPCName", &NameText);*/
 }
 
 void CLevel_Town::OnResume(_uint iPreLevel)

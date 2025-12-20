@@ -57,7 +57,9 @@ void CMapLoader::Load_Terrain(const string& LoadPath)
     }
 
     //씬에 들어와야 활성화
-    CGameInstance::GetInstance()->Set_EnalbeUpdateRender(false);
+
+    //CGameInstance::GetInstance()->Set_EnableUpdate(false);
+    //CGameInstance::GetInstance()->Set_EnalbeUpdateRender(false);
 
 }
 
