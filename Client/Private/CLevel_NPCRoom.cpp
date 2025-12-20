@@ -126,6 +126,8 @@ void CLevel_NPCRoom::OnEnter()
 void CLevel_NPCRoom::OnResume(_uint iPreLevel)
 {
     
+    m_pGameInstance->Clear_SceneColliders(m_iLevelID);
+
     CRoom_Manager::GetInstance()->Switch_Room(CRoom_Manager::GetInstance()->Get_RequestRoom());
  
     CheckNull(m_pPlayer);

@@ -78,6 +78,12 @@ HRESULT CInteraction_TriggerBox::Render()
 	return S_OK;
 }
 
+void CInteraction_TriggerBox::Register_Colliders(_uint iLevelIdx)
+{
+	for (auto& pCol : m_pCollider)
+		m_pGameInstance->Register_Collider(pCol, iLevelIdx);
+}
+
 HRESULT CInteraction_TriggerBox::Ready_Component(void* pArg)
 {
 	INTERACTION_TRIGGER_DESC* pDesc = static_cast<INTERACTION_TRIGGER_DESC*>(pArg);

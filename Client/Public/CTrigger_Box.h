@@ -36,6 +36,7 @@ public:
 
 public:
     HRESULT     Ready_Components(void* pArg);
+    CBoxColliderComponent* Get_Collider() { return pBoxCollider; }
 
 public:
     static CTrigger_Box* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex);

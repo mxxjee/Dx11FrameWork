@@ -13,7 +13,7 @@
 #include "CNPC_Richard.h"
 
 #include "CNavMesh_Manager.h"
-
+#include "CBoxColliderComponent.h"
 
 
 
@@ -51,6 +51,32 @@ void CRoom_Manager::Switch_Room(const string& strRoomName)
     if (m_strCurrentRoomID == strRoomName)
     {
         m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::ROOM));
+
+        RoomPackage* pNextPackage = nullptr;
+        size_t HashKey = hash<string>()(strRoomName);
+        auto iter = m_mapCachedRooms.find(HashKey);
+
+        if (iter != m_mapCachedRooms.end())
+        {
+            pNextPackage = iter->second;
+            //NPC의 메인셀 다시 설정
+            for (auto& pNpc : pNextPackage->NPCs)
+            {
+                CNPC* ppNpc = dynamic_cast<CNPC*>(pNpc);
+                ppNpc->Change_NavMesh();
+                ppNpc->Register_Colliders(ENUM_TO_UINT(LEVEL_ID::ROOM));
+
+            }
+
+            //충돌체들도 다시등록
+            for (auto& pTrigger : pNextPackage->Triggers)
+            {
+                CTrigger_Box* ppTrigger = dynamic_cast<CTrigger_Box*>(pTrigger);
+                m_pGameInstance->Register_Collider(ppTrigger->Get_Collider(), ENUM_TO_UINT(LEVEL_ID::ROOM));
+            }
+
+        }
+        
         return;
     }
 
@@ -86,6 +112,15 @@ void CRoom_Manager::Switch_Room(const string& strRoomName)
         {
             CNPC* ppNpc = dynamic_cast<CNPC*>(pNpc);
             ppNpc->Change_NavMesh();
+            ppNpc->Register_Colliders(ENUM_TO_UINT(LEVEL_ID::ROOM));
+
+        }
+
+        //충돌체들도 다시등록
+        for (auto& pTrigger : pNextPackage->Triggers)
+        {
+            CTrigger_Box* ppTrigger = dynamic_cast<CTrigger_Box*>(pTrigger);
+            m_pGameInstance->Register_Collider(ppTrigger->Get_Collider(),ENUM_TO_UINT(LEVEL_ID::ROOM));
         }
         
     }

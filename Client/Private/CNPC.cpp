@@ -398,3 +398,9 @@ void CNPC::Change_NavMesh()
 
     }
 }
+
+void CNPC::Register_Colliders(_uint iLevelID)
+{
+    m_pGameInstance->Register_Collider(m_pCollider, iLevelID);
+    m_pTriggerBox->Register_Colliders(iLevelID);
+}

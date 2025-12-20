@@ -94,7 +94,9 @@ protected:
     float       m_fTime = 0.f;//임시로 Exit조건 시간으로두기
 
 public:
+    /*룸 로드시에 부르는거*/
     void        Change_NavMesh();
+    void        Register_Colliders(_uint iLevelID);
 private:
     GameEvent       Enter_Interaction_Event;
     GameEvent       Exit_Interaction_Event;

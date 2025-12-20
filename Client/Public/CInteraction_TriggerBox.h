@@ -35,6 +35,9 @@ public:
 
     virtual HRESULT Render();
     
+public:
+    void        Register_Colliders(_uint iLevelIdx);
+
 private:
     HRESULT         Ready_Component(void* pArg);
 
