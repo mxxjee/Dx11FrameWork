@@ -165,6 +165,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 
 	/*·»´õÅ¸°Ù¸Å´ÏÀú*/
 	m_pTarget_Manager = CTarget_Manager::Create(*pDevice,*pContext);
+	if (FAILED(m_pTarget_Manager->Initialize()))
+		return E_FAIL;
+
 	CheckNullResult(m_pTarget_Manager, E_FAIL);
 
 

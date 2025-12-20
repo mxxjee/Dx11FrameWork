@@ -1,11 +1,20 @@
 #include "CTarget_Manager.h"
 #include "CRenderTarget.h"
 #include "CShader.h"
-
+#include "CGameInstance.h"
 
 CTarget_Manager::CTarget_Manager(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :m_pDevice(pDevice),m_pContext(pContext)
 {
+}
+
+HRESULT CTarget_Manager::Initialize()
+{
+    
+    m_pBackBuffer = CGameInstance::GetInstance()->Get_BackBuffer_RTV();
+    m_pDSV = CGameInstance::GetInstance()->Get_BackBuffer_DSV();
+
+    return S_OK;
 }
 
 HRESULT CTarget_Manager::Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
@@ -51,8 +60,8 @@ HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag)
     list<CRenderTarget*>*     pMRTList = Find_MRT(strMRTTag);
     CheckNullResult(pMRTList, E_FAIL);
 
-    //현재 ㅏㅂ인딩되어있는 백버퍼를 저장한다.
-    m_pContext->OMGetRenderTargets(1, m_pBackBuffer.ReleaseAndGetAddressOf(), m_pDSV.ReleaseAndGetAddressOf());
+    ////현재 ㅏㅂ인딩되어있는 백버퍼를 저장한다.
+    //m_pContext->OMGetRenderTargets(1, m_pBackBuffer.ReleaseAndGetAddressOf(), m_pDSV.ReleaseAndGetAddressOf());
 
     ID3D11RenderTargetView* pRTVs[8] = { nullptr };
     _uint   iNumRenderTargets = { };
@@ -89,6 +98,13 @@ HRESULT CTarget_Manager::Bind_RT_ShaderResource(const _wstring& strTargetTag, CS
     CRenderTarget* pRenderTarget = Find_RenderTarget(strTargetTag);
     CheckNullResult(pRenderTarget, E_FAIL);
 
+  /*  m_pContext->OMSetRenderTargets(0, nullptr, nullptr);
+    ID3D11ShaderResourceView* nullSRV[16] = {};
+
+    m_pContext->VSSetShaderResources(0, 16, nullSRV);
+    m_pContext->PSSetShaderResources(0, 16, nullSRV);
+    m_pContext->GSSetShaderResources(0, 16, nullSRV);
+    m_pContext->CSSetShaderResources(0, 16, nullSRV);*/
     return pRenderTarget->Bind_ShaderResource(pShader,pConstantName);
 }
 

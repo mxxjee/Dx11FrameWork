@@ -11,6 +11,8 @@ private:
     virtual ~CTarget_Manager() = default;
 
 public:
+    HRESULT         Initialize();
+
                 //렌더타겟을 등록하는함수
     HRESULT Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor);
     
