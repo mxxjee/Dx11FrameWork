@@ -74,9 +74,14 @@ HRESULT CMonster::Initialize_Copytype(void* pArg)
     if (m_pBody)
         m_pMonsterBody = dynamic_cast<CMonster_Body*>(m_pBody);
 
-    if (m_pNavigationCom)
-        m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
+    m_iHomeCell = desc->iHomeIdx;
+    m_fRoamRadius = desc->RoamRadius;
 
+
+    //if (m_pNavigationCom)
+    //    m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
+
+    //
 
   
     

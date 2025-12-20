@@ -62,11 +62,8 @@ HRESULT CM_MoriblinSword::Initialize_Copytype(void* pArg)
 		return E_FAIL;
 
 
-	m_fRoamRadius = 20.f;
-
 	if (m_pNavigationCom)
 	{
-		m_iHomeCell = 70;
 		m_pTransformCom->Set_State(STATE::POSITION, m_pNavigationCom->Get_Cell(m_iHomeCell)->Get_CenterPos());
 		m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
 		m_pNavigationCom->Get_RandomCells(m_pTransformCom->Get_State(STATE::POSITION),
@@ -346,11 +343,25 @@ void CM_MoriblinSword::Patrol_Behavior(float fTimeDelta)
 	_vector CellCenter = pCell->Get_CenterPos();
 
 	m_pTransformCom->LookAt(WORLD_UP,CellCenter,fTimeDelta);
-	bool bReach= m_pTransformCom->Chase(CellCenter, fTimeDelta, m_pNavigationCom, 3.f);
+	bool bReach= m_pTransformCom->Chase(CellCenter, fTimeDelta, m_pNavigationCom, 2.f);
+
 	if (bReach)
+	{
+		m_ActionControl.m_bMove = false;
+		m_fReachTime = 0.f;
+	}
+	else
+		m_fReachTime += fTimeDelta;
+	
+	/*4초안에 도달못할경우 강제로 셀 변경 */
+	if (m_fReachTime >=2.5f)
+	{
+		int RandIdx = rand() % m_RandomCells.size();
+		m_iNextCell = m_RandomCells[RandIdx];
+		m_fReachTime = 0.f;
 		m_ActionControl.m_bMove = false;
 
-	
+	}
 	if (Is_InRange(m_fDetectRange))
 	{
 		CheckTrue(m_bDetect);	//이전에 감지했다면,,또감지 하지않는다.
@@ -390,6 +401,8 @@ void CM_MoriblinSword::Enter_State(int newState)
 
 		//잠깐대기시간
 		m_ActionControl.m_bThink = true;
+		m_fReachTime = 0.f;
+
 	}
 
 	if (newState == CMonster::DAMAGE)

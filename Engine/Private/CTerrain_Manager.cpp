@@ -103,11 +103,13 @@ void CTerrain_Manager::Update_Late(_float fTimeDelta)
 			m_pPickTerrain = Check_Picking();
 		}
 
-		else if (m_pImguiManager->Get_MapToolMode() == MapToolMode::NAVMESH)
-			m_pPickTerrain = Check_Picking();
+	
 
 
 	}
+	else if (m_pImguiManager->Get_MapToolMode() == MapToolMode::NAVMESH)
+		m_pPickTerrain = Check_Picking();
+
 #endif
 
 

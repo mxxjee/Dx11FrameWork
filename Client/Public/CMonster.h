@@ -28,6 +28,9 @@ public:
         int iAttack;
         float fActionRange = 3.f;
         _uint   iLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);       //스폰된 레벨
+        
+        _uint   iHomeIdx = 0;//첫 스폰인덱스
+        float RoamRadius = 20.f;
 
     }MONSTER_DESC;
 protected:

@@ -106,7 +106,7 @@ HRESULT CCamera_Base::Create_RenderTagetview(bool bCreateRenderTarget)
 HRESULT CCamera_Base::Bind_RenderTarget()
 {
 
-    m_pContext->OMSetRenderTargets(0, nullptr, nullptr);
+    //m_pContext->OMSetRenderTargets(0, nullptr, nullptr);
 
   //Ä«¸Þ¶ó ·»´õÅ¸°Ù ¹ÙÀÎµù
     //ID3D11ShaderResourceView* nullSRV[2] = {};
@@ -125,9 +125,7 @@ HRESULT CCamera_Base::UnBind_RenderTarget()
     if (!m_bUseNewRenderTarget) 
         return S_OK;
 
-    
-    ID3D11RenderTargetView* nullRTV[8] = { nullptr };
-    m_pContext->OMSetRenderTargets(8, nullRTV, nullptr);
+
     m_pContext->OMSetRenderTargets(0, nullptr, nullptr);
     
     return S_OK;

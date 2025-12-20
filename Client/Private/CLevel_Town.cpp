@@ -312,8 +312,12 @@ HRESULT CLevel_Town::Ready_Layer_Player(const _wstring& strLayerTag)
 
 HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
 {  
+
+    //생성 셀번호 668,925,1033,857
+    
     //몬스터 생성루틴
-    CMonster::MonsterDesc desc;
+#pragma region 초록색슬라임
+   /* CMonster::MonsterDesc desc;
 
     CMonster_Body::MONSTER_BODY_DESC bodyDesc;
     bodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
@@ -343,42 +347,60 @@ HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
         PROTO_OBJ_NAME(L"CM_GreenZol"),
         ENUM_TO_UINT(LEVEL_ID::TOWN),
         strLayerTag, &desc)))
-        return E_FAIL;
+        return E_FAIL;*/
 
     
-
+#pragma endregion
     ///////////////////////////
-    CMonster::MonsterDesc Moriblindesc;
-
-    CMonster_Body::MONSTER_BODY_DESC MoriblinbodyDesc;
-    MoriblinbodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
-    MoriblinbodyDesc.modelName = L"MoriblinSword";
-    MoriblinbodyDesc.m_iLevelID = m_iLevelID;
-
-    Moriblindesc.BodyDesc = &MoriblinbodyDesc;
+    _uint SpawnIdx[4] = { 668,925,1020,860 };
+    _float RoamRadius[4] = { 20.f,5.f,10.f,20.f };
 
 
-    Moriblindesc.iAttack = 10;
-    Moriblindesc.MaxHp = 3;
-    Moriblindesc.fActionRange = 3.f;
-    Moriblindesc.m_iLevelID = m_iLevelID;
+    vector<CCell*>* m_Cells = m_pGameInstance->Get_MainCells();
+    CheckTrueResult(m_Cells->empty(),E_FAIL);
 
-    Moriblindesc.ObjTag = L"MoriblinSword" + to_wstring(0);
-    CTransform::TRANSFORM_DESC MoriblinTransDesc = {};
-    MoriblinTransDesc.vLocalRotation = { 0.f,180.f,0.f,1.f };
+    for (int i = 0; i < 4; ++i)
+    {
+        _vector vPos = (*m_Cells)[SpawnIdx[i]]->Get_CenterPos();
+        CMonster::MonsterDesc Moriblindesc;
 
-    MoriblinTransDesc.fSpeedPerSec = 2.f;
-    MoriblinTransDesc.fRotationPerSec = 10.f;
+        CMonster_Body::MONSTER_BODY_DESC MoriblinbodyDesc;
+        MoriblinbodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+        MoriblinbodyDesc.modelName = L"MoriblinSword";
+        MoriblinbodyDesc.m_iLevelID = m_iLevelID;
 
-    Moriblindesc.TransformDesc = &MoriblinTransDesc;
+        Moriblindesc.BodyDesc = &MoriblinbodyDesc;
+        
+
+        Moriblindesc.iAttack = 10;
+        Moriblindesc.MaxHp = 3;
+        Moriblindesc.fActionRange = 3.f;
+        Moriblindesc.m_iLevelID = m_iLevelID;
+        Moriblindesc.RoamRadius = RoamRadius[i];
+
+        //첫 스폰위치
+        Moriblindesc.iHomeIdx = SpawnIdx[i];
+
+        Moriblindesc.ObjTag = L"MoriblinSword" + to_wstring(i);
+        CTransform::TRANSFORM_DESC MoriblinTransDesc = {};
+        
+        MoriblinTransDesc.vLocalRotation = { 0.f,180.f,0.f,1.f };
+        XMStoreFloat4(&MoriblinTransDesc.vLocalPosition, vPos);
+
+        MoriblinTransDesc.fSpeedPerSec = 2.f;
+        MoriblinTransDesc.fRotationPerSec = 10.f;
+
+        Moriblindesc.TransformDesc = &MoriblinTransDesc;
 
 
 
-    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-        PROTO_OBJ_NAME(L"CM_MoriblinSword"),
-        ENUM_TO_UINT(LEVEL_ID::TOWN),
-        strLayerTag, &Moriblindesc)))
-        return E_FAIL;
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+            PROTO_OBJ_NAME(L"CM_MoriblinSword"),
+            ENUM_TO_UINT(LEVEL_ID::TOWN),
+            strLayerTag, &Moriblindesc)))
+            return E_FAIL;
+    }
+  
     return S_OK;
 
 }

@@ -66,6 +66,7 @@ private:
     _float          m_fDetectRange = 10.f;
     bool            m_bGuard = false;
 
+    float           m_fReachTime = 0.f;//만약 3초이상 도달못할경우 강제로 nextcell바꾸기
 
 private:
     vector<class CWeapon*>        m_pWeapons;
