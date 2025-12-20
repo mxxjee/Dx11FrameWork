@@ -98,7 +98,7 @@ void CQuest_Manager::Complete_Quest(_uint iQuestID)
 	auto iter = m_mapQuestDataBase.find(iQuestID);
 	CheckTrue(iter == m_mapQuestDataBase.end());
 	CheckTrue(m_mapQuestDataBase.empty());
-	CheckTrue(iter->second.m_eState != QuestState::COMPLETED);
+	CheckTrue(iter->second.m_eState == QuestState::COMPLETED);
 
 	QuestData& data = iter->second;
 

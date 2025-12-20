@@ -254,7 +254,7 @@ HRESULT CLevel_Spawn::Ready_Layer_Trigger(const _wstring& strLayerTag)
     EventTriggerDesc.vCenter = _float3(0.f,0.f,0.f);
     EventTriggerDesc.vExtents = _float3(1.5f,1.0f,1.0f);
     EventTriggerDesc.ObjTag = L"Trigger" + 0;
-    EventTriggerDesc.Func = [this]()
+    EventTriggerDesc.EnterFunc = [this]()
     {
         /*æ¿¿Ãµø*/
         LevelArgs args;

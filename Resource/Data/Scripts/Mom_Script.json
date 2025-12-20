@@ -17,7 +17,7 @@
             },
             {
               "Speaker": "마마샤",
-              "Text": "아…혹시 제 아이를 보지 못했나요?",
+              "Text": "아...혹시 제 아이를 보지 못했나요?",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             },
@@ -56,12 +56,13 @@
         },
         {
           "ChapterID": "Q1002_COMPLETABLE_READY",
+          "iQuestOffered": 1002,
           "iQuestRequiredToUnlock": 1002,
-          "strNextPermanentChapterID": "Q2001_DONE",
+          "strNextPermanentChapterID": "Q1002_DONE",
           "Steps": [
             {
               "Speaker": "마마샤",
-              "Text": "정말… 정말 고마워요.\n이 은혜는 잊지 않을게요.",
+              "Text": "정말.. 정말 고마워요.\n이 은혜는 잊지 않을게요.",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             }

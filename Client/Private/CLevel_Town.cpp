@@ -18,6 +18,8 @@
 #include "MathUtils.h"
 #include "CNPC_Richard.h"
 #include "CIInteractable.h"
+#include "CNPC_Fairy.h"
+
 
 #include "CInteraction_Manager.h"
 #include "CGameManager.h"
@@ -32,6 +34,7 @@
 
 #include "CRoomTrigger.h"
 #include "CQuest_Manager.h"
+#include "CEventTrigger.h"
 
 #include "CFontUI.h"
 #include "CCell.h"
@@ -140,12 +143,7 @@ void CLevel_Town::Update(const _float fTimeDelta)
         pTestObject->Get_Transform()->Set_State(STATE::POSITION, vPos);
 
     }
-
-    /*if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::A))
-        m_pGameInstance->BroadCastEvent(L"OnDialogueUIShow",nullptr);
-
-    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::B))
-        m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide",nullptr);*/
+    Set_Event_By_Chapter();
 
     return;
 
@@ -458,6 +456,36 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
 
     }
 
+    ////////요정
+    CNPC::NPC_DESC pFairyDesc;
+
+    CTransform::TRANSFORM_DESC pFairyTransDesc;
+
+
+    pFairyTransDesc.vLocalPosition = _float4(45.f, 14.65f, 88.94f, 1.f);
+    pFairyTransDesc.vLocalRotation = _float4(0.f, 180.f, 0.f, 0.f);
+
+    pFairyDesc.ObjTag = L"NPC_Fairy";
+    pFairyDesc.pTarget = nullptr;
+    pFairyDesc.ModelName = L"Fairy";
+    pFairyDesc.SceneName = "Level_Town";
+    pFairyDesc.m_iLevelID = m_iLevelID;
+    pFairyDesc.TalkRange = 3.f;
+    pFairyDesc.bUseNavMesh = false;
+
+
+
+    pFairyDesc.TransformDesc = &pFairyTransDesc;
+
+    CNPC_Fairy* pNpc_Fairy = CNPC_Fairy::Create(m_pDevice, m_pContext, &pFairyDesc);
+    if (pNpc_GreenKid)
+    {
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, pNpc_Fairy)))
+            return E_FAIL;
+
+    }
+
+
     return S_OK;
 }
 
@@ -536,9 +564,118 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
 
     }
+
+    //숲속 카메라트리거
+#pragma region 필드카메라
+    CEventTrigger::EventTriggerDesc DefaultEventDesc;
+    DefaultEventDesc.vCenter = _float3(0.f, 0.f, 0.f);
+    DefaultEventDesc.vExtents = _float3(0.8f, 0.5f, 8.f);
+    DefaultEventDesc.ObjTag = L"Default_Trigger";
+    DefaultEventDesc.m_iLevelID = m_iLevelID;
+
+    CTransform::TRANSFORM_DESC DefaultEventTransform;
+    DefaultEventTransform.vLocalPosition = _float4(2.198f, 12.79f, 40.188f, 1.f);
+
+    DefaultEventDesc.TransformDesc = &DefaultEventTransform;
+
+    DefaultEventDesc.StayFunc = [this]()
+    {
+        m_Chapter = L"Default";
+        CCamera_Base* pCamBase = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
+        CheckNull(pCamBase);
+
+        CMainCamera* pMaincam = dynamic_cast<CMainCamera*>(pCamBase);
+        CheckNull(pMaincam);
+
+        _float3 vCurFloatRot = pMaincam->Get_Transform()->Get_Rotation_ByEular();
+        _float3 vCurFloatOffset = pMaincam->Get_Offset();
+
+        _vector vCurRot = XMLoadFloat3(&vCurFloatRot);
+        _vector vCurOffSet = XMLoadFloat3(&vCurFloatOffset);
+
+        _vector fRotation = XMVectorLerp(vCurRot, XMVectorSet(52.f, 0.f, 0.f, 1.f), 0.02f);
+        _vector vOffset = XMVectorLerp(vCurOffSet, XMVectorSet(0.f, 8.5f, -7.f, 0.f), 0.02f);
+
+        _float4 vResult;
+        _float3 fOffSet;
+        XMStoreFloat4(&vResult, fRotation);
+        XMStoreFloat3(&fOffSet, vOffset);
+
+        pMaincam->Set_LocalRoation(vResult);
+        pCamBase->Set_Offset(fOffSet);
+
+    };
+
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, &DefaultEventDesc)))
+        return E_FAIL;
+
+#pragma endregion
+
+#pragma region 숲카메라
+    //숲속 카메라트리거
+    CEventTrigger::EventTriggerDesc EventDesc;
+    EventDesc.vCenter = _float3(0.f, 0.f, 0.f);
+    EventDesc.vExtents = _float3(0.8f, 0.5f, 8.f);
+    EventDesc.ObjTag = L"Forest_Trigger";
+    EventDesc.m_iLevelID = m_iLevelID;
+    
+    CTransform::TRANSFORM_DESC EventTransform;
+    EventTransform.vLocalPosition = _float4(2.198f, 12.79f, 52.188f, 1.f);
+
+    EventDesc.TransformDesc = &EventTransform;
+
+    EventDesc.StayFunc = [this]()
+    {
+        m_Chapter = L"Forest";
+        CCamera_Base* pCamBase = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
+        CheckNull(pCamBase);
+
+        CMainCamera* pMaincam = dynamic_cast<CMainCamera*>(pCamBase);
+        CheckNull(pMaincam);
+
+        _float3 vCurFloatRot = pMaincam->Get_Transform()->Get_Rotation_ByEular();
+        _float3 vCurFloatOffset = pMaincam->Get_Offset();
+
+        _vector vCurRot = XMLoadFloat3(&vCurFloatRot);
+        _vector vCurOffSet = XMLoadFloat3(&vCurFloatOffset);
+
+        _vector fRotation = XMVectorLerp( vCurRot, XMVectorSet(65.f, 0.f, 0.f, 1.f), 0.02f);
+        _vector vOffset = XMVectorLerp(vCurOffSet, XMVectorSet(0.f, 7.5f, -4.f, 0.f), 0.02f);
+
+        _float4 vResult;
+        _float3 fOffSet;
+        XMStoreFloat4(&vResult, fRotation);
+        XMStoreFloat3(&fOffSet, vOffset);
+
+        pMaincam->Set_LocalRoation(vResult);
+        pCamBase->Set_Offset(fOffSet);
+
+    };
+
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, &EventDesc)))
+        return E_FAIL;
+    
+#pragma endregion
     return S_OK;
 }
 
+
+void CLevel_Town::Set_Event_By_Chapter()
+{
+    if (m_Chapter == L"Default")
+    {
+     
+
+
+    }
+
+    else if (m_Chapter == L"Forest")
+    {
+
+    }
+}
 
 void CLevel_Town::OnEnter()
 {

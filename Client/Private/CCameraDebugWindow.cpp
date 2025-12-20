@@ -9,6 +9,8 @@
 #include "Client_Defines.h"
 #include "CImgui_Checkbox.h"
 #include "CImgui_InputFloat.h"
+#include "CMainCamera.h"
+
 
 
 
@@ -141,6 +143,15 @@ HRESULT CCameraDebugWindow::Create_Widgets()
 
     if (FAILED(Add_Widgets<CImgui_Slider>(&SliderDesc, reinterpret_cast<CImgui_Widget**>(&m_Sliders[2]))))
         return E_FAIL;
+
+    //RotationSlider
+    SliderDesc.m_LabelName = "Rotation";
+    SliderDesc.m_RelativePos = ImVec2(0.f, 300.f);
+    SliderDesc.vMin = 0.2f;
+    SliderDesc.vMax = 1000.f;
+    if (FAILED(Add_Widgets<CImgui_Slider>(&SliderDesc, reinterpret_cast<CImgui_Widget**>(&m_CulRotationSlider))))
+        return E_FAIL;
+
     //////////////////////////////////////////////////////
     // 
     //[CImgui_InputFloat]
@@ -436,6 +447,7 @@ void CCameraDebugWindow::ToggleClickOrtho(bool _b)
             fDebugFar = pTarget->Get_Far();
             fDebugFov = pTarget->Get_Fovy();
             fDebugOffSet = pTarget->Get_Offset();
+            fCulRotationX = pTarget->Get_Transform()->Get_Rotation_ByEular().x;
 
 
             ///////////////////////////////
@@ -467,6 +479,13 @@ void CCameraDebugWindow::ToggleClickOrtho(bool _b)
 
             m_InuptFloats[2]->Set_BindValue(&(fDebugOffSet.z));
 
+            m_CulRotationSlider->Set_BindValue(&(fCulRotationX));
+            m_CulRotationSlider->Set_Callback([pTarget, this]() {
+                CMainCamera* pMainCamera = dynamic_cast<CMainCamera*>(pTarget);
+                if (pMainCamera)
+                    pMainCamera->Set_LocalRoation(_float4(fCulRotationX, 0.f, 0.f, 0.f));
+
+                });
             ///////////////////////////////
             m_CulDistSlider->Set_BindValue(&fCulDist);
             m_CulDistSlider->Set_Callback([pTarget, this]() {
@@ -531,7 +550,7 @@ void CCameraDebugWindow::Free()
     Safe_Release(m_pPerspectiveCamButton);
     Safe_Release(m_pOrthoGraphicCamButton);
     Safe_Release(m_pDefaultOffSetButton);
-
+    Safe_Release(m_CulRotationSlider);
     Safe_Release(m_CulDistSlider);
 
     for (auto& i : m_InuptFloats)

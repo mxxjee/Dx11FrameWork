@@ -39,6 +39,8 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
     m_SceneName = pNpcDesc->SceneName;
     m_fTargetDistance = pNpcDesc->TalkRange;
 
+    m_bUseNavMesh = pNpcDesc->bUseNavMesh;
+
 
     CAnimBody::ANIMBODY_DESC BodyDesc;
     BodyDesc.modelName = pNpcDesc->ModelName;
@@ -66,11 +68,16 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
 
 
     Ready_Events();
-    if (m_pNavigationCom)
-    {
-        m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
-    }
 
+    if (m_bUseNavMesh)
+    {
+        if (m_pNavigationCom)
+        {
+            m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
+        }
+
+    }
+    
     DialogueTag = string(tag.begin(), tag.end());
     m_pGameManager = CGameManager::GetInstance();
 
@@ -92,9 +99,14 @@ void CNPC::Update(_float fTimeDelta)
 void CNPC::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
-     m_pTransformCom->Set_State(STATE::POSITION,
-        m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
 
+    if (m_bUseNavMesh)
+    {
+        m_pTransformCom->Set_State(STATE::POSITION,
+            m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
+
+    }
+   
    
     m_pCollider->Update_Collider(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
 

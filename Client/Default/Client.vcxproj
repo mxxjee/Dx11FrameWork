@@ -190,7 +190,6 @@
     <ClInclude Include="..\Public\CMMoriblinSwordDetectState.h" />
     <ClInclude Include="..\Public\CMMoriblinSwordGuardState.h" />
     <ClInclude Include="..\Public\CMMoriblin_Weapon.h" />
-    <ClInclude Include="..\Public\CModel_Bed.h" />
     <ClInclude Include="..\Public\CMonster.h" />
     <ClInclude Include="..\Public\CMonsterAttackState.h" />
     <ClInclude Include="..\Public\CMonsterDamageState.h" />
@@ -205,6 +204,7 @@
     <ClInclude Include="..\Public\CM_MoriblinSword.h" />
     <ClInclude Include="..\Public\CNPC.h" />
     <ClInclude Include="..\Public\CNPC_Body.h" />
+    <ClInclude Include="..\Public\CNPC_Fairy.h" />
     <ClInclude Include="..\Public\CNPC_Richard.h" />
     <ClInclude Include="..\Public\CObjectDebugWindow.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -298,7 +298,6 @@
     <ClCompile Include="..\Private\CMMoriblinSwordGuardState.cpp" />
     <ClCompile Include="..\Private\CMMoriblinSwordIdleState.cpp" />
     <ClCompile Include="..\Private\CMMoriblin_Weapon.cpp" />
-    <ClCompile Include="..\Private\CModel_Bed.cpp" />
     <ClCompile Include="..\Private\CMonster.cpp" />
     <ClCompile Include="..\Private\CMonsterAttackState.cpp" />
     <ClCompile Include="..\Private\CMonsterDamageState.cpp" />
@@ -313,6 +312,7 @@
     <ClCompile Include="..\Private\CM_MoriblinSword.cpp" />
     <ClCompile Include="..\Private\CNPC.cpp" />
     <ClCompile Include="..\Private\CNPC_Body.cpp" />
+    <ClCompile Include="..\Private\CNPC_Fairy.cpp" />
     <ClCompile Include="..\Private\CNPC_Richard.cpp" />
     <ClCompile Include="..\Private\CObjectDebugWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

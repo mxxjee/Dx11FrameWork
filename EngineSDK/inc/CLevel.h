@@ -43,6 +43,10 @@ public:
 
     _uint                   Get_LevelID() const { return m_eLevelArgs.m_iLevelID; }
     _uint                   Get_NextLevelID() const { return m_eLevelArgs.iNextLevelID; }
+
+public:
+    void        Set_Chapter(wstring _Chapter) { m_Chapter = _Chapter; }
+    void        Reset_Chapter() { m_Chapter = L"Default"; }
 protected:
     class CGameInstance*            m_pGameInstance = { nullptr };
     ComPtr<ID3D11Device>            m_pDevice;
@@ -55,6 +59,7 @@ private:
 
 protected:
     _uint               m_iLevelID = 0;
+        wstring             m_Chapter = L"Default";     //씬이 넓으므로 trigger에 의해서 챕터변경(카메라 트리거에사용)
 };
 NS_END
 

@@ -51,7 +51,10 @@ void CMainCamera::Update(_float fTimeDelta)
 	__super::Update(fTimeDelta);
 	
 	Follow_Target(fTimeDelta);
+
 	m_pTransformCom->Rotation(_float3(m_vLocalRotation.x, m_vLocalRotation.y, m_vLocalRotation.z));
+
+
 	Update_PipeLine();
 	
 	

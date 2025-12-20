@@ -27,7 +27,8 @@ public:
     virtual void        Update_Render(_float fTimeDelta);
 
     virtual HRESULT Render();
-    
+
+
 public:
     //렌더그룹 렌더 전 설정할것들, RTV변경등.
     virtual void        PreRenderGroup(_uint iRenderGroup);
@@ -35,13 +36,18 @@ public:
     //렌더그룹 렌더 후 설정할것들. 다시돌려놓기 등.
     virtual void        PostRenderGroup(_uint iRenderGroup);
 
+
 public:
     virtual void Update_PipeLine() override;
 public:
     //bInit = 초기화용, 첫프레임시 튀는걸 방지한다(바로스냅). 자연스럽게 타겟변경시에는 Set_Target()사용
-    void        Set_Target(CGameObject* pTarget,bool bInit=false);
+    void        Set_Target(CGameObject* pTarget, bool bInit = false);
     void        Follow_Target(_float fTimeDelta);
- 
+    
+    void        Set_LocalRoation(_float4 vRotation) { m_vLocalRotation = vRotation; }
+    void        Set_RotationSpeed(_float fSpeed) { m_fRotationSpeed = fSpeed; }
+    void        Set_Snap(bool b) { m_bSnap = b; }
+
 public:
     static CMainCamera* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg);
@@ -50,8 +56,8 @@ public:
 private:
     _matrix ViewMatrix;
     _float4 m_vLocalRotation;
-
-
+    bool        m_bSnap = true;
+    float       m_fRotationSpeed = 2.f;
 
 };
 

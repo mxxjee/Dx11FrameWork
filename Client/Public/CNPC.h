@@ -11,7 +11,6 @@ namespace Engine
 NS_BEGIN(Client)
 class CDialogue_Manager;
 class CPlayer;
-class CNavigation;
 class CQuest_Manager;
 
 class CNPC :
@@ -30,6 +29,9 @@ public:
         float TalkRange=1.f;            //플레이어가 이 거리 안으로 들어오면 상호작용가능
         string SceneName = "";      //현재 이 nPc가 존재하는 씬이름
         int NPC_ID=0; 
+
+        bool        bUseNavMesh = true;     //필요에 따라서 navmesh적용을 안시킴.
+
     }NPC_DESC;
 
 protected:
@@ -86,13 +88,12 @@ protected:
     NPC_DESC        m_NpcDesc;
     CPlayer*        m_pPlayer = nullptr;
     CCollider_Base* m_pCollider = nullptr; //    콜라이더 정보
-
+    bool            m_bUseNavMesh = true;
 
 protected:
     bool        m_bInteractable = false;        //상호작용가능여부
     bool        m_bTalking = false;
     float       m_fTime = 0.f;//임시로 Exit조건 시간으로두기
-
 public:
     /*룸 로드시에 부르는거*/
     void        Change_NavMesh();

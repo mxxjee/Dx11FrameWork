@@ -68,6 +68,9 @@
 #include "CRoomTrigger.h"
 #include "CEventTrigger.h"
 
+#include "CNPC_Fairy.h"
+
+
 
 
 
@@ -591,8 +594,6 @@ HRESULT CLoader::Register_GameObjects()
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Moriblin_Weapon", CMMoriblin_Weapon::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
-
-
 
     /// /////////Interaction Objects
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Interaction_TriggerBox", CInteraction_TriggerBox::Create(m_pDevice, m_pDeviceContext))))

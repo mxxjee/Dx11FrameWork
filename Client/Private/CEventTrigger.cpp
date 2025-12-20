@@ -33,7 +33,9 @@ HRESULT CEventTrigger::Initialize_Copytype(void* pArg)
     pBoxCollider->Set_ColGroup(ENUM_TO_UINT(COLLISION_GROUP::TRIGGER));
     pBoxCollider->Set_Owner(this);
     
-    m_Function = pDesc->Func;
+    m_EnterFunction = pDesc->EnterFunc;
+    m_StayFunction = pDesc->StayFunc;
+    m_EndFunction = pDesc->EnterFunc;
 
     return S_OK;
 }
@@ -79,8 +81,8 @@ void CEventTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
     {
 
     case Client::COLLISION_GROUP::PLAYER:
-        if (m_Function)
-            m_Function();
+        if (m_EnterFunction)
+            m_EnterFunction();
         break;
 
     }
@@ -88,8 +90,32 @@ void CEventTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 
 void CEventTrigger::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)
 {
+    CGameObject* pOwner = pOther->Get_Owner();
+
+    CheckNull(pOwner);
+    switch (COLLISION_GROUP(iGroup))
+    {
+
+    case Client::COLLISION_GROUP::PLAYER:
+        if (m_StayFunction)
+            m_StayFunction();
+        break;
+
+    }
 }
 
 void CEventTrigger::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
 {
+    CGameObject* pOwner = pOther->Get_Owner();
+
+    CheckNull(pOwner);
+    switch (COLLISION_GROUP(iGroup))
+    {
+
+    case Client::COLLISION_GROUP::PLAYER:
+        if (m_EndFunction)
+            m_EndFunction();
+        break;
+
+    }
 }

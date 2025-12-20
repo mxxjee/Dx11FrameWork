@@ -8,7 +8,9 @@ class CEventTrigger :
 public:
     struct EventTriggerDesc :public CTrigger_Box::TriggerBoxDesc
     {
-        function<void()>    Func = nullptr;
+        function<void()>    EnterFunc = nullptr;
+        function<void()>    StayFunc = nullptr;
+        function<void()>    ExitFunc = nullptr;
     };
 
 protected:
@@ -31,7 +33,9 @@ public:
     virtual     void    OnCollisionExit(_uint iGroup, CCollider_Base * pOther);
 
 private:
-    function<void()>        m_Function = nullptr;
+    function<void()>        m_EnterFunction = nullptr;
+    function<void()>        m_StayFunction = nullptr;
+    function<void()>        m_EndFunction = nullptr;
 
 
 

@@ -64,6 +64,7 @@ private:
     vector<CImgui_Checkbox*> m_CheckBoxs;
 
     CImgui_Slider*  m_CulDistSlider = nullptr;
+    CImgui_Slider* m_CulRotationSlider = nullptr;
 
 private:
     CGameInstance* m_pGameInstance = { nullptr };
@@ -78,6 +79,7 @@ private:
     _float3 fDebugOffSet;
     _float3 fDefaultOffSet;
 
+    float fCulRotationX = 0.f;
     CCamera_Base*           pTargetCamera = nullptr;
     CCamera_Base*           m_pSelectCamera = nullptr;
 
