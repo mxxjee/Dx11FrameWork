@@ -37,5 +37,7 @@ private:
 
     _float      m_fTime = 0.f;
 
+    bool        m_bStartAnim = false;
+    bool        m_bShowUI = false;      //true이면 이벤트발생x
 };
 NS_END

@@ -215,7 +215,7 @@ string CQuest_Manager::Get_Optimal_ChapterID(const string& ModelID)
 	return strBaseChapterID;
 }
 
-const bool& CQuest_Manager::Get_FactCheckValue(QuestFact eType)
+bool CQuest_Manager::Get_FactCheckValue(QuestFact eType)
 {
 	return m_Facts[ENUM_TO_UINT(eType)];
 
@@ -247,6 +247,8 @@ std::function<void()>    CQuest_Manager::Make_Reward_Function(_uint iQuestID)
 
 		break;
 	}
+
+	return nullptr;
 }
 
 

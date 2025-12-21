@@ -79,7 +79,7 @@ public:
     string  Get_Optimal_ChapterID(const string& ModelID);
 
     //factcheck값 가져오기
-    const bool& Get_FactCheckValue(QuestFact eType);
+    bool        Get_FactCheckValue(QuestFact eType);
     void        Set_FactCheckValue(QuestFact eType, bool bValue);
 
 private:

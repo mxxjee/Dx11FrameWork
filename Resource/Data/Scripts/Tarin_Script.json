@@ -24,8 +24,8 @@
             {
               "Speaker": "타린",
               "Text": "방패 뒤에 새겨진 이름을 봤지\n자, 이 방패 받아라!",
-              "strActionCommand": "PLAY_ANIM:NPC_BOW",
-              "actionTiming": "ON_START"
+              "strActionCommand": "Get_Shield",
+              "actionTiming": "ON_FINISH"
             }
           ]
         }

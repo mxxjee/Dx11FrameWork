@@ -2,6 +2,7 @@
 #include "CPlayer.h"
 #include "CCamera_Base.h"
 #include "GlobalGameEvent.h"
+#include "CInventory_Manager.h"
 
 USING(Client)
 CPlayerStateGetItem::CPlayerStateGetItem()
@@ -17,8 +18,41 @@ void CPlayerStateGetItem::Enter(CPlayer* pPlayer)
     pPlayerInput = pPlayer->Get_Input();
     pActionControl = pPlayer->Get_ActionControl();
 
-    pPlayer->Reserve_Animation_To_Body(L"item_get_st", false);
+    //최초로 얻은거라면, 노티파이 등록
+    if (CInventory_Manager::GetInstance()->Get_InvenSize() == 1)
+    {
+        m_pGameInstance->RegisterListners("PlayerOnItemGet", [this](const GameEvent& event)
+            {
+                CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
+                if (pPlayer)
+                {
+                    if (!m_bShowUI)
+                    {
+                        m_pGameInstance->BroadCastEvent(L"OnItemGetIconShow", CInventory_Manager::GetInstance()->Get_ItemGetEvent());
+                        m_bShowUI = true;
+                    }
+                }
 
+
+
+            });
+
+        m_pGameInstance->RegisterListners("PlayerExitItemGet", [this](const GameEvent& event)
+            {
+                CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
+                if (pPlayer)
+                {
+                    if (m_bShowUI)
+                    {
+                        m_pGameInstance->BroadCastEvent(L"OnItemGetIconHide", CInventory_Manager::GetInstance()->Get_ItemGetEvent());
+                        m_bShowUI = false;
+                    }
+                }
+
+
+
+            });
+    }
     m_ePhase = Phase::Start;
     m_eNextAnim = NextAnim::NONE;
 
@@ -30,9 +64,14 @@ void CPlayerStateGetItem::Enter(CPlayer* pPlayer)
     pPlayer->Set_CanMove(false);
 
     CCamera_Base* pCameraBase = m_pGameInstance->Get_MainCamera();
-    pCameraBase->Set_Offset(_float3(0.f, 3.5f, -1.5f));
+    pCameraBase->Set_Offset(_float3(0.f, 5.5f, -3.5f));
 
+    m_pGameInstance->Invoke(0.3f, 0.f, false, false, [this,pPlayer]()
+        {
+            m_bStartAnim = true;
+            pPlayer->Reserve_Animation_To_Body(L"item_get_st", false);
 
+        },pPlayer);
 
     m_fTime = 0.f;
 
@@ -40,6 +79,7 @@ void CPlayerStateGetItem::Enter(CPlayer* pPlayer)
 
 bool CPlayerStateGetItem::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
+    CheckFalseResult(m_bStartAnim,false);
     if (m_bChange)
         ChangePhase(pPlayer);
 
@@ -51,6 +91,10 @@ bool CPlayerStateGetItem::Update(CPlayer* pPlayer, _float fTimeDelta)
 
 void CPlayerStateGetItem::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 {
+    //먼저돌기
+    pPlayer->Get_Transform()->LookAtSmooth(XMLoadFloat4(&m_pGameInstance->Get_CamPosition(ENUM_TO_UINT(CAMERA_TYPE::TARGET))), 10.f, fTimeDelta);
+    CheckFalse(m_bStartAnim);
+
     //페이즈 바꾸는 타이밍
     switch (m_ePhase)
     {
@@ -62,13 +106,9 @@ void CPlayerStateGetItem::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 
     case Phase::Loop:
     {
-        m_fTime += fTimeDelta;
+        
 
-        if (m_fTime >= 5.f)
-        {
-            m_bChange = true;
-            m_fTime = 0.f;
-        }
+        
     }
         break;
 

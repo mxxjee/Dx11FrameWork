@@ -291,6 +291,12 @@
     <ClInclude Include="..\Public\CVariable_Condition.h">
       <Filter>96.Managers\QuestManager\QuestCondition\VariableCondition</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CItem_Manager.h">
+      <Filter>96.Managers\ItemManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CInventory_Manager.h">
+      <Filter>96.Managers\InventoryManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -634,6 +640,12 @@
     <Filter Include="96.Managers\QuestManager\QuestCondition\VariableCondition">
       <UniqueIdentifier>{862c9f07-12c9-4edc-b6ca-f0cb8f270a6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96.Managers\ItemManager">
+      <UniqueIdentifier>{49c61122-6379-4f96-b6b5-34b4923f729e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Managers\InventoryManager">
+      <UniqueIdentifier>{9720b4f7-6816-4b9e-bf34-ab29d14664d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -904,6 +916,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CVariable_Condition.cpp">
       <Filter>96.Managers\QuestManager\QuestCondition\VariableCondition</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CItem_Manager.cpp">
+      <Filter>96.Managers\ItemManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CInventory_Manager.cpp">
+      <Filter>96.Managers\InventoryManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

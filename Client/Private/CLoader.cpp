@@ -386,6 +386,7 @@ HRESULT CLoader::Register_Textures()
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Logo/", L".dds");
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Interaction/", L".dds");
     m_pGameInstance->Load_Textures(L"../../Resource/UI/NPC/", L".dds");
+    m_pGameInstance->Load_Textures(L"../../Resource/UI/Items/", L".dds");
 
 
     return S_OK;

@@ -72,7 +72,6 @@ typedef struct tagActionControl
 		m_bLadder = false;
 		m_bPush = false;
 		m_bCarry = false;
-		m_bItemGet = false;
 		m_bTalk = false;
 	}
 
@@ -128,17 +127,36 @@ typedef struct tagMonsterActionControl
 
 
 /////////아이템정보/////////
+enum class ItemType
+{
+	SHIELD_SLASH,//칼과방패
+	MUSHROOM ,	//숲에서발견한 버섯
+	LETTER,	//아이가 남기고간 쪽지
+	FEATHER,	//깃털
+	POWER_BRACELET,//파워팔찌
+	END
+
+};
+
 typedef struct tagItemInfo
 {
-	_wstring	ItemTag=L"";
+	ItemType	ItemType = ItemType::END;
+	wstring		ItemDesc = L"";	//아이템설명
+	wstring		TexKey = L"";		//아이템 UI 이름
+
 	bool		m_bQuick=false;	//퀵슬롯에 장착가능한지.
-	KeyCode		KeyCode=KeyCode::None;		//퀵슬롯에 장착했을경우, 키코드
 
 
 
 }ITMINFO;
 
 
+struct InvenSlot
+{
+	ItemType	ItemType = ItemType::END;
+	int			count = 0;
+
+};
 
 /*각 숫자는 우선순위를의미한다*/
 enum InteractionType

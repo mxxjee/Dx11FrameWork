@@ -3,6 +3,10 @@
 #include "CGameInstance.h"
 #include "MathUtils.h"
 #include "CFontUI.h"
+#include "CInventory_Manager.h"
+#include "CGameManager.h"
+#include "CPlayer.h"
+
 
 
 CGameInstance* UICreator::m_pGameInstance = CGameInstance::GetInstance();
@@ -255,7 +259,7 @@ HRESULT UICreator::Create_Interaction_TalkUI(wstring LayerTag)
     m_pGameInstance->RegisterEvent(L"OnTalkUIShow", [](void* pData)
         {
             _vector* pPos = static_cast<_vector*>(pData);
-            _vector OffSet = XMVectorSet(0.f, 40.f, 0.f, 0.f);
+            _vector OffSet = XMVectorSet(100.f, 40.f, 0.f, 0.f);
 
             (*pPos) += OffSet;
 
@@ -676,5 +680,113 @@ HRESULT UICreator::Create_Loading_UI(wstring LayerTag)
 
     }
 
+    return S_OK;
+}
+
+HRESULT UICreator::Create_ItemGet_UI(wstring LayerTag)
+{
+    ///아이템 아이콘
+    //BG
+    UIGroup             ItemGetIcon;    //아이콘,뒤에 반짝거리는거? 이펙트인가? 일단 그룹으로 만들어놓기.
+    ItemGetIcon.Key = L"ItemGetIconGroup";
+
+    CUI::tagUIDesc        IconDesc = {};
+
+    IconDesc.ObjTag = L"ItemGet_Icon";
+    IconDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+    IconDesc.TextureKey = L"Shield";
+
+    IconDesc.iIdx = 0;
+
+    IconDesc.fSizeX = 120.f;
+    IconDesc.fSizeY = 120.f;
+    IconDesc.fX = g_iWinSizeX >> 1;
+    IconDesc.fY = g_iWinSizeY >> 1;
+    IconDesc.Depth = 0.4f;
+
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    IconDesc.TransformDesc = &TransDesc;
+
+    //AlphaAnim등록
+    CUIComponent::UICOMP_DESC UIDesc = {};
+    IconDesc.UICompDesc = &UIDesc;
+
+    CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &IconDesc);
+    if (pObj)
+    {
+        CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+            return E_FAIL;
+
+
+        ItemGetIcon.push_back(pInstance);
+
+    }
+
+    m_pGameInstance->Register_UIGroup(ItemGetIcon);
+    m_pGameInstance->SetActiveGroup(ItemGetIcon.Key, false);
+
+                                                            //텍스처 키 보내주기
+    m_pGameInstance->RegisterEvent(L"OnItemGetIconShow", [](void* pData)
+        {
+            CInventory_Manager::ItemGetEvent* ItemEvent = static_cast<CInventory_Manager::ItemGetEvent*>(pData);
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"ItemGetIconGroup");
+            if (pGroup)
+            {
+                CGameObject* pObj = pGroup->Find(L"ItemGet_Icon");
+                if (pObj)
+                {
+                    CUI* pUI = dynamic_cast<CUI*>(pObj);
+                   
+                    //위치설정(플레이어 기준 오프셋)
+                    CPlayer* pPlayer=CGameManager::GetInstance()->Get_MainPlayer();
+                   
+                    
+                    _vector OffSet = XMVectorSet(ItemEvent->OffSet.x,ItemEvent->OffSet.y,ItemEvent->OffSet.z,1.f);
+                    _vector vOrigin = pPlayer->Get_Transform()->Get_State(STATE::POSITION);
+                    _vector ShowPos = MathUtils::WorldToScreen(vOrigin,
+                        m_pGameInstance->Get_ViewMatrix(0), m_pGameInstance->Get_ProjMatrix(0), g_iWinSizeX, g_iWinSizeY);
+
+                    pUI->Get_Transform()->Set_State(STATE::POSITION,
+                        MathUtils::ScreenToWorld_UI(OffSet+ ShowPos, g_iWinSizeX, g_iWinSizeY));
+
+                    pUI->Set_Texture(ItemEvent->TexKey);
+                    
+                 
+                    pUI->Set_ActiveAnim(0, [pUI]()
+                        {
+                            pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 10.f, false, false, false);
+                            
+                            //스케일애니메이션 재생안됨 확인
+                            //pUI->Get_UIComp()->PlayAnim(UIAnimType::SCALE, _float4(0.f, 0.f, 0.f, 0.f), _float4(120.f, 120.f, 1.f, 0.f), 10.f, false, false, false);
+
+                        });
+                    if (!pUI->Is_Active())
+                        pUI->OnActivated(true);
+                      
+
+                }
+            }
+        });
+
+    m_pGameInstance->RegisterEvent(L"OnItemGetIconHide", [](void* pData)
+        {
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"ItemGetIconGroup");
+            if (pGroup)
+            {
+                CGameObject* pObj = pGroup->Find(L"ItemGet_Icon");
+                if (pObj)
+                {
+                    CUI* pUI = dynamic_cast<CUI*>(pObj);
+                    pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 10.f, false, true, false);
+                    pUI->Get_UIComp()->PlayAnim(UIAnimType::SCALE, _float4(120.f * 0.7f, 120.f * 0.7f, 1.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 10.f, false, true, false);
+
+                }
+            }
+        });
+    //아이템설명UI
     return S_OK;
 }

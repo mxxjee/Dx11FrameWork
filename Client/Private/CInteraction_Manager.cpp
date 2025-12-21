@@ -93,6 +93,9 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 
 bool CInteraction_Manager::OnInteractKeyPresed()
 {
+	CheckNullResult(m_pMainPlayer, false);
+	CheckTrueResult(m_pMainPlayer->Get_ActionControl()->m_bItemGet, false);
+
 	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::A))
 	{
 		if (!m_pCurrentTarget)

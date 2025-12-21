@@ -186,6 +186,11 @@ HRESULT CPlayer_Body::Ready_Animation_Speed()
 	m_pModel->Set_Animation_Speed(L"push_st", 70.f);
 	m_pModel->Set_Animation_Speed(L"push_lp", 60.f);
 	m_pModel->Set_Animation_Speed(L"push_ed", 60.f);
+
+	m_pModel->Set_Animation_Speed(L"item_get_st", 50.f);
+	m_pModel->Set_Animation_Speed(L"item_get_lp", 50.f);
+	m_pModel->Set_Animation_Speed(L"item_get_ed", 50.f);
+
 	return S_OK;
 }
 
@@ -266,6 +271,23 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 	{
 		Event.Name = "PlayerOnCarry";
 		pAnim->AddNotify(23, Event);
+
+	}
+
+	//item_get_st
+	pAnim = m_pModel->Find_Animation(L"item_get_st");
+	if (pAnim)
+	{
+		Event.Name = "PlayerOnItemGet";
+		pAnim->AddNotify(20, Event);
+
+	}
+
+	pAnim = m_pModel->Find_Animation(L"item_get_ed");
+	if (pAnim)
+	{
+		Event.Name = "PlayerExitItemGet";
+		pAnim->AddNotify(6, Event);
 
 	}
 	return S_OK;

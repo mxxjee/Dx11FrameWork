@@ -1067,7 +1067,7 @@ void CPlayer::Render_Transform_Imgui()
 }
 void CPlayer::Render_StateDebug(int* pArg)
 {
-    if (ImGui::RadioButton("Ladder", (int*)(pArg), 0))
+    /*if (ImGui::RadioButton("Ladder", (int*)(pArg), 0))
     {
         m_ActionControl.m_bLadder = true;
         m_ActionControl.m_bPush = false;
@@ -1106,7 +1106,7 @@ void CPlayer::Render_StateDebug(int* pArg)
         m_ActionControl.m_bPush = false;
         m_ActionControl.m_bCarry = false;
         m_ActionControl.m_bItemGet = false;
-    }
+    }*/
 
 }
 

@@ -294,16 +294,48 @@ void CTransform::ScaleLerp(_vector vTargetPos, float fLerpSpeed, float fTimeDelt
 	Set_Scale(vScale);
 }
 
-void CTransform::RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDelta)
-{
+bool CTransform::RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDelta)
+{	_vector vCurRad = XMVectorSet(XMConvertToRadians(m_fEularDegree.x),
+		XMConvertToRadians(m_fEularDegree.y),
+		XMConvertToDegrees(m_fEularDegree.z), 0.f);
+
+	_float3 targetFloat;
+	XMStoreFloat3(&targetFloat, vTargetRot);
+	_vector vTargetRad = XMVectorSet(
+		XMConvertToRadians(targetFloat.x),
+		XMConvertToRadians(targetFloat.y),
+		XMConvertToRadians(targetFloat.z),
+		0.f);
+
+
+	_vector qCurrent = XMQuaternionRotationRollPitchYawFromVector(vCurRad);
+	_vector qTarget = XMQuaternionRotationRollPitchYawFromVector(vTargetRad);
+
 	float t = 1.0f - expf(-fTimeDelta * fLerpSpeed);
-	_vector vCur = XMLoadFloat3(&m_fEularDegree);
-	_vector vNew = XMVectorLerp(vCur, vTargetRot, t);
+	_vector vNew = XMQuaternionSlerp(qCurrent, qTarget, t);
 
 	_float3 vRotation;
 	XMStoreFloat3(&vRotation, vNew);
 
-	AddRotation(vRotation);
+	
+
+	//오차값을 통해 도착판단
+	_vector vDiff = XMVectorSubtractAngles(qTarget, qCurrent);
+	_vector vDisq = XMVector3LengthSq(vDiff);
+
+	if (XMVectorGetX(vDisq) <= 0.1f)
+	{
+		_float3 vTarget;
+		XMStoreFloat3(&vTarget, vTargetRot);
+		Rotation(vTarget);
+		return true;
+	}
+		
+	else
+		return false;
+
+	return false;
+
 }
 
 void CTransform::AddPosition(_float3 vPos)

@@ -6,6 +6,7 @@
 #include "CPlayer.h"
 #include "CGameManager.h"
 #include "CLevel_Spawn.h"
+#include "CInventory_Manager.h"
 
 
 
@@ -198,7 +199,7 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
 
     }
 
-    if (strCommand == "End_BlueKid")
+    else if (strCommand == "End_BlueKid")
     {
         CQuest_Manager::GetInstance()->Set_FactCheckValue(CQuest_Manager::QuestFact::SAVE_CHILD, true);
 
@@ -206,7 +207,7 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
     }
 
 
-    if (strCommand == "Fairy_End")
+    else if (strCommand == "Fairy_End")
     {
         CQuest_Manager::GetInstance()->Set_FactCheckValue(CQuest_Manager::QuestFact::SAVE_CHILD, true);
         
@@ -214,6 +215,14 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
         Event.Name = "Fairy_End";
 
         CGameInstance::GetInstance()->Emit(Event);
+
+    }
+
+    else if (strCommand == "Get_Shield")
+    {
+        CPlayer* pPlayer=CGameManager::GetInstance()->Get_MainPlayer();
+        CheckNull(pPlayer);
+        CInventory_Manager::GetInstance()->Add_To_Inven(ItemType::SHIELD_SLASH, 1);
 
     }
 }

@@ -21,6 +21,8 @@
 #include "CImgui_Button.h"
 #include "CInput_Manager.h"
 #include "CInteraction_Manager.h"
+#include "CItem_Manager.h"
+
 
 #include "CLevelDebugWindow.h"
 #include "CObjectDebugWindow.h"
@@ -40,6 +42,7 @@
 #include "CDialogue_Manager.h"
 
 #include "CFadeScreen.h"
+#include "CInventory_Manager.h"
 
 
 
@@ -120,6 +123,11 @@ HRESULT CMainApp::Initialize_Cilent()
 
 	if (FAILED(CDialogue_Manager::GetInstance()->Initialize()))
 		return E_FAIL;
+
+	if (FAILED(CItem_Manager::GetInstance()->Initialize()))
+		return E_FAIL;
+
+
 
 
 	//렌더그룹 관련 초기화
@@ -486,6 +494,9 @@ void CMainApp::Free()
 	Safe_Release(pImGui_Manager);
 #endif
 	
+	CItem_Manager::GetInstance()->DestroyInstance();
+	CInventory_Manager::GetInstance()->DestroyInstance();
+
 	CDialogue_Manager::GetInstance()->DestroyInstance();
 	CQuest_Manager::GetInstance()->DestroyInstance();
 	CRoom_Manager::GetInstance()->DestroyInstance();

@@ -23,6 +23,7 @@
 #include "CButton.h"
 
 #include "MathUtils.h"
+#include "CUICreator.h"
 
 
 
@@ -414,8 +415,14 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     m_pGameInstance->SetActiveGroup(ButtonSlotGroup.Key, false);
 
 
+    if (FAILED(UICreator::Create_ItemGet_UI(strLayerTag)))
+        return E_FAIL;
+
+
     return S_OK;
 #pragma endregion
+
+  
 }
 
 HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
