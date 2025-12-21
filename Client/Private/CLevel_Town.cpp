@@ -19,6 +19,7 @@
 #include "CNPC_Richard.h"
 #include "CIInteractable.h"
 #include "CNPC_Fairy.h"
+#include "CNPC_Kid_Blue.h"
 
 
 #include "CInteraction_Manager.h"
@@ -38,6 +39,7 @@
 
 #include "CFontUI.h"
 #include "CCell.h"
+#include "ColorUtils.h"
 
 USING(Client)
 
@@ -188,27 +190,27 @@ HRESULT CLevel_Town::Ready_Lights()
     LIGHT_DESC      LightDesc{};
     LightDesc.eType = LIGHT::DIRECTIONAL;
     LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-    LightDesc.vDiffuse = _float4(1.f, 1.f,1.f, 1.f);
-    LightDesc.vAmbient = _float4(0.5f,0.5f,0.5f, 1.f);
+    LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+    LightDesc.vAmbient = _float4(0.5f, 0.5f, 0.5f, 1.f);
     LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
 
     if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, LightDesc)))
         return E_FAIL;
 
 
-    //////////////빨간 점조명 테스트//////////
- /*   LIGHT_DESC       RedLight;
-    RedLight.eType = LIGHT::POINT;
+    //////////////물 조명//////////
+    LIGHT_DESC       WaterLight;
+    WaterLight.eType = LIGHT::POINT;
 
-    RedLight.vDiffuse = _float4(1.f, 0.f, 0.f, 1.f);
-    RedLight.fRange = _float4(10.f, 0.f, 0.f, 1.f);
-    RedLight.vPosition = _float4(30.f, 10.f, 24.f, 1.f);
-    RedLight.vSpecular = RedLight.vDiffuse;
-    RedLight.vAmbient = _float4(0.1f, 0.3f, 0.1f, 1.f);
+    WaterLight.vDiffuse = COLOR_BLUE;
+    WaterLight.fRange = _float4(3.f, 0.f, 0.f, 1.f);
+    WaterLight.vPosition = _float4(45.f,8.f, 90.f, 1.f);
+    WaterLight.vSpecular = WaterLight.vDiffuse;
+    WaterLight.vAmbient = _float4(0.1f, 0.3f, 0.1f, 1.f);
 
 
-    if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, RedLight)))
-        return E_FAIL;*/
+    if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, WaterLight)))
+        return E_FAIL;
 
 
     return S_OK;
@@ -462,15 +464,16 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
     CTransform::TRANSFORM_DESC pFairyTransDesc;
 
 
-    pFairyTransDesc.vLocalPosition = _float4(45.f, 14.65f, 88.94f, 1.f);
+    pFairyTransDesc.vLocalPosition = _float4(45.f, 12.65f, 88.94f, 1.f);
     pFairyTransDesc.vLocalRotation = _float4(0.f, 180.f, 0.f, 0.f);
+    pFairyTransDesc.vLocalScale = _float4(0.8f, 0.8f, 0.8f, 1.f);
 
     pFairyDesc.ObjTag = L"NPC_Fairy";
     pFairyDesc.pTarget = nullptr;
     pFairyDesc.ModelName = L"Fairy";
     pFairyDesc.SceneName = "Level_Town";
     pFairyDesc.m_iLevelID = m_iLevelID;
-    pFairyDesc.TalkRange = 3.f;
+    pFairyDesc.TalkRange = 4.f;
     pFairyDesc.bUseNavMesh = false;
 
 
@@ -485,6 +488,35 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
 
     }
 
+    /// <summary>
+    /// /숲애기
+    CNPC::NPC_DESC pKid_Blue_Desc;
+
+    CTransform::TRANSFORM_DESC pKid_Blue_TransDesc;
+
+    vPos = m_pGameInstance->Get_CellPos_By_MainCells(946);
+    XMStoreFloat4(&pKid_Blue_TransDesc.vLocalPosition, vPos);
+    pKid_Blue_TransDesc.vLocalRotation = _float4(0.f, 180.f, 0.f, 0.f);
+    pKid_Blue_TransDesc.vLocalScale = _float4(0.8f, 0.8f, 0.8f, 1.f);
+
+    pKid_Blue_Desc.ObjTag = L"NPC_Kid_Blue";
+    pKid_Blue_Desc.pTarget = nullptr;
+    pKid_Blue_Desc.ModelName = L"Kid_Blue";
+    pKid_Blue_Desc.SceneName = "Level_Town";
+    pKid_Blue_Desc.m_iLevelID = m_iLevelID;
+    pKid_Blue_Desc.TalkRange = 1.f;
+  
+
+
+
+    pKid_Blue_Desc.TransformDesc = &pKid_Blue_TransDesc;
+    CNPC_Kid_Blue* pNPC_Kid = CNPC_Kid_Blue::Create(m_pDevice, m_pContext, &pKid_Blue_Desc);
+    if (pNPC_Kid)
+    {
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, pNPC_Kid)))
+            return E_FAIL;
+
+    }
 
     return S_OK;
 }
@@ -593,16 +625,38 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
         _vector vCurRot = XMLoadFloat3(&vCurFloatRot);
         _vector vCurOffSet = XMLoadFloat3(&vCurFloatOffset);
 
-        _vector fRotation = XMVectorLerp(vCurRot, XMVectorSet(52.f, 0.f, 0.f, 1.f), 0.02f);
-        _vector vOffset = XMVectorLerp(vCurOffSet, XMVectorSet(0.f, 8.5f, -7.f, 0.f), 0.02f);
+        _vector fRotation = XMVectorLerp(vCurRot, XMVectorSet(56.f, 0.f, 0.f, 1.f), 0.02f);
+        _vector vOffset = XMVectorLerp(vCurOffSet, XMVectorSet(0.f, 9.f, -6.f, 0.f), 0.02f);
 
         _float4 vResult;
         _float3 fOffSet;
         XMStoreFloat4(&vResult, fRotation);
         XMStoreFloat3(&fOffSet, vOffset);
-
+        
         pMaincam->Set_LocalRoation(vResult);
         pCamBase->Set_Offset(fOffSet);
+
+        //directionlight조절
+        CLight* pDirectionLight = m_pGameInstance->Get_DirectionLight(m_iLevelID);
+        CheckNull(pDirectionLight);
+
+        LIGHT_DESC NewLightDesc = *pDirectionLight->Get_LightDesc();
+        _vector vDiffuseColor = XMLoadFloat4(&NewLightDesc.vDiffuse);
+        _vector vAmbient = XMLoadFloat4(&NewLightDesc.vAmbient);
+        _vector vSpecular = XMLoadFloat4(&NewLightDesc.vSpecular);
+
+        /*  LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+        LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+        LightDesc.vAmbient = _float4(0.5f, 0.5f, 0.5f, 1.f);
+        LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);*/
+
+        XMStoreFloat4(&NewLightDesc.vDiffuse, XMVectorLerp(vDiffuseColor, XMVectorSet(1.f,1.f, 1.f, 1.f), 0.2f));
+        XMStoreFloat4(&NewLightDesc.vAmbient, XMVectorLerp(vAmbient, XMVectorSet(0.5f, 0.5f, 0.5f, 1.f), 0.2f));
+        XMStoreFloat4(&NewLightDesc.vSpecular, XMVectorLerp(vSpecular, XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.2f));
+      
+        pDirectionLight->Set_LightDesc(NewLightDesc);
+
+
 
     };
 
@@ -650,6 +704,24 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
         pMaincam->Set_LocalRoation(vResult);
         pCamBase->Set_Offset(fOffSet);
+
+        //directionlight조절
+        CLight* pDirectionLight = m_pGameInstance->Get_DirectionLight(m_iLevelID);
+        CheckNull(pDirectionLight);
+
+        //빛 변경값..나중에 설정하기!!어두워지기!
+     //   LIGHT_DESC NewLightDesc = *pDirectionLight->Get_LightDesc();
+     //   _vector vDiffuseColor = XMLoadFloat4(&NewLightDesc.vDiffuse);
+     //   _vector vAmbient = XMLoadFloat4(&NewLightDesc.vAmbient);
+     //   _vector vSpecular = XMLoadFloat4(&NewLightDesc.vSpecular);
+
+     //   
+     //   XMStoreFloat4(&NewLightDesc.vDiffuse, XMVectorLerp(vDiffuseColor, XMVectorSet(0.f, 0.1f, 0.5f, 1.f), 0.2f));
+     ////   XMStoreFloat4(&NewLightDesc.vAmbient, XMVectorLerp(vAmbient, XMVectorSet(0.2f, 0.2f, 0.2f, 1.f), 0.2f));
+     //   XMStoreFloat4(&NewLightDesc.vSpecular, XMVectorLerp(vSpecular, XMVectorSet(0.5f, 0.5f, 0.5f, 1.f), 0.2f));
+
+     //   pDirectionLight->Set_LightDesc(NewLightDesc);
+
 
     };
 

@@ -282,7 +282,15 @@
     <ClInclude Include="..\Public\CEventTrigger.h">
       <Filter>02.GameObjects\00.WorldObjects\03.Triggers\EventTrigger</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CNPC_Fairy.h" />
+    <ClInclude Include="..\Public\CNPC_Fairy.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Fairy</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CNPC_Kid_Blue.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Kid_Blue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CVariable_Condition.h">
+      <Filter>96.Managers\QuestManager\QuestCondition\VariableCondition</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -620,6 +628,12 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\00.NPC\Fairy">
       <UniqueIdentifier>{2ea0ccc0-6a01-4fd1-8086-5c1552a3973c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\00.NPC\Kid_Blue">
+      <UniqueIdentifier>{a8ee5ce3-bdff-4d8a-82ae-cf9815452022}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Managers\QuestManager\QuestCondition\VariableCondition">
+      <UniqueIdentifier>{862c9f07-12c9-4edc-b6ca-f0cb8f270a6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -882,7 +896,15 @@
     <ClCompile Include="..\Private\CEventTrigger.cpp">
       <Filter>02.GameObjects\00.WorldObjects\03.Triggers\EventTrigger</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CNPC_Fairy.cpp" />
+    <ClCompile Include="..\Private\CNPC_Fairy.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Fairy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CNPC_Kid_Blue.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Kid_Blue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CVariable_Condition.cpp">
+      <Filter>96.Managers\QuestManager\QuestCondition\VariableCondition</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

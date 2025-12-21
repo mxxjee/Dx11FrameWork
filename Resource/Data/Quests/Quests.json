@@ -19,8 +19,8 @@
 
       "Conditions": [
         {
-          "Type": "LOCATION",
-          "State": "GO_TOWN"
+          "Type": "VARIABLE",
+          "State": "SAVE_CHILD"
         }
       ]
     }

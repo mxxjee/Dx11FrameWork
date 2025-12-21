@@ -279,6 +279,7 @@ public:
 	const						LIGHT_DESC* Get_LightDesc(_uint iLevelID,_uint iIndex);
 	HRESULT					 Bind_Lights(class CShader* pShader);
 	class CLight*			Get_Light(_uint iLevelID, _uint iIndex);
+	class CLight*			Get_DirectionLight(_uint iLevelID);
 
 	HRESULT					Bind_Directional_Light(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer, const LIGHT_DESC* pLightDesc);
 	void					Render_LightManager(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);

@@ -10,6 +10,12 @@ class CQuest_Manager :
     public CBase
 {
 public:
+    enum class QuestFact
+    {
+        SAVE_CHILD=0,
+        END
+    };
+public:
     struct BaseData
     {
         string BaseChapterID = "";
@@ -72,6 +78,9 @@ public:
                 //NPC의 영구챕터와 퀘스트 상태를 기반으로 현재 보여줄 챕터 ID반환
     string  Get_Optimal_ChapterID(const string& ModelID);
 
+    //factcheck값 가져오기
+    const bool& Get_FactCheckValue(QuestFact eType);
+    void        Set_FactCheckValue(QuestFact eType, bool bValue);
 
 private:
     std::function<void()>        Make_Reward_Function(_uint iQuestID);
@@ -89,6 +98,11 @@ private:
 
                 //각 NPC에 대한 영구 챕터 진행도 저장
     UMap<size_t, BaseData>    m_mapNPCChapterProgress;
+
+
+private:
+    //특수한 fact check들
+    vector<bool>        m_Facts;
 };
 
 NS_END

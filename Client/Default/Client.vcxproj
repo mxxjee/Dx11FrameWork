@@ -169,6 +169,7 @@
     <ClInclude Include="..\Public\CInteraction_Manager.h" />
     <ClInclude Include="..\Public\CInteraction_Rock.h" />
     <ClInclude Include="..\Public\CInteraction_TriggerBox.h" />
+    <ClInclude Include="..\Public\CNPC_Kid_Blue.h" />
     <ClInclude Include="..\Public\CLevelDebugWindow.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
@@ -246,6 +247,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\CVariable_Condition.h" />
     <ClInclude Include="..\Public\CWeapon.h" />
     <ClInclude Include="..\Public\GlobalGameEvent.h" />
     <ClInclude Include="..\Public\ItemCollect_Condition.h" />
@@ -277,6 +279,7 @@
     <ClCompile Include="..\Private\CInteraction_Manager.cpp" />
     <ClCompile Include="..\Private\CInteraction_Rock.cpp" />
     <ClCompile Include="..\Private\CInteraction_TriggerBox.cpp" />
+    <ClCompile Include="..\Private\CNPC_Kid_Blue.cpp" />
     <ClCompile Include="..\Private\CLevelDebugWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -353,6 +356,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\CVariable_Condition.cpp" />
     <ClCompile Include="..\Private\CWeapon.cpp" />
     <ClCompile Include="..\Private\ItemCollect_Condition.cpp" />
     <ClCompile Include="..\Public\CUICreator.cpp" />

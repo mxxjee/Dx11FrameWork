@@ -18,8 +18,8 @@ HRESULT CDialogue_Manager::Initialize()
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Mom_Script.json");
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Marin_Script.json");
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Tarin_Script.json");
-    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Kid_Green.json");
-
+    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Kid_Green_Script.json");
+    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Kid_Blue_Script.json");
     m_pGameInstance = CGameInstance::GetInstance();
 
     Register_EventListner();
@@ -192,6 +192,13 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
         Event.Name = "EndCutScene";
 
         m_pGameInstance->Emit(Event);
+
+    }
+
+    if (strCommand == "End_BlueKid")
+    {
+        CQuest_Manager::GetInstance()->Set_FactCheckValue(CQuest_Manager::QuestFact::SAVE_CHILD, true);
+
 
     }
 

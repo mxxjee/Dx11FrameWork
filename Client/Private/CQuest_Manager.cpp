@@ -3,6 +3,8 @@
 #include "CLocation_Condition.h"
 #include "ItemCollect_Condition.h"
 #include "CGameManager.h"
+#include "CVariable_Condition.h"
+
 #include "CPlayer.h"
 #include <iostream>
 #include <sstream>
@@ -13,6 +15,11 @@ IMPLEMENT_SINGLETON(CQuest_Manager)
 
 HRESULT CQuest_Manager::Initialize()
 {
+	m_Facts.resize((size_t)QuestFact::END);
+	m_Facts[ENUM_TO_UINT(QuestFact::SAVE_CHILD)] = false;
+
+
+
 	LoadQuestDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Quests/Quests.json");
 
 	//size_t Mom_HashKey = hash<string>()("NPC_Mom");
@@ -38,6 +45,9 @@ HRESULT CQuest_Manager::Initialize()
 	m_mapNPCChapterProgress[KidGreen_HashKey].BaseChapterID = "Q1002_START";		//대화시작챕터:START
 	m_mapNPCChapterProgress[KidGreen_HashKey].CurrentChapterID = m_mapNPCChapterProgress[KidGreen_HashKey].BaseChapterID;		//대화시작챕터:START
 
+	size_t KidBlue_HashKey = hash<string>()("NPC_Kid_Blue");
+	m_mapNPCChapterProgress[KidBlue_HashKey].BaseChapterID = "Q1002_ACTIVE_PERM";		//대화시작챕터:START
+	m_mapNPCChapterProgress[KidBlue_HashKey].CurrentChapterID = m_mapNPCChapterProgress[KidBlue_HashKey].BaseChapterID;		//대화시작챕터:START
 
 	return S_OK;
 }
@@ -199,6 +209,18 @@ string CQuest_Manager::Get_Optimal_ChapterID(const string& ModelID)
 	return strBaseChapterID;
 }
 
+const bool& CQuest_Manager::Get_FactCheckValue(QuestFact eType)
+{
+	return m_Facts[ENUM_TO_UINT(eType)];
+
+}
+
+void CQuest_Manager::Set_FactCheckValue(QuestFact eType, bool bValue)
+{
+	m_Facts[ENUM_TO_UINT(eType)] = bValue;
+
+}
+
 std::function<void()>    CQuest_Manager::Make_Reward_Function(_uint iQuestID)
 {
 	switch (iQuestID)
@@ -318,5 +340,15 @@ CQuestCondition* CQuest_Manager::Make_Condition_From_Json(const json& json_cond)
 		}
 	}
 
+	else if (strType == "VARIABLE")
+	{
+		string State = json_cond.at("State").get<string>();
+		CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+
+		if (State == "SAVE_CHILD")
+		{
+			return new CVariable_Condition(QuestFact::SAVE_CHILD,true);
+		}
+	}
 	return nullptr;
 }

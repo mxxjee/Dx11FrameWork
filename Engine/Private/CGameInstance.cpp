@@ -878,6 +878,11 @@ CLight* CGameInstance::Get_Light(_uint iLevelID, _uint iIndex)
 	return m_pLightManager->Get_Light(iLevelID,iIndex);
 }
 
+CLight* CGameInstance::Get_DirectionLight(_uint iLevelID)
+{
+	return m_pLightManager->Get_DirectionLight(iLevelID);
+}
+
 HRESULT CGameInstance::Bind_Directional_Light(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer, const LIGHT_DESC* pLightDesc)
 {
 	return m_pLightManager->Bind_Directional_Light(pShader, pVIBuffer,pLightDesc);

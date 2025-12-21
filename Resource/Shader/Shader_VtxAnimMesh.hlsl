@@ -197,6 +197,31 @@ float4 PS_Eye(PS_IN Input) : SV_Target0
     
 
 }
+
+PS_OUT PS_Alpha(PS_IN Input)
+{
+    PS_OUT Out;
+    
+    float4 fDiffuseColor, fAmbientColor, fSpeculrColor;
+    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
+    
+    
+                        //0~1값으로 치환
+    Out.vNormal = float4(Input.vNormal.xyz * 0.5f + 0.5f, 0.f);
+
+  
+    
+    float3 Tmpcolor = saturate(Out.vDiffuse.rgb + float3(2.5, 0.0, 0.0));
+    Out.vDiffuse.a = g_Alpha;
+    
+    /*Depth_RenderTarget에 기록하자*/
+    
+    Out.vDepth = float4(Input.vProjPos.z / Input.vProjPos.w, ///0~1사이 
+                        Input.vPosition.w, //월드 z, 
+                        0.f, 0.f);
+   
+    return Out;
+}
 /*렌더링 방법을 정의한다.*/
 technique11 DefaultTechnique
 {
@@ -217,6 +242,19 @@ technique11 DefaultTechnique
 
     }
 
+    pass Alpha
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Alpha, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        //이 pass가 선택되면 VertexShader는 이렇게 컴파일하세요.
+                                //버전 , 진입함수 설정
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_Alpha();
+
+    }
 
     
 }

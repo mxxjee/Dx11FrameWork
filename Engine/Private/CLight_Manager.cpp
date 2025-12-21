@@ -41,6 +41,14 @@ CLight* CLight_Manager::Get_Light(_uint iLevelID, _uint iIndex)
 
 }
 
+CLight* CLight_Manager::Get_DirectionLight(_uint iLevelID)
+{
+    CLight* pLight = m_DirectionalLights[iLevelID];
+
+
+    return pLight;
+}
+
 HRESULT CLight_Manager::Bind_Lights(CShader* pShader)
 {  
 

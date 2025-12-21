@@ -98,7 +98,7 @@ public:
     /*룸 로드시에 부르는거*/
     void        Change_NavMesh();
     void        Register_Colliders(_uint iLevelID);
-private:
+protected:
     GameEvent       Enter_Interaction_Event;
     GameEvent       Exit_Interaction_Event;
 
