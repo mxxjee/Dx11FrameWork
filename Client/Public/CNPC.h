@@ -50,6 +50,7 @@ public:
 
     virtual HRESULT Render();
 
+
 protected:
     Engine::CNavigation* m_pNavigationCom = { nullptr };
 

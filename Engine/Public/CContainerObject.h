@@ -26,6 +26,9 @@ public:
 
     virtual HRESULT Render();
 
+public:
+    virtual void Set_Active(bool _b);
+
 protected:
     UMap<_wstring, class CPartObject*> m_PartObjects;
 

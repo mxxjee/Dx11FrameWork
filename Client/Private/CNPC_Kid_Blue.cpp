@@ -28,6 +28,10 @@ HRESULT CNPC_Kid_Blue::Initialize_Prototype(void* pArg)
     if (FAILED(__super::Initialize_Prototype(pArg)))
         return E_FAIL;
 
+    m_pGameInstance->RegisterListners("Enter_Forest", [this](const GameEvent& event)
+        {
+            Set_Active(true);
+        });
 
     m_pAnimBody->Reserve_Animation(L"panic", true, false);
 
@@ -84,7 +88,6 @@ void CNPC_Kid_Blue::Update_Late(_float fTimeDelta)
     {
         Set_Active(false);
         m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide", nullptr);
-        m_pTriggerBox->Set_Active(false);
     }
 
 

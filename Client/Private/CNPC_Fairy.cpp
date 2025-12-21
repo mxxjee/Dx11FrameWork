@@ -19,6 +19,11 @@ HRESULT CNPC_Fairy::Initialize_Prototype(void* pArg)
         return E_FAIL;
 
 
+    m_pGameInstance->RegisterListners("Enter_Forest", [this](const GameEvent& event)
+        {
+            Set_Active(true);
+        });
+
 
     return S_OK;
 }

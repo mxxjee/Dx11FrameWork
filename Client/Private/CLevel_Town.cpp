@@ -399,6 +399,13 @@ HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
             ENUM_TO_UINT(LEVEL_ID::TOWN),
             strLayerTag, &Moriblindesc)))
             return E_FAIL;
+
+        CGameObject* pFindMonster = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::TOWN),
+            L"Monster_Layer", Moriblindesc.ObjTag);
+
+        if (pFindMonster)
+            pFindMonster->Set_Active(false);
+
     }
   
     return S_OK;
@@ -456,6 +463,7 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
         if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, pNpc_GreenKid)))
             return E_FAIL;
 
+        pNpc_GreenKid->Set_Active(false);
     }
 
     ////////¿äÁ¤
@@ -481,11 +489,12 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
     pFairyDesc.TransformDesc = &pFairyTransDesc;
 
     CNPC_Fairy* pNpc_Fairy = CNPC_Fairy::Create(m_pDevice, m_pContext, &pFairyDesc);
-    if (pNpc_GreenKid)
+    if (pNpc_Fairy)
     {
         if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, pNpc_Fairy)))
             return E_FAIL;
 
+        pNpc_Fairy->Set_Active(false);
     }
 
     /// <summary>
@@ -516,6 +525,7 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
         if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, pNPC_Kid)))
             return E_FAIL;
 
+        pNPC_Kid->Set_Active(false);
     }
 
     return S_OK;
@@ -610,6 +620,9 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
     DefaultEventDesc.TransformDesc = &DefaultEventTransform;
 
+
+
+
     DefaultEventDesc.StayFunc = [this]()
     {
         m_Chapter = L"Default";
@@ -678,7 +691,14 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
     EventTransform.vLocalPosition = _float4(2.198f, 12.79f, 52.188f, 1.f);
 
     EventDesc.TransformDesc = &EventTransform;
+    EventDesc.EnterFunc = [this]()
+    {
+        GameEvent Event;
+        Event.Name = "Enter_Forest";
 
+        m_pGameInstance->Emit(Event);
+
+    };
     EventDesc.StayFunc = [this]()
     {
         m_Chapter = L"Forest";

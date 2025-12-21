@@ -1,0 +1,35 @@
+{
+  "NPCScripts": [
+    {
+      "ModelID": "NPC_Tarin",
+      "Chapters": [
+        {
+          "ChapterID": "Q999_START",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "타린",
+              "Text": "어, 링크! 일어났구나\n난 타린이라고 한다. 몸은 어때?",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "타린",
+              "Text": "응?! 내가 이름을 아는게\n신기하냐...?",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "타린",
+              "Text": "방패 뒤에 새겨진 이름을 봤지\n자, 이 방패 받아라!",
+              "strActionCommand": "PLAY_ANIM:NPC_BOW",
+              "actionTiming": "ON_START"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

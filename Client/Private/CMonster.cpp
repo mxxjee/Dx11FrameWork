@@ -152,11 +152,11 @@ void CMonster::Set_Active(bool _b)
     for (auto& pair : m_PartObjects)
     {
         if (pair.second)
-            pair.second->Set_Active(false);
+            pair.second->Set_Active(_b);
 
     }
 
-    m_pCollider->Set_Active(false);
+    m_pCollider->Set_Active(_b);
 
 }
 

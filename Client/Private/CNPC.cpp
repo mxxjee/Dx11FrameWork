@@ -134,6 +134,8 @@ HRESULT CNPC::Render()
     return S_OK;
 }
 
+
+
 bool CNPC::IsInteratable()
 {
     CheckNullResult(m_pTriggerBox, false);

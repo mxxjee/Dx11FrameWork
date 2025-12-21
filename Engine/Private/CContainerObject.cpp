@@ -95,6 +95,17 @@ HRESULT CContainerObject::Render()
     return S_OK;
 }
 
+void CContainerObject::Set_Active(bool _b)
+{
+    __super::Set_Active(_b);
+
+    for (auto& pair : m_PartObjects)
+    {
+        if (pair.second)
+            pair.second->Set_Active(_b);
+    }
+}
+
 HRESULT CContainerObject::Add_PartObject(_uint iPrototypeLevelIdx, const _wstring& strPrototypeTag, const _wstring& strPartObjTag, void* pArg)
 {
     /*이미존재하는지 체크*/

@@ -45,10 +45,17 @@ HRESULT CM_MoriblinSword::Initialize_Prototype()
 	return S_OK;
 }
 
+
 HRESULT CM_MoriblinSword::Initialize_Copytype(void* pArg)
 {
 	if (FAILED(__super::Initialize_Copytype(pArg)))
 		return E_FAIL;
+
+	m_pGameInstance->RegisterListners("Enter_Forest", [this](const GameEvent& event)
+		{
+			Set_Active(true);
+		});
+
 
 	Register_Anim();
 
