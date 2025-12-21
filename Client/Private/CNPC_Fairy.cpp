@@ -1,5 +1,8 @@
 #include "CNPC_Fairy.h"
 #include "CPlayer.h"
+#include "CAnimBody.h"
+#include "CAnimation.h"
+#include "CModel.h"
 
 
 USING(Client)
@@ -18,12 +21,30 @@ HRESULT CNPC_Fairy::Initialize_Prototype(void* pArg)
     if (FAILED(__super::Initialize_Prototype(pArg)))
         return E_FAIL;
 
+    //st-lp-ed
+    Reigster_AnimNotify();
 
     m_pGameInstance->RegisterListners("Enter_Forest", [this](const GameEvent& event)
         {
             Set_Active(true);
         });
 
+    m_pGameInstance->RegisterListners("Fairy_End", [this](const GameEvent& event)
+        {
+            m_pAnimBody->Reserve_Animation(L"heel_st", false);
+        });
+
+
+    m_pGameInstance->RegisterListners("Fairy_Go_Loop", [this](const GameEvent& event)
+        {
+            m_pAnimBody->Reserve_Animation(L"heel_lp", false);
+        });
+
+
+    m_pGameInstance->RegisterListners("Fairy_Go_End", [this](const GameEvent& event)
+        {
+            m_pAnimBody->Reserve_Animation(L"heel_ed", false);
+        });
 
     return S_OK;
 }
@@ -51,6 +72,37 @@ void CNPC_Fairy::Update_Render(_float fTimeDelta)
 HRESULT CNPC_Fairy::Render()
 {
     return S_OK;
+}
+
+void CNPC_Fairy::Reigster_AnimNotify()
+{
+    GameEvent Event;
+    EventPayload payload;
+    Event.Payload = payload;
+
+    //st->lp
+    CAnimation* pAnim = m_pAnimBody->Get_Model()->Find_Animation(L"heel_st");
+
+    if (pAnim)
+    {
+        Event.Name = "Fairy_Go_Loop";
+        pAnim->AddNotify(129, Event);
+    }
+
+    pAnim = m_pAnimBody->Get_Model()->Find_Animation(L"heel_lp");
+
+    if (pAnim)
+    {
+        Event.Name = "Fairy_Go_End";
+        pAnim->AddNotify(100, Event);
+    }
+
+    pAnim = m_pAnimBody->Get_Model()->Find_Animation(L"heel_ed");
+ /*   if (pAnim)
+    {
+        Event.Name = "Go_";
+        pAnim->AddNotify(100, Event);
+    }*/
 }
 
 CNPC_Fairy* CNPC_Fairy::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex, void* pArg)

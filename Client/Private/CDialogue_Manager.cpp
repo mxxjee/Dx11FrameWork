@@ -20,6 +20,9 @@ HRESULT CDialogue_Manager::Initialize()
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Tarin_Script.json");
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Kid_Green_Script.json");
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Kid_Blue_Script.json");
+    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Fairy_Script.json");
+
+    
     m_pGameInstance = CGameInstance::GetInstance();
 
     Register_EventListner();
@@ -202,6 +205,17 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
 
     }
 
+
+    if (strCommand == "Fairy_End")
+    {
+        CQuest_Manager::GetInstance()->Set_FactCheckValue(CQuest_Manager::QuestFact::SAVE_CHILD, true);
+        
+        GameEvent Event;
+        Event.Name = "Fairy_End";
+
+        CGameInstance::GetInstance()->Emit(Event);
+
+    }
 }
 
 void CDialogue_Manager::LoadScriptDatabase(const string& strFilePath)

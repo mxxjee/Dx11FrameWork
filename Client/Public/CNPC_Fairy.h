@@ -22,11 +22,13 @@ public:
 
     virtual HRESULT Render();
 
-
+private:
+    void        Reigster_AnimNotify();
 
 public:
     static CNPC_Fairy* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex, void* pArg);
     virtual void Free() override;
+
 
 
 };

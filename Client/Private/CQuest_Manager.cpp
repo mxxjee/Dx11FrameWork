@@ -49,6 +49,12 @@ HRESULT CQuest_Manager::Initialize()
 	m_mapNPCChapterProgress[KidBlue_HashKey].BaseChapterID = "Q1002_ACTIVE_PERM";		//대화시작챕터:START
 	m_mapNPCChapterProgress[KidBlue_HashKey].CurrentChapterID = m_mapNPCChapterProgress[KidBlue_HashKey].BaseChapterID;		//대화시작챕터:START
 
+
+	size_t Fairy_HashKey = hash<string>()("NPC_Fairy");
+	m_mapNPCChapterProgress[Fairy_HashKey].BaseChapterID = "Fairy_start";		//대화시작챕터:START
+	m_mapNPCChapterProgress[Fairy_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Fairy_HashKey].BaseChapterID;		//대화시작챕터:START
+
+
 	return S_OK;
 }
 
