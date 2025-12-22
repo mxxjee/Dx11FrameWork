@@ -781,6 +781,7 @@ void CLevel_Town::OnEnter()
     CPlayer* pPlayer=m_pGameManager->Get_MainPlayer();
     CheckNull(pPlayer);
 
+    pPlayer->Show_Weapons();
     vector<CCell*>* m_Cells = m_pGameInstance->Get_MainCells();
     if (m_Cells)
     {
@@ -858,6 +859,7 @@ void CLevel_Town::OnResume(_uint iPreLevel)
 
     //카메라돌려놓기이벤트 실행
     CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
+    pPlayer->Show_Weapons();
 
     GameEvent Event;
     EventPayload payload;

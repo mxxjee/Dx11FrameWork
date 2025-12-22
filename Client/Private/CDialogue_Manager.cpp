@@ -230,6 +230,7 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
         CPlayer* pPlayer=CGameManager::GetInstance()->Get_MainPlayer();
         CheckNull(pPlayer);
         CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::SHIELD,1);
+        CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::SWROD, 1);
 
     }
 }
