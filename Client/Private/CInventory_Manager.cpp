@@ -20,50 +20,59 @@ CInventory_Manager::CInventory_Manager()
 
 }
 
-bool CInventory_Manager::Add_To_Inven(ItemType eType, int iCount)
+void CInventory_Manager::Update(_float fTimeDelta)
 {
-	CheckTrueResult(iCount == 0,false);
+	//큐를검사하면서 진짜 넣을수있는지 체크
+	CheckTrue(m_SlotQueue.empty());
 
-	InvenSlot* pSlot = Find_Inven(eType);
-	if (pSlot)
+	InvenStanby* pFront = m_SlotQueue.front();
+	if (pFront->m_bEnd)
 	{
-		pSlot->count += iCount;
+		InvenSlot* pNewSlot = new InvenSlot;
+		pNewSlot->ItemType = pFront->ItemType;
+		pNewSlot->count = pNewSlot->count;
+
+		m_InvenSlots[ENUM_TO_UINT(pNewSlot->ItemType)] = pNewSlot;
+		m_SlotQueue.pop_front();
+		Safe_Delete(pFront);
 	}
 
 	else
 	{
-		InvenSlot* pNewSlot = new InvenSlot;
-
-		pNewSlot->ItemType = eType;
-		pNewSlot->count = iCount;
-		m_InvenSlots[ENUM_TO_UINT(eType)] = pNewSlot;
+		//아ㅣ나렴ㄴ UI요청해라. 매프레임불려도 같은상태라면 안바뀜.
+		Request_UI_Event(pFront->ItemType);
 	}
 
 
-	//UI활성화..
-	//아이템원본 정보가져오기
-	ITMINFO* pOriginITMINFO = m_pItemManager->Get_ItemInfo(eType);
-	CheckNullResult(pOriginITMINFO,false);
-	CheckNullResult(m_ItemEvent, false);
 
-	m_ItemEvent->ItemDesc = pOriginITMINFO->ItemDesc;
-	m_ItemEvent->TexKey = pOriginITMINFO->TexKey;
-	m_ItemEvent->OffSet = _float3(0.f, -130.f, 0.f);
+}
+bool CInventory_Manager::Request_Add_To_Inven(ItemType eType, int iCount)
+{
+	/*인벤 대기열에 넣을 거 관리*/
+	CheckTrueResult(iCount == 0,false);
+
+	InvenSlot* pSlot = Find_Inven(eType);
+	
+	//이미대기열에존재한다면, 추가 X(1개씩얻어야하는 아이템들)
+	InvenStanby* pFindStanby = Find_Stanby(eType);
+	CheckTrueResult(pFindStanby!=nullptr, false);
+
+	InvenStanby* pStanBy = new InvenStanby;
+	pStanBy->ItemType = eType;
+
+	//같은아이템 또먹은경우
+	if (pSlot)
+		pStanBy->count += iCount + pSlot->count;
+
+	else
+	{
+		pStanBy->count = iCount;
+		m_SlotQueue.push_back(pStanBy);
+
+	}
 
 
-	//플레이어한테 애니메이션 실행시켜라.
-	//플레이어는 여기 애님노티파이를 통해서 ui활성화
-	if (!m_pPlayer)
-		m_pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
-
-
-	CheckNullResult(m_pPlayer, false);
-
-	//아이템얻은상태로 변경
-	m_pPlayer->Set_GetItem(true);
-
-
-
+	
 
 	return true;
 }
@@ -76,6 +85,9 @@ InvenSlot* CInventory_Manager::Find_Inven(ItemType eType)
 void CInventory_Manager::Free()
 {
 	for (auto& pSlot : m_InvenSlots)
+		Safe_Delete(pSlot);
+	
+	for (auto& pSlot : m_SlotQueue)
 		Safe_Delete(pSlot);
 
 	Safe_Delete(m_ItemEvent);
@@ -102,4 +114,63 @@ int CInventory_Manager::Get_InvenSize()
 			
 	}
 	return Size;
+}
+
+void CInventory_Manager::Set_End_in_SlotQueue(ItemType eType, bool b)
+{
+	for (auto& slot : m_SlotQueue)
+	{
+		if (slot->ItemType == eType)
+		{
+			slot->m_bEnd = b;
+			return;
+
+		}
+	}
+}
+
+void CInventory_Manager::Request_UI_Event(ItemType eType)
+{
+	//UI활성화..
+	//아이템원본 정보가져오기
+	//이미 아이템얻고있는상태라면 빠꾸
+	if (!m_pPlayer)
+		m_pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+
+	CheckNull(m_pPlayer);
+	CheckTrue(m_pPlayer->Get_ActionControl()->m_bItemGet);
+
+	ITMINFO* pOriginITMINFO = m_pItemManager->Get_ItemInfo(eType);
+	CheckNull(pOriginITMINFO);
+	CheckNull(m_ItemEvent);
+
+	m_ItemEvent->eType = eType;
+	m_ItemEvent->ItemDesc = pOriginITMINFO->ItemDesc;
+	m_ItemEvent->TexKey = pOriginITMINFO->TexKey;
+	m_ItemEvent->OffSet = _float3(0.f, -130.f, 0.f);
+
+
+	//플레이어한테 애니메이션 실행시켜라.
+	//플레이어는 여기 애님노티파이를 통해서 ui활성화
+	
+
+
+
+	//아이템얻은상태로 변경
+	m_pPlayer->Set_GetItem(true);
+
+
+
+}
+
+CInventory_Manager::InvenStanby* CInventory_Manager::Find_Stanby(ItemType eType)
+{
+	CheckTrueResult(m_SlotQueue.empty(),nullptr);
+	for (auto& pDst : m_SlotQueue)
+	{
+		if (pDst->ItemType == eType)
+			return pDst;
+	}
+
+	return nullptr;
 }

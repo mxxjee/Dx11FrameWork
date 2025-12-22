@@ -32,8 +32,8 @@ HRESULT CQuest_Manager::Initialize()
 	m_mapNPCChapterProgress[Marin_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Marin_HashKey].BaseChapterID;		//대화시작챕터:START
 
 	size_t Tarin_HashKey = hash<string>()("NPC_Tarin");
-	m_mapNPCChapterProgress[Tarin_HashKey].BaseChapterID = "Q999_START";		//대화시작챕터:START
-	m_mapNPCChapterProgress[Tarin_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Marin_HashKey].BaseChapterID;		//대화시작챕터:START
+	m_mapNPCChapterProgress[Tarin_HashKey].BaseChapterID = "TARIN_START";		//대화시작챕터:START
+	m_mapNPCChapterProgress[Tarin_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Tarin_HashKey].BaseChapterID;		//대화시작챕터:START
 
 
 	size_t Mom_HashKey = hash<string>()("NPC_Mom");
@@ -193,7 +193,7 @@ string CQuest_Manager::Get_Optimal_ChapterID(const string& ModelID)
 
 
 	if (iTrackingQuestID == 0)
-		return strBaseChapterID;
+		return Get_NPC_Chapter(ModelID);
 
 	//퀘스트 상태확인
 	QuestState state = Get_QuestState(iTrackingQuestID);
@@ -202,13 +202,16 @@ string CQuest_Manager::Get_Optimal_ChapterID(const string& ModelID)
 		return "Q" + to_string(iTrackingQuestID) + "_ACTIVE_PERM";
 	}
 
-	if (state == QuestState::COMPLETABLE)
+	else if (state == QuestState::COMPLETABLE)
 	{
 		return "Q" + to_string(iTrackingQuestID) + "_COMPLETABLE_READY";
 	}
 
-	if(state==QuestState::COMPLETED)
+	else if (state == QuestState::COMPLETED)
 		return "Q" + std::to_string(iTrackingQuestID) + "_DONE";
+
+	else
+		return Get_NPC_Chapter(ModelID);
 
 	// 퀘스트가 ACTIVE 상태라면 strBaseChapterID (예: Q1001_ACTIVE_PERM) 그대로 반환
 	// 퀘스트가 NONE 상태이고 strBaseChapterID가 Q[번호]_START라면 그대로 반환

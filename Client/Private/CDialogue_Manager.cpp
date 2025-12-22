@@ -103,6 +103,13 @@ void CDialogue_Manager::TryAdvanceChapter(const string& ModelID, const string& s
         }
     }
 
+
+    //CASE 3: 퀘스트없이 그냥 넘어가는대화
+    if (iOfferedQuest == 0 && iRequiredQuest == 0)
+    {
+        if (!pChapter->strNextPermanentChapterID.empty())
+            pQM->Set_NPC_Chapter(ModelID, pChapter->strNextPermanentChapterID);
+    }
     
 }
 
@@ -222,7 +229,7 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
     {
         CPlayer* pPlayer=CGameManager::GetInstance()->Get_MainPlayer();
         CheckNull(pPlayer);
-        CInventory_Manager::GetInstance()->Add_To_Inven(ItemType::SHIELD_SLASH, 1);
+        CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::SHIELD,1);
 
     }
 }

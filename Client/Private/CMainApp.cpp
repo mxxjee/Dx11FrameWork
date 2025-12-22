@@ -275,6 +275,7 @@ void CMainApp::Update(_float fTimeDelta)
 	
 	m_pGameInstance->Update_Engine(fTimeDelta);
 	CInteraction_Manager::GetInstance()->Update(fTimeDelta);
+	CInventory_Manager::GetInstance()->Update(fTimeDelta);
 #ifdef _DEBUG
 	pImGui_Manager->Update();
 #endif
@@ -285,6 +286,7 @@ void CMainApp::Update_Late(float fTimeDelta)
 {
 
 	m_pGameInstance->LateUpdate_Engine(fTimeDelta);
+
 	CQuest_Manager::GetInstance()->Update(fTimeDelta);
 }
 

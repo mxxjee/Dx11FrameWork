@@ -49,5 +49,8 @@ private:
     bool        m_bShowUI = false;      //true이면 이벤트발생x
     CMainCamera* m_pMainCamera = nullptr;
 
+private:
+    ItemType        m_eGetItemType;
+
 };
 NS_END

@@ -8,6 +8,8 @@ NS_BEGIN(Client)
 class CItem_Manager;
 class CPlayer;
 
+/*바로인벤에 넣어지는것이아니ㅏㄹ 여러개의 아이템을 동시에 얻었을떄
+하나씩 처리되도록 설정*/
 
 class CInventory_Manager :
     public CBase
@@ -20,24 +22,40 @@ public:
             //아이템 얻는 UI띄울떄 보낼 구조체
     struct ItemGetEvent
     {
+        ItemType eType = ItemType::END;
         wstring TexKey = L"";   //어떤아이템꺼 띄울건지
         _float3 OffSet = _float3(0.f, 0.f, 0.f);        //오프셋값
         wstring ItemDesc = L"";
 
     };
+
+    struct InvenStanby
+    {
+        ItemType	ItemType = ItemType::END;
+        int			count = 0;
+        bool        m_bEnd = false;
+    };
 private:
     explicit CInventory_Manager();
     virtual ~CInventory_Manager()=default;
 
+public:
+    void        Update(_float fTimeDelta);
 
 public:
     //아이템소유중인지체크 
     InvenSlot* Find_Inven(ItemType eType);
+    InvenStanby* Find_Stanby(ItemType eType);
+
     CInventory_Manager::ItemGetEvent* Get_ItemGetEvent();
     int             Get_InvenSize();    //인벤토리 아이템 총 개수 판단
 public:
-    bool         Add_To_Inven(ItemType eType, int iCount);
-                
+
+                //이 아이템 인벤에 넣을거니까 유아이 띄워.
+    bool         Request_Add_To_Inven(ItemType eType, int iCount);
+    void         Request_UI_Event(ItemType eType);
+                    //Desc사라지고 이후에 true로만들어서 이후에 인벤에 진짜추가됨
+    void         Set_End_in_SlotQueue(ItemType eType, bool b);
    
 
 public:
@@ -52,6 +70,7 @@ private:
     CInventory_Manager::ItemGetEvent* m_ItemEvent = nullptr;        //가장 최근 얻은 아이템정보
 
 private:
+    deque<InvenStanby*>      m_SlotQueue;
     CPlayer* m_pPlayer = nullptr;
 
 

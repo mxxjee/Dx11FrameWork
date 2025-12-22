@@ -101,7 +101,8 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
         
     
     if (m_pGameManager->Get_UseCutScene())
-        Change_State(ENUM_TO_UINT(PLAYER_STATE::PRATFALL));
+        StartCutScene();//컷씬상태에 맞는 메쉬,등등 설정
+      
 
     else
         Change_State(IDLE);
@@ -204,6 +205,13 @@ HRESULT CPlayer::Render()
 } 
 
 
+void CPlayer::StartCutScene()
+{
+    //컷씬상태라면, 웨폰없는상태로 시작
+    Change_State(ENUM_TO_UINT(PLAYER_STATE::PRATFALL));
+    Set_HideWeapons();
+}
+
 void CPlayer::EndCutScene()
 {
     //불변수 false만들고, 움직임가능하게 처리.
@@ -247,26 +255,36 @@ void CPlayer::Update_Input(_float fTimeDelta)
 {
     CheckTrue(m_pGameInstance->Get_IsLoading());
 
-    if (m_ActionControl.m_bCanAttack)
-        m_Input.m_bisAttack = m_pInputManager->IsKeyHeld(KeyCode::B);
-    else
-        m_Input.m_bisAttack = false;
+    _uint iCurrentLevel = m_pGameInstance->Get_CurrentLevelID();
 
-
-
-
-    if(m_ActionControl.m_bCanShield)
-        m_Input.m_bisShield = m_pInputManager->IsKeyHeld(KeyCode::T);
-    else
-        m_Input.m_bisShield = false;
-
-    m_Input.m_bisShieldRelease = m_pInputManager->IsKeyReleased(KeyCode::T);
-    if (m_Input.m_bisJump = m_pInputManager->IsKeyPressed(KeyCode::X) && m_iState!= ENUM_TO_UINT(CPlayer::PLAYER_STATE::JUMP))
+    //NPC방이 아닐때만 점프/어택/쉴드 가능
+    if (iCurrentLevel != ENUM_TO_UINT(LEVEL_ID::ROOM) &&
+        iCurrentLevel != ENUM_TO_UINT(LEVEL_ID::SPAWN))
     {
-        m_pGravity->Jump(20);
-        m_pGravity->SetOnGround(false);
+        if (m_ActionControl.m_bCanAttack)
+            m_Input.m_bisAttack = m_pInputManager->IsKeyHeld(KeyCode::B);
+        else
+            m_Input.m_bisAttack = false;
 
+        if (m_ActionControl.m_bCanShield)
+            m_Input.m_bisShield = m_pInputManager->IsKeyHeld(KeyCode::T);
+        else
+            m_Input.m_bisShield = false;
+
+        m_Input.m_bisShieldRelease = m_pInputManager->IsKeyReleased(KeyCode::T);
+        if (m_Input.m_bisJump = m_pInputManager->IsKeyPressed(KeyCode::X) && m_iState != ENUM_TO_UINT(CPlayer::PLAYER_STATE::JUMP))
+        {
+            m_pGravity->Jump(20);
+            m_pGravity->SetOnGround(false);
+
+        }
     }
+
+
+
+
+
+   
     /*등록한 홀드키에 대해서 모두 홀드키 시간, 여부 검사*/
     Update_HoldTime(fTimeDelta);
    
@@ -590,6 +608,14 @@ void CPlayer::Set_HideWeapons()
 void CPlayer::Show_Weapons()
 {
     CheckNull(m_pBody);
+
+    _uint iCurrentLevelID = m_pGameInstance->Get_CurrentLevelID();
+
+    //만약 npc룸 안이라면, 활성화하지 않음
+    CheckTrue(iCurrentLevelID == ENUM_TO_UINT(LEVEL_ID::ROOM));
+    CheckTrue(iCurrentLevelID == ENUM_TO_UINT(LEVEL_ID::SPAWN));
+
+
 
 	m_pBody->Set_VisibleMesh(L"linkShieldA_bis_low__linkShieldA_MI_shieldA", true);
 

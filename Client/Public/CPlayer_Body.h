@@ -30,6 +30,7 @@ public:
 
     virtual HRESULT Render();
 
+
 private :
     virtual HRESULT         Bind_ShaderResources() override;
 

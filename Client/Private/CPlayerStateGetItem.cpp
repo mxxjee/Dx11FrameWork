@@ -23,11 +23,14 @@ void CPlayerStateGetItem::Enter(CPlayer* pPlayer)
 
     m_pMainCamera=dynamic_cast<CMainCamera*>(m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET));
     
+    m_eGetItemType = CInventory_Manager::GetInstance()->Get_ItemGetEvent()->eType;
+
     //npc근처에있으면 이거 숨기기..
     m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", nullptr);
 
+
     //최초로 얻은거라면, 노티파이 등록
-    if (CInventory_Manager::GetInstance()->Get_InvenSize() == 1)
+    if (CInventory_Manager::GetInstance()->Get_InvenSize() == 0)
     {
         m_pGameInstance->RegisterListners("PlayerOnItemGet", [this](const GameEvent& event)
             {
@@ -135,6 +138,7 @@ void CPlayerStateGetItem::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
         if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::A))
         {
             m_bChange = true;
+            CInventory_Manager::GetInstance()->Set_End_in_SlotQueue(m_eGetItemType,true);
         }
 
         
@@ -155,7 +159,7 @@ void CPlayerStateGetItem::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 void CPlayerStateGetItem::Exit(CPlayer* pPlayer)
 {
     pPlayer->Set_CanMove(true);
-    pPlayer->Set_Default();
+    pPlayer->Show_Weapons();
 
     pActionControl->m_bItemGet = false;
     

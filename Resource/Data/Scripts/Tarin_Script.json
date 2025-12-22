@@ -4,10 +4,10 @@
       "ModelID": "NPC_Tarin",
       "Chapters": [
         {
-          "ChapterID": "Q999_START",
+          "ChapterID": "TARIN_START",
           "iQuestOffered": 0,
           "iQuestRequiredToUnlock": 0,
-          "strNextPermanentChapterID": "",
+          "strNextPermanentChapterID": "TARIN_END",
           "Steps": [
             {
               "Speaker": "타린",
@@ -26,6 +26,20 @@
               "Text": "방패 뒤에 새겨진 이름을 봤지\n자, 이 방패 받아라!",
               "strActionCommand": "Get_Shield",
               "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "TARIN_END",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "타린",
+              "Text": "이제 어서 바깥으로 나가보거라!",
+              "strActionCommand": "",
+              "actionTiming": ""
             }
           ]
         }

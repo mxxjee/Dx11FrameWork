@@ -129,7 +129,8 @@ typedef struct tagMonsterActionControl
 /////////아이템정보/////////
 enum class ItemType
 {
-	SHIELD_SLASH,//칼과방패
+	SHIELD,//방패
+	SWROD,//칼
 	MUSHROOM ,	//숲에서발견한 버섯
 	LETTER,	//아이가 남기고간 쪽지
 	FEATHER,	//깃털
@@ -155,7 +156,7 @@ struct InvenSlot
 {
 	ItemType	ItemType = ItemType::END;
 	int			count = 0;
-
+	
 };
 
 /*각 숫자는 우선순위를의미한다*/

@@ -9,11 +9,17 @@ HRESULT CItem_Manager::Initialize()
 {
     m_ItmInfos.resize((size_t)ItemType::END);
 
-    ITMINFO* pShield_SlashItem = new ITMINFO;
-    pShield_SlashItem->ItemType = ItemType::SHIELD_SLASH;
-    pShield_SlashItem->ItemDesc = L"방패를 되찾았다!\nT키를 누르는 동안 적을 튕겨낼 수 있다.";
-    pShield_SlashItem->TexKey = L"Shield";
-    m_ItmInfos[ENUM_TO_UINT(ItemType::SHIELD_SLASH)]=(pShield_SlashItem);
+    ITMINFO* pShieldItem = new ITMINFO;
+    pShieldItem->ItemType = ItemType::SHIELD;
+    pShieldItem->ItemDesc = L"방패를 되찾았다!\nT키를 누르는 동안 적을 튕겨낼 수 있다.";
+    pShieldItem->TexKey = L"Shield";
+    m_ItmInfos[ENUM_TO_UINT(ItemType::SHIELD)]=(pShieldItem);
+
+    ITMINFO* pSwordItem = new ITMINFO;
+    pSwordItem->ItemType = ItemType::SWROD;
+    pSwordItem->ItemDesc = L"칼을 받았다!\nB키를 눌러 공격하고 방패와 조합이 가능하다.";
+    pSwordItem->TexKey = L"Sword";
+    m_ItmInfos[ENUM_TO_UINT(ItemType::SWROD)] = (pSwordItem);
 
     ITMINFO* pMushroomItem = new ITMINFO;
     pMushroomItem->ItemType = ItemType::MUSHROOM;
@@ -28,7 +34,7 @@ HRESULT CItem_Manager::Initialize()
     m_ItmInfos[ENUM_TO_UINT(ItemType::LETTER)] = (pLetterItem);
 
     ITMINFO* pFeatherItem = new ITMINFO;
-    pShield_SlashItem->ItemType = ItemType::FEATHER;
+    pFeatherItem->ItemType = ItemType::FEATHER;
     pFeatherItem->ItemDesc = L"깃털을 얻었다!\n모으면 무슨일이 생길까...?";
     pFeatherItem->TexKey = L"Feather";
     m_ItmInfos[ENUM_TO_UINT(ItemType::FEATHER)] = (pFeatherItem);
