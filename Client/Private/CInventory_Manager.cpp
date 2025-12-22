@@ -48,7 +48,7 @@ bool CInventory_Manager::Add_To_Inven(ItemType eType, int iCount)
 
 	m_ItemEvent->ItemDesc = pOriginITMINFO->ItemDesc;
 	m_ItemEvent->TexKey = pOriginITMINFO->TexKey;
-	m_ItemEvent->OffSet = _float3(0.f, -200.f, 0.f);
+	m_ItemEvent->OffSet = _float3(0.f, -130.f, 0.f);
 
 
 	//플레이어한테 애니메이션 실행시켜라.

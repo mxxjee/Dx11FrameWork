@@ -1,6 +1,11 @@
 #pragma once
 #include "CPlayerState.h"
 
+namespace Engine
+{
+    class CMainCamera;
+
+}
 NS_BEGIN(Client)
 class CPlayerStateGetItem :
     public CPlayerState
@@ -23,6 +28,9 @@ private:
     void            ChangePhase(CPlayer* pPlayer);      //페이즈만 변경
     void            ChangeState(CPlayer* pPlayer);//아예 다른상태로 전이
 
+private:
+    void        Change_CameraState(float _fTimeDelta);
+
 
 public:
     static CPlayerStateGetItem* Create();
@@ -39,5 +47,7 @@ private:
 
     bool        m_bStartAnim = false;
     bool        m_bShowUI = false;      //true이면 이벤트발생x
+    CMainCamera* m_pMainCamera = nullptr;
+
 };
 NS_END

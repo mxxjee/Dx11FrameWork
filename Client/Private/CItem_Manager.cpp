@@ -11,7 +11,7 @@ HRESULT CItem_Manager::Initialize()
 
     ITMINFO* pShield_SlashItem = new ITMINFO;
     pShield_SlashItem->ItemType = ItemType::SHIELD_SLASH;
-    pShield_SlashItem->ItemDesc = L"방패를 되찾았다!\nR키를 누르는 동안 적을 튕겨낼 수 있다.";
+    pShield_SlashItem->ItemDesc = L"방패를 되찾았다!\nT키를 누르는 동안 적을 튕겨낼 수 있다.";
     pShield_SlashItem->TexKey = L"Shield";
     m_ItmInfos[ENUM_TO_UINT(ItemType::SHIELD_SLASH)]=(pShield_SlashItem);
 

@@ -3,6 +3,9 @@
 #include "CCamera_Base.h"
 #include "GlobalGameEvent.h"
 #include "CInventory_Manager.h"
+#include "CMainCamera.h"
+#include "CInput_Manager.h"
+
 
 USING(Client)
 CPlayerStateGetItem::CPlayerStateGetItem()
@@ -18,6 +21,11 @@ void CPlayerStateGetItem::Enter(CPlayer* pPlayer)
     pPlayerInput = pPlayer->Get_Input();
     pActionControl = pPlayer->Get_ActionControl();
 
+    m_pMainCamera=dynamic_cast<CMainCamera*>(m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET));
+    
+    //npc근처에있으면 이거 숨기기..
+    m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", nullptr);
+
     //최초로 얻은거라면, 노티파이 등록
     if (CInventory_Manager::GetInstance()->Get_InvenSize() == 1)
     {
@@ -28,8 +36,20 @@ void CPlayerStateGetItem::Enter(CPlayer* pPlayer)
                 {
                     if (!m_bShowUI)
                     {
-                        m_pGameInstance->BroadCastEvent(L"OnItemGetIconShow", CInventory_Manager::GetInstance()->Get_ItemGetEvent());
+                        CInventory_Manager::ItemGetEvent* pEvent = CInventory_Manager::GetInstance()->Get_ItemGetEvent();
+
+                        m_pGameInstance->BroadCastEvent(L"OnItemGetIconShow", pEvent);
                         m_bShowUI = true;
+
+                        m_pGameInstance->Invoke(2.f, 0.f, false, false, [pEvent]()
+                            {
+                                CGameInstance::GetInstance()->BroadCastEvent(L"OnItemDescUIShow", pEvent);
+                                CGameInstance::GetInstance()->BroadCastEvent(L"UpdateItemDescText", pEvent);
+
+                            },pPlayer);
+
+                       
+                       
                     }
                 }
 
@@ -44,7 +64,10 @@ void CPlayerStateGetItem::Enter(CPlayer* pPlayer)
                 {
                     if (m_bShowUI)
                     {
+                        m_pGameInstance->BroadCastEvent(L"OnItemDescUIHide", nullptr);
+
                         m_pGameInstance->BroadCastEvent(L"OnItemGetIconHide", CInventory_Manager::GetInstance()->Get_ItemGetEvent());
+                      
                         m_bShowUI = false;
                     }
                 }
@@ -95,6 +118,9 @@ void CPlayerStateGetItem::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
     pPlayer->Get_Transform()->LookAtSmooth(XMLoadFloat4(&m_pGameInstance->Get_CamPosition(ENUM_TO_UINT(CAMERA_TYPE::TARGET))), 10.f, fTimeDelta);
     CheckFalse(m_bStartAnim);
 
+    //카메라 각도회전
+    Change_CameraState(fTimeDelta);
+
     //페이즈 바꾸는 타이밍
     switch (m_ePhase)
     {
@@ -106,7 +132,10 @@ void CPlayerStateGetItem::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 
     case Phase::Loop:
     {
-        
+        if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::A))
+        {
+            m_bChange = true;
+        }
 
         
     }
@@ -178,6 +207,54 @@ void CPlayerStateGetItem::ChangeState(CPlayer* pPlayer)
     }
 
     m_bChangeState = false;
+}
+
+void CPlayerStateGetItem::Change_CameraState(float _fTimeDelta)
+{
+    CheckNull(m_pMainCamera);
+
+    if (m_ePhase != Phase::End)
+    {
+        _float3 vCurFloatRot = m_pMainCamera->Get_Transform()->Get_Rotation_ByEular();
+        _float3 vCurFloatOffset = m_pMainCamera->Get_Offset();
+
+        _vector vCurRot = XMLoadFloat3(&vCurFloatRot);
+        _vector vCurOffSet = XMLoadFloat3(&vCurFloatOffset);
+
+        _vector fRotation = XMVectorLerp(vCurRot, XMVectorSet(65.f, 0.f, 0.f, 1.f), 0.8f);
+        _vector vOffset = XMVectorLerp(vCurOffSet, XMVectorSet(0.f, 6.5f, -2.5f, 0.f), 0.8f);
+
+        _float4 vResult;
+        _float3 fOffSet;
+        XMStoreFloat4(&vResult, fRotation);
+        XMStoreFloat3(&fOffSet, vOffset);
+
+        m_pMainCamera->Set_LocalRoation(vResult);
+        m_pMainCamera->Set_Offset(fOffSet);
+    }
+
+    else
+    {
+        _float3 vCurFloatRot = m_pMainCamera->Get_Transform()->Get_Rotation_ByEular();
+        _float3 vCurFloatOffset = m_pMainCamera->Get_Offset();
+
+        _vector vCurRot = XMLoadFloat3(&vCurFloatRot);
+        _vector vCurOffSet = XMLoadFloat3(&vCurFloatOffset);
+
+        
+       
+        _vector fRotation = XMVectorLerp(vCurRot,XMVectorSet(56.f,0.f,0.f,1.f), 0.8f);
+        _vector vOffset = XMVectorLerp(vCurOffSet, XMLoadFloat3(&m_pMainCamera->Get_InitOffset()), 0.8f);
+
+        _float4 vResult;
+        _float3 fOffSet;
+        XMStoreFloat4(&vResult, fRotation);
+        XMStoreFloat3(&fOffSet, vOffset);
+
+        m_pMainCamera->Set_LocalRoation(vResult);
+        m_pMainCamera->Set_Offset(fOffSet);
+    }
+    
 }
 
 CPlayerStateGetItem* CPlayerStateGetItem::Create()

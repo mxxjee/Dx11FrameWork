@@ -15,6 +15,8 @@ namespace UICreator
 	HRESULT		Create_NPC_Dialogue_UI(wstring LayerTag);
 	HRESULT		Create_Loading_UI(wstring LayerTag);
 	HRESULT		Create_ItemGet_UI(wstring LayerTag);
+	HRESULT		Create_ItemGet_Desc_UI(wstring LayerTag);
+
 
 	extern CGameInstance* m_pGameInstance;
 	
