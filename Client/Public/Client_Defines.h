@@ -172,12 +172,14 @@ enum Interact_Object_Type
 	CAVEROCK,
 	ROCK,
 	LAWN,
-	GRASS
+	GRASS,
+	ITEM
 };
 
 enum Interact_Behavior_Type
 {
 	NONE,
+	ITEMABLE,
 	PUSHABLE,
 	CARRYABLE,
 	Interact_Behavior_Type_END

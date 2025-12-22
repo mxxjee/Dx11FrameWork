@@ -28,9 +28,9 @@ HRESULT UICreator::Create_HeartGroup(wstring LayerTag)
 
         Desc.iIdx = i;
 
-        Desc.fSizeX = 38.f;
+        Desc.fSizeX = 35.f;
         Desc.fSizeY = 38.f;
-        Desc.fX = 50.f + (i * 45.f);
+        Desc.fX = 50.f + (i * 35.f);
         Desc.fY = 50.f;
 
         CTransform::TRANSFORM_DESC TransDesc = {};
@@ -294,6 +294,109 @@ HRESULT UICreator::Create_Interaction_TalkUI(wstring LayerTag)
         {
 
             UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"Interaction_PopUP_TalkGroup");
+            if (pGroup)
+            {
+                for (auto& i : pGroup->Objects)
+                {
+                    CUI* pUI = dynamic_cast<CUI*>(i.second);
+                    if (pUI)
+                    {
+                        pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 20.f, false, true);
+
+                    }
+                }
+            }
+        });
+    return S_OK;
+}
+
+HRESULT UICreator::Create_Interaction_GetUI(wstring LayerTag)
+{
+    UIGroup     Interaction_PopUP_GetGroup;
+    Interaction_PopUP_GetGroup.Key = L"Interaction_PopUP_GetGroup";
+
+    wstring ObjTags[] = { L"Interact_Talk_BG",L"Interaction_A_Get" };
+    wstring TextureKeys[] = { L"Interact_BG",L"Interaction_A_Get" };
+
+    for (int i = 0; i < sizeof(ObjTags) / sizeof(ObjTags[0]); ++i)
+    {
+        //BG
+        CUI::tagUIDesc        Desc = {};
+
+        Desc.ObjTag = ObjTags[i];
+        Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+        Desc.TextureKey = TextureKeys[i];
+
+        Desc.iIdx = 0;
+
+        Desc.fSizeX = 200.f * 0.7f;
+        Desc.fSizeY = 90.f * 0.7f;
+        Desc.fX = g_iWinSizeX >> 1;
+        Desc.fY = g_iWinSizeY >> 1;
+        Desc.Depth = 0.5f - (0.01f * i);
+
+        CTransform::TRANSFORM_DESC TransDesc = {};
+        TransDesc.fRotationPerSec = 10.f;
+        TransDesc.fSpeedPerSec = 5.f;
+        Desc.TransformDesc = &TransDesc;
+
+        //AlphaAnimµî·Ï
+        CUIComponent::UICOMP_DESC UIDesc = {};
+        Desc.UICompDesc = &UIDesc;
+
+        CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &Desc);
+        if (pObj)
+        {
+            CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+            if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+                return E_FAIL;
+
+
+            Interaction_PopUP_GetGroup.push_back(pInstance);
+
+        }
+    }
+
+    m_pGameInstance->Register_UIGroup(Interaction_PopUP_GetGroup);
+    m_pGameInstance->SetActiveGroup(Interaction_PopUP_GetGroup.Key, false);
+
+    m_pGameInstance->RegisterEvent(L"OnGetUIShow", [](void* pData)
+        {
+            _vector* pPos = static_cast<_vector*>(pData);
+            _vector OffSet = XMVectorSet(100.f, 40.f, 0.f, 0.f);
+
+            (*pPos) += OffSet;
+
+            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"Interaction_PopUP_GetGroup");
+            if (pGroup)
+            {
+                for (auto& i : pGroup->Objects)
+                {
+                    CUI* pUI = dynamic_cast<CUI*>(i.second);
+                    if (pUI)
+                    {
+
+                        pUI->Get_Transform()->Set_State(STATE::POSITION,
+                            MathUtils::ScreenToWorld_UI((*pPos), g_iWinSizeX, g_iWinSizeY));
+
+                        pUI->Set_ActiveAnim(0, [pUI]()
+                            {
+                                pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 10.f, false, false);
+                            });
+
+                        if (!pUI->Is_Active())
+                            pUI->OnActivated(true);
+
+                    }
+                }
+            }
+        });
+
+    m_pGameInstance->RegisterEvent(L"OnGetUIHide", [](void* pData)
+        {
+
+            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"Interaction_PopUP_GetGroup");
             if (pGroup)
             {
                 for (auto& i : pGroup->Objects)

@@ -40,7 +40,7 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
     m_fTargetDistance = pNpcDesc->TalkRange;
 
     m_bUseNavMesh = pNpcDesc->bUseNavMesh;
-
+    m_vCamera_Target = pNpcDesc->fTargetPoint;
 
     CAnimBody::ANIMBODY_DESC BodyDesc;
     BodyDesc.modelName = pNpcDesc->ModelName;
@@ -343,15 +343,18 @@ HRESULT CNPC::Ready_Resource(void* pArg)
 void CNPC::Ready_Events()
 {
     Enter_Interaction_Event.Name = "Enter_Interaction_NPC";
-    EventPayload Payload;
+    
 
-    //_float3(0.f, 3.f, -2.f)
-    Payload.Floats["Float_X"] = 0.f;
-    Payload.Floats["Float_Y"] = 5.f;
-    Payload.Floats["Float_Z"] = -4.f;
-    Payload.Ptrs["NPC"] = this;
+    //_float3(0.f, 3.f, -2.f)5
+    CameraPayload.Floats["Float_X"] = 0.f;
+    CameraPayload.Floats["Float_Y"] = 5.f;
+    CameraPayload.Floats["Float_Z"] = -3.f;
+    
 
-    Enter_Interaction_Event.Payload = Payload;
+
+    CameraPayload.Ptrs["NPC"] = this;
+
+    Enter_Interaction_Event.Payload = CameraPayload;
 
 
 

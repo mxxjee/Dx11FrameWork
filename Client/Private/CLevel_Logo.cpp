@@ -414,6 +414,9 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     m_pGameInstance->Register_UIGroup(ButtonSlotGroup);
     m_pGameInstance->SetActiveGroup(ButtonSlotGroup.Key, false);
 
+    if (FAILED(UICreator::Create_Interaction_GetUI(strLayerTag)))
+        return E_FAIL;
+
 
     if (FAILED(UICreator::Create_ItemGet_UI(strLayerTag)))
         return E_FAIL;
@@ -635,7 +638,7 @@ void CLevel_Logo::Create_MainCamera()
     Desc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::STATIC);
 
 
-    Desc.vOffset= _float3(0.f, 9.f, -6.f);
+    Desc.vOffset = _float3(0.f, 9.f, -6.f);//_float3(0.f, 7.5f, -4.f);
     Desc.fFar = 100.f;
     Desc.pTarget = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Player_Layer", L"Player");
 
@@ -643,7 +646,7 @@ void CLevel_Logo::Create_MainCamera()
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
-    TransDesc.vLocalRotation = {56.f,0.f,0.f,1.f };
+    TransDesc.vLocalRotation = { 56.f,0.f,0.f,1.f }; //{65.f, 0.f, 0.f, 0.f};
     TransDesc.vLocalScale = { 1.f,1.f,1.f,1.f };
     Desc.TransformDesc = &TransDesc;
 

@@ -63,6 +63,8 @@
 #include "CInteractionObject.h"
 #include "CInteraction_Lawn.h"
 #include "CInteraction_Rock.h"
+#include "CInteraction_Mushroom.h"
+
 
 #include "CRoom.h"
 #include "CRoomTrigger.h"
@@ -366,7 +368,7 @@ HRESULT CLoader::Register_Textures()
 
 
 
-    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/Hp.png", 1);
+    pTexture = CTexture::Create(m_pDevice, m_pDeviceContext, L"../../Resource/UI/PlayerHUD/Hp.dds", 1);
     if (FAILED(m_pGameInstance->Register_Texture(L"Hp", pTexture)))
         return E_FAIL;
 
@@ -609,7 +611,9 @@ HRESULT CLoader::Register_GameObjects()
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Interaction_Lawn", CInteraction_Lawn::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
-    
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Interaction_Mushroom", CInteraction_Mushroom::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
     /////////Rooms
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Room", CRoom::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;

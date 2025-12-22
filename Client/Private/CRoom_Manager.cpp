@@ -11,6 +11,7 @@
 #include "Parsing_TriggerInfo.h"
 #include "CNPC.h"
 #include "CNPC_Richard.h"
+#include "CNPC_Witch.h"
 
 #include "CNavMesh_Manager.h"
 #include "CBoxColliderComponent.h"
@@ -352,13 +353,27 @@ HRESULT CRoom_Manager::Load_NPC(const string& RoomName, const wstring& ModelName
     pDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
     pDesc.TransformDesc = &pTransDesc;
 
-
-    CNPC* pNpc = CNPC::Create(m_pDevice, m_pContext, &pDesc);
-    if (pNpc)
+    if (ModelName == L"Witch")
     {
-        //Safe_AddRef(pNpc);
-        pOut->NPCs.push_back(pNpc);
-        return S_OK;
+        CNPC_Witch* pNpc = CNPC_Witch::Create(m_pDevice, m_pContext, &pDesc);
+        if (pNpc)
+        {
+            //Safe_AddRef(pNpc);
+            pOut->NPCs.push_back(pNpc);
+            return S_OK;
+        }
+    }
+
+    else
+    {
+        CNPC* pNpc = CNPC::Create(m_pDevice, m_pContext, &pDesc);
+        if (pNpc)
+        {
+            //Safe_AddRef(pNpc);
+            pOut->NPCs.push_back(pNpc);
+            return S_OK;
+        }
+
     }
    
     return E_FAIL;

@@ -297,6 +297,10 @@
     <ClInclude Include="..\Public\CInventory_Manager.h">
       <Filter>96.Managers\InventoryManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CNPC_Witch.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Witch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CInteraction_Mushroom.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -646,6 +650,15 @@
     <Filter Include="96.Managers\InventoryManager">
       <UniqueIdentifier>{9720b4f7-6816-4b9e-bf34-ab29d14664d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\00.NPC\Witch">
+      <UniqueIdentifier>{f6ed822d-e891-4876-a529-4f1202ce1fc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\97.Item">
+      <UniqueIdentifier>{67f1876d-83a2-4116-b01b-b1d12f347c1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\02.InteractionObject\Interaction_Mushroom">
+      <UniqueIdentifier>{4820a85c-ceb5-4f0c-8659-1f64ab4c1a33}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -923,6 +936,10 @@
     <ClCompile Include="..\Private\CInventory_Manager.cpp">
       <Filter>96.Managers\InventoryManager</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CNPC_Witch.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Witch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CInteraction_Mushroom.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

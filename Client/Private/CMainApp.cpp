@@ -190,6 +190,9 @@ HRESULT CMainApp::Initialize_Cilent()
 
 	m_pGameInstance->Register_HotKey(KeyCode::C, true, false, false, [this]()
 		{
+			CheckNull(CGameInstance::GetInstance()->Find_Camera(CAMERA_TYPE::TARGET));
+			CheckNull(CGameInstance::GetInstance()->Find_Camera(CAMERA_TYPE::FREE));
+
 
 			if (iTargetCameraIdx == 1)
 				iTargetCameraIdx = 0;

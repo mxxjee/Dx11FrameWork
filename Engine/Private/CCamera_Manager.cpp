@@ -36,7 +36,7 @@ HRESULT CCamera_Manager::Initialize()
 		{
 			CGameObject* pNpc = static_cast<CGameObject*>(evt.Payload.Ptrs.at("NPC"));
 			CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(Get_MainCamera());
-			
+		
 			CheckNull(pNpc);
 			CheckNull(pCameraBase);
 

@@ -55,6 +55,7 @@ void CDialogue_Manager::StartDialogue(string strModelID)
         AdvanceDialogueStep();
 
     }
+   
 }
 
 const DialogueChapter* CDialogue_Manager::Get_ChapterDefinition(const string& strModelID, const string& strCurrentChapterID)

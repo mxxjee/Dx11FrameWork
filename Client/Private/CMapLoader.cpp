@@ -154,6 +154,13 @@ HRESULT CMapLoader::Make_Object_By_LoadData(string SceneName, CLayer* pLayer)
         }
             break;
 
+        case Interact_Object_Type::ITEM:
+        {
+            Desc.fTargetDistance = 3.f;
+            ProtoTag = L"Interaction_"+wstring(Desc.ModelName);
+        }
+        break;
+
         }
        if(FAILED(pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
             PROTO_OBJ_NAME(ProtoTag),

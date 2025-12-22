@@ -141,7 +141,7 @@ void CMainCamera::Update_PipeLine()
 
 
 
-void CMainCamera::Set_Target(CGameObject* pTarget, bool bInit)
+void CMainCamera::Set_Target(CGameObject* pTarget,  bool bInit)
 {
 	CheckNull(pTarget);
 	m_pTarget = pTarget;
@@ -152,7 +152,7 @@ void CMainCamera::Set_Target(CGameObject* pTarget, bool bInit)
 		CTransform* pTargetTransform = static_cast<CTransform*>(m_pTarget->Get_Component(COMPONENT_TYPE::TRANSFORM));
 		if (pTargetTransform && m_pTransformCom)
 		{
-			_vector vTargetPos = pTargetTransform->Get_State(STATE::POSITION,TransformScope::WORLD);
+			_vector vTargetPos = pTargetTransform->Get_State(STATE::POSITION,TransformScope::WORLD) ;
 			
 			_vector vStartPos = vTargetPos + XMLoadFloat3(&m_vOffset);
 			m_pTransformCom->Set_State(STATE::POSITION, vStartPos);

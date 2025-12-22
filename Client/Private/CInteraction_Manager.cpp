@@ -248,6 +248,10 @@ HRESULT CInteraction_Manager::Load_Data(string SceneName, vector< DefaultInterac
 		else if (InteractionType == "Grass")
 			Data.InteractionType = ENUM_TO_UINT(Interact_Object_Type::GRASS);
 
+		else if (InteractionType == "Mushroom")
+			Data.InteractionType = ENUM_TO_UINT(Interact_Object_Type::ITEM);
+
+
 		json TransformData = iInteraction["Transform"];
 
 		Data.vPos.x = TransformData["Position"][0].get<float>();

@@ -181,11 +181,11 @@ void CPlayerStateGetItem::ChangePhase(CPlayer* pPlayer)
     {   pPlayer->Reserve_Animation_To_Body(L"item_get_ed", false);
         m_ePhase = Phase::End;
 
-        GameEvent	InitCameraEvent = MakeEvent("Init_Camera");
+       /* GameEvent	InitCameraEvent = MakeEvent("Init_Camera");
         EventPayload  Paylaod;
         Paylaod.Ptrs["Player"] = pPlayer;
         InitCameraEvent.Payload = Paylaod;
-        m_pGameInstance->Emit(InitCameraEvent);
+        m_pGameInstance->Emit(InitCameraEvent);*/
 
 
     }
@@ -248,7 +248,7 @@ void CPlayerStateGetItem::Change_CameraState(float _fTimeDelta)
         
        
         _vector fRotation = XMVectorLerp(vCurRot,XMVectorSet(56.f,0.f,0.f,1.f), 0.8f);
-        _vector vOffset = XMVectorLerp(vCurOffSet, XMLoadFloat3(&m_pMainCamera->Get_InitOffset()), 0.8f);
+        _vector vOffset = XMVectorLerp(vCurOffSet, XMLoadFloat3(&m_pMainCamera->Get_InitOffset()), 0.5f);
 
         _float4 vResult;
         _float3 fOffSet;

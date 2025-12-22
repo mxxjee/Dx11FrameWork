@@ -37,6 +37,8 @@ HRESULT CFadeScreen::Initialize_Copytype(void* pArg)
 
 void CFadeScreen::PlayFadeIn()
 {
+	CheckTrue(m_eState ==END_FADEIN || m_eState==LOOP_FADE_IN);
+
 	m_eState = START_FADEIN;
 
 	m_pGameInstance->BroadCastEvent(L"PlayFadeIn", nullptr);
@@ -65,10 +67,16 @@ void CFadeScreen::Update(_float fTimeDelta)
 	{
 	case Client::CFadeScreen::START_FADEIN:
 	{	
+		m_eState = LOOP_FADE_IN;
+	
+	}
+		
+		break;
+	case Client::CFadeScreen::LOOP_FADE_IN:
+	{
 		if (Get_UIComp()->Is_AnimEnd(UIAnimType::ALPHA))
 			m_eState = END_FADEIN;
 	}
-		
 		break;
 
 	case Client::CFadeScreen::END_FADEIN:
@@ -82,11 +90,17 @@ void CFadeScreen::Update(_float fTimeDelta)
 	case Client::CFadeScreen::START_FADEOUT:
 	{
 		IfFadeOutEnd();
+		m_eState = LOOP_FADEOUT;
+		
+	}
+		break;
+	case Client::CFadeScreen::LOOP_FADEOUT:
+	{
+		
 		if (Get_UIComp()->Is_AnimEnd(UIAnimType::ALPHA))
 			m_eState = END_FADEOUT;
 	}
-		break;
-
+	break;
 	case Client::CFadeScreen::END_FADEOUT:
 	{
 		IfFadeOutStart();

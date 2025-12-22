@@ -31,7 +31,7 @@ public:
         int NPC_ID=0; 
 
         bool        bUseNavMesh = true;     //필요에 따라서 navmesh적용을 안시킴.
-
+        _float3      fTargetPoint = _float3(0.f, 0.f, 0.f);  //카메라 타겟정할때 오프셋값( 거리 오프셋이랑은다름)
     }NPC_DESC;
 
 protected:
@@ -95,6 +95,7 @@ protected:
     bool        m_bInteractable = false;        //상호작용가능여부
     bool        m_bTalking = false;
     float       m_fTime = 0.f;//임시로 Exit조건 시간으로두기
+    _float3     m_vCamera_Target = _float3(0.f, 0.f, 0.f);
 public:
     /*룸 로드시에 부르는거*/
     void        Change_NavMesh();
@@ -112,7 +113,9 @@ protected:
     class     CInteraction_TriggerBox* m_pTriggerBox = nullptr;
 
     class CGameManager* m_pGameManager = nullptr;
-
+    
+protected:
+    EventPayload CameraPayload;
 };
 
 NS_END

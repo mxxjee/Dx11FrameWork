@@ -2,12 +2,10 @@
 #include "CLoader.h"
 #include "CBackGround.h"
 #include "CMainCamera.h"
-#include "CPerspectiveCameraComponent.h"
 #include "CTerrain.h"
+
 #include "CMonster.h"
 #include "CMonster_Body.h"
-
-#include "CBody.h"
 #include "CInput_Manager.h"
 #include "CLight.h"
 
@@ -37,6 +35,8 @@
 #include "CQuest_Manager.h"
 #include "CEventTrigger.h"
 
+#include "CBoxColliderComponent.h"
+#include "CBounding_AABB.h"
 #include "CFontUI.h"
 #include "CCell.h"
 #include "ColorUtils.h"
@@ -80,6 +80,9 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
         return E_FAIL;*/
 
     if (FAILED(Ready_Layer_Trigger(L"Trigger_Layer")))
+        return E_FAIL;
+
+    if (FAILED(Ready_EventListners()))
         return E_FAIL;
 
 
@@ -145,7 +148,6 @@ void CLevel_Town::Update(const _float fTimeDelta)
         pTestObject->Get_Transform()->Set_State(STATE::POSITION, vPos);
 
     }
-    Set_Event_By_Chapter();
 
     return;
 
@@ -352,8 +354,8 @@ HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
     
 #pragma endregion
     ///////////////////////////
-    _uint SpawnIdx[4] = { 668,925,1020,860 };
-    _float RoamRadius[4] = { 20.f,5.f,10.f,20.f };
+    _uint SpawnIdx[4] = { 686,866,1026,947 };
+    _float RoamRadius[4] = { 10,5.f,10.f,10.f };
 
 
     vector<CCell*>* m_Cells = m_pGameInstance->Get_MainCells();
@@ -494,7 +496,7 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
         if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, pNpc_Fairy)))
             return E_FAIL;
 
-        pNpc_Fairy->Set_Active(false);
+        //pNpc_Fairy->Set_Active(false);
     }
 
     /// <summary>
@@ -503,7 +505,7 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
 
     CTransform::TRANSFORM_DESC pKid_Blue_TransDesc;
 
-    vPos = m_pGameInstance->Get_CellPos_By_MainCells(946);
+    vPos = m_pGameInstance->Get_CellPos_By_MainCells(940);
     XMStoreFloat4(&pKid_Blue_TransDesc.vLocalPosition, vPos);
     pKid_Blue_TransDesc.vLocalRotation = _float4(0.f, 180.f, 0.f, 0.f);
     pKid_Blue_TransDesc.vLocalScale = _float4(0.8f, 0.8f, 0.8f, 1.f);
@@ -534,11 +536,52 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
 HRESULT CLevel_Town::Ready_Layer_InteractionObject(const _wstring& strLayerTag)
 {
 
+
     if (FAILED(m_pGameInstance->Make_New_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag)))
         return E_FAIL;
 
+
     CLayer* pInteractionLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag);
     CMapLoader::Make_Object_By_LoadData("Level_Town", pInteractionLayer);
+
+
+
+    ////滚几 积楼积己..
+    //CInteractionObject::Interaction_DESC Desc;
+    //Desc.eInteractionType = ENUM_TO_UINT(InteractionType::OBJECT);
+    //Desc.eInteract_Object_Type = Interact_Object_Type::ITEM;
+    //Desc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);
+
+    //Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+    //Desc.ModelName = L"Mushroom";
+
+    //Desc.SceneName = "Level_Town";
+    //Desc.bAnimated = false;
+    //Desc.ObjTag = L"Mushroom";
+
+    //CTransform::TRANSFORM_DESC TransDesc;
+    //vector<CCell*>* m_Cells = m_pGameInstance->Get_MainCells();
+    //CheckNullResult(m_Cells, E_FAIL);
+    //CCell* pSpawnCell = (*m_Cells)[0];
+    //_vector vSpawnPoint = pSpawnCell->Get_CenterPos();
+    //XMStoreFloat4(&TransDesc.vLocalPosition, vSpawnPoint);
+    //Desc.TransformDesc = &TransDesc;
+
+
+    //CBoxColliderComponent::COLLIDER_DESC ColDesc;
+    //ColDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::INTERACTION);
+    //CBounding_AABB::BOUNDING_AABB_DESC aabbDesc;
+    //aabbDesc.Extents = _float3(0.5f, 0.5f, 0.5f);
+    //ColDesc.m_BoundingDesc = &aabbDesc;
+    //ColDesc.m_iLevelID = m_iLevelID;
+    //Desc.pColliderComp = &ColDesc;
+
+
+    //if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+    //    PROTO_OBJ_NAME(L"Interaction_Rock"),
+    //    ENUM_TO_UINT(LEVEL_ID::TOWN),
+    //    strLayerTag, &Desc)))
+    //    return E_FAIL;
 
     return S_OK;
 }
@@ -753,21 +796,38 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
     return S_OK;
 }
 
-
-void CLevel_Town::Set_Event_By_Chapter()
+HRESULT CLevel_Town::Ready_EventListners()
 {
-    if (m_Chapter == L"Default")
-    {
-     
+    m_pGameInstance->RegisterListners("FadeScreen_Before_WitchRoom", [this](const GameEvent& evt)
+        {
+            pFadeScreen->PlayFadeIn();
 
 
-    }
+        });
 
-    else if (m_Chapter == L"Forest")
-    {
+    m_pGameInstance->RegisterListners("Go_WitchRoom", [this](const GameEvent& evt)
+        {
+            m_pGameInstance->Clear_SceneColliders(ENUM_TO_UINT(LEVEL_ID::ROOM));
 
-    }
+
+            LevelArgs args;
+            args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
+            args.changeType = LEVELCHANGETYPE::PUSH;
+            args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+            args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
+            CRoom_Manager::GetInstance()->Request_Room("MagicPowerHouse");
+
+            if (FAILED(m_pGameInstance->Level_Changer(
+                ENUM_TO_UINT(LEVEL_ID::LOADING),
+                args)))
+                return;
+
+        });
+    return S_OK;
 }
+
+
 
 void CLevel_Town::OnEnter()
 {
@@ -785,7 +845,7 @@ void CLevel_Town::OnEnter()
     vector<CCell*>* m_Cells = m_pGameInstance->Get_MainCells();
     if (m_Cells)
     {
-         CCell* pSpawnCell = (*m_Cells)[0];
+         CCell* pSpawnCell = (*m_Cells)[0];//[1033];
         _vector vSpawnPoint = pSpawnCell->Get_CenterPos();
 
       

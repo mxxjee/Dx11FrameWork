@@ -1,0 +1,52 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "MI_SleepyMushroom_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_SleepyMushroom",
+            "Normal": "MI_SleepyMushroom_nml.png",
+            "OPACITY": "MI_SleepyMushroom_alb.png",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 1,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 3480,
+            "MaterialName": "MI_SleepyMushroom",
+            "MeshIdx": 0,
+            "Name": "sleepyMushroom_low__MI_SleepyMushroom",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 664
+        }
+    ],
+    "ModelName": "Mushroom"
+}

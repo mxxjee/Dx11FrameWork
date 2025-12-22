@@ -474,5 +474,39 @@
                 1.0
             ]
         }
+    },
+     {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.5,
+                0.0
+            ],
+            "Extent": [
+                0.6,
+                0.6,
+                0.6
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Mushroom",
+        "ModelName": "Mushroom",
+        "Transform": {
+            "Position": [
+                15.9783173,
+                13,
+                61.0775661
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
     }
 ]

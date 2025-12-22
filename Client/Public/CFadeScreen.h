@@ -8,7 +8,7 @@ class CFadeScreen :
 public:
 	enum State
 	{
-		WAIT,START_FADEIN,END_FADEIN,START_FADEOUT,END_FADEOUT,END
+		WAIT,START_FADEIN,LOOP_FADE_IN,END_FADEIN,START_FADEOUT,LOOP_FADEOUT,END_FADEOUT,END
 	};
 private:
 	CFadeScreen(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);

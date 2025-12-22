@@ -29,9 +29,12 @@ HRESULT CNPC_Fairy::Initialize_Prototype(void* pArg)
             Set_Active(true);
         });
 
+    //대화끝나면알아서 애니메이션재생
     m_pGameInstance->RegisterListners("Fairy_End", [this](const GameEvent& event)
         {
             m_pAnimBody->Reserve_Animation(L"heel_st", false);
+            m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", (void*)nullptr);
+
         });
 
 
@@ -45,6 +48,8 @@ HRESULT CNPC_Fairy::Initialize_Prototype(void* pArg)
         {
             m_pAnimBody->Reserve_Animation(L"heel_ed", false);
         });
+
+    Enter_Interaction_Event.Payload.Floats.at("Float_Y") = 7.5f;
 
     return S_OK;
 }
@@ -74,27 +79,46 @@ HRESULT CNPC_Fairy::Render()
     return S_OK;
 }
 
+void CNPC_Fairy::Exit_Interaction()
+{
+    m_bTalking = false;
+    m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide", nullptr);
+  
+
+    m_pPlayer->Get_ActionControl()->m_bTalk = false;
+    m_bPrevRange = false;
+    m_bPrevInteracting = false;
+}
+
 void CNPC_Fairy::Reigster_AnimNotify()
 {
     GameEvent Event;
     EventPayload payload;
     Event.Payload = payload;
 
+    m_pAnimBody->Set_Animation_Speed(L"heel_st", 50.f);
+    m_pAnimBody->Set_Animation_Speed(L"heel_lp", 50.f);
+    m_pAnimBody->Set_Animation_Speed(L"heel_ed", 50.f);
+
     //st->lp
     CAnimation* pAnim = m_pAnimBody->Get_Model()->Find_Animation(L"heel_st");
-
+    
     if (pAnim)
     {
         Event.Name = "Fairy_Go_Loop";
-        pAnim->AddNotify(129, Event);
+        pAnim->AddNotify(127, Event);
     }
 
     pAnim = m_pAnimBody->Get_Model()->Find_Animation(L"heel_lp");
 
     if (pAnim)
     {
-        Event.Name = "Fairy_Go_End";
-        pAnim->AddNotify(100, Event);
+
+        Event.Name = "FadeScreen_Before_WitchRoom";
+        pAnim->AddNotify(80, Event);
+
+        Event.Name = "Go_WitchRoom";
+        pAnim->AddNotify(90, Event);
     }
 
     pAnim = m_pAnimBody->Get_Model()->Find_Animation(L"heel_ed");

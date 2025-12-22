@@ -1,15 +1,15 @@
-
+#pragma once
 #include "CNPC.h"
+
 NS_BEGIN(Client)
 
-
-class CNPC_Fairy :
+class CNPC_Witch :
     public CNPC
 {
 protected:
-    CNPC_Fairy(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
-    CNPC_Fairy(const CNPC_Fairy& rhs);
-    virtual ~CNPC_Fairy() = default;
+    CNPC_Witch(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+    CNPC_Witch(const CNPC_Witch& rhs);
+    virtual ~CNPC_Witch() = default;
 
 public:
     HRESULT     Initialize_Prototype(void* pArg); /*NPC는 clone으로 생성하지않는다.*/
@@ -23,16 +23,15 @@ public:
     virtual HRESULT Render();
 
 public:
-    virtual void    Exit_Interaction();
-
+    virtual void        Exit_Interaction();
+    virtual void        Stay_InteractRange(_float fTimeDelta);
 private:
     void        Reigster_AnimNotify();
 
 public:
-    static CNPC_Fairy* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex, void* pArg);
+    static CNPC_Witch* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex, void* pArg);
     virtual void Free() override;
 
-
-
 };
+
 NS_END

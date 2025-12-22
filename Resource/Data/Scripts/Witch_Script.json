@@ -1,0 +1,41 @@
+{
+  "NPCScripts": [
+    {
+      "ModelID": "NPC_Fairy",
+      "Chapters": [
+        {
+          "ChapterID": "Fairy_start",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "숲의 요정",
+              "Text": "어머.. 인간이 여길 찾아오다니.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "숲의 요정",
+              "Text": "당신.. 길을 잃은 모양이군요?",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "숲의 요정",
+              "Text": "괜찮아요.\n여기서 몸과 마음을 치유하고 가세요..",
+              "strActionCommand": "PLAY_ANIM:NPC_BOW",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "숲의 요정",
+              "Text": "하지만 이 근처는 위험해요..\n눈을 감으세요.. 당신을 안내하겠습니다..",
+              "strActionCommand": "Fairy_End",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
