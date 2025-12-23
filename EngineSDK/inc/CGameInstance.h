@@ -335,7 +335,8 @@ public:
 
 #pragma region EventBusManager
 	 void Emit(const GameEvent& Event);
-	 void RegisterListners(const string& CBName, EventCallBack Callback);
+	 _uint RegisterListners(const string& CBName, EventCallBack Callback);
+	 void    UnRegisterListenrs(const string& CBName, _uint iHandle);
 
 #pragma endregion
 

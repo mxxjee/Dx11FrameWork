@@ -14,9 +14,34 @@ void CEventBus_Manager::Emit(const GameEvent& Event)
 	m_GameEventQue.push_back(Event);
 }
 
-void CEventBus_Manager::RegisterListners(const string& CBName, EventCallBack Callback)
+_uint CEventBus_Manager::RegisterListners(const string& CBName, EventCallBack Callback)
 {
-	m_EventCB[CBName].push_back(Callback);
+	_uint iResultHandle = 0;
+	auto iter = m_EventCB.find(CBName);
+	if (iter == m_EventCB.end())
+		iResultHandle = 0;
+
+	else
+		iResultHandle = iter->second.size();
+
+	m_EventCB[CBName][iResultHandle] = Callback;
+
+
+	return iResultHandle;
+}
+
+void CEventBus_Manager::UnRegisterListenrs(const string& CBName, _uint iHandle)
+{
+	auto iter = m_EventCB.find(CBName);
+	if (iter == m_EventCB.end())
+		return;
+
+
+	auto EraseHandle = iter->second.find(iHandle);
+	if(EraseHandle!=iter->second.end())
+		iter->second.erase(EraseHandle);
+
+
 }
 
 void CEventBus_Manager::DisPatch(_float fTimeDelta)
@@ -28,8 +53,12 @@ void CEventBus_Manager::DisPatch(_float fTimeDelta)
 		if (Target == m_EventCB.end())		//이 이벤트와 맞는 이름을 가진 콜백함수가없네유..
 			continue;
 
-		for (auto& callback : Target->second)
-			callback(event);
+		for (auto& pair : Target->second)
+		{
+			if (pair.second != nullptr)
+				pair.second(event);
+		}
+			
 
 
 	}
@@ -56,6 +85,7 @@ void CEventBus_Manager::Free()
 
 	for (auto& pair : m_EventCB)
 	{
+		
 		pair.second.clear();
 	}
 

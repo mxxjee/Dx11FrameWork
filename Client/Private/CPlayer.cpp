@@ -578,6 +578,14 @@ wstring CPlayer::Get_CurrentAnimKey()
     return m_pAnimBody->Get_CurrentAnimKey();
 }
 
+void CPlayer::On_Heal(int Hp)
+{
+    //È¸º¹
+    iHp = Hp;
+    m_pGameInstance->BroadCastEvent(L"OnHeartHealed", &iHp);
+  
+}
+
 void CPlayer::Set_VisibleMesh(const wstring& MeshName, bool bVisible)
 {
     if (m_pBody)

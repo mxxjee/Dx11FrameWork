@@ -35,8 +35,9 @@ public:
     void Emit(const GameEvent& Event);
 
         
-    void RegisterListners(const string& CBName, EventCallBack Callback);
-
+    //키값에 유효한 핸들을 반환한다.
+    _uint RegisterListners(const string& CBName, EventCallBack Callback);
+    void    UnRegisterListenrs(const string& CBName, _uint iHandle);
     
 public:
     void        DisPatch(_float fTimeDelta);// 매 라이프사이클의 update마지막에 수행될 , 예약열을 보며 이벤트를 수행하는 함수
@@ -47,7 +48,7 @@ public:
     virtual void    Free();
 private:
     vector<GameEvent>       m_GameEventQue;       //이번프레임에 실행할 이벤트들 ,GameEvent=이벤트실행시 넘겨줄 데이터들을 담는구조체,,
-    UMap<string, vector<EventCallBack>>         m_EventCB;      
+    UMap<string, map<_uint,EventCallBack>>         m_EventCB;      
                     //m_GAmeEvnet의 이름과 비교하여 실제로 실행할 콜백함수들
                     //하나의 이벤트 당 여러 콜백함수를 등록할 수 있도록 하기위해.
                     //ex) m_EventCB[NPCFOCUS]=CameraZoom();

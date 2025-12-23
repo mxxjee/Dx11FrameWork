@@ -414,6 +414,8 @@ void CMonster::Free()
 
 void CMonster::Set_Dead()
 {
+    CheckFalse(m_bActive);
+
     Set_Active(false);
     CLayer* pLayer = m_pGameInstance->Find_Layer(m_iLevelID, L"Monster_Layer");
     pLayer->RequestDestroy(this);

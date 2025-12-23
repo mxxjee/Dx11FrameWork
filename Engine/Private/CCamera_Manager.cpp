@@ -43,7 +43,7 @@ HRESULT CCamera_Manager::Initialize()
 			pCameraBase->Set_Target(pNpc);
 
 			//오프셋 줌인 전 기록해놓기
-			pCameraBase->Set_PrevOffset(pCameraBase->Get_Offset());
+			pCameraBase->Set_TargetOffset(pCameraBase->Get_Offset());
 
 			pCameraBase->Set_Offset(_float3(
 				evt.Payload.Floats.at("Float_X"),
@@ -61,7 +61,7 @@ HRESULT CCamera_Manager::Initialize()
 			CheckNull(pPlayer);
 
 			pCameraBase->Set_Target(pPlayer);
-			pCameraBase->Set_Offset(pCameraBase->Get_PrevOffset());
+			pCameraBase->Set_Offset(pCameraBase->Get_TargetOffset());
 
 		});
 
@@ -90,7 +90,7 @@ HRESULT CCamera_Manager::Initialize()
 				pCameraBase->Set_Target(pPlayer);
 
 
-			pCameraBase->Set_Offset(pCameraBase->Get_InitOffset());
+			pCameraBase->Set_Offset(pCameraBase->Get_TargetOffset());
 
 		});
 

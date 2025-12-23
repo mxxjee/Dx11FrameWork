@@ -115,6 +115,9 @@ public:
     wstring         Get_CurrentAnimKey();
 
     void            Set_GetItem(bool b) { if(m_ActionControl.m_bItemGet!=b)m_ActionControl.m_bItemGet = b; }
+
+public:
+    void        On_Heal(int Hp);
 public:
     //상태에따른 메쉬 비지블
     void        Set_VisibleMesh(const wstring& MeshName, bool bVisible);

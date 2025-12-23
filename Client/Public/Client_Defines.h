@@ -11,6 +11,7 @@
 extern HWND g_hWnd;
 extern HINSTANCE g_hInst;
 
+
 namespace Client
 {
 	static const unsigned int g_iWinSizeX = 1280;

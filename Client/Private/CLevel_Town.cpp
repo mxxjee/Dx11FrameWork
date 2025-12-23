@@ -675,14 +675,19 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
         CMainCamera* pMaincam = dynamic_cast<CMainCamera*>(pCamBase);
         CheckNull(pMaincam);
 
+        _float3 vRotation = _float3(56.f, 0.f, 0.f);
+        _float3 vOffSet = _float3(0.f, 9.f, -6.f);
+
         _float3 vCurFloatRot = pMaincam->Get_Transform()->Get_Rotation_ByEular();
         _float3 vCurFloatOffset = pMaincam->Get_Offset();
 
         _vector vCurRot = XMLoadFloat3(&vCurFloatRot);
         _vector vCurOffSet = XMLoadFloat3(&vCurFloatOffset);
 
-        _vector fRotation = XMVectorLerp(vCurRot, XMVectorSet(56.f, 0.f, 0.f, 1.f), 0.02f);
-        _vector vOffset = XMVectorLerp(vCurOffSet, XMVectorSet(0.f, 9.f, -6.f, 0.f), 0.02f);
+        _vector fRotation = XMVectorLerp(vCurRot, XMLoadFloat3(&vRotation), 0.02f);
+        _vector vOffset = XMVectorLerp(vCurOffSet, XMLoadFloat3(&vOffSet), 0.02f);
+
+        
 
         _float4 vResult;
         _float3 fOffSet;
@@ -691,6 +696,10 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
         
         pMaincam->Set_LocalRoation(vResult);
         pCamBase->Set_Offset(fOffSet);
+        
+        pCamBase->Set_TargetOffset (vOffSet);
+        pCamBase->Set_TargetRotation(vRotation);
+
 
         //directionlight조절
         CLight* pDirectionLight = m_pGameInstance->Get_DirectionLight(m_iLevelID);
@@ -751,6 +760,8 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
         CMainCamera* pMaincam = dynamic_cast<CMainCamera*>(pCamBase);
         CheckNull(pMaincam);
 
+        _float3 vTargetOffset = _float3(0.f, 7.5f, -4.f);
+
         _float3 vCurFloatRot = pMaincam->Get_Transform()->Get_Rotation_ByEular();
         _float3 vCurFloatOffset = pMaincam->Get_Offset();
 
@@ -758,7 +769,7 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
         _vector vCurOffSet = XMLoadFloat3(&vCurFloatOffset);
 
         _vector fRotation = XMVectorLerp( vCurRot, XMVectorSet(65.f, 0.f, 0.f, 1.f), 0.02f);
-        _vector vOffset = XMVectorLerp(vCurOffSet, XMVectorSet(0.f, 7.5f, -4.f, 0.f), 0.02f);
+        _vector vOffset = XMVectorLerp(vCurOffSet,XMLoadFloat3(&vTargetOffset), 0.02f);
 
         _float4 vResult;
         _float3 fOffSet;
@@ -767,6 +778,12 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
         pMaincam->Set_LocalRoation(vResult);
         pCamBase->Set_Offset(fOffSet);
+
+        pCamBase->Set_TargetOffset(vTargetOffset);
+
+        pCamBase->Set_InitRotation(_float3(65.f, 0.f, 0.f));
+        pCamBase->Set_TargetRotation(_float3(65.f, 0.f, 0.f));
+
 
         //directionlight조절
         CLight* pDirectionLight = m_pGameInstance->Get_DirectionLight(m_iLevelID);

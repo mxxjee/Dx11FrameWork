@@ -51,7 +51,7 @@ HRESULT CM_MoriblinSword::Initialize_Copytype(void* pArg)
 	if (FAILED(__super::Initialize_Copytype(pArg)))
 		return E_FAIL;
 
-	m_pGameInstance->RegisterListners("Enter_Forest", [this](const GameEvent& event)
+	m_iEventHandle=CGameInstance::GetInstance()->RegisterListners("Enter_Forest", [this](const GameEvent& event)
 		{
 			Set_Active(true);
 		});
@@ -554,6 +554,13 @@ CGameObject* CM_MoriblinSword::Clone(void* pArg)
 void CM_MoriblinSword::Free()
 {
 	__super::Free();
+}
+
+void CM_MoriblinSword::Set_Dead()
+{
+
+	__super::Set_Dead();
+	m_pGameInstance->UnRegisterListenrs("Enter_Forest", m_iEventHandle);
 }
 
 void CM_MoriblinSword::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)

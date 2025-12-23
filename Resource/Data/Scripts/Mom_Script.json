@@ -7,7 +7,7 @@
           "ChapterID": "Q1002_START",
           "iQuestOffered": 1002,
           "iQuestRequiredToUnlock": 0,
-          "strNextPermanentChapterID": "Q1001_ACTIVE_PERM",
+          "strNextPermanentChapterID": "Q1002_ACTIVE_PERM",
           "Steps": [
             {
               "Speaker": "마마샤",

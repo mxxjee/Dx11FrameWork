@@ -87,12 +87,14 @@ public:
    
 
     void        Set_Offset(_float3 Offset) { m_vOffset = Offset; }
-    void        Set_PrevOffset(_float3 PreOffset) { m_vPreOffSet = PreOffset; }
+    void        Set_TargetOffset(_float3 PreOffset) { m_vTargetOffSet = PreOffset; }
 
     void       Set_Fovy(_float Fov) { m_fFovy = Fov; }
     void      Set_Near(float fNear) { m_fNearZ=fNear; }
     void       Set_Far(float fFar) { m_fFarZ=fFar; }
-
+    
+    void       Set_TargetRotation(_float3 fTargetRotation) { m_vTargetRotation = fTargetRotation; }
+    void        Set_InitRotation(_float3 fInitRotation) { m_vInitRotation = fInitRotation; }
 public:
                         //렌더그룹 렌더 전 설정할것들, RTV변경등.
     virtual void        PreRenderGroup(_uint iRenderGroup) {};
@@ -111,9 +113,11 @@ public:
     const _float    Get_Fovy() { return m_fFovy; }
     const _float    Get_Near() { return m_fNearZ; }
     const _float    Get_Far() { return m_fFarZ; }
-    const _float3& Get_PrevOffset() { return m_vPreOffSet; }
+    const _float3& Get_TargetOffset() { return m_vTargetOffSet; }
     _float4         Get_CameraPosition();
 
+    _float3         Get_InitRotation() { return m_vInitRotation; }
+    _float3         Get_TargetRotation() {return m_vTargetRotation;}
 private:
     void            Make_Planes();
 
@@ -149,8 +153,12 @@ protected:
 
     _float			m_fNearZ{}, m_fFarZ{};
     _float3         m_vOffset;
-    _float3         m_vInitOffset;
-    _float3         m_vPreOffSet;
+
+    _float3         m_vInitOffset;      //처음세팅하고 절대바뀌지않는값
+    _float3         m_vTargetOffSet;    //항상바뀌는값
+
+    _float3         m_vInitRotation;
+    _float3         m_vTargetRotation;
 
 
     bool            m_bPerspective = true;

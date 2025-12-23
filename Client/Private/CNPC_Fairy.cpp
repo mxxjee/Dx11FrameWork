@@ -3,7 +3,7 @@
 #include "CAnimBody.h"
 #include "CAnimation.h"
 #include "CModel.h"
-
+#include "CQuest_Manager.h"
 
 USING(Client)
 CNPC_Fairy::CNPC_Fairy(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -34,6 +34,7 @@ HRESULT CNPC_Fairy::Initialize_Prototype(void* pArg)
         {
             m_pAnimBody->Reserve_Animation(L"heel_st", false);
             m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", (void*)nullptr);
+            m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide", (void*)nullptr);
 
         });
 
@@ -83,9 +84,15 @@ void CNPC_Fairy::Exit_Interaction()
 {
     m_bTalking = false;
     m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide", nullptr);
-  
-
+    m_pAnimBody->Reserve_Animation(L"wait", true);
+    
     m_pPlayer->Get_ActionControl()->m_bTalk = false;
+
+    if(CQuest_Manager::GetInstance()->Get_QuestState(1003)!= QuestState::COMPLETABLE)
+        m_pGameInstance->Emit(Exit_Interaction_Event);
+
+
+
     m_bPrevRange = false;
     m_bPrevInteracting = false;
 }

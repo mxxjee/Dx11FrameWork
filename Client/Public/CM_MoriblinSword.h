@@ -52,7 +52,8 @@ public:
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
-
+public:
+    virtual void        Set_Dead();
 public:
     virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther);
     //플레이어 weapon과 충돌했을때 밀어내는 행동(재정의 가능)
@@ -70,6 +71,7 @@ private:
 
 private:
     vector<class CWeapon*>        m_pWeapons;
+    _uint                       m_iEventHandle = 0;
 
 };
 NS_END

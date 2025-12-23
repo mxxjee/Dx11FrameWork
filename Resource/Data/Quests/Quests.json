@@ -23,7 +23,20 @@
           "State": "SAVE_CHILD"
         }
       ]
-    }
+    },
+    {
+      "iQuestID": 1003,
+      "strTitle": "버섯 찾기",
+      "strDescription": "어둡고 습한 곳에 있는 버섯을 찾아오세요.",
 
+      "Conditions": [
+        {
+          "Type": "COLLET_ITEM",
+          "ItemType": "Mushroom",
+          "Count": 1
+
+        }
+      ]
+    }
   ]
 }

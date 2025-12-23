@@ -655,6 +655,12 @@ void CLevel_Logo::Create_MainCamera()
     m_pGameInstance->RegisterCamera(CAMERA_TYPE::TARGET, pInstance);
     
 
+    CCamera_Base* pCam = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
+    CheckNull(pCam);
+    
+    pCam->Set_InitRotation(_float3(56.f, 0.f, 0.f));
+    pCam->Set_TargetRotation(_float3(56.f, 0.f, 0.f)); 
+
     //pInstance->Set_Active(false);
 }
 

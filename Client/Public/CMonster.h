@@ -101,7 +101,7 @@ public:
     virtual void Free() override;
 
 public: 
-    void        Set_Dead();
+    virtual void        Set_Dead();
     void        Set_CollisionEnable(bool _b);
 
                 //매프레임마다 죽음 확인

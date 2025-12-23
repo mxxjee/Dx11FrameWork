@@ -79,6 +79,7 @@ bool CInventory_Manager::Request_Add_To_Inven(ItemType eType, int iCount)
 
 InvenSlot* CInventory_Manager::Find_Inven(ItemType eType)
 {
+	CheckTrueResult(m_InvenSlots.empty(), nullptr);
 	return m_InvenSlots[ENUM_TO_UINT(eType)];
 }
 

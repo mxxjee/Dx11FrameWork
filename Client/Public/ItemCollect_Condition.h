@@ -3,6 +3,8 @@
 
 /*인벤토리매니저한테 요청해서 있는지확인하다.*/
 NS_BEGIN(Client)
+class CInventory_Manager;
+
 class ItemCollect_Condition :
     public CQuestCondition
 {
@@ -10,7 +12,7 @@ class ItemCollect_Condition :
 
 public:
     ItemCollect_Condition();
-    ItemCollect_Condition(_uint iCollectItemID, int iCount);
+    ItemCollect_Condition(ItemType iCollectItemID, int iCount);
     virtual ~ItemCollect_Condition();
 
 
@@ -21,7 +23,9 @@ public:
 
 private:
     int         m_iCount = 0;
-    _uint       m_iCheckItem = 0;
+    ItemType       m_iCheckItem;
+
+    class CInventory_Manager* m_pInventory_Manager = nullptr;
 
 };
 

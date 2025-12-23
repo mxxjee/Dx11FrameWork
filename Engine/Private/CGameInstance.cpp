@@ -1003,11 +1003,16 @@ void CGameInstance::Emit(const GameEvent& Event)
 	return m_pEventBusManager->Emit(Event);
 
 }
-void CGameInstance::RegisterListners(const string& CBName, EventCallBack Callback)
+_uint CGameInstance::RegisterListners(const string& CBName, EventCallBack Callback)
 {
-	CheckNull(m_pEventBusManager);
+	CheckNullResult(m_pEventBusManager,0);
 	return m_pEventBusManager->RegisterListners(CBName,Callback);
 
+}
+
+void CGameInstance::UnRegisterListenrs(const string& CBName, _uint iHandle)
+{
+	return m_pEventBusManager->UnRegisterListenrs(CBName, iHandle);
 }
 
 HRESULT CGameInstance::Register_Collider(CCollider_Base* pCollider, _uint iSceneID)

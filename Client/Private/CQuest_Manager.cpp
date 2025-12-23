@@ -51,7 +51,7 @@ HRESULT CQuest_Manager::Initialize()
 
 
 	size_t Fairy_HashKey = hash<string>()("NPC_Fairy");
-	m_mapNPCChapterProgress[Fairy_HashKey].BaseChapterID = "Fairy_start";		//대화시작챕터:START
+	m_mapNPCChapterProgress[Fairy_HashKey].BaseChapterID = "Q1003_START";		//대화시작챕터:START
 	m_mapNPCChapterProgress[Fairy_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Fairy_HashKey].BaseChapterID;		//대화시작챕터:START
 
 
@@ -323,9 +323,14 @@ CQuestCondition* CQuest_Manager::Make_Condition_From_Json(const json& json_cond)
 
 	if (strType == "COLLET_ITEM")
 	{
-		int id = json_cond.at("ItemID").get<int>();
+		string strtemType = json_cond.at("ItemType").get<string>();
+
+		ItemType itemType;
+		if (strtemType == "Mushroom")
+			itemType = ItemType::MUSHROOM;
+
 		int count = json_cond.at("Count").get<int>();
-		return new ItemCollect_Condition(id, count);
+		return new ItemCollect_Condition(itemType, count);
 
 	}
 

@@ -101,6 +101,34 @@ HRESULT UICreator::Create_HeartGroup(wstring LayerTag)
             }
         });
 
+    m_pGameInstance->RegisterEvent(L"OnHeartHealed", [](void* pData)
+        {
+            int* iHp = reinterpret_cast<int*>(pData);
+            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"HeartGroup");
+            if (pGroup)
+            {
+                for (auto& i : pGroup->Objects)
+                {
+                    CUI* pUI = dynamic_cast<CUI*>(i.second);
+                    if (pUI)
+                    {
+                        int iTargetIdx = (int)pUI->Get_Idx();
+
+                        if (iTargetIdx < (*iHp))
+                        {
+                            if(!pUI->Is_Active())
+                            {
+                                pUI->Set_Active(true);
+                                pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA,_float4(0.f,0.f,0.f,0.f),_float4(1.f,0.f,0.f,0.f),5.f,false,false);
+                            }
+                                
+
+                        }
+                    }
+                }
+            }
+        });
+
 	return S_OK;
 }
 

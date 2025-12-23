@@ -237,6 +237,7 @@ void CPlayerStateGetItem::Change_CameraState(float _fTimeDelta)
         m_pMainCamera->Set_Offset(fOffSet);
     }
 
+    //원래복원작업
     else
     {
         _float3 vCurFloatRot = m_pMainCamera->Get_Transform()->Get_Rotation_ByEular();
@@ -245,10 +246,14 @@ void CPlayerStateGetItem::Change_CameraState(float _fTimeDelta)
         _vector vCurRot = XMLoadFloat3(&vCurFloatRot);
         _vector vCurOffSet = XMLoadFloat3(&vCurFloatOffset);
 
-        
-       
-        _vector fRotation = XMVectorLerp(vCurRot,XMVectorSet(56.f,0.f,0.f,1.f), 0.8f);
-        _vector vOffset = XMVectorLerp(vCurOffSet, XMLoadFloat3(&m_pMainCamera->Get_InitOffset()), 0.5f);
+
+        _float3 TargetRotation = m_pMainCamera->Get_TargetRotation();
+        _float3 TargetOffSet = m_pMainCamera->Get_TargetOffset();
+
+        _vector vTargetRot = XMLoadFloat3(&TargetRotation);
+
+        _vector fRotation = XMVectorLerp(vCurRot, vTargetRot, 0.8f);
+        _vector vOffset = XMVectorLerp(vCurOffSet, XMLoadFloat3(&TargetOffSet), 0.5f);
 
         _float4 vResult;
         _float3 fOffSet;

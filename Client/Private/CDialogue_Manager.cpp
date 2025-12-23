@@ -186,6 +186,17 @@ void CDialogue_Manager::Register_EventListner()
 
 
         });
+
+    m_pGameInstance->RegisterListners("On_PlayerHeal", [this](const GameEvent& evt)
+        {
+            CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+            CheckNull(pPlayer);
+       
+            pPlayer->On_Heal(5);
+
+
+
+        });
 }
 
 void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, const Dialog_Action_Timing& strTiming)
@@ -214,6 +225,15 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
 
     }
 
+    else if (strCommand == "On_PlayerHeal")
+    {
+        CQuest_Manager::GetInstance()->Set_FactCheckValue(CQuest_Manager::QuestFact::SAVE_CHILD, true);
+
+        GameEvent Event;
+        Event.Name = "On_PlayerHeal";
+        CGameInstance::GetInstance()->Emit(Event);
+
+    }
 
     else if (strCommand == "Fairy_End")
     {
