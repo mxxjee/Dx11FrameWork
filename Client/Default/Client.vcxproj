@@ -165,6 +165,7 @@
     <ClInclude Include="..\Public\CGameManager.h" />
     <ClInclude Include="..\Public\CIInteractable.h" />
     <ClInclude Include="..\Public\CInteractionObject.h" />
+    <ClInclude Include="..\Public\CInteraction_BigRock.h" />
     <ClInclude Include="..\Public\CInteraction_Lawn.h" />
     <ClInclude Include="..\Public\CInteraction_Manager.h" />
     <ClInclude Include="..\Public\CInteraction_Mushroom.h" />
@@ -279,6 +280,7 @@
     <ClCompile Include="..\Private\CGameManager.cpp" />
     <ClCompile Include="..\Private\CIInteractable.cpp" />
     <ClCompile Include="..\Private\CInteractionObject.cpp" />
+    <ClCompile Include="..\Private\CInteraction_BigRock.cpp" />
     <ClCompile Include="..\Private\CInteraction_Lawn.cpp" />
     <ClCompile Include="..\Private\CInteraction_Manager.cpp" />
     <ClCompile Include="..\Private\CInteraction_Mushroom.cpp" />

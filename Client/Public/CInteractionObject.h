@@ -32,6 +32,7 @@ public:
         string                  SceneName = "";
         float                   InteractionPopUpRange = 2.f;    //플레이어가 이 안에 들어오면 interaction 가능한상태
 
+        bool                    m_bUseNavMesh = true;
     }Interaction_DESC;
 
 
@@ -113,6 +114,9 @@ protected:
     _vector          m_velocity;
 
     _float3 Pos=_float3(0.f,0.f,0.f);
+
+private:
+     bool m_bUseNavMesh=true;
 };
 NS_END
 

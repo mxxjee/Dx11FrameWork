@@ -55,6 +55,7 @@ protected:
     Engine::CNavigation* m_pNavigationCom = { nullptr };
 
 public:
+    virtual void Set_Active(bool _b);
     ///////////범위감지용//////////
     virtual bool            IsInteratable();      //상호작용조건
     virtual void        Enter_InteractRange();

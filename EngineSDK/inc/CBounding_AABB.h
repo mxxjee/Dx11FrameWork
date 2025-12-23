@@ -8,7 +8,7 @@ class ENGINE_DLL CBounding_AABB :
 public:
     typedef struct tagBoundingAABBDesc: CBounding::BOUNDING_DESC
     {
-        _float3 Extents = { 1.f,1.f,1.f };      //초기 범위
+        _float3 Extents = { 0.6f,0.6f,0.6f };      //초기 범위
 
     }BOUNDING_AABB_DESC;
 

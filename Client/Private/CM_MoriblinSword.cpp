@@ -138,6 +138,9 @@ HRESULT CM_MoriblinSword::Ready_Component(void* pArg)
 		reinterpret_cast<CComponent**>(&m_pCollider)
 	)))
 		return E_FAIL;
+	
+	m_pCollider->Set_Trigger(false);
+
 	return  S_OK;
 }
 

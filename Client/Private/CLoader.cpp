@@ -71,6 +71,7 @@
 #include "CEventTrigger.h"
 
 #include "CNPC_Fairy.h"
+#include "CInteraction_BigRock.h"
 
 
 
@@ -614,6 +615,12 @@ HRESULT CLoader::Register_GameObjects()
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Interaction_Mushroom", CInteraction_Mushroom::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
+
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Interaction_BigRock", CInteraction_BigRock::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+
     /////////Rooms
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Room", CRoom::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;

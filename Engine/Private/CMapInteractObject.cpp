@@ -114,6 +114,8 @@ void CMapInteractObject::Save_To_Json(json& Json)
 	ColliderCenter.push_back(vCenter.z);
 	Collider["Center"] = ColliderCenter;
 
+
+
 	json ColliderExtent = json::array();
 	ColliderExtent.push_back(vExtent.x);
 	ColliderExtent.push_back(vExtent.y);
@@ -146,7 +148,8 @@ void CMapInteractObject::Save_To_Json(json& Json)
 		InteractionInfo = "Grass";
 		break;
 
-
+	case InteractionType::BIGROCK:
+		InteractionInfo = "BigRock";
 	}
 
 	Meta["InteractionType"] = InteractionInfo;

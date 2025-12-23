@@ -136,9 +136,18 @@ HRESULT CNPC::Render()
 
 
 
+void CNPC::Set_Active(bool _b)
+{
+    __super::Set_Active(_b);
+
+    m_pTriggerBox->Set_Active(_b);
+}
+
 bool CNPC::IsInteratable()
 {
     CheckNullResult(m_pTriggerBox, false);
+    CheckFalseResult(m_pTriggerBox->Is_Active(), false);
+
     return m_pTriggerBox->Is_Collision();
     return false;
 }
@@ -146,7 +155,7 @@ bool CNPC::IsInteratable()
 void CNPC::Enter_InteractRange()
 {
     //말걸기 UI 활성화..
-
+    CheckFalse(m_pTriggerBox->Is_Active());
     _vector ShowPos = MathUtils::WorldToScreen(m_pTransformCom->Get_State(STATE::POSITION),
         m_pGameInstance->Get_ViewMatrix(0), m_pGameInstance->Get_ProjMatrix(0), g_iWinSizeX, g_iWinSizeY);
 
@@ -158,6 +167,7 @@ void CNPC::Enter_InteractRange()
 void CNPC::Stay_InteractRange(_float fTimeDelta)
 {
     /*플레이어 쳐다보기*/
+    CheckFalse(m_pTriggerBox->Is_Active());
     _vector PlayerPos = m_pPlayer->Get_Transform()->Get_State(STATE::POSITION);
     _vector vUp = XMVector3Normalize(m_pTransformCom->Get_State(STATE::UP));
 
@@ -168,12 +178,14 @@ void CNPC::Stay_InteractRange(_float fTimeDelta)
 
 void CNPC::Exit_InteractRange()
 {
+    CheckFalse(m_pTriggerBox->Is_Active());
     m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", (void*)nullptr);
 }
 
 void CNPC::Enter_Interaction()
 {
     m_bTalking = true;
+    CheckFalse(m_pTriggerBox->Is_Active());
     m_pAnimBody->Reserve_Animation(L"talk", true);
     m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", (void*)nullptr);
 
@@ -188,6 +200,7 @@ void CNPC::Enter_Interaction()
 
 void CNPC::Stay_Interaction(_float fTimeDelta)
 {
+    CheckFalse(m_pTriggerBox->Is_Active());
     m_fTime += fTimeDelta;
 
     m_pPlayer->Get_Transform()->LookAtSmooth(m_pTransformCom->Get_State(STATE::POSITION), 5.f, fTimeDelta);
@@ -205,6 +218,7 @@ void CNPC::Stay_Interaction(_float fTimeDelta)
 
 void CNPC::Exit_Interaction()
 {
+    CheckFalse(m_pTriggerBox->Is_Active());
     m_bTalking = false;
     m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide", nullptr);
 

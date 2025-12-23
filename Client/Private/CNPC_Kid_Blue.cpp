@@ -136,8 +136,9 @@ void CNPC_Kid_Blue::Exit_Interaction()
     m_bTalking = false;
     m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide", nullptr);
 
+
     m_pPlayer->Get_ActionControl()->m_bTalk = false;
-    m_pAnimBody->Reserve_Animation(L"idle", true);
+    m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", nullptr);
 
     m_bPrevRange = false;
     m_bPrevInteracting = false;

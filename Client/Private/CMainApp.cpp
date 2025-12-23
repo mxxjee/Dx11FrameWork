@@ -258,6 +258,9 @@ void CMainApp::Set_Collision_Rules()
 
 
 	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::TRIGGER), ENUM_TO_UINT(COLLISION_GROUP::PLAYER), true);
+	
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::TRIGGER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::MONSTER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
 
 }
 

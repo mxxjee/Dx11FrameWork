@@ -300,7 +300,12 @@
     <ClInclude Include="..\Public\CNPC_Witch.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Witch</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CInteraction_Mushroom.h" />
+    <ClInclude Include="..\Public\CInteraction_BigRock.h">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_BigRock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CInteraction_Mushroom.h">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Mushroom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -656,7 +661,10 @@
     <Filter Include="02.GameObjects\97.Item">
       <UniqueIdentifier>{67f1876d-83a2-4116-b01b-b1d12f347c1a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\02.InteractionObject\Interaction_Mushroom">
+    <Filter Include="02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_BigRock">
+      <UniqueIdentifier>{646e08e5-af82-477d-9941-f2b24d72d9fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Mushroom">
       <UniqueIdentifier>{4820a85c-ceb5-4f0c-8659-1f64ab4c1a33}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -939,7 +947,12 @@
     <ClCompile Include="..\Private\CNPC_Witch.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Witch</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CInteraction_Mushroom.cpp" />
+    <ClCompile Include="..\Private\CInteraction_BigRock.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_BigRock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CInteraction_Mushroom.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Mushroom</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

@@ -18,7 +18,7 @@ HRESULT CMapLoader::Load_Town()
 {
     Load_Terrain("../../Resource/Data/Map/Final_Town.json");
     Load_NavMesh(LEVEL_ID::TOWN, "../../Resource/Data/Map/Terrain11_Nav.dat");
-    Load_Interaction("Level_Town", "../../Resource/Data/Map/Interaction3.json");
+    Load_Interaction("Level_Town", "../../Resource/Data/Map/Interaction5.json");
     return S_OK;
 }
 
@@ -117,6 +117,10 @@ HRESULT CMapLoader::Make_Object_By_LoadData(string SceneName, CLayer* pLayer)
         Desc.SceneName = SceneName;
         Desc.bAnimated = false;
         Desc.ObjTag = StringToWString(Info.ModelName) + to_wstring(iIdx);
+        if (Info.ModelName == "BigRock")
+            Desc.m_bUseNavMesh = false;
+
+
 
         CTransform::TRANSFORM_DESC TransDesc;
         TransDesc.vLocalPosition = _float4(Info.vPos.x, Info.vPos.y, Info.vPos.z, 1.f);
@@ -153,6 +157,14 @@ HRESULT CMapLoader::Make_Object_By_LoadData(string SceneName, CLayer* pLayer)
             ProtoTag = L"Interaction_Rock";
         }
             break;
+
+
+        case Interact_Object_Type::BIGROCK:
+        {
+            Desc.fTargetDistance = 3.f;
+            ProtoTag = L"Interaction_BigRock";
+        }
+        break;
 
         case Interact_Object_Type::ITEM:
         {

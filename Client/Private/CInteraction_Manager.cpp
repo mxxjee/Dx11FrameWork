@@ -47,8 +47,8 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 	//전체 리스트를 돌면서 상호작용가능한 조건을 가지는 애들을 간추리기
 	for (auto pInteratable : m_InteractableObjects)
 	{
-		CheckTrue(m_pMainPlayer->Get_ActionControl()->m_bCarry)
-
+		CheckTrue(m_pMainPlayer->Get_ActionControl()->m_bCarry);
+	
 		if (!pInteratable)
 			continue;
 
@@ -250,6 +250,9 @@ HRESULT CInteraction_Manager::Load_Data(string SceneName, vector< DefaultInterac
 
 		else if (InteractionType == "Mushroom")
 			Data.InteractionType = ENUM_TO_UINT(Interact_Object_Type::ITEM);
+
+		else if (InteractionType == "BigRock")
+			Data.InteractionType = ENUM_TO_UINT(Interact_Object_Type::BIGROCK);
 
 
 		json TransformData = iInteraction["Transform"];

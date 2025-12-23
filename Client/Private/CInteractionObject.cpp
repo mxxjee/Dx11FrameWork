@@ -50,7 +50,7 @@ HRESULT CInteractionObject::Initialize_Copytype(void* pArg)
     m_eInteractionType = pDesc->eInteract_Object_Type;
     m_SceneName = pDesc->SceneName;
     m_fTargetDistance = pDesc->fTargetDistance;
-
+    m_bUseNavMesh = pDesc->m_bUseNavMesh;
 
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
@@ -64,8 +64,12 @@ HRESULT CInteractionObject::Initialize_Copytype(void* pArg)
 
     m_pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
 
+
+
     //vPos.m128_f32 0x00000070d30fd1a0 {21.9783173, 10.5500002, 28.0775661, 0.00000000}
-    m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
+
+    if(m_bUseNavMesh)
+        m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
 
 
 
@@ -207,6 +211,8 @@ HRESULT CInteractionObject::Ready_Components(void* pArg)
 
 
     ///Navigation »ý¼º
+    CheckFalseResult(m_bUseNavMesh, S_OK);
+
     CComponent::COMPONENT_DESC Desc;
     Desc.pOwner = this;
 
@@ -296,6 +302,7 @@ void CInteractionObject::Exit_InteractRange()
 
 void CInteractionObject::Enter_Interaction()
 {
+    CheckFalse(m_bActive);
     m_bCall_Exit_Interaction = false;
 
 }
@@ -306,6 +313,7 @@ void CInteractionObject::Stay_Interaction(_float fTimeDelta)
 
 void CInteractionObject::Exit_Interaction()
 {
+    CheckFalse(m_bActive);
     CheckTrue(m_bCall_Exit_Interaction);
     m_bCall_Exit_Interaction = true;
 }

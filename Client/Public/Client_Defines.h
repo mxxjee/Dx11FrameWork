@@ -174,7 +174,8 @@ enum Interact_Object_Type
 	ROCK,
 	LAWN,
 	GRASS,
-	ITEM
+	ITEM,
+	BIGROCK
 };
 
 enum Interact_Behavior_Type

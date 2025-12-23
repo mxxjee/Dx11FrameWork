@@ -91,6 +91,9 @@ HRESULT CInteraction_Mushroom::Render()
 bool CInteraction_Mushroom::IsInteratable()
 {
     CheckNullResult(m_pTriggerBox, false);
+    CheckTrueResult(!m_pTriggerBox->Is_Active(),false);
+
+
     return m_pTriggerBox->Is_Collision();
     return false;
 }
@@ -98,6 +101,7 @@ bool CInteraction_Mushroom::IsInteratable()
 void CInteraction_Mushroom::Enter_InteractRange()
 {
     CheckTrue(m_bInteraction);
+    CheckFalse(m_bActive);
 
     _vector ShowPos = MathUtils::WorldToScreen(m_pTransformCom->Get_State(STATE::POSITION),
         m_pGameInstance->Get_ViewMatrix(0), m_pGameInstance->Get_ProjMatrix(0), g_iWinSizeX, g_iWinSizeY);
@@ -110,12 +114,16 @@ void CInteraction_Mushroom::Enter_InteractRange()
 void CInteraction_Mushroom::Exit_InteractRange()
 {
     CheckTrue(m_bInteraction);
+    CheckFalse(m_bActive);
+
+
     m_pGameInstance->BroadCastEvent(L"OnGetUIHide", (void*)nullptr);
 
 }
 
 void CInteraction_Mushroom::Enter_Interaction()
 {
+    CheckFalse(m_bActive);
     CheckTrue(m_pPlayer->Get_ActionControl()->m_bCarry);
     m_bCall_Exit_Interaction = false;
 
@@ -124,6 +132,7 @@ void CInteraction_Mushroom::Enter_Interaction()
     m_pGameInstance->BroadCastEvent(L"OnGetUIHide", (void*)nullptr);
 
     Set_Active(false);
+    m_pTriggerBox->Set_Active(false);
    // m_pPlayer->Get_ActionControl()->m_bCarry = true;
   //  m_pGameInstance->SetActiveGroup(L"Interaction_PopUp_Carry", false);
 

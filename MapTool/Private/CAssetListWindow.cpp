@@ -335,7 +335,7 @@ HRESULT CAssetListWindow::Create_ModelFile()
     }
 
     ///////////Interaction 오브젝트들/////
-    wstring IteractionModelNames[] = { L"CaveRock",L"Rock",L"Lawn",L"Grass"};
+    wstring IteractionModelNames[] = { L"CaveRock",L"Rock",L"Lawn",L"Grass",L"BigRock"};
     int iSize = sizeof(IteractionModelNames) / sizeof(IteractionModelNames[0]);
 
     CFolder* pInteractionFolder= Get_Folder("Interaction");
