@@ -274,6 +274,15 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
         m_pGameInstance->Emit(gameEvent);
 
     }
+
+
+    else if (strCommand == "Get_Power")
+    {
+        CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+        CheckNull(pPlayer);
+        CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::POWER_BRACELET, 1);
+
+    }
 }
 
 void CDialogue_Manager::LoadScriptDatabase(const string& strFilePath)

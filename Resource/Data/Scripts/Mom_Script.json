@@ -24,13 +24,31 @@
             {
               "Speaker": "마마샤",
               "Text": "아침까진 집 근처에 있었는데...\n숲 쪽으로 간 것 같아요.",
-              "strActionCommand": "PLAY_ANIM:NPC_BOW",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "마마샤",
+              "Text": "숲 안쪽엔 큰 돌들이 길을 막고있어서..\n전 도저히 들어갈 수가 없었어요.",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "마마샤",
+              "Text": "이건 남편이 쓰던 물건이에요.\n당신이라면 쓸 수 있을거에요.",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "마마샤",
+              "Text": "<파워 팔찌>예요.\n이걸로 돌을 들어 아이를 구해주세요.",
+              "strActionCommand": "",
               "actionTiming": "ON_START"
             },
             {
               "Speaker": "마마샤",
               "Text": "부탁이에요...\n숲에서 아이를 찾아주세요.",
-              "strActionCommand": "",
+              "strActionCommand": "Get_Power",
               "actionTiming": "ON_FINISH"
             }
           ]
