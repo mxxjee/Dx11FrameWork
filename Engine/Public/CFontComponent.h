@@ -4,6 +4,13 @@ NS_BEGIN(Engine)
 class ENGINE_DLL CFontComponent :
     public CComponent
 {
+    struct TextChunk
+    {
+        wstring str = L"";
+        _float4 color;
+        _float3 Offset=_float3(0.f,0.f,0.f);
+
+    };
 
 public:
     struct Font_Desc : public CComponent::COMPONENT_DESC
@@ -66,7 +73,7 @@ private:
 public:
                 //타이핑 효과를 재생시킨다 딱1회의 스위치 개념,내부적으로 알아서 재귀처리가 됨(문장끝을만나면 멈춤)
     void            PlayTyping();
-
+    void            Set_RandomColor(bool b);
 private:
     bool        m_bTypingEffect = false;        //타이핑 하는거처럼 나오는 이펙트
     bool        m_bPlay = false;
@@ -89,6 +96,8 @@ private:
 
                 //타이핑효과끝난 이후에 실행
     function<void()>        m_EndFunction = nullptr;
+
+    bool                m_bRandomColor = false;
 
 
 };

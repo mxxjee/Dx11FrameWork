@@ -29,7 +29,7 @@
             },
             {
               "Speaker": "???",
-              "Text": "나잖아. 마린!",
+              "Text": "나잖아. <마린!>",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             },
@@ -41,7 +41,7 @@
             },
             {
               "Speaker": "마린",
-              "Text": "여긴 코호린트 섬이야.\n그리고 넌... 마을의 심부름꾼이지.",
+              "Text": "여긴 [코호린트] 섬이야.\n그리고 넌... 마을의 심부름꾼이지.",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             },

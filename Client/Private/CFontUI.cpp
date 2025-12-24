@@ -31,6 +31,11 @@ HRESULT CFontUI::Initialize_Copytype(void* pArg)
 	if (FAILED(CFontUI::Ready_Component(pArg)))
 		return E_FAIL;
 
+	FONTUI_DESC* pDesc = static_cast<FONTUI_DESC*>(pArg);
+
+	m_pFontComp->Set_RandomColor(pDesc->m_bRandomColor);
+
+
 	return S_OK;
 }
 

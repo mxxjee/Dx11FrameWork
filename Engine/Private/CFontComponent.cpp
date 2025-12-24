@@ -97,6 +97,7 @@ HRESULT CFontComponent::Render()
 
 
     /*원래 텍스트*/
+
     m_pFont->DrawString(m_pBatch, 
         m_TypingStr.c_str(),
         m_vPosition,
@@ -140,7 +141,8 @@ void CFontComponent::Update(XMMATRIX WorldMatrix, _float alpha,_float fTimeDelta
         }
     }
 
-  
+   
+
 }
 
 CFontComponent* CFontComponent::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -219,12 +221,29 @@ void CFontComponent::PlayTyping()
         return;
     }
 
+	m_TypingStr += m_pText[m_iTargetIdx];
 
-    m_TypingStr += m_pText[m_iTargetIdx];
+        
+
     ++m_iTargetIdx;
 
    
 
 
+}
+
+void CFontComponent::Set_RandomColor(bool b)
+{
+    if (b)
+    {
+        m_pGameInstance->Repeat(0.1f, 0.1f, true, false, [this]()
+            {
+                m_vColor = _float4(m_pGameInstance->Random(0.5f, 1.f),
+                    m_pGameInstance->Random(0.2f, 1.f),
+                    m_pGameInstance->Random(0.1f, 1.f),
+                    1.f);
+            }, m_pOwner);
+
+    }
 }
 

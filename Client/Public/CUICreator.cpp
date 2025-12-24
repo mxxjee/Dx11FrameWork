@@ -982,7 +982,7 @@ HRESULT UICreator::Create_ItemGet_Desc_UI(wstring LayerTag)
 
     FontUIDesc.fX = ItemGetFrameDesc.fX + 25.f;
     FontUIDesc.fY = OriginY + 50.f;
-
+    FontUIDesc.m_bRandomColor = true;
     FontUIDesc.Depth = 0.5f - (0.01f);
 
     FontUIDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);

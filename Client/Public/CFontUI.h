@@ -21,6 +21,8 @@ public:
 
         _float2 vPosition = _float2(0.f, 0.f);
 
+        bool        m_bRandomColor = false;
+
     }FONTUI_DESC;
 protected:
     CFontUI(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
