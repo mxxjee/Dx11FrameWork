@@ -94,6 +94,35 @@ HRESULT CCamera_Manager::Initialize()
 
 		});
 
+	m_pGameInstance->RegisterListners("Complete_Init_Camera", [this](const GameEvent& evt)
+		{
+
+			CGameObject* pPlayer = static_cast<CGameObject*>(evt.Payload.Ptrs.at("Player"));
+			CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(Get_MainCamera());
+
+			CMainCamera* pMainCamera = dynamic_cast<CMainCamera*>(pCameraBase);
+
+			CheckNull(pCameraBase);
+			CheckNull(pPlayer);
+			CheckNull(pMainCamera);
+
+			if (pMainCamera)
+				pMainCamera->Set_Target(pPlayer, true);
+
+			else
+				pCameraBase->Set_Target(pPlayer);
+
+		
+			_float3 vRot = pCameraBase->Get_InitRotation();
+
+			pCameraBase->Set_Offset(pCameraBase->Get_InitOffset());
+			pMainCamera->Set_LocalRoation(_float4(vRot.x, vRot.y, vRot.z,0.f));
+			pMainCamera->Set_TargetRotation(vRot);
+
+
+
+		});
+
 	m_pGameInstance->RegisterListners("Enter_NPCRoom", [this](const GameEvent& evt)
 		{
 			CGameObject* pPlayer = static_cast<CGameObject*>(evt.Payload.Ptrs.at("Player"));
@@ -111,9 +140,40 @@ HRESULT CCamera_Manager::Initialize()
 			pCameraBase->Set_Offset(OffSet);
 			pCameraBase->Set_Target(pPlayer,true);
 
+			_float3 vRot = pCameraBase->Get_InitRotation();
+			pCameraBase->Set_LocalRoation(_float4(vRot.x,vRot.y,vRot.z,0.f));
+			pCameraBase->Set_TargetRotation(vRot);
 
 		});
 
+	m_pGameInstance->RegisterListners("Cameara_LerpRotation_Start", [this](const GameEvent& evt)
+		{
+			CMainCamera* pCameraBase = dynamic_cast<CMainCamera*>(Get_MainCamera());
+
+
+			_float3 Rotation = _float3(evt.Payload.Floats.at("Rot_X"),
+				evt.Payload.Floats.at("Rot_Y"),
+				evt.Payload.Floats.at("Rot_Z"));
+
+
+			CheckNull(pCameraBase);
+		
+	
+			pCameraBase->Set_TargetRotation(Rotation);
+
+		});
+
+	m_pGameInstance->RegisterListners("Cameara_LerpRotation_End", [this](const GameEvent& evt)
+		{
+			CMainCamera* pCameraBase = dynamic_cast<CMainCamera*>(Get_MainCamera());
+
+
+			CheckNull(pCameraBase);
+
+			pCameraBase->Set_RotationLerp(true);
+			pCameraBase->Set_TargetRotation(pCameraBase->Get_InitRotation());
+
+		});
 	return S_OK;
 
 }

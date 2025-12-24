@@ -316,8 +316,11 @@ bool CTransform::RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDel
 
 	_float3 vRotation;
 	XMStoreFloat3(&vRotation, vNew);
+	vRotation.x = XMConvertToDegrees(vRotation.x);
+	vRotation.y = XMConvertToDegrees(vRotation.y);
+	vRotation.z = XMConvertToDegrees(vRotation.z);
 
-	
+	Rotation(vRotation);
 
 	//오차값을 통해 도착판단
 	_vector vDiff = XMVectorSubtractAngles(qTarget, qCurrent);

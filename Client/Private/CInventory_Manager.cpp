@@ -175,3 +175,20 @@ CInventory_Manager::InvenStanby* CInventory_Manager::Find_Stanby(ItemType eType)
 
 	return nullptr;
 }
+
+bool CInventory_Manager::Uset_Item(ItemType eType, int iCount)
+{
+	InvenSlot* pSlot = m_InvenSlots[ENUM_TO_UINT(eType)];
+	CheckNullResult(pSlot, false);
+	CheckTrueResult(pSlot->count < iCount,false);
+
+	pSlot->count -= iCount;
+
+	if (pSlot->count <= 0)
+	{
+		pSlot = nullptr;
+	}
+
+	return true;
+
+}

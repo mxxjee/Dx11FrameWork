@@ -119,6 +119,12 @@ void CInteraction_TriggerBox::Set_Active(bool _b)
 	m_bActive = _b;
 	for (auto& pCol : m_pCollider)
 		pCol->Set_Active(_b);
+
+	if (_b == false)
+	{
+		m_bCollision = false;
+
+	}
 }
 
 void CInteraction_TriggerBox::Set_Size(_float3 vSize)
@@ -204,7 +210,12 @@ CGameObject* CInteraction_TriggerBox::Clone(void* pArg)
 void CInteraction_TriggerBox::Free()
 {
 	for (auto& i : m_pCollider)
+	{
+		m_pGameInstance->UnRegister_Collider(i, m_iSceneID);
+
 		Safe_Release(i);
+	
+	}
 
 	__super::Free();
 

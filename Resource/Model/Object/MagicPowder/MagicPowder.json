@@ -1,0 +1,140 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "MI_body_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_body",
+            "Normal": "MI_body_nml.png",
+            "OPACITY": "MI_body_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_body_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_body",
+            "Normal": "MI_body_nml.png",
+            "OPACITY": "MI_body_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_body_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_body",
+            "Normal": "MI_body_nml.png",
+            "OPACITY": "MI_body_alb.png",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 3,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 786,
+            "MaterialName": "MI_body",
+            "MeshIdx": 0,
+            "Name": "knot_low__MI_body",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 202
+        },
+        {
+            "IBPath": "Mesh_1.ib",
+            "IndexCount": 930,
+            "MaterialName": "MI_body",
+            "MeshIdx": 1,
+            "Name": "opening_low__MI_body",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_1.vb",
+            "VertexCount": 199
+        },
+        {
+            "IBPath": "Mesh_2.ib",
+            "IndexCount": 1590,
+            "MaterialName": "MI_body",
+            "MeshIdx": 2,
+            "Name": "sack_low__MI_body",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_2.vb",
+            "VertexCount": 346
+        }
+    ],
+    "ModelName": "MagicPowder"
+}

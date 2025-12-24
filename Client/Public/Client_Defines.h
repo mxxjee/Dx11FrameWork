@@ -136,6 +136,7 @@ enum class ItemType
 	LETTER,	//아이가 남기고간 쪽지
 	FEATHER,	//깃털
 	POWER_BRACELET,//파워팔찌
+	MAGIC_POWDER,//마녀한테 받은가루
 	END
 
 };

@@ -81,14 +81,17 @@ void CNPC_Kid_Blue::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
     if (m_bEnd)
+    {
         m_fAlpha -= fTimeDelta;
+        m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", (void*)nullptr);
 
+    }
 
     if (m_fAlpha <= 0)
     {
         Set_Active(false);
         m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide", nullptr);
-    }
+            }
 
 
 }
@@ -122,6 +125,8 @@ void CNPC_Kid_Blue::Enter_Interaction()
 {
     m_bTalking = true;
     m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", (void*)nullptr);
+ //   m_pGameInstance->BroadCastEvent(L"OnDialogueUIShow", nullptr);
+
 
 
     m_pGameInstance->Emit(Enter_Interaction_Event);

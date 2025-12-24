@@ -45,6 +45,11 @@ HRESULT CItem_Manager::Initialize()
     pFeatherItem->TexKey = L"PowerBracelet";
     m_ItmInfos[ENUM_TO_UINT(ItemType::POWER_BRACELET)] = (pPowerBracelet);
 
+    ITMINFO* pMagicPowder = new ITMINFO;
+    pMagicPowder->ItemType = ItemType::MAGIC_POWDER;
+    pMagicPowder->ItemDesc = L"마법의 가루를 손에 넣었다!\n쓸 곳을 찾아보자!";
+    pMagicPowder->TexKey = L"MagicPowder";
+    m_ItmInfos[ENUM_TO_UINT(ItemType::MAGIC_POWDER)] = (pMagicPowder);
 
     return S_OK;
 }

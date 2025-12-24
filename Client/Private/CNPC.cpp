@@ -141,6 +141,12 @@ void CNPC::Set_Active(bool _b)
     __super::Set_Active(_b);
 
     m_pTriggerBox->Set_Active(_b);
+
+    if (!_b)
+    {
+        CInteraction_Manager::GetInstance()->UnRegisterInteractable(this);
+  
+    }
 }
 
 bool CNPC::IsInteratable()
@@ -239,6 +245,8 @@ void CNPC::Exit_Interaction()
 
 void CNPC::Pressed_InteractionKey()
 {
+    CheckTrue(m_bWait);
+
     if (!m_pDialogue_Manager->AdvanceDialogueStep())
         Exit_Interaction();
 }

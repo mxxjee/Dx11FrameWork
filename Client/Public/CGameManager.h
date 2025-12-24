@@ -30,8 +30,17 @@ public:
     void        Set_LastPosition(_float4 vPosition);
     void        Set_LastPosition(_vector vPosition);
 
+
+    void        Set_DefaultPosition(_vector vPosition);
+    void        Set_DefaultPosition(_float4 vPosition);
+
+
+
     _float4     Get_LastPosition_By_Float4();
     _vector     Get_LastPosition_By_Vector();
+
+    _float4     Get_DefaultPositio_By_Float4();
+    _vector     Get_DefaultPositioBy_Vector();
 
     virtual void Free() override;
 
@@ -41,16 +50,19 @@ public:
 public:
     void        Set_FirstLoading(bool b) { m_bFirstLoading = b; }
     void        Set_UseCutScene(bool b) { m_bUseCutScene = b; }
+   
+ 
 
     bool        Get_IsFirstLoading() { return m_bFirstLoading; }
-    bool        Get_UseCutScene() { return m_bUseCutScene;
-    }
+    bool        Get_UseCutScene() { return m_bUseCutScene;}
 
 
 private:
     CPlayer* m_pMainPlayer=nullptr;
+  
     _float4  vLastPosition;
-    
+    _float4  vDefulatPosition;
+
 
     bool        m_bFirstSpawn = true;//첫시작일떄를 의미
     bool        m_bFirstLoading = true;//첫 로딩임을 의미

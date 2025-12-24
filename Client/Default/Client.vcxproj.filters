@@ -306,6 +306,9 @@
     <ClInclude Include="..\Public\CInteraction_Mushroom.h">
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Mushroom</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CSocket_Model.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Witch\Part_MushRoom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -667,6 +670,9 @@
     <Filter Include="02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Mushroom">
       <UniqueIdentifier>{4820a85c-ceb5-4f0c-8659-1f64ab4c1a33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\00.NPC\Witch\Part_MushRoom">
+      <UniqueIdentifier>{82e7b14e-041b-4f8d-921f-78ef77e48498}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -952,6 +958,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CInteraction_Mushroom.cpp">
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Mushroom</Filter>
+    </ClCompile>
+    <ClCompile Include="CSocket_Model.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Witch\Part_MushRoom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

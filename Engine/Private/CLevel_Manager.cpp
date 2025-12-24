@@ -218,8 +218,9 @@ void CLevel_Manager::Pop_Level()
 	if (!m_Stack.empty())
 	{
 		m_Stack.back()->Set_State(LEVELSTATE::ACTIVE);
-		m_Stack.back()->OnResume(pLevel->Get_LevelID());
 		m_iCurrentLevelID = m_Stack.back()->Get_LevelID();
+		m_Stack.back()->OnResume(pLevel->Get_LevelID());
+
 	}
 
 }

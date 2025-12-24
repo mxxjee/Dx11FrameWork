@@ -53,6 +53,8 @@ public:
 
                 //이 아이템 인벤에 넣을거니까 유아이 띄워.
     bool         Request_Add_To_Inven(ItemType eType, int iCount);
+    bool        Uset_Item(ItemType eType, int iCount);
+
     void         Request_UI_Event(ItemType eType);
                     //Desc사라지고 이후에 true로만들어서 이후에 인벤에 진짜추가됨
     void         Set_End_in_SlotQueue(ItemType eType, bool b);

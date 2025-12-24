@@ -22,6 +22,7 @@ HRESULT CDialogue_Manager::Initialize()
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Kid_Green_Script.json");
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Kid_Blue_Script.json");
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Fairy_Script.json");
+    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Witch_Script.json");
 
     
     m_pGameInstance = CGameInstance::GetInstance();
@@ -252,6 +253,25 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
         CheckNull(pPlayer);
         CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::SHIELD,1);
         CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::SWROD, 1);
+
+    }
+    else if (strCommand == "Witch_Mix")
+    {
+        GameEvent gameEvent;
+        gameEvent.Name = "Play_Witch_Mix";
+
+        CInventory_Manager::GetInstance()->Uset_Item(ItemType::MUSHROOM, 1);
+
+        m_pGameInstance->Emit(gameEvent);
+
+    }
+
+    else if (strCommand == "Witch_give")
+    {
+        GameEvent gameEvent;
+        gameEvent.Name = "Witch_give";
+
+        m_pGameInstance->Emit(gameEvent);
 
     }
 }

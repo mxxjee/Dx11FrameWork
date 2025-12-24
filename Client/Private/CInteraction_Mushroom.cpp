@@ -8,6 +8,10 @@
 #include "CBounding_AABB.h"
 
 #include "CInventory_Manager.h"
+#include "CLayer.h"
+
+#include "CInteraction_Manager.h"
+
 
 
 
@@ -133,6 +137,12 @@ void CInteraction_Mushroom::Enter_Interaction()
 
     Set_Active(false);
     m_pTriggerBox->Set_Active(false);
+    
+    CLayer* pLayer = m_pGameInstance->Find_Layer(m_iSceneID, L"Interaction_Layer");
+    if(pLayer)
+        pLayer->RequestDestroy(this);
+
+
    // m_pPlayer->Get_ActionControl()->m_bCarry = true;
   //  m_pGameInstance->SetActiveGroup(L"Interaction_PopUp_Carry", false);
 
@@ -178,5 +188,8 @@ CGameObject* CInteraction_Mushroom::Clone(void* pArg)
 
 void CInteraction_Mushroom::Free()
 {
+    m_pGameInstance->UnRegister_Collider(m_pCollider, m_iSceneID);
+    CInteraction_Manager::GetInstance()->UnRegisterInteractable(this);
+
     __super::Free();
 }

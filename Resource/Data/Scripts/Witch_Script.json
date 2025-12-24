@@ -1,36 +1,68 @@
 {
   "NPCScripts": [
     {
-      "ModelID": "NPC_Fairy",
+      "ModelID": "NPC_Witch",
       "Chapters": [
         {
-          "ChapterID": "Fairy_start",
+          "ChapterID": "Witch_start",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "Witch_end",
+          "Steps": [
+            {
+              "Speaker": "마법 할머니",
+              "Text": "흐음... 그 버섯냄새...\n 좋은 재료로군.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "마법 할머니",
+              "Text": "요정이 널 여기로 보냈다면,\n그만한 이유가 있었겠지.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "마법 할머니",
+              "Text": "그 버섯은 보기엔 평범해도\n마력을 잘 품는 재료야.",
+              "strActionCommand": "PLAY_ANIM:NPC_BOW",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "마법 할머니",
+              "Text": "조금만 기다려.\n마법은 서두르면 탈이 나거든.",
+              "strActionCommand": "Witch_Mix",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Witch_end",
           "iQuestOffered": 0,
           "iQuestRequiredToUnlock": 0,
           "strNextPermanentChapterID": "",
           "Steps": [
             {
-              "Speaker": "숲의 요정",
-              "Text": "어머.. 인간이 여길 찾아오다니.",
+              "Speaker": "마법 할머니",
+              "Text": "이 가루는... 보이지 않는 걸\n조금 솔직하게 만들어 주지. ",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             },
             {
-              "Speaker": "숲의 요정",
-              "Text": "당신.. 길을 잃은 모양이군요?",
+              "Speaker": "마법 할머니",
+              "Text": "특히 오래된 집이나,\n사람 손이 닿지 않은 벽에 뿌리면 말이야.",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             },
             {
-              "Speaker": "숲의 요정",
-              "Text": "괜찮아요.\n여기서 몸과 마음을 치유하고 가세요..",
-              "strActionCommand": "PLAY_ANIM:NPC_BOW",
+              "Speaker": "마법 할머니",
+              "Text": "후후...\n숨고 싶은 것들은 가루를 싫어하거든.",
+              "strActionCommand": "",
               "actionTiming": "ON_START"
             },
             {
-              "Speaker": "숲의 요정",
-              "Text": "하지만 이 근처는 위험해요..\n눈을 감으세요.. 당신을 안내하겠습니다..",
-              "strActionCommand": "Fairy_End",
+              "Speaker": "마법 할머니",
+              "Text": "조금만 기다려.\n마법은 서두르면 탈이 나거든.",
+              "strActionCommand": "Witch_give",
               "actionTiming": "ON_FINISH"
             }
           ]

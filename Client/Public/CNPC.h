@@ -115,6 +115,7 @@ protected:
 
     class CGameManager* m_pGameManager = nullptr;
     
+    bool        m_bWait = false;        //true일떄는 a키눌러도반응 X
 protected:
     EventPayload CameraPayload;
 };

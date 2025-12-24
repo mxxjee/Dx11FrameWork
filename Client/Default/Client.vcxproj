@@ -258,6 +258,7 @@
     <ClInclude Include="..\Public\ItemCollect_Condition.h" />
     <ClInclude Include="..\Public\MonsterStates.h" />
     <ClInclude Include="..\Public\PlayerStates.h" />
+    <ClInclude Include="..\Public\CSocket_Model.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="CScreenFilter.h" />
     <ClInclude Include="framework.h" />
@@ -372,6 +373,7 @@
     <ClCompile Include="..\Public\CUICreator.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="CScreenFilter.cpp" />
+    <ClCompile Include="CSocket_Model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc" />

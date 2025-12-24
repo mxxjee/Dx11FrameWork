@@ -55,6 +55,10 @@ HRESULT CQuest_Manager::Initialize()
 	m_mapNPCChapterProgress[Fairy_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Fairy_HashKey].BaseChapterID;		//대화시작챕터:START
 
 
+	size_t Witch_HashKey = hash<string>()("NPC_Witch");
+	m_mapNPCChapterProgress[Witch_HashKey].BaseChapterID = "Witch_start";		//대화시작챕터:START
+	m_mapNPCChapterProgress[Witch_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Witch_HashKey].BaseChapterID;		//대화시작챕터:START
+
 	return S_OK;
 }
 

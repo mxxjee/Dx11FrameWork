@@ -115,19 +115,11 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
 
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
     {
-       /* CRoom_Manager::GetInstance()->Request_Room("Mamasha_room");
+        GameEvent gameEvent;
+        gameEvent.Name = "Go_WitchRoom";
 
-        LevelArgs args;
-        args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
-        args.changeType = LEVELCHANGETYPE::PUSH;
-        args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+        m_pGameInstance->Emit(gameEvent);
 
-
-        if (FAILED(m_pGameInstance->Level_Changer(
-            ENUM_TO_UINT(LEVEL_ID::LOADING),
-            args)))
-            return;*/
 
 
     }
@@ -194,7 +186,7 @@ HRESULT CLevel_Town::Ready_Lights()
     LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
     LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
     LightDesc.vAmbient = _float4(0.5f, 0.5f, 0.5f, 1.f);
-    LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);
+    LightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
 
     if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, LightDesc)))
         return E_FAIL;
@@ -465,7 +457,6 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
         if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, pNpc_GreenKid)))
             return E_FAIL;
 
-        pNpc_GreenKid->Set_Active(false);
     }
 
     ////////요정
@@ -781,7 +772,7 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
         pCamBase->Set_TargetOffset(vTargetOffset);
 
-        pCamBase->Set_InitRotation(_float3(65.f, 0.f, 0.f));
+
         pCamBase->Set_TargetRotation(_float3(65.f, 0.f, 0.f));
 
 
@@ -825,7 +816,10 @@ HRESULT CLevel_Town::Ready_EventListners()
     m_pGameInstance->RegisterListners("Go_WitchRoom", [this](const GameEvent& evt)
         {
             m_pGameInstance->Clear_SceneColliders(ENUM_TO_UINT(LEVEL_ID::ROOM));
-
+            //요정비활성화
+            
+            //마녀집 가기전 다시스폰하기 위한 전위치
+            m_pGameManager->Set_LastPosition(m_pGameManager->Get_LastPosition_By_Float4());
 
             LevelArgs args;
             args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
@@ -839,6 +833,15 @@ HRESULT CLevel_Town::Ready_EventListners()
                 ENUM_TO_UINT(LEVEL_ID::LOADING),
                 args)))
                 return;
+
+
+            CLayer* pNPCLayer = CGameInstance::GetInstance()->Find_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), L"NPC_Layer");
+            if (pNPCLayer)
+            {
+                CGameObject* pFairy = pNPCLayer->Find_GameObject(L"NPC_Fairy");
+                pFairy->Set_Active(false);
+            }
+
 
         });
     return S_OK;
@@ -869,7 +872,8 @@ void CLevel_Town::OnEnter()
         pPlayer->Get_Transform()->Set_State(STATE::POSITION, vSpawnPoint);
         pPlayer->Change_MainNavMesh();
 
-
+        m_pGameManager->Set_DefaultPosition(vSpawnPoint);
+        m_pGameManager->Set_LastPosition(vSpawnPoint);
 
     }
 
@@ -943,7 +947,7 @@ void CLevel_Town::OnResume(_uint iPreLevel)
     Event.Payload = payload;
 
     Event.Payload.Ptrs["Player"] = pPlayer;
-    Event.Name = "Init_Camera";
+    Event.Name = "Complete_Init_Camera";
 
     m_pGameInstance->Emit(Event);
     LEVEL_ID PrevID = (LEVEL_ID)iPreLevel;
@@ -953,8 +957,9 @@ void CLevel_Town::OnResume(_uint iPreLevel)
     case Client::LEVEL_ID::ROOM:
         m_pGameInstance->Set_EnalbeUpdateRender(true);
         m_pGameInstance->Set_EnableUpdate(true);
-        CheckNull(pFadeScreen);
+        CheckNull(pFadeScreen);                                                         
         pFadeScreen->PlayFadeOut();
+
        break;
 
     case Client::LEVEL_ID::UI:

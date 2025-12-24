@@ -49,8 +49,28 @@ _vector CGameManager::Get_LastPosition_By_Vector()
 	return XMLoadFloat4(&vLastPosition);
 }
 
+_float4 CGameManager::Get_DefaultPositio_By_Float4()
+{
+	return vDefulatPosition;
+}
+
+_vector CGameManager::Get_DefaultPositioBy_Vector()
+{
+	return XMLoadFloat4(&vDefulatPosition);
+}
+
 void CGameManager::Free()
 {
 	__super::Free();
 	Safe_Release(m_pMainPlayer);
+}
+
+void CGameManager::Set_DefaultPosition(_vector vPosition)
+{
+	return XMStoreFloat4(&vLastPosition, vPosition);
+}
+
+void CGameManager::Set_DefaultPosition(_float4 vPosition)
+{
+	vLastPosition = vPosition;
 }

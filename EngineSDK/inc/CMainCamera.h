@@ -47,7 +47,7 @@ public:
     void        Set_LocalRoation(_float4 vRotation) { m_vLocalRotation = vRotation; }
     void        Set_RotationSpeed(_float fSpeed) { m_fRotationSpeed = fSpeed; }
     void        Set_Snap(bool b) { m_bSnap = b; }
-
+    void        Set_RotationLerp(bool _b) { m_bLerpRotation = _b; }
 public:
     static CMainCamera* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg);
@@ -58,6 +58,7 @@ private:
     _float4 m_vLocalRotation;
     bool        m_bSnap = true;
     float       m_fRotationSpeed = 2.f;
+    bool        m_bLerpRotation = false;
 
 };
 

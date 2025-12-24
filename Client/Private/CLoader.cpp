@@ -64,7 +64,7 @@
 #include "CInteraction_Lawn.h"
 #include "CInteraction_Rock.h"
 #include "CInteraction_Mushroom.h"
-
+#include "CSocket_Model.h"    
 
 #include "CRoom.h"
 #include "CRoomTrigger.h"
@@ -562,7 +562,8 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"StaticBody", CStaticBody::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Soket_Model", CSocket_Model::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Body", CPlayer_Body::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;

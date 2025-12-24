@@ -51,8 +51,19 @@ void CMainCamera::Update(_float fTimeDelta)
 	__super::Update(fTimeDelta);
 	
 	Follow_Target(fTimeDelta);
+	
+	if (m_bLerpRotation)
+	{
 
-	m_pTransformCom->Rotation(_float3(m_vLocalRotation.x, m_vLocalRotation.y, m_vLocalRotation.z));
+		_float3 vFRotation = m_pTransformCom->Get_Rotation_ByEular();
+		_vector vRot = XMLoadFloat3(&vFRotation);
+		XMStoreFloat4(&m_vLocalRotation, vRot);
+
+		m_pTransformCom->RotateLerp(XMLoadFloat3(&m_vTargetRotation), m_fRotationSpeed, fTimeDelta);
+
+	}
+	else
+		m_pTransformCom->Rotation(_float3(m_vLocalRotation.x, m_vLocalRotation.y, m_vLocalRotation.z));
 
 
 	Update_PipeLine();

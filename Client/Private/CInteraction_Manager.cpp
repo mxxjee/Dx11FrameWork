@@ -52,7 +52,7 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 		if (!pInteratable)
 			continue;
 
-		bool inRange = pInteratable->IsInteratable();//일단 인터렉트 가능한 상태인가요?
+   		bool inRange = pInteratable->IsInteratable();//일단 인터렉트 가능한 상태인가요?
 
 		//이전프레임에없엇는데 현재들어왔따면
 		if (!pInteratable->m_bPrevRange && inRange)
