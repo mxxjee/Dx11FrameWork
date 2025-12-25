@@ -262,9 +262,12 @@ namespace Engine
 struct RoomPackage
 {
 	string			m_RoomName = "";
+
 	list<Engine::CGameObject*> EnvObjs;		//맵 오브젝트들
 	list<Engine::CGameObject*>	 NPCs;
 	list<Engine::CGameObject*>	Triggers;
+	list<Engine::CGameObject*>	Interactions;
+
 	string			m_navMeshFile = "";
 	_float3			m_vPlayerSpawnPoin=_float3(0.f,0.f,0.f);
 
@@ -282,9 +285,13 @@ struct RoomPackage
 		for (auto& pObj : Triggers)
 			Safe_Release(pObj);
 
+		for (auto& pObj : Interactions)
+			Safe_Release(pObj);
+
 		EnvObjs.clear();
 		NPCs.clear();
 		Triggers.clear();
+		Interactions.clear();
 
 
 
@@ -299,6 +306,9 @@ struct RoomPackage
 			pObj->Set_Active(b);
 
 		for (auto& pObj : Triggers)
+			pObj->Set_Active(b);
+
+		for (auto& pObj : Interactions)
 			pObj->Set_Active(b);
 	}
 };

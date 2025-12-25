@@ -124,6 +124,7 @@ private:
 public:
     bool            IsInDistance(const _float3 vCenter);
     void            Set_Distance(_float fDistance) { m_fCulDistance = fDistance; }
+    virtual void            Set_Lock(bool b); 
 public:
     virtual bool IsInFrustum(const _float3& MinBound, const _float3& MaxBound);
 
@@ -164,6 +165,9 @@ protected:
     bool            m_bPerspective = true;
 
     float           m_fCulDistance = 50.f;
+
+    bool            m_bLock = false;
+
 };
 
 NS_END

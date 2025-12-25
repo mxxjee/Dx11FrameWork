@@ -91,6 +91,7 @@ HRESULT CCamera_Manager::Initialize()
 
 
 			pCameraBase->Set_Offset(pCameraBase->Get_TargetOffset());
+			pCameraBase->Set_Lock(false);
 
 		});
 
@@ -118,7 +119,7 @@ HRESULT CCamera_Manager::Initialize()
 			pCameraBase->Set_Offset(pCameraBase->Get_InitOffset());
 			pMainCamera->Set_LocalRoation(_float4(vRot.x, vRot.y, vRot.z,0.f));
 			pMainCamera->Set_TargetRotation(vRot);
-
+			pMainCamera->Set_Lock(false);
 
 
 		});

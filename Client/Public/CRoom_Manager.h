@@ -42,12 +42,14 @@ private:                                //룸이름+.json을 로드한 후 pacakge의 값�
     void             Enter_Room(RoomPackage* pPackage,bool bCached); //방 switch 시 입장(실제적인 오브젝트 설정)
     HRESULT           Load_NPC(const string& RoomName,const wstring& ModelName, _float3 vPos, RoomPackage* pOut);
 
+    HRESULT         Load_Interaction(const string& RoomName, const wstring& ModelName, _float3 vPos, RoomPackage* pOut);
  
 private:
     CLayer*         m_pEnviromentLayer = nullptr;       //Level_Room의 enviromnetlayer(참조)
     CLayer*         m_pNPCLayer= nullptr;               //Level_Room의 NPClayer(참조)
     CLayer*         m_pTriggerLayer = nullptr;       //Level_Room의 Playerlayer(참조)
-    
+
+
 public:
     virtual         void        Free() override;
     

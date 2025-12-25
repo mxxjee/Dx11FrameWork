@@ -9,6 +9,7 @@
 #include "CFadeScreen.h"
 #include "CGameManager.h"
 #include "CNavMesh_Manager.h"
+#include "CIInteractable.h"
 
 
 USING(Client)
@@ -26,12 +27,11 @@ HRESULT CLevel_NPCRoom::Initialize(LevelArgs& args)
     hr=m_pGameInstance->Make_New_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"Enviroment_Layer");
     hr = m_pGameInstance->Make_New_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"Trigger_Layer");
     hr = m_pGameInstance->Make_New_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"NPC_Layer");
-    hr = m_pGameInstance->Make_New_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"Interaction_Layer");
+
 
     CLayer* pEnvLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"Enviroment_Layer");
     CLayer* pTriggerLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"Trigger_Layer");
     CLayer* pNPCLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"NPC_Layer");
-    CLayer* pInteractionLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"Interaction_Layer");
 
 
     if(FAILED(CRoom_Manager::GetInstance()->Initialize(m_pDevice, m_pContext, pEnvLayer, pNPCLayer, pTriggerLayer)))
@@ -84,7 +84,8 @@ void CLevel_NPCRoom::Render()
 void CLevel_NPCRoom::OnEnter()
 {
     CRoom_Manager::GetInstance()->Switch_Room(CRoom_Manager::GetInstance()->Get_RequestRoom());
-    
+    CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::ROOM));
+
     _float4 vSpawnPos = CRoom_Manager::GetInstance()->Get_SpawnPosition();
    
     m_pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
@@ -101,12 +102,27 @@ void CLevel_NPCRoom::OnEnter()
     GameEvent Event;
     EventPayload payload;
     Event.Payload = payload;
+    if (CRoom_Manager::GetInstance()->Get_RequestRoom() == "RichardHouse")
+    {
+        Event.Payload.Ptrs["Player"] = m_pPlayer;
+        Event.Payload.Floats["OffSet_X"] = 0.f;
+        Event.Payload.Floats["OffSet_Y"] = 10.f;
+        Event.Payload.Floats["OffSet_Z"] = -3.f;
 
-    Event.Payload.Ptrs["Player"] = m_pPlayer;
-    Event.Payload.Floats["OffSet_X"] = 0.f;
-    Event.Payload.Floats["OffSet_Y"] = 9.f;
-    Event.Payload.Floats["OffSet_Z"] = -4.f;
 
+        CGameObject* pObj = m_pGameInstance->Find_GameObject(m_iLevelID, L"Enviroment_Layer", L"Workbench0");
+        if (pObj)
+            CInteraction_Manager::GetInstance()->RegisterInteractable(dynamic_cast<CIInteractable*>(pObj));
+
+    }
+
+    else
+    {
+        Event.Payload.Ptrs["Player"] = m_pPlayer;
+        Event.Payload.Floats["OffSet_X"] = 0.f;
+        Event.Payload.Floats["OffSet_Y"] = 9.f;
+        Event.Payload.Floats["OffSet_Z"] = -4.f;
+    }
     Event.Name = "Enter_NPCRoom";
 
     m_pGameInstance->Emit(Event);
@@ -117,12 +133,23 @@ void CLevel_NPCRoom::OnEnter()
   
     //씬이 다시시작행슬때 메인 상호작용오브ㅈ게트들 설정
     //////현재씬의 itneraction 등록
-    CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::ROOM));
-
+  
     __super::OnEnter();
 
     m_pGameInstance->Set_IsLoading(false);
 
+    if (CRoom_Manager::GetInstance()->Get_RequestRoom() == "RichardHouse")
+    {
+        //카메라고정
+        CCamera_Base* pMainCam = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
+        CMainCamera* ppMainCam = dynamic_cast<CMainCamera*>(pMainCam);
+        if (ppMainCam)
+        {
+            ppMainCam->Set_Target(m_pPlayer, true);
+            ppMainCam->Set_Lock(true);
+
+        }
+    }
 
 }
 
@@ -132,7 +159,9 @@ void CLevel_NPCRoom::OnResume(_uint iPreLevel)
     m_pGameInstance->Clear_SceneColliders(m_iLevelID);
 
     CRoom_Manager::GetInstance()->Switch_Room(CRoom_Manager::GetInstance()->Get_RequestRoom());
- 
+    CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::ROOM));
+
+    
     CheckNull(m_pPlayer);
  
     _float4 vSpawnPos = CRoom_Manager::GetInstance()->Get_SpawnPosition();

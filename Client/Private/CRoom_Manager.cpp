@@ -15,7 +15,7 @@
 
 #include "CNavMesh_Manager.h"
 #include "CBoxColliderComponent.h"
-
+#include "Cinteraction_Statue.h"
 
 
 IMPLEMENT_SINGLETON(CRoom_Manager)
@@ -34,6 +34,7 @@ HRESULT CRoom_Manager::Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11De
     CheckNullResult(pNPC,E_FAIL);
     CheckNullResult(pTrigger,E_FAIL);
 
+
     m_pEnviromentLayer = pEnv;
     Safe_AddRef(pEnv);
 
@@ -42,6 +43,7 @@ HRESULT CRoom_Manager::Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11De
 
     m_pTriggerLayer = pTrigger;
     Safe_AddRef(pTrigger);
+
 
     return S_OK;
 }
@@ -57,6 +59,7 @@ void CRoom_Manager::Switch_Room(const string& strRoomName)
         size_t HashKey = hash<string>()(strRoomName);
         auto iter = m_mapCachedRooms.find(HashKey);
 
+        
         if (iter != m_mapCachedRooms.end())
         {
             pNextPackage = iter->second;
@@ -76,6 +79,7 @@ void CRoom_Manager::Switch_Room(const string& strRoomName)
                 m_pGameInstance->Register_Collider(ppTrigger->Get_Collider(), ENUM_TO_UINT(LEVEL_ID::ROOM));
             }
 
+        
         }
         
         return;
@@ -263,6 +267,13 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
             m_vSpawnPosition = _float4(PosInfo.vPos.x, PosInfo.vPos.y, PosInfo.vPos.z, 1.f);
 
         }
+
+        else if (PosInfo.TargetName == "Statue_SpawnPoint")
+        {
+            if (FAILED(Load_Interaction(RoomName, L"Workbench", PosInfo.vPos, pOutPackage)))
+                return E_FAIL;
+
+        }
         else 
         {
             for (auto& ModelName : NPCModelNames)
@@ -380,6 +391,27 @@ HRESULT CRoom_Manager::Load_NPC(const string& RoomName, const wstring& ModelName
 
 }
 
+HRESULT CRoom_Manager::Load_Interaction(const string& RoomName, const wstring& ModelName, _float3 vPos, RoomPackage* pOut)
+{
+    CGameObject* pObj = Cinteraction_Statue::Create(m_pDevice, m_pContext);
+    
+    if (pObj)
+    {
+        pObj->Get_Transform()->Set_State(STATE::POSITION, XMVectorSet(vPos.x, vPos.y, vPos.z, 1.f));
+        pObj->Get_Transform()->Set_Scale(_float4(1.5f, 1.5f, 1.5f, 1.f));
+
+
+        //Safe_AddRef(pNpc);
+        pOut->EnvObjs.push_back(pObj);
+        return S_OK;
+        
+    }
+    
+
+
+    return S_OK;
+}
+
 void CRoom_Manager::Free()
 {
     __super::Free();
@@ -390,6 +422,7 @@ void CRoom_Manager::Free()
     Safe_Release(m_pEnviromentLayer);
     Safe_Release(m_pNPCLayer);
     Safe_Release(m_pTriggerLayer);
+  
 
     Safe_Release(m_pGameInstance);
 }

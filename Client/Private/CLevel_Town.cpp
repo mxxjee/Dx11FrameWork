@@ -64,7 +64,6 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_Enviroment(L"Enviroment_Layer")))
         return E_FAIL;
 
-
     if (FAILED(Ready_Layer_Player(L"Player_Layer")))
         return E_FAIL;
 
@@ -119,11 +118,12 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
 
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
     {
-        GameEvent gameEvent;
+       /* GameEvent gameEvent;
         gameEvent.Name = "Go_WitchRoom";
 
-        m_pGameInstance->Emit(gameEvent);
+        m_pGameInstance->Emit(gameEvent);*/
 
+        Teleport_RichardHouse();
 
 
     }

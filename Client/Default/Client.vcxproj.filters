@@ -23,7 +23,7 @@
       <Filter>01.Levels\Logo</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLoader.h">
-      <Filter>01.Levels\Loading\Loader</Filter>
+      <Filter>96.Managers\Loader</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPanel.h">
       <Filter>02.GameObjects\99.UI\00.Panel</Filter>
@@ -315,6 +315,9 @@
     <ClInclude Include="..\Public\CWeatherCock.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\WeatherCock</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\Cinteraction_Statue.h">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Statue</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -339,9 +342,6 @@
     </Filter>
     <Filter Include="01.Levels\Logo">
       <UniqueIdentifier>{41d62cd9-7035-4d17-a5c4-70bb9eff99df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Levels\Loading\Loader">
-      <UniqueIdentifier>{db198de7-dbcd-45bd-8a12-7a3ca30bec2c}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameObjects">
       <UniqueIdentifier>{88ed5311-71b9-4e23-9422-872d7ee15fdf}</UniqueIdentifier>
@@ -685,6 +685,15 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\WeatherCock">
       <UniqueIdentifier>{ee3f9203-6293-4aaf-8b0d-31cd950fe4b3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Statue">
+      <UniqueIdentifier>{952ab6d4-ae7f-4597-968a-2ff06f124dd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Managers\Loader">
+      <UniqueIdentifier>{db198de7-dbcd-45bd-8a12-7a3ca30bec2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Powder">
+      <UniqueIdentifier>{9747f137-6fe4-4571-ae54-cfe2d5009456}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -703,7 +712,7 @@
       <Filter>01.Levels\Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLoader.cpp">
-      <Filter>01.Levels\Loading\Loader</Filter>
+      <Filter>96.Managers\Loader</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevelDebugWindow.cpp">
       <Filter>999.ImguiObject\LevelDebugWindow</Filter>
@@ -979,6 +988,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CWeatherCock.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\WeatherCock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\Cinteraction_Statue.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Statue</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

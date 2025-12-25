@@ -14,11 +14,15 @@ namespace UICreator
 	HRESULT		Create_Interaction_UI(wstring LayerTag);
 	HRESULT		Create_Interaction_TalkUI(wstring LayerTag);
 	HRESULT		Create_Interaction_GetUI(wstring LayerTag);
+	HRESULT		Create_Interaction_SeeUI(wstring LayerTag);
+
+
 
 	HRESULT		Create_NPC_Dialogue_UI(wstring LayerTag);
 	HRESULT		Create_Loading_UI(wstring LayerTag);
 	HRESULT		Create_ItemGet_UI(wstring LayerTag);
 	HRESULT		Create_ItemGet_Desc_UI(wstring LayerTag);
+	HRESULT		Create_See_Desc_UI(wstring LayerTag);
 
 
 	extern CGameInstance* m_pGameInstance;

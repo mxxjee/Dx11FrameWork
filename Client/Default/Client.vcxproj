@@ -170,6 +170,7 @@
     <ClInclude Include="..\Public\CInteraction_Manager.h" />
     <ClInclude Include="..\Public\CInteraction_Mushroom.h" />
     <ClInclude Include="..\Public\CInteraction_Rock.h" />
+    <ClInclude Include="..\Public\Cinteraction_Statue.h" />
     <ClInclude Include="..\Public\CInteraction_TriggerBox.h" />
     <ClInclude Include="..\Public\CInventory_Manager.h" />
     <ClInclude Include="..\Public\CItem_Manager.h" />
@@ -288,6 +289,7 @@
     <ClCompile Include="..\Private\CInteraction_Manager.cpp" />
     <ClCompile Include="..\Private\CInteraction_Mushroom.cpp" />
     <ClCompile Include="..\Private\CInteraction_Rock.cpp" />
+    <ClCompile Include="..\Private\Cinteraction_Statue.cpp" />
     <ClCompile Include="..\Private\CInteraction_TriggerBox.cpp" />
     <ClCompile Include="..\Private\CInventory_Manager.cpp" />
     <ClCompile Include="..\Private\CItem_Manager.cpp" />

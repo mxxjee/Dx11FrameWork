@@ -146,6 +146,8 @@ bool CInteraction_Manager::Check_InteractiveType(InteractionType eType)
 
 void CInteraction_Manager::Change_Scene(_uint iLevelID)
 {
+	Clear();
+
 	CLayer* pInteractionLayer = m_pGameInstance->Find_Layer(iLevelID, L"Interaction_Layer");
 	if (pInteractionLayer)
 	{

@@ -50,6 +50,7 @@ void CMainCamera::Update(_float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
 	
+
 	Follow_Target(fTimeDelta);
 	
 	if (m_bLerpRotation)
@@ -184,16 +185,33 @@ void CMainCamera::Follow_Target(_float fTimeDelta)
 	if (!m_pTransformCom || !pTargetTransform)
 		return;
 
+	_vector eye;
+	_vector look;
+	XMVECTOR up;
+
+	if (!m_bLock)
+	{
+		const _vector TargetPos = pTargetTransform->Get_State(STATE::POSITION, TransformScope::WORLD);
+		m_pTransformCom->MoveLerp(TargetPos + XMLoadFloat3(&m_vOffset), 3.f, fTimeDelta);
+
+
+		//??????? 왜이상한곳을보고있니
+		eye = m_pTransformCom->Get_State(STATE::POSITION);
+		look = XMVector3Normalize(m_pTransformCom->Get_State(STATE::LOOK));
+		up = m_pTransformCom->Get_State(STATE::UP);
+	}
 	
+	else
+	{
+		m_pTransformCom->Set_State(STATE::POSITION, TargetPos + XMLoadFloat3(&m_vOffset));
 
-	const _vector TargetPos = pTargetTransform->Get_State(STATE::POSITION,TransformScope::WORLD);
-	m_pTransformCom->MoveLerp(TargetPos + XMLoadFloat3(&m_vOffset), 3.f, fTimeDelta);
 
+		//??????? 왜이상한곳을보고있니
+		eye = m_pTransformCom->Get_State(STATE::POSITION);
+		look = XMVector3Normalize(m_pTransformCom->Get_State(STATE::LOOK));
+		up = m_pTransformCom->Get_State(STATE::UP);
 
-	//??????? 왜이상한곳을보고있니
-	_vector eye = m_pTransformCom->Get_State(STATE::POSITION);
-	_vector look = XMVector3Normalize(m_pTransformCom->Get_State(STATE::LOOK));
-	XMVECTOR up = m_pTransformCom->Get_State(STATE::UP);
+	}
 
 	ViewMatrix = XMMatrixLookToLH(eye, look, up);
 
@@ -232,3 +250,12 @@ void CMainCamera::Free()
 	
 
 }
+
+void CMainCamera::Set_Lock(bool b)
+{
+	__super::Set_Lock(b);
+	
+	CheckNull(m_pTarget);
+	TargetPos = m_pTarget->Get_Transform()->Get_State(STATE::POSITION);
+}
+

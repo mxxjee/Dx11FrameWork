@@ -52,14 +52,14 @@ public:
     static CMainCamera* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg);
     virtual void    Free() override;
-
+    virtual void            Set_Lock(bool b);
 private:
     _matrix ViewMatrix;
     _float4 m_vLocalRotation;
     bool        m_bSnap = true;
     float       m_fRotationSpeed = 2.f;
     bool        m_bLerpRotation = false;
-
+    _vector         TargetPos;
 };
 
 NS_END

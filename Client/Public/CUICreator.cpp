@@ -441,6 +441,111 @@ HRESULT UICreator::Create_Interaction_GetUI(wstring LayerTag)
     return S_OK;
 }
 
+HRESULT UICreator::Create_Interaction_SeeUI(wstring LayerTag)
+{
+    /*조사 ui*/
+    UIGroup     Interaction_PopUP_SeeGroup;
+    Interaction_PopUP_SeeGroup.Key = L"Interaction_PopUP_SeeGroup";
+
+    wstring ObjTags[] = { L"Interact_Talk_BG",L"Interaction_A_See" };
+    wstring TextureKeys[] = { L"Interact_BG",L"Interaction_A_See" };
+
+    for (int i = 0; i < sizeof(ObjTags) / sizeof(ObjTags[0]); ++i)
+    {
+        //BG
+        CUI::tagUIDesc        Desc = {};
+
+        Desc.ObjTag = ObjTags[i];
+        Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+        Desc.TextureKey = TextureKeys[i];
+
+        Desc.iIdx = 0;
+
+        Desc.fSizeX = 200.f * 0.7f;
+        Desc.fSizeY = 90.f * 0.7f;
+        Desc.fX = g_iWinSizeX >> 1;
+        Desc.fY = g_iWinSizeY >> 1;
+        Desc.Depth = 0.5f - (0.01f * i);
+
+        CTransform::TRANSFORM_DESC TransDesc = {};
+        TransDesc.fRotationPerSec = 10.f;
+        TransDesc.fSpeedPerSec = 5.f;
+        Desc.TransformDesc = &TransDesc;
+
+        //AlphaAnim등록
+        CUIComponent::UICOMP_DESC UIDesc = {};
+        Desc.UICompDesc = &UIDesc;
+
+        CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &Desc);
+        if (pObj)
+        {
+            CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+            if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+                return E_FAIL;
+
+
+            Interaction_PopUP_SeeGroup.push_back(pInstance);
+
+        }
+    }
+
+    m_pGameInstance->Register_UIGroup(Interaction_PopUP_SeeGroup);
+    m_pGameInstance->SetActiveGroup(Interaction_PopUP_SeeGroup.Key, false);
+
+    m_pGameInstance->RegisterEvent(L"OnSeeUIShow", [](void* pData)
+        {
+            _vector* pPos = static_cast<_vector*>(pData);
+            _vector OffSet = XMVectorSet(100.f, 40.f, 0.f, 0.f);
+
+            (*pPos) += OffSet;
+
+            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"Interaction_PopUP_SeeGroup");
+            if (pGroup)
+            {
+                for (auto& i : pGroup->Objects)
+                {
+                    CUI* pUI = dynamic_cast<CUI*>(i.second);
+                    if (pUI)
+                    {
+
+                        pUI->Get_Transform()->Set_State(STATE::POSITION,
+                            MathUtils::ScreenToWorld_UI((*pPos), g_iWinSizeX, g_iWinSizeY));
+
+                        pUI->Set_ActiveAnim(0, [pUI]()
+                            {
+                                pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 10.f, false, false);
+                            });
+
+                        if (!pUI->Is_Active())
+                            pUI->OnActivated(true);
+
+                    }
+                }
+            }
+        });
+
+    m_pGameInstance->RegisterEvent(L"OnSeeUIHide", [](void* pData)
+        {
+
+            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"Interaction_PopUP_SeeGroup");
+            if (pGroup)
+            {
+                for (auto& i : pGroup->Objects)
+                {
+                    CUI* pUI = dynamic_cast<CUI*>(i.second);
+                    if (pUI)
+                    {
+                        pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 20.f, false, true);
+
+                    }
+                }
+            }
+        });
+    return S_OK;
+
+}
+
 HRESULT UICreator::Create_NPC_Dialogue_UI(wstring LayerTag)
 {
 #pragma region NPC_DialogueBox
@@ -1080,5 +1185,162 @@ HRESULT UICreator::Create_ItemGet_Desc_UI(wstring LayerTag)
     m_pGameInstance->SetActiveGroup(ItemGetDescGroup.Key, false);
 
     
+    return S_OK;
+}
+
+HRESULT UICreator::Create_See_Desc_UI(wstring LayerTag)
+{
+    UIGroup SeeDescGroup;
+    SeeDescGroup.Key = L"SeeDescGroup";
+
+
+#pragma region 박스만들기
+    _float OriginY = (g_iWinSizeY >> 1) + 250.f;
+
+    CUI::tagUIDesc        ItemSeeFrameDesc = {};
+
+    ItemSeeFrameDesc.ObjTag = L"ItemSeeFrameDesc";
+    ItemSeeFrameDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+    ItemSeeFrameDesc.TextureKey = L"See_BG";
+
+    ItemSeeFrameDesc.iIdx = 0;
+
+    ItemSeeFrameDesc.fSizeX = 1814 * 0.3f;
+    ItemSeeFrameDesc.fSizeY = 759 * 0.3f;
+    ItemSeeFrameDesc.fX = g_iWinSizeX >> 1;
+    ItemSeeFrameDesc.fY = OriginY;
+
+
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    ItemSeeFrameDesc.TransformDesc = &TransDesc;
+
+    //AlphaAnim등록
+    CUIComponent::UICOMP_DESC  UIDesc = {};
+    ItemSeeFrameDesc.UICompDesc = &UIDesc;
+
+    CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &ItemSeeFrameDesc);
+    if (pObj)
+    {
+        CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+            return E_FAIL;
+
+
+        SeeDescGroup.push_back(pInstance);
+
+    }
+#pragma endregion
+#pragma region 말하는 폰트만들기
+    ///폰트먼저만들기
+    CFontUI::FONTUI_DESC FontUIDesc;
+    FontUIDesc.FontName = L"Dialogue_Default";
+    FontUIDesc.vDefaultFontColor = _float4(1.f, 1.f, 1.f, 0.5f);
+    FontUIDesc.ObjTag = L"SeeDesc_Text";
+    FontUIDesc.fSizeX = 0.5f;
+    FontUIDesc.fSizeY = 0.5f;
+    FontUIDesc.m_bUseTypingEffect = true;
+    FontUIDesc.vPosition = _float2(638.58f, 580.80f);
+
+    FontUIDesc.fX = ItemSeeFrameDesc.fX + 25.f;
+    FontUIDesc.fY = OriginY + 50.f;
+    FontUIDesc.Depth = 0.5f - (0.01f);
+
+    FontUIDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+    TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    FontUIDesc.TransformDesc = &TransDesc;
+
+    UIDesc = {};
+    FontUIDesc.UICompDesc = &UIDesc;
+
+    pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FontUI"), &FontUIDesc);
+    CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+        return E_FAIL;
+
+
+    SeeDescGroup.push_back(pInstance);
+    m_pGameInstance->Register_UIGroup(SeeDescGroup);
+
+
+
+    //폰트 이벤트 바인딩
+    CGameInstance::GetInstance()->RegisterEvent(L"UpdateSeeDescText", [](void* pData)
+        {
+            wstring* pWText = static_cast<wstring*>(pData);
+
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"SeeDescGroup");
+            if (pGroup)
+            {
+                CGameObject* pObj = pGroup->Find(L"SeeDesc_Text");
+                CheckNull(pObj);
+
+                CFontUI* pText = dynamic_cast<CFontUI*>(pObj);
+                CheckNull(pText);
+                pText->Set_Text((*pWText));
+
+            }
+        });
+#pragma endregion
+
+    ////////////활성/비활성화 
+
+    m_pGameInstance->RegisterEvent(L"OnSeeDescUIShow", [](void* pData)
+        {
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"SeeDescGroup");
+            if (pGroup)
+            {
+                for (auto& pair : pGroup->Objects)
+                {
+                    CGameObject* pObj = pair.second;
+                    CUI* pUI = dynamic_cast<CUI*>(pObj);
+                    CheckNull(pUI);
+
+                    pUI->Set_ActiveAnim(0, [pUI]()
+                        {
+                            pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 10.f, false, false);
+                        });
+
+                    if (!pUI->Is_Active())
+                        pUI->OnActivated(true);
+                }
+
+            }
+        });
+
+    m_pGameInstance->RegisterEvent(L"OnSeeDescUIHide", [](void* pData)
+        {
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"SeeDescGroup");
+            if (pGroup)
+            {
+                for (auto& pair : pGroup->Objects)
+                {
+                    CGameObject* pObj = pair.second;
+                    if (pObj->Get_Tag() == L"SeeDesc_Text")
+                    {
+                        pObj->Set_Active(false);
+                        continue;
+
+                    }
+
+                    CUI* pUI = dynamic_cast<CUI*>(pObj);
+                    CheckNull(pUI);
+
+                    pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 10.f, false, true, false);
+
+                }
+
+
+            }
+        });
+
+
+    m_pGameInstance->SetActiveGroup(SeeDescGroup.Key, false);
+
+
     return S_OK;
 }

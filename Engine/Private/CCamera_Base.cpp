@@ -307,6 +307,10 @@ bool CCamera_Base::IsInDistance(const _float3 vCenter)
 
     return true;
 }
+void CCamera_Base::Set_Lock(bool b)
+{
+    m_bLock = b;
+}
 bool CCamera_Base::IsInFrustum(const _float3& MinBound, const _float3& MaxBound)
 {
     for (int i = 0; i < ENUM_TO_UINT(PLANE::END); ++i)
