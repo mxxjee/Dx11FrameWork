@@ -8,7 +8,9 @@ CTimerTask_Manager::CTimerTask_Manager()
 
 CTimerTask_Manager* CTimerTask_Manager::Create()
 {
-	return new CTimerTask_Manager;
+	CTimerTask_Manager* pInstance = new CTimerTask_Manager;
+	pInstance->m_Tasks.reserve(200);
+	return pInstance;
 }
 
 void CTimerTask_Manager::Free()
@@ -18,14 +20,15 @@ void CTimerTask_Manager::Free()
 
 void CTimerTask_Manager::Update(_float fTimeDelta)
 {
+	vector < _uint> vecDeadTasks;
 	for (auto& Task : m_Tasks)
 	{
-		Task.m_fTime -= fTimeDelta;
+ 		Task.m_fTime -= fTimeDelta;
 		
 		//시간다됐으면..
 		if (Task.m_fTime <= 0.f)
 		{
-			if (Task.m_Callback)
+			if (Task.pOwner&&Task.m_Callback)
 				Task.m_Callback();
 
 			
@@ -33,10 +36,13 @@ void CTimerTask_Manager::Update(_float fTimeDelta)
 				Task.m_fTime += Task.m_finterval;
 
 			else
-				CancelTask(Task.m_id);
-
+				vecDeadTasks.push_back(Task.m_id);
 		}
 	}
+
+	for (auto& id : vecDeadTasks)
+		CancelTask(id);
+
 }
 
 HRESULT CTimerTask_Manager::Invoke(float _fTime, float _finterval, bool _bRepeat, bool _bCancelled, std::function<void()> cb, CGameObject* pOwner)

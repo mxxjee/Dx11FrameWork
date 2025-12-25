@@ -34,7 +34,7 @@ HRESULT CCamera_Manager::Initialize()
 	//NPC 이벤트 시작시 필요한 콜백 등록(카메라 역할)
 	m_pGameInstance->RegisterListners("Enter_Interaction_NPC", [this](const GameEvent& evt)
 		{
-			CGameObject* pNpc = static_cast<CGameObject*>(evt.Payload.Ptrs.at("NPC"));
+                                                                                                                                                                                                                                                      			CGameObject* pNpc = static_cast<CGameObject*>(evt.Payload.Ptrs.at("NPC"));
 			CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(Get_MainCamera());
 		
 			CheckNull(pNpc);

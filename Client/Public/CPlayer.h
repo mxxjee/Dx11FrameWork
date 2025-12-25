@@ -117,7 +117,12 @@ public:
     void            Set_GetItem(bool b) { if(m_ActionControl.m_bItemGet!=b)m_ActionControl.m_bItemGet = b; }
 
 public:
+    /*이벤트 함수들*/
     void        On_Heal(int Hp);
+    void        On_RichardChapterEvent(CGameObject* pObj);
+    void        Teleport(_uint iNewIdx);
+    void        Exit_RichardChapterEvent();
+
 public:
     //상태에따른 메쉬 비지블
     void        Set_VisibleMesh(const wstring& MeshName, bool bVisible);
@@ -244,7 +249,9 @@ private:
     CInteractionObject*     m_CarryObject = nullptr;
 
 private:
-    CGameManager* m_pGameManager = nullptr;
+    CGameManager*   m_pGameManager = nullptr;
+    bool            m_bRichardChapter = false;
+
 
 };
 

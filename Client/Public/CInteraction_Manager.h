@@ -40,6 +40,7 @@ public:
 public:
     CIInteractable*              Get_CurrentTarget() { return m_pCurrentTarget; }
     void                        Reset_CurrentTarget() { m_pCurrentTarget = nullptr; }
+    void                        Set_CurrentTarget(CIInteractable* pObj);
 public:
     virtual void                Free() override;
 public:

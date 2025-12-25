@@ -47,7 +47,7 @@ private:
     CLayer*         m_pEnviromentLayer = nullptr;       //Level_Room의 enviromnetlayer(참조)
     CLayer*         m_pNPCLayer= nullptr;               //Level_Room의 NPClayer(참조)
     CLayer*         m_pTriggerLayer = nullptr;       //Level_Room의 Playerlayer(참조)
-
+    
 public:
     virtual         void        Free() override;
     

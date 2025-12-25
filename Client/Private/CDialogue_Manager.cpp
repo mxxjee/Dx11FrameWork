@@ -7,7 +7,8 @@
 #include "CGameManager.h"
 #include "CLevel_Spawn.h"
 #include "CInventory_Manager.h"
-
+#include "CFadeScreen.h"
+#include "CLevel_Town.h"
 
 
 IMPLEMENT_SINGLETON(CDialogue_Manager)
@@ -204,7 +205,7 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
 {
     if (strCommand.empty())
         return;
-
+    CGameObject* pOwner = CGameManager::GetInstance()->Get_MainPlayer();
     if (strCommand == "EndCutScene")
     {
         CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
@@ -283,6 +284,41 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
         CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::POWER_BRACELET, 1);
 
     }
+   
+
+   else if (strCommand == "On_TarinEvent_End")
+    {
+        //1초뒤 fadein
+        m_pGameInstance->Invoke(1.f, 0.f, false, false, [this]()
+            {
+
+
+                UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
+                CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Find(L"FadeScreen"));
+
+
+                CheckNull(pFadeScreen);
+                pFadeScreen->PlayFadeIn();
+
+            }, pOwner);
+       
+
+
+        //그이후 텔포
+           //1초뒤 fadein
+        m_pGameInstance->Invoke(1.5f, 0.f, false, false, [this]()
+            {
+
+
+                CLevel_Town* pTown = dynamic_cast<CLevel_Town*>(m_pGameInstance->Get_CurrentLevel());
+                if (pTown)
+                    pTown->Teleport_RichardHouse();
+
+
+            }, pOwner);
+
+    }
+
 }
 
 void CDialogue_Manager::LoadScriptDatabase(const string& strFilePath)

@@ -70,7 +70,7 @@ private:
 
     ComPtr<ID3D11BlendState> BS_AlphaBlend;
 
-public:
+public: 
                 //타이핑 효과를 재생시킨다 딱1회의 스위치 개념,내부적으로 알아서 재귀처리가 됨(문장끝을만나면 멈춤)
     void            PlayTyping();
     void            Set_RandomColor(bool b);

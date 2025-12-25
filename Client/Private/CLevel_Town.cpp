@@ -41,6 +41,10 @@
 #include "CCell.h"
 #include "ColorUtils.h"
 
+#include "CNPC_Tarin.h"
+#include "CNavigation.h"
+#include "CWeatherCock.h"
+
 USING(Client)
 
 CLevel_Town::CLevel_Town(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -216,6 +220,21 @@ HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
     m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::TOWN));
     CGameInstance::GetInstance()->Set_EnalbeUpdateRender(true);
+
+   //30.10.37
+    CWeatherCock::MODELOBJECT_DESC ModelDesc;
+    ModelDesc.m_iLevelID = m_iLevelID;
+    ModelDesc.ObjTag = L"WeatherCock";
+
+    CTransform::tagTransformDesc TransDesc;
+    TransDesc.vLocalPosition = _float4(30.5f,10.f,39.f,1.f);
+    TransDesc.vLocalScale = _float4(1.5f, 1.5f,1.5f, 1.f);
+
+    ModelDesc.TransformDesc = &TransDesc;
+
+    CGameObject* pObj = CWeatherCock::Create(m_pDevice, m_pContext,&ModelDesc);
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(m_iLevelID, strLayerTag, pObj)))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -474,7 +493,7 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
     pFairyDesc.ModelName = L"Fairy";
     pFairyDesc.SceneName = "Level_Town";
     pFairyDesc.m_iLevelID = m_iLevelID;
-    pFairyDesc.TalkRange = 4.f;
+    pFairyDesc.TalkRange =   4.f;
     pFairyDesc.bUseNavMesh = false;
 
 
@@ -485,7 +504,7 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
     if (pNpc_Fairy)
     {
         if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, pNpc_Fairy)))
-            return E_FAIL;
+            return E_FAIL; 
 
         //pNpc_Fairy->Set_Active(false);
     }
@@ -519,6 +538,39 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
             return E_FAIL;
 
         pNPC_Kid->Set_Active(false);
+    }
+
+    /// <summary>
+    /// 이벤트전용  Tarin따로생성
+    CNPC::NPC_DESC pTarin;
+
+    CTransform::TRANSFORM_DESC pTarinTransDesc;
+
+    _vector vTarinPos = m_pGameInstance->Get_CellPos_By_MainCells(23);
+    XMStoreFloat4(&pTarinTransDesc.vLocalPosition, vTarinPos);
+
+    pTarinTransDesc.vLocalRotation = _float4(0.f, 90.f, 0.f, 0.f);
+    pTarinTransDesc.fSpeedPerSec = 2.f;
+
+    pTarin.ObjTag = L"NPC_Tarin";
+    pTarin.pTarget = nullptr;
+    pTarin.ModelName = L"Tarin";          
+    pTarin.SceneName = "Level_Town";
+    pTarin.m_iLevelID = m_iLevelID;
+    pTarin.TalkRange =4.f;
+  //  pTarin.bUseNavMesh = false;
+
+
+
+    pTarin.TransformDesc = &pTarinTransDesc;
+
+    CNPC_Tarin* pNpc_Tarin = CNPC_Tarin::Create(m_pDevice, m_pContext, &pTarin);
+    if (pNpc_Tarin)
+    {
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, pNpc_Tarin)))
+            return E_FAIL;
+
+        //pNpc_Fairy->Set_Active(false);
     }
 
     return S_OK;
@@ -610,14 +662,16 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 {
     /// <summary>
     /// 썡으로배치..
-    wstring TriggerTags[] = { L"mamasha_House1",L"mamasha_House2",L"TelephoneBox",L"MarinHouse" };
-    string NextKeys[] = { "Mamasha_room","Mamasha_room","telephoneBox","MarinHouse" };
+    wstring TriggerTags[] = { L"mamasha_House1",L"mamasha_House2",L"TelephoneBox",L"MarinHouse",L"RichardHouse"};
+    string NextKeys[] = { "Mamasha_room","Mamasha_room","telephoneBox","MarinHouse","RichardHouse"};
 
     _float4 TriggerPos[] = {
         _float4(30.75f,12.86f,51.f,1.f),
         _float4(33.66f,12.86f,51.f,1.f),
         _float4(30.81f,10.5,15.746f,1.f),
-        _float4(30.63f,10.577f,27.19f,1.f)
+        _float4(30.63f,10.577f,27.19f,1.f),
+        _float4(80.f,13.8f,100.8f,1.f)
+
 
     };
 
@@ -801,6 +855,54 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
         return E_FAIL;
     
 #pragma endregion
+   
+
+
+#pragma region 타린트리거
+    CEventTrigger::EventTriggerDesc NewChapter_EventDesc;
+    NewChapter_EventDesc.vCenter = _float3(0.f, 0.f, 0.f);
+    NewChapter_EventDesc.vExtents = _float3(1.f, 1.f, 1.f);
+    NewChapter_EventDesc.ObjTag = L"Richard_Chapter_Trigger";    //리처드 챕터 트리거( 리처드 집이동 이벤트)
+    NewChapter_EventDesc.m_iLevelID = m_iLevelID;
+
+    CTransform::TRANSFORM_DESC NewChapter_EventTransform;
+    NewChapter_EventTransform.vLocalPosition = _float4(38.f, 10.5f, 34.5f, 1.f);
+
+    NewChapter_EventDesc.TransformDesc = &NewChapter_EventTransform;
+
+
+    NewChapter_EventDesc.EnterFunc = [this]()
+    {
+        CLayer* pLayer = m_pGameInstance->Find_Layer(m_iLevelID, L"NPC_Layer");
+        if (pLayer)
+        {
+            CGameObject* pNPC = pLayer->Find_GameObject(L"NPC_Tarin");
+            if (pNPC)
+            {
+                CNPC_Tarin* pNpc_Tarin = dynamic_cast<CNPC_Tarin*>(pNPC);
+                CheckNull(pNpc_Tarin);
+                pNpc_Tarin->Set_Active(true);
+                pNpc_Tarin->Set_StartEvent(true, CNPC_Tarin::State::WALK);
+
+                CPlayer* pPlayer=CGameManager::GetInstance()->Get_MainPlayer();
+                CheckNull(pPlayer);
+                
+                pPlayer->On_RichardChapterEvent(pNpc_Tarin);
+
+              
+                
+            }
+        }
+
+        
+    };
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, &NewChapter_EventDesc)))
+        return E_FAIL;
+
+
+#pragma endregion
+
     return S_OK;
 }
 
@@ -948,6 +1050,8 @@ void CLevel_Town::OnResume(_uint iPreLevel)
 
     Event.Payload.Ptrs["Player"] = pPlayer;
     Event.Name = "Complete_Init_Camera";
+    
+
 
     m_pGameInstance->Emit(Event);
     LEVEL_ID PrevID = (LEVEL_ID)iPreLevel;
@@ -997,6 +1101,7 @@ void CLevel_Town::OnPause(_uint iNextLevel)
         CheckNull(pFadeScreen);
         pFadeScreen->PlayFadeIn();
         break;
+
     case Client::LEVEL_ID::UI:
         break;
  
@@ -1015,6 +1120,84 @@ void CLevel_Town::OnExit()
 }
 
 
+
+void CLevel_Town::Teleport_RichardHouse()
+{
+    CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+    CheckNull(pPlayer);
+
+
+    //왠지모르지만 room트리거들이 밟히는거같아서 콜리전비홀성화
+    CLayer* pTriggerLayer = m_pGameInstance->Find_Layer(m_iLevelID, L"Trigger_Layer");
+    for (auto& pObj : pTriggerLayer->Get_ObjList())
+    {
+        CTrigger_Box* pRoomTrigger = dynamic_cast<CTrigger_Box*>(pObj);
+        if (pRoomTrigger)
+        {
+            m_pGameInstance->UnRegister_Collider(pRoomTrigger->Get_Collider(), m_iLevelID);
+
+        }
+            
+    }
+
+    /*텔레포트 - 리차드집앞*/
+    _vector vTeleportPos = XMVectorSet(79.f, 13.f, 95.f, 1.f);
+    pPlayer->Get_Transform()->Set_State(STATE::POSITION, vTeleportPos);
+    pPlayer->Change_MainNavMesh();
+
+    /*타린도 함께 텔레포트*/
+    CNPC* Tarin = dynamic_cast<CNPC*>(m_pGameInstance->Find_GameObject(m_iLevelID, L"NPC_Layer", L"NPC_Tarin"));
+    if (Tarin)
+    {
+
+        _vector vTarinTelepos= XMVectorSet(78.f, 18.f, 97.f, 1.f);
+        Tarin->Get_Transform()->Set_State(STATE::POSITION, vTarinTelepos);
+        CNPC_Tarin* pTarin = dynamic_cast<CNPC_Tarin*>(Tarin);
+        CheckNull(pTarin);
+
+        pTarin->Get_Navigation()->Set_CurrentIdx(pTarin->Get_Transform()->Get_State(STATE::POSITION) );
+        pTarin->Get_Transform()->Set_State(STATE::POSITION,
+            pTarin->Get_Navigation()->SetUp_OnNavigation((pTarin->Get_Transform()->Get_State(STATE::POSITION))));
+
+        pTarin->Start_SecondChapter();
+    }
+                                            
+    m_pGameInstance->Invoke(2.f, false, false, false, []()
+        {
+
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"FadeScreenGroup");
+            CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Find(L"FadeScreen"));
+            pFadeScreen->PlayFadeOut();
+
+
+        },CGameManager::GetInstance()->Get_MainPlayer());
+
+    
+    m_pGameInstance->Invoke(3.f, false, false, false, []()
+        {
+               CNPC* Tarin = dynamic_cast<CNPC*>(CGameInstance::GetInstance()->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::TOWN), L"NPC_Layer", L"NPC_Tarin"));
+               CNPC_Tarin* pTarin = dynamic_cast<CNPC_Tarin*>(Tarin);
+               CheckNull(pTarin);
+
+               CInteraction_Manager::GetInstance()->Set_CurrentTarget(pTarin);
+      
+               /*도착했을때 다시켜주기.*/
+               CLayer* pTriggerLayer = CGameInstance::GetInstance()->Find_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), L"Trigger_Layer");
+               for (auto& pObj : pTriggerLayer->Get_ObjList())
+               {
+                   CTrigger_Box* pRoomTrigger = dynamic_cast<CTrigger_Box*>(pObj);
+                   if (pRoomTrigger)
+                   {
+                       CGameInstance::GetInstance()->Register_Collider(pRoomTrigger->Get_Collider(), ENUM_TO_UINT(LEVEL_ID::TOWN));
+
+                   }
+
+               }
+        }, CGameManager::GetInstance()->Get_MainPlayer());
+
+
+
+}
 
 CLevel_Town* CLevel_Town::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)
 {

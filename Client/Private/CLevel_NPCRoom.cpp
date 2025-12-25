@@ -26,10 +26,13 @@ HRESULT CLevel_NPCRoom::Initialize(LevelArgs& args)
     hr=m_pGameInstance->Make_New_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"Enviroment_Layer");
     hr = m_pGameInstance->Make_New_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"Trigger_Layer");
     hr = m_pGameInstance->Make_New_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"NPC_Layer");
+    hr = m_pGameInstance->Make_New_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"Interaction_Layer");
 
     CLayer* pEnvLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"Enviroment_Layer");
     CLayer* pTriggerLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"Trigger_Layer");
     CLayer* pNPCLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"NPC_Layer");
+    CLayer* pInteractionLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::ROOM), L"Interaction_Layer");
+
 
     if(FAILED(CRoom_Manager::GetInstance()->Initialize(m_pDevice, m_pContext, pEnvLayer, pNPCLayer, pTriggerLayer)))
         return E_FAIL;

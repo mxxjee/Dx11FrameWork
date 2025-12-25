@@ -122,8 +122,15 @@ void CPlayer::Update(_float fTimeDelta)
     //무조건 a키.
     m_Input.m_bInteract = CInteraction_Manager::GetInstance()->OnInteractKeyPresed();
 
+    //돌아보기
+    if (m_bRichardChapter)
+    {
+        _vector vPos = m_pTarget->Get_Transform()->Get_State(STATE::POSITION);
+        m_pTransformCom->LookAtSmooth(vPos, 5.f, fTimeDelta);
+    }
 
-    if (!m_pGameManager->Get_UseCutScene())
+
+    if (!m_pGameManager->Get_UseCutScene() && !m_bRichardChapter)
     {
         Update_Input(fTimeDelta);
         UpdateFlash(fTimeDelta);
@@ -255,6 +262,9 @@ void CPlayer::Update_Input(_float fTimeDelta)
 {
     CheckTrue(m_pGameInstance->Get_IsLoading());
 
+
+    CheckTrue(m_bRichardChapter);
+
     _uint iCurrentLevel = m_pGameInstance->Get_CurrentLevelID();
 
     //NPC방이 아닐때만 점프/어택/쉴드 가능
@@ -332,6 +342,7 @@ void CPlayer::Update_Movement(_float fTimeDelta)
 
     CheckFalse(m_ActionControl.m_bCanMove);
     CheckTrue(m_ActionControl.m_fDamage==1.f);
+    CheckTrue(m_bRichardChapter);
 
     if (m_ActionControl.IsHold(HOLD_B))
         Hold_Movement(fTimeDelta);
@@ -586,6 +597,37 @@ void CPlayer::On_Heal(int Hp)
   
 }
 
+void CPlayer::On_RichardChapterEvent(CGameObject* pObj)
+{
+    /*컷씬전용*/
+
+
+    m_bRichardChapter = true;
+    m_pTarget = pObj;
+
+    m_Input.m_bisMove = false;
+    Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
+
+    
+}
+
+void CPlayer::Exit_RichardChapterEvent()
+{
+    m_bRichardChapter = false;
+    m_Input.m_bisMove = true;
+
+
+}
+void CPlayer::Teleport(_uint iNewIdx)
+{
+    _vector vSpawnPos = m_pGameInstance->Get_CellPos_By_MainCells(iNewIdx);
+    Get_Transform()->Set_State(STATE::POSITION, vSpawnPos);
+    
+    m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
+
+}
+
+
 void CPlayer::Set_VisibleMesh(const wstring& MeshName, bool bVisible)
 {
     if (m_pBody)
@@ -719,6 +761,8 @@ void CPlayer::Change_MainNavMesh()
     {
         m_pNavigationCom->Set_MainCell();
         m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
+        m_pTransformCom->Set_State(STATE::POSITION,
+            m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
 
     }
 }
@@ -1095,6 +1139,7 @@ void CPlayer::Render_Transform_Imgui()
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 0, 255, 255));
     ImGui::BulletText("isOnGround:%s",
         result.c_str());
+    ImGui::BulletText("CurIdex:%d", m_pNavigationCom->Get_CurrentCell()->Get_Idx());
     ImGui::PopStyleColor();
 
 

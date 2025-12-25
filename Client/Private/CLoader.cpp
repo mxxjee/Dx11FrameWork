@@ -76,7 +76,6 @@
 
 
 
-
 USING(Client)
 CLoader::CLoader(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
     :m_pDevice{_pDevice},
@@ -444,7 +443,7 @@ HRESULT CLoader::Register_Models()
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Rooms/", RoomMatrix);
 
-    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Bed/Bed.json", XMMatrixIdentity());
+    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Weathercock/Weathercock.json", XMMatrixIdentity());
 
     return S_OK;
 }

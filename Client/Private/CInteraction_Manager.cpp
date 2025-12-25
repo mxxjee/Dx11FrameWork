@@ -207,6 +207,14 @@ void CInteraction_Manager::Set_MainPlayer(CGameObject* pObj)
 }
 
 
+void CInteraction_Manager::Set_CurrentTarget(CIInteractable* pObj)
+{
+	m_pCurrentTarget = pObj; 
+	m_pCurrentTarget->Enter_Interaction();
+	m_pCurrentTarget->m_bPrevInteracting = true;
+	
+}
+
 void CInteraction_Manager::Free()
 {
 

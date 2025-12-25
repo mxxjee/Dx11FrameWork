@@ -211,6 +211,7 @@
     <ClInclude Include="..\Public\CNPC_Body.h" />
     <ClInclude Include="..\Public\CNPC_Fairy.h" />
     <ClInclude Include="..\Public\CNPC_Richard.h" />
+    <ClInclude Include="..\Public\CNPC_Tarin.h" />
     <ClInclude Include="..\Public\CNPC_Witch.h" />
     <ClInclude Include="..\Public\CObjectDebugWindow.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -254,6 +255,7 @@
     </ClInclude>
     <ClInclude Include="..\Public\CVariable_Condition.h" />
     <ClInclude Include="..\Public\CWeapon.h" />
+    <ClInclude Include="..\Public\CWeatherCock.h" />
     <ClInclude Include="..\Public\GlobalGameEvent.h" />
     <ClInclude Include="..\Public\ItemCollect_Condition.h" />
     <ClInclude Include="..\Public\MonsterStates.h" />
@@ -327,6 +329,7 @@
     <ClCompile Include="..\Private\CNPC_Body.cpp" />
     <ClCompile Include="..\Private\CNPC_Fairy.cpp" />
     <ClCompile Include="..\Private\CNPC_Richard.cpp" />
+    <ClCompile Include="..\Private\CNPC_Tarin.cpp" />
     <ClCompile Include="..\Private\CNPC_Witch.cpp" />
     <ClCompile Include="..\Private\CObjectDebugWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -369,6 +372,7 @@
     </ClCompile>
     <ClCompile Include="..\Private\CVariable_Condition.cpp" />
     <ClCompile Include="..\Private\CWeapon.cpp" />
+    <ClCompile Include="..\Private\CWeatherCock.cpp" />
     <ClCompile Include="..\Private\ItemCollect_Condition.cpp" />
     <ClCompile Include="..\Public\CUICreator.cpp" />
     <ClCompile Include="Client.cpp" />

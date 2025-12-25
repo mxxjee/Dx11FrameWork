@@ -32,7 +32,7 @@ HRESULT CQuest_Manager::Initialize()
 	m_mapNPCChapterProgress[Marin_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Marin_HashKey].BaseChapterID;		//대화시작챕터:START
 
 	size_t Tarin_HashKey = hash<string>()("NPC_Tarin");
-	m_mapNPCChapterProgress[Tarin_HashKey].BaseChapterID = "TARIN_START";		//대화시작챕터:START
+	m_mapNPCChapterProgress[Tarin_HashKey].BaseChapterID = "Tarin_START";		//대화시작챕터:START
 	m_mapNPCChapterProgress[Tarin_HashKey].CurrentChapterID = m_mapNPCChapterProgress[Tarin_HashKey].BaseChapterID;		//대화시작챕터:START
 
 

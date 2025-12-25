@@ -1,0 +1,30 @@
+{
+    "AnimDatas": [
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 23408,
+                    "BoneName": "bird",
+                    "NumKeyFrames": 532
+                },
+                {
+                    "BinaryOffset": 23408,
+                    "BinarySize": 88,
+                    "BoneName": "foundation",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 23496,
+                    "BinarySize": 33924,
+                    "BoneName": "propeller",
+                    "NumKeyFrames": 771
+                }
+            ],
+            "Duration": 800.0,
+            "Name": "wait",
+            "NumChannels": 3,
+            "TickPerSecond": 25.0
+        }
+    ]
+}

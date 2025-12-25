@@ -309,6 +309,12 @@
     <ClInclude Include="..\Public\CSocket_Model.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Witch\Part_MushRoom</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CNPC_Tarin.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Tarin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWeatherCock.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\WeatherCock</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -673,6 +679,12 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\00.NPC\Witch\Part_MushRoom">
       <UniqueIdentifier>{82e7b14e-041b-4f8d-921f-78ef77e48498}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\00.NPC\Tarin">
+      <UniqueIdentifier>{de7723f8-cf63-47d2-bfc7-d2d766da895c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\WeatherCock">
+      <UniqueIdentifier>{ee3f9203-6293-4aaf-8b0d-31cd950fe4b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -961,6 +973,12 @@
     </ClCompile>
     <ClCompile Include="CSocket_Model.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Witch\Part_MushRoom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CNPC_Tarin.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Tarin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWeatherCock.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\WeatherCock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
