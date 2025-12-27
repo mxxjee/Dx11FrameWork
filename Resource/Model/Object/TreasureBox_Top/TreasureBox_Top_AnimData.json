@@ -1,0 +1,64 @@
+{
+    "AnimDatas": [
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 88,
+                    "BoneName": "lid",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 88,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                }
+            ],
+            "Duration": 19.0,
+            "Name": "wait",
+            "NumChannels": 2,
+            "TickPerSecond": 25.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 968,
+                    "BoneName": "lid",
+                    "NumKeyFrames": 22
+                },
+                {
+                    "BinaryOffset": 968,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                }
+            ],
+            "Duration": 40.0,
+            "Name": "open",
+            "NumChannels": 2,
+            "TickPerSecond": 25.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 88,
+                    "BoneName": "lid",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 88,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                }
+            ],
+            "Duration": 1.0,
+            "Name": "open_wait",
+            "NumChannels": 2,
+            "TickPerSecond": 25.0
+        }
+    ]
+}

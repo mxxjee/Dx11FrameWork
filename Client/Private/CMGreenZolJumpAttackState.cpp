@@ -43,7 +43,7 @@ void CMGreenZolJumpAttackState::Update(CMonster* pMonster, _float fTimeDelta)
 		else
 		{
 			m_fTime += fTimeDelta;
-			if (m_fTime >= 1.f)
+			if (m_fTime >=0.8f)
 			{
 				m_fTime = 0.f;
 				

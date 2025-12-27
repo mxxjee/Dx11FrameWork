@@ -1,0 +1,113 @@
+{
+    "Bones": [
+        {
+            "BoneName": "root",
+            "OffsetMatrix": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "ParentIndex": -1,
+            "Transformation": [
+                1.0,
+                0.0,
+                -0.0,
+                0.0,
+                0.0,
+                1.0,
+                -0.0,
+                0.0,
+                -0.0,
+                -0.0,
+                1.0,
+                -0.0,
+                0.0,
+                0.0,
+                -0.0,
+                1.0
+            ]
+        },
+        {
+            "BoneName": "lid",
+            "OffsetMatrix": [
+                1.0,
+                0.0,
+                -0.0,
+                0.0,
+                0.0,
+                1.0,
+                -1.6292067073209182e-07,
+                -0.5846145153045654,
+                -0.0,
+                1.6292067073209182e-07,
+                1.0,
+                -0.5709435939788818,
+                0.0,
+                0.0,
+                -0.0,
+                1.0
+            ],
+            "ParentIndex": 0,
+            "Transformation": [
+                1.0,
+                0.0,
+                -0.0,
+                0.0,
+                0.0,
+                0.4999995529651642,
+                -0.8660256862640381,
+                0.5846145749092102,
+                -0.0,
+                0.8660256862640381,
+                0.4999995529651642,
+                0.5709435939788818,
+                0.0,
+                0.0,
+                -0.0,
+                1.0
+            ]
+        }
+    ],
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "MI_dungeonTreasureBox_01_alb.png",
+            "METALNESS": "MI_dungeonTreasureBox_01_mtl.png",
+            "MaterialName": "TreasureBox_Top_MI_dungeonTreasureBox_01",
+            "Normal": "MI_dungeonTreasureBox_01_nml.png",
+            "OPACITY": "MI_dungeonTreasureBox_01_occ.png",
+            "Specular": "MI_dungeonTreasureBox_01_smt.png"
+        }
+    ],
+    "MeshNums": 1,
+    "Meshes": [
+        {
+            "BoneIdx": [
+                1
+            ],
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 2490,
+            "MaterialName": "TreasureBox_Top_MI_dungeonTreasureBox_01",
+            "MeshIdx": 0,
+            "Name": "huta__MI_dungeonTreasureBox_01",
+            "NumBones": 1,
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 842
+        }
+    ],
+    "ModelName": "TreasureBox_Top",
+    "NumAnimations": 3
+}

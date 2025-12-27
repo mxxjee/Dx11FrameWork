@@ -75,6 +75,7 @@
 #include "CInteraction_BigRock.h"
 
 
+#include "CTreasureChest.h"
 
 
 USING(Client)
@@ -475,7 +476,7 @@ HRESULT CLoader::Register_Models()
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Object/", XMMatrixIdentity());
 
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Rooms/", RoomMatrix);
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Rooms/", XMMatrixIdentity());
 
     m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Weathercock/Weathercock.json", XMMatrixIdentity());
 
@@ -650,7 +651,10 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Interaction_Mushroom", CInteraction_Mushroom::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"TreasureChest", CTreasureChest::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
+   
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Interaction_BigRock", CInteraction_BigRock::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 

@@ -329,6 +329,9 @@
     <ClInclude Include="..\Public\CLevel_Dungeon.h">
       <Filter>01.Levels\Dungeon</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CTreasureChest.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\TreasureChest</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -711,6 +714,9 @@
     <Filter Include="01.Levels\Dungeon">
       <UniqueIdentifier>{fd77ef72-1771-43d6-8a91-6bb321525fbe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\TreasureChest">
+      <UniqueIdentifier>{5110a716-b9b4-4fa2-919f-a5a630e8d756}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1019,6 +1025,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_Dungeon.cpp">
       <Filter>01.Levels\Dungeon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTreasureChest.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\TreasureChest</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

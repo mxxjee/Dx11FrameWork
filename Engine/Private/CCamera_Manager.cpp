@@ -147,6 +147,33 @@ HRESULT CCamera_Manager::Initialize()
 
 		});
 
+	m_pGameInstance->RegisterListners("Enter_DungeonRoom", [this](const GameEvent& evt)
+		{
+			CGameObject* pPlayer = static_cast<CGameObject*>(evt.Payload.Ptrs.at("Player"));
+			CMainCamera* pCameraBase = dynamic_cast<CMainCamera*>(Get_MainCamera());
+
+			_float3 OffSet = _float3(evt.Payload.Floats.at("OffSet_X"),
+				evt.Payload.Floats.at("OffSet_Y"),
+				evt.Payload.Floats.at("OffSet_Z"));
+			
+			_float3 vRotation= _float3(evt.Payload.Floats.at("Rot_X"),
+				evt.Payload.Floats.at("Rot_Y"),
+				evt.Payload.Floats.at("Rot_Z"));
+
+
+			CheckNull(pCameraBase);
+			CheckNull(pPlayer);
+
+
+			pCameraBase->Set_Offset(OffSet);
+			pCameraBase->Set_Target(pPlayer, true);
+			pCameraBase->Set_Lock(false);
+
+
+			pCameraBase->Set_LocalRoation(_float4(vRotation.x, vRotation.y, vRotation.z, 0.f));
+
+		});
+
 	m_pGameInstance->RegisterListners("Cameara_LerpRotation_Start", [this](const GameEvent& evt)
 		{
 			CMainCamera* pCameraBase = dynamic_cast<CMainCamera*>(Get_MainCamera());

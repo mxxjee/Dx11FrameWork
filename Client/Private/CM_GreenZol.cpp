@@ -60,12 +60,11 @@ HRESULT CM_GreenZol::Initialize_Copytype(void* pArg)
 
 	if (m_pNavigationCom)
 	{
-		m_pTransformCom->Set_State(STATE::POSITION, m_pNavigationCom->Get_Cell(30)->Get_CenterPos());
 		m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
 	}
 
 
-	Change_State(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::INTRO));
+ 	Change_State(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::INTRO));
 	m_eCurState = MONSTER_BASE_STATE::INTRO;
 
 	m_pCollider->Set_Active(false);
@@ -138,8 +137,8 @@ void CM_GreenZol::Register_Anim()
 
 
 		//////////Speed///////
-		m_pMonsterBody->Set_Animation_Speed(L"spawn", 25.f);
-		m_pMonsterBody->Set_Animation_Speed(L"jump_sign",50.f);
+		m_pMonsterBody->Set_Animation_Speed(L"spawn", 50.f);
+		m_pMonsterBody->Set_Animation_Speed(L"jump_sign",70.f);
 		m_pMonsterBody->Set_Animation_Speed(L"jump_loop", 50.f);
 		m_pMonsterBody->Set_Animation_Speed(L"depop", 50.f);
 
@@ -215,7 +214,7 @@ HRESULT CM_GreenZol::Ready_Component(void* pArg)
 	//////////////Boxcollider√ﬂ∞°
 	CCollider_Base::COLLIDER_DESC pColliderDesc;
 	pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::MONSTER);
-	pColliderDesc.m_iLevelID = m_iLevelID;
+	pColliderDesc.m_iLevelID = m_iSceneID;
 
 	CBounding_AABB::BOUNDING_AABB_DESC CollDesc;
 	CollDesc.vCenter = { 0.f,0.5f,0.f };

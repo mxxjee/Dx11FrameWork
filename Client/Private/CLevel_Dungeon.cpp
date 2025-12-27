@@ -10,6 +10,11 @@
 #include "CGameManager.h"
 #include "CCell.h"
 
+#include "CMonster.h"
+#include "CM_GreenZol.h"
+#include "CMonster_Body.h"
+
+
 
 
 
@@ -34,6 +39,10 @@ HRESULT CLevel_Dungeon::Initialize(LevelArgs& args)
 
 	if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
 		return E_FAIL;
+
+	if (FAILED(Ready_Layer_InteractionObject(L"Interaction_Layer")))
+		return E_FAIL;
+
 
 	UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
 	pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Find(L"FadeScreen"));
@@ -91,7 +100,7 @@ HRESULT CLevel_Dungeon::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 		_float4(82.015f,0.f,17.567f,1.f)
 	};
 
-	/*for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < 4; ++i)
 	{
 		CRoom::MODELOBJECT_DESC     RoomDesc;
 		RoomDesc.ObjTag = ModelName[i];
@@ -116,13 +125,14 @@ HRESULT CLevel_Dungeon::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
 
 		}
-	}*/
+	}
 
 	if (FAILED(CMapLoader::Load_Dungeon()))
 		return E_FAIL;
 	
 
 	m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::DUNGEON));
+
 
 	return S_OK;
 }
@@ -139,11 +149,72 @@ HRESULT CLevel_Dungeon::Ready_Layer_Player(const _wstring& strLayerTag)
 
 HRESULT CLevel_Dungeon::Ready_Layer_Monster(const _wstring& strLayerTag)
 {
+	_float4 vPos[] = {
+		_float4(11.211f,0.f,9.88f,1.f),
+		_float4(7.675f,0.f,11.350f,1.f),
+		_float4(5.472f,0.f,19.44f,1.f),
+		_float4(12.909f,0.f,17.425f,1.f),
+
+	};
+
+	for (int i = 0; i < 4; ++i)
+	{
+		CMonster::MonsterDesc desc;
+
+		CMonster_Body::MONSTER_BODY_DESC bodyDesc;
+		bodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+		bodyDesc.modelName = L"ZolGreenAnim";
+
+		desc.BodyDesc = &bodyDesc;
+
+
+		desc.iAttack = 10;
+		desc.MaxHp = 1;
+		desc.fActionRange = 10.f;
+		desc.m_iLevelID = m_iLevelID;
+
+		desc.ObjTag = L"CM_GreenZol" + to_wstring(i);
+		CTransform::TRANSFORM_DESC TransDesc = {};
+		TransDesc.vLocalPosition = vPos[i];
+		TransDesc.vLocalRotation = { 0.f,180.f,0.f,1.f };
+
+		TransDesc.fSpeedPerSec = 3.f;
+		TransDesc.fRotationPerSec = 10.f;
+
+		desc.TransformDesc = &TransDesc;
+
+
+
+		if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+			PROTO_OBJ_NAME(L"CM_GreenZol"),
+			ENUM_TO_UINT(LEVEL_ID::DUNGEON),
+			strLayerTag, &desc)))
+			return E_FAIL;
+	}
 	return S_OK;
 }
 
 HRESULT CLevel_Dungeon::Ready_Layer_InteractionObject(const _wstring& strLayerTag)
 {
+	CInteractionObject::Interaction_DESC Desc;
+	Desc.m_iLevelID = m_iLevelID;
+	Desc.SceneName = "Level_Dungeon";
+	Desc.bAnimated = false;
+
+	Desc.ObjTag = L"Treausurebox" + to_wstring(0);
+
+	CTransform::TRANSFORM_DESC TransDesc;
+	TransDesc.vLocalPosition = _float4(5.559f, 0.f, 21.266f,1.f);
+	Desc.TransformDesc = &TransDesc;
+
+	
+	if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+		PROTO_OBJ_NAME(L"TreasureChest"),
+		m_iLevelID,
+		L"Interaction_Layer", &Desc)))
+		return E_FAIL;
+
+
 	return S_OK;
 }
 
@@ -183,8 +254,23 @@ void CLevel_Dungeon::OnEnter()
 
 	CheckNull(pFadeScreen);
 	pFadeScreen->PlayFadeOut();
-	CGameInstance::GetInstance()->Set_EnalbeUpdateRender(true);
+	CGameInstance::GetInstance()->Set_EnalbeUpdateRender(false);
 
+	GameEvent Event;
+	EventPayload payload;
+	Event.Payload = payload;
+
+	Event.Payload.Ptrs["Player"] = pPlayer; 
+	Event.Payload.Floats["OffSet_X"] = 0.f;
+	Event.Payload.Floats["OffSet_Y"] = 10.f;
+	Event.Payload.Floats["OffSet_Z"] = -3.f;
+
+	Event.Payload.Floats["Rot_X"] = 60.f;
+	Event.Payload.Floats["Rot_Y"] = 0.f;
+	Event.Payload.Floats["Rot_Z"] = 0.f;
+
+	Event.Name = "Enter_DungeonRoom";
+	m_pGameInstance->Emit(Event);
 }
 
 void CLevel_Dungeon::OnResume(_uint iPreLevel)

@@ -261,7 +261,7 @@ HRESULT CInteractionObject::Ready_PartObjects(void* pArg)
     }
 
     //아니라면 .static body할당
-    {
+    else {
         CBody::BODY_DESC pBodyDesc;
         pBodyDesc.eRenderGroup = m_eRenderGroup;
         pBodyDesc.pOwner = this;

@@ -70,7 +70,7 @@ public:
 
 private:
     MONSTER_BASE_STATE  m_eCurState;
-    float               m_fSecond = 1.f;
+    float               m_fSecond = 0.5f;
     
 private:
     float           m_fSpawnRange = 3.f;        //스폰하기위한 범위
