@@ -397,6 +397,7 @@ HRESULT CRoom_Manager::Load_Interaction(const string& RoomName, const wstring& M
     
     if (pObj)
     {
+        pObj->Get_Transform()->Set_Speed(0.3f);
         pObj->Get_Transform()->Set_State(STATE::POSITION, XMVectorSet(vPos.x, vPos.y, vPos.z, 1.f));
         pObj->Get_Transform()->Set_Scale(_float4(1.5f, 1.5f, 1.5f, 1.f));
 

@@ -25,6 +25,8 @@ namespace UICreator
 	HRESULT		Create_See_Desc_UI(wstring LayerTag);
 
 
+	HRESULT		Create_InvenSlot(wstring LayerTag);
+
 	extern CGameInstance* m_pGameInstance;
 	
 }

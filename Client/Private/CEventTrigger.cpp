@@ -37,6 +37,16 @@ HRESULT CEventTrigger::Initialize_Copytype(void* pArg)
     m_StayFunction = pDesc->StayFunc;
     m_EndFunction = pDesc->EnterFunc;
 
+    //첫시작이 비활성화라면, 비활성화 ㅋ충돌체
+    if(pDesc->bActive_At_Begin==false)
+    {
+        pBoxCollider->Set_Active(false);
+        Set_Active(false);
+        m_pGameInstance->UnRegister_Collider(pBoxCollider, m_iSceneID);
+
+    }
+    
+        
     return S_OK;
 }
 

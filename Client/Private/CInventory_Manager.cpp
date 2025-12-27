@@ -5,6 +5,7 @@
 
 
 
+
 USING(Client)
 
 IMPLEMENT_SINGLETON(CInventory_Manager)
@@ -30,9 +31,16 @@ void CInventory_Manager::Update(_float fTimeDelta)
 	{
 		InvenSlot* pNewSlot = new InvenSlot;
 		pNewSlot->ItemType = pFront->ItemType;
-		pNewSlot->count = pNewSlot->count;
+		pNewSlot->count = pFront->count;
+		pNewSlot->m_pItemInfo = pFront->m_pItem;
 
 		m_InvenSlots[ENUM_TO_UINT(pNewSlot->ItemType)] = pNewSlot;
+
+
+		if (pFront->m_pItem->m_AfterGetFunc)
+			pFront->m_pItem->m_AfterGetFunc();
+
+
 		m_SlotQueue.pop_front();
 		Safe_Delete(pFront);
 	}
@@ -46,19 +54,25 @@ void CInventory_Manager::Update(_float fTimeDelta)
 
 
 }
-bool CInventory_Manager::Request_Add_To_Inven(ItemType eType, int iCount)
+bool CInventory_Manager::Request_Add_To_Inven(ItemType itemType, int iCount)
 {
 	/*인벤 대기열에 넣을 거 관리*/
 	CheckTrueResult(iCount == 0,false);
 
-	InvenSlot* pSlot = Find_Inven(eType);
+	ITMINFO* pItemInfo = m_pItemManager->Get_ItemInfo(itemType);
+	CheckNullResult(pItemInfo, false);
+	InvenSlot* pSlot = Find_Inven(pItemInfo->ItemType);
 	
 	//이미대기열에존재한다면, 추가 X(1개씩얻어야하는 아이템들)
-	InvenStanby* pFindStanby = Find_Stanby(eType);
+	InvenStanby* pFindStanby = Find_Stanby(pItemInfo->ItemType);
 	CheckTrueResult(pFindStanby!=nullptr, false);
 
 	InvenStanby* pStanBy = new InvenStanby;
-	pStanBy->ItemType = eType;
+	pStanBy->ItemType = pItemInfo->ItemType;
+	pStanBy->m_pItem = m_pItemManager->Get_ItemInfo(itemType);
+
+
+
 
 	//같은아이템 또먹은경우
 	if (pSlot)
@@ -176,7 +190,7 @@ CInventory_Manager::InvenStanby* CInventory_Manager::Find_Stanby(ItemType eType)
 	return nullptr;
 }
 
-bool CInventory_Manager::Uset_Item(ItemType eType, int iCount)
+bool CInventory_Manager::Use_Item(ItemType eType, int iCount)
 {
 	InvenSlot* pSlot = m_InvenSlots[ENUM_TO_UINT(eType)];
 	CheckNullResult(pSlot, false);
@@ -184,11 +198,71 @@ bool CInventory_Manager::Uset_Item(ItemType eType, int iCount)
 
 	pSlot->count -= iCount;
 
+
+	ITMINFO* pItem = pSlot->m_pItemInfo;
+
+	//사용시 플레이ㅓㅇ상태를 제어한다면
+	int iState = pItem->PlayerState;
+	if (iState != -1)
+	{
+		CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+		CheckNullResult(pPlayer, false);
+		pPlayer->Change_State(iState);
+	}
+
 	if (pSlot->count <= 0)
 	{
+		
+		if (m_XSlot == pSlot)
+			m_XSlot = nullptr;
+
+		else if (m_YSlot == pSlot)
+			m_YSlot = nullptr;
+
 		pSlot = nullptr;
 	}
 
+	
+
 	return true;
 
+}
+
+void CInventory_Manager::Set_SlotKey(ItemType eType, KeyCode code)
+{
+	InvenSlot* pSlot = Find_Inven(eType);
+	CheckNull(pSlot);
+	
+	ITMINFO* pInfo = m_pItemManager->Get_ItemInfo(eType);
+	CheckNull(pInfo);
+	CheckFalse(pInfo->PlayerState);
+
+	if (code == KeyCode::X)
+		CheckTrue(m_XSlot != nullptr);
+
+
+	if(code==KeyCode::Y)
+		CheckTrue(m_YSlot != nullptr);
+
+
+	/////////모두 맞다면///////
+	/*퀵슬롯 지정*/
+	pSlot->m_eQuickKeyCode = code;
+
+	if (code == KeyCode::X)
+		m_XSlot = pSlot;
+
+	else if (code == KeyCode::Y)
+		m_YSlot = pSlot;
+
+
+	//UI Event
+	CGameInstance::GetInstance()->BroadCastEvent(L"UpdateInvenSlotIcon", &pInfo->TexKey);
+}
+
+bool CInventory_Manager::Use_QuickSlot_Item(KeyCode e, int _iCount)
+{
+	CheckTrueResult(m_XSlot==nullptr, false);
+
+	return Use_Item(m_XSlot->ItemType, _iCount);
 }

@@ -175,10 +175,27 @@ void CLevel_NPCRoom::OnResume(_uint iPreLevel)
     EventPayload payload;
     Event.Payload = payload;
 
-    Event.Payload.Ptrs["Player"] = m_pPlayer;
-    Event.Payload.Floats["OffSet_X"] = 0.f;
-    Event.Payload.Floats["OffSet_Y"] = 9.f;
-    Event.Payload.Floats["OffSet_Z"] = -4.f;
+    if (CRoom_Manager::GetInstance()->Get_RequestRoom() == "RichardHouse")
+    {
+        Event.Payload.Ptrs["Player"] = m_pPlayer;
+        Event.Payload.Floats["OffSet_X"] = 0.f;
+        Event.Payload.Floats["OffSet_Y"] = 10.f;
+        Event.Payload.Floats["OffSet_Z"] = -3.f;
+
+
+        CGameObject* pObj = m_pGameInstance->Find_GameObject(m_iLevelID, L"Enviroment_Layer", L"Workbench0");
+        if (pObj)
+            CInteraction_Manager::GetInstance()->RegisterInteractable(dynamic_cast<CIInteractable*>(pObj));
+
+    }
+
+    else
+    {
+        Event.Payload.Ptrs["Player"] = m_pPlayer;
+        Event.Payload.Floats["OffSet_X"] = 0.f;
+        Event.Payload.Floats["OffSet_Y"] = 9.f;
+        Event.Payload.Floats["OffSet_Z"] = -4.f;
+    }
 
     Event.Name = "Enter_NPCRoom";
 
@@ -188,12 +205,21 @@ void CLevel_NPCRoom::OnResume(_uint iPreLevel)
 
   
 
-
-    //씬이 다시시작행슬때 메인 상호작용오브ㅈ게트들 설정
-    //////현재씬의 itneraction 등록
-    CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::ROOM));
-
     __super::OnResume(iPreLevel);
+
+
+    if (CRoom_Manager::GetInstance()->Get_RequestRoom() == "RichardHouse")
+    {
+        //카메라고정
+        CCamera_Base* pMainCam = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
+        CMainCamera* ppMainCam = dynamic_cast<CMainCamera*>(pMainCam);
+        if (ppMainCam)
+        {
+            ppMainCam->Set_Target(m_pPlayer, true);
+            ppMainCam->Set_Lock(true);
+
+        }
+    }
 }
 
 void CLevel_NPCRoom::OnPause(_uint iNextLevel)

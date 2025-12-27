@@ -11,6 +11,8 @@ public:
         function<void()>    EnterFunc = nullptr;
         function<void()>    StayFunc = nullptr;
         function<void()>    ExitFunc = nullptr;
+
+        bool                bActive_At_Begin = true;        //첫세팅시 setactive/false설정
     };
 
 protected:

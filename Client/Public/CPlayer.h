@@ -18,6 +18,7 @@ namespace Engine
 }
 NS_BEGIN(Client)
 class CInteractionObject;
+class CInventory_Manager;
 class CPlayerState;
 class CGameManager;
 
@@ -50,6 +51,7 @@ public:
         FALL,
         DAMANGE,
         PRATFALL,   //컷신용
+        POWDER,
         END
     };
 
@@ -122,6 +124,7 @@ public:
     void        On_RichardChapterEvent(CGameObject* pObj);
     void        Teleport(_uint iNewIdx);
     void        Exit_RichardChapterEvent();
+    void        Create_PowderParticle();
 
 public:
     //상태에따른 메쉬 비지블
@@ -249,8 +252,9 @@ private:
     CInteractionObject*     m_CarryObject = nullptr;
 
 private:
-    CGameManager*   m_pGameManager = nullptr;
-    bool            m_bRichardChapter = false;
+    CGameManager*           m_pGameManager = nullptr;
+    CInventory_Manager*     m_pInventoryManager = nullptr;
+    bool                    m_bRichardChapter = false;
 
 
 };

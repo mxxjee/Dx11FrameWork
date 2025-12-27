@@ -58,6 +58,7 @@
 
 #include "CSnow.h"
 #include "CExplosion.h"
+#include "CMagicPowder.h"
 
 #include "CInteraction_TriggerBox.h"
 #include "CInteractionObject.h"
@@ -640,7 +641,8 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Explosion", CExplosion::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"MagicPowder", CMagicPowder::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
     return S_OK;
 }

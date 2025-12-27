@@ -20,6 +20,9 @@
 
 #include "CInteractionObject.h"
 #include "CGameManager.h"
+#include "CInventory_Manager.h"
+#include "CMagicPowder.h"
+
 
 
 
@@ -27,14 +30,15 @@
 USING(Client)
 CPlayer::CPlayer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CAnimModelObject(pDevice,pContext),
-    m_pInputManager(CInput_Manager::GetInstance())
+    m_pInputManager(CInput_Manager::GetInstance()),
+    m_pInventoryManager(CInventory_Manager::GetInstance())
    
 {
     Safe_AddRef(m_pInputManager);
 }
 
 CPlayer::CPlayer(const CPlayer& rhs)
-    : CAnimModelObject(rhs),m_pInputManager(rhs.m_pInputManager)
+    : CAnimModelObject(rhs),m_pInputManager(rhs.m_pInputManager),m_pInventoryManager(rhs.m_pInventoryManager)
 {
     Safe_AddRef(m_pInputManager);
 }
@@ -150,8 +154,6 @@ void CPlayer::Update(_float fTimeDelta)
     if (m_pCurState)
         m_pCurState->Update(this, fTimeDelta);
   
-    
-
     /*컨테이너 업데이트 - 바디가 플레이어 상태를 보고 set_Animation을 호출한다.*/
     __super::Update(fTimeDelta);
  }
@@ -267,6 +269,7 @@ void CPlayer::Update_Input(_float fTimeDelta)
 
     _uint iCurrentLevel = m_pGameInstance->Get_CurrentLevelID();
 
+
     //NPC방이 아닐때만 점프/어택/쉴드 가능
     if (iCurrentLevel != ENUM_TO_UINT(LEVEL_ID::ROOM) &&
         iCurrentLevel != ENUM_TO_UINT(LEVEL_ID::SPAWN))
@@ -282,7 +285,7 @@ void CPlayer::Update_Input(_float fTimeDelta)
             m_Input.m_bisShield = false;
 
         m_Input.m_bisShieldRelease = m_pInputManager->IsKeyReleased(KeyCode::T);
-        if (m_Input.m_bisJump = m_pInputManager->IsKeyPressed(KeyCode::X) && m_iState != ENUM_TO_UINT(CPlayer::PLAYER_STATE::JUMP))
+        if (m_Input.m_bisJump = m_pInputManager->IsKeyPressed(KeyCode::R) && m_iState != ENUM_TO_UINT(CPlayer::PLAYER_STATE::JUMP))
         {
             m_pGravity->Jump(20);
             m_pGravity->SetOnGround(false);
@@ -291,7 +294,11 @@ void CPlayer::Update_Input(_float fTimeDelta)
     }
 
 
+    if (m_pInputManager->IsKeyPressed(KeyCode::X))
+        m_pInventoryManager->Use_QuickSlot_Item(KeyCode::X, 1);
 
+    else if (m_pInputManager->IsKeyPressed(KeyCode::Y))
+        m_pInventoryManager->Use_QuickSlot_Item(KeyCode::Y, 1);
 
 
    
@@ -615,6 +622,40 @@ void CPlayer::Exit_RichardChapterEvent()
 {
     m_bRichardChapter = false;
     m_Input.m_bisMove = true;
+
+
+}
+void CPlayer::Create_PowderParticle()
+{
+    _uint iCurrentLevel = m_pGameInstance->Get_CurrentLevelID();
+
+    CMagicPowder::MAGICPOWDER_DESC Desc;
+    Desc.m_iLevelID = iCurrentLevel;
+    Desc.ObjTag = L"MagicPowder";
+    Desc.fLifeTime = 1.f;
+
+    _vector vPos = m_pTransformCom->Get_State(STATE::POSITION);
+    _vector vParticlePos = vPos + (XMVector3Normalize(m_pTransformCom->Get_State(STATE::LOOK)) * 2.f);
+
+
+    CTransform::TRANSFORM_DESC TransDesc;
+    XMStoreFloat4(&TransDesc.vLocalPosition, vParticlePos);
+
+    Desc.TransformDesc = &TransDesc;
+
+    CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT,
+            ENUM_TO_UINT(LEVEL_ID::STATIC),
+            PROTO_OBJ_NAME(L"MagicPowder"), &Desc);
+
+    if (pObj)
+    {
+        CGameObject* ppObj = dynamic_cast<CGameObject*>(pObj);
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(iCurrentLevel, L"Particle_Layer", ppObj)))
+            return;
+
+
+
+    }
 
 
 }
@@ -980,6 +1021,8 @@ HRESULT CPlayer::Ready_States()
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::DAMANGE), CPlayerDamageState::Create());
 
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::PRATFALL), CPlayerPratFallState::Create());
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::POWDER), CPlayerPowderState::Create());
+
 
     /// <summary>
     /// 키 설정

@@ -53,12 +53,17 @@ HRESULT CCollider_Base::Initialize_Prototype()
 
 HRESULT CCollider_Base::Initialize_Copytype(void* pArg)
 {
+    if(FAILED(__super::Initialize_Copytype(pArg)))
+        return E_FAIL;
+
     COLLIDER_DESC* pDesc = static_cast<COLLIDER_DESC*>(pArg);
     if (pDesc)
+    {
         m_eColGroup = pDesc->m_eColGroup;
-
+        m_iLevelID = pDesc->m_iLevelID;
+    }
     if(m_pGameInstance->Get_EngineDesc().eEngineMode==EngineMode::CLIENT)
-        m_pGameInstance->Register_Collider(this,pDesc->m_iLevelID);
+        m_pGameInstance->Register_Collider(this, m_iLevelID);
 
 
 
@@ -146,8 +151,10 @@ HRESULT CCollider_Base::Render()
 
 void CCollider_Base::Free()
 {
+
+   
     __super::Free();
-#ifdef _DEBUG
+  #ifdef _DEBUG
     if (false == m_isClone)
     {
         Safe_Delete(m_pBatch);

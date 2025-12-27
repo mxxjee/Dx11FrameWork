@@ -104,6 +104,7 @@ void CInteractionObject::Update(_float fTimeDelta)
          if (Pos.y <= CellY)
          {
              m_pCollider->Set_Trigger(false);
+
              m_bPhysics = false;
              Pos.y = CellY;
              m_pTransformCom->Set_State(STATE::POSITION,
@@ -209,6 +210,7 @@ HRESULT CInteractionObject::Ready_Components(void* pArg)
     )))
         return E_FAIL;
 
+    pCollider->Set_Owner(this);
 
     ///Navigation »ý¼º
     CheckFalseResult(m_bUseNavMesh, S_OK);

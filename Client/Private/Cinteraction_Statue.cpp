@@ -28,6 +28,7 @@ HRESULT Cinteraction_Statue::Initialize_Copytype(void* pArg)
     Desc.eInteract_Object_Type = InteractionType::OBJECT;
     Desc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
 
+
     Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
     Desc.ModelName = L"Workbench";
 
@@ -44,6 +45,7 @@ HRESULT Cinteraction_Statue::Initialize_Copytype(void* pArg)
     aabbDesc.vCenter = _float3(0.f,0.f,0.f);
     aabbDesc.Extents = _float3(1.f, 1.f, 1.f);
     ColDesc.m_BoundingDesc = &aabbDesc;
+    ColDesc.pOwner = this;
     ColDesc.m_iLevelID = m_iSceneID;
     Desc.pColliderComp = &ColDesc;
 
@@ -54,7 +56,7 @@ HRESULT Cinteraction_Statue::Initialize_Copytype(void* pArg)
 
     m_pCollider->Set_Trigger(false);
     m_BehaviorType = Interact_Behavior_Type::PUSHABLE;
-
+ 
     CInteraction_Manager::GetInstance()->RegisterInteractable(this);
 
     
@@ -97,9 +99,15 @@ HRESULT Cinteraction_Statue::Ready_PartObjects(void* pArg)
 void Cinteraction_Statue::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
-
+    CheckTrue(m_bReach);
+    if (m_bOpen)
+    {
+        m_bReach=m_pTransformCom->Chase(m_vOpenPos, fTimeDelta, nullptr,1.f);
+    }
 
 }
+
+
 
 bool Cinteraction_Statue::IsInteratable()
 {
@@ -152,6 +160,8 @@ void Cinteraction_Statue::Exit_Interaction()
 
 }
 
+
+
 Cinteraction_Statue* Cinteraction_Statue::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
     Cinteraction_Statue* pInstance = new Cinteraction_Statue(_pDevice, _pDeviceContext);
@@ -185,4 +195,33 @@ CGameObject* Cinteraction_Statue::Clone(void* pArg)
 void Cinteraction_Statue::Free()
 {
     __super::Free();
+}
+
+void Cinteraction_Statue::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
+{
+    CGameObject* pOwner = pOther->Get_Owner();
+    CheckNull(pOwner);
+
+    switch (COLLISION_GROUP(iGroup))
+    {
+    case COLLISION_GROUP::PARTICLE:
+    {
+        CheckTrue(m_bOpen);
+        m_bOpen = true;
+        m_pTriggerBox->Set_Active(false);
+        m_vOpenPos = m_pTransformCom->Get_State(STATE::POSITION) + XMVectorSet(2.5f, 0.f, 0.f, 0.f);
+
+
+    }
+
+    break;
+    }
+}
+
+void Cinteraction_Statue::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)
+{
+}
+
+void Cinteraction_Statue::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
+{
 }

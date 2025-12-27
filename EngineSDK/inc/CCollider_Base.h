@@ -90,6 +90,7 @@ protected:
     class                    CBounding* m_pBounding = { nullptr };     //생성할 바운딩박스 
     _bool                   m_isColl = { false };           //충돌 했는지 판단
     _uint                    m_eColGroup = 0;
+    _uint                     m_iLevelID = 0;
 
 protected:
     bool                    m_bTrigger = true;       //통과여부,false면 충돌시 밀어내기계산

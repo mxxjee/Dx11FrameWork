@@ -17,6 +17,7 @@ public:
     virtual void        Update(_float fTimeDelta);
 
 
+
 public:
     virtual bool IsInteratable() override;
     virtual void Enter_InteractRange() override;
@@ -27,6 +28,11 @@ public:
     virtual void Exit_Interaction() override;
 
 public:
+    virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther);
+    virtual     void    OnCollisionStay(_uint iGroup, CCollider_Base* pOther);
+    virtual     void    OnCollisionExit(_uint iGroup, CCollider_Base* pOther);
+
+public:
     static Cinteraction_Statue* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     // CGameObjectÀ»(¸¦) ÅëÇØ »ó¼ÓµÊ
     virtual CGameObject* Clone(void* pArg) override;
@@ -34,8 +40,9 @@ public:
 
 private:
     class     CInteraction_TriggerBox* m_pTriggerBox = nullptr;
-
-
+    bool        m_bOpen = false;
+    _vector     m_vOpenPos;//±â¹Í Ç®¸é ¿òÁ÷ÀÏ ÃÖÁ¾¸ñÇ¥ÁÂÇ¥
+    bool        m_bReach = false;
 };
 NS_END
 

@@ -1344,3 +1344,196 @@ HRESULT UICreator::Create_See_Desc_UI(wstring LayerTag)
 
     return S_OK;
 }
+
+HRESULT UICreator::Create_InvenSlot(wstring LayerTag)
+{
+    UIGroup InvenSlotGroup;
+    InvenSlotGroup.Key = L"InvenSlotGroup";
+
+#pragma region ItemSlotBackground
+    {
+        CUI::tagUIDesc        Desc = {};
+
+        Desc.ObjTag = L"InvenSlot_Icon";
+        Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+        Desc.TextureKey = L"ItemSlot";
+
+        Desc.iIdx = 0;
+
+        Desc.fSizeX = 192.f * 0.7f;
+        Desc.fSizeY = 192.f * 0.7f;
+        Desc.fX = g_iWinSizeX - 100.f;
+        Desc.fY = 250.f;
+        Desc.Depth = 0.5f;
+        CTransform::TRANSFORM_DESC TransDesc = {};
+        TransDesc.fRotationPerSec = 10.f;
+        TransDesc.fSpeedPerSec = 5.f;
+        Desc.TransformDesc = &TransDesc;
+
+        //AlphaAnim등록
+        CUIComponent::UICOMP_DESC UIDesc = {};
+        Desc.UICompDesc = &UIDesc;
+
+        CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &Desc);
+        if (pObj)
+        {
+            CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+            if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+                return E_FAIL;
+
+
+            InvenSlotGroup.push_back(pInstance);
+
+        }
+    }
+  
+#pragma endregion
+
+#pragma region 아이템표시할 아이콘
+    {
+        CUI::tagUIDesc        Desc = {};
+
+        Desc.ObjTag = L"Item_Icon";
+        Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+        Desc.TextureKey = L"Item_X";
+
+        Desc.iIdx = 0;
+
+        Desc.fSizeX = 120.f * 0.7f;
+        Desc.fSizeY = 120.f * 0.7f;
+        Desc.fX = g_iWinSizeX - 100.f;
+        Desc.fY = 250.f;
+        Desc.Depth = 0.49f;
+        CTransform::TRANSFORM_DESC TransDesc = {};
+        TransDesc.fRotationPerSec = 10.f;
+        TransDesc.fSpeedPerSec = 5.f;
+        Desc.TransformDesc = &TransDesc;
+
+        //AlphaAnim등록
+        CUIComponent::UICOMP_DESC UIDesc = {};
+        Desc.UICompDesc = &UIDesc;
+
+        CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &Desc);
+        if (pObj)
+        {
+            CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+            if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+                return E_FAIL;
+
+
+            CUI* pUI = dynamic_cast<CUI*>(pInstance);
+            CheckNullResult(pUI,E_FAIL);
+
+            InvenSlotGroup.push_back(pInstance);
+        }
+    }
+#pragma endregion
+#pragma region 슬롯X
+    {
+        CUI::tagUIDesc        Desc = {};
+
+        Desc.ObjTag = L"Item_X";
+        Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+        Desc.TextureKey = L"Item_X";
+
+        Desc.iIdx = 0;
+
+        Desc.fSizeX = 192.f * 0.35f;
+        Desc.fSizeY = 192.f * 0.35f;
+        Desc.fX = g_iWinSizeX - 130.f;
+        Desc.fY = 285.f;
+        Desc.Depth = 0.4f;
+        CTransform::TRANSFORM_DESC TransDesc = {};
+        TransDesc.fRotationPerSec = 10.f;
+        TransDesc.fSpeedPerSec = 5.f;
+        Desc.TransformDesc = &TransDesc;
+
+        //AlphaAnim등록
+        CUIComponent::UICOMP_DESC UIDesc = {};
+        Desc.UICompDesc = &UIDesc;
+
+        CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &Desc);
+        if (pObj)
+        {
+            CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+            if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+                return E_FAIL;
+
+
+            CUI* pUI = dynamic_cast<CUI*>(pInstance);
+            CheckNullResult(pUI,E_FAIL);
+            
+            InvenSlotGroup.push_back(pInstance);
+
+        }
+    }
+#pragma endregion
+    m_pGameInstance->Register_UIGroup(InvenSlotGroup);
+    ////////////활성/비활성화
+    m_pGameInstance->RegisterEvent(L"OnShowInvenSlot", [](void* pData)
+        {
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"InvenSlotGroup");
+            if (pGroup)
+            {
+                for (auto& pair : pGroup->Objects)
+                {
+                    CGameObject* pObj = pair.second;
+                    CUI* pUI = dynamic_cast<CUI*>(pObj);
+                    CheckNull(pUI);
+                    
+                    pUI->Set_ActiveAnim(0, [pUI]()
+                        {
+                            pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 10.f, false, false);
+                        });
+
+                    if (!pUI->Is_Active())
+                        pUI->OnActivated(true);
+                }
+
+
+            }
+        });
+
+    m_pGameInstance->RegisterEvent(L"OnHideInvenSlot", [](void* pData)
+        {
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"InvenSlotGroup");
+            if (pGroup)
+            {
+                for (auto& pair : pGroup->Objects)
+                {
+                    CGameObject* pObj = pair.second;
+                    CUI* pUI = dynamic_cast<CUI*>(pObj);
+                    CheckNull(pUI);
+
+
+                    pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 10.f, false, true, false);
+
+                }
+
+
+            }
+        });
+
+
+    m_pGameInstance->RegisterEvent(L"UpdateInvenSlotIcon", [](void* pData)
+        {
+            wstring* pItemSlotTexKey = static_cast<wstring*>(pData);
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"InvenSlotGroup");
+            if (pGroup)
+            {
+               
+                CGameObject* pICon = pGroup->Find(L"Item_Icon");
+                CheckNull(pICon);
+
+                CUI* pUI = dynamic_cast<CUI*>(pICon);
+                CheckNull(pUI);
+
+                pUI->Set_Texture(*pItemSlotTexKey);
+                  
+
+            }
+        });
+
+    m_pGameInstance->SetActiveGroup(InvenSlotGroup.Key, false);
+    return S_OK;
+}

@@ -261,7 +261,7 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
         GameEvent gameEvent;
         gameEvent.Name = "Play_Witch_Mix";
 
-        CInventory_Manager::GetInstance()->Uset_Item(ItemType::MUSHROOM, 1);
+        CInventory_Manager::GetInstance()->Use_Item(ItemType::MUSHROOM, 1);
 
         m_pGameInstance->Emit(gameEvent);
 

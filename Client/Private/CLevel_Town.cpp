@@ -45,6 +45,9 @@
 #include "CNavigation.h"
 #include "CWeatherCock.h"
 
+#include "CInventory_Manager.h"
+
+
 USING(Client)
 
 CLevel_Town::CLevel_Town(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -127,6 +130,21 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
 
 
     }
+
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::W))
+    {
+         GameEvent gameEvent;
+         gameEvent.Name = "Go_WitchRoom";
+
+         m_pGameInstance->Emit(gameEvent);
+
+
+
+
+    }
+
+   
+   
 }
 
 void CLevel_Town::Update(const _float fTimeDelta)
@@ -144,6 +162,8 @@ void CLevel_Town::Update(const _float fTimeDelta)
         pTestObject->Get_Transform()->Set_State(STATE::POSITION, vPos);
 
     }
+
+
 
     return;
 
@@ -869,7 +889,7 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
     NewChapter_EventTransform.vLocalPosition = _float4(38.f, 10.5f, 34.5f, 1.f);
 
     NewChapter_EventDesc.TransformDesc = &NewChapter_EventTransform;
-
+    NewChapter_EventDesc.bActive_At_Begin = false;
 
     NewChapter_EventDesc.EnterFunc = [this]()
     {
@@ -1145,9 +1165,12 @@ void CLevel_Town::Teleport_RichardHouse()
     pPlayer->Get_Transform()->Set_State(STATE::POSITION, vTeleportPos);
     pPlayer->Change_MainNavMesh();
 
+    //텔레포트
+
     /*타린도 함께 텔레포트*/
+
     CNPC* Tarin = dynamic_cast<CNPC*>(m_pGameInstance->Find_GameObject(m_iLevelID, L"NPC_Layer", L"NPC_Tarin"));
-    if (Tarin)
+   /* if (Tarin)
     {
 
         _vector vTarinTelepos= XMVectorSet(78.f, 18.f, 97.f, 1.f);
@@ -1159,8 +1182,8 @@ void CLevel_Town::Teleport_RichardHouse()
         pTarin->Get_Transform()->Set_State(STATE::POSITION,
             pTarin->Get_Navigation()->SetUp_OnNavigation((pTarin->Get_Transform()->Get_State(STATE::POSITION))));
 
-        pTarin->Start_SecondChapter();
-    }
+      pTarin->Start_SecondChapter();
+    }*/
                                             
     m_pGameInstance->Invoke(2.f, false, false, false, []()
         {
@@ -1194,8 +1217,6 @@ void CLevel_Town::Teleport_RichardHouse()
 
                }
         }, CGameManager::GetInstance()->Get_MainPlayer());
-
-
 
 }
 

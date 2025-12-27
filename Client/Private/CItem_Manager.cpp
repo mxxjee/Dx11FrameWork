@@ -1,5 +1,6 @@
 #include "CItem_Manager.h"
-
+#include "CPlayer.h"
+#include "CInventory_Manager.h"
 
 IMPLEMENT_SINGLETON(CItem_Manager)
 
@@ -13,7 +14,7 @@ HRESULT CItem_Manager::Initialize()
     pShieldItem->ItemType = ItemType::SHIELD;
     pShieldItem->ItemDesc = L"방패를 되찾았다!\nT키를 누르는 동안 적을 튕겨낼 수 있다.";
     pShieldItem->TexKey = L"Shield";
-    m_ItmInfos[ENUM_TO_UINT(ItemType::SHIELD)]=(pShieldItem);
+    m_ItmInfos[ENUM_TO_UINT(ItemType::SHIELD)] = (pShieldItem);
 
     ITMINFO* pSwordItem = new ITMINFO;
     pSwordItem->ItemType = ItemType::SWROD;
@@ -49,6 +50,18 @@ HRESULT CItem_Manager::Initialize()
     pMagicPowder->ItemType = ItemType::MAGIC_POWDER;
     pMagicPowder->ItemDesc = L"마법의 가루를 손에 넣었다!\n쓸 곳을 찾아보자!";
     pMagicPowder->TexKey = L"MagicPowder";
+    pMagicPowder->m_bQuick = true;
+    pMagicPowder->PlayerState = ENUM_TO_UINT(CPlayer::PLAYER_STATE::POWDER);
+    pMagicPowder->m_AfterGetFunc = []()
+    {
+        CGameInstance::GetInstance()->BroadCastEvent(L"OnShowInvenSlot", nullptr);
+        
+        wstring str = L"MagicPowder";
+
+        /// X슬롯에 등록
+        CInventory_Manager::GetInstance()->Set_SlotKey(ItemType::MAGIC_POWDER,KeyCode::X);
+    };
+
     m_ItmInfos[ENUM_TO_UINT(ItemType::MAGIC_POWDER)] = (pMagicPowder);
 
     return S_OK;

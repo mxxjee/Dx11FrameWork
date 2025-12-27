@@ -34,6 +34,9 @@ public:
         ItemType	ItemType = ItemType::END;
         int			count = 0;
         bool        m_bEnd = false;
+        ITMINFO*    m_pItem = nullptr;
+
+ 
     };
 private:
     explicit CInventory_Manager();
@@ -47,13 +50,17 @@ public:
     InvenSlot* Find_Inven(ItemType eType);
     InvenStanby* Find_Stanby(ItemType eType);
 
+    //퀵슬롯아이템사용하기
+    bool        Use_QuickSlot_Item(KeyCode e,int _iCount=1);
+
     CInventory_Manager::ItemGetEvent* Get_ItemGetEvent();
     int             Get_InvenSize();    //인벤토리 아이템 총 개수 판단
+    void            Set_SlotKey(ItemType eType,KeyCode code);
 public:
 
                 //이 아이템 인벤에 넣을거니까 유아이 띄워.
-    bool         Request_Add_To_Inven(ItemType eType, int iCount);
-    bool        Uset_Item(ItemType eType, int iCount);
+    bool         Request_Add_To_Inven(ItemType itemType, int iCount);
+    bool        Use_Item(ItemType eType, int iCount);
 
     void         Request_UI_Event(ItemType eType);
                     //Desc사라지고 이후에 true로만들어서 이후에 인벤에 진짜추가됨
@@ -74,6 +81,11 @@ private:
 private:
     deque<InvenStanby*>      m_SlotQueue;
     CPlayer* m_pPlayer = nullptr;
+
+
+private:
+    InvenSlot*        m_XSlot = nullptr;//X키눌렀을때의 아이템(퀵 슬롯:X)
+    InvenSlot*        m_YSlot = nullptr;//Y키눌렀을때의 아이템(퀵 슬롯:X)
 
 
 };

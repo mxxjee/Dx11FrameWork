@@ -165,11 +165,9 @@ void CNPC_Witch::Ready_Events()
 
     m_pGameInstance->RegisterListners("Witch_give", [this](const GameEvent evt)
         {
-        
-          
 
             m_pAnimBody->Reserve_Animation(L"wait", false);
-           CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::MAGIC_POWDER, 1);
+            CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::MAGIC_POWDER, 1);
             m_pMagicPowder->Set_Active(false);
 
           

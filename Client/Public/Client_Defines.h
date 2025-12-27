@@ -24,6 +24,7 @@ namespace Client
 		INTERACTION,
 		TRIGGER,
 		OBJECT,
+		PARTICLE,
 		END};
 	//enum class LEV
 }
@@ -151,8 +152,9 @@ typedef struct tagItemInfo
 	ItemType	ItemType = ItemType::END;
 	wstring		ItemDesc = L"";	//아이템설명
 	wstring		TexKey = L"";		//아이템 UI 이름
-
+	int			PlayerState = -1;
 	bool		m_bQuick=false;	//퀵슬롯에 장착가능한지.
+	std::function<void()>        m_AfterGetFunc = nullptr;       //얻고나서 함수실행할거
 
 
 
@@ -161,9 +163,10 @@ typedef struct tagItemInfo
 
 struct InvenSlot
 {
-	ItemType	ItemType = ItemType::END;
-	int			count = 0;
-	
+	ItemType			ItemType = ItemType::END;
+	int					count = 0;
+	KeyCode					m_eQuickKeyCode = KeyCode::End;
+	ITMINFO*			m_pItemInfo = nullptr;		//원본아이템 info
 };
 
 /*각 숫자는 우선순위를의미한다*/

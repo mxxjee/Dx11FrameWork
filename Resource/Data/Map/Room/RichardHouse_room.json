@@ -2,7 +2,7 @@
   "NPC_ModelNames": [
     "RichardAnim"
   ],
-  "NavData": "../../Resource/Data/Map/Room/RichardHouse_room_Nav.dat",
+  "NavData": "../../Resource/Data/Map/Room/RichardHouse_room_Nav2.dat",
   "MapPositions": [
     {
       "Pos": [
@@ -22,9 +22,9 @@
     }
   ],
   "Position": [
-    12.600000381469727,
+    12.6,
     0.0,
-    5.800000190734863
+    5.8
   ],
   "RoomName": "RichardHouse",
   "RoomTriggers": [

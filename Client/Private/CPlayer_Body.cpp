@@ -7,6 +7,8 @@
 #include "CShader.h"
 
 #include "CInteraction_Manager.h"
+#include "Client_Defines.h"
+
 
 
 
@@ -191,6 +193,9 @@ HRESULT CPlayer_Body::Ready_Animation_Speed()
 	m_pModel->Set_Animation_Speed(L"item_get_lp", 50.f);
 	m_pModel->Set_Animation_Speed(L"item_get_ed", 50.f);
 
+	m_pModel->Set_Animation_Speed(L"powder", 60.f);
+
+
 	return S_OK;
 }
 
@@ -290,6 +295,15 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 		pAnim->AddNotify(6, Event);
 
 	}
+
+	pAnim = m_pModel->Find_Animation(L"powder");
+	if (pAnim)
+	{
+		Event.Name = "PlayerPowder";
+		pAnim->AddNotify(4, Event);
+
+	}
+
 	return S_OK;
 }
 
@@ -351,6 +365,16 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 
 		});
 
+	//ÆÄ¿ì´õ
+	m_pGameInstance->RegisterListners("PlayerPowder", [](const GameEvent& event)
+		{
+			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
+			CheckNull(pPlayer);
+
+			pPlayer->Create_PowderParticle();
+
+
+		});
 
 	return S_OK;
 }

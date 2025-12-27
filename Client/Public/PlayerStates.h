@@ -16,3 +16,4 @@
 #include "CPlayerFallState.h"
 #include "CPlayerDamageState.h"
 #include "CPlayerPratFallState.h"
+#include "CPlayerPowderState.h"

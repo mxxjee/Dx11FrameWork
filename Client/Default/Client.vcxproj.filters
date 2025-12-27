@@ -230,7 +230,6 @@
     <ClInclude Include="..\Public\CSnow.h">
       <Filter>02.GameObjects\98.Effect\Particle\Snow</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CExplosion.h" />
     <ClInclude Include="..\Public\CLevel_NPCRoom.h">
       <Filter>01.Levels\NPCRoom</Filter>
     </ClInclude>
@@ -317,6 +316,15 @@
     </ClInclude>
     <ClInclude Include="..\Public\Cinteraction_Statue.h">
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Statue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPlayerPowderState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Powder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMagicPowder.h">
+      <Filter>02.GameObjects\98.Effect\Particle\MagicPowder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CExplosion.h">
+      <Filter>02.GameObjects\98.Effect\Particle\Explosion</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -694,6 +702,9 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Powder">
       <UniqueIdentifier>{9747f137-6fe4-4571-ae54-cfe2d5009456}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\98.Effect\Particle\MagicPowder">
+      <UniqueIdentifier>{e6e00569-9a3d-4a96-abf3-b712b396ac93}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -907,7 +918,6 @@
     <ClCompile Include="..\Private\CSnow.cpp">
       <Filter>02.GameObjects\98.Effect\Particle\Snow</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CExplosion.cpp" />
     <ClCompile Include="..\Private\CLevel_NPCRoom.cpp">
       <Filter>01.Levels\NPCRoom</Filter>
     </ClCompile>
@@ -991,6 +1001,15 @@
     </ClCompile>
     <ClCompile Include="..\Private\Cinteraction_Statue.cpp">
       <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Statue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPlayerPowderState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Powder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMagicPowder.cpp">
+      <Filter>02.GameObjects\98.Effect\Particle\MagicPowder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CExplosion.cpp">
+      <Filter>02.GameObjects\98.Effect\Particle\Explosion</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -217,9 +217,17 @@ HRESULT CMainApp::Initialize_Cilent()
 
 		});
 
+
+	/*테스트용*/
+	m_pGameInstance->Register_HotKey(KeyCode::B, true, false, false, [this]()
+		{
+			CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::MAGIC_POWDER, 20);
+
+		});
+
 #endif // _DEBUG
 
-
+	
 
 
 
@@ -246,8 +254,7 @@ void CMainApp::Set_Collision_Rules()
 {
 	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
 	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER_WEAPON), true);
-	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), true);
-
+	
 	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::TRIGGER), true);
 
 	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
@@ -255,12 +262,17 @@ void CMainApp::Set_Collision_Rules()
 	
 
 	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), ENUM_TO_UINT(COLLISION_GROUP::PLAYER), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
+
 
 
 	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::TRIGGER), ENUM_TO_UINT(COLLISION_GROUP::PLAYER), true);
 	
 	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::TRIGGER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
 	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::MONSTER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
+
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), ENUM_TO_UINT(COLLISION_GROUP::PARTICLE), true);
+
 
 }
 

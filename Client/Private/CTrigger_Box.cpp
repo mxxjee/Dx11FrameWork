@@ -59,7 +59,7 @@ void CTrigger_Box::Update_Render(_float fTimeDelta)
 
 	if (CGameInstance::m_bDrawDebug)
 	{
-		if (m_pGameInstance->Add_DebugComponent(pBoxCollider))
+		if (FAILED(m_pGameInstance->Add_DebugComponent(pBoxCollider)))
 			return;
 	}
 
