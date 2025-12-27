@@ -546,6 +546,110 @@ HRESULT UICreator::Create_Interaction_SeeUI(wstring LayerTag)
 
 }
 
+HRESULT UICreator::Create_Interaction_OpenUI(wstring LayerTag)
+{
+    /*조사 ui*/
+    UIGroup     Interaction_PopUP_OpenGroup;
+    Interaction_PopUP_OpenGroup.Key = L"Interaction_PopUP_Open_Group";
+
+    wstring ObjTags[] = { L"Interact_Talk_BG",L"Interaction_A_Open" };
+    wstring TextureKeys[] = { L"Interact_BG",L"Interaction_A_Open" };
+
+    for (int i = 0; i < sizeof(ObjTags) / sizeof(ObjTags[0]); ++i)
+    {
+        //BG
+        CUI::tagUIDesc        Desc = {};
+
+        Desc.ObjTag = ObjTags[i];
+        Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+        Desc.TextureKey = TextureKeys[i];
+
+        Desc.iIdx = 0;
+
+        Desc.fSizeX = 200.f * 0.7f;
+        Desc.fSizeY = 90.f * 0.7f;
+        Desc.fX = g_iWinSizeX >> 1;
+        Desc.fY = g_iWinSizeY >> 1;
+        Desc.Depth = 0.5f - (0.01f * i);
+
+        CTransform::TRANSFORM_DESC TransDesc = {};
+        TransDesc.fRotationPerSec = 10.f;
+        TransDesc.fSpeedPerSec = 5.f;
+        Desc.TransformDesc = &TransDesc;
+
+        //AlphaAnim등록
+        CUIComponent::UICOMP_DESC UIDesc = {};
+        Desc.UICompDesc = &UIDesc;
+
+        CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &Desc);
+        if (pObj)
+        {
+            CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+            if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+                return E_FAIL;
+
+
+            Interaction_PopUP_OpenGroup.push_back(pInstance);
+
+        }
+    }
+
+    m_pGameInstance->Register_UIGroup(Interaction_PopUP_OpenGroup);
+    m_pGameInstance->SetActiveGroup(Interaction_PopUP_OpenGroup.Key, false);
+
+    m_pGameInstance->RegisterEvent(L"OnOpenUIShow", [](void* pData)
+        {
+            _vector* pPos = static_cast<_vector*>(pData);
+            _vector OffSet = XMVectorSet(100.f, 40.f, 0.f, 0.f);
+
+            (*pPos) += OffSet;
+
+            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"Interaction_PopUP_OpenGroup");
+            if (pGroup)
+            {
+                for (auto& i : pGroup->Objects)
+                {
+                    CUI* pUI = dynamic_cast<CUI*>(i.second);
+                    if (pUI)
+                    {
+
+                        pUI->Get_Transform()->Set_State(STATE::POSITION,
+                            MathUtils::ScreenToWorld_UI((*pPos), g_iWinSizeX, g_iWinSizeY));
+
+                        pUI->Set_ActiveAnim(0, [pUI]()
+                            {
+                                pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 10.f, false, false);
+                            });
+
+                        if (!pUI->Is_Active())
+                            pUI->OnActivated(true);
+
+                    }
+                }
+            }
+        });
+
+    m_pGameInstance->RegisterEvent(L"OnOpenUIHide", [](void* pData)
+        {
+
+            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"Interaction_PopUP_OpenGroup");
+            if (pGroup)
+            {
+                for (auto& i : pGroup->Objects)
+                {
+                    CUI* pUI = dynamic_cast<CUI*>(i.second);
+                    if (pUI)
+                    {
+                        pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 20.f, false, true);
+
+                    }
+                }
+            }
+        });
+    return S_OK;
+}
+
 HRESULT UICreator::Create_NPC_Dialogue_UI(wstring LayerTag)
 {
 #pragma region NPC_DialogueBox

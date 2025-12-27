@@ -134,7 +134,7 @@ void CTreasureChest::Update(_float fTimeDelta)
 	__super::Update(fTimeDelta);
 	if (m_pBody->Get_Model()->Get_CurrentAnimKey() == L"open" && m_pBody->Get_Model()->Get_IsAnimFinished())
 	{
-		m_pBody->Get_Model()->Set_Animation(L"open_wait", true);
+		//m_pBody->Get_Model()->Set_Animation(L"open_wait", true);
 	}
 }
 
@@ -218,7 +218,7 @@ void CTreasureChest::Enter_InteractRange()
 		m_pGameInstance->Get_ViewMatrix(0), m_pGameInstance->Get_ProjMatrix(0), g_iWinSizeX, g_iWinSizeY);
 
 
-	m_pGameInstance->BroadCastEvent(L"OnSeeUIShow", (void*)&ShowPos);
+	m_pGameInstance->BroadCastEvent(L"OnOpenUIShow", (void*)&ShowPos);
 
 }
 
@@ -229,7 +229,7 @@ void CTreasureChest::Stay_InteractRange(_float fTimeDelta)
 void CTreasureChest::Exit_InteractRange()
 {
 	CheckTrue(m_bInteraction);
-	m_pGameInstance->BroadCastEvent(L"OnSeeUIHide", (void*)nullptr);
+	m_pGameInstance->BroadCastEvent(L"OnOpenUIHide", (void*)nullptr);
 
 
 }

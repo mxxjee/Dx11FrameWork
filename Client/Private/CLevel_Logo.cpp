@@ -427,8 +427,13 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     if (FAILED(UICreator::Create_Interaction_SeeUI(strLayerTag)))
         return E_FAIL;
 
+    if (FAILED(UICreator::Create_Interaction_OpenUI(strLayerTag)))
+        return E_FAIL;
+
     if (FAILED(UICreator::Create_See_Desc_UI(strLayerTag)))
         return E_FAIL;
+
+ 
 
     if (FAILED(UICreator::Create_InvenSlot(strLayerTag)))
         return E_FAIL;

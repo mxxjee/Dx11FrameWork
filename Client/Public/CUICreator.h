@@ -15,6 +15,7 @@ namespace UICreator
 	HRESULT		Create_Interaction_TalkUI(wstring LayerTag);
 	HRESULT		Create_Interaction_GetUI(wstring LayerTag);
 	HRESULT		Create_Interaction_SeeUI(wstring LayerTag);
+	HRESULT		Create_Interaction_OpenUI(wstring LayerTag);
 
 
 
