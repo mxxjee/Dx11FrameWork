@@ -15,6 +15,7 @@
 #include "CLevel_UI.h"
 #include "CLevel_NPCRoom.h"
 #include "CLevel_Spawn.h"
+#include "CLevel_Dungeon.h"
 
 
 #include "CImGui_Manager.h"
@@ -366,6 +367,15 @@ void CMainApp::Register_Levels()
 		{
 			return CLevel_NPCRoom::Create(m_pDevice, m_pContext, args);
 		});
+
+
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::DUNGEON), [this](LevelArgs& args)->CLevel*
+		{
+			return CLevel_Dungeon::Create(m_pDevice, m_pContext, args);
+		});
+
+
+
 
 }
 

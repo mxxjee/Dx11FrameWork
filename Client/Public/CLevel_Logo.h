@@ -25,8 +25,6 @@ public:
     virtual void        Render() override;         //æ¿¿« ∑ª¥ı.
 
 public:
- 
-  
     HRESULT                 Ready_Layer_UI(const _wstring& strLayerTag);
     HRESULT                 Ready_Layer_MainCamera(const _wstring& strLayerTag);
     

@@ -326,6 +326,9 @@
     <ClInclude Include="..\Public\CExplosion.h">
       <Filter>02.GameObjects\98.Effect\Particle\Explosion</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CLevel_Dungeon.h">
+      <Filter>01.Levels\Dungeon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -705,6 +708,9 @@
     <Filter Include="02.GameObjects\98.Effect\Particle\MagicPowder">
       <UniqueIdentifier>{e6e00569-9a3d-4a96-abf3-b712b396ac93}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\Dungeon">
+      <UniqueIdentifier>{fd77ef72-1771-43d6-8a91-6bb321525fbe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1010,6 +1016,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CExplosion.cpp">
       <Filter>02.GameObjects\98.Effect\Particle\Explosion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_Dungeon.cpp">
+      <Filter>01.Levels\Dungeon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

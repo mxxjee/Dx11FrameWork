@@ -22,6 +22,13 @@ HRESULT CMapLoader::Load_Town()
     return S_OK;
 }
 
+HRESULT CMapLoader::Load_Dungeon()
+{
+    Load_NavMesh(LEVEL_ID::DUNGEON, "../../Resource/Data/Map/Cave_Nav.dat");
+
+    return S_OK;
+}
+
 
 
 ///////////////////읽어와서 구조체만 모아둠.

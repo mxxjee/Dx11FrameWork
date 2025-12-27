@@ -91,6 +91,23 @@ void CRoomTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
            // m_pGameInstance->Set_IsLoading(true);
         }
 
+        else if (m_NextRoomKey == "Level_Dungeon")
+        {
+            LevelArgs args;
+            args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::DUNGEON);
+            args.changeType = LEVELCHANGETYPE::PUSH;
+            args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+            args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
+
+            if (FAILED(m_pGameInstance->Level_Changer(
+                ENUM_TO_UINT(LEVEL_ID::LOADING),
+                args)))
+                return;
+
+
+        }
+
         else
         {
              CRoom_Manager::GetInstance()->Request_Room(m_NextRoomKey);

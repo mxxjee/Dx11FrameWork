@@ -196,12 +196,12 @@ CGameObject* CMagicPowder::Clone(void* pArg)
 
 void CMagicPowder::Free()
 {
-
     __super::Free();
-
+    
     Safe_Release(m_pCollider);
     Safe_Release(m_pTexture);
     Safe_Release(m_pShader);
     Safe_Release(m_pVIBuffer);
+
 }
 

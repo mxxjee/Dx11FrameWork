@@ -157,6 +157,8 @@ HRESULT CNavMesh_Manager::Render()
 
 void CNavMesh_Manager::Set_Shader(CShader* pShader)
 {
+	CheckTrue(m_pShader != nullptr);
+
 	m_pShader = pShader;
 	if (m_pShader)
 		Safe_AddRef(m_pShader);
@@ -164,9 +166,8 @@ void CNavMesh_Manager::Set_Shader(CShader* pShader)
 #endif
 void CNavMesh_Manager::Free()
 {
-#ifdef _DEBUG
 	Safe_Release(m_pShader);
-#endif
+
 	for(auto& pair: m_LevelCells)
 	{
 

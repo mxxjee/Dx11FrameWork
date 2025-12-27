@@ -35,6 +35,7 @@ private:
     HRESULT        Loading_UI();//원래 UI는 로딩이없지만, 테스트용
     HRESULT        Loading_Room();
     HRESULT        Loading_Spawn();
+    HRESULT        Loading_Dungeon();
 
     /// load resource //
     HRESULT         Register_Shaders();

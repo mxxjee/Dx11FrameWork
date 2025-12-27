@@ -67,7 +67,10 @@ void CLevelDebugWindow::Update()
                     LevelName = "SPAWN";
                     break;
 
-      
+
+                case LEVEL_ID::DUNGEON:
+                    LevelName = "DUNGEON";
+                    break;
 
                 case LEVEL_ID::TOWN:
                     LevelName = "TOWN";
