@@ -889,6 +889,8 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
     NewChapter_EventTransform.vLocalPosition = _float4(38.f, 10.5f, 34.5f, 1.f);
 
     NewChapter_EventDesc.TransformDesc = &NewChapter_EventTransform;
+   
+    //!나중에 흐름연결필요!
     NewChapter_EventDesc.bActive_At_Begin = false;
 
     NewChapter_EventDesc.EnterFunc = [this]()

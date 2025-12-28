@@ -14,8 +14,11 @@
 #include "CM_GreenZol.h"
 #include "CMonster_Body.h"
 
+#include "CTreasureChest.h"
+#include "CItem_Manager.h"
 
-
+#include "CEventTrigger.h"
+#include "CLayer.h"
 
 
 USING(Client)
@@ -42,6 +45,14 @@ HRESULT CLevel_Dungeon::Initialize(LevelArgs& args)
 
 	if (FAILED(Ready_Layer_InteractionObject(L"Interaction_Layer")))
 		return E_FAIL;
+	 
+	if (FAILED(Ready_Layer_Trigger(L"Trigger_Layer")))
+		return E_FAIL;  
+
+	if (FAILED(Ready_Events()))
+		return E_FAIL;
+
+
 
 
 	UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
@@ -58,6 +69,7 @@ void CLevel_Dungeon::Update_Priority(_float fTimeDelta)
 void CLevel_Dungeon::Update(const _float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
+
 
 }
 
@@ -115,11 +127,11 @@ HRESULT CLevel_Dungeon::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 		RoomDesc.TransformDesc = &TransDesc;
 
 		CBase* pBaseRoom = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Room"), &RoomDesc);
-		CGameObject* pRoom = dynamic_cast<CGameObject*>(pBaseRoom);
+		m_Rooms[i] = dynamic_cast<CGameObject*>(pBaseRoom);
 		
-		if (pRoom)
+		if (m_Rooms[i])
 		{
-			if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::DUNGEON), strLayerTag, pRoom)))
+			if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::DUNGEON), strLayerTag, m_Rooms[i])))
 				return E_FAIL;
 
 
@@ -196,12 +208,13 @@ HRESULT CLevel_Dungeon::Ready_Layer_Monster(const _wstring& strLayerTag)
 
 HRESULT CLevel_Dungeon::Ready_Layer_InteractionObject(const _wstring& strLayerTag)
 {
-	CInteractionObject::Interaction_DESC Desc;
+	CTreasureChest::CTreasureChest_Desc Desc;
 	Desc.m_iLevelID = m_iLevelID;
 	Desc.SceneName = "Level_Dungeon";
 	Desc.bAnimated = false;
 
 	Desc.ObjTag = L"Treausurebox" + to_wstring(0);
+	Desc.m_pInnerItem = CItem_Manager::GetInstance()->Get_ItemInfo(ItemType::LETTER);
 
 	CTransform::TRANSFORM_DESC TransDesc;
 	TransDesc.vLocalPosition = _float4(5.559f, 0.f, 21.266f,1.f);
@@ -225,7 +238,151 @@ HRESULT CLevel_Dungeon::Ready_Layer_Particle(const _wstring& strLayerTag)
 
 HRESULT CLevel_Dungeon::Ready_Layer_Trigger(const _wstring& strLayerTag)
 {
+#pragma region 2단계던전 가는 트리거
+	CEventTrigger::EventTriggerDesc Goto_Second_Desc;
+	Goto_Second_Desc.vCenter = _float3(0.f, 0.f, 0.f);
+	Goto_Second_Desc.vExtents = _float3(1.f,1.f, 1.f);
+	Goto_Second_Desc.ObjTag = L"Dungeon_Goto_Two_Chapter";
+	Goto_Second_Desc.m_iLevelID = m_iLevelID;
+
+	CTransform::TRANSFORM_DESC Second_EventTransform;
+	Second_EventTransform.vLocalPosition = _float4(15.5f, 0.7f, 23.39f, 1.f);
+
+	Goto_Second_Desc.TransformDesc = &Second_EventTransform;
+	Goto_Second_Desc.EnterFunc = [this]()
+	{
+		Teleport(TELEPORT::GOTO_2ND);
+		pFadeScreen->PlayFadeIn();
+
+		m_Rooms[0]->Set_Active(false);
+		m_Rooms[1]->Set_Active(false);
+
+	};
+
+	if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::DUNGEON), strLayerTag, &Goto_Second_Desc)))
+		return E_FAIL;
+
+#pragma endregion
+
+
+#pragma region 1단계이전
+	CEventTrigger::EventTriggerDesc Goto_First_Desc;
+	Goto_First_Desc.vCenter = _float3(0.f, 0.f, 0.f);
+	Goto_First_Desc.vExtents = _float3(1.f, 1.f, 0.5f);
+	Goto_First_Desc.ObjTag = L"Dungeon_Goto_First_Chapter";
+	Goto_First_Desc.m_iLevelID = m_iLevelID;
+
+	CTransform::TRANSFORM_DESC First_EventTransform;
+	First_EventTransform.vLocalPosition = _float4(15.5f, 2.f, 4.03f, 1.f);
+
+	Goto_First_Desc.TransformDesc = &First_EventTransform;
+	Goto_First_Desc.EnterFunc = [this]()
+	{
+		Teleport(TELEPORT::GOTO_1PRE);
+		pFadeScreen->PlayFadeIn();
+	};
+
+	if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::DUNGEON), strLayerTag, &Goto_First_Desc)))
+		return E_FAIL;
+#pragma endregion
+
+
+
+#pragma region 마지막
+	CEventTrigger::EventTriggerDesc Goto_Third_Desc;
+	Goto_Third_Desc.vCenter = _float3(0.f, 0.f, 0.f);
+	Goto_Third_Desc.vExtents = _float3(0.5f, 0.5f, 0.5f);
+	Goto_Third_Desc.ObjTag = L"Dungeon_Goto_Exit";
+	Goto_Third_Desc.m_iLevelID = m_iLevelID;
+
+	CTransform::TRANSFORM_DESC Third_EventTransform;
+	Third_EventTransform.vLocalPosition = _float4(78.f, 2.f, 10.536f, 1.f);
+
+	Goto_Third_Desc.TransformDesc = &Third_EventTransform;
+	Goto_Third_Desc.EnterFunc = [this]()
+	{
+		Teleport(TELEPORT::GOTO_EXIT);
+		pFadeScreen->PlayFadeIn();
+	};
+
+	if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::DUNGEON), strLayerTag, &Goto_Third_Desc)))
+		return E_FAIL;
+#pragma endregion
+
 	return S_OK;
+}
+
+HRESULT CLevel_Dungeon::Ready_Events()
+{
+
+	CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
+
+	m_EnterFirstEvent.Payload.Ptrs["Player"] = pPlayer;
+	m_EnterFirstEvent.Payload.Floats["OffSet_X"] = 0.f;
+	m_EnterFirstEvent.Payload.Floats["OffSet_Y"] = 10.f;
+	m_EnterFirstEvent.Payload.Floats["OffSet_Z"] = -3.f;
+
+	m_EnterFirstEvent.Payload.Floats["Rot_X"] = 60.f;
+	m_EnterFirstEvent.Payload.Floats["Rot_Y"] = 0.f;
+	m_EnterFirstEvent.Payload.Floats["Rot_Z"] = 0.f;
+
+	m_EnterFirstEvent.Name = "Enter_DungeonRoom";
+
+
+
+	m_EnterSecondEvent.Payload.Ptrs["Player"] = pPlayer;
+	m_EnterSecondEvent.Payload.Floats["OffSet_X"] = 0.f;
+	m_EnterSecondEvent.Payload.Floats["OffSet_Y"] = 10.f;
+	m_EnterSecondEvent.Payload.Floats["OffSet_Z"] = -7.f;
+
+	m_EnterSecondEvent.Payload.Floats["Rot_X"] = 60.f;
+	m_EnterSecondEvent.Payload.Floats["Rot_Y"] = 0.f;
+	m_EnterSecondEvent.Payload.Floats["Rot_Z"] = 0.f;
+
+	m_EnterSecondEvent.Name = "Enter_DungeonRoom";
+
+
+	return S_OK;
+}
+
+void CLevel_Dungeon::Teleport(TELEPORT eType)
+{
+	CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+	CheckNull(pPlayer);
+
+	switch (eType)
+	{
+	case TELEPORT::GOTO_2ND:
+	{
+
+		pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMVectorSet(76.5f, 1.5f, 21.630f, 1.f));
+		pPlayer->Change_MainNavMesh();
+
+		m_eCurrentPhase = CLevel_Dungeon::PHASE::SECOND;
+
+		m_Rooms[0]->Set_Active(false);
+		m_Rooms[1]->Set_Active(false);
+
+		m_Rooms[2]->Set_Active(true);
+		m_Rooms[3]->Set_Active(true);
+
+
+		m_pGameInstance->Emit(m_EnterSecondEvent);
+	}
+		break;
+	}
+
+
+
+
+	m_pGameInstance->Invoke(2.f, false, false, false, [this]()
+		{
+			pFadeScreen->PlayFadeOut();
+
+		},pPlayer);
+
+
+
 }
 
 void CLevel_Dungeon::OnEnter()
@@ -240,7 +397,7 @@ void CLevel_Dungeon::OnEnter()
 	vector<CCell*>* m_Cells = m_pGameInstance->Get_MainCells();
 	if (m_Cells)
 	{
-		CCell* pSpawnCell = (*m_Cells)[0];
+		CCell* pSpawnCell = (*m_Cells)[3];
 		_vector vSpawnPoint = pSpawnCell->Get_CenterPos();
 
 
@@ -250,27 +407,22 @@ void CLevel_Dungeon::OnEnter()
 		m_pGameManager->Set_DefaultPosition(vSpawnPoint);
 		m_pGameManager->Set_LastPosition(vSpawnPoint);
 
+		
+		m_eCurrentPhase = CLevel_Dungeon::PHASE::FIRST;
+
+		m_Rooms[0]->Set_Active(true);
+		m_Rooms[1]->Set_Active(true);
+
+		m_Rooms[2]->Set_Active(false);
+		m_Rooms[3]->Set_Active(false);
+
 	}
 
 	CheckNull(pFadeScreen);
 	pFadeScreen->PlayFadeOut();
 	CGameInstance::GetInstance()->Set_EnalbeUpdateRender(false);
 
-	GameEvent Event;
-	EventPayload payload;
-	Event.Payload = payload;
-
-	Event.Payload.Ptrs["Player"] = pPlayer; 
-	Event.Payload.Floats["OffSet_X"] = 0.f;
-	Event.Payload.Floats["OffSet_Y"] = 10.f;
-	Event.Payload.Floats["OffSet_Z"] = -3.f;
-
-	Event.Payload.Floats["Rot_X"] = 60.f;
-	Event.Payload.Floats["Rot_Y"] = 0.f;
-	Event.Payload.Floats["Rot_Z"] = 0.f;
-
-	Event.Name = "Enter_DungeonRoom";
-	m_pGameInstance->Emit(Event);
+	m_pGameInstance->Emit(m_EnterFirstEvent);
 }
 
 void CLevel_Dungeon::OnResume(_uint iPreLevel)

@@ -16,7 +16,7 @@
                 }
             ],
             "Duration": 19.0,
-            "Name": "wait",
+            "Name": "Wait",
             "NumChannels": 2,
             "TickPerSecond": 25.0
         },
@@ -36,7 +36,27 @@
                 }
             ],
             "Duration": 40.0,
-            "Name": "open",
+            "Name": "Open",
+            "NumChannels": 2,
+            "TickPerSecond": 25.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 1232,
+                    "BoneName": "lid",
+                    "NumKeyFrames": 28
+                },
+                {
+                    "BinaryOffset": 1232,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                }
+            ],
+            "Duration": 27.0,
+            "Name": "Close",
             "NumChannels": 2,
             "TickPerSecond": 25.0
         },

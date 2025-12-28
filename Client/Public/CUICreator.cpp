@@ -605,7 +605,7 @@ HRESULT UICreator::Create_Interaction_OpenUI(wstring LayerTag)
 
             (*pPos) += OffSet;
 
-            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"Interaction_PopUP_OpenGroup");
+            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"Interaction_PopUP_Open_Group");
             if (pGroup)
             {
                 for (auto& i : pGroup->Objects)
@@ -633,7 +633,7 @@ HRESULT UICreator::Create_Interaction_OpenUI(wstring LayerTag)
     m_pGameInstance->RegisterEvent(L"OnOpenUIHide", [](void* pData)
         {
 
-            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"Interaction_PopUP_OpenGroup");
+            UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"Interaction_PopUP_Open_Group");
             if (pGroup)
             {
                 for (auto& i : pGroup->Objects)

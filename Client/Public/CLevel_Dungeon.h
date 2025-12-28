@@ -1,13 +1,27 @@
 #pragma once
 #include "CLevel.h"
 
+namespace Engine
+{
+    class CGameObject;
+}
+
 NS_BEGIN(Client)
 class CFadeScreen;
 class CGameManager;
-
+class CRoom;
 class CLevel_Dungeon :
     public CLevel
 {
+    enum TELEPORT
+    {
+       GOTO_2ND,GOTO_1PRE,GOTO_EXIT
+    };
+
+    enum PHASE
+    {
+        FIRST,SECOND,END
+    };
 private:
     explicit CLevel_Dungeon(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual ~CLevel_Dungeon() = default;
@@ -35,7 +49,9 @@ public:
     HRESULT                 Ready_Layer_Particle(const _wstring& strLayerTag);
     HRESULT                 Ready_Layer_Trigger(const _wstring& strLayerTag);
 
-
+    HRESULT                 Ready_Events();
+public:
+    void        Teleport(TELEPORT eType);
 public:
     virtual void        OnEnter() override;           //씬 진입시 매번호출
     virtual void        OnResume(_uint iPreLevel) override;              //pause되었다가 active되었을때 호출
@@ -50,6 +66,14 @@ public:
 private:    
     CFadeScreen* pFadeScreen = nullptr;
     CGameManager* m_pGameManager = nullptr;
+
+    PHASE m_eCurrentPhase;
+    class CGameObject* m_Rooms[4] = { nullptr };
+
+
+private:
+    GameEvent       m_EnterSecondEvent;
+    GameEvent       m_EnterFirstEvent;
 };
 
 NS_END

@@ -72,6 +72,8 @@ private:
 
     bool        m_bOpen = false;
     CBody*      m_pBodyBottom = nullptr;
+
+    bool        m_bCheck = false;
 };
 
 

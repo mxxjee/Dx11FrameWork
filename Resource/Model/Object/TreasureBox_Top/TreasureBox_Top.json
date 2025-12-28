@@ -49,10 +49,10 @@
                 0.0,
                 0.0,
                 1.0,
-                -1.6292067073209182e-07,
-                -0.5846145153045654,
+                7.549789415861596e-08,
+                -0.5846145749092102,
                 -0.0,
-                1.6292067073209182e-07,
+                -7.549789415861596e-08,
                 1.0,
                 -0.5709435939788818,
                 0.0,
@@ -67,12 +67,12 @@
                 -0.0,
                 0.0,
                 0.0,
-                0.4999995529651642,
-                -0.8660256862640381,
+                0.6822776198387146,
+                -0.7310932278633118,
                 0.5846145749092102,
                 -0.0,
-                0.8660256862640381,
-                0.4999995529651642,
+                0.7310932278633118,
+                0.6822776198387146,
                 0.5709435939788818,
                 0.0,
                 0.0,
@@ -82,15 +82,15 @@
         }
     ],
     "Materials": [
-        {
-            "Ambient": "",
-            "Diffuse": "MI_dungeonTreasureBox_01_alb.png",
-            "METALNESS": "MI_dungeonTreasureBox_01_mtl.png",
-            "MaterialName": "TreasureBox_Top_MI_dungeonTreasureBox_01",
-            "Normal": "MI_dungeonTreasureBox_01_nml.png",
-            "OPACITY": "MI_dungeonTreasureBox_01_occ.png",
-            "Specular": "MI_dungeonTreasureBox_01_smt.png"
-        }
+      {
+        "Ambient": "",
+        "Diffuse": "MI_dungeonTreasureBox_01_alb.png",
+        "METALNESS": "MI_dungeonTreasureBox_01_mtl.png",
+        "MaterialName": "TreasureBox_Top_MI_dungeonTreasureBox_01",
+        "Normal": "MI_dungeonTreasureBox_01_nml.png",
+        "OPACITY": "MI_dungeonTreasureBox_01_occ.png",
+        "Specular": "MI_dungeonTreasureBox_01_smt.png"
+      }
     ],
     "MeshNums": 1,
     "Meshes": [
@@ -109,5 +109,5 @@
         }
     ],
     "ModelName": "TreasureBox_Top",
-    "NumAnimations": 3
+    "NumAnimations": 4
 }

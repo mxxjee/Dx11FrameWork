@@ -9,6 +9,7 @@
 #include "CInteraction_Manager.h"
 
 #include "CModel.h"
+#include "CInventory_Manager.h"
 
 
 
@@ -68,7 +69,7 @@ HRESULT CTreasureChest::Initialize_Copytype(void* pArg)
 	CAnimBody* pAnimBody = dynamic_cast<CAnimBody*>(m_pBody);
 	CheckNullResult(pAnimBody,E_FAIL);
 
-	pAnimBody->Get_Model()->Set_Animation(L"wait", true);
+	pAnimBody->Get_Model()->Set_Animation(L"Wait", true);
 
 	return S_OK;
 }
@@ -132,10 +133,15 @@ void CTreasureChest::Update_Priority(_float fTimeDelta)
 void CTreasureChest::Update(_float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
-	if (m_pBody->Get_Model()->Get_CurrentAnimKey() == L"open" && m_pBody->Get_Model()->Get_IsAnimFinished())
+
+	CheckTrue(m_bCheck);
+	if (m_pBody->Get_Model()->Get_CurrentAnimKey() == L"Open")
 	{
-		//m_pBody->Get_Model()->Set_Animation(L"open_wait", true);
+		m_pBody->Get_Model()->Set_Animation(L"open_wait", true);
+		m_bCheck = true;
 	}
+
+	
 }
 
 void CTreasureChest::Update_Late(_float fTimeDelta)
@@ -217,7 +223,7 @@ void CTreasureChest::Enter_InteractRange()
 	_vector ShowPos = MathUtils::WorldToScreen(m_pTransformCom->Get_State(STATE::POSITION),
 		m_pGameInstance->Get_ViewMatrix(0), m_pGameInstance->Get_ProjMatrix(0), g_iWinSizeX, g_iWinSizeY);
 
-
+	ShowPos = XMVectorSetW(ShowPos, 1.f);
 	m_pGameInstance->BroadCastEvent(L"OnOpenUIShow", (void*)&ShowPos);
 
 }
@@ -241,9 +247,11 @@ void CTreasureChest::Enter_Interaction()
 	CAnimBody* pAnimBody = dynamic_cast<CAnimBody*>(m_pBody);
 	CheckNull(pAnimBody);
 
-	pAnimBody->Get_Model()->Set_Animation(L"open", false);
+	pAnimBody->Get_Model()->Set_Animation(L"Open", false);
 	m_bOpen = true;
 
+	CInventory_Manager::GetInstance()->Request_Add_To_Inven(m_pInnerItem->ItemType, 1);
+	m_pGameInstance->BroadCastEvent(L"OnOpenUIHide", (void*)nullptr);
 
 
 }
