@@ -7,6 +7,8 @@ class CMonster;
 class CMonsterDamageState :
     public CMonsterState
 {
+public:
+    enum class EXIT_TYPE {ANIM_END, TIMER,END};
 private:
     CMonsterDamageState();
     virtual ~CMonsterDamageState();
@@ -19,9 +21,23 @@ public:
 
 
 public:
-    static CMonsterDamageState* Create() {
-        return new CMonsterDamageState;
+    static CMonsterDamageState* Create(EXIT_TYPE eType=EXIT_TYPE::ANIM_END) {
+
+        CMonsterDamageState* pInstance = new CMonsterDamageState;
+        if (pInstance)
+            pInstance->m_eExitType = eType;
+
+        return pInstance;
     }
+
+    void        Set_ExitType(EXIT_TYPE eType) { m_eExitType = eType; }
+
+private:
+    EXIT_TYPE       m_eExitType = EXIT_TYPE::END;
+
+    _float          m_fTime = 0.f;
+    _float          m_fExitTime = 0.5f;
+    
 };
 
 NS_END

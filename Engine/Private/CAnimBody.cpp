@@ -180,6 +180,20 @@ HRESULT CAnimBody::Ready_Components(void* pArg)
 	return S_OK;
 }
 
+HRESULT CAnimBody::Bind_ShaderResources()
+{
+	if (FAILED(__super::Bind_ShaderResources()))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Bind_Float("b_Damage", false)))
+		return E_FAIL;
+
+	if (FAILED(m_pShader->Bind_Float("g_Time", 0.f)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
 
 void CAnimBody::Free()
 {

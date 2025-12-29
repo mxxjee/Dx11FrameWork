@@ -63,7 +63,7 @@ void CWeatherCock::Update_Render(_float fTimeDelta)
 
 HRESULT CWeatherCock::Render()
 {
-
+ 
     return S_OK;
 }
 

@@ -76,6 +76,9 @@
 
 
 #include "CTreasureChest.h"
+#include "CRangeCollider.h"
+#include "CM_Gidbos.h"
+
 
 
 USING(Client)
@@ -456,6 +459,9 @@ HRESULT CLoader::Register_Models()
     
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy/MoriblinSword", MoriblinSwordMatrix);
 
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy/Gidbos", MoriblinSwordMatrix);
+
+
 
     _matrix DadMatrix = XMMatrixScaling(1.2f, 1.2f, 1.2f);
     DadMatrix = XMMatrixMultiply(DadMatrix, NPCmatrix);
@@ -635,6 +641,9 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Moriblin_Weapon", CMMoriblin_Weapon::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"CM_Gidbos", CM_Gidbos::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
     /// /////////Interaction Objects
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Interaction_TriggerBox", CInteraction_TriggerBox::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
@@ -663,9 +672,11 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Room", CRoom::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"RoomTrigger", CRoomTrigger::Create(m_pDevice, m_pDeviceContext))))
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"RangeCollider", CRangeCollider::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"RoomTrigger", CRoomTrigger::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"EventTrigger", CEventTrigger::Create(m_pDevice, m_pDeviceContext))))

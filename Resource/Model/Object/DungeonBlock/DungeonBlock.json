@@ -1,0 +1,96 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "MI_DungeonCollapseTileCave_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_DungeonCollapseTileCave_01",
+            "Normal": "MI_DungeonCollapseTileCave_01_nml.png",
+            "OPACITY": "MI_DungeonCollapseTileCave_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_DungeonCollapseTileCave2_02_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_DungeonCollapseTileCave2_02",
+            "Normal": "",
+            "OPACITY": "MI_DungeonCollapseTileCave2_02_alb.png",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 2,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 6,
+            "MaterialName": "MI_DungeonCollapseTileCave_01",
+            "MeshIdx": 0,
+            "Name": "Tile__MI_DungeonCollapseTileCave_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 4
+        },
+        {
+            "IBPath": "Mesh_1.ib",
+            "IndexCount": 336,
+            "MaterialName": "MI_DungeonCollapseTileCave2_02",
+            "MeshIdx": 1,
+            "Name": "wall__MI_DungeonCollapseTileCave2_02",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_1.vb",
+            "VertexCount": 94
+        }
+    ],
+    "ModelName": "DungeonBlock"
+}

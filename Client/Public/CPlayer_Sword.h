@@ -5,7 +5,7 @@ NS_BEGIN(Client)
 class CPlayer_Sword :
     public CWeapon
 {
-    enum CollisionPos{BOTTON,TOP,END};
+    enum CollisionPos{TOP=0,END};
 protected:
     CPlayer_Sword(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CPlayer_Sword(const CPlayer_Sword& Prototype);

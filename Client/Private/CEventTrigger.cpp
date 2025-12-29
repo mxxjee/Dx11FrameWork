@@ -84,6 +84,8 @@ void CEventTrigger::Free()
 
 void CEventTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {
+
+    CheckFalse(m_bActive);
     CGameObject* pOwner = pOther->Get_Owner();
 
     CheckNull(pOwner);
@@ -100,6 +102,7 @@ void CEventTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 
 void CEventTrigger::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)
 {
+    CheckFalse(m_bActive);
     CGameObject* pOwner = pOther->Get_Owner();
 
     CheckNull(pOwner);
@@ -116,6 +119,7 @@ void CEventTrigger::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)
 
 void CEventTrigger::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
 {
+    CheckFalse(m_bActive);
     CGameObject* pOwner = pOther->Get_Owner();
 
     CheckNull(pOwner);

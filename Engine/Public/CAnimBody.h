@@ -48,7 +48,8 @@ public:
     wstring     Get_CurrentAnimKey();
 protected:
     virtual HRESULT         Ready_Components(void* pArg);
-
+protected:
+    virtual HRESULT         Bind_ShaderResources();
 protected:
     const _uint* m_pParentState = { nullptr };
     const _uint* m_pParentPreState = { nullptr };

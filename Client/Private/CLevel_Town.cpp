@@ -441,6 +441,41 @@ HRESULT CLevel_Town::Ready_Layer_Monster(const _wstring& strLayerTag)
 
     }
   
+
+#pragma region gidbos Test
+    // CMonster::MonsterDesc desc;
+
+    //CMonster_Body::MONSTER_BODY_DESC bodyDesc;
+    //bodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+    //bodyDesc.modelName = L"Gidbos";
+
+    //desc.BodyDesc = &bodyDesc;
+
+
+    //desc.iAttack = 10;
+    //desc.MaxHp = 2;
+    //desc.fActionRange = 10.f;
+    //desc.m_iLevelID = m_iLevelID;
+
+    //desc.ObjTag = L"Gidbos" + to_wstring(0);
+    //CTransform::TRANSFORM_DESC TransDesc = {};
+    //TransDesc.vLocalPosition = { 11.5f,10.5f,22.893f,1.f };
+    //TransDesc.vLocalRotation = { 0.f,90.f,0.f,1.f };
+
+    //TransDesc.fSpeedPerSec = 3.f;
+    //TransDesc.fRotationPerSec = 10.f;
+
+    //desc.TransformDesc = &TransDesc;
+
+
+
+    //if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+    //    PROTO_OBJ_NAME(L"CM_Gidbos"),
+    //    ENUM_TO_UINT(LEVEL_ID::TOWN),
+    //    strLayerTag, &desc)))
+    //    return E_FAIL;
+
+#pragma endregion
     return S_OK;
 
 }

@@ -19,6 +19,12 @@
 
 #include "CEventTrigger.h"
 #include "CLayer.h"
+#include "CM_Gidbos.h"
+#include "CDungeonBlock.h"
+
+
+#include "CMainCamera.h"
+#include "CBoxColliderComponent.h"
 
 
 USING(Client)
@@ -146,6 +152,25 @@ HRESULT CLevel_Dungeon::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 	m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::DUNGEON));
 
 
+#pragma region 떨어지는바닥설치
+	CDungeonBlock::MODELOBJECT_DESC BlockDesc;
+	BlockDesc.m_iLevelID = m_iLevelID;
+	BlockDesc.ObjTag = L"DungeonBlock";
+
+	CTransform::TRANSFORM_DESC TransDesc;
+	TransDesc.vLocalPosition = _float4(5.414f, 0.f, 16.988f, 1.f);
+	TransDesc.vLocalScale = _float4(1.5f, 1.5f, 1.f, 1.f);
+	BlockDesc.TransformDesc = &TransDesc;
+
+	CDungeonBlock* pBlock = CDungeonBlock::Create(m_pDevice, m_pContext, &BlockDesc);
+	if (pBlock)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(m_iLevelID, strLayerTag, pBlock)))
+			return E_FAIL;
+
+	}
+#pragma endregion
+
 	return S_OK;
 }
 
@@ -203,6 +228,73 @@ HRESULT CLevel_Dungeon::Ready_Layer_Monster(const _wstring& strLayerTag)
 			strLayerTag, &desc)))
 			return E_FAIL;
 	}
+
+
+
+#pragma region gibos
+	bool b = true;
+
+	_float3 PointA[] = {
+		_float3(70.39f,0.f,16.497f),
+		_float3(68.813f,0.f,14.595f),
+	};
+
+
+	_float3 PointB[] = {
+		_float3(84.151f,0.f,16.674f),
+		_float3(84.927f,0.f,14.876f),
+	};
+
+
+	for (int i = 0; i < 2; ++i)
+	{
+		CM_Gidbos::GIDBOS_DESC desc;
+
+		CMonster_Body::MONSTER_BODY_DESC bodyDesc;
+		bodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+		bodyDesc.modelName = L"Gidbos";
+
+		desc.BodyDesc = &bodyDesc;
+		desc.m_StartLeft = b;
+
+		desc.iAttack = 10;
+		desc.MaxHp = 2;
+		desc.fActionRange = 10.f;
+		desc.m_iLevelID = m_iLevelID;
+
+		desc.m_vPointA = PointA[i];
+		desc.m_vPointB = PointB[i];
+
+		desc.ObjTag = L"Gidbos" + to_wstring(0);
+		CTransform::TRANSFORM_DESC TransDesc = {};
+
+		if (b)
+		{
+			TransDesc.vLocalRotation = { 0.f,90.f,0.f,1.f };
+			TransDesc.fSpeedPerSec = 1.5f;
+		}
+		else
+		{
+			TransDesc.vLocalRotation = { 0.f,-90.f,0.f,1.f };
+			TransDesc.fSpeedPerSec = 3.f;
+		}
+
+		TransDesc.fRotationPerSec = 10.f;
+
+		desc.TransformDesc = &TransDesc;
+
+
+
+		if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+			PROTO_OBJ_NAME(L"CM_Gidbos"),
+			ENUM_TO_UINT(LEVEL_ID::DUNGEON),
+			strLayerTag, &desc)))
+			return E_FAIL;
+
+		b = !b;
+	}
+
+#pragma endregion
 	return S_OK;
 }
 
@@ -214,7 +306,7 @@ HRESULT CLevel_Dungeon::Ready_Layer_InteractionObject(const _wstring& strLayerTa
 	Desc.bAnimated = false;
 
 	Desc.ObjTag = L"Treausurebox" + to_wstring(0);
-	Desc.m_pInnerItem = CItem_Manager::GetInstance()->Get_ItemInfo(ItemType::LETTER);
+	Desc.m_pInnerItem = CItem_Manager::GetInstance()->Get_ItemInfo(ItemType::FEATHER);
 
 	CTransform::TRANSFORM_DESC TransDesc;
 	TransDesc.vLocalPosition = _float4(5.559f, 0.f, 21.266f,1.f);
@@ -226,6 +318,28 @@ HRESULT CLevel_Dungeon::Ready_Layer_InteractionObject(const _wstring& strLayerTa
 		m_iLevelID,
 		L"Interaction_Layer", &Desc)))
 		return E_FAIL;
+
+	CGameObject* pObj = m_pGameInstance->Find_GameObject(m_iLevelID, L"Interaction_Layer", L"Treausurebox0");
+	if (pObj)
+	{
+		CTreasureChest* pChest = dynamic_cast<CTreasureChest*>(pObj);
+		if (pChest)
+			pChest->Set_Event([this]()
+				{
+					CGameObject* pObj = m_pGameInstance->Find_GameObject(m_iLevelID, L"Enviroment_Layer", L"DungeonBlock");
+					
+					if (pObj)
+					{
+						CDungeonBlock* pBlock = dynamic_cast<CDungeonBlock*>(pObj);
+						if (pBlock)
+							pBlock->Drop();
+
+
+					}
+					
+				});
+
+	}
 
 
 	return S_OK;
@@ -251,11 +365,14 @@ HRESULT CLevel_Dungeon::Ready_Layer_Trigger(const _wstring& strLayerTag)
 	Goto_Second_Desc.TransformDesc = &Second_EventTransform;
 	Goto_Second_Desc.EnterFunc = [this]()
 	{
-		Teleport(TELEPORT::GOTO_2ND);
-		pFadeScreen->PlayFadeIn();
+		CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+		if(pPlayer)
+			pPlayer->Set_CanMove(false);
 
-		m_Rooms[0]->Set_Active(false);
-		m_Rooms[1]->Set_Active(false);
+
+		Teleport(TELEPORT::GOTO_2ND);
+
+
 
 	};
 
@@ -296,13 +413,13 @@ HRESULT CLevel_Dungeon::Ready_Layer_Trigger(const _wstring& strLayerTag)
 	Goto_Third_Desc.m_iLevelID = m_iLevelID;
 
 	CTransform::TRANSFORM_DESC Third_EventTransform;
-	Third_EventTransform.vLocalPosition = _float4(78.f, 2.f, 10.536f, 1.f);
+	Third_EventTransform.vLocalPosition = _float4(71.f, 0.5f, 10.f, 1.f);
 
 	Goto_Third_Desc.TransformDesc = &Third_EventTransform;
 	Goto_Third_Desc.EnterFunc = [this]()
 	{
 		Teleport(TELEPORT::GOTO_EXIT);
-		pFadeScreen->PlayFadeIn();
+
 	};
 
 	if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::DUNGEON), strLayerTag, &Goto_Third_Desc)))
@@ -347,24 +464,33 @@ HRESULT CLevel_Dungeon::Ready_Events()
 
 void CLevel_Dungeon::Teleport(TELEPORT eType)
 {
+	CheckTrue(m_bTeleport);
+
 	CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
 	CheckNull(pPlayer);
+	m_bTeleport = true;
+	pFadeScreen->PlayFadeIn();
+
+
+	//왠지모르지만 room트리거들이 밟히는거같아서 콜리전비홀성화
+	CLayer* pTriggerLayer = m_pGameInstance->Find_Layer(m_iLevelID, L"Trigger_Layer");
+	for (auto& pObj : pTriggerLayer->Get_ObjList())
+	{
+		pObj->Set_Active(false);
+
+	}
+
+	_vector vTargetPos;
 
 	switch (eType)
 	{
 	case TELEPORT::GOTO_2ND:
 	{
+		vTargetPos = XMVectorSet(76.5f, 1.5f, 21.630f, 1.f);
 
-		pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMVectorSet(76.5f, 1.5f, 21.630f, 1.f));
-		pPlayer->Change_MainNavMesh();
-
+		
 		m_eCurrentPhase = CLevel_Dungeon::PHASE::SECOND;
 
-		m_Rooms[0]->Set_Active(false);
-		m_Rooms[1]->Set_Active(false);
-
-		m_Rooms[2]->Set_Active(true);
-		m_Rooms[3]->Set_Active(true);
 
 
 		m_pGameInstance->Emit(m_EnterSecondEvent);
@@ -372,12 +498,29 @@ void CLevel_Dungeon::Teleport(TELEPORT eType)
 		break;
 	}
 
+	//옮기고나서 페이드아웃
+	m_pGameInstance->Invoke(2.f, false, false, false, [pPlayer, vTargetPos, this]()
+		{
+			pPlayer->Get_Transform()->Set_State(STATE::POSITION, vTargetPos);
+			pPlayer->Change_MainNavMesh();
+
+		}, pPlayer);
 
 
 
-	m_pGameInstance->Invoke(2.f, false, false, false, [this]()
+	m_pGameInstance->Invoke(3.5f, false, false, false, [pPlayer, vTargetPos,this]()
 		{
 			pFadeScreen->PlayFadeOut();
+			m_bTeleport = false;
+			pPlayer->Set_CanMove(true);
+
+			CLayer* pTriggerLayer = m_pGameInstance->Find_Layer(m_iLevelID, L"Trigger_Layer");
+			for (auto& pObj : pTriggerLayer->Get_ObjList())
+			{
+				pObj->Set_Active(true);
+
+			}
+
 
 		},pPlayer);
 
@@ -403,18 +546,12 @@ void CLevel_Dungeon::OnEnter()
 
 		pPlayer->Get_Transform()->Set_State(STATE::POSITION, vSpawnPoint);
 		pPlayer->Change_MainNavMesh();
-
+	
 		m_pGameManager->Set_DefaultPosition(vSpawnPoint);
 		m_pGameManager->Set_LastPosition(vSpawnPoint);
 
 		
 		m_eCurrentPhase = CLevel_Dungeon::PHASE::FIRST;
-
-		m_Rooms[0]->Set_Active(true);
-		m_Rooms[1]->Set_Active(true);
-
-		m_Rooms[2]->Set_Active(false);
-		m_Rooms[3]->Set_Active(false);
 
 	}
 

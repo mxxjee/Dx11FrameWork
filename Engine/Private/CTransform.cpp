@@ -42,6 +42,7 @@ HRESULT CTransform::Initialize_Copytype(void* pArg)
 		Set_State(STATE::POSITION, pDesc->vLocalPosition);
 		Set_Scale(pDesc->vLocalScale);
 		Rotation(_float3(pDesc->vLocalRotation.x, pDesc->vLocalRotation.y, pDesc->vLocalRotation.z));
+
 	}
 	
 	else
@@ -63,6 +64,7 @@ HRESULT CTransform::Initialize_Copytype(void* pArg)
 
 
 	m_vVelocity = XMVectorSet(0.f, 0.f, 0.f, 0.f);
+	Set_Speed(m_fSpeedPerSec);
 
 	return S_OK;
 }
@@ -858,6 +860,62 @@ void CTransform::LookAtSmooth(_vector vTargetPos, float fLerpSpped, float fTimeD
 	Set_State(STATE::LOOK, vNewLook * vScale.z);
 
 
+
+}
+
+void CTransform::LookAtSmooth_Quaternion(_vector vTargetPos, float fTurnSpeed, float fTimeDelta)
+{
+
+	//new look
+
+	_vector vPos = Get_State(STATE::POSITION);
+	_float3 vScale = Get_Scale_ByFloat3();
+
+	_vector vDir = vTargetPos - vPos;
+	vDir = XMVectorSetY(vDir, 0.f);
+	vDir = XMVector3Normalize(vDir);
+
+
+	_vector vCurLook = XMVector3Normalize(Get_State(STATE::LOOK));
+	vCurLook = XMVectorSetY(vCurLook, 0.f);
+
+
+	//예외처리(이미 보고있는상황일떈 하지않음)
+	float fDot = XMVectorGetX(XMVector3Dot(vCurLook, vDir));
+	if (fDot > 0.9999f) return; // 이미 보고 있음
+
+	//쿼터니온 회전
+	_vector vAxis = XMVector3Cross(vCurLook, vDir);
+
+	if (XMVectorGetX(XMVector3LengthSq(vAxis)) < 0.0001f)
+		vAxis = WORLD_UP;
+
+	else
+		vAxis = XMVector3Normalize(vAxis);
+
+	// 사이 각도 구하기 (Acos)
+	float fAngle = acosf(fDot);
+
+	//이번 프레임에 회전할 각도 제한
+	// fTurnSpeed는 '초당 라디안' 단위여야 함.
+	float fStep = fTurnSpeed * fTimeDelta;
+
+	// 목표 각도보다 더 많이 돌 필요 없으므로 Clamp
+	if (fStep > fAngle) fStep = fAngle;
+
+
+	// 현재 Look 벡터를 vAxis 축으로 fStep만큼 회전
+	_matrix matRot = XMMatrixRotationAxis(vAxis, fStep);
+	_vector vNewLook = XMVector3TransformNormal(vCurLook, matRot);
+
+	vNewLook = XMVector3Normalize(vNewLook);
+
+	_vector vRight = XMVector3Normalize(XMVector3Cross(WORLD_UP, vNewLook));
+	_vector vUp = XMVector3Normalize(XMVector3Cross(vNewLook, vRight));
+
+	Set_State(STATE::RIGHT, vRight * vScale.x);
+	Set_State(STATE::UP, vUp * vScale.y);
+	Set_State(STATE::LOOK, vNewLook * vScale.z);
 
 }
 

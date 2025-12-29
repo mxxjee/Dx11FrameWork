@@ -173,7 +173,7 @@
             ],
             "Duration": 1.0,
             "Name": "wait",
-            "NumChannels": 29,
+            "NumChannels": 28,
             "TickPerSecond": 25.0
         },
         {
@@ -349,7 +349,7 @@
             ],
             "Duration": 15.0,
             "Name": "walk",
-            "NumChannels": 29,
+            "NumChannels": 28,
             "TickPerSecond": 25.0
         },
         {
@@ -525,7 +525,7 @@
             ],
             "Duration": 34.0,
             "Name": "move_st",
-            "NumChannels": 29,
+            "NumChannels": 28,
             "TickPerSecond": 25.0
         },
         {
@@ -701,7 +701,7 @@
             ],
             "Duration": 18.0,
             "Name": "move_ed",
-            "NumChannels": 29,
+            "NumChannels": 28,
             "TickPerSecond": 25.0
         },
         {
@@ -877,7 +877,7 @@
             ],
             "Duration": 36.0,
             "Name": "damage",
-            "NumChannels": 29,
+            "NumChannels": 28,
             "TickPerSecond": 25.0
         },
         {
@@ -1053,7 +1053,7 @@
             ],
             "Duration": 19.0,
             "Name": "dead",
-            "NumChannels": 29,
+            "NumChannels": 28,
             "TickPerSecond": 25.0
         }
     ]

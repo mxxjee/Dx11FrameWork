@@ -76,9 +76,9 @@ public:
 public:
     virtual         void        UpdateOnIdleState() {};
 
-private:
+protected:
     virtual   HRESULT     Ready_PartObjects(void* pArg);
-    virtual HRESULT     Ready_Components(void* pArg);
+    virtual     HRESULT     Ready_Components(void* pArg);
    
    
 public:

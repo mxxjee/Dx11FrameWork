@@ -10,6 +10,8 @@
 
 #include "CModel.h"
 #include "CInventory_Manager.h"
+#include "CStaticBody.h"
+
 
 
 
@@ -81,14 +83,14 @@ HRESULT CTreasureChest::Ready_PartObjects(void* pArg)
 		return E_FAIL;
 
 	////bottom
-	CAnimBody::ANIMBODY_DESC pAnimBodyDesc;
-	pAnimBodyDesc.eRenderGroup = m_eRenderGroup;
-	pAnimBodyDesc.pOwner = this;
-	pAnimBodyDesc.modelName = L"TreasureBox_Bottom";
-	pAnimBodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
-	pAnimBodyDesc.pParentState = nullptr;
-	pAnimBodyDesc.ObjTag = L"TreasureBox_Bottom_body";
-	if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"AnimBody"), L"TreasureBox_Bottom_body", &pAnimBodyDesc)))
+	CStaticBody::BODY_DESC pBodyDesc;
+	pBodyDesc.eRenderGroup = m_eRenderGroup;
+	pBodyDesc.pOwner = this;
+	pBodyDesc.modelName = L"TreasureBox_Bottom";
+	pBodyDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
+
+	pBodyDesc.ObjTag = L"TreasureBox_Bottom_body";
+	if (FAILED(__super::Add_PartObject(0, PROTO_OBJ_NAME(L"StaticBody"), L"TreasureBox_Bottom_body", &pBodyDesc)))
 		return E_FAIL;
 
 	m_pBodyBottom = dynamic_cast<CBody*>(Find_PartObject(L"Part_Body"));
@@ -252,6 +254,9 @@ void CTreasureChest::Enter_Interaction()
 
 	CInventory_Manager::GetInstance()->Request_Add_To_Inven(m_pInnerItem->ItemType, 1);
 	m_pGameInstance->BroadCastEvent(L"OnOpenUIHide", (void*)nullptr);
+
+	if (m_CallEvent)
+		m_CallEvent();
 
 
 }

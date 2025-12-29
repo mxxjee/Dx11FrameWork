@@ -25,6 +25,10 @@ void CMonsterIdleState::Update(CMonster* pMonster, _float fTimeDelta)
 
     __super::Update(pMonster, fTimeDelta);
 
+    if (m_pActionControl->m_bMove)
+        pMonster->Change_State(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::WALK));
+
+
     if (m_pActionControl->m_bAttack)
         pMonster->Change_State(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::ATTACK));
 

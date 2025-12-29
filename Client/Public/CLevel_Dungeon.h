@@ -62,7 +62,6 @@ public:
 public:
     static  CLevel_Dungeon* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args);
     virtual     void        Free();
-
 private:    
     CFadeScreen* pFadeScreen = nullptr;
     CGameManager* m_pGameManager = nullptr;
@@ -74,6 +73,10 @@ private:
 private:
     GameEvent       m_EnterSecondEvent;
     GameEvent       m_EnterFirstEvent;
+
+    bool            m_bTeleport = false;
+
+   
 };
 
 NS_END

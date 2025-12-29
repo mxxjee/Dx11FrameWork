@@ -58,8 +58,12 @@ void CWeapon::Update(_float fTimeDelta)
 
 void CWeapon::Update_Late(_float fTimeDelta)
 {
-    for(auto& i:m_pCollider)
-        i->Update_Collider(XMLoadFloat4x4(&m_CombinedWorldMatrix));
+    for (auto& i : m_pCollider)
+    {
+        if(i)
+            i->Update_Collider(XMLoadFloat4x4(&m_CombinedWorldMatrix));
+
+    }
 
 
 }
@@ -73,8 +77,12 @@ void CWeapon::Update_Render(_float fTimeDelta)
     {
         for (auto& i : m_pCollider)
         {
-            if (FAILED(m_pGameInstance->Add_DebugComponent(i)))
-                return;
+            if (i)
+            {
+                if (FAILED(m_pGameInstance->Add_DebugComponent(i)))
+                    return;
+
+            }
         }
         
     }
@@ -93,8 +101,12 @@ HRESULT CWeapon::Render()
 void CWeapon::Set_Active(bool _b)
 {
     m_bActive = _b;
-    for(auto& pCol:m_pCollider)
-        pCol->Set_Active(_b);
+    for (auto& pCol : m_pCollider)
+    {
+        if(pCol)
+            pCol->Set_Active(_b);
+    }
+      
 
 }
 

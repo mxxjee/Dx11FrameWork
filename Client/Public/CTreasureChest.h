@@ -66,6 +66,8 @@ public:
 
     virtual _int Get_Interaction_Priority() override;
 
+public:
+    void        Set_Event(function<void()> CallEvent) { m_CallEvent = CallEvent; }
 private:
     class       CInteraction_TriggerBox* m_pTriggerBox = nullptr;
     ITMINFO*    m_pInnerItem = nullptr;
@@ -74,6 +76,8 @@ private:
     CBody*      m_pBodyBottom = nullptr;
 
     bool        m_bCheck = false;
+
+    function<void()>        m_CallEvent = nullptr;
 };
 
 
