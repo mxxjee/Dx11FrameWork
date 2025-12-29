@@ -29,6 +29,13 @@ HRESULT CMapLoader::Load_Dungeon()
     return S_OK;
 }
 
+HRESULT CMapLoader::Load_Boss()
+{
+    Load_NavMesh(LEVEL_ID::BOSS, "../../Resource/Data/Map/Boss_Nav.dat");
+
+    return S_OK;
+}
+
 
 
 ///////////////////읽어와서 구조체만 모아둠.

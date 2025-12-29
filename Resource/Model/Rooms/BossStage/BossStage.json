@@ -38,15 +38,6 @@
         },
         {
             "Ambient": "",
-            "Diffuse": "MI_d3_f_floor_h_01_alb.png",
-            "METALNESS": "",
-            "MaterialName": "MI_d3_f_floor_h_01",
-            "Normal": "MI_d3_f_floor_h_01_nml.png",
-            "OPACITY": "MI_d3_f_floor_h_01_alb.png",
-            "Specular": ""
-        },
-        {
-            "Ambient": "",
             "Diffuse": "MI_d3_w_wall_a_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_d3_w_wall_a_01",
@@ -64,7 +55,7 @@
             "Specular": ""
         }
     ],
-    "MeshNums": 7,
+    "MeshNums": 6,
     "Meshes": [
         {
             "IBPath": "Mesh_0.ib",
@@ -208,44 +199,9 @@
         },
         {
             "IBPath": "Mesh_4.ib",
-            "IndexCount": 234,
-            "MaterialName": "MI_d3_f_floor_h_01",
-            "MeshIdx": 4,
-            "Name": "Lv03KeyCavern_07G1__MI_d3_f_floor_h_01",
-            "Transform": [
-                [
-                    1.0,
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                [
-                    0.0,
-                    1.0,
-                    -0.0,
-                    0.0
-                ],
-                [
-                    -0.0,
-                    -0.0,
-                    1.0,
-                    -0.0
-                ],
-                [
-                    0.0,
-                    0.0,
-                    -0.0,
-                    1.0
-                ]
-            ],
-            "VBPath": "Mesh_4.vb",
-            "VertexCount": 150
-        },
-        {
-            "IBPath": "Mesh_5.ib",
             "IndexCount": 1140,
             "MaterialName": "MI_d3_w_wall_a_01",
-            "MeshIdx": 5,
+            "MeshIdx": 4,
             "Name": "Lv03KeyCavern_07G1__MI_d3_w_wall_a_01",
             "Transform": [
                 [
@@ -273,14 +229,14 @@
                     1.0
                 ]
             ],
-            "VBPath": "Mesh_5.vb",
+            "VBPath": "Mesh_4.vb",
             "VertexCount": 324
         },
         {
-            "IBPath": "Mesh_6.ib",
+            "IBPath": "Mesh_5.ib",
             "IndexCount": 288,
             "MaterialName": "MI_d3_w_wall_a_04",
-            "MeshIdx": 6,
+            "MeshIdx": 5,
             "Name": "Lv03KeyCavern_07G1__MI_d3_w_wall_a_04",
             "Transform": [
                 [
@@ -308,7 +264,7 @@
                     1.0
                 ]
             ],
-            "VBPath": "Mesh_6.vb",
+            "VBPath": "Mesh_5.vb",
             "VertexCount": 146
         }
     ],

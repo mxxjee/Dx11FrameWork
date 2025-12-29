@@ -249,8 +249,13 @@ void CLevel_Manager::ActiveTop(CLevel* pNewLevel, LEVELCHANGETYPE eChangeType)
 	if (!m_Stack.empty())
 	{
 		if (m_Stack.back())
+		{
 			iPreLevel = m_Stack.back()->Get_LevelID();
+			if (eChangeType == LEVELCHANGETYPE::REPLACETOP)
+				m_Stack.back()->Set_State(LEVELSTATE::HIDDEN);
 
+		}
+		
 	}
 
 	m_Stack.push_back(pNewLevel);

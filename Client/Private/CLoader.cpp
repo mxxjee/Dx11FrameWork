@@ -164,6 +164,10 @@ HRESULT CLoader::Loading()
         Loading_Dungeon();
         break;
 
+    case Client::LEVEL_ID::BOSS:
+        Loading_Boss();
+        break;
+
     case Client::LEVEL_ID::END:
         break;
 
@@ -340,6 +344,33 @@ HRESULT CLoader::Loading_Dungeon()
     lstrcpy(m_szFPS, TEXT("맵 로딩중입니다."));
 
 
+    lstrcpy(m_szFPS, TEXT("로딩완료!"));
+
+
+    m_isFinished = true;
+
+    return S_OK;
+}
+
+HRESULT CLoader::Loading_Boss()
+{
+    lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
+    for (size_t i = 0; i < 88899999; i++)
+    {
+        int a = 10;
+    }
+    lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
+
+
+
+    lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
+    for (size_t i = 0; i < 88889999; i++)
+    {
+        int a = 10;
+    }
+
+
+    lstrcpy(m_szFPS, TEXT("맵 로딩중입니다."));
     lstrcpy(m_szFPS, TEXT("로딩완료!"));
 
 

@@ -15,6 +15,7 @@ namespace CMapLoader
 
 	HRESULT		Load_Town();
 	HRESULT		Load_Dungeon();
+	HRESULT		Load_Boss();
 
 
 	//////////////각종 매니저에게전달하는함수들/////////////////

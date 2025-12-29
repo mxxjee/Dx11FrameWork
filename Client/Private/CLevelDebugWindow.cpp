@@ -76,10 +76,16 @@ void CLevelDebugWindow::Update()
                     LevelName = "TOWN";
                     break;
 
+                case LEVEL_ID::BOSS:
+                    LevelName = "BOSS";
+                    break;
+
+
                 case LEVEL_ID::UI:
                     LevelName = "UI";
                     break;
 
+               
                 case LEVEL_ID::ROOM:
                     LevelName = "Room";
                     break;

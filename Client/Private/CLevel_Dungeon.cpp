@@ -459,6 +459,22 @@ HRESULT CLevel_Dungeon::Ready_Events()
 	m_EnterSecondEvent.Name = "Enter_DungeonRoom";
 
 
+	m_pGameInstance->RegisterListners("Go_Boss", [this](const GameEvent& evt)
+		{
+
+			LevelArgs args;
+			args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::BOSS);
+			args.changeType = LEVELCHANGETYPE::PUSH;
+			args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+			args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
+
+			if (FAILED(m_pGameInstance->Level_Changer(
+				ENUM_TO_UINT(LEVEL_ID::LOADING),
+				args)))
+				return;
+		});
+
 	return S_OK;
 }
 
@@ -494,6 +510,16 @@ void CLevel_Dungeon::Teleport(TELEPORT eType)
 
 
 		m_pGameInstance->Emit(m_EnterSecondEvent);
+		break;
+	}
+
+	case TELEPORT::GOTO_EXIT:
+	{
+		GameEvent gameEvent;
+		gameEvent.Name = "Go_Boss";
+
+		m_pGameInstance->Emit(gameEvent);
+		return;
 	}
 		break;
 	}
@@ -560,6 +586,7 @@ void CLevel_Dungeon::OnEnter()
 	CGameInstance::GetInstance()->Set_EnalbeUpdateRender(false);
 
 	m_pGameInstance->Emit(m_EnterFirstEvent);
+
 }
 
 void CLevel_Dungeon::OnResume(_uint iPreLevel)
@@ -572,6 +599,13 @@ void CLevel_Dungeon::OnPause(_uint iNextLeve)
 
 void CLevel_Dungeon::OnExit()
 {
+	if (Get_State() == LEVELSTATE::HIDDEN || Get_State() == LEVELSTATE::PAUSE)
+		return;
+
+	m_pGameInstance->Clear_SceneColliders(m_iLevelID);
+	CheckNull(pFadeScreen);
+	pFadeScreen->PlayFadeIn();
+
 }
 
 CLevel_Dungeon* CLevel_Dungeon::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)

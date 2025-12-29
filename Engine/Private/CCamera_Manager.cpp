@@ -160,14 +160,20 @@ HRESULT CCamera_Manager::Initialize()
 				evt.Payload.Floats.at("Rot_Y"),
 				evt.Payload.Floats.at("Rot_Z"));
 
+			_bool bLock = false;
 
+			if (evt.Payload.Ints.find("bLock")!=evt.Payload.Ints.end())
+			{
+				bLock = evt.Payload.Ints.at("bLock");
+
+			}
 			CheckNull(pCameraBase);
 			CheckNull(pPlayer);
 
 
 			pCameraBase->Set_Offset(OffSet);
 			pCameraBase->Set_Target(pPlayer, true);
-			pCameraBase->Set_Lock(false);
+			pCameraBase->Set_Lock(bLock);
 
 
 			pCameraBase->Set_LocalRoation(_float4(vRotation.x, vRotation.y, vRotation.z, 0.f));

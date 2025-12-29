@@ -339,6 +339,9 @@
     <ClInclude Include="..\Public\CDungeonBlock.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\DungeonBlock</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CLevel_Boss.h">
+      <Filter>01.Levels\Boss</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -733,6 +736,9 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\DungeonBlock">
       <UniqueIdentifier>{c7c80632-07cf-432a-a821-65a81101fbe8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\Boss">
+      <UniqueIdentifier>{e6855277-e5f8-44a0-8943-7c7f8e071eee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1051,6 +1057,9 @@
     <ClCompile Include="..\Private\CRangeCollider.cpp" />
     <ClCompile Include="..\Private\CDungeonBlock.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\DungeonBlock</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_Boss.cpp">
+      <Filter>01.Levels\Boss</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
