@@ -8,6 +8,8 @@ namespace Engine
 NS_BEGIN(Client)
 class CFadeScreen;
 class CGameManager;
+class CInteraction_JackyBall;
+
 class CLevel_Boss :
     public CLevel
 {
@@ -29,6 +31,8 @@ public:
     HRESULT                 Ready_Lights();
     HRESULT                 Ready_Layer_Enviroment(const _wstring& strLayerTag);
     HRESULT                 Ready_Layer_Monster(const _wstring& strLayerTag);
+    HRESULT                 Ready_Layer_Interaction(const _wstring& strLayerTag);
+
     HRESULT                 Ready_Events();
 public:
     virtual void        OnEnter() override;           //씬 진입시 매번호출
@@ -45,7 +49,7 @@ private:
     CGameManager* m_pGameManager = nullptr;
 
     GameEvent       m_EnterFirstEvent;
-
+    CInteraction_JackyBall* pJackyBall;
 };
 
 

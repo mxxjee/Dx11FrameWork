@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -167,6 +167,7 @@
     <ClInclude Include="..\Public\CIInteractable.h" />
     <ClInclude Include="..\Public\CInteractionObject.h" />
     <ClInclude Include="..\Public\CInteraction_BigRock.h" />
+    <ClInclude Include="..\Public\CInteraction_JackyBall.h" />
     <ClInclude Include="..\Public\CInteraction_Lawn.h" />
     <ClInclude Include="..\Public\CInteraction_Manager.h" />
     <ClInclude Include="..\Public\CInteraction_Mushroom.h" />
@@ -178,7 +179,12 @@
     <ClInclude Include="..\Public\CLevel_Boss.h" />
     <ClInclude Include="..\Public\CLevel_Dungeon.h" />
     <ClInclude Include="..\Public\CMagicPowder.h" />
+    <ClInclude Include="..\Public\CMJackyIdleState.h" />
+    <ClInclude Include="..\Public\CMJackyLiftState.h" />
+    <ClInclude Include="..\Public\CMJackyRunState.h" />
+    <ClInclude Include="..\Public\CMJackyThrowState.h" />
     <ClInclude Include="..\Public\CM_Gidbos.h" />
+    <ClInclude Include="..\Public\CM_Jacky.h" />
     <ClInclude Include="..\Public\CNPC_Kid_Blue.h" />
     <ClInclude Include="..\Public\CLevelDebugWindow.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -263,6 +269,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CVariable_Condition.h" />
+    <ClInclude Include="..\Public\CWall.h" />
     <ClInclude Include="..\Public\CWeapon.h" />
     <ClInclude Include="..\Public\CWeatherCock.h" />
     <ClInclude Include="..\Public\GlobalGameEvent.h" />
@@ -294,6 +301,7 @@
     <ClCompile Include="..\Private\CIInteractable.cpp" />
     <ClCompile Include="..\Private\CInteractionObject.cpp" />
     <ClCompile Include="..\Private\CInteraction_BigRock.cpp" />
+    <ClCompile Include="..\Private\CInteraction_JackyBall.cpp" />
     <ClCompile Include="..\Private\CInteraction_Lawn.cpp" />
     <ClCompile Include="..\Private\CInteraction_Manager.cpp" />
     <ClCompile Include="..\Private\CInteraction_Mushroom.cpp" />
@@ -305,7 +313,12 @@
     <ClCompile Include="..\Private\CLevel_Boss.cpp" />
     <ClCompile Include="..\Private\CLevel_Dungeon.cpp" />
     <ClCompile Include="..\Private\CMagicPowder.cpp" />
+    <ClCompile Include="..\Private\CMJackyIdleState.cpp" />
+    <ClCompile Include="..\Private\CMJackyLiftState.cpp" />
+    <ClCompile Include="..\Private\CMJackyRunState.cpp" />
+    <ClCompile Include="..\Private\CMJackyThrowState.cpp" />
     <ClCompile Include="..\Private\CM_Gidbos.cpp" />
+    <ClCompile Include="..\Private\CM_Jacky.cpp" />
     <ClCompile Include="..\Private\CNPC_Kid_Blue.cpp" />
     <ClCompile Include="..\Private\CLevelDebugWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -389,6 +402,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CVariable_Condition.cpp" />
+    <ClCompile Include="..\Private\CWall.cpp" />
     <ClCompile Include="..\Private\CWeapon.cpp" />
     <ClCompile Include="..\Private\CWeatherCock.cpp" />
     <ClCompile Include="..\Private\ItemCollect_Condition.cpp" />

@@ -109,7 +109,9 @@ void CInteractionObject::Update(_float fTimeDelta)
              Pos.y = CellY;
              m_pTransformCom->Set_State(STATE::POSITION,
                  m_pNavigationCom->SetUp_OnNavigation(m_pTransformCom->Get_State(STATE::POSITION)));
-        
+
+             
+             Set_InteractionMode(false);
              return;
          }
         
@@ -346,6 +348,7 @@ void CInteractionObject::Throw()
     _float3 ThrowDir;
     CTransform* pTransform = m_pPlayer->Get_Transform();
     CheckNull(pTransform);
+
 
 
     _vector vDir = (pTransform->Get_State(STATE::LOOK) + m_pTransformCom->Get_State(STATE::UP));

@@ -89,7 +89,7 @@ HRESULT CInteraction_TriggerBox::Ready_Component(void* pArg)
 	INTERACTION_TRIGGER_DESC* pDesc = static_cast<INTERACTION_TRIGGER_DESC*>(pArg);
 
 	CCollider_Base::COLLIDER_DESC pColliderDesc;
-	pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::INTERACTION);
+	pColliderDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::TRIGGER);
 	pColliderDesc.pOwner = this;
 	pColliderDesc.m_iLevelID = pDesc->m_iLevelID;
 
@@ -150,11 +150,14 @@ void CInteraction_TriggerBox::OnCollisionEnter(_uint iGroup, CCollider_Base* pOt
 	switch (COLLISION_GROUP(iGroup))
 	{
 	case Client::COLLISION_GROUP::PLAYER:
+		m_pOther = pOwner;
 		m_bCollision = true;
-
 		break;
 
-
+	case Client::COLLISION_GROUP::MONSTER:
+		m_pOther = pOwner;
+		m_bCollision = true;
+		break;
 
 	}
 }
@@ -173,11 +176,14 @@ void CInteraction_TriggerBox::OnCollisionExit(_uint iGroup, CCollider_Base* pOth
 	switch (COLLISION_GROUP(iGroup))
 	{
 	case Client::COLLISION_GROUP::PLAYER:
+		m_pOther = nullptr;
 		m_bCollision = false;
-
 	break;
 
-
+	case Client::COLLISION_GROUP::MONSTER:
+		m_pOther = nullptr;
+		m_bCollision = false;
+		break;
 
 	}
 }

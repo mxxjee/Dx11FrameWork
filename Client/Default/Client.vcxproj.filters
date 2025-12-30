@@ -333,7 +333,7 @@
       <Filter>02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\TreasureChest</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CM_Gidbos.h">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Hidy</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Gidbos</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CRangeCollider.h" />
     <ClInclude Include="..\Public\CDungeonBlock.h">
@@ -341,6 +341,25 @@
     </ClInclude>
     <ClInclude Include="..\Public\CLevel_Boss.h">
       <Filter>01.Levels\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CWall.h" />
+    <ClInclude Include="..\Public\CInteraction_JackyBall.h">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_JackyBall</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CM_Jacky.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMJackyIdleState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMJackyRunState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Walk</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMJackyLiftState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Lift</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMJackyThrowState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Throw</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -727,9 +746,6 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\TreasureChest">
       <UniqueIdentifier>{5110a716-b9b4-4fa2-919f-a5a630e8d756}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Hidy">
-      <UniqueIdentifier>{35410f69-2e91-48a3-a6b6-aee64d4def2f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\RangeCollider">
       <UniqueIdentifier>{d9b40aaa-24d0-4597-b8a8-7b1b6e652492}</UniqueIdentifier>
     </Filter>
@@ -738,6 +754,36 @@
     </Filter>
     <Filter Include="01.Levels\Boss">
       <UniqueIdentifier>{e6855277-e5f8-44a0-8943-7c7f8e071eee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\03.Triggers\Wall">
+      <UniqueIdentifier>{c9639f7a-f8cc-4006-b6c8-f778d6d50e58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_JackyBall">
+      <UniqueIdentifier>{95a06a21-1ef4-49b2-bceb-cba741eeb6fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky">
+      <UniqueIdentifier>{7c6b0e8d-cbaa-4119-be5e-89fdac214735}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Gidbos">
+      <UniqueIdentifier>{35410f69-2e91-48a3-a6b6-aee64d4def2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState">
+      <UniqueIdentifier>{d81ada1d-3e0a-4a9d-9c54-ac42564f69b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Idle">
+      <UniqueIdentifier>{f64d5ae1-3011-457f-9fb5-1e599db9bc31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Walk">
+      <UniqueIdentifier>{c14e93de-1ff4-49be-9389-776440889e54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Lift">
+      <UniqueIdentifier>{5014035d-b7ba-461f-9206-e183b7737d63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Throw">
+      <UniqueIdentifier>{b920a4bd-4e19-4218-88b1-8ced34d6e0e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Escape">
+      <UniqueIdentifier>{05eb8e2c-8b23-4be5-9f2a-e7ab04e88485}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1052,7 +1098,7 @@
       <Filter>02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\TreasureChest</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CM_Gidbos.cpp">
-      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Hidy</Filter>
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Gidbos</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CRangeCollider.cpp" />
     <ClCompile Include="..\Private\CDungeonBlock.cpp">
@@ -1060,6 +1106,25 @@
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_Boss.cpp">
       <Filter>01.Levels\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CWall.cpp" />
+    <ClCompile Include="..\Private\CInteraction_JackyBall.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_JackyBall</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CM_Jacky.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMJackyIdleState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMJackyRunState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Walk</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMJackyLiftState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Lift</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMJackyThrowState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Throw</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

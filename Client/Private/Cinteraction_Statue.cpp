@@ -46,7 +46,7 @@ HRESULT Cinteraction_Statue::Initialize_Copytype(void* pArg)
     aabbDesc.Extents = _float3(1.f, 1.f, 1.f);
     ColDesc.m_BoundingDesc = &aabbDesc;
     ColDesc.pOwner = this;
-    ColDesc.m_iLevelID = m_iSceneID;
+    ColDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
     Desc.pColliderComp = &ColDesc;
 
 
@@ -76,7 +76,7 @@ HRESULT Cinteraction_Statue::Ready_PartObjects(void* pArg)
     TriggerDesc.ObjTag = pDesc->ObjTag + L"Trigger_Box";
     TriggerDesc.pParentMatrix = m_pTransformCom->Get_WorldMatrixPtr();
     TriggerDesc.pOwner = this;
-    TriggerDesc.m_iLevelID = m_iSceneID;
+    TriggerDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
 
     CBounding_AABB* pAABB = dynamic_cast<CBounding_AABB*>(m_pCollider->Get_Bounding());
 
@@ -199,6 +199,8 @@ void Cinteraction_Statue::Free()
 
 void Cinteraction_Statue::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {
+    //이 담당하고있는 씬이 안돌아가고있으면 false
+  
     CGameObject* pOwner = pOther->Get_Owner();
     CheckNull(pOwner);
 

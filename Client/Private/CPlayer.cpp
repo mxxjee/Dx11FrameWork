@@ -391,9 +391,12 @@ void CPlayer::Normal_Movement(_float fTimeDelta)
     if(m_ActionControl.m_Holds[HoldKey::HOLD_T].m_bHeld)
         m_pTransformCom->Set_Speed(m_fInitSpeed/2.f);
 
-    else if(m_ActionControl.m_bPush || m_ActionControl.m_bCarry)
-        m_pTransformCom->Set_Speed(m_fInitSpeed / 4.f);
+    else if (m_ActionControl.m_bPush || m_ActionControl.m_bCarry)
+    {
+        float f = m_ActionControl.m_bCarry ? 2.f : 4.f;
+        m_pTransformCom->Set_Speed(m_fInitSpeed / f);
 
+    }
 
     else
         m_pTransformCom->Set_Speed(m_fInitSpeed);
@@ -1297,7 +1300,7 @@ bool CPlayer::Set_CarryAndThrowState(CInteractionObject* pObj)
 
     else
     { 
-
+        CheckNullResult(m_CarryObject,false);
         m_CarryObject->Throw();
         pObj->Set_InteractionMode(false);
         m_CarryObject = nullptr;

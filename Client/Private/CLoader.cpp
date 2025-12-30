@@ -78,7 +78,10 @@
 #include "CTreasureChest.h"
 #include "CRangeCollider.h"
 #include "CM_Gidbos.h"
+#include "CWall.h"
+#include "CInteraction_JackyBall.h"
 
+#include "CM_Jacky.h"
 
 
 USING(Client)
@@ -369,7 +372,7 @@ HRESULT CLoader::Loading_Boss()
         int a = 10;
     }
 
-
+   
     lstrcpy(m_szFPS, TEXT("맵 로딩중입니다."));
     lstrcpy(m_szFPS, TEXT("로딩완료!"));
 
@@ -492,8 +495,8 @@ HRESULT CLoader::Register_Models()
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy/Gidbos", MoriblinSwordMatrix);
 
-
-
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy/Jacky", MoriblinSwordMatrix);
+ 
     _matrix DadMatrix = XMMatrixScaling(1.2f, 1.2f, 1.2f);
     DadMatrix = XMMatrixMultiply(DadMatrix, NPCmatrix);
 
@@ -675,6 +678,11 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"CM_Gidbos", CM_Gidbos::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"CM_Jacky", CM_Jacky::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+
     /// /////////Interaction Objects
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Interaction_TriggerBox", CInteraction_TriggerBox::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
@@ -722,6 +730,14 @@ HRESULT CLoader::Register_GameObjects()
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"MagicPowder", CMagicPowder::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
+
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Wall", CWall::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Interaction_JackyIronBall", CInteraction_JackyBall::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
 
     return S_OK;
 }

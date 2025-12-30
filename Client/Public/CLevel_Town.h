@@ -56,6 +56,8 @@ private:
     int iTargetIdx = 0;
     CFadeScreen* pFadeScreen = nullptr;
     CGameManager* m_pGameManager = nullptr;
+
+    GameEvent       m_EnterFirstEvent;
     
 };
 NS_END

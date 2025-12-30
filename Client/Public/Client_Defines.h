@@ -19,12 +19,14 @@ namespace Client
                     
 
 	enum class LEVEL_ID {STATIC,LOGO,LOADING,SPAWN,TOWN,ROOM,DUNGEON,BOSS,UI,MAPTOOL,END};
-	enum class COLLISION_GROUP{PLAYER,PLAYER_WEAPON,
+	enum class COLLISION_GROUP{
+		PLAYER,PLAYER_WEAPON,
 		MONSTER,MONSTER_WEAPON,
 		INTERACTION,
 		TRIGGER,
 		OBJECT,
 		PARTICLE,
+		WALL,
 		END};
 	//enum class LEV
 }
@@ -184,7 +186,8 @@ enum Interact_Object_Type
 	LAWN,
 	GRASS,
 	ITEM,
-	BIGROCK
+	BIGROCK,
+	IRONBALL
 };
 
 enum Interact_Behavior_Type

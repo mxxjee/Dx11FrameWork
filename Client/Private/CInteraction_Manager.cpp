@@ -264,6 +264,9 @@ HRESULT CInteraction_Manager::Load_Data(string SceneName, vector< DefaultInterac
 		else if (InteractionType == "BigRock")
 			Data.InteractionType = ENUM_TO_UINT(Interact_Object_Type::BIGROCK);
 
+		else if (InteractionType == "JackyIronBall")
+			Data.InteractionType = ENUM_TO_UINT(Interact_Object_Type::IRONBALL);
+
 
 		json TransformData = iInteraction["Transform"];
 

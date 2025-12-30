@@ -46,6 +46,7 @@
 #include "CWeatherCock.h"
 
 #include "CInventory_Manager.h"
+#include "CWall.h"
 
 
 USING(Client)
@@ -121,12 +122,12 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
 
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
     {
-       /* GameEvent gameEvent;
-        gameEvent.Name = "Go_WitchRoom";
+        GameEvent gameEvent;
+        gameEvent.Name = "Go_Boss";
 
-        m_pGameInstance->Emit(gameEvent);*/
+        m_pGameInstance->Emit(gameEvent);
 
-        Teleport_RichardHouse();
+        //Teleport_RichardHouse();
 
 
     }
@@ -1003,6 +1004,40 @@ HRESULT CLevel_Town::Ready_EventListners()
 
 
         });
+
+    /*보스 디버그전용*/
+    CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
+
+    m_EnterFirstEvent.Payload.Ptrs["Player"] = pPlayer;
+    m_EnterFirstEvent.Payload.Floats["OffSet_X"] = 0.f;
+    m_EnterFirstEvent.Payload.Floats["OffSet_Y"] = 10.5f;
+    m_EnterFirstEvent.Payload.Floats["OffSet_Z"] = -7.5f;
+
+    m_EnterFirstEvent.Payload.Floats["Rot_X"] = 76.f;
+    m_EnterFirstEvent.Payload.Floats["Rot_Y"] = 0.f;
+    m_EnterFirstEvent.Payload.Floats["Rot_Z"] = 0.f;
+
+    m_EnterFirstEvent.Payload.Ints["bLock"] = true;
+
+
+    m_EnterFirstEvent.Name = "Enter_DungeonRoom";
+
+    m_pGameInstance->RegisterListners("Go_Boss", [this](const GameEvent& evt)
+        {
+
+            LevelArgs args;
+            args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::BOSS);
+            args.changeType = LEVELCHANGETYPE::PUSH;
+            args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+            args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
+
+            if (FAILED(m_pGameInstance->Level_Changer(
+                ENUM_TO_UINT(LEVEL_ID::LOADING),
+                args)))
+                return;
+        });
+
     return S_OK;
 }
 

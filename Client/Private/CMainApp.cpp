@@ -274,7 +274,8 @@ void CMainApp::Set_Collision_Rules()
 	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::MONSTER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
 
 	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), ENUM_TO_UINT(COLLISION_GROUP::PARTICLE), true);
-
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), ENUM_TO_UINT(COLLISION_GROUP::WALL), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::WALL), true);
 
 }
 

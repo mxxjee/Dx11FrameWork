@@ -919,6 +919,72 @@ void CTransform::LookAtSmooth_Quaternion(_vector vTargetPos, float fTurnSpeed, f
 
 }
 
+void CTransform::LookAtSmooth_Second(_vector vTargetPos, float fTime, float fTimeDelta)
+{
+	// 1. 방향 벡터 계산 (Y축 제거)
+	_vector vPos = Get_State(STATE::POSITION);
+	_float3 vScale = Get_Scale_ByFloat3();
+
+	_vector vTargetDir = vTargetPos - vPos;
+	vTargetDir = XMVectorSetY(vTargetDir, 0.f);
+	vTargetDir = XMVector3Normalize(vTargetDir);
+
+	_vector vCurLook = XMVector3Normalize(Get_State(STATE::LOOK));
+	vCurLook = XMVectorSetY(vCurLook, 0.f);
+
+	// 2. 현재 내적(Cos)과 각도(Radian) 계산
+	// 내적값이 1.0을 초과하는 부동소수점 오차 방지 (Clamp)
+	float fDot = XMVectorGetX(XMVector3Dot(vCurLook, vTargetDir));
+	fDot = max(-1.f, min(1.f, fDot));
+
+	float fCurAngleRad = acosf(fDot);
+
+	// 3. 이미 목표를 보고 있다면(오차범위 내) 리턴
+	if (fCurAngleRad < 0.001f)
+		return;
+
+	// 4. 회전 속도 계산 (최악의 경우 180도(PI)를 fTime 안에 돌아야 함)
+	// 형님이 원하는 "무조건 fTime 안에"를 충족하기 위한 최소 속도입니다.
+	// 만약 fTime이 2.0f면 -> 초당 90도 회전 속도
+	float fMaxSpeed = XM_PI / fTime;
+
+	// 이번 프레임에 회전할 각도 (속도 * 델타타임)
+	float fStepAngle = fMaxSpeed * fTimeDelta;
+
+	_vector vNewLook;
+
+	// 5. [핵심] 남은 각도가 이번 턴 회전량보다 작으면 -> 바로 스냅(Snap)
+	if (fCurAngleRad <= fStepAngle)
+	{
+		vNewLook = vTargetDir;
+	}
+	else
+	{
+		// 6. 아니라면 축(Axis)을 기준으로 fStepAngle 만큼만 회전
+		_vector vRotAxis = XMVector3Cross(vCurLook, vTargetDir);
+
+		// 외적이 0이면(완전 뒤돌아보거나 할 때) 업벡터를 축으로 잡음
+		if (XMVectorGetX(XMVector3LengthSq(vRotAxis)) < 0.001f)
+			vRotAxis = XMVectorSet(0.f, 1.f, 0.f, 0.f);
+		else
+			vRotAxis = XMVector3Normalize(vRotAxis);
+
+		// 쿼터니언을 이용해 벡터 회전 (가장 깔끔함)
+		_matrix RotationMatrix = XMMatrixRotationAxis(vRotAxis, fStepAngle);
+		vNewLook = XMVector3TransformNormal(vCurLook, RotationMatrix);
+	}
+
+	vNewLook = XMVector3Normalize(vNewLook);
+
+	// 7. Up, Right 갱신 및 적용
+	_vector vRight = XMVector3Normalize(XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), vNewLook));
+	_vector vUp = XMVector3Normalize(XMVector3Cross(vNewLook, vRight));
+
+	Set_State(STATE::RIGHT, vRight * vScale.x);
+	Set_State(STATE::UP, vUp * vScale.y);
+	Set_State(STATE::LOOK, vNewLook * vScale.z);
+}
+
 
 bool CTransform::Chase(_vector vPoint, _float fTimeDelta, CNavigation* pNavigation,_float MinDistance)
 {

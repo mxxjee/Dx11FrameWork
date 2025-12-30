@@ -32,6 +32,7 @@ HRESULT CMapLoader::Load_Dungeon()
 HRESULT CMapLoader::Load_Boss()
 {
     Load_NavMesh(LEVEL_ID::BOSS, "../../Resource/Data/Map/Boss_Nav.dat");
+    Load_Interaction("Level_Boss", "../../Resource/Data/Map/Interaction7.json");
 
     return S_OK;
 }
@@ -116,6 +117,9 @@ HRESULT CMapLoader::Make_Object_By_LoadData(string SceneName, CLayer* pLayer)
     if (SceneName == "Level_Town")
         SceneID = ENUM_TO_UINT(LEVEL_ID::TOWN);
 
+    else if (SceneName == "Level_Boss")
+        SceneID = ENUM_TO_UINT(LEVEL_ID::BOSS);
+
 
     int iIdx = 0;
     for (auto& Info : Infos)
@@ -187,6 +191,13 @@ HRESULT CMapLoader::Make_Object_By_LoadData(string SceneName, CLayer* pLayer)
         }
         break;
 
+        case Interact_Object_Type::IRONBALL:
+        {
+            Desc.fTargetDistance = 3.f;
+            ProtoTag = L"Interaction_" + wstring(Desc.ModelName);
+        }
+
+        break;
         }
        if(FAILED(pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
             PROTO_OBJ_NAME(ProtoTag),

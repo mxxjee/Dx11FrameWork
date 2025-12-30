@@ -101,6 +101,10 @@ HRESULT CTrigger_Box::Ready_Components(void* pArg)
 	return S_OK;
 }
 
+void CTrigger_Box::PushOut(_float3 vOutPush)
+{
+}
+
 
 CTrigger_Box* CTrigger_Box::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex)
 {

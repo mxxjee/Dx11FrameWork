@@ -45,6 +45,7 @@ public:
     virtual void    Set_Active(bool _b);
     bool            Is_Collision() { return m_bCollision; }
     void            Set_Size(_float3 vSize);
+    virtual     void    PushOut(_float3 vOutPush) {};
 
 protected:
     vector<CCollider_Base*> m_pCollider = { nullptr };
@@ -62,8 +63,13 @@ public:
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
+public:
+    CGameObject*    Get_Other() { return m_pOther; }
+
 private:
-    bool        m_bCollision = false;
+    bool            m_bCollision = false;
+    CGameObject*    m_pOther = nullptr;
+
 
 };
 

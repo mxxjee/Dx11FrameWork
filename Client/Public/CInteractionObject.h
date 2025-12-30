@@ -63,6 +63,8 @@ public:
     virtual HRESULT     Ready_Components(void* pArg);
     virtual HRESULT     Ready_PartObjects(void* pArg);
 
+public:
+    void        Set_Call_Exit_Interaction(bool b) { m_bCall_Exit_Interaction = b; }
 
 protected:
     _uint                   m_eInteractionType = 10; //인터렉션타입 (10 : OBJECT)
@@ -73,7 +75,7 @@ protected:
     _uint                   m_eRenderGroup = 0;
 
 
-private:
+public:
     _uint       m_iState = 0;
 
 
@@ -100,7 +102,7 @@ public:
     void                Set_SocketMatrix(const _float4x4* matrix) { m_pSocketMatrix = matrix; }
 
 public:
-    void        Throw();
+    virtual void        Throw();
 
 protected:
     class     CPlayer* m_pPlayer = nullptr;

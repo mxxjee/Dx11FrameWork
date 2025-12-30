@@ -226,6 +226,8 @@ void CLevel_NPCRoom::OnPause(_uint iNextLevel)
 {
  /*   if (iNextLevel != ENUM_TO_UINT(LEVEL_ID::UI))
         CRoom_Manager::GetInstance()->Reset_CurrentRoomID();*/
+
+
 }
 
 void CLevel_NPCRoom::OnExit()

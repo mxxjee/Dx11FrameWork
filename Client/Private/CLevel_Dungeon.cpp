@@ -25,6 +25,8 @@
 
 #include "CMainCamera.h"
 #include "CBoxColliderComponent.h"
+#include "CInteraction_Manager.h"
+
 
 
 USING(Client)
@@ -557,6 +559,7 @@ void CLevel_Dungeon::Teleport(TELEPORT eType)
 void CLevel_Dungeon::OnEnter()
 {
 	__super::OnEnter();
+	CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::DUNGEON));
 	m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
 
 	CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();

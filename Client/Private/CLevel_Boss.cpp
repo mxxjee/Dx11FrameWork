@@ -12,6 +12,18 @@
 #include "CCell.h"
 #include "CCamera_Base.h"
 
+#include "CWall.h"
+#include "CInteraction_Manager.h"
+#include "CBoxColliderComponent.h"
+#include "CBounding_AABB.h"
+
+#include "CMapLoader.h"
+#include "CMonster.h"
+#include "CMonster_Body.h"
+
+#include "CM_Jacky.h"
+#include "CInteraction_JackyBall.h"
+
 
 
 
@@ -34,6 +46,9 @@ HRESULT CLevel_Boss::Initialize(LevelArgs& args)
         return E_FAIL;
 
     if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
+        return E_FAIL;
+
+    if (FAILED(Ready_Layer_Interaction(L"Interaction_Layer")))
         return E_FAIL;
 
 
@@ -67,7 +82,10 @@ void CLevel_Boss::Update_Late(_float fTimeDelta)
 void CLevel_Boss::Render()
 {
     wchar_t szTitle[256];
-    swprintf_s(szTitle, L"Boss 씬입니다. FPS : %.1f", m_pGameInstance->Get_FPS(L"Timer_60"));
+    CheckNull(pJackyBall);
+    swprintf_s(szTitle, L"Boss 씬입니다. FPS : %.1f , %s", m_pGameInstance->Get_FPS(L"Timer_60"), pJackyBall->Print_Owner().c_str());
+
+
 
     SetWindowText(g_hWnd, szTitle);
 }
@@ -119,11 +137,140 @@ HRESULT CLevel_Boss::Ready_Layer_Enviroment(const _wstring& strLayerTag)
     m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::BOSS));
 
 
+#pragma region 벽 충돌체 생성
+    _float4 vPos[] = {
+        _float4(12.861f,-0.361f,7.947f,1.f),
+        _float4(12.578f,-0.438f,18.303f,1.f),
+        _float4(6.566f,-1.0f,12.738f,1.f),
+        _float4(18.989f,-1.0f,12.738f,1.f),
+        _float4(12.687,0.f,12.685,1.f)
+    };
+
+    _float3 vExtents[] = {
+        _float3(6.8f,3.4f,0.3f),
+        _float3(6.8f,3.4f,0.3f),
+        _float3(0.2f,4.0f,5.6f),
+        _float3(0.2f,4.0f,5.6f),
+        _float3(6.f,0.1f,4.5f)
+
+    };
+
+    for (int i = 0; i < 5; ++i)
+    {
+        CWall::WALL_DESC WallDesc;
+
+        WallDesc.m_iLevelID = m_iLevelID;
+        WallDesc.ObjTag = L"Wall" + to_wstring(i);
+        WallDesc.vExtents = vExtents[i];
+
+        CTransform::TRANSFORM_DESC TransDesc;
+        TransDesc.vLocalPosition = vPos[i];
+        
+        WallDesc.TransformDesc = &TransDesc;
+
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+            PROTO_OBJ_NAME(L"Wall"),
+            ENUM_TO_UINT(LEVEL_ID::BOSS),
+            strLayerTag, &WallDesc)))
+            return E_FAIL;
+
+    }
+#pragma endregion
+
     return S_OK;
 }
 
 HRESULT CLevel_Boss::Ready_Layer_Monster(const _wstring& strLayerTag)
 {
+    vector<CCell*>* m_Cells = m_pGameInstance->Get_MainCells();
+    CheckTrueResult(m_Cells->empty(), E_FAIL);
+
+    _vector vPos = (*m_Cells)[29]->Get_CenterPos();
+
+    CMonster::MonsterDesc JackyDesc;
+
+    CMonster_Body::MONSTER_BODY_DESC JackybodyDesc;
+    JackybodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+    JackybodyDesc.modelName = L"Jacky";
+    JackybodyDesc.m_iLevelID = m_iLevelID;
+    JackyDesc.BodyDesc = &JackybodyDesc;
+    JackyDesc.ObjTag =L"Jacky";
+
+    JackyDesc.iAttack = 10;
+    JackyDesc.MaxHp = 5;
+    JackyDesc.fActionRange = 3.f;
+    JackyDesc.m_iLevelID = m_iLevelID;
+    JackyDesc.RoamRadius = 0.f;
+
+    CTransform::TRANSFORM_DESC JackyTransDesc;
+    JackyTransDesc.vLocalRotation = { 0.f,180.f,0.f,1.f };
+    XMStoreFloat4(&JackyTransDesc.vLocalPosition, vPos);
+    JackyTransDesc.fSpeedPerSec =2.5f;
+    JackyDesc.TransformDesc = &JackyTransDesc;
+
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"CM_Jacky"),
+        ENUM_TO_UINT(LEVEL_ID::BOSS),
+        strLayerTag, &JackyDesc)))
+        return E_FAIL;
+
+
+
+    return S_OK;
+}
+
+HRESULT CLevel_Boss::Ready_Layer_Interaction(const _wstring& strLayerTag)
+{
+
+    if (FAILED(m_pGameInstance->Make_New_Layer(ENUM_TO_UINT(LEVEL_ID::BOSS), strLayerTag)))
+        return E_FAIL;
+
+    CLayer* pInteractionLayer = m_pGameInstance->Find_Layer(ENUM_TO_UINT(LEVEL_ID::BOSS), strLayerTag);
+    CMapLoader::Make_Object_By_LoadData("Level_Boss", pInteractionLayer);
+
+
+  /*  CInteractionObject::Interaction_DESC Desc;
+    Desc.eInteractionType = ENUM_TO_UINT(InteractionType::OBJECT);
+    Desc.eInteract_Object_Type = InteractionType::OBJECT;
+    Desc.m_iLevelID = m_iLevelID;
+
+    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+    Desc.ModelName = L"Rock";
+
+    Desc.SceneName = "Level_Boss";
+    Desc.bAnimated = false;
+    Desc.ObjTag = L"JackyIronBall";
+    
+    vector<CCell*>* m_Cells = m_pGameInstance->Get_MainCells();
+    _vector vPos = (*m_Cells)[23]->Get_CenterPos()+XMVectorSet(0.f,1.f,0.f,0.f);
+
+
+    CTransform::TRANSFORM_DESC TransDesc;
+    XMStoreFloat4(&TransDesc.vLocalPosition, vPos);
+    TransDesc.vLocalScale = _float4(1.f, 1.f, 1.f, 1.f);
+    TransDesc.vLocalRotation = _float4(0.f, 0.f, 0.f, 1.f);
+
+    Desc.TransformDesc = &TransDesc;
+
+
+    CBoxColliderComponent::COLLIDER_DESC ColDesc;
+    ColDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::INTERACTION);
+    CBounding_AABB::BOUNDING_AABB_DESC aabbDesc;
+    aabbDesc.vCenter = _float3(0.f,0.f,0.f);
+    aabbDesc.Extents = _float3(0.25f, 0.25f, 0.25f);
+
+    ColDesc.m_BoundingDesc = &aabbDesc;
+    ColDesc.m_iLevelID = m_iLevelID;
+    Desc.pColliderComp = &ColDesc;
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"Interaction_JackyIronBall"),
+        m_iLevelID,
+        L"Interaction_Layer", &Desc)))
+        return E_FAIL;*/
+
+
     return S_OK;
 }
 
@@ -154,6 +301,7 @@ void CLevel_Boss::OnEnter()
 {
     __super::OnEnter();
     m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
+    CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::BOSS));
 
     CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
     CheckNull(pPlayer);
@@ -181,8 +329,21 @@ void CLevel_Boss::OnEnter()
     if (pBase)
         pBase->Set_Lock(true);
 
+    ////보스몬스터가 쫓아야할 ball 세팅해주기.
+    CGameObject* pMonster = m_pGameInstance->Find_GameObject(m_iLevelID, L"Monster_Layer", L"Jacky");
+    if (pMonster)
+    {
+        CGameObject* pInteraction = m_pGameInstance->Find_GameObject(m_iLevelID, L"Interaction_Layer", L"JackyIronBall0");
+        if (pInteraction)
+        {
+            CM_Jacky* pJacky = dynamic_cast<CM_Jacky*>(pMonster);
+            pJackyBall = dynamic_cast<CInteraction_JackyBall*>(pInteraction);
 
+            if (pJacky && pJackyBall)
+                pJacky->Set_ChaseTargetObj(pJackyBall);
 
+        }
+    }
 }
 
 void CLevel_Boss::OnResume(_uint iPreLevel)

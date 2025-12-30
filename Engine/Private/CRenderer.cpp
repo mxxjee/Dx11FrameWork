@@ -283,7 +283,6 @@ void CRenderer::Render_Debug()
 
 }
 
-#ifdef _DEBUG
 HRESULT CRenderer::Add_DebugComponent(CComponent* pComponent)
 {
 	m_DebugComponents.push_back(pComponent);
@@ -292,8 +291,6 @@ HRESULT CRenderer::Add_DebugComponent(CComponent* pComponent)
 
 	return S_OK;
 }
-#endif
-
 #endif
 
 void CRenderer::Bind_And_Render_Lights()
