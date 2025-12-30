@@ -1,0 +1,52 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "MI_PanelBlockedDoor_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_PanelBlockedDoor_01",
+            "Normal": "MI_PanelBlockedDoor_01_nml.png",
+            "OPACITY": "MI_PanelBlockedDoor_01_alb.png",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 1,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 60,
+            "MaterialName": "MI_PanelBlockedDoor_01",
+            "MeshIdx": 0,
+            "Name": "PanelBlockedDoor__MI_PanelBlockedDoor_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 24
+        }
+    ],
+    "ModelName": "ClosedDoor"
+}

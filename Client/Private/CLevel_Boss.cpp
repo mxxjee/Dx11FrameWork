@@ -17,12 +17,17 @@
 #include "CBoxColliderComponent.h"
 #include "CBounding_AABB.h"
 
+#include "CClosedDoor.h"
+
 #include "CMapLoader.h"
 #include "CMonster.h"
 #include "CMonster_Body.h"
 
 #include "CM_Jacky.h"
 #include "CInteraction_JackyBall.h"
+#include "CEventTrigger.h"
+
+
 
 
 
@@ -51,6 +56,8 @@ HRESULT CLevel_Boss::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_Interaction(L"Interaction_Layer")))
         return E_FAIL;
 
+    if (FAILED(Ready_Layer_Trigger(L"Trigger_Layer")))
+        return E_FAIL;
 
     if (FAILED(Ready_Events()))
         return E_FAIL;
@@ -134,6 +141,37 @@ HRESULT CLevel_Boss::Ready_Layer_Enviroment(const _wstring& strLayerTag)
     if (FAILED(CMapLoader::Load_Boss()))
         return E_FAIL;
 
+#pragma region closedDoor
+    _float4 vPlayerPos[] = {
+        _float4(12.520f,1.2f,19.f,1.f),
+        _float4(12.699f,1.2f,6.673f,1.f)
+
+    };
+
+    _float4 vRotation[] = {
+       _float4(0.f,0.f,0.f,1.f),
+       _float4(0.f,180.f,0.f,1.f)
+
+    };
+
+    for (int i = 0; i < 2; ++i)
+    {
+        CClosedDoor::MODELOBJECT_DESC Desc;
+        Desc.m_iLevelID = m_iLevelID;
+        Desc.ObjTag = L"ClosedDoor"+to_wstring(i);
+        
+        CTransform::TRANSFORM_DESC TransDesc;
+        TransDesc.vLocalPosition = vPlayerPos[i];
+        TransDesc.vLocalRotation = vRotation[i];
+
+        Desc.TransformDesc = &TransDesc;
+
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),PROTO_OBJ_NAME(L"CloseDoor"),ENUM_TO_UINT(LEVEL_ID::BOSS), strLayerTag,&Desc)))
+            return E_FAIL;
+
+    }
+
+#pragma endregion
     m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::BOSS));
 
 
@@ -142,7 +180,7 @@ HRESULT CLevel_Boss::Ready_Layer_Enviroment(const _wstring& strLayerTag)
         _float4(12.444f,-0.361f,7.117f,1.f),
         _float4(12.611,-0.361f,18.303f,1.f),
         _float4(6.564f,-1.0f,12.738f,1.f),
-        _float4(19.734f,-1.0f,12.738f,1.f),
+        _float4(18.734f,-1.0f,12.738f,1.f),
         _float4(12.687,0.f,12.685,1.f)
     };
 
@@ -274,6 +312,37 @@ HRESULT CLevel_Boss::Ready_Layer_Interaction(const _wstring& strLayerTag)
     return S_OK;
 }
 
+HRESULT CLevel_Boss::Ready_Layer_Trigger(const _wstring& strLayerTag)
+{
+#pragma region ¿¬Ãâ
+    CEventTrigger::EventTriggerDesc Enter_Boss_Desc;
+    Enter_Boss_Desc.vCenter = _float3(0.f, 0.f, 0.f);
+    Enter_Boss_Desc.vExtents = _float3(1.6f, 0.3f, 0.6f);
+    Enter_Boss_Desc.ObjTag = L"Enter_BossStage";
+    Enter_Boss_Desc.m_iLevelID = m_iLevelID;
+
+    CTransform::TRANSFORM_DESC EventTransform;
+    EventTransform.vLocalPosition = _float4(12.761f, 1.f, 16.565f, 1.f);
+
+    Enter_Boss_Desc.TransformDesc = &EventTransform;
+    Enter_Boss_Desc.EnterFunc = [this]()
+    {
+
+        GameEvent Event;
+        Event.Name = "CloseDoor";
+
+        m_pGameInstance->Emit(Event);
+
+
+    };
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::BOSS), strLayerTag, &Enter_Boss_Desc)))
+        return E_FAIL;
+
+#pragma endregion
+    return S_OK;
+}
+
 HRESULT CLevel_Boss::Ready_Events()
 {
     CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
@@ -356,6 +425,11 @@ void CLevel_Boss::OnPause(_uint iNextLeve)
 
 void CLevel_Boss::OnExit()
 {
+}
+
+void CLevel_Boss::Close_Door()
+{
+    
 }
 
 CLevel_Boss* CLevel_Boss::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)

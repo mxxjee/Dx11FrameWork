@@ -364,6 +364,9 @@
     <ClInclude Include="..\Public\CMJackyEscapeState.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Escape</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CClosedDoor.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\ClosedDoor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -788,6 +791,9 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Escape">
       <UniqueIdentifier>{05eb8e2c-8b23-4be5-9f2a-e7ab04e88485}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\ClosedDoor">
+      <UniqueIdentifier>{28e52337-7416-45ad-8759-b92f092a77ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1131,6 +1137,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMJackyEscapeState.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Escape</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CClosedDoor.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\ClosedDoor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

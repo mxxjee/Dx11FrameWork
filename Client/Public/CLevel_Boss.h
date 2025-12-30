@@ -32,13 +32,16 @@ public:
     HRESULT                 Ready_Layer_Enviroment(const _wstring& strLayerTag);
     HRESULT                 Ready_Layer_Monster(const _wstring& strLayerTag);
     HRESULT                 Ready_Layer_Interaction(const _wstring& strLayerTag);
-
+    HRESULT                 Ready_Layer_Trigger(const _wstring& strLayerTag);
     HRESULT                 Ready_Events();
 public:
     virtual void        OnEnter() override;           //씬 진입시 매번호출
     virtual void        OnResume(_uint iPreLevel) override;              //pause되었다가 active되었을때 호출
     virtual void        OnPause(_uint iNextLeve) override;               //pause되었을때 호출
     virtual void        OnExit() override;
+
+public:
+    void        Close_Door();
 public:
     static  CLevel_Boss* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args);
     virtual     void        Free();

@@ -82,6 +82,8 @@
 #include "CInteraction_JackyBall.h"
 
 #include "CM_Jacky.h"
+#include "CClosedDoor.h"
+
 
 
 USING(Client)
@@ -738,7 +740,8 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Interaction_JackyIronBall", CInteraction_JackyBall::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
-
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"CloseDoor", CClosedDoor::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
     return S_OK;
 }
 

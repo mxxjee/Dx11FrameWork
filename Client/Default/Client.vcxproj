@@ -156,6 +156,7 @@
     <ClInclude Include="..\Public\CCameraDebugWindow.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\CClosedDoor.h" />
     <ClInclude Include="..\Public\CDialogue_Manager.h" />
     <ClInclude Include="..\Public\CDungeonBlock.h" />
     <ClInclude Include="..\Public\CEventTrigger.h" />
@@ -291,6 +292,7 @@
     <ClCompile Include="..\Private\CCameraDebugWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\CClosedDoor.cpp" />
     <ClCompile Include="..\Private\CDialogue_Manager.cpp" />
     <ClCompile Include="..\Private\CDungeonBlock.cpp" />
     <ClCompile Include="..\Private\CEventTrigger.cpp" />
