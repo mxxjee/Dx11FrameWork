@@ -139,18 +139,18 @@ HRESULT CLevel_Boss::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
 #pragma region 벽 충돌체 생성
     _float4 vPos[] = {
-        _float4(12.861f,-0.361f,7.947f,1.f),
-        _float4(12.578f,-0.438f,18.303f,1.f),
-        _float4(6.566f,-1.0f,12.738f,1.f),
-        _float4(18.989f,-1.0f,12.738f,1.f),
+        _float4(12.444f,-0.361f,7.117f,1.f),
+        _float4(12.611,-0.361f,18.303f,1.f),
+        _float4(6.564f,-1.0f,12.738f,1.f),
+        _float4(19.734f,-1.0f,12.738f,1.f),
         _float4(12.687,0.f,12.685,1.f)
     };
 
     _float3 vExtents[] = {
-        _float3(6.8f,3.4f,0.3f),
-        _float3(6.8f,3.4f,0.3f),
-        _float3(0.2f,4.0f,5.6f),
-        _float3(0.2f,4.0f,5.6f),
+        _float3(6.8f,3.4f,0.2f),
+        _float3(6.8f,3.4f,0.2f),
+        _float3(0.2f,4.0f,5.8f),
+        _float3(0.2f,4.0f,5.8f),
         _float3(6.f,0.1f,4.5f)
 
     };

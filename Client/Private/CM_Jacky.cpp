@@ -11,6 +11,9 @@
 ///////////STates////
 #include "CMJackyIdleState.h"
 #include "CMJackyRunState.h"
+#include "CMonsterDamageState.h"
+#include "CMonsterDeadState.h"
+
 
 #include "CGameManager.h"
 #include "CAnimation.h"
@@ -76,7 +79,9 @@ void CM_Jacky::Update_Priority(_float fTimeDelta)
 
 void CM_Jacky::Update(_float fTimeDelta)
 {
+    Check_Escape();
     Setting_Target();
+
     if (m_bRotate)
     {
         if (m_pTarget)
@@ -132,6 +137,7 @@ void CM_Jacky::Register_Anim()
 
         m_pMonsterBody->Register_AnimKey(ENUM_TO_UINT(CM_Jacky::JackyState::ESCAPE), L"escape");
 
+        m_pMonsterBody->Register_AnimKey(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DIE), L"dead");
 
 
     }
@@ -203,6 +209,7 @@ void CM_Jacky::Register_Anim()
     m_pMonsterBody->Set_Animation_Speed(L"lifting_move", 65.f);
     m_pMonsterBody->Set_Animation_Speed(L"throw", 50.f);
     m_pMonsterBody->Set_Animation_Speed(L"escape", 50.f);
+    m_pMonsterBody->Set_Animation_Speed(L"damage", 50.f);
 
 }
 
@@ -255,6 +262,10 @@ HRESULT CM_Jacky::Ready_States()
    
    m_States.emplace(CM_Jacky::JackyState::ESCAPE, CMJackyEscapeState::Create());
 
+   m_States.emplace(CMonster::MONSTER_BASE_STATE::DAMAGE, CMonsterDamageState::Create());
+
+
+   m_States.emplace(CM_Jacky::MONSTER_BASE_STATE::DIE, CMonsterDeadState::Create());
 
 
 
@@ -295,7 +306,13 @@ void CM_Jacky::Enter_State(int newState)
 
     case ENUM_TO_UINT(CM_Jacky::JackyState::ESCAPE):
     {
-        /*처음들어왔을때 방향갱신*/
+       
+        _vector vMyPos = m_pTransformCom->Get_State(STATE::POSITION);
+        _vector vPlayerPos = XMVector3Normalize(m_pTransformCom->Get_State(STATE::LOOK) * (-1.f));
+
+
+        m_vTargetPos = vMyPos + XMVector3Normalize(vMyPos - vPlayerPos);
+
 
     }
 
@@ -334,6 +351,7 @@ void CM_Jacky::AIState_Change(_float fTimeDelta)
 
         break;
     case Client::CMonster::MONSTER_BASE_STATE::DAMAGE:
+        Damage_Behavior(fTimeDelta);
         break;
     case Client::CMonster::MONSTER_BASE_STATE::DIE:
         break;
@@ -404,6 +422,10 @@ void CM_Jacky::Idle_Behavior(_float fTimeDelta)
 void CM_Jacky::Walk_Behavior(_float fTimeDelta)
 {
     /*던지기상태 설정*/
+
+    m_pTransformCom->Set_Speed(m_fInitSpeed);
+
+
     m_fThrowTime += fTimeDelta;
     if (m_fThrowTime >= m_fThrowTargetTime && Is_Carrying())
     {
@@ -439,6 +461,14 @@ void CM_Jacky::Walk_Behavior(_float fTimeDelta)
 
 void CM_Jacky::Escape_Behavior(_float fTimeDelta)
 {
+    m_pTransformCom->Set_Speed(m_fInitSpeed*1.5f);
+
+    //도망가라.
+    //
+   
+
+    m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta, Space::Local, m_pNavigationCom);
+
 
 }
 
@@ -461,9 +491,34 @@ void CM_Jacky::Setting_Target()
     }
 }
 
+void CM_Jacky::Check_Escape()
+{
+    CGameObject* pOwner = m_pChaseTarget->Get_Owner();
+
+    if (pOwner != nullptr)
+    {
+        if (pOwner != this)
+            m_JackyActionInput.bEscape = true;
+
+    }
+
+    else
+        m_JackyActionInput.bEscape = false;
+
+}
+
 void CM_Jacky::Grab(CInteractionObject* pObj)
 {
+    CheckTrue(m_iState == ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DAMAGE) ||
+        m_iState == ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DIE));
+
+
     CheckTrue(m_JackyActionInput.bLift);
+    CheckTrue(m_ActionControl.m_bDamage == 1.f);
+
+    if (m_pChaseTarget->Get_Owner() != nullptr)
+        return;
+
 
     m_JackyActionInput.bLift = true;
     pObj->Set_InteractionMode(true);
@@ -539,4 +594,52 @@ string CM_Jacky::Convert_String_To_Enum(_uint eState)
 
 
     return StateDebugStr;
+}
+
+void CM_Jacky::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
+{
+    CheckFalse(m_bCanCollision);
+    CheckTrue(m_ActionControl.m_bDamage == 1.f);
+    CheckTrue(Is_Carrying());
+
+    CGameObject* pOwner = pOther->Get_Owner();
+    CheckNull(pOwner);
+
+    switch (COLLISION_GROUP(iGroup))
+    {
+    case COLLISION_GROUP::INTERACTION:
+    {
+        if (pOwner->Get_Tag() == L"JackyIronBall0")
+        {
+            CGameObject* pBallOwner = m_pChaseTarget->Get_Owner();
+            CheckNull(pBallOwner);//오너가 없으면 그냥 굴러가는 볼
+
+            if (pBallOwner != this)
+            {
+                m_ActionControl.m_bDamage = 1.f;
+                --iHp;
+
+                if (pBallOwner)
+                {
+
+                    //pOther을 바라보고,
+                    m_pTransformCom->LookAt(pBallOwner->Get_Transform());
+
+                    _float3 vDir;
+                    XMStoreFloat3(&vDir, m_pTransformCom->Get_State(STATE::LOOK));
+                    m_pTransformCom->AddImpulse(-0.3f, vDir);
+
+                }
+            }
+
+            
+
+        }
+        
+    }
+
+    break;
+    }
+
+
 }

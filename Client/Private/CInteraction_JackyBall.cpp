@@ -6,6 +6,8 @@
 #include "Client_Defines.h"
 #include "CStaticBody.h"
 
+#include "CMonsterDeadState.h"
+
 #include "CPlayer.h"
 #include "CM_Jacky.h"
 
@@ -75,6 +77,16 @@ void CInteraction_JackyBall::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
 
+    if (!CanInteractive)
+    {
+        m_fTime += fTimeDelta;
+        if (m_fTime >= m_fInteractionCoolTime)
+        {
+            m_fTime = 0.f;
+            CanInteractive = true;
+        }
+           
+    }
     if (m_bInteraction && m_pSocketMatrix)
     {
         _matrix SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix);
@@ -90,6 +102,7 @@ void CInteraction_JackyBall::Update(_float fTimeDelta)
         XMStoreFloat4x4(&WorldMat, ParentMatrix);
         m_pTransformCom->Set_WorldMatrix(WorldMat);
 
+        m_pCollider->Set_Active(false);
     }
 
     else
@@ -113,8 +126,12 @@ void CInteraction_JackyBall::Update_Late(_float fTimeDelta)
 
 bool CInteraction_JackyBall::IsInteratable()
 {
+    CheckFalseResult(CanInteractive,false);
+
     CheckTrueResult(m_bInteraction,false);
     CheckNullResult(m_pTriggerBox, false);
+    CheckTrueResult(m_pOwner != nullptr,false);
+
     bool bResult=m_pTriggerBox->Is_Collision();
     
     if (bResult)
@@ -174,6 +191,8 @@ void CInteraction_JackyBall::Enter_InteractRange()
 
 void CInteraction_JackyBall::Exit_InteractRange()
 {
+    CheckTrue(m_bInteraction);
+    m_pGameInstance->BroadCastEvent(L"OnCarryUIHide", (void*)nullptr);
 
 }
 
@@ -191,7 +210,6 @@ void CInteraction_JackyBall::Enter_Interaction()
     m_pPlayer->Get_ActionControl()->m_bCarry = true;
     m_pGameInstance->SetActiveGroup(L"Interaction_PopUp_Carry", false);
 
-    m_pOwner = m_pPlayer;
 
 }
 
@@ -211,7 +229,28 @@ void CInteraction_JackyBall::Exit_Interaction()
 
     }
 
-    m_pOwner = nullptr;
+}
+
+void CInteraction_JackyBall::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
+{
+    CGameObject* pOtherOwner = pOther->Get_Owner();
+    CheckNull(pOtherOwner);
+    CheckNull(m_pOwner);
+
+    //자신의 오너가 아닌사람과 충돌했다면, 땅에떨어지도록한다.
+    if (pOtherOwner != m_pOwner)
+    {
+        _vector vOtherPos = pOtherOwner->Get_Transform()->Get_State(STATE::POSITION);
+        _vector vPos = m_pTransformCom->Get_State(STATE::POSITION);
+
+        //밀려나는방향
+        _vector vDir = vPos - vOtherPos;
+        _float3 fVdir;
+        XMStoreFloat3(&fVdir, vDir);
+
+        m_pTransformCom->AddImpulse(0.4f, fVdir, m_pNavigationCom);
+        Set_InteractionMode(false);
+    }
 
 }
 
@@ -302,7 +341,14 @@ void CInteraction_JackyBall::Set_InteractionMode(bool b)
         if (pJackey)
         {
             pJackey->Get_JackyActionInput()->bLift = false;
-            Exit_Interaction();
+           
+
         }
+
+
+        Exit_Interaction();
+        m_pOwner = nullptr;
+        CanInteractive = false;
+        
     }
 }

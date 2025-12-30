@@ -26,6 +26,27 @@ void CMJackyEscapeState::Enter(CMonster* pMonster)
 
 void CMJackyEscapeState::Update(CMonster* pMonster, _float fTimeDelta)
 {
+	if (m_pActionControl->m_bDead)
+	{
+		pMonster->Change_State(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DIE));
+		return;
+	}
+
+
+	CheckTrue(pMonster->Is_Dead());
+
+	if (m_pActionControl->m_bDamage == 1.f)
+	{
+		pMonster->Change_State(ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::DAMAGE));
+		return;
+
+	}
+
+	if (!m_pJacky->Get_JackyActionInput()->bEscape)
+	{
+		pMonster->Change_State(ENUM_TO_UINT(CMonster::WALK));
+		return;
+	}
 }
 
 void CMJackyEscapeState::Update_Late(CMonster* pMonster, _float fTimeDelta)
@@ -38,4 +59,8 @@ void CMJackyEscapeState::Exit(CMonster* pMonster)
 
 void CMJackyEscapeState::Check_Always(CMonster* pMonster, _float fTimeDelta)
 {
+	__super::Check_Always(pMonster, fTimeDelta);
+
+
+
 }

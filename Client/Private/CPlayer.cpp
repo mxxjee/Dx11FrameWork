@@ -22,7 +22,7 @@
 #include "CGameManager.h"
 #include "CInventory_Manager.h"
 #include "CMagicPowder.h"
-
+#include "CInteraction_JackyBall.h"
 
 
 
@@ -1288,12 +1288,26 @@ bool CPlayer::Set_CarryAndThrowState(CInteractionObject* pObj)
     //들고있는경우에는 carry모드 , 아니라면 throwmode
     if (m_ActionControl.m_bCarry)
     {
+        CInteraction_JackyBall* pBall = dynamic_cast<CInteraction_JackyBall*>(pObj);
+        if (pBall->Get_Owner() != nullptr)
+            return false;
+
+
         Change_State(ENUM_TO_UINT(PLAYER_STATE::CARRY));
         m_CarryObject = pObj;
+
+      
+
+        if (pBall)
+            pBall->Set_Owner(this);
 
         pObj->Set_InteractionMode(true);
         pObj->Set_ParentMatrix(m_pTransformCom->Get_WorldMatrixPtr());
         pObj->Set_SocketMatrix(m_pBody->Get_SocketMatrix("itemA_L"));
+        
+       
+
+
         return true;
 
     }
@@ -1302,7 +1316,6 @@ bool CPlayer::Set_CarryAndThrowState(CInteractionObject* pObj)
     { 
         CheckNullResult(m_CarryObject,false);
         m_CarryObject->Throw();
-        pObj->Set_InteractionMode(false);
         m_CarryObject = nullptr;
 
         return false;
@@ -1347,7 +1360,10 @@ void CPlayer::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
     {
     case Client::COLLISION_GROUP::MONSTER:
     case Client::COLLISION_GROUP::MONSTER_WEAPON:
-    {   m_ActionControl.m_fDamage =1.f;
+    {   
+       
+        if(!m_ActionControl.m_bCarry)
+            m_ActionControl.m_fDamage =1.f;
 
     _vector vDir = (pOwner->Get_Transform()->Get_State(STATE::POSITION))
         - (m_pTransformCom->Get_State(STATE::POSITION));
@@ -1429,8 +1445,29 @@ void CPlayer::Check_Interaction_Collision(CCollider_Base* pOther)
     //들고있는상태에선 밀어내는동작X
     CheckTrue(m_ActionControl.m_bCarry || m_ActionControl.m_bPush);
 
+
     CGameObject* pOtherOwner = pOther->Get_Owner();
     CheckNull(pOtherOwner);
+
+    if (pOtherOwner->Get_Tag() == L"JackyIronBall0")
+    {
+        CInteraction_JackyBall* pJackyBall = dynamic_cast<CInteraction_JackyBall*>(pOtherOwner);
+        CheckNull(pJackyBall);
+
+        CGameObject* pBallOwner = pJackyBall->Get_Owner();
+        CheckTrue(pBallOwner == nullptr);
+        
+        if (pBallOwner != this)
+        {
+            m_ActionControl.m_fDamage = 1.f;
+
+            _vector vDir = (pBallOwner->Get_Transform()->Get_State(STATE::POSITION))
+                - (m_pTransformCom->Get_State(STATE::POSITION));
+
+            m_bHitFront = m_pTransformCom->IsFront(vDir);
+            m_bCanCollision = false;
+        }
+    }
 
     CIInteractable* pInteratable = dynamic_cast<CIInteractable*>(pOtherOwner);
     CheckNull(pInteratable);

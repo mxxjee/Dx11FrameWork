@@ -89,4 +89,7 @@ void CMJackyRunState::Check_Always(CMonster* pMonster, _float fTimeDelta)
 	if (m_pJacky->Get_JackyActionInput()->bLift)
 		pMonster->Change_State(ENUM_TO_UINT(CM_Jacky::JackyState::LIFTING));
 
+	if (m_pJacky->Get_JackyActionInput()->bEscape)
+		pMonster->Change_State(ENUM_TO_UINT(CM_Jacky::JackyState::ESCAPE));
+
 }

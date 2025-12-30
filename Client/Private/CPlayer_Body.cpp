@@ -177,7 +177,7 @@ HRESULT CPlayer_Body::Ready_Animation_Speed()
 	m_pModel->Set_Animation_Speed(L"item_get_ed", 50.f);
 
 
-	m_pModel->Set_Animation_Speed(L"carry", 50.f);
+	m_pModel->Set_Animation_Speed(L"carry", 60.f);
 	m_pModel->Set_Animation_Speed(L"jump_carry", 70.f);
 	m_pModel->Set_Animation_Speed(L"talk", 70.f);
 

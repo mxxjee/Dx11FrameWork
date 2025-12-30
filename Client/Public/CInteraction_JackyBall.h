@@ -25,9 +25,14 @@ public:
     virtual void Enter_Interaction() override;
     virtual void Stay_Interaction(_float fTimeDelta) override;
     virtual void Exit_Interaction() override;
+
+public:
+    virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther);
+
 public:
             //누가잡았는지 세팅하는 함수
     void        Set_Owner(CGameObject* pOwner) { m_pOwner = pOwner; }
+    CGameObject* Get_Owner() { return m_pOwner; }
     virtual void        Throw();
     wstring                Print_Owner();
 public:
@@ -44,6 +49,11 @@ public:
 private:
     CInteraction_TriggerBox* m_pTriggerBox = nullptr;
     class       CGameObject* m_pOwner = nullptr;
+
+    bool            CanInteractive = true;
+    _float           m_fInteractionCoolTime = 0.5f;
+    _float           m_fTime = 0.f;
+
 };
 NS_END
 

@@ -89,6 +89,7 @@ void CInteractionObject::Update(_float fTimeDelta)
     __super::Update(fTimeDelta);
 	if (m_bPhysics)
 	{
+        m_pCollider->Set_Active(true);
 		m_pTransformCom->UpdateImpulse(fTimeDelta, nullptr,true);
          
          /*XMStoreFloat3(&Pos, m_pTransformCom->Get_State(STATE::POSITION));
@@ -104,7 +105,7 @@ void CInteractionObject::Update(_float fTimeDelta)
          if (Pos.y <= CellY)
          {
              m_pCollider->Set_Trigger(false);
-
+             
              m_bPhysics = false;
              Pos.y = CellY;
              m_pTransformCom->Set_State(STATE::POSITION,

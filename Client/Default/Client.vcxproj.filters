@@ -361,6 +361,9 @@
     <ClInclude Include="..\Public\CMJackyThrowState.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Throw</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CMJackyEscapeState.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Escape</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1125,6 +1128,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMJackyThrowState.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Throw</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMJackyEscapeState.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Monster\Jacky\JackyState\Escape</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

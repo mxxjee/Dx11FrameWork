@@ -73,7 +73,7 @@ public:
 
 
     void                    Setting_Target();   // 매프레임마다 상태에 따라서 타겟세팅
-    
+    void                    Check_Escape();
 
 public:
     void        Set_ChaseTargetObj(CInteraction_JackyBall* pObj) { m_pChaseTarget = pObj; }
@@ -84,6 +84,9 @@ public:
     
     void        Grab(CInteractionObject* pObj);
     void        Throw();
+
+public:
+
 public:
     CM_Jacky::JackyActionInput* Get_JackyActionInput() { return &m_JackyActionInput; }
 
@@ -95,6 +98,8 @@ private:
 
 public:
     virtual string Convert_String_To_Enum(_uint eState);
+    virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther);
+
 private:
     bool        m_bCanMove = false;       //true면움직임 시작, false면 움직임X
 
