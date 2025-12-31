@@ -177,11 +177,11 @@ HRESULT CLevel_Boss::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
 #pragma region 벽 충돌체 생성
     _float4 vPos[] = {
-        _float4(12.444f,-0.361f,7.117f,1.f),
+        _float4(12.444f,-0.361f,7.917f,1.f),
         _float4(12.611,-0.361f,18.303f,1.f),
-        _float4(6.564f,-1.0f,12.738f,1.f),
+        _float4(6.364f,-1.1f,12.938f,1.f),
         _float4(18.734f,-1.0f,12.738f,1.f),
-        _float4(12.687,0.f,12.685,1.f)
+        _float4(12.687,0.2f,12.685,1.f)
     };
 
     _float3 vExtents[] = {
@@ -268,47 +268,6 @@ HRESULT CLevel_Boss::Ready_Layer_Interaction(const _wstring& strLayerTag)
     CMapLoader::Make_Object_By_LoadData("Level_Boss", pInteractionLayer);
 
 
-  /*  CInteractionObject::Interaction_DESC Desc;
-    Desc.eInteractionType = ENUM_TO_UINT(InteractionType::OBJECT);
-    Desc.eInteract_Object_Type = InteractionType::OBJECT;
-    Desc.m_iLevelID = m_iLevelID;
-
-    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
-    Desc.ModelName = L"Rock";
-
-    Desc.SceneName = "Level_Boss";
-    Desc.bAnimated = false;
-    Desc.ObjTag = L"JackyIronBall";
-    
-    vector<CCell*>* m_Cells = m_pGameInstance->Get_MainCells();
-    _vector vPos = (*m_Cells)[23]->Get_CenterPos()+XMVectorSet(0.f,1.f,0.f,0.f);
-
-
-    CTransform::TRANSFORM_DESC TransDesc;
-    XMStoreFloat4(&TransDesc.vLocalPosition, vPos);
-    TransDesc.vLocalScale = _float4(1.f, 1.f, 1.f, 1.f);
-    TransDesc.vLocalRotation = _float4(0.f, 0.f, 0.f, 1.f);
-
-    Desc.TransformDesc = &TransDesc;
-
-
-    CBoxColliderComponent::COLLIDER_DESC ColDesc;
-    ColDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::INTERACTION);
-    CBounding_AABB::BOUNDING_AABB_DESC aabbDesc;
-    aabbDesc.vCenter = _float3(0.f,0.f,0.f);
-    aabbDesc.Extents = _float3(0.25f, 0.25f, 0.25f);
-
-    ColDesc.m_BoundingDesc = &aabbDesc;
-    ColDesc.m_iLevelID = m_iLevelID;
-    Desc.pColliderComp = &ColDesc;
-
-    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-        PROTO_OBJ_NAME(L"Interaction_JackyIronBall"),
-        m_iLevelID,
-        L"Interaction_Layer", &Desc)))
-        return E_FAIL;*/
-
-
     return S_OK;
 }
 
@@ -322,16 +281,19 @@ HRESULT CLevel_Boss::Ready_Layer_Trigger(const _wstring& strLayerTag)
     Enter_Boss_Desc.m_iLevelID = m_iLevelID;
 
     CTransform::TRANSFORM_DESC EventTransform;
-    EventTransform.vLocalPosition = _float4(12.761f, 1.f, 16.565f, 1.f);
+    EventTransform.vLocalPosition = _float4(12.861f, 0.2f, 16.065f, 1.f);
 
     Enter_Boss_Desc.TransformDesc = &EventTransform;
     Enter_Boss_Desc.EnterFunc = [this]()
     {
-
+        //여러이벤트 실행
         GameEvent Event;
         Event.Name = "CloseDoor";
-
         m_pGameInstance->Emit(Event);
+
+        Event.Name = "Start_Boss";
+        m_pGameInstance->Emit(Event);
+
 
 
     };

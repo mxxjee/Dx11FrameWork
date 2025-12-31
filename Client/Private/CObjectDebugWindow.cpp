@@ -32,7 +32,10 @@ void CObjectDebugWindow::Update()
 
     if (pSelectObject)
     {
-        pSelectObject->Render_Transform_Imgui();
+        CTransform* pTransform = nullptr;
+        if (pTransform = pSelectObject->Get_Transform())
+            pTransform->OnInspectorUI();
+
 
         if (pSelectModelObj)
         {

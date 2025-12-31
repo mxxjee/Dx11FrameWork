@@ -57,6 +57,10 @@ HRESULT CM_Jacky::Initialize_Copytype(void* pArg)
     if (FAILED(Ready_States()))
         return E_FAIL;
 
+    if (FAILED(Ready_EventLisnters()))
+        return E_FAIL;
+
+
     if (m_pNavigationCom)
     {
         m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
@@ -273,12 +277,32 @@ HRESULT CM_Jacky::Ready_States()
     return S_OK;
 }
 
+HRESULT CM_Jacky::Ready_EventLisnters()
+{
+    m_pGameInstance->RegisterListners("Start_Boss", [this](const GameEvent event)
+        {
+            m_bStart = true;
+
+            m_pGameInstance->Invoke(2.f, false, false, false, [this]()
+                {
+                    //대기 후 1초뒤 양옆으로이동
+                    m_ActionControl.m_bMove = true;
+                }, this);
+
+        });
+
+
+    return S_OK;
+}
+
 void CM_Jacky::Enter_State(int newState)
 {
     switch (newState)
     {
     case ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::IDLE):
     {
+        CheckFalse(m_bStart);
+
         m_pGameInstance->Invoke(2.f, false, false, false, [this]()
             {
                 //대기 후 1초뒤 양옆으로이동

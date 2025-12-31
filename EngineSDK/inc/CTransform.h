@@ -93,7 +93,7 @@ public:
     
     void    LookAtSmooth(_vector vTargetPos, float fLerpSpped, float fTimeDelta);
     void    LookAtSmooth_Quaternion(_vector vTargetPos, float fTurnSpeed, float fTimeDelta);
-  
+    void    LookAtSmooth_Second(_vector vTargetPos, float fTime, float fTimeDelta);
                 //거리만족하면 true(멈춤), 아니라면 false(쫓아가고있는 중 반환)
     bool    Chase(_vector vPoint, _float fTimeDelta,class CNavigation* pNavigation=nullptr, _float MinDistance = 0.f);    //최소 거리 까지만 쫓아간다.
 

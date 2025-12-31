@@ -42,6 +42,7 @@ private:
     void                    Register_Anim();
     HRESULT                 Ready_Components(void* pArg);
     HRESULT                 Ready_States();
+    HRESULT                 Ready_EventLisnters();
 
 public:
     virtual void        Enter_State(int newState);
@@ -112,6 +113,9 @@ private:
     _float          m_fThrowTime = 0.f;
     _float          m_fThrowTargetTime = 0.f;
 
+
+    /// 트리거박스밟으면 활성화. 공격시작
+    bool            m_bStart = false;
 };
 NS_END
 
