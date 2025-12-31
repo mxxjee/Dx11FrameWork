@@ -51,7 +51,7 @@ private:
     class       CGameObject* m_pOwner = nullptr;
 
     bool            CanInteractive = true;
-    _float           m_fInteractionCoolTime = 0.5f;
+    _float           m_fInteractionCoolTime = 1.f;
     _float           m_fTime = 0.f;
 
 };

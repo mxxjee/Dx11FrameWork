@@ -54,6 +54,10 @@ HRESULT CNPC_Fairy::Initialize_Prototype(void* pArg)
     Enter_Interaction_Event.Payload.Floats.at("Float_Y") = 7.5f;
     Enter_Interaction_Event.Payload.Floats.at("Float_Z") = -5.f;
 
+    m_ipressionIdx_Eye[EXPRESSION::HAPPY] = 2;
+    m_ipressionIdx_Mouth[EXPRESSION::HAPPY] = 2;
+
+
     return S_OK;
 }
 

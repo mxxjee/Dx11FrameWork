@@ -343,14 +343,17 @@ bool CTransform::RotateLerp(_vector vTargetRot, float fLerpSpeed, float fTimeDel
 
 }
 
-void CTransform::AddPosition(_float3 vPos)
+void CTransform::AddPosition(_float3 vPos, CNavigation* pNavigation)
 {
 	_vector vCurPos = Get_State(STATE::POSITION);
 	_vector vMovePower = XMLoadFloat3(&vPos);
 
-	Set_State(STATE::POSITION, vCurPos + vMovePower);
+	_vector vPosition = vCurPos + vMovePower;
+	if (pNavigation == nullptr || pNavigation->isMove(vPosition))
+		Set_State(STATE::POSITION, vPosition);
 
 }
+
 
 bool CTransform::IsFront(_vector vDir)
 {

@@ -178,6 +178,7 @@ HRESULT CPlayer_Body::Ready_Animation_Speed()
 
 
 	m_pModel->Set_Animation_Speed(L"carry", 60.f);
+
 	m_pModel->Set_Animation_Speed(L"jump_carry", 70.f);
 	m_pModel->Set_Animation_Speed(L"talk", 70.f);
 
@@ -279,6 +280,14 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 
 	}
 
+	/*pAnim = m_pModel->Find_Animation(L"throw");
+	if (pAnim)
+	{
+		Event.Name = "PlayerOnThrow";
+		pAnim->AddNotify(3, Event);
+
+	}*/
+
 	//item_get_st
 	pAnim = m_pModel->Find_Animation(L"item_get_st");
 	if (pAnim)
@@ -364,6 +373,20 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 
 
 		});
+
+	// 프레임맞춰서 던지기
+	//m_pGameInstance->RegisterListners("PlayerOnThrow", [](const GameEvent& event)
+	//	{
+	//		CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
+
+	//		CIInteractable* pObj = CInteraction_Manager::GetInstance()->Get_PreTarget();
+	//		if (pPlayer)
+	//			pPlayer->Set_CarryAndThrowState(dynamic_cast<CInteractionObject*>(pObj));
+
+
+
+
+	//	});
 
 	//파우더
 	m_pGameInstance->RegisterListners("PlayerPowder", [](const GameEvent& event)

@@ -2,6 +2,8 @@
 #include "CScreenQuad.h"
 #include "CGameInstance.h"
 #include "CInput_Manager.h"
+#include "CGameManager.h"
+#include "CUICreator.h"
 
 
 CLevel_UI::CLevel_UI(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
@@ -22,11 +24,7 @@ HRESULT CLevel_UI::Initialize(LevelArgs& args)
 void CLevel_UI::Update_Priority(_float fTimeDelta)
 {
 	__super::Update_Priority(fTimeDelta);
-	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::P))
-		m_pGameInstance->Pop_Level() ;
 
-	/*if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::P))
-		m_pGameInstance->SaveTextureToFile(L"RenderBehind", L"../../ScreenShots/1.png");*/
 
 }
 
@@ -66,18 +64,27 @@ void CLevel_UI::OnEnter()
 			pScreenQuad->Make_ScreenShot(pTexture);
 
 	}
+
+	CGameManager::GetInstance()->Set_OpenInventory(true);
+	
 }
 
 void CLevel_UI::OnResume(_uint iPreLevel)
 {
+	CGameManager::GetInstance()->Set_OpenInventory(true);
+
 }
 
 void CLevel_UI::OnPause(_uint iNextLevel)
 {
+	CGameManager::GetInstance()->Set_OpenInventory(false);
+
 }
 
 void CLevel_UI::OnExit()
 {
+	CGameManager::GetInstance()->Set_OpenInventory(false);
+
 }
 
 CLevel_UI* CLevel_UI::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)
@@ -126,6 +133,10 @@ HRESULT CLevel_UI::Ready_Layer_UI(const _wstring& strLayerTag)
 		PROTO_OBJ_NAME(L"ScreenQuad"),
 		ENUM_TO_UINT(LEVEL_ID::UI),
 		strLayerTag, &Desc)))
+		return E_FAIL;
+
+
+	if (FAILED(UICreator::Create_InventorySceneSlot(strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

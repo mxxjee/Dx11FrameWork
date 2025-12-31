@@ -78,8 +78,8 @@ public:
     bool        Get_IsAnimFinished() { return m_isAnimFinished; }
 
 public:
-    CMeshComponent* Get_Mesh(const wstring& Name);
-
+    CMeshComponent*     Get_Mesh(const wstring& Name);
+  
     const UMap<wstring, CMeshComponent*>& Get_Meshs() { return m_Meshs; }
     const UMap<wstring, class CAnimation*>& Get_Anims()   { return m_Animations; }
 

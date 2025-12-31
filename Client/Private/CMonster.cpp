@@ -360,7 +360,7 @@ void CMonster::Push_Behavior(CGameObject* pOther)
 
     _float3 vDir;
     XMStoreFloat3(&vDir, m_pTransformCom->Get_State(STATE::LOOK));
-    m_pTransformCom->AddImpulse(-0.2f, vDir);
+    m_pTransformCom->AddImpulse(-0.2f, vDir,m_pNavigationCom);
 
     m_bCanCollision = false;
     m_pGameInstance->Invoke(2.f, 0.f, false, false, [this]()

@@ -175,6 +175,7 @@
     <ClInclude Include="..\Public\CInteraction_Rock.h" />
     <ClInclude Include="..\Public\Cinteraction_Statue.h" />
     <ClInclude Include="..\Public\CInteraction_TriggerBox.h" />
+    <ClInclude Include="..\Public\CInventorySlot.h" />
     <ClInclude Include="..\Public\CInventory_Manager.h" />
     <ClInclude Include="..\Public\CItem_Manager.h" />
     <ClInclude Include="..\Public\CLevel_Boss.h" />
@@ -258,6 +259,7 @@
     <ClInclude Include="..\Public\CRoom.h" />
     <ClInclude Include="..\Public\CRoomTrigger.h" />
     <ClInclude Include="..\Public\CRoom_Manager.h" />
+    <ClInclude Include="..\Public\CSlot.h" />
     <ClInclude Include="..\Public\CSnow.h" />
     <ClInclude Include="..\Public\CStateDebugWindow.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -311,6 +313,7 @@
     <ClCompile Include="..\Private\CInteraction_Rock.cpp" />
     <ClCompile Include="..\Private\Cinteraction_Statue.cpp" />
     <ClCompile Include="..\Private\CInteraction_TriggerBox.cpp" />
+    <ClCompile Include="..\Private\CInventorySlot.cpp" />
     <ClCompile Include="..\Private\CInventory_Manager.cpp" />
     <ClCompile Include="..\Private\CItem_Manager.cpp" />
     <ClCompile Include="..\Private\CLevel_Boss.cpp" />
@@ -394,6 +397,7 @@
     <ClCompile Include="..\Private\CRoom.cpp" />
     <ClCompile Include="..\Private\CRoomTrigger.cpp" />
     <ClCompile Include="..\Private\CRoom_Manager.cpp" />
+    <ClCompile Include="..\Private\CSlot.cpp" />
     <ClCompile Include="..\Private\CSnow.cpp" />
     <ClCompile Include="..\Private\CStateDebugWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

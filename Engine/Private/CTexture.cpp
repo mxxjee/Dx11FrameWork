@@ -85,6 +85,15 @@ HRESULT CTexture::Bind_ShaderResources(CShader* pShader, const _char* pConstantN
 	return pShader->Bind_SRVs(pConstantName,&m_Raws.front(),m_iNumTextures);
 }
 
+void CTexture::Set_Texture(int Swap1Idx)
+{
+	//(0번) /eye0/eye1/eye2/eye3이렇게저장
+	CheckTrue(m_Textures.size() < Swap1Idx);
+	m_Textures[0] = m_Textures[Swap1Idx+1];
+
+
+}
+
 HRESULT CTexture::Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNumTextures)
 {
 	m_iNumTextures = iNumTextures;
@@ -159,7 +168,9 @@ HRESULT CTexture::Load_Texture(const _tchar* pTextureFilePath)
 
 	//경로 분할 함수
 	_wsplitpath_s(pTextureFilePath, szDrive, MAX_PATH, szDir, MAX_PATH, nullptr, 0, szEXT, MAX_PATH);
-
+	fs::path Path(pTextureFilePath);
+	string Name = Path.stem().string();
+	
 	ComPtr<ID3D11ShaderResourceView> pSRV;
 
 
@@ -177,7 +188,10 @@ HRESULT CTexture::Load_Texture(const _tchar* pTextureFilePath)
 	if (FAILED(hr))
 		return E_FAIL;
 
+
 	m_Textures.push_back(pSRV);
+
+
 	m_Raws.push_back(pSRV.Get());
 
 

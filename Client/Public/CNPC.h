@@ -17,6 +17,12 @@ class CNPC :
     public CAnimModelObject, public CIInteractable
 {
 public:
+    enum EXPRESSION
+    {
+        NORMAL,HAPPY,SAD,SURPRISE,END
+    };
+
+public:
     enum class NPC_STATE
     {
         NONE,WAIT,TALK,END
@@ -32,6 +38,12 @@ public:
 
         bool        bUseNavMesh = true;     //필요에 따라서 navmesh적용을 안시킴.
         _float3      fTargetPoint = _float3(0.f, 0.f, 0.f);  //카메라 타겟정할때 오프셋값( 거리 오프셋이랑은다름)
+       
+        _uint        iExpressionIdxEye[EXPRESSION::END] = { 0,0,0,0 };
+        _uint        iExpressionIdx_Mouth[EXPRESSION::END] = { 0,0,0,0 };
+        _uint        iOpenIdx_Mouth[EXPRESSION::END] = { 1,1,1,1 };
+
+
     }NPC_DESC;
 
 protected:
@@ -105,6 +117,12 @@ protected:
     GameEvent       Enter_Interaction_Event;
     GameEvent       Exit_Interaction_Event;
 
+private:
+    HRESULT                Ready_Expressions();
+
+public:
+    void        Set_Expression(EXPRESSION expression);
+
 protected:
     CDialogue_Manager* m_pDialogue_Manager = nullptr;
     CQuest_Manager* m_pQuest_Manager = nullptr;
@@ -116,8 +134,33 @@ protected:
     class CGameManager* m_pGameManager = nullptr;
     
     bool        m_bWait = false;        //true일떄는 a키눌러도반응 X
+
+ private:
+     void       Update_Mouth(_float fTimeDelta);
 protected:
     EventPayload CameraPayload;
+
+protected:
+    CTexture*       m_pEyeTex=nullptr;
+    CTexture*       m_pMouthTex=nullptr;
+
+    EXPRESSION          m_iCurExPression = EXPRESSION::NORMAL;
+    
+   
+    _uint               m_ipressionIdx_Eye[EXPRESSION::END];
+    _uint               m_ipressionIdx_Mouth[EXPRESSION::END];
+    _uint               m_iOpenIdx_Mouth[EXPRESSION::END];
+
+
+    _uint               m_iTargetIdx_Eye = 0;
+    _uint               m_iTargetIdx_Mouth = 0;
+
+    _uint               m_iOpenIdx = 0;
+
+
+    bool                m_bIsTalking = false;
+    float               m_fMouthOpenTimer = 0.f;
+    float               m_fMouthSpeed = 15.f;   //입 벌리는속도
 };
 
 NS_END

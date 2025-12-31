@@ -367,6 +367,10 @@
     <ClInclude Include="..\Public\CClosedDoor.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\ClosedDoor</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CSlot.h">
+      <Filter>02.GameObjects\99.UI\00.Panel\03.Slot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CInventorySlot.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -794,6 +798,12 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\ClosedDoor">
       <UniqueIdentifier>{28e52337-7416-45ad-8759-b92f092a77ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.UI\00.Panel\03.Slot">
+      <UniqueIdentifier>{6accb66b-68f1-4595-959b-882166c3e578}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.UI\00.Panel\03.Slot\InventorySlot">
+      <UniqueIdentifier>{2fa555e9-2cf7-44ab-b7cd-3a5d65288539}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1141,6 +1151,10 @@
     <ClCompile Include="..\Private\CClosedDoor.cpp">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\03.NormalObj\ClosedDoor</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CSlot.cpp">
+      <Filter>02.GameObjects\99.UI\00.Panel\03.Slot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CInventorySlot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

@@ -63,6 +63,8 @@ HRESULT CNPC_Kid_Blue::Initialize_Prototype(void* pArg)
     //알파값조절을 위한 셰이더
     pModelShader = pModel->Get_Shader();
 
+
+
     return S_OK;
 }
 

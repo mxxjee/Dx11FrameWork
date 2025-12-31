@@ -647,11 +647,15 @@ void CM_Jacky::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
                 {
 
                     //pOther을 바라보고,
-                    m_pTransformCom->LookAt(pBallOwner->Get_Transform());
+                    if (iHp > 0)
+                    {
+                        m_pTransformCom->LookAt(pBallOwner->Get_Transform());
 
-                    _float3 vDir;
-                    XMStoreFloat3(&vDir, m_pTransformCom->Get_State(STATE::LOOK));
-                    m_pTransformCom->AddImpulse(-0.3f, vDir);
+                        _float3 vDir;
+                        XMStoreFloat3(&vDir, m_pTransformCom->Get_State(STATE::LOOK));
+                        m_pTransformCom->AddImpulse(-0.3f, vDir);
+
+                    }
 
                 }
             }

@@ -50,12 +50,13 @@ public:
 public:
     void        Set_FirstLoading(bool b) { m_bFirstLoading = b; }
     void        Set_UseCutScene(bool b) { m_bUseCutScene = b; }
-   
+    void        Set_OpenInventory(bool b) { m_bOpenInventory = b; }
  
 
     bool        Get_IsFirstLoading() { return m_bFirstLoading; }
     bool        Get_UseCutScene() { return m_bUseCutScene;}
 
+    bool        Get_IsOpenInventory() { return m_bOpenInventory; }
 
 private:
     CPlayer* m_pMainPlayer=nullptr;
@@ -68,6 +69,8 @@ private:
     bool        m_bFirstLoading = true;//첫 로딩임을 의미
     bool        m_bUseCutScene = true;
 
+
+    bool        m_bOpenInventory = false;
 
 };
 NS_END

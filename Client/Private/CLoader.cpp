@@ -83,7 +83,7 @@
 
 #include "CM_Jacky.h"
 #include "CClosedDoor.h"
-
+#include "CInventorySlot.h"
 
 
 USING(Client)
@@ -463,6 +463,7 @@ HRESULT CLoader::Register_Textures()
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Interaction/", L".dds");
     m_pGameInstance->Load_Textures(L"../../Resource/UI/NPC/", L".dds");
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Items/", L".dds");
+    m_pGameInstance->Load_Textures(L"../../Resource/UI/Inventory/", L".png");
 
 
     return S_OK;
@@ -659,6 +660,9 @@ HRESULT CLoader::Register_GameObjects()
         return E_FAIL;
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"FontUI", CFontUI::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"InventorySlot", CInventorySlot::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     ////////////////Monsters//////////////////

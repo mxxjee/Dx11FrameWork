@@ -174,6 +174,15 @@ HRESULT CLevel_Spawn::Ready_Layer_NPC(const _wstring& strLayerTag)
     pMarin_Desc.TalkRange = 3.f;
     pMarin_Desc.SceneName = "MarinHouse_Room";
 
+    _uint   iCurIdx[ENUM_TO_UINT(CNPC::EXPRESSION::END)] = {0,2,3,4};
+    _uint   iOpenIdx[ENUM_TO_UINT(CNPC::EXPRESSION::END)] = { 1,7,4,8 };
+
+    memcpy(&pMarin_Desc.iExpressionIdxEye, iCurIdx,sizeof(_uint)*ENUM_TO_UINT(CNPC::EXPRESSION::END));
+    memcpy(&pMarin_Desc.iExpressionIdx_Mouth, iCurIdx, sizeof(_uint) * ENUM_TO_UINT(CNPC::EXPRESSION::END));
+
+    memcpy(&pMarin_Desc.iOpenIdx_Mouth, iOpenIdx, sizeof(_uint) * ENUM_TO_UINT(CNPC::EXPRESSION::END));
+
+
     pMarin_Desc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::SPAWN);
     pMarin_Desc.TransformDesc = &pTransDesc;
 

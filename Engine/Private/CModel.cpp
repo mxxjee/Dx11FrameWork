@@ -633,6 +633,22 @@ CMeshComponent* CModel::Get_Mesh(const wstring& Name)
 	return nullptr;
 }
 
+//CMaterial* CModel::Get_Material(const wstring& MaterialName)
+//{
+//	for (auto& Mesh : m_Meshs)
+//	{
+//		if (Mesh.second)
+//		{
+//			const MeshData meshData=Mesh.second->Get_MeshData();
+//			wstring MaterialInfo = meshData.m_MaterialData.m_MaterialName;
+//
+//			if(MaterialName==MaterialInfo)
+//				return meshData.m_MaterialData
+//		}
+//	}
+//	return nullptr;
+//}
+
 CAnimation* CModel::Find_Animation(const _wstring& Key)
 {
 	auto iter = m_Animations.find(Key);

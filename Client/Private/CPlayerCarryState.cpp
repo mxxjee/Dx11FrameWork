@@ -113,7 +113,7 @@ void CPlayerCarryState::ChangePhase(CPlayer* pPlayer)
 
     case CPlayerCarryState::Phase::Loop:
         {   
-            pPlayer->Reserve_Animation_To_Body(L"throw", false);
+            pPlayer->Reserve_Animation_To_Body(L"throw", false,true);
             m_ePhase = Phase::End;
             pPlayer->Set_CanMove(false);
 

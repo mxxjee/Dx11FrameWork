@@ -22,11 +22,13 @@ public:
 	HRESULT			Bind_ShaderResource(class CShader* pShader, const _char* pConstantName, _uint iTextureIndex);
 	HRESULT			Bind_ShaderResources(class CShader* pShader, const _char* pConstantName);
 
+					//매개변수로 들어온 번쨰의 SRV를 0번 슬롯에 등록한다.
+	void			Set_Texture(int Swap1Idx);
 public:
 	virtual HRESULT Initialize_Prototype(const _tchar* pTextureFilePath, _uint iNumTextures);
 	virtual HRESULT Initialize(void* pArg);
 
-private:
+public:
 	HRESULT			Load_TextureSequence(const _tchar* pTextureFilePath, _uint iNumTextures);
 	HRESULT			Load_Texture(const _tchar* pTextureFilePath);
 
@@ -46,7 +48,7 @@ private:
 	ComPtr<ID3D11DeviceContext>				m_pContext;
 
 private:
-	_uint											m_iNumTextures=1;
+	_uint											m_iNumTextures = 1;
 	vector<ComPtr<ID3D11ShaderResourceView>>			m_Textures;
 	vector<ID3D11ShaderResourceView*>					m_Raws;
 

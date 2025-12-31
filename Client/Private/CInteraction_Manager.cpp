@@ -70,7 +70,11 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 
 		if (inRange)
 			if (!pBest || pInteratable->Get_Interaction_Priority() > pBest->Get_Interaction_Priority())
+			{
+				m_pPreTarget = m_pCurrentTarget;
 				pBest = pInteratable;
+				
+			}
 	}
 
 	m_pCurrentTarget = pBest;

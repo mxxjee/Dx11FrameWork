@@ -35,6 +35,8 @@
     0.0,
     6.5
   ],
+  "Expressions_eye": [ 0, 2, 3, 4 ],
+  "Expressions_Mouth_Open": [ 1, 7, 4, 8 ],
   "RoomName": "MarinHouse",
   "RoomTriggers": [
     {

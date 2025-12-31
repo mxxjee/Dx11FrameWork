@@ -1,0 +1,10 @@
+{
+  "NPC_ModelNames": [
+    "Marin"
+  ],
+  "Expressions_eye": [ 0, 2, 3, 4],
+  "Expressions_Mouth": [0, 2, 3, 4 ],
+  "Expressions_Mouth_Open": [ 1, 7, 4, 8 ]
+
+
+}

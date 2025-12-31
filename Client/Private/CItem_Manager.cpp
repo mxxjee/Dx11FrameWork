@@ -41,7 +41,7 @@ HRESULT CItem_Manager::Initialize()
     m_ItmInfos[ENUM_TO_UINT(ItemType::FEATHER)] = (pFeatherItem);
 
     ITMINFO* pPowerBracelet = new ITMINFO;
-    pPowerBracelet->ItemType = ItemType::FEATHER;
+    pPowerBracelet->ItemType = ItemType::POWER_BRACELET;
     pPowerBracelet->ItemDesc = L"파워팔찌를 얻었다!\n힘이 넘쳐난다!뭐든지 들 수 있을 것 같은 기분!";
     pPowerBracelet->TexKey = L"PowerBracelet";
     m_ItmInfos[ENUM_TO_UINT(ItemType::POWER_BRACELET)] = (pPowerBracelet);

@@ -13,6 +13,10 @@
 #include "CQuest_Manager.h"
 #include "CInteraction_TriggerBox.h"
 #include "CGameManager.h"
+#include "CMaterial.h"
+#include "CTexture.h"
+#include "CInput_Manager.h"
+#include "MathUtils.h"
 
 
 USING(Client)
@@ -53,7 +57,6 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
     pNpcDesc->BodyDesc = &BodyDesc;
 
 
-
     if (FAILED(Ready_Resource(pArg)))
         return E_FAIL;
 
@@ -63,6 +66,10 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
 
     if (FAILED(Ready_PartObjects(pArg)))
         return E_FAIL;
+
+    if (FAILED(Ready_Expressions()))
+        return E_FAIL;
+
 
     m_pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
 
@@ -78,10 +85,25 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
 
     }
     
-    DialogueTag = string(tag.begin(), tag.end());
+
+    DialogueTag = WStringToUTF8(tag);
     m_pGameManager = CGameManager::GetInstance();
+    
+    memcpy(&m_ipressionIdx_Eye, &pNpcDesc->iExpressionIdxEye, sizeof(_uint) * EXPRESSION::END);
+    memcpy(&m_ipressionIdx_Mouth, &pNpcDesc->iExpressionIdx_Mouth, sizeof(_uint) * EXPRESSION::END);
+    memcpy(&m_iOpenIdx_Mouth, &pNpcDesc->iOpenIdx_Mouth, sizeof(_uint) * EXPRESSION::END);
 
 
+    Set_Expression(EXPRESSION::NORMAL);
+
+    if (BodyDesc.modelName == L"Dad")
+    {
+        m_pAnimBody->Set_VisibleMesh(L"leaf_a_low__MI_pineapple", false);
+        m_pAnimBody->Set_VisibleMesh(L"apperhalf_low__MI_pineapple", false);
+        m_pAnimBody->Set_VisibleMesh(L"pineapple_low__MI_pineapple", false);
+
+    
+    }
     return S_OK;
 }
 
@@ -93,6 +115,7 @@ void CNPC::Update_Priority(_float fTimeDelta)
 void CNPC::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
+  
 
 }
 
@@ -110,7 +133,7 @@ void CNPC::Update_Late(_float fTimeDelta)
    
     m_pCollider->Update_Collider(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
 
-
+    Update_Mouth(fTimeDelta);
 }
 
 void CNPC::Update_Render(_float fTimeDelta)
@@ -201,7 +224,7 @@ void CNPC::Enter_Interaction()
 
     m_pDialogue_Manager->StartDialogue(DialogueTag);
 
-   
+    m_bIsTalking = true;
 }
 
 void CNPC::Stay_Interaction(_float fTimeDelta)
@@ -241,6 +264,8 @@ void CNPC::Exit_Interaction()
 
     //pCameraBase->Set_Target(m_pPlayer);
     //pCameraBase->Set_Offset(pCameraBase->Get_InitOffset());
+
+    m_bIsTalking = false;
 }
 
 void CNPC::Pressed_InteractionKey()
@@ -442,4 +467,98 @@ void CNPC::Register_Colliders(_uint iLevelID)
 {
     m_pGameInstance->Register_Collider(m_pCollider, iLevelID);
     m_pTriggerBox->Register_Colliders(iLevelID);
+}
+
+HRESULT CNPC::Ready_Expressions()
+{
+    //눈->모델이름_MI_eye
+    CheckNullResult(m_pAnimBody,E_FAIL);
+    CModel* pModel = m_pAnimBody->Get_Model();
+    wstring ModelName = pModel->Get_ModelData().name;
+
+    wstring FilePath = L"../../Resource/Model/Actor/NPC/" + ModelName + L"/Materials/";
+
+    //눈 사진 추가 바인드
+    CMaterial* pEyeMat = m_pGameInstance->Find_Material(ModelName + L"_MI_eye");
+    if (pEyeMat)
+    {
+        auto pair=pEyeMat->Get_MaterialData()->m_Textures.find(aiTextureType::aiTextureType_DIFFUSE);
+        if (pair == pEyeMat->Get_MaterialData()->m_Textures.end())
+            return E_FAIL;
+
+        m_pEyeTex = pair->second;
+
+        for (int i = 0; i <= 6; ++i)
+        {
+            wstring EyePath = FilePath + L"MI_eye_alb." + to_wstring(i) + L".dds";
+            m_pEyeTex->Load_Texture(EyePath.c_str());
+
+        }
+       
+
+    }
+
+    //입 사진 추가바인드
+    CMaterial* pMouthMat = m_pGameInstance->Find_Material(ModelName + L"_MI_mouth");
+    if (pMouthMat)
+    {
+        auto pair = pMouthMat->Get_MaterialData()->m_Textures.find(aiTextureType::aiTextureType_DIFFUSE);
+        if (pair == pMouthMat->Get_MaterialData()->m_Textures.end())
+            return E_FAIL;
+ 
+        m_pMouthTex = pair->second;
+
+        for (int i = 0; i <=8 ; ++i)
+        {
+            wstring MouthPath = FilePath + L"MI_mouth_alb." + to_wstring(i) + L".dds";
+            m_pMouthTex->Load_Texture(MouthPath.c_str());
+
+        }
+
+
+    }
+
+
+    return S_OK;
+}
+
+void CNPC::Set_Expression(EXPRESSION expression)
+{
+    int iSwapIdx = 0;
+
+    //기분에 따른 눈,입 인덱스 설정
+    m_iTargetIdx_Eye = m_ipressionIdx_Eye[ENUM_TO_UINT(expression)];
+    m_iTargetIdx_Mouth=m_ipressionIdx_Mouth[ENUM_TO_UINT(expression)];
+    m_iOpenIdx = m_iOpenIdx_Mouth[ENUM_TO_UINT(expression)];
+
+
+    CheckNull(m_pEyeTex);
+    m_pEyeTex->Set_Texture(m_iTargetIdx_Eye);
+
+    CheckNull(m_pMouthTex);
+    m_pMouthTex->Set_Texture(m_iTargetIdx_Mouth);
+
+}
+
+void CNPC::Update_Mouth(_float fTimeDelta)
+{
+    CheckNull(m_pMouthTex);
+    if (!m_bIsTalking)
+    {
+        m_pMouthTex->Set_Texture(m_iTargetIdx_Mouth);
+        m_fMouthOpenTimer = 0.f;
+        return;
+    }
+    else
+
+    {
+        m_fMouthOpenTimer += fTimeDelta * m_fMouthSpeed;
+        float wave = sinf(m_fMouthOpenTimer);
+        if (wave > 0.f)
+            m_pMouthTex->Set_Texture(m_iOpenIdx);
+
+        else
+            m_pMouthTex->Set_Texture(m_iTargetIdx_Mouth);
+
+    }
 }

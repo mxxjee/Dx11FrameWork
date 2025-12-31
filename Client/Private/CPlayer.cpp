@@ -1289,17 +1289,18 @@ bool CPlayer::Set_CarryAndThrowState(CInteractionObject* pObj)
     if (m_ActionControl.m_bCarry)
     {
         CInteraction_JackyBall* pBall = dynamic_cast<CInteraction_JackyBall*>(pObj);
-        if (pBall->Get_Owner() != nullptr)
-            return false;
+        if (pBall)
+        {
+            if (pBall->Get_Owner() != nullptr)
+                return false;
+            pBall->Set_Owner(this);
+        }
+ 
 
 
         Change_State(ENUM_TO_UINT(PLAYER_STATE::CARRY));
         m_CarryObject = pObj;
 
-      
-
-        if (pBall)
-            pBall->Set_Owner(this);
 
         pObj->Set_InteractionMode(true);
         pObj->Set_ParentMatrix(m_pTransformCom->Get_WorldMatrixPtr());

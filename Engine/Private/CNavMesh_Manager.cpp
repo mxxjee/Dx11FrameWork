@@ -166,7 +166,11 @@ void CNavMesh_Manager::Set_Shader(CShader* pShader)
 #endif
 void CNavMesh_Manager::Free()
 {
+#ifdef _DEBUG
 	Safe_Release(m_pShader);
+
+
+#endif // _DEBUG
 
 	for(auto& pair: m_LevelCells)
 	{

@@ -39,6 +39,7 @@ public:
 
 public:
     CIInteractable*              Get_CurrentTarget() { return m_pCurrentTarget; }
+    CIInteractable*              Get_PreTarget() { return m_pPreTarget;}
     void                        Reset_CurrentTarget() { m_pCurrentTarget = nullptr; }
     void                        Set_CurrentTarget(CIInteractable* pObj);
 public:
@@ -51,7 +52,10 @@ private:
     CIInteractable*              Find_Object(const CIInteractable* pObj);
 
 private:
+    
     CIInteractable*              m_pCurrentTarget = nullptr;
+    CIInteractable*             m_pPreTarget = nullptr;
+
     list<CIInteractable*>        m_InteractableObjects;  //현재 레벨에 맞는, 필드에 존재하는 모든 상호작용한 오브젝트들을 등록
 
 public:

@@ -259,6 +259,8 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
         NPCModelNames.push_back(ModelName);
 
 
+  
+
     for (auto& PosInfo : PositionIfos)
     {
         if (PosInfo.TargetName == "Player_SpawnPoint")
@@ -350,6 +352,14 @@ void CRoom_Manager::Enter_Room(RoomPackage* pPackage, bool bCached)
 
 HRESULT CRoom_Manager::Load_NPC(const string& RoomName, const wstring& ModelName, _float3 vPos, RoomPackage* pOut)
 {
+    /*Expression등 추가데이터 json읽어오기*/
+    string BaseFilePath = "../../Resource/Data/NPC/";
+
+    string strModelName = WStringToUTF8(ModelName);
+    string FullPath = BaseFilePath + strModelName + ".json";
+
+    ifstream file(FullPath);
+    json jNPCData = json::parse(file);
 
     CNPC::NPC_DESC pDesc;
 
@@ -360,6 +370,41 @@ HRESULT CRoom_Manager::Load_NPC(const string& RoomName, const wstring& ModelName
     pDesc.pTarget = nullptr;
     pDesc.ModelName = ModelName;
     pDesc.SceneName = RoomName;
+    
+    //Expression인덱스받아온다.
+    _uint Expression_Eye[ENUM_TO_UINT(CNPC::EXPRESSION::END)] = {};
+    _uint Expression_Mouth[ENUM_TO_UINT(CNPC::EXPRESSION::END)]={};
+    _uint Expression_Mouth_Open[ENUM_TO_UINT(CNPC::EXPRESSION::END)]={};
+
+    _uint iIdx = 0;
+
+    for (auto& ExpressionEye : jNPCData["Expressions_eye"])
+    {
+        Expression_Eye[iIdx] = ExpressionEye;
+        ++iIdx;
+    }
+
+    iIdx = 0;
+
+    for (auto& ExpressionMouth : jNPCData["Expressions_Mouth"])
+    {
+        Expression_Mouth[iIdx] = ExpressionMouth;
+        ++iIdx;
+    }
+
+    iIdx = 0;
+
+    for (auto& ExpressionMouth : jNPCData["Expressions_Mouth_Open"])
+    {
+        Expression_Mouth_Open[iIdx] = ExpressionMouth;
+        ++iIdx;
+    }
+
+    memcpy(&pDesc.iExpressionIdxEye, Expression_Eye,sizeof(_uint)*CNPC::EXPRESSION::END);
+    memcpy(&pDesc.iExpressionIdx_Mouth , Expression_Mouth, sizeof(_uint) * CNPC::EXPRESSION::END);
+    memcpy(&pDesc.iOpenIdx_Mouth, Expression_Mouth_Open, sizeof(_uint) * CNPC::EXPRESSION::END);
+
+
 
     pDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
     pDesc.TransformDesc = &pTransDesc;
@@ -375,6 +420,8 @@ HRESULT CRoom_Manager::Load_NPC(const string& RoomName, const wstring& ModelName
         }
     }
 
+   
+
     else
     {
         CNPC* pNpc = CNPC::Create(m_pDevice, m_pContext, &pDesc);
@@ -382,8 +429,16 @@ HRESULT CRoom_Manager::Load_NPC(const string& RoomName, const wstring& ModelName
         {
             //Safe_AddRef(pNpc);
             pOut->NPCs.push_back(pNpc);
+            if (ModelName == L"Mom" || ModelName == L"Dad")
+            {
+                pNpc->Set_Expression(CNPC::EXPRESSION::SAD);
+
+            }
             return S_OK;
         }
+
+       
+
 
     }
    

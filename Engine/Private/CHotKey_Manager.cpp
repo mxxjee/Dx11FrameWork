@@ -44,11 +44,19 @@ bool CHotKey_Manager::CheckHotKeyPressed(const HotKey& Key)
     bool bPressedShift = m_pInputManager->IsKeyHeld(KeyCode::LShift);
     bool bCtrl = m_pInputManager->IsKeyHeld(KeyCode::LControl);
 
-    return (bPressedKey && bCtrl) == Key.Ctrl 
-        && (bPressedShift == Key.Shift)
-        && (bPressedAlt == Key.alt);
+    if (Key.Ctrl)
+    {
+        return (bPressedKey && bCtrl) == Key.Ctrl
+            && (bPressedShift == Key.Shift)
+            && (bPressedAlt == Key.alt);
+    }
+ 
+    else
+    {
+        return bPressedKey;
+    }
 
-    return true;
+    return false;
 }
 
 CHotKey_Manager* CHotKey_Manager::Create()

@@ -229,7 +229,35 @@ HRESULT CMainApp::Initialize_Cilent()
 
 #endif // _DEBUG
 
-	
+	//*UISCENE*//
+	m_pGameInstance->Register_HotKey(KeyCode::P, false , false, false, [this]()
+		{
+
+			bool b = CGameManager::GetInstance()->Get_IsOpenInventory();
+			if (b)
+			{
+				CGameInstance::GetInstance()->Pop_Level();
+
+			}
+
+			else
+			{
+				LevelArgs args;
+				args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
+				args.changeType = LEVELCHANGETYPE::PUSH;
+				//args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+				args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
+
+
+				if (FAILED(m_pGameInstance->Level_Changer(
+					ENUM_TO_UINT(LEVEL_ID::UI),
+					args)))
+					return;
+				CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::MAGIC_POWDER, 20);
+
+			}
+
+		});
 
 
 

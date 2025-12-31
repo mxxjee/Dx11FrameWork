@@ -524,6 +524,15 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
     pDesc.TalkRange = 3.f;
 
 
+    _uint        iExpressionIdxEye[CNPC::EXPRESSION::END] = { 0,2,4,3 };
+    _uint        iExpressionIdxMouth[CNPC::EXPRESSION::END] = { 0,2,3,3 };
+    _uint        iMouthOpen[CNPC::EXPRESSION::END] = { 1,1,3,3 };
+
+    memcpy(pDesc.iExpressionIdxEye, iExpressionIdxEye, sizeof(_uint) * CNPC::EXPRESSION::END);
+    memcpy(pDesc.iExpressionIdx_Mouth, iExpressionIdxMouth, sizeof(_uint) * CNPC::EXPRESSION::END);
+    memcpy(pDesc.iOpenIdx_Mouth, iMouthOpen, sizeof(_uint) * CNPC::EXPRESSION::END);
+
+
     pDesc.TransformDesc = &pTransDesc;
 
     CNPC* pNpc_GreenKid = CNPC::Create(m_pDevice, m_pContext, &pDesc);
@@ -583,7 +592,13 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
     pKid_Blue_Desc.m_iLevelID = m_iLevelID;
     pKid_Blue_Desc.TalkRange = 1.f;
   
+    _uint Kid_Blue_iExpressionIdxEye[CNPC::EXPRESSION::END] = { 0,2,4,3};
+    _uint Kid_Blue_iExpressionIdxMouth[CNPC::EXPRESSION::END] = { 0,2,3,3 };
+    _uint Kid_Blue_iMouthOpen[CNPC::EXPRESSION::END] = { 1,1,3,3 };
 
+    memcpy(pKid_Blue_Desc.iExpressionIdxEye, Kid_Blue_iExpressionIdxEye, sizeof(_uint) * CNPC::EXPRESSION::END);
+    memcpy(pKid_Blue_Desc.iExpressionIdx_Mouth, Kid_Blue_iExpressionIdxMouth, sizeof(_uint) * CNPC::EXPRESSION::END);
+    memcpy(pKid_Blue_Desc.iOpenIdx_Mouth, Kid_Blue_iMouthOpen, sizeof(_uint) * CNPC::EXPRESSION::END);
 
 
     pKid_Blue_Desc.TransformDesc = &pKid_Blue_TransDesc;

@@ -1,0 +1,10 @@
+{
+  "NPC_ModelNames": [
+    "Mom"
+  ],
+  "Expressions_eye": [ 3, 2, 6, 3 ],
+  "Expressions_Mouth": [0, 2, 3, 0 ],
+  "Expressions_Mouth_Open": [ 1, 1, 3, 1 ]
+
+
+}

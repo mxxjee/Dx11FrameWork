@@ -206,7 +206,7 @@ void CInteraction_JackyBall::Enter_Interaction()
     
     __super::Enter_Interaction();
 
-
+    m_pTriggerBox->Set_Active(false);
     m_pPlayer->Get_ActionControl()->m_bCarry = true;
     m_pGameInstance->SetActiveGroup(L"Interaction_PopUp_Carry", false);
 
@@ -225,6 +225,7 @@ void CInteraction_JackyBall::Exit_Interaction()
     if (m_pOwner == m_pPlayer)
     {
         m_pPlayer->Get_ActionControl()->m_bCarry = false;
+        m_pTriggerBox->Set_Active(true);
         m_pPlayer->Set_CarryAndThrowState(this);
 
     }
