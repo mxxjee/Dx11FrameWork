@@ -248,6 +248,19 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
 
     }
 
+
+    else if (strCommand == "Mom_Finish")
+    {
+        CQuest_Manager::GetInstance()->Set_FactCheckValue(CQuest_Manager::QuestFact::SAVE_CHILD, true);
+
+        GameEvent Event;
+        Event.Name = "Mom_Finish";
+
+        CGameInstance::GetInstance()->Emit(Event);
+
+    }
+
+
     else if (strCommand == "Get_Shield")
     {
         CPlayer* pPlayer=CGameManager::GetInstance()->Get_MainPlayer();

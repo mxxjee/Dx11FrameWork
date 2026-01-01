@@ -132,17 +132,7 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
 
     }
 
-    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::W))
-    {
-         GameEvent gameEvent;
-         gameEvent.Name = "Go_WitchRoom";
 
-         m_pGameInstance->Emit(gameEvent);
-
-
-
-
-    }
 
    
    
@@ -643,7 +633,7 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
         if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, pNpc_Tarin)))
             return E_FAIL;
 
-        //pNpc_Fairy->Set_Active(false);
+        pNpc_Tarin->Set_Active(false);
     }
 
     return S_OK;
@@ -1071,6 +1061,21 @@ HRESULT CLevel_Town::Ready_EventListners()
                 return;
         });
 
+
+    //Richard_Chapter_Trigger
+
+    m_pGameInstance->RegisterListners("Mom_Finish", [this](const GameEvent& evt)
+        {
+
+            CGameObject* pFindTrigger = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::TOWN), L"Trigger_Layer", L"Richard_Chapter_Trigger");
+            if (pFindTrigger)
+            {
+                pFindTrigger->Set_Active(true);
+
+            }
+
+           
+        });
     return S_OK;
 }
 
@@ -1324,7 +1329,7 @@ void CLevel_Town::Teleport_RichardHouse()
     /*타린도 함께 텔레포트*/
 
     CNPC* Tarin = dynamic_cast<CNPC*>(m_pGameInstance->Find_GameObject(m_iLevelID, L"NPC_Layer", L"NPC_Tarin"));
-   /* if (Tarin)
+    if (Tarin)
     {
 
         _vector vTarinTelepos= XMVectorSet(78.f, 18.f, 97.f, 1.f);
@@ -1337,7 +1342,7 @@ void CLevel_Town::Teleport_RichardHouse()
             pTarin->Get_Navigation()->SetUp_OnNavigation((pTarin->Get_Transform()->Get_State(STATE::POSITION))));
 
       pTarin->Start_SecondChapter();
-    }*/
+    }
                                             
     m_pGameInstance->Invoke(2.f, false, false, false, []()
         {

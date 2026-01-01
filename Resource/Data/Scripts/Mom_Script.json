@@ -81,7 +81,7 @@
             {
               "Speaker": "마마샤",
               "Text": "정말.. 정말 고마워요.\n이 은혜는 잊지 않을게요.",
-              "strActionCommand": "",
+              "strActionCommand": "Mom_Finish",
               "actionTiming": "ON_FINISH"
             }
           ]

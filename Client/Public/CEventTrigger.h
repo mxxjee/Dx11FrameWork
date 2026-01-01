@@ -29,6 +29,7 @@ public:
     virtual CGameObject* Clone(void* pArg);
     virtual void    Free() override;
 
+
 public:
     virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base * pOther);
     virtual     void    OnCollisionStay(_uint iGroup, CCollider_Base * pOther);
