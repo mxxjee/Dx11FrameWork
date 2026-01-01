@@ -14,6 +14,7 @@ public:
 public:
     void push_back(class CGameObject* pObj);
     void Release();
+    bool    Is_Active() { return isActive; }
     class CGameObject* Find(const wstring& Key);
  
 };

@@ -52,7 +52,10 @@ public:
 
 
     void            Update_InventorySlots();
+    void            Update_InventoryItemInfo();
     void            Update_OnUseItem();
+    void            Update_UpdateXSlot();
+    void            Clean_QUickSlot();
 private:
     vector<CInventorySlot*>       m_InvenSlots;
     CUI_Cursor*                 m_Cursor;
@@ -61,6 +64,8 @@ private:
 
 private:
     int             m_iCurIdx = 0;
+    int             m_iXIdx = 0;
+
     int             maxIdx = 15;
     CInventory_Manager* m_pInventory_Manager = nullptr;
 

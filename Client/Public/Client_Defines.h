@@ -158,7 +158,7 @@ typedef struct tagItemInfo
 	int			PlayerState = -1;
 	bool		m_bQuick=false;	//퀵슬롯에 장착가능한지.
 	std::function<void()>        m_AfterGetFunc = nullptr;       //얻고나서 함수실행할거
-
+	bool				m_bCanUse = true;
 
 
 }ITMINFO;
@@ -170,6 +170,7 @@ struct InvenSlot
 	int					count = 0;
 	KeyCode					m_eQuickKeyCode = KeyCode::End;
 	ITMINFO*			m_pItemInfo = nullptr;		//원본아이템 info
+
 	bool				m_bUsedInUI = false;
 };
 

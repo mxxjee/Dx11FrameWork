@@ -97,6 +97,15 @@ void CUI_Window_Inventory::Update(_float fTimeDelta)
 		m_iCurIdx += 4;
 		m_bPressed = true;
 	}
+
+	if (m_pInput_Manager->IsKeyPressed(KeyCode::X))
+	{
+		Update_UpdateXSlot();
+		m_bPressed = true;
+	}
+
+
+
 	
 	if (m_bPressed)
 	{
@@ -134,17 +143,7 @@ void CUI_Window_Inventory::Update_Cursor(int PreIdx)
 	pSlot->Change_State(CSlot::State::SELECT);
 
 	//커서위치에 따른 UIInfo갱신
-	if (pSlot->Is_HasItem())
-	{
-		m_ItemInfoUI->Set_Active(true);
-		m_ItemInfoUI->Update_ItemInfo(pSlot->Get_ItemType());
-
-	}
-
-	else
-	{
-		m_ItemInfoUI->Set_Active(false);
-	}
+	Update_InventoryItemInfo();
 }
 
 
@@ -227,6 +226,25 @@ void CUI_Window_Inventory::Update_InventorySlots()
 	
 }
 
+void CUI_Window_Inventory::Update_InventoryItemInfo()
+{
+	CInventorySlot* pSlot = m_InvenSlots[m_iCurIdx];
+
+
+	//커서위치에 따른 UIInfo갱신
+	if (pSlot->Is_HasItem())
+	{
+		m_ItemInfoUI->Set_Active(true);
+		m_ItemInfoUI->Update_ItemInfo(pSlot->Get_ItemType());
+
+	}
+
+	else
+	{
+		m_ItemInfoUI->Set_Active(false);
+	}
+}
+
 void CUI_Window_Inventory::Update_OnUseItem()
 {
 	vector<InvenSlot*>* AllInven = m_pInventory_Manager->Get_AllInven();
@@ -254,12 +272,58 @@ void CUI_Window_Inventory::Update_OnUseItem()
 
 					else
 						continue;
+
+					if (m_pInventory_Manager->Get_XSlot())
+					{
+						if (m_pInventory_Manager->Get_XSlot()->ItemType == pItemInfo->ItemType)
+							Clean_QUickSlot();
+					}
+					
+
+					
 				}
 			}
 			
 		}
 
 	}
+
+}
+
+void CUI_Window_Inventory::Update_UpdateXSlot()
+{
+	
+	CheckNull(m_InvenSlots[m_iCurIdx]);
+	CInventorySlot* pSlot = m_InvenSlots[m_iCurIdx];
+
+	//x슬롯 처음설정하는거면, 바로설정
+	if (m_pInventory_Manager->Get_XSlot() == nullptr)
+	{
+		if (pSlot->Is_HasItem())
+		{
+			pSlot->Set_QuickSlot(true);
+			
+		}
+	}
+
+	else
+	{
+		CInventorySlot* pPreSlot = m_InvenSlots[m_iXIdx];
+		if (pPreSlot)
+			pPreSlot->Set_QuickSlot(false);
+
+		pSlot->Set_QuickSlot(true);
+	}
+
+	m_iXIdx = pSlot->Get_Idx();
+	m_pInventory_Manager->Set_SlotKey(pSlot->Get_ItemType(), KeyCode::X);
+
+}
+
+void CUI_Window_Inventory::Clean_QUickSlot()
+{
+	m_iXIdx = -1;
+	m_pGameInstance->BroadCastEvent(L"CleanInvenSlotIcon",nullptr);
 
 }
 

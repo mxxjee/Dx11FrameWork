@@ -181,7 +181,7 @@ HRESULT CLevel_Boss::Ready_Layer_Enviroment(const _wstring& strLayerTag)
         _float4(12.611,-0.361f,18.303f,1.f),
         _float4(6.364f,-1.1f,12.938f,1.f),
         _float4(18.734f,-1.0f,12.738f,1.f),
-        _float4(12.687,0.2f,12.685,1.f)
+        _float4(12.687,0.2f,12.685f,1.f)
     };
 
     _float3 vExtents[] = {

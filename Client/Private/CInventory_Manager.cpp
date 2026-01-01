@@ -201,10 +201,12 @@ bool CInventory_Manager::Use_Item(ItemType eType, int iCount)
 	CheckNullResult(pSlot, false);
 	CheckTrueResult(pSlot->count < iCount,false);
 
-	pSlot->count -= iCount;
-
-
 	ITMINFO* pItem = pSlot->m_pItemInfo;
+	if (pItem->m_bCanUse)
+		pSlot->count -= iCount;
+
+	else
+		return true;
 
 	//사용시 플레이ㅓㅇ상태를 제어한다면
 	int iState = pItem->PlayerState;
@@ -217,15 +219,14 @@ bool CInventory_Manager::Use_Item(ItemType eType, int iCount)
 
 	if (pSlot->count <= 0)
 	{
-		
-		if (m_XSlot == pSlot)
-			m_XSlot = nullptr;
 
-		else if (m_YSlot == pSlot)
-			m_YSlot = nullptr;
 
 		if (Update_OnUseItem)
 			Update_OnUseItem();
+
+
+		if (m_XSlot == pSlot)
+			m_XSlot = nullptr;
 
 		Safe_Delete(pSlot);
 		pSlot = nullptr;
@@ -247,12 +248,15 @@ void CInventory_Manager::Set_SlotKey(ItemType eType, KeyCode code)
 	CheckFalse(pInfo->PlayerState);
 
 	if (code == KeyCode::X)
-		CheckTrue(m_XSlot != nullptr);
+	{
+		//이미있으면 교체해야함/ 키바꾸기
+		if (m_XSlot)
+		{
+			m_XSlot->m_eQuickKeyCode = KeyCode::None;
+		}
+	}
 
-
-	if(code==KeyCode::Y)
-		CheckTrue(m_YSlot != nullptr);
-
+	
 
 	/////////모두 맞다면///////
 	/*퀵슬롯 지정*/
@@ -260,9 +264,6 @@ void CInventory_Manager::Set_SlotKey(ItemType eType, KeyCode code)
 
 	if (code == KeyCode::X)
 		m_XSlot = pSlot;
-
-	else if (code == KeyCode::Y)
-		m_YSlot = pSlot;
 
 
 	//UI Event

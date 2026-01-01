@@ -1452,7 +1452,10 @@ HRESULT UICreator::Create_See_Desc_UI(wstring LayerTag)
 HRESULT UICreator::Create_InvenSlot(wstring LayerTag)
 {
     UIGroup InvenSlotGroup;
-    InvenSlotGroup.Key = L"InvenSlotGroup";
+    InvenSlotGroup.Key = L"QuickSlotGroup";
+
+    float fX = 100.f;
+    float fY = g_iWinSizeY - 100.f;
 
 #pragma region ItemSlotBackground
     {
@@ -1466,8 +1469,8 @@ HRESULT UICreator::Create_InvenSlot(wstring LayerTag)
 
         Desc.fSizeX = 192.f * 0.7f;
         Desc.fSizeY = 192.f * 0.7f;
-        Desc.fX = g_iWinSizeX - 100.f;
-        Desc.fY = 250.f;
+        Desc.fX = fX;
+        Desc.fY = fY;
         Desc.Depth = 0.5f;
         CTransform::TRANSFORM_DESC TransDesc = {};
         TransDesc.fRotationPerSec = 10.f;
@@ -1499,15 +1502,16 @@ HRESULT UICreator::Create_InvenSlot(wstring LayerTag)
 
         Desc.ObjTag = L"Item_Icon";
         Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
-        Desc.TextureKey = L"Item_X";
+        Desc.TextureKey = L"Shield";
 
         Desc.iIdx = 0;
 
         Desc.fSizeX = 120.f * 0.7f;
         Desc.fSizeY = 120.f * 0.7f;
-        Desc.fX = g_iWinSizeX - 100.f;
-        Desc.fY = 250.f;
+        Desc.fX = fX;
+        Desc.fY = fY;
         Desc.Depth = 0.49f;
+
         CTransform::TRANSFORM_DESC TransDesc = {};
         TransDesc.fRotationPerSec = 10.f;
         TransDesc.fSpeedPerSec = 5.f;
@@ -1544,9 +1548,9 @@ HRESULT UICreator::Create_InvenSlot(wstring LayerTag)
 
         Desc.fSizeX = 192.f * 0.35f;
         Desc.fSizeY = 192.f * 0.35f;
-        Desc.fX = g_iWinSizeX - 130.f;
-        Desc.fY = 285.f;
-        Desc.Depth = 0.4f;
+        Desc.fX = fX-35.f;
+        Desc.fY = fY+30.f;
+        Desc.Depth = 0.49f;
         CTransform::TRANSFORM_DESC TransDesc = {};
         TransDesc.fRotationPerSec = 10.f;
         TransDesc.fSpeedPerSec = 5.f;
@@ -1572,11 +1576,11 @@ HRESULT UICreator::Create_InvenSlot(wstring LayerTag)
         }
     }
 #pragma endregion
-    m_pGameInstance->Register_UIGroup(InvenSlotGroup);
+ 
     ////////////활성/비활성화
     m_pGameInstance->RegisterEvent(L"OnShowInvenSlot", [](void* pData)
         {
-            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"InvenSlotGroup");
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"QuickSlotGroup");
             if (pGroup)
             {
                 for (auto& pair : pGroup->Objects)
@@ -1600,7 +1604,7 @@ HRESULT UICreator::Create_InvenSlot(wstring LayerTag)
 
     m_pGameInstance->RegisterEvent(L"OnHideInvenSlot", [](void* pData)
         {
-            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"InvenSlotGroup");
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"QuickSlotGroup");
             if (pGroup)
             {
                 for (auto& pair : pGroup->Objects)
@@ -1622,10 +1626,13 @@ HRESULT UICreator::Create_InvenSlot(wstring LayerTag)
     m_pGameInstance->RegisterEvent(L"UpdateInvenSlotIcon", [](void* pData)
         {
             wstring* pItemSlotTexKey = static_cast<wstring*>(pData);
-            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"InvenSlotGroup");
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"QuickSlotGroup");
             if (pGroup)
             {
-               
+
+                if (!pGroup->Is_Active())
+                    m_pGameInstance->SetActiveGroup(pGroup->Key, true);
+
                 CGameObject* pICon = pGroup->Find(L"Item_Icon");
                 CheckNull(pICon);
 
@@ -1638,7 +1645,30 @@ HRESULT UICreator::Create_InvenSlot(wstring LayerTag)
             }
         });
 
+    m_pGameInstance->RegisterEvent(L"CleanInvenSlotIcon", [](void* pData)
+        {
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"QuickSlotGroup");
+            if (pGroup)
+            {
+
+                if (!pGroup->Is_Active())
+                    m_pGameInstance->SetActiveGroup(pGroup->Key, true);
+
+                CGameObject* pICon = pGroup->Find(L"Item_Icon");
+                CheckNull(pICon);
+
+                CUI* pUI = dynamic_cast<CUI*>(pICon);
+                CheckNull(pUI);
+
+                pUI->Set_Texture(L"");
+
+
+            }
+        });
+
+    m_pGameInstance->Register_UIGroup(InvenSlotGroup);
     m_pGameInstance->SetActiveGroup(InvenSlotGroup.Key, false);
+
     return S_OK;
 }
 
@@ -1757,7 +1787,7 @@ HRESULT UICreator::Create_InventoryCursor(wstring LayerTag)
     Desc.fX = g_iWinSizeX>>1;
     Desc.fY = g_iWinSizeY >> 1;
 
-    Desc.Depth = 0.48f;
+    Desc.Depth = 0.47f;
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;
     TransDesc.fSpeedPerSec = 5.f;
@@ -1821,7 +1851,7 @@ HRESULT UICreator::Create_InventorySceneSlot(wstring LayerTag)
             Desc.fX = fBeginfX + (fOffSet*j);
             Desc.fY = fBeginfY+(fOffSet*i);
 
-            Desc.Depth = 0.49f;
+            Desc.Depth = 0.48f;
             CTransform::TRANSFORM_DESC TransDesc = {};
             TransDesc.fRotationPerSec = 10.f;
             TransDesc.fSpeedPerSec = 5.f;

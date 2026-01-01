@@ -38,7 +38,7 @@ public:
 	virtual void		Enter_State();
 	virtual void		Update_State();
 	bool				Is_HasItem() {return m_eType != ItemType::END;}
-
+	void				Set_QuickSlot(bool b);
 private:
 
 	ItemType			m_eType=ItemType::END;

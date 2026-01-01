@@ -167,7 +167,7 @@ void CNPC_Witch::Ready_Events()
         {
 
             m_pAnimBody->Reserve_Animation(L"wait", false);
-            CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::MAGIC_POWDER, 1);
+            CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::MAGIC_POWDER, 20);
             m_pMagicPowder->Set_Active(false);
 
           

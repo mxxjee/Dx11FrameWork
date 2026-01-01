@@ -298,9 +298,6 @@ void CPlayer::Update_Input(_float fTimeDelta)
     if (m_pInputManager->IsKeyPressed(KeyCode::X))
         m_pInventoryManager->Use_QuickSlot_Item(KeyCode::X, 1);
 
-    else if (m_pInputManager->IsKeyPressed(KeyCode::Y))
-        m_pInventoryManager->Use_QuickSlot_Item(KeyCode::Y, 1);
-
 
    
     /*등록한 홀드키에 대해서 모두 홀드키 시간, 여부 검사*/

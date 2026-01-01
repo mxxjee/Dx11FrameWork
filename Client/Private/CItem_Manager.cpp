@@ -15,6 +15,7 @@ HRESULT CItem_Manager::Initialize()
     pShieldItem->ItemDesc = L"방패를 되찾았다!\nT키를 누르는 동안 적을 튕겨낼 수 있다.";
     pShieldItem->TexKey = L"Shield";
     pShieldItem->InfoDesc = L"이름을 새긴 방패";
+    pShieldItem->m_bCanUse = false;
     m_ItmInfos[ENUM_TO_UINT(ItemType::SHIELD)] = (pShieldItem);
 
     ITMINFO* pSwordItem = new ITMINFO;
@@ -22,6 +23,7 @@ HRESULT CItem_Manager::Initialize()
     pSwordItem->ItemDesc = L"칼을 받았다!\nB키를 눌러 공격하고 방패와 조합이 가능하다.";
     pSwordItem->TexKey = L"Sword";
     pSwordItem->InfoDesc = L"타린에게 받은 검";
+    pSwordItem->m_bCanUse = false;
     m_ItmInfos[ENUM_TO_UINT(ItemType::SWROD)] = (pSwordItem);
 
     ITMINFO* pMushroomItem = new ITMINFO;
@@ -61,15 +63,6 @@ HRESULT CItem_Manager::Initialize()
     pMagicPowder->InfoDesc= L"마법의 힘이 담긴 신비한 가루.";
     pMagicPowder->PlayerState = ENUM_TO_UINT(CPlayer::PLAYER_STATE::POWDER);
 
-    pMagicPowder->m_AfterGetFunc = []()
-    {
-        CGameInstance::GetInstance()->BroadCastEvent(L"OnShowInvenSlot", nullptr);
-        
-        wstring str = L"MagicPowder";
-
-        /// X슬롯에 등록
-        CInventory_Manager::GetInstance()->Set_SlotKey(ItemType::MAGIC_POWDER,KeyCode::X);
-    };
 
     m_ItmInfos[ENUM_TO_UINT(ItemType::MAGIC_POWDER)] = (pMagicPowder);
 

@@ -116,6 +116,8 @@ void CLevel_UI::OnEnter()
 
 
 	m_pWindow_Inventory->Update_InventorySlots();
+	m_pWindow_Inventory->Update_InventoryItemInfo();
+
 }
 
 void CLevel_UI::OnResume(_uint iPreLevel)
@@ -137,7 +139,7 @@ void CLevel_UI::OnResume(_uint iPreLevel)
 
 	}
 
-	m_pWindow_Inventory->Update_Cursor(0);
+	m_pWindow_Inventory->Update_InventoryItemInfo();
 
 }
 
@@ -179,8 +181,7 @@ HRESULT CLevel_UI::Ready_Layer_UI(const _wstring& strLayerTag)
 	
 	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
 	Desc.ObjTag = L"ScreenQuad";
-	
-	Desc.Depth = 0.6f;
+
 	Desc.fSizeX = g_iWinSizeX;
 	Desc.fSizeY = g_iWinSizeY;
 
@@ -190,7 +191,7 @@ HRESULT CLevel_UI::Ready_Layer_UI(const _wstring& strLayerTag)
 	Desc.passName = "Blur";
 
 
-	Desc.Depth = 0.6f;
+	Desc.Depth = 0.49f;
 
 	CTransform::TRANSFORM_DESC TransDesc = {};
 	Desc.TransformDesc = &TransDesc;

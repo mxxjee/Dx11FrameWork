@@ -20,7 +20,7 @@ HRESULT CUI_Manager::Register_UIGroup(const UIGroup& Group, const _wstring& Key)
 	else
 	{
 		pGroup = new UIGroup;
-		pGroup->Key = Key;
+		pGroup->Key = FindKey;
 
 
 		size_t Hash = hash<wstring>()(FindKey);
@@ -112,7 +112,8 @@ HRESULT CUI_Manager::SetActiveGroup(const _wstring& Key, bool bActive)
 		}
 		
 	}
-
+	
+	pGroup->isActive = bActive;
 	return S_OK;
 }
 

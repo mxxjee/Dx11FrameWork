@@ -133,6 +133,9 @@ void CInventorySlot::Update_Item(ItemType eType)
     {
         m_pItemPanel->Set_Texture(L"");
         m_pItemPanel->Set_Active(false);
+        
+        m_eState = State::IDLE;
+        Set_Texture(m_TexKeys[ENUM_TO_UINT(State::IDLE)]);
        
     }
     else
@@ -226,6 +229,29 @@ void CInventorySlot::Update_State()
     default:
         break;
     }
+}
+
+void CInventorySlot::Set_QuickSlot(bool b)
+{
+   m_bQuickSlot = b;
+
+   if (b)
+   {
+       if (m_eState == State::HOVER || m_eState == State::SELECT)
+       {
+           if (!m_bQuickSlot)
+               Set_Texture(m_TexKeys[ENUM_TO_UINT(State::HOVER)]);
+
+           else
+               Set_Texture(L"ItemSlot_Quick_Select");
+       }
+   }
+
+   else
+   {
+       Set_Texture(m_TexKeys[ENUM_TO_UINT(State::IDLE)]);
+   }
+  
 }
 
 void CInventorySlot::Free()

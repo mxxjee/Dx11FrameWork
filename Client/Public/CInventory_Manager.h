@@ -52,6 +52,7 @@ public:
 
     //퀵슬롯아이템사용하기
     bool        Use_QuickSlot_Item(KeyCode e,int _iCount=1);
+    InvenSlot*  Get_XSlot()          { return m_XSlot; }
 
     CInventory_Manager::ItemGetEvent* Get_ItemGetEvent();
     int             Get_InvenSize();    //인벤토리 아이템 총 개수 판단
@@ -87,8 +88,7 @@ private:
 
 private:
     InvenSlot*        m_XSlot = nullptr;//X키눌렀을때의 아이템(퀵 슬롯:X)
-    InvenSlot*        m_YSlot = nullptr;//Y키눌렀을때의 아이템(퀵 슬롯:X)
-
+ 
 
 private:
     std::function<void()> Update_UISCene = nullptr;
