@@ -263,6 +263,7 @@ void CPlayer::Update_State(float fTimeDelta)
 void CPlayer::Update_Input(_float fTimeDelta)
 {
     CheckTrue(m_pGameInstance->Get_IsLoading());
+    CheckFalse(m_pInputManager->Get_InputMode() == InputMode::GAME);
 
 
     CheckTrue(m_bRichardChapter);

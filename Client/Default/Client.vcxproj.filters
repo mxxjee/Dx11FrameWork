@@ -379,6 +379,9 @@
     <ClInclude Include="..\Public\CUI_Cursor.h">
       <Filter>02.GameObjects\99.UI\00.Panel\04.Cursor</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_ItemInfo.h">
+      <Filter>02.GameObjects\99.UI\00.Panel\03.Slot\InventoryItemInfo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -818,6 +821,9 @@
     <Filter Include="02.GameObjects\99.UI\03.Group">
       <UniqueIdentifier>{c7baff0c-211f-4d47-b18f-b21ff74931e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.UI\00.Panel\03.Slot\InventoryItemInfo">
+      <UniqueIdentifier>{14f460cb-361f-469a-ab16-4a0bf089b2fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1176,6 +1182,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Cursor.cpp">
       <Filter>02.GameObjects\99.UI\00.Panel\04.Cursor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_ItemInfo.cpp">
+      <Filter>02.GameObjects\99.UI\00.Panel\03.Slot\InventoryItemInfo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -29,7 +29,8 @@ HRESULT CNPC_Fairy::Initialize_Prototype(void* pArg)
 
     m_pGameInstance->RegisterListners("Enter_Forest", [this](const GameEvent& event)
         {
-            Set_Active(true);
+            if(!m_bEnd)
+                Set_Active(true);
         });
 
     //대화끝나면알아서 애니메이션재생
@@ -39,6 +40,7 @@ HRESULT CNPC_Fairy::Initialize_Prototype(void* pArg)
             m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", (void*)nullptr);
             m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide", (void*)nullptr);
             m_pTriggerBox->Set_Active(false);
+            m_bEnd = true;
 
         });
 

@@ -990,11 +990,22 @@ HRESULT CLevel_Town::Ready_EventListners()
 
     m_pGameInstance->RegisterListners("Go_WitchRoom", [this](const GameEvent& evt)
         {
+            CLayer* pNPCLayer = CGameInstance::GetInstance()->Find_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), L"NPC_Layer");
+            CGameObject* pFairy = nullptr;
+            if (pNPCLayer)
+            {
+                pFairy = pNPCLayer->Find_GameObject(L"NPC_Fairy");
+                if (pFairy)
+                    CheckFalse(pFairy->Is_Active());
+            }
+
             m_pGameInstance->Clear_SceneColliders(ENUM_TO_UINT(LEVEL_ID::ROOM));
             //요정비활성화
             
-            //마녀집 가기전 다시스폰하기 위한 전위치
-            m_pGameManager->Set_LastPosition(m_pGameManager->Get_LastPosition_By_Float4());
+            //마녀집 가기전 다시스폰하기 위한 전위치, 집앞
+            
+            _vector vPos = m_pGameInstance->Get_CellPos_By_MainCells(0);
+            m_pGameManager->Set_LastPosition(vPos);
 
             LevelArgs args;
             args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
@@ -1009,13 +1020,9 @@ HRESULT CLevel_Town::Ready_EventListners()
                 args)))
                 return;
 
-
-            CLayer* pNPCLayer = CGameInstance::GetInstance()->Find_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), L"NPC_Layer");
-            if (pNPCLayer)
-            {
-                CGameObject* pFairy = pNPCLayer->Find_GameObject(L"NPC_Fairy");
+            if(pFairy)
                 pFairy->Set_Active(false);
-            }
+           
 
 
         });
@@ -1142,9 +1149,6 @@ void CLevel_Town::OnResume(_uint iPreLevel)
      //////현재씬의 itneraction 등록
     CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::TOWN));
 
-    CGameInstance::GetInstance()->Set_EnableUpdate(false);
-    CGameInstance::GetInstance()->Set_EnalbeUpdateRender(false);
-
 
 
     //카메라돌려놓기이벤트 실행
@@ -1170,6 +1174,11 @@ void CLevel_Town::OnResume(_uint iPreLevel)
         m_pGameInstance->Set_EnableUpdate(true);
         CheckNull(pFadeScreen);                                                         
         pFadeScreen->PlayFadeOut();
+        
+        //NavMesh돌려놓기
+        m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::TOWN));
+        pPlayer->Get_Transform()->Set_State(STATE::POSITION, m_pGameManager->Get_LastPosition_By_Vector());
+        pPlayer->Change_MainNavMesh();
 
        break;
 
@@ -1180,10 +1189,6 @@ void CLevel_Town::OnResume(_uint iPreLevel)
         break;
     }
 
-    //NavMesh돌려놓기
-    m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::TOWN));
-    pPlayer->Get_Transform()->Set_State(STATE::POSITION, m_pGameManager->Get_LastPosition_By_Vector());
-    pPlayer->Change_MainNavMesh();
 
     __super::OnResume(iPreLevel);
     m_pGameInstance->Set_IsLoading(false);

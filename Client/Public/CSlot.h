@@ -31,6 +31,9 @@ public:
 	virtual void		Enter_State();
 	virtual void		Update_State();
 
+public:
+	void		Change_State(State iState);
+
 	
 
 protected:

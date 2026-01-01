@@ -1,6 +1,8 @@
 #pragma once
 #include "CBase.h"
 
+enum class InputMode{GAME,UI,CUTSCENE,END};
+
 NS_BEGIN(Engine)
 class ENGINE_DLL CInput_Manager
 	:public CBase
@@ -41,6 +43,9 @@ public:
 	POINT GetMousePos() const;
 	_float2 GetMousePosF() const;
 	POINT GetMouseDelta() const;
+
+	InputMode	Get_InputMode() { return m_InuptMode; }
+	void		Set_InputMode(InputMode eMode) { m_InuptMode = eMode; }
 private:
 	void Free() override;
 	void UpdateMouseState();
@@ -64,8 +69,14 @@ private:
 	POINT m_PrevMousePos{};
 	mutable DWORD m_LastClickTime[3] = {};
 
+
 	UMap<string, KeyCode> m_KeyBindings;
 	HWND m_hWnd = nullptr;
+
+
+	//입력모드
+	InputMode		m_InuptMode = InputMode::GAME;
+
 };
 NS_END
 

@@ -273,6 +273,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_ItemInfo.h" />
     <ClInclude Include="..\Public\CUI_Window_Inventory.h" />
     <ClInclude Include="..\Public\CVariable_Condition.h" />
     <ClInclude Include="..\Public\CWall.h" />
@@ -412,6 +413,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\CUI_ItemInfo.cpp" />
     <ClCompile Include="..\Private\CUI_Window_Inventory.cpp" />
     <ClCompile Include="..\Private\CVariable_Condition.cpp" />
     <ClCompile Include="..\Private\CWall.cpp" />

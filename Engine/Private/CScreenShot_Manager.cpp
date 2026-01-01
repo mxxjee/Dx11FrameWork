@@ -148,6 +148,7 @@ void CScreenShot_Manager::Free()
        Safe_Release(pair.second);
     }
 
+    m_Texmap.clear();
 
 }
 

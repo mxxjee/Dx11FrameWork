@@ -164,46 +164,62 @@ void CLevel_NPCRoom::OnResume(_uint iPreLevel)
     
     CheckNull(m_pPlayer);
  
-    _float4 vSpawnPos = CRoom_Manager::GetInstance()->Get_SpawnPosition();
-    m_pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMLoadFloat4(&vSpawnPos));
-    m_pPlayer->Change_MainNavMesh();
-
-
-
-    ////GameEvent (카메라 조절)
-    GameEvent Event;
-    EventPayload payload;
-    Event.Payload = payload;
-
-    if (CRoom_Manager::GetInstance()->Get_RequestRoom() == "RichardHouse")
+    LEVEL_ID PrevID = (LEVEL_ID)iPreLevel;
+    switch (PrevID)
     {
-        Event.Payload.Ptrs["Player"] = m_pPlayer;
-        Event.Payload.Floats["OffSet_X"] = 0.f;
-        Event.Payload.Floats["OffSet_Y"] = 10.f;
-        Event.Payload.Floats["OffSet_Z"] = -3.f;
+    case Client::LEVEL_ID::UI:
+        break;
+
+    default:
+    {
+        _float4 vSpawnPos = CRoom_Manager::GetInstance()->Get_SpawnPosition();
+        m_pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMLoadFloat4(&vSpawnPos));
+        m_pPlayer->Change_MainNavMesh();
 
 
-        CGameObject* pObj = m_pGameInstance->Find_GameObject(m_iLevelID, L"Enviroment_Layer", L"Workbench0");
-        if (pObj)
-            CInteraction_Manager::GetInstance()->RegisterInteractable(dynamic_cast<CIInteractable*>(pObj));
+        ////GameEvent (카메라 조절)
+        GameEvent Event;
+        EventPayload payload;
+        Event.Payload = payload;
+
+        if (CRoom_Manager::GetInstance()->Get_RequestRoom() == "RichardHouse")
+        {
+            Event.Payload.Ptrs["Player"] = m_pPlayer;
+            Event.Payload.Floats["OffSet_X"] = 0.f;
+            Event.Payload.Floats["OffSet_Y"] = 10.f;
+            Event.Payload.Floats["OffSet_Z"] = -3.f;
+
+
+            CGameObject* pObj = m_pGameInstance->Find_GameObject(m_iLevelID, L"Enviroment_Layer", L"Workbench0");
+            if (pObj)
+                CInteraction_Manager::GetInstance()->RegisterInteractable(dynamic_cast<CIInteractable*>(pObj));
+
+        }
+
+        else
+        {
+            Event.Payload.Ptrs["Player"] = m_pPlayer;
+            Event.Payload.Floats["OffSet_X"] = 0.f;
+            Event.Payload.Floats["OffSet_Y"] = 9.f;
+            Event.Payload.Floats["OffSet_Z"] = -4.f;
+        }
+
+
+
+        Event.Name = "Enter_NPCRoom";
+
+        m_pGameInstance->Emit(Event);
+        CheckNull(pFadeScreen);
+        pFadeScreen->PlayFadeOut();
+
 
     }
-
-    else
-    {
-        Event.Payload.Ptrs["Player"] = m_pPlayer;
-        Event.Payload.Floats["OffSet_X"] = 0.f;
-        Event.Payload.Floats["OffSet_Y"] = 9.f;
-        Event.Payload.Floats["OffSet_Z"] = -4.f;
+        break;
     }
+    
 
-    Event.Name = "Enter_NPCRoom";
 
-    m_pGameInstance->Emit(Event);
-    CheckNull(pFadeScreen);
-   pFadeScreen->PlayFadeOut();
 
-  
 
     __super::OnResume(iPreLevel);
 

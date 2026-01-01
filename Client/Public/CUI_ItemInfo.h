@@ -1,17 +1,19 @@
 #pragma once
-#include "CSlot.h"
-#include "CInventory_Manager.h"
+#include "CPanel.h"
+#include "Client_Defines.h"
 
 
 NS_BEGIN(Client)
+class CFontUI;
 
-class CInventorySlot :
-    public CSlot
+class CUI_ItemInfo :
+    public CPanel
 {
 private:
-	CInventorySlot(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
-	CInventorySlot(const CInventorySlot& rhs);
-	virtual ~CInventorySlot() = default;
+	CUI_ItemInfo(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
+	CUI_ItemInfo(const CUI_ItemInfo& rhs);
+	virtual ~CUI_ItemInfo() = default;
+
 
 public:
 	virtual HRESULT Initialize_Prototype() override; /* 원형객체가 만들어질 때 호출되는 함수. 무거운 초기화작업.  */
@@ -24,30 +26,18 @@ public:
 
 	virtual HRESULT Render() override;
 
-
 public:
 	HRESULT			Ready_PartObject();
-	void			Update_Item(ItemType eType);
-
+	void			Update_ItemInfo(ItemType eType);
 public:
-	static CInventorySlot* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
+	static CUI_ItemInfo* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
-	ItemType			Get_ItemType() { return m_eType; }
-public:
-	virtual void		Enter_State();
-	virtual void		Update_State();
-	bool				Is_HasItem() {return m_eType != ItemType::END;}
 
 private:
+	CFontUI* m_pFontUI = nullptr;
 
-	ItemType			m_eType=ItemType::END;
-	int					iCount = 0; 
-
-	bool			m_bQuickSlot = false;
-	CPanel*			m_pItemPanel = nullptr;
-
-	
 };
 NS_END
+
 

@@ -10,6 +10,8 @@ namespace Engine
 NS_BEGIN(Client)
 class CInventorySlot;
 class CUI_Cursor;
+class CInventory_Manager;
+class CUI_ItemInfo;
 
 
 class CUI_Window_Inventory :
@@ -40,22 +42,27 @@ public:
 
     // CGameObject을(를) 통해 상속됨
     virtual CGameObject* Clone(void* pArg) override;
-    void        Update_Cursor();
+    void        Update_Cursor(int PreIdx);
 
 
 public:
     void        Add_InvenSlots(CGameObject* pObj, int iIdx);
     void        Set_Cursor(CGameObject* pObj);
+    void        Set_ItemInfoUI(CGameObject* pObj);
 
+
+    void            Update_InventorySlots();
+    void            Update_OnUseItem();
 private:
     vector<CInventorySlot*>       m_InvenSlots;
     CUI_Cursor*                 m_Cursor;
     CInput_Manager*             m_pInput_Manager = nullptr;
-
+    CUI_ItemInfo*           m_ItemInfoUI = nullptr;
 
 private:
     int             m_iCurIdx = 0;
     int             maxIdx = 15;
+    CInventory_Manager* m_pInventory_Manager = nullptr;
 
 };
 NS_END

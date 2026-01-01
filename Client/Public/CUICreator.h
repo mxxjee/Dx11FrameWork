@@ -31,6 +31,7 @@ namespace UICreator
 
 	/// /////inventory SCene
 	HRESULT		Create_InventorySceneLine(wstring LayerTag);
+	HRESULT		Create_InventoryItemInfo(wstring LayerTag);
 	HRESULT		Create_InventoryCursor(wstring LayerTag);
 	HRESULT		Create_InventorySceneSlot(wstring LayerTag);
 

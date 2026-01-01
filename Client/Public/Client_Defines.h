@@ -153,6 +153,7 @@ typedef struct tagItemInfo
 {
 	ItemType	ItemType = ItemType::END;
 	wstring		ItemDesc = L"";	//아이템설명
+	wstring		InfoDesc = L"";		//인벤에 표시할 아이템설명
 	wstring		TexKey = L"";		//아이템 UI 이름
 	int			PlayerState = -1;
 	bool		m_bQuick=false;	//퀵슬롯에 장착가능한지.
@@ -169,6 +170,7 @@ struct InvenSlot
 	int					count = 0;
 	KeyCode					m_eQuickKeyCode = KeyCode::End;
 	ITMINFO*			m_pItemInfo = nullptr;		//원본아이템 info
+	bool				m_bUsedInUI = false;
 };
 
 /*각 숫자는 우선순위를의미한다*/

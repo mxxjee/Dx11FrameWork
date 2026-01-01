@@ -69,3 +69,8 @@ void CSlot::Update_State()
 {
 	
 }
+
+void CSlot::Change_State(State iState)
+{
+	m_eState = iState;
+}

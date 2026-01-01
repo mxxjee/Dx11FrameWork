@@ -1648,7 +1648,7 @@ HRESULT UICreator::Create_InventorySceneLine(wstring LayerTag)
     InventoryLineGroup.Key = L"InventoryLineGroup";
 
     float fBeginfX = g_iWinSizeX>>1;
-    float fBeginfY = 166.f;
+    float fBeginfY = 100.f;
 
     //슬롯크기
     float fSizeX = 1250.f;
@@ -1696,6 +1696,46 @@ HRESULT UICreator::Create_InventorySceneLine(wstring LayerTag)
 
     m_pGameInstance->Register_UIGroup(InventoryLineGroup);
 
+    return S_OK;
+}
+
+HRESULT UICreator::Create_InventoryItemInfo(wstring LayerTag)
+{
+    CUI::tagUIDesc        Desc = {};
+
+    _float fSizeX = 300 * 0.8f;
+    _float fSizeY = 300 * 0.8f;
+
+    Desc.ObjTag = L"Inven_ItemInfo";
+    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+    Desc.TextureKey = L"Shield";
+
+    Desc.iIdx = 0;
+
+    Desc.fSizeX = fSizeX;
+    Desc.fSizeY = fSizeY;
+    Desc.fX = (g_iWinSizeX >> 1) - 300.f;
+    Desc.fY = (g_iWinSizeY >> 1) -40.f;
+
+    Desc.Depth = 0.48f;
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    Desc.TransformDesc = &TransDesc;
+
+    //AlphaAnim등록
+    CUIComponent::UICOMP_DESC UIDesc = {};
+    Desc.UICompDesc = &UIDesc;
+
+    CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"UI_ItemInfo"), &Desc);
+    if (pObj)
+    {
+        CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::UI), LayerTag, pInstance)))
+            return E_FAIL;
+
+    }
+    return S_OK;
     return S_OK;
 }
 
@@ -1753,14 +1793,14 @@ HRESULT UICreator::Create_InventorySceneSlot(wstring LayerTag)
 
 
     //그리드 시작 좌상단
-    float fBeginfX = (g_iWinSizeX >> 1) - 150.f;
-    float fBeginfY = (g_iWinSizeY >> 1) -100.f;
+    float fBeginfX = (g_iWinSizeX >> 1)+50;
+    float fBeginfY = (g_iWinSizeY >> 1) -200.f;
 
     //슬롯크기
-    float fSizeX = 192 * 0.6f;
-    float fSizeY = 192 * 0.6f;
+    float fSizeX = 192 * 0.63f;
+    float fSizeY = 192 * 0.63f;
 
-    float fOffSet = fSizeX*0.5f + 50.f;
+    float fOffSet = fSizeX*0.5f + 65.f;
 
     for (int i = 0; i < 4; ++i)
     {

@@ -6,6 +6,8 @@
 #include "CUICreator.h"
 
 #include "CUI_Window_Inventory.h"
+#include "CInventory_Manager.h"
+
 
 CLevel_UI::CLevel_UI(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 	:CLevel(_pDevice, _pDeviceContext)
@@ -88,20 +90,54 @@ void CLevel_UI::OnEnter()
 				++iIdx;
 			}
 		}
-		
+
 
 	}
+
+
+	CGameObject* pItemInfo = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::UI), L"UI_Layer", L"Inven_ItemInfo");
+	if (pItemInfo)
+		m_pWindow_Inventory->Set_ItemInfoUI(pItemInfo);
+
 
 	CGameObject* pCursor = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::UI), L"UI_Layer", L"InvenSlot_Cursor");
 	if (pCursor)
 		m_pWindow_Inventory->Set_Cursor(pCursor);
 
-	
+	CInventory_Manager::GetInstance()->Set_UpdateUISceneEvent([pWindow_Inventory = m_pWindow_Inventory]()
+		{
+			pWindow_Inventory->Update_InventorySlots();
+		});
+
+	CInventory_Manager::GetInstance()->Set_Update_OnUseItem([pWindow_Inventory = m_pWindow_Inventory]()
+		{
+			pWindow_Inventory->Update_OnUseItem();
+		});
+
+
+	m_pWindow_Inventory->Update_InventorySlots();
 }
 
 void CLevel_UI::OnResume(_uint iPreLevel)
 {
 	CGameManager::GetInstance()->Set_OpenInventory(true);
+	m_pGameInstance->ScreenShot(L"RenderBehind");
+
+	//뒤에화면을 블러처리한 텍스처로 복사
+	CGameObject* pObj = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::UI),
+		L"UI_Layer", L"ScreenQuad");
+
+	if (pObj)
+	{
+		CTexture* pTexture = m_pGameInstance->Find_ScreenTexture(L"RenderBehind");
+
+		CScreenQuad* pScreenQuad = dynamic_cast<CScreenQuad*>(pObj);
+		if (pScreenQuad && pTexture)
+			pScreenQuad->Make_ScreenShot(pTexture);
+
+	}
+
+	m_pWindow_Inventory->Update_Cursor(0);
 
 }
 
@@ -167,6 +203,9 @@ HRESULT CLevel_UI::Ready_Layer_UI(const _wstring& strLayerTag)
 
 
 	if (FAILED(UICreator::Create_InventoryCursor(strLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(UICreator::Create_InventoryItemInfo(strLayerTag)))
 		return E_FAIL;
 
 	if (FAILED(UICreator::Create_InventorySceneSlot(strLayerTag)))

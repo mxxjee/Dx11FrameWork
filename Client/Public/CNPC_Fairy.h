@@ -31,7 +31,7 @@ private:
 public:
     static CNPC_Fairy* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex, void* pArg);
     virtual void Free() override;
-
+    bool        m_bEnd = false;
 
 
 };

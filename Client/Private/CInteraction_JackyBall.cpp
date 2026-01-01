@@ -219,7 +219,7 @@ void CInteraction_JackyBall::Stay_Interaction(_float fTimeDelta)
 
 void CInteraction_JackyBall::Exit_Interaction()
 {
-    CheckTrue(m_bCall_Exit_Interaction);
+    //CheckTrue(m_bCall_Exit_Interaction);
     m_bCall_Exit_Interaction = true;
 
     if (m_pOwner == m_pPlayer)

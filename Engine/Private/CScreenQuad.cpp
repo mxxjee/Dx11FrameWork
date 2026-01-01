@@ -124,6 +124,9 @@ HRESULT CScreenQuad::Bind_ShaderResources()
 
 void CScreenQuad::Make_ScreenShot(CTexture* pTex)
 {
+    if (m_pTexture)
+        Safe_Release(m_pTexture);
+
     m_pTexture = pTex;
     Safe_AddRef(m_pTexture);
 }
@@ -212,5 +215,4 @@ CGameObject* CScreenQuad::Clone(void* pArg)
 void CScreenQuad::Free()
 {
     __super::Free();
-
 }

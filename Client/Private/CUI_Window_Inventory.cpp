@@ -4,7 +4,8 @@
 #include "MathUtils.h"
 #include "CUI_Cursor.h"
 #include "CUI.h"
-
+#include "CInventory_Manager.h"
+#include "CUI_ItemInfo.h"
 
 
 USING(Client)
@@ -48,6 +49,8 @@ HRESULT CUI_Window_Inventory::Initialize_Prototype()
 	m_pInput_Manager = CInput_Manager::GetInstance();
 	m_InvenSlots.resize(maxIdx + 1);
 
+	m_pInventory_Manager = CInventory_Manager::GetInstance();
+
 
     return S_OK;
 }
@@ -70,6 +73,7 @@ void CUI_Window_Inventory::Update(_float fTimeDelta)
 {
 	__super::Update(fTimeDelta);
 	bool m_bPressed = false;
+	int iPreIdx = m_iCurIdx;
 
 	if (m_pInput_Manager->IsKeyPressed(KeyCode::LeftArrow))
 	{
@@ -97,7 +101,7 @@ void CUI_Window_Inventory::Update(_float fTimeDelta)
 	if (m_bPressed)
 	{
 		m_iCurIdx = MathUtils::Clamp(m_iCurIdx, 0, maxIdx);
-		Update_Cursor();
+		Update_Cursor(iPreIdx);
 	}
 	
 
@@ -111,18 +115,36 @@ void CUI_Window_Inventory::Update_Late(_float fTimeDelta)
 	
 }
 
-void CUI_Window_Inventory::Update_Cursor()
+void CUI_Window_Inventory::Update_Cursor(int PreIdx)
 {
 	CheckTrue(m_InvenSlots.empty());
+
+	CheckNull(m_InvenSlots[PreIdx]);
 	CheckNull(m_InvenSlots[m_iCurIdx]);
 
+	CInventorySlot* pPreSlot = m_InvenSlots[PreIdx];
 	CInventorySlot* pSlot = m_InvenSlots[m_iCurIdx];
 
 	const CUI::UIInfo* SlotInfo = pSlot->Get_UIInitInfo();
 	 
 	m_Cursor->Set_Pos(SlotInfo->fX, SlotInfo->fY, m_Cursor->Get_UIInitInfo()->Depth);
 	m_Cursor->Set_SelectSlot(pSlot);
+	
+	pPreSlot->Change_State(CSlot::State::IDLE);
+	pSlot->Change_State(CSlot::State::SELECT);
 
+	//커서위치에 따른 UIInfo갱신
+	if (pSlot->Is_HasItem())
+	{
+		m_ItemInfoUI->Set_Active(true);
+		m_ItemInfoUI->Update_ItemInfo(pSlot->Get_ItemType());
+
+	}
+
+	else
+	{
+		m_ItemInfoUI->Set_Active(false);
+	}
 }
 
 
@@ -160,7 +182,84 @@ void CUI_Window_Inventory::Set_Cursor(CGameObject* pObj)
 	m_Cursor = pCursor;
 	Safe_AddRef(m_Cursor);
 
-	Update_Cursor();
+	Update_Cursor(0);
+
+}
+
+void CUI_Window_Inventory::Set_ItemInfoUI(CGameObject* pObj)
+{
+
+	CUI_ItemInfo* pItemUI = dynamic_cast<CUI_ItemInfo*>(pObj);
+	CheckNull(pItemUI);
+
+	m_ItemInfoUI = pItemUI;
+	Safe_AddRef(m_ItemInfoUI);
+
+}
+
+void CUI_Window_Inventory::Update_InventorySlots()
+{
+	vector<InvenSlot*>* AllInven = m_pInventory_Manager->Get_AllInven();
+	CheckTrue(AllInven->empty());
+	
+	for (auto& pItemInfo : (*AllInven))
+	{
+		if (pItemInfo)
+		{
+			//이미 UI에 사용되고있다면.. FAlse
+			if (pItemInfo->m_bUsedInUI)
+				continue;
+			for (auto& Slot : m_InvenSlots)
+			{
+				if (Slot->Is_HasItem())
+					continue;
+
+				else
+				{
+					Slot->Update_Item(pItemInfo->ItemType);
+					pItemInfo->m_bUsedInUI = true;
+					break;
+				}
+			}
+		}
+		
+	}
+	
+}
+
+void CUI_Window_Inventory::Update_OnUseItem()
+{
+	vector<InvenSlot*>* AllInven = m_pInventory_Manager->Get_AllInven();
+	CheckTrue(AllInven->empty());
+
+	for (auto& pItemInfo : (*AllInven))
+	{
+		if (pItemInfo)
+		{
+			//카운트가 0이하가아니라면
+			if (pItemInfo->count <= 0 == false)
+				continue;
+
+			else
+			{
+				for (auto& Slot : m_InvenSlots)
+				{
+					if (Slot->Is_HasItem())
+					{
+						if (Slot->Get_ItemType() == pItemInfo->ItemType)
+						{
+							Slot->Update_Item(ItemType::END);
+						}
+					}
+
+					else
+						continue;
+				}
+			}
+			
+		}
+
+	}
 
 }
 
@@ -172,6 +271,7 @@ void CUI_Window_Inventory::Free()
 	for (auto& pObj : m_InvenSlots)
 		Safe_Release(pObj);
 
+	Safe_Release(m_ItemInfoUI);
 	Safe_Release(m_Cursor);
 
 }

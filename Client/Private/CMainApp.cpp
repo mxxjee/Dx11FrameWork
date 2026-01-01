@@ -221,11 +221,11 @@ HRESULT CMainApp::Initialize_Cilent()
 
 
 	/*테스트용*/
-	m_pGameInstance->Register_HotKey(KeyCode::B, true, false, false, [this]()
-		{
-			CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::MAGIC_POWDER, 20);
+	//m_pGameInstance->Register_HotKey(KeyCode::B, true, false, false, [this]()
+	//	{
+	//		CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::MAGIC_POWDER, 20);
 
-		});
+	//	});
 
 #endif // _DEBUG
 
@@ -237,11 +237,15 @@ HRESULT CMainApp::Initialize_Cilent()
 			if (b)
 			{
 				CGameInstance::GetInstance()->Pop_Level();
+				CInput_Manager::GetInstance()->Set_InputMode(InputMode::GAME);
 
 			}
 
 			else
 			{
+				//
+				CInput_Manager::GetInstance()->Set_InputMode(InputMode::UI);
+
 				LevelArgs args;
 				args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
 				args.changeType = LEVELCHANGETYPE::PUSH;
@@ -253,8 +257,7 @@ HRESULT CMainApp::Initialize_Cilent()
 					ENUM_TO_UINT(LEVEL_ID::UI),
 					args)))
 					return;
-				CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::MAGIC_POWDER, 20);
-
+				
 			}
 
 		});

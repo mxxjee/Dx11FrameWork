@@ -37,8 +37,13 @@ void CInventory_Manager::Update(_float fTimeDelta)
 		m_InvenSlots[ENUM_TO_UINT(pNewSlot->ItemType)] = pNewSlot;
 
 
+		//아이템마다 다름. 얻은이후 실행할 이벤트전송
 		if (pFront->m_pItem->m_AfterGetFunc)
 			pFront->m_pItem->m_AfterGetFunc();
+
+		//uiscene 갱신
+		if (Update_UISCene)
+			Update_UISCene();
 
 
 		m_SlotQueue.pop_front();
@@ -219,6 +224,10 @@ bool CInventory_Manager::Use_Item(ItemType eType, int iCount)
 		else if (m_YSlot == pSlot)
 			m_YSlot = nullptr;
 
+		if (Update_OnUseItem)
+			Update_OnUseItem();
+
+		Safe_Delete(pSlot);
 		pSlot = nullptr;
 	}
 
