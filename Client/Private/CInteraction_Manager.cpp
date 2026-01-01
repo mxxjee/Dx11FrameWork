@@ -134,8 +134,35 @@ bool CInteraction_Manager::OnInteractKeyPresed()
 
 void CInteraction_Manager::Clear()
 {
-	m_pCurrentTarget = nullptr;
 
+	//현재 상호작용 중인 타겟이 있다면 강제 종료
+	if (m_pCurrentTarget)
+	{
+		m_pCurrentTarget->Exit_Interaction();
+		m_pCurrentTarget->m_bPrevInteracting = false;
+		m_pCurrentTarget->m_bPrevRange = false; // 범위도 나간 걸로 처리
+		m_pCurrentTarget = nullptr;
+	}
+
+	//리스트에 등록된 모든 오브젝트를 순회하며 "범위 나감" 처리
+	for (auto& pObj : m_InteractableObjects)
+	{
+		if (pObj)
+		{
+			// 상호작용 중이었거나, 범위 안에 있었다면 강제로 Exit 호출
+			if (pObj->m_bPrevInteracting)
+			{
+				pObj->Exit_Interaction();
+				pObj->m_bPrevInteracting = false;
+			}
+
+			if (pObj->m_bPrevRange)
+			{
+				pObj->Exit_InteractRange(); // 여기서 UI 끄는 이벤트 등이 발생
+				pObj->m_bPrevRange = false;
+			}
+		}
+	}
 	m_InteractableObjects.clear();
 
 

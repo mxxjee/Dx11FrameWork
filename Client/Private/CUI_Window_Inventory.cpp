@@ -292,9 +292,9 @@ void CUI_Window_Inventory::Update_OnUseItem()
 
 void CUI_Window_Inventory::Update_UpdateXSlot()
 {
-	
 	CheckNull(m_InvenSlots[m_iCurIdx]);
 	CInventorySlot* pSlot = m_InvenSlots[m_iCurIdx];
+	CheckTrue(pSlot->Get_ItemType() == ItemType::END);
 
 	//x슬롯 처음설정하는거면, 바로설정
 	if (m_pInventory_Manager->Get_XSlot() == nullptr)
@@ -302,8 +302,10 @@ void CUI_Window_Inventory::Update_UpdateXSlot()
 		if (pSlot->Is_HasItem())
 		{
 			pSlot->Set_QuickSlot(true);
-			
+
 		}
+		else
+			return;
 	}
 
 	else
@@ -315,6 +317,7 @@ void CUI_Window_Inventory::Update_UpdateXSlot()
 		pSlot->Set_QuickSlot(true);
 	}
 
+	
 	m_iXIdx = pSlot->Get_Idx();
 	m_pInventory_Manager->Set_SlotKey(pSlot->Get_ItemType(), KeyCode::X);
 

@@ -156,11 +156,6 @@ void CLevel_NPCRoom::OnEnter()
 void CLevel_NPCRoom::OnResume(_uint iPreLevel)
 {
     
-    m_pGameInstance->Clear_SceneColliders(m_iLevelID);
-
-    CRoom_Manager::GetInstance()->Switch_Room(CRoom_Manager::GetInstance()->Get_RequestRoom());
-    CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::ROOM));
-
     
     CheckNull(m_pPlayer);
  
@@ -171,7 +166,13 @@ void CLevel_NPCRoom::OnResume(_uint iPreLevel)
         break;
 
     default:
-    {
+    {   
+        m_pGameInstance->Clear_SceneColliders(m_iLevelID);
+
+        CRoom_Manager::GetInstance()->Switch_Room(CRoom_Manager::GetInstance()->Get_RequestRoom());
+        CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::ROOM));
+
+
         _float4 vSpawnPos = CRoom_Manager::GetInstance()->Get_SpawnPosition();
         m_pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMLoadFloat4(&vSpawnPos));
         m_pPlayer->Change_MainNavMesh();

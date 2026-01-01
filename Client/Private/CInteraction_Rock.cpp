@@ -105,8 +105,17 @@ void CInteraction_Rock::Update(_float fTimeDelta)
 bool CInteraction_Rock::IsInteratable()
 {
     CheckNullResult(m_pTriggerBox, false);
-    return m_pTriggerBox->Is_Collision();
-    return false;
+    bool bResult= m_pTriggerBox->Is_Collision();
+
+    if (bResult)
+    {
+        if (m_pTriggerBox->Get_Other() == m_pPlayer)
+            return true;
+
+        else
+            bResult = false;
+    }
+    return bResult;
 }
 
 void CInteraction_Rock::Enter_InteractRange()
@@ -152,6 +161,7 @@ void CInteraction_Rock::Exit_Interaction()
 
    m_pPlayer->Get_ActionControl()->m_bCarry = false;
     m_pPlayer->Set_CarryAndThrowState(this);
+    m_pGameInstance->SetActiveGroup(L"Interaction_PopUp_Carry", false);
 
 }
 

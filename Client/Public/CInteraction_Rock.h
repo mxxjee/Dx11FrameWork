@@ -25,6 +25,7 @@ public:
     virtual void Enter_Interaction() override;
     virtual void Stay_Interaction(_float fTimeDelta) override;
     virtual void Exit_Interaction() override;
+    virtual     void    PushOut(_float3 vOutPush) {};
 
 
 public:

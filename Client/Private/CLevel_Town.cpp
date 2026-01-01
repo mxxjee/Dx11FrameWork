@@ -122,12 +122,7 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
 
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
     {
-        GameEvent gameEvent;
-        gameEvent.Name = "Go_Boss";
-
-        m_pGameInstance->Emit(gameEvent);
-
-        //Teleport_RichardHouse();
+        CGameManager::GetInstance()->Get_MainPlayer()->On_Heal(5);
 
 
     }

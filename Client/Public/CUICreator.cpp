@@ -74,7 +74,7 @@ HRESULT UICreator::Create_HeartGroup(wstring LayerTag)
     m_pGameInstance->Register_UIGroup(HeartGroup);
     m_pGameInstance->RegisterEvent(L"OnHeartDamaged", [](void* pData)
         {
-            int* iHp = reinterpret_cast<int*>(pData);
+             int* iHp = reinterpret_cast<int*>(pData);
             UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"HeartGroup");
             if (pGroup)
             {
@@ -83,19 +83,27 @@ HRESULT UICreator::Create_HeartGroup(wstring LayerTag)
                     CUI* pUI = dynamic_cast<CUI*>(i.second);
                     if (pUI)
                     {
-                        if (pUI->Get_Idx() == (*iHp))
+                        if (pUI->Get_Idx() >= (*iHp))
                         {
-                            pUI->Set_ActiveAnim(1, [pUI]()
-                                {
-                                    pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA);
+                            if (pUI->Is_Active())
+                            {
+                                pUI->Set_ActiveAnim(1, [pUI]()
+                                    {
+                                        pUI->Get_UIComp()->PlayAnim(
+                                            UIAnimType::ALPHA,
+                                            _float4(1.f, 0.f, 0.f, 0.f), // Start: 보임
+                                            _float4(0.f, 0.f, 0.f, 0.f), // Target: 안 보임 (투명)
+                                            5.f,   // Speed
+                                            false, // Loop
+                                            true   // bAutoDisable: ★ 애니메이션 끝나면 자동으로 Set_Active(false) 해줌
+                                        );
+                                    });
 
 
-                                    // pUI->Get_UIComp()->PlayAnim(UIAnimType::POSITION);
-                                });
-
-
-                            pUI->OnActivated(false);
-                        }
+                                pUI->OnActivated(false);
+                            }
+                         
+                        } 
                     }
                 }
             }
@@ -114,15 +122,24 @@ HRESULT UICreator::Create_HeartGroup(wstring LayerTag)
                     {
                         int iTargetIdx = (int)pUI->Get_Idx();
 
+                        // 내 인덱스가 현재 체력보다 작으면 (살아야 할 운명)
                         if (iTargetIdx < (*iHp))
                         {
-                            if(!pUI->Is_Active())
+                            //
+                            if (!pUI->Is_Active())
                             {
                                 pUI->Set_Active(true);
-                                pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA,_float4(0.f,0.f,0.f,0.f),_float4(1.f,0.f,0.f,0.f),5.f,false,false);
-                            }
-                                
 
+                                // 새로 살아나는 놈만 페이드 인 (0 -> 1)
+                                pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA,
+                                    _float4(0.f, 0.f, 0.f, 0.f), // Start
+                                    _float4(1.f, 0.f, 0.f, 0.f), // Target
+                                    5.f,  // Speed
+                                    false, // Loop
+                                    false // AutoDisable (켜지는 거니까 끄면 안 됨)
+                                );
+                            }
+                            // 이미 켜져있는 놈은 아무것도 안 함 (가만히 둠)
                         }
                     }
                 }
@@ -191,6 +208,7 @@ HRESULT UICreator::Create_Interaction_UI(wstring LayerTag)
             (*pPos) += OffSet;
 
             UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"Interaction_PopUp_Carry");
+            
             if (pGroup)
             {
                 for (auto& i : pGroup->Objects)
@@ -219,6 +237,8 @@ HRESULT UICreator::Create_Interaction_UI(wstring LayerTag)
         {
             
             UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"Interaction_PopUp_Carry");
+            
+
             if (pGroup)
             {
                 for (auto& i : pGroup->Objects)
@@ -226,7 +246,8 @@ HRESULT UICreator::Create_Interaction_UI(wstring LayerTag)
                     CUI* pUI = dynamic_cast<CUI*>(i.second);
                     if (pUI)
                     {
-                     pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f),  20.f, false, true);
+                        if(pUI->Is_Active())
+                            pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f),  20.f, false, true);
 
                     }
                 }
