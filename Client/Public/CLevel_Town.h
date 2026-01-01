@@ -10,6 +10,10 @@ class CGameManager;
 class CLevel_Town final :
     public CLevel
 {
+    enum Area
+    {
+        TOWN,FOREST,END
+    };
 private:
     explicit CLevel_Town(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual ~CLevel_Town() = default;
@@ -46,6 +50,8 @@ public:
     virtual void        OnPause(_uint iNextLeve) override;               //pause되었을때 호출
     virtual void        OnExit() override;
     
+public:
+    void            Change_Area();
       
 public:
     void        Teleport_RichardHouse();
@@ -58,7 +64,10 @@ private:
     CGameManager* m_pGameManager = nullptr;
 
     GameEvent       m_EnterFirstEvent;
-    
+
+    Area            m_ePreArea = Area::END;
+    Area            m_eArea = Area::TOWN;
+
 };
 NS_END
 

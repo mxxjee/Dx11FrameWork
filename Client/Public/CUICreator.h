@@ -35,6 +35,10 @@ namespace UICreator
 	HRESULT		Create_InventoryCursor(wstring LayerTag);
 	HRESULT		Create_InventorySceneSlot(wstring LayerTag);
 
+
+	///Level_UI
+	HRESULT		Create_LevelUI(wstring LayerTag);
+
 	extern CGameInstance* m_pGameInstance;
 	
 }

@@ -414,6 +414,11 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
     m_pGameInstance->Register_UIGroup(ButtonSlotGroup);
     m_pGameInstance->SetActiveGroup(ButtonSlotGroup.Key, false);
 
+    if (FAILED(UICreator::Create_LevelUI(strLayerTag)))
+        return E_FAIL;
+
+
+
     if (FAILED(UICreator::Create_Interaction_GetUI(strLayerTag)))
         return E_FAIL;
 

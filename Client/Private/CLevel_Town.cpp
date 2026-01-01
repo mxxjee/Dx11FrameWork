@@ -173,6 +173,8 @@ void CLevel_Town::Update(const _float fTimeDelta)
 void CLevel_Town::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
+
+    Change_Area();
     /*점조명테스트*/
     if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::PageUp))
     {
@@ -770,7 +772,7 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 #pragma region 필드카메라
     CEventTrigger::EventTriggerDesc DefaultEventDesc;
     DefaultEventDesc.vCenter = _float3(0.f, 0.f, 0.f);
-    DefaultEventDesc.vExtents = _float3(0.8f, 0.5f, 8.f);
+    DefaultEventDesc.vExtents = _float3(0.8f, 0.5f, 3.f);
     DefaultEventDesc.ObjTag = L"Default_Trigger";
     DefaultEventDesc.m_iLevelID = m_iLevelID;
 
@@ -779,6 +781,10 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
     DefaultEventDesc.TransformDesc = &DefaultEventTransform;
 
+    DefaultEventDesc.EnterFunc = [this]()
+    {
+        m_eArea = Area::TOWN;
+    };
 
 
 
@@ -864,7 +870,12 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
         GameEvent Event;
         Event.Name = "Enter_Forest";
 
+        CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
+        m_eArea = Area::FOREST;
+
         m_pGameInstance->Emit(Event);
+     
+
 
     };
     EventDesc.StayFunc = [this]()
@@ -1138,6 +1149,14 @@ void CLevel_Town::OnEnter()
     pFadeScreen->PlayFadeOut();
     CGameInstance::GetInstance()->Set_EnalbeUpdateRender(true);
 
+    wstring strKey = L"Town";
+    CGameInstance::GetInstance()->BroadCastEvent(L"UpdateLevelUI", &strKey);
+    m_pGameInstance->Invoke(6.f, 0.f, false, false, []()
+        {
+            CGameInstance::GetInstance()->BroadCastEvent(L"OnLevelUIHide", nullptr);
+
+
+        },pPlayer);
 }
 
 void CLevel_Town::OnResume(_uint iPreLevel)
@@ -1170,21 +1189,33 @@ void CLevel_Town::OnResume(_uint iPreLevel)
     {
 
     case Client::LEVEL_ID::ROOM:
+    {
         m_pGameInstance->Set_EnalbeUpdateRender(true);
         m_pGameInstance->Set_EnableUpdate(true);
-        CheckNull(pFadeScreen);                                                         
+        CheckNull(pFadeScreen);
         pFadeScreen->PlayFadeOut();
-        
+
         //NavMesh돌려놓기
         m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::TOWN));
         pPlayer->Get_Transform()->Set_State(STATE::POSITION, m_pGameManager->Get_LastPosition_By_Vector());
         pPlayer->Change_MainNavMesh();
+        wstring strKey = L"Town";
+        CGameInstance::GetInstance()->BroadCastEvent(L"UpdateLevelUI", &strKey);
+        m_pGameInstance->Invoke(6.f, 0.f, false, false, []()
+            {
+                CGameInstance::GetInstance()->BroadCastEvent(L"OnLevelUIHide", nullptr);
 
-       break;
+
+            }, pPlayer);
+
+    }
+    
+    break;
+
 
     case Client::LEVEL_ID::UI:
         break;
-
+         
     default:
         break;
     }
@@ -1229,6 +1260,37 @@ void CLevel_Town::OnExit()
 {
     CInteraction_Manager::GetInstance()->Clear();                                                          
     CGameInstance::GetInstance()->Set_EnalbeUpdateRender(false);
+}
+
+void CLevel_Town::Change_Area()
+{
+    wstring strKey = L"";
+
+    if (m_ePreArea != m_eArea)
+    {
+        switch (m_eArea)
+        {
+        case Client::CLevel_Town::TOWN:
+            strKey = L"Town";
+            break;
+        case Client::CLevel_Town::FOREST:
+            strKey = L"Forest";
+            break;
+  
+        default:
+                break;
+        }
+
+        CGameInstance::GetInstance()->BroadCastEvent(L"UpdateLevelUI", &strKey);
+        m_pGameInstance->Invoke(6.f, 0.f, false, false, []()
+            {
+                CGameInstance::GetInstance()->BroadCastEvent(L"OnLevelUIHide", nullptr);
+
+
+            }, CGameManager::GetInstance()->Get_MainPlayer());
+
+        m_ePreArea = m_eArea;
+    }
 }
 
 

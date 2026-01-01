@@ -590,6 +590,14 @@ void CLevel_Dungeon::OnEnter()
 
 	m_pGameInstance->Emit(m_EnterFirstEvent);
 
+	wstring strKey = L"Dungeon";
+	CGameInstance::GetInstance()->BroadCastEvent(L"UpdateLevelUI", &strKey);
+	m_pGameInstance->Invoke(6.f, 0.f, false, false, []()
+		{
+			CGameInstance::GetInstance()->BroadCastEvent(L"OnLevelUIHide", nullptr);
+
+
+		}, pPlayer);
 }
 
 void CLevel_Dungeon::OnResume(_uint iPreLevel)

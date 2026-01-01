@@ -1880,3 +1880,132 @@ HRESULT UICreator::Create_InventorySceneSlot(wstring LayerTag)
 
     return S_OK;
 }
+
+HRESULT UICreator::Create_LevelUI(wstring LayerTag)
+{
+    UIGroup     LevelUIGroup;
+    LevelUIGroup.Key = L"LevelUIGroup";
+
+
+    //그리드 시작 좌상단
+    float fBeginfX =  150.f;
+    float fBeginfY = (g_iWinSizeY >> 1) - 200.f;
+
+    //슬롯크기
+    float fSizeX = 600 * 0.5f;
+    float fSizeY = 300 * 0.5f;
+
+
+	CUI::tagUIDesc        Desc = {};
+
+
+	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+	Desc.TextureKey = L"";
+
+	Desc.iIdx =0;
+	Desc.ObjTag = L"Level_UI" + to_wstring(Desc.iIdx);
+
+	Desc.fSizeX = fSizeX;
+	Desc.fSizeY = fSizeY;
+	Desc.fX = fBeginfX;
+	Desc.fY = fBeginfY;
+
+	Desc.Depth = 0.5f;
+	CTransform::TRANSFORM_DESC TransDesc = {};
+	TransDesc.fRotationPerSec = 10.f;
+	TransDesc.fSpeedPerSec = 5.f;
+	Desc.TransformDesc = &TransDesc;
+
+	//AlphaAnim등록
+	CUIComponent::UICOMP_DESC UIDesc = {};
+	Desc.UICompDesc = &UIDesc;
+
+	CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &Desc);
+	if (pObj)
+	{
+		CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+		if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+			return E_FAIL;
+
+
+        LevelUIGroup.push_back(pInstance);
+
+
+
+    }
+
+    m_pGameInstance->Register_UIGroup(LevelUIGroup);
+
+    m_pGameInstance->RegisterEvent(L"UpdateLevelUI", [](void* pData)
+        {
+            wstring* levelName= static_cast<wstring*>(pData);
+         
+
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"LevelUIGroup");
+            if (pGroup)
+            {
+                for (auto& pair : pGroup->Objects)
+                {
+                    CGameObject* pObj = pair.second;
+                    CUI* pUI = dynamic_cast<CUI*>(pObj);
+                    CheckNull(pUI);
+
+                    pUI->Set_Texture(*levelName);
+                    pUI->Set_ActiveAnim(0, [pUI]()
+                        {
+                            pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 5.f, false, false);
+                        });
+
+                    if (!pUI->Is_Active())
+                        pUI->OnActivated(true);
+                }
+
+            }
+        });
+
+    m_pGameInstance->RegisterEvent(L"OnLevelUIShow", [](void* pData)
+        {
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"LevelUIGroup");
+            if (pGroup)
+            {
+                for (auto& pair : pGroup->Objects)
+                {
+                    CGameObject* pObj = pair.second;
+                    CUI* pUI = dynamic_cast<CUI*>(pObj);
+                    CheckNull(pUI);
+
+                    pUI->Set_ActiveAnim(0, [pUI]()
+                        {
+                            pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 10.f, false, false);
+                        });
+
+                    if (!pUI->Is_Active())
+                        pUI->OnActivated(true);
+                }
+
+            }
+        });
+
+    m_pGameInstance->RegisterEvent(L"OnLevelUIHide", [](void* pData)
+        {
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"LevelUIGroup");
+            if (pGroup)
+            {
+                for (auto& pair : pGroup->Objects)
+                {
+                    CGameObject* pObj = pair.second;
+                    CUI* pUI = dynamic_cast<CUI*>(pObj);
+                    CheckNull(pUI);
+
+                    pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 10.f, false, true, false);
+
+                }
+
+
+            }
+        });
+    
+    m_pGameInstance->SetActiveGroup(LevelUIGroup.Key, false);
+
+    return S_OK;
+}
