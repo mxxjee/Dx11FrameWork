@@ -265,7 +265,7 @@ void CUIComponent::Check_LoopAnimation(UIAnimType eType, UIAnimInfo& Info, _floa
 				{
 					_float4 vTmp = Info.fStart;
 					Info.fStart = Info.fTarget;
-					Info.fTarget = Info.fStart;
+					Info.fTarget = vTmp;
 
 				}
 

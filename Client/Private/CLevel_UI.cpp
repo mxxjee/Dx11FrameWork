@@ -5,6 +5,7 @@
 #include "CGameManager.h"
 #include "CUICreator.h"
 
+#include "CUI_Window_Inventory.h"
 
 CLevel_UI::CLevel_UI(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 	:CLevel(_pDevice, _pDeviceContext)
@@ -17,6 +18,14 @@ HRESULT CLevel_UI::Initialize(LevelArgs& args)
 
 	if (FAILED(Ready_Layer_UI(L"UI_Layer")))
 		return E_FAIL;
+
+	m_pWindow_Inventory = CUI_Window_Inventory::Create(m_pDevice, m_pContext);
+	if (m_pWindow_Inventory)
+	{
+		if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::UI), L"Enviroment_Layer", m_pWindow_Inventory)))
+			return E_FAIL;
+
+	}
 
 	return S_OK;
 }
@@ -66,6 +75,27 @@ void CLevel_UI::OnEnter()
 	}
 
 	CGameManager::GetInstance()->Set_OpenInventory(true);
+
+	UIGroup* pInvenGroup = m_pGameInstance->Get_UIGroup(L"InventorySlotGroup");
+	if (pInvenGroup)
+	{
+		int iIdx = 0;
+		for (auto& pObj : pInvenGroup->Objects)
+		{
+			if (pObj.second)
+			{
+				m_pWindow_Inventory->Add_InvenSlots(pObj.second, iIdx);
+				++iIdx;
+			}
+		}
+		
+
+	}
+
+	CGameObject* pCursor = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::UI), L"UI_Layer", L"InvenSlot_Cursor");
+	if (pCursor)
+		m_pWindow_Inventory->Set_Cursor(pCursor);
+
 	
 }
 
@@ -136,7 +166,13 @@ HRESULT CLevel_UI::Ready_Layer_UI(const _wstring& strLayerTag)
 		return E_FAIL;
 
 
+	if (FAILED(UICreator::Create_InventoryCursor(strLayerTag)))
+		return E_FAIL;
+
 	if (FAILED(UICreator::Create_InventorySceneSlot(strLayerTag)))
+		return E_FAIL;
+
+	if (FAILED(UICreator::Create_InventorySceneLine(strLayerTag)))
 		return E_FAIL;
 
 	return S_OK;

@@ -3,6 +3,8 @@
 #include "Client_Defines.h"
 
 NS_BEGIN(Client)
+class CUI_Window_Inventory;
+
 class CLevel_UI :
     public CLevel
 {
@@ -33,6 +35,8 @@ public:
 
 private:
     HRESULT     Ready_Layer_UI(const _wstring& strLayerTag);
+    CUI_Window_Inventory* m_pWindow_Inventory = nullptr;
+
 };
 NS_END
 

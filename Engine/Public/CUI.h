@@ -7,6 +7,19 @@ class ENGINE_DLL CUI :
     public CQuad
 {
 public:
+    struct UIInfo
+    {
+        _float fX = {};
+        _float fY = {};
+        _float Depth = { 0.5f };
+
+        _float fSizeX = {};
+        _float fSizeY = {};
+        _uint           iIdx = 0;
+    };
+
+
+public:
     typedef struct tagUIDesc : public CQuad::QUAD_DESC
     {
         _float fX = {}, fY = {},Depth = { 0.5f };
@@ -47,12 +60,15 @@ public:
     void            Set_ActiveAnim(_uint Flag, function<void()> Func) { m_ActiveAnim[Flag] = Func; }
 public:
     //UIEvent관련
-    //활성,비활성화 상태에 따른 호출
+    //활성,비활성화 상태에 따른 호출`
     virtual void        OnActivated(bool isActive);
-
+    void                Set_Pos(_float fX, _float fY,_float fDepth);
 public:
     virtual CGameObject* Clone(void* pArg)=0;
     virtual void    Free() override;
+
+public:
+    const UIInfo* Get_UIInitInfo() { return &m_UIInitInfo; }
 
 
    
@@ -60,11 +76,10 @@ private:
     function<void()>        m_ActiveAnim[2];
 
 
-private:
-    _uint                     m_iIdx = 0;         //UIGroup제어용, 기본값 0
-  
+protected:
+    _uint                     m_iIdx = 0;         //UIGroup제어용, 기본값 
     CUIComponent*             m_pUICom = nullptr;
- 
+    UIInfo                     m_UIInitInfo;
 };
 NS_END
 

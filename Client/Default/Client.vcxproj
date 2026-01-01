@@ -268,10 +268,12 @@
     <ClInclude Include="..\Public\CTreasureChest.h" />
     <ClInclude Include="..\Public\CTrigger_Box.h" />
     <ClInclude Include="..\Public\CUICreator.h" />
+    <ClInclude Include="..\Public\CUI_Cursor.h" />
     <ClInclude Include="..\Public\CUI_Interactable.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="..\Public\CUI_Window_Inventory.h" />
     <ClInclude Include="..\Public\CVariable_Condition.h" />
     <ClInclude Include="..\Public\CWall.h" />
     <ClInclude Include="..\Public\CWeapon.h" />
@@ -405,10 +407,12 @@
     <ClCompile Include="..\Private\CTerrain.cpp" />
     <ClCompile Include="..\Private\CTreasureChest.cpp" />
     <ClCompile Include="..\Private\CTrigger_Box.cpp" />
+    <ClCompile Include="..\Private\CUI_Cursor.cpp" />
     <ClCompile Include="..\Private\CUI_Interactable.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\Private\CUI_Window_Inventory.cpp" />
     <ClCompile Include="..\Private\CVariable_Condition.cpp" />
     <ClCompile Include="..\Private\CWall.cpp" />
     <ClCompile Include="..\Private\CWeapon.cpp" />

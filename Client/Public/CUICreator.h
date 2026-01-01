@@ -29,7 +29,9 @@ namespace UICreator
 	HRESULT		Create_InvenSlot(wstring LayerTag);
 
 
+	/// /////inventory SCene
 	HRESULT		Create_InventorySceneLine(wstring LayerTag);
+	HRESULT		Create_InventoryCursor(wstring LayerTag);
 	HRESULT		Create_InventorySceneSlot(wstring LayerTag);
 
 	extern CGameInstance* m_pGameInstance;

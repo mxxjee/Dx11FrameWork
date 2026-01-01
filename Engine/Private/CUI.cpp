@@ -42,7 +42,15 @@ HRESULT CUI::Initialize_Copytype(void* pArg)
 
 
     m_pUICom->Set_OwnerTransform(m_pTransformCom);
+    
+    m_UIInitInfo.fX = pDesc->fX;
+    m_UIInitInfo.fY = pDesc->fY;
 
+    m_UIInitInfo.fSizeX = pDesc->fSizeX;
+    m_UIInitInfo.fSizeY = pDesc->fSizeY;
+
+    m_UIInitInfo.Depth = pDesc->Depth;
+    m_UIInitInfo.iIdx = pDesc->iIdx;
 
     return S_OK;
 }
@@ -159,4 +167,16 @@ void CUI::OnActivated(bool isActive)
             m_bActive = false;
        
     }
+}
+
+void CUI::Set_Pos(_float fX, _float fY, _float fDepth)
+{
+    _vector vScreenPos = XMVectorSet(fX, fY, fDepth, 1.f);
+
+    auto& vector = m_pGameInstance->Get_Viewports();
+    _float4 vPos = MathUtils::ScreenToWorld_UI(vScreenPos, vector[0].Width, vector[0].Height);
+    m_pTransformCom->Set_State(STATE::POSITION, vPos);
+
+
+    return;
 }

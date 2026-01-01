@@ -370,7 +370,15 @@
     <ClInclude Include="..\Public\CSlot.h">
       <Filter>02.GameObjects\99.UI\00.Panel\03.Slot</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CInventorySlot.h" />
+    <ClInclude Include="..\Public\CUI_Window_Inventory.h">
+      <Filter>02.GameObjects\99.UI\03.Group</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CInventorySlot.h">
+      <Filter>02.GameObjects\99.UI\00.Panel\03.Slot\InventorySlot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_Cursor.h">
+      <Filter>02.GameObjects\99.UI\00.Panel\04.Cursor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -804,6 +812,12 @@
     <Filter Include="02.GameObjects\99.UI\00.Panel\03.Slot\InventorySlot">
       <UniqueIdentifier>{2fa555e9-2cf7-44ab-b7cd-3a5d65288539}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.UI\00.Panel\04.Cursor">
+      <UniqueIdentifier>{0f2b9920-89a1-419e-ac68-c42b2987c7c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.UI\03.Group">
+      <UniqueIdentifier>{c7baff0c-211f-4d47-b18f-b21ff74931e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1154,7 +1168,15 @@
     <ClCompile Include="..\Private\CSlot.cpp">
       <Filter>02.GameObjects\99.UI\00.Panel\03.Slot</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CInventorySlot.cpp" />
+    <ClCompile Include="..\Private\CUI_Window_Inventory.cpp">
+      <Filter>02.GameObjects\99.UI\03.Group</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CInventorySlot.cpp">
+      <Filter>02.GameObjects\99.UI\00.Panel\03.Slot\InventorySlot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_Cursor.cpp">
+      <Filter>02.GameObjects\99.UI\00.Panel\04.Cursor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

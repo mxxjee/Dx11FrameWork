@@ -1647,7 +1647,7 @@ HRESULT UICreator::Create_InventorySceneLine(wstring LayerTag)
     UIGroup     InventoryLineGroup;
     InventoryLineGroup.Key = L"InventoryLineGroup";
 
-    float fBeginfX = 17.f;
+    float fBeginfX = g_iWinSizeX>>1;
     float fBeginfY = 166.f;
 
     //슬롯크기
@@ -1660,9 +1660,9 @@ HRESULT UICreator::Create_InventorySceneLine(wstring LayerTag)
     {
         CUI::tagUIDesc        Desc = {};
 
-        Desc.ObjTag = L"InvenSlot_Icon";
+        Desc.ObjTag = L"InvenSlot_Icon" + to_wstring(i);
         Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
-        Desc.TextureKey = L"ItemSlot";
+        Desc.TextureKey = L"Inventory_Line";
 
         Desc.iIdx = i;
 
@@ -1681,7 +1681,7 @@ HRESULT UICreator::Create_InventorySceneLine(wstring LayerTag)
         CUIComponent::UICOMP_DESC UIDesc = {};
         Desc.UICompDesc = &UIDesc;
 
-        CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"InventorySlot"), &Desc);
+        CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &Desc);
         if (pObj)
         {
             CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
@@ -1689,9 +1689,59 @@ HRESULT UICreator::Create_InventorySceneLine(wstring LayerTag)
                 return E_FAIL;
 
 
-            InventorySlotGroup.push_back(pInstance);
+            InventoryLineGroup.push_back(pInstance);
 
         }
+    }
+
+    m_pGameInstance->Register_UIGroup(InventoryLineGroup);
+
+    return S_OK;
+}
+
+HRESULT UICreator::Create_InventoryCursor(wstring LayerTag)
+{
+    CUI::tagUIDesc        Desc = {};
+
+    _float fSizeX = 300 * 0.8f;
+    _float fSizeY = 300 * 0.8f;
+
+    Desc.ObjTag = L"InvenSlot_Cursor";
+    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+    Desc.TextureKey = L"ItemCursor";
+
+    Desc.iIdx =0;
+
+    Desc.fSizeX = fSizeX;
+    Desc.fSizeY = fSizeY;
+    Desc.fX = g_iWinSizeX>>1;
+    Desc.fY = g_iWinSizeY >> 1;
+
+    Desc.Depth = 0.48f;
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    Desc.TransformDesc = &TransDesc;
+
+    //AlphaAnim등록
+    CUIComponent::UICOMP_DESC UIDesc = {};
+
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::SCALE)].fStart = _float4(fSizeX, fSizeY, 1.f, 0.f);
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::SCALE)].fTarget = _float4(fSizeX*1.15f, fSizeY * 1.15f, 1.f, 0.f);
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::SCALE)].m_fSpeed = 20.f;
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::SCALE)].bLoop = true;
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::SCALE)].bAutoDisable = false;
+    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::SCALE)].bPingpong = true;
+
+    Desc.UICompDesc = &UIDesc;
+
+    CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Cursor"), &Desc);
+    if (pObj)
+    {
+        CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::UI), LayerTag, pInstance)))
+            return E_FAIL;
+
     }
     return S_OK;
 }
@@ -1719,11 +1769,12 @@ HRESULT UICreator::Create_InventorySceneSlot(wstring LayerTag)
         {
             CUI::tagUIDesc        Desc = {};
 
-            Desc.ObjTag = L"InvenSlot_Icon";
+           
             Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
             Desc.TextureKey = L"ItemSlot";
 
             Desc.iIdx = (i*4)+j;
+            Desc.ObjTag = L"InvenSlot_Icon" + to_wstring(Desc.iIdx);
 
             Desc.fSizeX = fSizeX;
             Desc.fSizeY = fSizeY;

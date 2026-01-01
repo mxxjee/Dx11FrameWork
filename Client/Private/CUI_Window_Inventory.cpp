@@ -1,0 +1,178 @@
+#include "CUI_Window_Inventory.h"
+#include "CInventorySlot.h"
+#include "CInput_Manager.h"
+#include "MathUtils.h"
+#include "CUI_Cursor.h"
+#include "CUI.h"
+
+
+
+USING(Client)
+
+CUI_Window_Inventory::CUI_Window_Inventory(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
+	:CGameObject(pDevice,pContext)
+{
+}
+
+CUI_Window_Inventory::CUI_Window_Inventory(const CUI_Window_Inventory& rhs)
+	: CGameObject(rhs)
+{
+}
+
+
+CUI_Window_Inventory* CUI_Window_Inventory::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
+{
+	CUI_Window_Inventory* pInstance = new CUI_Window_Inventory(pDevice,pContext);
+
+	if (FAILED(pInstance->Initialize_Prototype()))
+	{
+		MSG_BOX("Failed to Cloned : CUI_Window_Inventory");
+		Safe_Release(pInstance);
+	}
+
+	return pInstance;
+}
+
+CGameObject* CUI_Window_Inventory::Clone(void* pArg)
+{
+	return nullptr;
+}
+
+
+
+HRESULT CUI_Window_Inventory::Initialize_Prototype()
+{
+	if (FAILED(__super::Initialize_Prototype()))
+		return E_FAIL;
+
+	m_pInput_Manager = CInput_Manager::GetInstance();
+	m_InvenSlots.resize(maxIdx + 1);
+
+
+    return S_OK;
+}
+
+HRESULT CUI_Window_Inventory::Initialize_Copytype(void* pArg)
+{
+	if (FAILED(__super::Initialize_Copytype(pArg)))
+		return E_FAIL;
+
+
+	return S_OK;
+}
+
+void CUI_Window_Inventory::Update_Priority(_float fTimeDelta)
+{
+	__super::Update_Priority(fTimeDelta);
+}
+
+void CUI_Window_Inventory::Update(_float fTimeDelta)
+{
+	__super::Update(fTimeDelta);
+	bool m_bPressed = false;
+
+	if (m_pInput_Manager->IsKeyPressed(KeyCode::LeftArrow))
+	{
+		--m_iCurIdx;
+		m_bPressed = true;
+	}
+
+	if (m_pInput_Manager->IsKeyPressed(KeyCode::RightArrow))
+	{
+		++m_iCurIdx;
+		m_bPressed = true;
+	}
+
+	if (m_pInput_Manager->IsKeyPressed(KeyCode::UpArrow))
+	{
+		m_iCurIdx -= 4;
+		m_bPressed = true;
+	}
+	if (m_pInput_Manager->IsKeyPressed(KeyCode::DownArrow))
+	{
+		m_iCurIdx += 4;
+		m_bPressed = true;
+	}
+	
+	if (m_bPressed)
+	{
+		m_iCurIdx = MathUtils::Clamp(m_iCurIdx, 0, maxIdx);
+		Update_Cursor();
+	}
+	
+
+}
+
+void CUI_Window_Inventory::Update_Late(_float fTimeDelta)
+{
+	__super::Update_Late(fTimeDelta);
+	
+	
+	
+}
+
+void CUI_Window_Inventory::Update_Cursor()
+{
+	CheckTrue(m_InvenSlots.empty());
+	CheckNull(m_InvenSlots[m_iCurIdx]);
+
+	CInventorySlot* pSlot = m_InvenSlots[m_iCurIdx];
+
+	const CUI::UIInfo* SlotInfo = pSlot->Get_UIInitInfo();
+	 
+	m_Cursor->Set_Pos(SlotInfo->fX, SlotInfo->fY, m_Cursor->Get_UIInitInfo()->Depth);
+	m_Cursor->Set_SelectSlot(pSlot);
+
+}
+
+
+void CUI_Window_Inventory::Update_Render(_float fTimeDelta)
+{
+	__super::Update_Render(fTimeDelta);
+}
+
+HRESULT CUI_Window_Inventory::Render()
+{
+	__super::Render();
+    return S_OK;
+}
+
+
+
+void CUI_Window_Inventory::Add_InvenSlots(CGameObject* pObj,int iIdx)
+{
+	CInventorySlot* pSlot = dynamic_cast<CInventorySlot*>(pObj);
+	CheckNull(pSlot);
+
+	int iTargetIdx = pSlot->Get_Idx();
+
+	m_InvenSlots[iTargetIdx]=(pSlot);
+	Safe_AddRef(pSlot);
+
+	
+}
+
+void CUI_Window_Inventory::Set_Cursor(CGameObject* pObj)
+{
+	CUI_Cursor* pCursor = dynamic_cast<CUI_Cursor*>(pObj);
+	CheckNull(pCursor);
+
+	m_Cursor = pCursor;
+	Safe_AddRef(m_Cursor);
+
+	Update_Cursor();
+
+}
+
+
+void CUI_Window_Inventory::Free()
+{
+	__super::Free();
+
+	for (auto& pObj : m_InvenSlots)
+		Safe_Release(pObj);
+
+	Safe_Release(m_Cursor);
+
+}
+

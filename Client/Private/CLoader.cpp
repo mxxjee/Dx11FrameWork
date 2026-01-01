@@ -84,6 +84,7 @@
 #include "CM_Jacky.h"
 #include "CClosedDoor.h"
 #include "CInventorySlot.h"
+#include "CUI_Cursor.h"
 
 
 USING(Client)
@@ -663,6 +664,9 @@ HRESULT CLoader::Register_GameObjects()
         return E_FAIL;
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"InventorySlot", CInventorySlot::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+    \
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Cursor", CUI_Cursor::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     ////////////////Monsters//////////////////
