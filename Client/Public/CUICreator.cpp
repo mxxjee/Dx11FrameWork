@@ -1004,6 +1004,8 @@ HRESULT UICreator::Create_Loading_UI(wstring LayerTag)
     Desc.fSizeY = 320.f * 0.7f;
     Desc.fX = 1100.f;
     Desc.fY = 600.f;
+    Desc.Depth = 0.01f;
+
 
     CTransform::TRANSFORM_DESC TransDesc = {};
     TransDesc.fRotationPerSec = 10.f;

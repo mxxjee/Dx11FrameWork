@@ -107,18 +107,25 @@ void CRoomTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 
         else if (m_NextRoomKey == "Level_Dungeon")
         {
-            LevelArgs args;
-            args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::DUNGEON);
-            args.changeType = LEVELCHANGETYPE::PUSH;
-            args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-            args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
+            m_pFadeScreen->Set_FadeInEndFunc([this]()
+                {
+                    LevelArgs args;
+                    args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::DUNGEON);
+                    args.changeType = LEVELCHANGETYPE::PUSH;
+                    args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+                    args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
 
-            if (FAILED(m_pGameInstance->Level_Changer(
-                ENUM_TO_UINT(LEVEL_ID::LOADING),
-                args)))
-                return;
 
+
+                    if (FAILED(m_pGameInstance->Level_Changer(
+                        ENUM_TO_UINT(LEVEL_ID::LOADING),
+                        args)))
+                        return;
+                });
+
+            m_pFadeScreen->PlayFadeIn();
 
         }
 
@@ -137,18 +144,22 @@ void CRoomTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
              pPlayerPos.z -= 1.2f;
              CGameManager::GetInstance()->Set_LastPosition(pPlayerPos);
 
+             m_pFadeScreen->Set_FadeInEndFunc([this]()
+                 {
+                     LevelArgs args;
+                     args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
+                     args.changeType = LEVELCHANGETYPE::PUSH;
+                     args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+                     args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
-             LevelArgs args;
-             args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
-             args.changeType = LEVELCHANGETYPE::PUSH;
-             args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-             args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
-
-             if (FAILED(m_pGameInstance->Level_Changer(
-                 ENUM_TO_UINT(LEVEL_ID::LOADING),
-                 args)))
-                 return;
+                     if (FAILED(m_pGameInstance->Level_Changer(
+                         ENUM_TO_UINT(LEVEL_ID::LOADING),
+                         args)))
+                         return;
+                 });
+             
+             m_pFadeScreen->PlayFadeIn();
              }
              break;
 

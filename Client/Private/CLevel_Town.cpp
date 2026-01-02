@@ -1003,19 +1003,25 @@ HRESULT CLevel_Town::Ready_EventListners()
             _vector vPos = m_pGameInstance->Get_CellPos_By_MainCells(0);
             m_pGameManager->Set_LastPosition(vPos);
 
-            LevelArgs args;
-            args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
-            args.changeType = LEVELCHANGETYPE::PUSH;
-            args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-            args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+            pFadeScreen->Set_FadeInEndFunc([this]()
+                {
+                    LevelArgs args;
+                    args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
+                    args.changeType = LEVELCHANGETYPE::PUSH;
+                    args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+                    args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
-            CRoom_Manager::GetInstance()->Request_Room("MagicPowerHouse");
+                    CRoom_Manager::GetInstance()->Request_Room("MagicPowerHouse");
 
-            if (FAILED(m_pGameInstance->Level_Changer(
-                ENUM_TO_UINT(LEVEL_ID::LOADING),
-                args)))
-                return;
+                    if (FAILED(m_pGameInstance->Level_Changer(
+                        ENUM_TO_UINT(LEVEL_ID::LOADING),
+                        args)))
+                        return;
 
+                });
+
+            pFadeScreen->PlayFadeIn();
+            
             if(pFairy)
                 pFairy->Set_Active(false);
            
@@ -1170,26 +1176,27 @@ void CLevel_Town::OnResume(_uint iPreLevel)
 
 
 
-    //카메라돌려놓기이벤트 실행
-    CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
-    pPlayer->Show_Weapons();
-
-    GameEvent Event;
-    EventPayload payload;
-    Event.Payload = payload;
-
-    Event.Payload.Ptrs["Player"] = pPlayer;
-    Event.Name = "Complete_Init_Camera";
     
 
 
-    m_pGameInstance->Emit(Event);
     LEVEL_ID PrevID = (LEVEL_ID)iPreLevel;
     switch (PrevID)
     {
 
     case Client::LEVEL_ID::ROOM:
     {
+        //카메라돌려놓기이벤트 실행
+        CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
+        pPlayer->Show_Weapons();
+
+        GameEvent Event;
+        EventPayload payload;
+        Event.Payload = payload;
+
+        Event.Payload.Ptrs["Player"] = pPlayer;
+        Event.Name = "Complete_Init_Camera";
+        m_pGameInstance->Emit(Event);
+
         m_pGameInstance->Set_EnalbeUpdateRender(true);
         m_pGameInstance->Set_EnableUpdate(true);
         CheckNull(pFadeScreen);

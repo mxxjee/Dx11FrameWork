@@ -65,8 +65,14 @@ HRESULT CLevel_Loading::Initialize(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeTyp
 void CLevel_Loading::Update_Priority(_float fTimeDelta)
 {
     __super::Update_Priority(fTimeDelta);
-    if (m_pLoader->IsFinished() &&
-        CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Enter))
+    if (m_pLoader->IsFinished())
+    {
+        m_fTime += fTimeDelta;
+
+    }
+
+
+    if (m_fTime>=m_fNextTime)
     {
         LevelArgs args;
         args.changeType = m_eChangeType;
@@ -77,6 +83,7 @@ void CLevel_Loading::Update_Priority(_float fTimeDelta)
             return;
 
         MSG_BOX("다음 씬 불러오기 실패");
+        m_fTime = 0.f;
     }
 }
 

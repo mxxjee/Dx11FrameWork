@@ -48,6 +48,10 @@ private:
 
 
     CFadeScreen* pFadeScreen = nullptr;
+
+    _float      m_fTime = 0.f;
+    _float      m_fNextTime = 1.5f;
+
 };
 NS_END
 
