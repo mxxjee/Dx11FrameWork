@@ -488,8 +488,6 @@ void CMainApp::Create_FadeScreen()
 		return;
 
 
-	pFadeScreen->Set_AutoTime(1.5f);
-	pFadeScreen->Set_AutoMode(true);
 
 	pFadeScreen->Set_Active(false);
 	FadeScrcreenGroup.push_back(pFadeScreen);
@@ -525,7 +523,7 @@ void CMainApp::Create_FadeScreen()
 					CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(i.second);
 					if (pFadeScreen)
 					{
-						pFadeScreen->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 8.f, false, false);
+						pFadeScreen->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 8.f, false, true);
 
 					}
 				}

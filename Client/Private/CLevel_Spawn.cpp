@@ -77,23 +77,7 @@ void CLevel_Spawn::Update_Priority(_float fTimeDelta)
 void CLevel_Spawn::Update(const _float fTimeDelta)
 {
     __super::Update(fTimeDelta);
-    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
-    {
-        LevelArgs args;
-        args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);
-        args.changeType = LEVELCHANGETYPE::REPLACETOP;
-        args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
-
-        //pFadeScreen->PlayFadeIn();
-
-
-        if (FAILED(CGameInstance::GetInstance()->Level_Changer(
-            ENUM_TO_UINT(LEVEL_ID::LOADING),
-            args)))
-            return;
-    }
-
+    
 }
 
 void CLevel_Spawn::Update_Late(_float fTimeDelta)
@@ -235,23 +219,7 @@ HRESULT CLevel_Spawn::Ready_Layer_NPC(const _wstring& strLayerTag)
 
 HRESULT CLevel_Spawn::Ready_Layer_InteractionObject(const _wstring& strLayerTag)
 {
-    /*CModel_Bed::MODELOBJECT_DESC     BedDesc;
-    BedDesc.ObjTag = L"Obj_Bed";
-
-
-    CTransform::TRANSFORM_DESC TransDesc;
-    TransDesc.vLocalPosition = _float4(10.25f, 0.f, 7.7f, 1.f);
-    BedDesc.TransformDesc = &TransDesc;
-
-    CBase* pBaseBed = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Model_Bed"), &BedDesc);
-    CGameObject* pBed = dynamic_cast<CGameObject*>(pBaseBed);
-    if (pBed)
-    {
-        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::SPAWN), strLayerTag, pBed)))
-            return E_FAIL;
-
-
-    }*/
+ 
     return S_OK;
 
 
@@ -265,20 +233,25 @@ HRESULT CLevel_Spawn::Ready_Layer_Trigger(const _wstring& strLayerTag)
     EventTriggerDesc.ObjTag = L"Trigger" + 0;
     EventTriggerDesc.EnterFunc = [this]()
     {
-        /*¾ÀÀÌµ¿*/
-        LevelArgs args;
-        args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);
-        args.changeType = LEVELCHANGETYPE::REPLACETOP;
-        args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+        pFadeScreen->Set_FadeInEndFunc([]()
+            {
+                /*¾ÀÀÌµ¿*/
+                LevelArgs args;
+                args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);
+                args.changeType = LEVELCHANGETYPE::REPLACETOP;
+                args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+                args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
-        //pFadeScreen->PlayFadeIn();
 
 
-        if (FAILED(CGameInstance::GetInstance()->Level_Changer(
-            ENUM_TO_UINT(LEVEL_ID::LOADING),
-            args)))
-            return;
+                if (FAILED(CGameInstance::GetInstance()->Level_Changer(
+                    ENUM_TO_UINT(LEVEL_ID::LOADING),
+                    args)))
+                    return;
+            });
+        pFadeScreen->PlayFadeIn();
+
+      
     };
 
     EventTriggerDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::SPAWN);

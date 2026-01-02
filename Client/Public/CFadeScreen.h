@@ -43,12 +43,13 @@ private:
 
 private:
 	void			Change_State();
-
 public:
 	static CFadeScreen* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
 	virtual CGameObject* Clone(void* pArg) override;
 	virtual void Free() override;
 
+public:
+	void			Set_FadeInEndFunc(std::function<void()> Func) { m_FadeInEndFunction = Func; }
 private:
 	bool			m_bAutoMode = false;			//오토모드 true이면 특정 시간이후에 다시 알아서 fadeout실행
 
@@ -61,6 +62,8 @@ private:
 	State				m_eState = WAIT;
 	State				m_ePreState = END;
 
+private:
+	std::function<void()>		m_FadeInEndFunction = nullptr;
 
 };
 NS_END

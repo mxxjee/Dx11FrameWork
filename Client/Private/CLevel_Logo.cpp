@@ -67,83 +67,38 @@ void CLevel_Logo::Update_Priority(_float fTimeDelta)
     
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Enter))
     {
-        
-       
-        if (!m_bPressEnter)
-        {
-            m_bPressEnter = true;
-            CUI* pUI = dynamic_cast<CUI*>(pTitleBackGround);
-            if (pUI)
-                pUI->Set_Texture(L"Title_Blur");
+        pFadeScreen->PlayFadeIn();
 
-            ///UIGroup비활성화
-            m_pGameInstance->SetActiveGroup(L"LogoGroup", false);
+        pFadeScreen->Set_FadeInEndFunc([FadeScreen=pFadeScreen]()
+            {
+                /*씬이동*/
+                LevelArgs args;
+                args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::SPAWN);
+                args.changeType = LEVELCHANGETYPE::REPLACETOP;
+                //args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+                args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
-            pFadeScreen->PlayFadeIn();
-        }
+
+                if (FAILED(CGameInstance::GetInstance()->Level_Changer(
+                    ENUM_TO_UINT(LEVEL_ID::LOADING),
+                    args)))
+                    return;
+            });
+
+    
+
+    
 
    
        
     }
 
-    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::S))
-    {
-        /*씬이동*/
-        LevelArgs args;
-        args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::TOWN);
-        args.changeType = LEVELCHANGETYPE::REPLACETOP; 
-        //args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-        args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
-
-
-        if (FAILED(m_pGameInstance->Level_Changer(
-            ENUM_TO_UINT(LEVEL_ID::LOADING),
-            args)))
-            return;
-    }
+ 
 }
 
 void CLevel_Logo::Update(const _float fTimeDelta)
 {
     __super::Update(fTimeDelta);
-    
-    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::UpArrow))
-        --m_ButtonIdx;
-
-    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::DownArrow))
-        ++m_ButtonIdx;
-
-    m_ButtonIdx = MathUtils::Clamp<unsigned int>(m_ButtonIdx, 0, 2);
-
-
-
-    UIGroup* pButtonGroup = m_pGameInstance->Get_UIGroup(L"ButtonSlotGroup");
-    int i = 0;
-    if (pButtonGroup)
-    {
-        for (auto& pair : pButtonGroup->Objects)
-        {
-            CGameObject* pTarget = pair.second;
-            if (pTarget)
-            {
-                CButton* pButton = dynamic_cast<CButton*>(pTarget);
-
-                if (pButton)
-                {
-                    if (i == m_ButtonIdx)
-                        pButton->Set_Hover(true);
-
-                    else
-                        pButton->Set_Hover(false);
-                    ++i;
-                }
-
-
-            }
-        }
-  
-        
-    }
 
 }
 
@@ -151,88 +106,6 @@ void CLevel_Logo::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
     
- 
-
-    /*타겟 바꾸기 테스트*/
-  /*  if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Tab))
-    {
-        if (iTargetIdx == 1)
-            iTargetIdx = 0;
-        else
-            ++iTargetIdx;
-      
-        iTargetIdx = MathUtils::Clamp(iTargetIdx, 0, 1);
-
-
-        CGameObject* pMainCamera = m_pGameInstance->Get_MainCamera();
-        CheckNull(pMainCamera);
-        CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
-        CheckNull(ppMainCamera);
-        switch (iTargetIdx)
-        {
-        case 0:
-            ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC),
-                L"Player_Layer",
-                L"Player"));
-            break;
-
-        case 1:
-            ppMainCamera->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC),
-                L"Enviroment_Layer",
-                L"Floor"));
-
-            break;
-
-        case 2:
-            break;
-        }
-
-    }*/
-
-    ///*카메라 변경 테스트*/
-    //if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::C))
-    //{
-    //    if (iTargetIdx == 1)
-    //        iTargetIdx = 0;
-    //    else
-    //        ++iTargetIdx;
-
-    //    iTargetIdx = MathUtils::Clamp(iTargetIdx, 0, 1);
-
-    //    switch (iTargetIdx)
-    //    {
-    //    case 0:
-    //        m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
-    //        break;
-
-    //    case 1:
-    //        m_pGameInstance->Set_MainCamera(CAMERA_TYPE::FREE);
-
-    //        break;
-    //    }
-
-    //}
-
-    /*UI Screen좌펴 변환 테스트*/
-    //Set_UIPos_ByWorld(_float3(0.f,-100.f,0.f));
-
-    /*부모행렬테스트*/
-    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Q))
-    {
-      /*  CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Test_Layer", L"Test");
-        CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Player_Layer", L"Player");
-
-        if (pTestObject)
-        {
-            if (pTestObject->Get_Transform()->Get_Parent() == nullptr)
-                pTestObject->Get_Transform()->Set_Parent(pPlayerObject->Get_Transform());
-
-            else
-                pTestObject->Get_Transform()->Set_Parent(nullptr);
-
-        }*/
-    }
-
 
 }
 
@@ -354,66 +227,6 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
 
 
 
-#pragma region 버튼생성
-    ///////////////////////////////슬롯버튼//////////////////////////////////
-    UIGroup ButtonSlotGroup;
-    ButtonSlotGroup.Key = L"ButtonSlotGroup";
-
-
-    //////////슬롯(버튼)///////
-    for (int i = 0; i < 3; ++i)
-    {
-        CButton::tagButtonDesc Button_Desc = {};
-        Button_Desc.ObjTag = L"SaveSlot"+to_wstring(i);
-        Button_Desc.passName = "SaveSlot";
-        Button_Desc.m_iLevelID = m_iLevelID;
-
-        Button_Desc.TextureKey = L"SaveSlot";
-        Button_Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
-
-        Button_Desc.fSizeX = 800 * 0.9f;
-        Button_Desc.fSizeY = 140 * 0.9f;
-        Button_Desc.Depth = 0.49f;
-
-        Button_Desc.fX = g_iWinSizeX>>1;
-        Button_Desc.fY = 170 + (i*200.f);
-
-        Button_Desc.eKeyCode = KeyCode::Enter;
-        Button_Desc.SelectActionFunc = [&]()
-        {
-            /*씬이동*/
-            LevelArgs args;
-            args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::SPAWN);
-            args.changeType = LEVELCHANGETYPE::REPLACETOP;
-            //args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-            args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
-
-            pFadeScreen->Set_AutoMode(false);
-            if (FAILED(m_pGameInstance->Level_Changer(
-                ENUM_TO_UINT(LEVEL_ID::LOADING),
-                args)))
-                return;
-        };
-
-
-        Button_Desc.TransformDesc = &TransDesc;
-        //AlphaAnim등록
-        CUIComponent::UICOMP_DESC UIDesc = {};
-        Button_Desc.UICompDesc = &UIDesc;
-
-
-        CBase* pSlotObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Button"), &Button_Desc);
-        CGameObject* ppSlotObj = dynamic_cast<CGameObject*>(pSlotObj);
-        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOGO), strLayerTag, ppSlotObj)))
-            return E_FAIL;
-
-        ButtonSlotGroup.push_back(ppSlotObj);
-
-    }
-  
-    m_pGameInstance->Register_UIGroup(ButtonSlotGroup);
-    m_pGameInstance->SetActiveGroup(ButtonSlotGroup.Key, false);
-
     if (FAILED(UICreator::Create_LevelUI(strLayerTag)))
         return E_FAIL;
 
@@ -444,7 +257,6 @@ HRESULT CLevel_Logo::Ready_Layer_UI(const _wstring& strLayerTag)
         return E_FAIL;
 
     return S_OK;
-#pragma endregion
 
   
 }
@@ -510,12 +322,13 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
 
 void CLevel_Logo::OnEnter()
 {
+    pFadeScreen->PlayFadeOut();
+
     //타겟카메라
     m_pGameInstance->Set_MainCamera(CAMERA_TYPE::TARGET);
 
     ///UIGroup활성화(페이드인아웃)
     m_pGameInstance->SetActiveGroup(L"LogoGroup", true);
-    m_pGameInstance->SetActiveGroup(L"ButtonSlotGroup", false);
 
  
     //페이드스크린이벤트 추가설정..
@@ -531,36 +344,10 @@ void CLevel_Logo::OnEnter()
             }
         });
 
-#pragma region 메인카메라 등록및 transform 부모설정
-   
-
-    //CGameObject* pTestObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Test_Layer", L"Test");
-    //CGameObject* pPlayerObject = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOGO), L"Player_Layer", L"Player");
-    ////pPlayerObject->Set_Target(m_pGameInstance->Find_Camera(L"FreeCamera"));
-
-
-    //if (pTestObject)
-    //{
-    //    if (pTestObject->Get_Transform()->Get_Parent() == nullptr)
-    //    {
-    //        pTestObject->Get_Transform()->Set_State(STATE::POSITION, XMVectorSet(0.f, 1.f, 0.f, 1.f));
-    //        pTestObject->Get_Transform()->Rotation(_float3(-90.f, 0.f, 0.f));
-    //        pTestObject->Get_Transform()->Set_Parent(pPlayerObject->Get_Transform());
-    //    }
-
-
-    //    else
-    //        pTestObject->Get_Transform()->Set_Parent(nullptr);
-
-    //}
-
-#pragma endregion
 
 
 
-    
-
-
+  
 
 }
 
@@ -581,7 +368,6 @@ void CLevel_Logo::OnPause(_uint iNextLevel)
 void CLevel_Logo::OnExit()
 {
 
-    pFadeScreen->PlayFadeIn();
     m_pGameInstance->UnRegisterEvent(L"FadeOutEnd");
 
 

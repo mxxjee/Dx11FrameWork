@@ -81,7 +81,7 @@ void CFadeScreen::Update(_float fTimeDelta)
 
 	case Client::CFadeScreen::END_FADEIN:
 	{
-		IfFadeInEnd();
+
 		if (Get_UIComp()->Is_AnimEnd(UIAnimType::ALPHA))
 			m_eState = WAIT;
 	}
@@ -89,7 +89,7 @@ void CFadeScreen::Update(_float fTimeDelta)
 
 	case Client::CFadeScreen::START_FADEOUT:
 	{
-		IfFadeOutEnd();
+
 		m_eState = LOOP_FADEOUT;
 		
 	}
@@ -167,6 +167,11 @@ void CFadeScreen::IfFadeOutStart()
 void CFadeScreen::IfFadeInEnd()
 {
 	m_pGameInstance->BroadCastEvent(L"FadeInEnd", nullptr);
+	if (m_FadeInEndFunction)
+	{
+		m_FadeInEndFunction();
+		m_FadeInEndFunction = nullptr;
+	}
 }
 
 void CFadeScreen::IfFadeInStart()
