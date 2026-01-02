@@ -9,6 +9,7 @@
 
 
 unordered_map<size_t, vector<DefaultInteractionData>> CMapLoader::m_sceneInteractbles = {};
+bool CMapLoader::bLoadTownOnce = false;
 
 
 
@@ -16,9 +17,13 @@ USING(Client)
 
 HRESULT CMapLoader::Load_Town()
 {
+    CheckTrueResult(bLoadTownOnce,S_OK);
+
     Load_Terrain("../../Resource/Data/Map/Final_Town.json");
     Load_NavMesh(LEVEL_ID::TOWN, "../../Resource/Data/Map/Terrain11_Nav.dat");
     Load_Interaction("Level_Town", "../../Resource/Data/Map/Interaction5.json");
+
+    bLoadTownOnce = true;
     return S_OK;
 }
 

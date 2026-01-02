@@ -1193,8 +1193,14 @@ void CLevel_Town::OnResume(_uint iPreLevel)
         m_pGameInstance->Set_EnalbeUpdateRender(true);
         m_pGameInstance->Set_EnableUpdate(true);
         CheckNull(pFadeScreen);
-        pFadeScreen->PlayFadeOut();
 
+        m_pGameInstance->Invoke(1.f, 0.f, false, false, [m_pFadeScreen=pFadeScreen]()
+            {
+                m_pFadeScreen->PlayFadeOut();
+
+            },CGameManager::GetInstance()->Get_MainPlayer());
+
+       
         //NavMesh돌려놓기
         m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::TOWN));
         pPlayer->Get_Transform()->Set_State(STATE::POSITION, m_pGameManager->Get_LastPosition_By_Vector());

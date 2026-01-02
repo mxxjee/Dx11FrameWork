@@ -6,7 +6,8 @@
 #include "CGameManager.h"
 #include "CPlayer.h"
 #include "CNavMesh_Manager.h"
-
+#include "CFadeScreen.h"
+#include "CGameManager.h"
 
 USING(Client)
 CRoomTrigger::CRoomTrigger(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -39,6 +40,12 @@ HRESULT CRoomTrigger::Initialize_Copytype(void* pArg)
     CheckNullResult (pBoxCollider,S_OK);
     pBoxCollider->Set_ColGroup(ENUM_TO_UINT(COLLISION_GROUP::TRIGGER));
     pBoxCollider->Set_Owner(this);
+
+
+    UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
+    m_pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Find(L"FadeScreen"));
+
+
     return S_OK;
 }
 
@@ -87,7 +94,14 @@ void CRoomTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
     case Client::COLLISION_GROUP::PLAYER:
         if (m_NextRoomKey == "Level_Town")
         {
-            m_pGameInstance->Pop_Level();
+            m_pFadeScreen->PlayFadeIn();
+
+            m_pGameInstance->Invoke(2.f, 0.f, false, false, [m_pGameInstance= m_pGameInstance]()
+                {
+                    m_pGameInstance->Pop_Level();
+                }, CGameManager::GetInstance()->Get_MainPlayer());
+    
+            
            // m_pGameInstance->Set_IsLoading(true);
         }
 

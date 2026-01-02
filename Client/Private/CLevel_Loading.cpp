@@ -124,7 +124,6 @@ void CLevel_Loading::OnEnter()
     m_pGameInstance->Set_IsLoading(true);
     CheckNull(pFadeScreen);
 
-    pFadeScreen->PlayFadeIn();
 }
 
 void CLevel_Loading::OnResume(_uint iPreLevel)

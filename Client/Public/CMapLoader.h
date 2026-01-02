@@ -34,7 +34,7 @@ namespace CMapLoader
 	/// /////////////////////////////////
 	/// </summary>
 	extern UMap<size_t, vector<DefaultInteractionData>> m_sceneInteractbles;
-
+	extern bool bLoadTownOnce;
 
 };
 

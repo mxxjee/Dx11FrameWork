@@ -2,6 +2,8 @@
 #include "CTrigger_Box.h"
 
 NS_BEGIN(Client)
+class CFadeScreen;
+
 class CRoomTrigger :
     public CTrigger_Box
 {
@@ -32,7 +34,8 @@ public:
 private:
     string      m_NextRoomKey = "";
 
-    
+    CFadeScreen* m_pFadeScreen = nullptr;
+
 
 };
 
