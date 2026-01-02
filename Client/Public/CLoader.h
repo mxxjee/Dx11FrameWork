@@ -48,8 +48,9 @@ private:
 
 public:
     _bool       IsFinished() const { return m_isFinished; }
-
-
+    _float      Get_Loading_MinTime() { return m_fMinTime;}
+    int      Get_CurrentLoadCount() { return m_iCurcount; }
+    int     Get_TotalLoadCount() { return m_iTotalCount; }
 private:
     ComPtr<ID3D11Device>    m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext>    m_pDeviceContext = { nullptr };
@@ -69,6 +70,19 @@ private:
 public:
     static CLoader* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LEVEL_ID iNextLevelID);
     virtual void Free();
+
+
+private:
+    float       m_fProgress = 0.f;
+
+    int       m_iTotalCount = 100;
+    int       m_iCurcount = 0;
+    
+    
+            //각 로딩마다 다르게설정
+    float       m_fMinTime = 3.f;
+    
+
 
 };
 

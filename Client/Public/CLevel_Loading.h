@@ -3,9 +3,11 @@
 #include "CLevel.h"
 #include "Client_Defines.h"
 
+
+
 NS_BEGIN(Client)
 class CFadeScreen;
-
+class CLoadingUI;
 class CLevel_Loading final :
     public CLevel
 {
@@ -51,6 +53,17 @@ private:
 
     _float      m_fTime = 0.f;
     _float      m_fNextTime = 1.5f;
+
+    _float      m_fAccLoadingTime = 0.f;
+    _float       m_fLoadingRatio = 0.f;
+
+
+    _float m_fTimeRatio = 0.f;
+    _float m_fRealRatio = 0.f;
+    _float m_fTargetRatio = 0.f;
+    _float m_fProgress = 0.f;
+
+    vector<CLoadingUI*>        m_pLoadingUI;
 
 };
 NS_END

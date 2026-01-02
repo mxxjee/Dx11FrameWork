@@ -17,7 +17,7 @@
 #include "CVIBuffer_Rect.h"
 #include "CUICamera.h"
 #include "CFadeScreen.h"
-
+#include "CLoadingUI.h"
 
 
 
@@ -94,19 +94,27 @@ void CLevel_Loading::Update(const _float fTimeDelta)
     /*로더야 로딩 다 되었니?*/
     CheckNull(m_pLoader);
 
-   
+
+    
+
+
 
 }
 
 void CLevel_Loading::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
+  
 
 }
 
 void CLevel_Loading::Render()
 {
     //UI렌더. (로딩바)
+    //  m_fTimeRatio >= 1.0f && m_fRealRatio >= 1.0f && m_fProgress >= 0.99f)
+    
+  
+
     CheckNull(m_pLoader);
     m_pLoader->Output();
 
@@ -117,7 +125,7 @@ void CLevel_Loading::Render()
 HRESULT CLevel_Loading::Ready_UI_Layer()
 {
     //UI 요소 추가.
-    if (FAILED(UICreator::Create_Loading_UI(L"UI_Layer")))
+    if (FAILED(UICreator::Create_Loading_UI(L"UI_Layer", m_pLoadingUI)))
         return E_FAIL;
 
 

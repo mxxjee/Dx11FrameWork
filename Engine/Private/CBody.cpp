@@ -80,6 +80,7 @@ HRESULT CBody::Render()
         if (Mesh.second)
         {
             Mesh.second->Bind_ShaderResource(m_pShader, "g_DiffuseTexture", aiTextureType::aiTextureType_DIFFUSE);
+            Mesh.second->Bind_ShaderResource(m_pShader, "g_NormalTexture", aiTextureType::aiTextureType_NORMALS);
             Mesh.second->Bind_ShaderResource(m_pShader, "g_SpecularTexture", aiTextureType::aiTextureType_SPECULAR);
             Mesh.second->Bind_ShaderResource(m_pShader, "g_AmbientTexture", aiTextureType::aiTextureType_AMBIENT);
 

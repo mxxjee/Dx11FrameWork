@@ -37,3 +37,9 @@ cbuffer BoneBuffer : register(b3)
 {
     row_major matrix g_BoneMatrices[512];
 }
+
+cbuffer LoadingBuffer : register(b4)
+{
+    float4 g_Progress;
+
+}

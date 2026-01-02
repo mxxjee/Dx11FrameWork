@@ -7,7 +7,7 @@
 #include "CGameManager.h"
 #include "CPlayer.h"
 #include "CGameObject.h"
-#include "CLoadingUI_Back.h"
+#include "CLoadingUI.h"
 
 
 
@@ -990,61 +990,69 @@ HRESULT UICreator::Create_NPC_Dialogue_UI(wstring LayerTag)
     return S_OK;
 }
 
-HRESULT UICreator::Create_Loading_UI(wstring LayerTag)
+HRESULT UICreator::Create_Loading_UI(wstring LayerTag, vector<CLoadingUI*>& UIVec)
 {
-    CUI::tagUIDesc        Desc = {};
+    float       m_fOriginX = g_iWinSizeX-100.f;
+    float       m_fOriginY = g_iWinSizeY-100.f;
 
-    Desc.ObjTag = L"Loading_UI";
-    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
-    Desc.TextureKey = L"loadingUI";
-
-    Desc.iIdx = 0;
-
-    Desc.fSizeX = 320.f*0.7f;
-    Desc.fSizeY = 320.f * 0.7f;
-    Desc.fX = 1100.f;
-    Desc.fY = 600.f;
-    Desc.Depth = 0.01f;
-
-
-    CTransform::TRANSFORM_DESC TransDesc = {};
-    TransDesc.fRotationPerSec = 10.f;
-    TransDesc.fSpeedPerSec = 5.f;
-    Desc.TransformDesc = &TransDesc;
-
-    //AlphaAnim등록
-    CUIComponent::UICOMP_DESC UIDesc = {};
-    /*    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].fStart = _float4(Desc.fX, Desc.fY, 1.f, 1.f);
-        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].fTarget = _float4(Desc.fX - 10.f, Desc.fY, 1.f, 1.f);
-        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].m_fSpeed = 0.1f;
-        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::POSITION)].bLoop = true;*/
-
-    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].fStart = _float4(1.f, 0.f, 0.f, 0.f);
-    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].fTarget = _float4(0.f, 0.f, 0.f, 0.f);
-    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].m_fSpeed = 5.f;
-    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bLoop = true;
-    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bAutoDisable = false;
-    UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bPingpong = true;
-
-    Desc.UICompDesc = &UIDesc;
+    float       m_fOffsetX = 200.f;
 
 
 
-
-
-    CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &Desc);
-    if (pObj)
+    /// 채우는 UI
+    for (int i = 0; i < 1; ++i)
     {
-        CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
-        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOADING), LayerTag, pInstance)))
-            return E_FAIL;
+        CUI::tagUIDesc        Desc = {};
 
-        CUI* pUI = dynamic_cast<CUI*>(pObj);
-        if (pUI)
-            pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA);
+        Desc.ObjTag = L"Loading_UI" + to_wstring(i);
+        Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+        Desc.TextureKey = L"loadingUI";
+
+
+        Desc.iIdx = i;
+
+        Desc.fSizeX = 320.f*0.5f;
+        Desc.fSizeY = 320.f*0.5f;
+
+        Desc.fX = m_fOriginX;
+        Desc.fY = m_fOriginY;
+        Desc.Depth = 0.009f;
+
+
+        CTransform::TRANSFORM_DESC TransDesc = {};
+        TransDesc.fRotationPerSec = 10.f;
+        TransDesc.fSpeedPerSec = 5.f;
+        Desc.TransformDesc = &TransDesc;
+
+        //AlphaAnim등록
+        CUIComponent::UICOMP_DESC UIDesc = {};
+        
+
+        Desc.UICompDesc = &UIDesc;
+
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].fStart = _float4(0.f, 0.f, 0.f, 0.f);
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].fTarget = _float4(1.f, 0.f, 0.f, 0.f);
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].m_fSpeed = 2.f;
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bLoop = true;
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bAutoDisable = false;
+        UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bPingpong = true;
+
+
+
+
+        CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Loading"), &Desc);
+        if (pObj)
+        {
+            CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+            if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOADING), LayerTag, pInstance)))
+                return E_FAIL;
+
+            CLoadingUI* pUI = dynamic_cast<CLoadingUI*>(pObj);
+            UIVec.push_back(pUI);
+
+        }
 
     }
-
     return S_OK;
 }
 

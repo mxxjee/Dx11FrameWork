@@ -12,6 +12,7 @@ vector g_vMaterialSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
 
 Texture2D g_DiffuseTexture;
+Texture2D g_NormalTexture;
 Texture2D g_SpecularTexture;
 Texture2D g_AmbientTexture;
 
@@ -35,6 +36,8 @@ struct VS_OUT
 {
     float4 vPosition : SV_POSITION;
     float4 vNormal : NORMAL;
+    float4 vTangent : TANGENT;
+    float4 vBinormal : BINORMAL;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
     float4 vProjPos : TEXCOORD2;
@@ -44,6 +47,8 @@ struct PS_IN
 {
     float4 vPosition : SV_POSITION;
     float4 vNormal : NORMAL;
+    float4 vTangent : TANGENT;
+    float4 vBinormal : BINORMAL;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
     float4 vProjPos : TEXCOORD2;
@@ -77,8 +82,11 @@ VS_OUT VS_MAIN(VS_IN In)
     
     //계산완료된 vPosition(x,y,z,w)중 w는 z값을 보관중이다.
     Out.vPosition = vPosition;
+    
     Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
-
+    Out.vTangent = normalize(mul(vector(In.vTangent.xyz, 0.f), g_WorldMatrix));
+    Out.vBinormal = normalize(mul(vector(In.vBinormal.xyz, 0.f), g_WorldMatrix));
+    
     Out.vTexcoord = In.vTexcoord;
     Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
     Out.vProjPos = Out.vPosition;
@@ -94,66 +102,29 @@ VS_OUT VS_MAIN(VS_IN In)
 PS_OUT PS_MAIN(PS_IN Input) 
 {
     PS_OUT Out;
-    
     vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
-   
-   
-    Out.vDiffuse = vMtrlDiffuse;
-    Out.vNormal = vector(Input.vNormal.xyz * 0.5f + 0.5f, 0.f);
+    
+    
+    
+    vector vNormalDesc =g_NormalTexture.Sample(DefaultSampler, Input.vTexcoord);
+    float2 vNormalXY = vNormalDesc.rg * 2.0f - 1.0f;
+    float fNormalZ = sqrt(saturate(1.0f - dot(vNormalXY, vNormalXY)));
+    
+    vector vNormal = vector(vNormalXY.x, vNormalXY.y, fNormalZ, 0.0f);
+    
+    
+    float3x3 WorldMatrix = float3x3(Input.vTangent.xyz, Input.vBinormal.xyz * -1.f, Input.vNormal.xyz);
+    vNormal = vector(mul(vNormal.xyz, WorldMatrix), 0.f);
+    
+    
+    Out.vDiffuse = vMtrlDiffuse*1.5f;
+    Out.vNormal = vector(vNormal.xyz * 0.5f + 0.5f, 0.f);
     Out.VDepth = vector(Input.vProjPos.z / Input.vProjPos.w,
                         Input.vProjPos.w, 0.f, 0.f);
     
     return Out;
     
-    //float4 fDiffuseColor, fAmbientColor, fSpeculrColor;
-
-    ////Maskmap의 흰색부분 = 풀, 검은색 부분 = 흙
-    //float4 MtrlDiffuseColor = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
-       
-    //clip(MtrlDiffuseColor.a - 0.5f);
-               
-    ////음영값 (diffuse 세기)
-    //float fShade = Compute_Shade(g_vLightDirection, Input.vNormal);
-    
-  
-    ////specular 세기 = 반사벡터를 구해서  카메라 시야벡터 * (-1)와 내적
-    //float fSpecular = Compute_Specular(g_vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition,50);
-                  
- 
-    //fDiffuseColor = g_vLightDiffuse * MtrlDiffuseColor * fShade;
-    //fAmbientColor = g_vLightAmbient * g_vMaterialAmbient * (MtrlDiffuseColor * 0.5f);
-    
-
-    //float4 MtrlSpecularColor = g_SpecularTexture.Sample(DefaultSampler, Input.vTexcoord);
-    //fSpeculrColor = g_vLightSpecular * MtrlSpecularColor * fSpecular;
-
-    
-
-    
-    ////////////////////점 조명에 대한 연산/////////////////////
-    //for (int i = 0; i < g_PointLightNum; ++i)
-    //{
-    //    //1.어디방향으로 빛이오는지 계산하자.
-    //    vector vLightDirection = g_vPL_Position[i] - Input.vWorldPos;
-    //    float Distance = length(vLightDirection);
-        
-    //    float fShade = Compute_Shade(vLightDirection, Input.vNormal);
-    //    float fAttenuation = Compute_Attenuation(g_vPL_Range[i].r, Distance);
-    //    float fSpecular = Compute_Specular(vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition,50);
-        
-        
-    //    ///이거 이상함.
-    //    fDiffuseColor += g_vPL_Diffuse[i] * MtrlDiffuseColor * fShade * fAttenuation;
-    //    fAmbientColor += g_vPL_Ambient[i] * g_vMaterialAmbient * fAttenuation;
-    //    fSpeculrColor += g_vPL_Specular[i] * MtrlSpecularColor * fSpecular;
-        
-
-    //}
-  
-  
-    //float4 ResultColor = fDiffuseColor + fAmbientColor + fSpeculrColor;
-    //return saturate(ResultColor);
-
+   
 }
 
 

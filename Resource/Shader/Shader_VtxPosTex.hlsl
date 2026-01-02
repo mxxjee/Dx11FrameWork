@@ -6,7 +6,6 @@ HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 #include "Shader_Light.hlsli"
 #include "Engine_Shader_Defines.hlsli"
 
-
 float4 g_TintColor = float4(1.0, 0.871, 0.722, 0.529);
 float3 fBlueColor = float3(0.2, 0.4, 1.0);
 
@@ -220,14 +219,34 @@ float4 PS_SaveSlot(PS_IN In) : SV_Target0
     return color;
 }
                        
-float4 PS_BlackAndWhite(PS_IN In):SV_Target0
+float4 PS_GrayScale(PS_IN In):SV_Target0
 {
     float4 color = texture0.Sample(DefaultSampler, In.vTexcoord);
-    color.argb = color.r;
+
+    float3 weight = float3(0.299f, 0.587f, 0.114f);
+    float gray = dot(color.rgb, weight);
+    
+    color.rgb = gray;
     
   
     return color;
 }
+
+float4 PS_Loading(PS_IN In) : SV_Target0
+{
+    float4 color = texture0.Sample(DefaultSampler, In.vTexcoord);
+    //높이 = 1-In.vTexcoord.y
+    
+    if ((In.vTexcoord.x) > g_Progress.x)
+        color. a = 0.f;
+    
+    
+    
+ 
+  
+    return color;
+}
+
 
 /*렌더링 방법을 정의한다.*/
 technique11 DefaultTechnique
@@ -382,7 +401,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_Selected();
     }
     
-    pass BlackAndWhite
+    pass GrayScale
     {
         SetRasterizerState(RS_UI);
         SetDepthStencilState(DSS_UI, 0);
@@ -390,6 +409,17 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_BlackAndWhite();
+        PixelShader = compile ps_5_0 PS_GrayScale();
+    }
+
+    pass Loading
+    {
+        SetRasterizerState(RS_UI);
+        SetDepthStencilState(DSS_UI, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_Loading();
     }
 }

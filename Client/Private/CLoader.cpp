@@ -227,19 +227,29 @@ HRESULT CLoader::Loading_Town()
 
 HRESULT CLoader::Loading_Logo()
 {
+    m_fMinTime = 3.f;
+
+
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
     if (FAILED(Register_Textures()))
         return E_FAIL;
+
+    m_iCurcount += 30.f;
+
 
     lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
 
     if (FAILED(Register_Shaders()))
         return E_FAIL;
 
+    m_iCurcount += 10;
+
 
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
     if (FAILED(Register_Models()))
         return E_FAIL;
+
+    m_iCurcount += 30;
 
 
 
@@ -249,12 +259,17 @@ HRESULT CLoader::Loading_Logo()
     if (FAILED(Register_Components()))
         return E_FAIL;
 
+    m_iCurcount += 30;
+
+
 
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
     if (FAILED(Register_GameObjects()))
         return E_FAIL;
 
-   
+    m_iCurcount += 40;
+
+
 
     m_isFinished = true;
     return S_OK;
@@ -284,21 +299,34 @@ HRESULT CLoader::Loading_UI()
 
 HRESULT CLoader::Loading_Room()
 {
+    m_fMinTime = 2.f;
+
+
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
     for (size_t i = 0; i < 88899999; i++)
     {
         int a = 10;
     }
+
+    m_iCurcount += 40;
+
+
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
     for (size_t i = 0; i < 88889999; i++)
     {
         int a = 10;
     }
+
+    m_iCurcount += 40;
+
     lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
     for (size_t i = 0; i < 88889999; i++)
     {
         int a = 10;
     }
+
+    m_iCurcount += 40;
+
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
     m_isFinished = true;
     return S_OK;
@@ -312,7 +340,7 @@ HRESULT CLoader::Loading_Spawn()
         int a = 10;
     }
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
-
+ 
 
 
     lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
@@ -324,8 +352,8 @@ HRESULT CLoader::Loading_Spawn()
 
     lstrcpy(m_szFPS, TEXT("맵 로딩중입니다."));
 
-
     lstrcpy(m_szFPS, TEXT("로딩완료!"));
+
 
 
     m_isFinished = true;
@@ -334,12 +362,15 @@ HRESULT CLoader::Loading_Spawn()
 
 HRESULT CLoader::Loading_Dungeon()
 {
+    m_fMinTime = 3.f;
+
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
     for (size_t i = 0; i < 88899999; i++)
     {
         int a = 10;
     }
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
+    m_iCurcount += 40;
 
 
 
@@ -348,12 +379,14 @@ HRESULT CLoader::Loading_Dungeon()
     {
         int a = 10;
     }
+    m_iCurcount += 30;
 
 
     lstrcpy(m_szFPS, TEXT("맵 로딩중입니다."));
 
 
     lstrcpy(m_szFPS, TEXT("로딩완료!"));
+    m_iCurcount += 30;
 
 
     m_isFinished = true;
@@ -363,12 +396,15 @@ HRESULT CLoader::Loading_Dungeon()
 
 HRESULT CLoader::Loading_Boss()
 {
+    m_fMinTime = rand() % +2 + 2;
+
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
     for (size_t i = 0; i < 88899999; i++)
     {
         int a = 10;
     }
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
+    m_iCurcount += 30;
 
 
 
@@ -377,10 +413,12 @@ HRESULT CLoader::Loading_Boss()
     {
         int a = 10;
     }
+    m_iCurcount += 30;
 
    
     lstrcpy(m_szFPS, TEXT("맵 로딩중입니다."));
     lstrcpy(m_szFPS, TEXT("로딩완료!"));
+    m_iCurcount += 30;
 
 
     m_isFinished = true;
@@ -463,13 +501,13 @@ HRESULT CLoader::Register_Textures()
     if (FAILED(m_pGameInstance->Register_Texture(L"Snow", pTexture)))
         return E_FAIL;
 
-    m_pGameInstance->Load_Textures(L"../../Resource/UI/Logo/", L".dds");
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Interaction/", L".dds");
     m_pGameInstance->Load_Textures(L"../../Resource/UI/NPC/", L".dds");
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Items/", L".dds");
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Inventory/", L".png");
     m_pGameInstance->Load_Textures(L"../../Resource/UI/AreaUI/", L".png");
 
+  
 
     return S_OK;
 }

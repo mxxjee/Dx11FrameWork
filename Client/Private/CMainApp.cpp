@@ -46,7 +46,8 @@
 #include "CFadeScreen.h"
 #include "CInventory_Manager.h"
 
-#include "CLoadingUI_Back.h"
+#include "CLoadingUI.h"
+
 
 
 
@@ -539,7 +540,10 @@ void CMainApp::Create_FadeScreen()
 
 void CMainApp::Create_LoadingUI()
 {
-	if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Loading_Back", CLoadingUI_Back::Create(m_pDevice, m_pContext))))
+	m_pGameInstance->Load_Textures(L"../../Resource/UI/Loading/", L".png");
+	m_pGameInstance->Load_Textures(L"../../Resource/UI/Logo/", L".dds");
+
+	if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Loading", CLoadingUI::Create(m_pDevice, m_pContext))))
 		return;
 
 

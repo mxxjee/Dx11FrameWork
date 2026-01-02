@@ -95,8 +95,6 @@ PS_OUT_BACKBUFFER PS_MAIN_DEBUG(PS_IN In)
 PS_OUT_LIGHT PS_MAIN_DIRECTIONAL(PS_IN In)
 {
     PS_OUT_LIGHT Out;
-
-
     float4 vNormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexcoord);
 
     
@@ -104,11 +102,6 @@ PS_OUT_LIGHT PS_MAIN_DIRECTIONAL(PS_IN In)
     /* 0~1 -> -1~1 */
 
     float4 vNormal = float4(vNormalDesc.xyz * 2.f - 1.f, 0.f);
-
-      
-
-
-
     vector vShade = max(dot(normalize(g_vLightDirection) * -1.f, vNormal), 0.f) + (g_vLightAmbient * g_vMtrlAmbient);
 
     Out.vShade = g_vLightDiffuse * saturate(vShade);
@@ -239,7 +232,7 @@ PS_OUT_LIGHT PS_MAIN_POINT(PS_IN In)
         
         vector vReflect = reflect(normalize(vLightDir), vNormal);
        
-        Out.vSpecular += fAtt * ((g_vPL_Specular[i] * g_vMtrlSpecular) * pow(max(dot(normalize(vReflect) * -1.f, normalize(vLook)), 0.f), 50.f));
+        Out.vSpecular += fAtt * ((g_vPL_Specular[i] * g_vMtrlSpecular) * pow(max(dot(normalize(vReflect) * -1.f, normalize(vLook)), 0.f), 100.f));
         
 
 
@@ -255,16 +248,14 @@ PS_OUT_BACKBUFFER PS_MAIN_COMBINED(PS_IN In)
     PS_OUT_BACKBUFFER Out;
     
     vector vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
-   
-    
     vector vShade = g_ShadeTexture.Sample(DefaultSampler, In.vTexcoord);
     vector vSpecular = g_SpecularTexture.Sample(DefaultSampler, In.vTexcoord);
     
-    
+       
+  
     float4 color = vDiffuse*vShade+vSpecular;
-    
-    //¹à±âº¸Á¤
-    color = pow(saturate(color), 1.0 / 1.7);
+    //color = pow(saturate(color), 1.0 / 1.7); //¹à±âº¸Á¤
+    color.a = 1.f;
 
     Out.vColor = color;
     

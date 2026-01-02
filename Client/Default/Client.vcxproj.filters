@@ -379,11 +379,11 @@
     <ClInclude Include="..\Public\CUI_ItemInfo.h">
       <Filter>02.GameObjects\99.UI\00.Panel\03.Slot\InventoryItemInfo</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CLoadingUI_Back.h">
-      <Filter>02.GameObjects\99.UI\00.Panel\05.Loading UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CNPC_Fairy.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Kid_Blue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLoadingUI.h">
+      <Filter>02.GameObjects\99.UI\00.Panel\05.Loading UI\UI_Back</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -830,6 +830,12 @@
     <Filter Include="02.GameObjects\99.UI\00.Panel\05.Loading UI">
       <UniqueIdentifier>{4b66f0de-d86e-4869-9dff-cbb1b6a4cf9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\99.UI\00.Panel\05.Loading UI\UI_Back">
+      <UniqueIdentifier>{bbbe43a2-246a-4498-a519-9110750fd634}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\99.UI\00.Panel\05.Loading UI\UI">
+      <UniqueIdentifier>{2c5b55a1-bcfa-4d38-bef4-3dff52b6c5f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1192,8 +1198,8 @@
     <ClCompile Include="..\Private\CUI_ItemInfo.cpp">
       <Filter>02.GameObjects\99.UI\00.Panel\03.Slot\InventoryItemInfo</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CLoadingUI_Back.cpp">
-      <Filter>02.GameObjects\99.UI\00.Panel\05.Loading UI</Filter>
+    <ClCompile Include="..\Private\CLoadingUI.cpp">
+      <Filter>02.GameObjects\99.UI\00.Panel\05.Loading UI\UI_Back</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -164,6 +164,12 @@ HRESULT CShader_Manager::Create_GlobalConstantBuffer()
 	CConstantBuffer* pBoneBuffer = new CConstantBuffer(m_pDevice, m_pContext);
 	pBoneBuffer->Create(3, sizeof(BoneBuffer));
 	m_ConstantBuffers.emplace("BoneBuffer", pBoneBuffer);
+	 
+
+
+	CConstantBuffer* pLoadingBuffer = new CConstantBuffer(m_pDevice, m_pContext);
+	pLoadingBuffer->Create(4, sizeof(Loadingbuffer));
+	m_ConstantBuffers.emplace("LoadingBuffer", pLoadingBuffer);
 
 
 	return S_OK;

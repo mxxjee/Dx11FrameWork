@@ -95,7 +95,7 @@ HRESULT CRenderer::Initialize(_uint RenderGroupCount)
 #ifdef _DEBUG
 	if (m_EngineDesc.eEngineMode == EngineMode::CLIENT)
 	{
-		if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Diffuse"), 50.f, 50.f, 100.f, 100.f)))
+		/*if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Diffuse"), 50.f, 50.f, 100.f, 100.f)))
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Normal"), 50.f, 150.f, 100.f, 100.f)))
@@ -105,7 +105,20 @@ HRESULT CRenderer::Initialize(_uint RenderGroupCount)
 			return E_FAIL;
 
 		if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Specular"), 150.f, 150.f, 100.f, 100.f)))
+			return E_FAIL;*/
+
+		if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Diffuse"), 200.f, 200.f, 400.f, 400.f)))
 			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Normal"), 200.f, 550.f, 400.f, 400.f)))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Shade"), 550.f, 200.f, 400.f, 400.f)))
+			return E_FAIL;
+
+		if (FAILED(m_pGameInstance->Ready_RT_Debug(TEXT("Target_Specular"), 550.f, 550.f, 400.f, 400.f)))
+			return E_FAIL;
+
 	}
 	
 

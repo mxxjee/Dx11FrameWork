@@ -35,6 +35,16 @@ struct PointLightBuffer :public ConstantBufferStruct
 };
 
 
+
+struct Loadingbuffer:public ConstantBufferStruct
+{
+	_float4 g_Progress;
+	
+
+
+};
+
+
 struct BoneBuffer :public ConstantBufferStruct
 {
 
