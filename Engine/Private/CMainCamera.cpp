@@ -22,7 +22,7 @@ HRESULT CMainCamera::Initialize_Prototype()
 }
 
 HRESULT CMainCamera::Initialize_Copytype(void* pArg)
-{
+{ 
 	if(FAILED(__super::Initialize_Copytype(pArg)))
 		return E_FAIL;
 

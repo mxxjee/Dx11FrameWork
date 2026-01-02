@@ -64,6 +64,8 @@ HRESULT CNPC_Kid_Blue::Initialize_Prototype(void* pArg)
     pModelShader = pModel->Get_Shader();
 
 
+    Set_Expression(EXPRESSION::SAD);
+
 
     return S_OK;
 }

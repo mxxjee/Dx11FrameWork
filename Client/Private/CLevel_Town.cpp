@@ -120,12 +120,12 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
     //        return;
     }
 
-    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
-    {
-        CGameManager::GetInstance()->Get_MainPlayer()->On_Heal(5);
+    //if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
+    //{
+    //    CGameManager::GetInstance()->Get_MainPlayer()->On_Heal(5);
 
 
-    }
+    //}
 
 
 

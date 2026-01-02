@@ -230,6 +230,9 @@ bool CInventory_Manager::Use_Item(ItemType eType, int iCount)
 
 		Safe_Delete(pSlot);
 		pSlot = nullptr;
+
+		m_InvenSlots[ENUM_TO_UINT(eType)] = nullptr;
+
 	}
 
 	

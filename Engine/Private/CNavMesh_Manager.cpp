@@ -83,6 +83,11 @@ void CNavMesh_Manager::Reset_NaveMesh(_uint iLevelIdx)
 	vector<CCell*>* FindCells = Find_Cells(iLevelIdx);
 	CheckNull(FindCells);
 
+	if (m_MainCells == FindCells)
+	{
+		m_MainCells = nullptr;
+	}
+
 	for (auto& pCell : *FindCells)
 		Safe_Release(pCell);
 
@@ -171,14 +176,18 @@ void CNavMesh_Manager::Free()
 
 
 #endif // _DEBUG
-
-	for(auto& pair: m_LevelCells)
+	for (auto& pair : m_LevelCells)
 	{
-
 		for (auto& cell : pair.second)
-			Safe_Release(cell);
-		
-
+		{
+			// 방어 코드: 혹시라도 null이거나 이미 해제된 놈이면 건너뜀
+			if (cell)
+			{
+				Safe_Release(cell);
+				cell = nullptr; // (선택) 댕글링 방지
+			}
+		}
 		pair.second.clear();
 	}
+	m_LevelCells.clear(); // [추가] 맵 자체도 비워주는 게 깔끔합니다.
 }

@@ -9,6 +9,7 @@
 #include "CInventory_Manager.h"
 #include "CFadeScreen.h"
 #include "CLevel_Town.h"
+#include "CNPC.h"
 
 
 IMPLEMENT_SINGLETON(CDialogue_Manager)
@@ -257,6 +258,15 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
         Event.Name = "Mom_Finish";
 
         CGameInstance::GetInstance()->Emit(Event);
+
+        CNPC* pMomNPC = dynamic_cast<CNPC*>(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::ROOM), L"NPC_Layer", L"NPC_Mom"));
+        CNPC* pDadNPC = dynamic_cast<CNPC*>(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::ROOM), L"NPC_Layer", L"NPC_Dad"));
+
+        if (pMomNPC&& pDadNPC)
+        {
+            pMomNPC->Set_Expression(CNPC::EXPRESSION::HAPPY);
+            pDadNPC->Set_Expression(CNPC::EXPRESSION::HAPPY);
+        }
 
     }
 
