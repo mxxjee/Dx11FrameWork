@@ -44,6 +44,7 @@ private:
 
 public:
 	void		Create_FadeScreen();
+	void		Create_LoadingUI();
 
 private:
 #ifdef _DEBUG

@@ -44,8 +44,11 @@ void CPlayerStateGetItem::Enter(CPlayer* pPlayer)
                         m_pGameInstance->BroadCastEvent(L"OnItemGetIconShow", pEvent);
                         m_bShowUI = true;
 
+                        pPlayer->Set_Expression(CPlayer::EXPRESSION::HAPPY);
+
                         m_pGameInstance->Invoke(2.f, 0.f, false, false, [pEvent]()
                             {
+
                                 CGameInstance::GetInstance()->BroadCastEvent(L"OnItemDescUIShow", pEvent);
                                 CGameInstance::GetInstance()->BroadCastEvent(L"UpdateItemDescText", pEvent);
 
@@ -160,6 +163,7 @@ void CPlayerStateGetItem::Exit(CPlayer* pPlayer)
 {
     pPlayer->Set_CanMove(true);
     pPlayer->Show_Weapons();
+    pPlayer->Set_Expression(CPlayer::EXPRESSION::IDLE);
 
     pActionControl->m_bItemGet = false;
     

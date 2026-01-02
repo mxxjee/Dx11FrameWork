@@ -55,6 +55,12 @@ public:
         END
     };
 
+public:
+    enum class EXPRESSION
+    {
+        IDLE,HAPPY,END
+    };
+
 protected:
     CPlayer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CPlayer(const CPlayer& rhs);
@@ -125,6 +131,10 @@ public:
     void        Teleport(_uint iNewIdx);
     void        Exit_RichardChapterEvent();
     void        Create_PowderParticle();
+
+public:
+    HRESULT        Ready_Expressions();
+    void        Set_Expression(EXPRESSION expression);
 
 public:
     //상태에따른 메쉬 비지블
@@ -256,6 +266,7 @@ private:
     CInventory_Manager*     m_pInventoryManager = nullptr;
     bool                    m_bRichardChapter = false;
 
+    CTexture*               m_pMouthTex = nullptr;
 
 };
 

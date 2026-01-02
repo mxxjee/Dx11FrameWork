@@ -180,6 +180,7 @@
     <ClInclude Include="..\Public\CItem_Manager.h" />
     <ClInclude Include="..\Public\CLevel_Boss.h" />
     <ClInclude Include="..\Public\CLevel_Dungeon.h" />
+    <ClInclude Include="..\Public\CLoadingUI_Back.h" />
     <ClInclude Include="..\Public\CMagicPowder.h" />
     <ClInclude Include="..\Public\CMJackyEscapeState.h" />
     <ClInclude Include="..\Public\CMJackyIdleState.h" />
@@ -321,6 +322,7 @@
     <ClCompile Include="..\Private\CItem_Manager.cpp" />
     <ClCompile Include="..\Private\CLevel_Boss.cpp" />
     <ClCompile Include="..\Private\CLevel_Dungeon.cpp" />
+    <ClCompile Include="..\Private\CLoadingUI_Back.cpp" />
     <ClCompile Include="..\Private\CMagicPowder.cpp" />
     <ClCompile Include="..\Private\CMJackyEscapeState.cpp" />
     <ClCompile Include="..\Private\CMJackyIdleState.cpp" />

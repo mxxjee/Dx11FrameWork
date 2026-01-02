@@ -46,6 +46,7 @@
 #include "CFadeScreen.h"
 #include "CInventory_Manager.h"
 
+#include "CLoadingUI_Back.h"
 
 
 
@@ -109,6 +110,7 @@ HRESULT CMainApp::Initialize()
 	CGameInstance::GetInstance()->Register_Shader(L"Default", pInstance);
 
 	Create_FadeScreen();
+	Create_LoadingUI();
 
 
 	if (FAILED(Start_Level(LEVEL_ID::LOGO,LEVELCHANGETYPE::REPLACETOP)))
@@ -271,15 +273,17 @@ HRESULT CMainApp::Initialize_Cilent()
 
 HRESULT CMainApp::Ready_Fonts()
 {
-
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Zelda_Default"), TEXT("../../Resource/Fonts/Zelda_Default.spritefont"))))
 		return E_FAIL;
+
 
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Dialogue_Default"), TEXT("../../Resource/Fonts/Dialogue_Default.spritefont"))))
 		return E_FAIL;
 
+
 	if (FAILED(m_pGameInstance->Add_Font(TEXT("Dialogue_DefaultBold"), TEXT("../../Resource/Fonts/Dialogue_DefaultBold.spritefont"))))
 		return E_FAIL;
+
 	return S_OK;
 }
 
@@ -531,6 +535,14 @@ void CMainApp::Create_FadeScreen()
 		});
 
 #pragma endregion
+}
+
+void CMainApp::Create_LoadingUI()
+{
+	if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Loading_Back", CLoadingUI_Back::Create(m_pDevice, m_pContext))))
+		return;
+
+
 }
 
 CMainApp* CMainApp::Create()

@@ -219,7 +219,15 @@ float4 PS_SaveSlot(PS_IN In) : SV_Target0
     
     return color;
 }
-                        
+                       
+float4 PS_BlackAndWhite(PS_IN In):SV_Target0
+{
+    float4 color = texture0.Sample(DefaultSampler, In.vTexcoord);
+    color.argb = color.r;
+    
+  
+    return color;
+}
 
 /*렌더링 방법을 정의한다.*/
 technique11 DefaultTechnique
@@ -372,5 +380,16 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_Selected();
+    }
+    
+    pass BlackAndWhite
+    {
+        SetRasterizerState(RS_UI);
+        SetDepthStencilState(DSS_UI, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_BlackAndWhite();
     }
 }

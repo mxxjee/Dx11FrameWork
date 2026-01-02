@@ -24,6 +24,10 @@
 #include "CMagicPowder.h"
 #include "CInteraction_JackyBall.h"
 
+#include "CMaterial.h"
+#include "CTexture.h"
+
+
 
 
 
@@ -90,6 +94,9 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
     if (FAILED(Ready_States()))
+        return E_FAIL;
+    
+    if (FAILED(Ready_Expressions()))
         return E_FAIL;
 
     
@@ -658,6 +665,45 @@ void CPlayer::Create_PowderParticle()
 
     }
 
+
+}
+HRESULT CPlayer::Ready_Expressions()
+{
+    CheckNullResult(m_pAnimBody, E_FAIL);
+    CModel* pModel = m_pAnimBody->Get_Model();
+    wstring ModelName = pModel->Get_ModelData().name;
+
+    wstring FilePath = L"../../Resource/Model/Actor/LinkAnim/Materials/";
+
+    //입 사진 추가바인드
+    CMaterial* pMouthMat = m_pGameInstance->Find_Material(ModelName + L"_MI_mouth");
+    if (pMouthMat)
+    {
+        auto pair = pMouthMat->Get_MaterialData()->m_Textures.find(aiTextureType::aiTextureType_DIFFUSE);
+        if (pair == pMouthMat->Get_MaterialData()->m_Textures.end())
+            return E_FAIL;
+
+        m_pMouthTex = pair->second;
+
+        for (int i = 0; i <= 8; ++i)
+        {
+            wstring MouthPath = FilePath + L"MI_mouth_alb." + to_wstring(i) + L".dds";
+            m_pMouthTex->Load_Texture(MouthPath.c_str());
+
+        }
+
+
+    }
+
+    return S_OK;
+}
+void CPlayer::Set_Expression(EXPRESSION expression)
+{
+    if (expression == EXPRESSION::IDLE)
+        m_pMouthTex->Set_Texture(0);
+
+    if (expression == EXPRESSION::HAPPY)
+        m_pMouthTex->Set_Texture(2);
 
 }
 void CPlayer::Teleport(_uint iNewIdx)
