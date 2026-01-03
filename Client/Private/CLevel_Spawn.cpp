@@ -283,8 +283,11 @@ HRESULT CLevel_Spawn::Ready_Layer_Trigger(const _wstring& strLayerTag)
 HRESULT CLevel_Spawn::Ready_Layer_Particle(const _wstring& strLayerTag)
 {
     CMeshEffect::MESHEFFECT_DESC Desc;
-    Desc.modelName = L"SlashEffect";
-    Desc.ObjTag = L"SlashEffect";
+    Desc.modelName = L"Swish01";
+    Desc.ObjTag = L"Swish01";
+
+
+    Desc.PassName = "Slash";
 
     CTransform::TRANSFORM_DESC TransDesc;
     TransDesc.vLocalPosition = _float4(13.6f, 1.3f, 5.3f, 1.f);
@@ -376,6 +379,11 @@ void CLevel_Spawn::OnEnter()
 
 
     m_pPlayer->Change_MainNavMesh();
+
+    /// <summary>
+    /// ////
+    /// </summary>
+    m_pPlayer->Show_Weapons();
 
     //////현재씬의 itneraction 등록 
     CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::SPAWN));

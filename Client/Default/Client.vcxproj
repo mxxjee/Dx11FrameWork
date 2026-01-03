@@ -282,6 +282,7 @@
     <ClInclude Include="..\Public\CWall.h" />
     <ClInclude Include="..\Public\CWeapon.h" />
     <ClInclude Include="..\Public\CWeatherCock.h" />
+    <ClInclude Include="..\Public\EffectData.h" />
     <ClInclude Include="..\Public\GlobalGameEvent.h" />
     <ClInclude Include="..\Public\ItemCollect_Condition.h" />
     <ClInclude Include="..\Public\MonsterStates.h" />
@@ -439,6 +440,11 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\..\Resource\Shader\Shader_MeshEffect.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+    </FxCompile>
     <FxCompile Include="..\..\Resource\Shader\Shader_MapTool.hlsl">
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>

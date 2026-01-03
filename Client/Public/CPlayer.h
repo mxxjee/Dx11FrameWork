@@ -21,11 +21,17 @@ class CInteractionObject;
 class CInventory_Manager;
 class CPlayerState;
 class CGameManager;
+class CMeshEffect;
 
 
 class CPlayer :
     public CAnimModelObject
 {
+    enum PLAYER_EFFECT
+    {
+        SLASH1,SLASH2 ,PLAYER_EFFECT_END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+   };
+
 public:
     enum HoldKey
     {
@@ -132,6 +138,7 @@ public:
     void        Exit_RichardChapterEvent();
     void        Create_PowderParticle();
 
+    
 public:
     HRESULT        Ready_Expressions();
     void        Set_Expression(EXPRESSION expression);
@@ -171,6 +178,7 @@ public:
     virtual HRESULT     Ready_Components(void* pArg);
     virtual HRESULT     Ready_PartObjects(void* pArg);
     HRESULT                Ready_States();
+    HRESULT                Ready_Effects();
 
     void                Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop,bool immediately=false);
 
@@ -268,6 +276,12 @@ private:
 
     CTexture*               m_pMouthTex = nullptr;
 
+public:
+    void        AnimNotify_SlashStart();
+private:
+    vector<list<CMeshEffect*>>     m_PlayerEffects;
+
+
 };
 
-NS_END
+NS_END                                                                                                                                                                                                                                                                                                                      

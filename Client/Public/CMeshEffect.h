@@ -1,6 +1,6 @@
 #pragma once
 #include "CGameObject.h"
-#include "Client_Defines.h"
+#include "EffectData.h"
 
 namespace Engine
 {
@@ -19,6 +19,8 @@ public:
     typedef struct tagMeshEffectDesc : public CGameObject::tagGameObjectDesc
     {
         wstring    modelName;               //이 body가 사용할 모델이름
+        wstring      ShaderName=L"";
+        string      PassName="Default";
         _uint eRenderGroup = 0;
 
     }MESHEFFECT_DESC;
@@ -47,6 +49,7 @@ public:
 
 public:
     void Set_VisibleMesh(const wstring& MeshName, bool bVisible);
+    const EffectData* Get_EffectData() { return &m_LocalData; }
 
 protected:
     CModel* m_pModel = { nullptr };
@@ -69,17 +72,34 @@ public:
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
+public:
 
+    void    Spawn(const _float4x4* pSocketMatrix = nullptr,const _float4x4* pParentMatrix=nullptr);
+
+
+    void    Play();
+    void     Stop();
 protected:
     _uint                   m_eRenderGroup = 0;
-
+    string                  m_PassName = "";
 public:
     EffectData              m_LocalData;
     float                   m_fTime = 0.f;
     wstring                 m_ModelName = L"";
 
     CEffectData_Manager* m_pEffectData_Manager = nullptr;
-  
+    bool                m_bStop = false;
+
+private:
+ //   void Update_Matrix();
+
+
+private:
+    _float4x4   m_CombinedWorldMatrix;
+    const _float4x4* m_pSocketMatrix = { nullptr };
+    const _float4x4* m_pParentMatrix = { nullptr };
+
+
 };
 NS_END
 

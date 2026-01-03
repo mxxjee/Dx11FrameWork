@@ -25,6 +25,9 @@ void CPlayerAttackState::Enter(CPlayer* pPlayer)
     //중복공격막고..
     pPlayer->Set_CanAttackEnable(false);
     pPlayer->Set_CanMove(false);
+
+   // pPlayer->AnimNotify_SlashStart();
+
     m_bChange = false;
 }
 

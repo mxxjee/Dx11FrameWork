@@ -1,4 +1,5 @@
 #include "CEffectData_Manager.h"
+#include "Client_Defines.h"
 
 IMPLEMENT_SINGLETON(CEffectData_Manager)
 
@@ -78,7 +79,27 @@ HRESULT CEffectData_Manager::Load_AllData()
 
             Data->fLifeTime = jEffectData["LifeTime"].get<float>();
 
-            Data->fLifeTime = jEffectData["Speed"].get<float>();
+            Data->fSpeed = jEffectData["Speed"].get<float>();
+            Data->m_bLoop = jEffectData["Loop"].get<bool>();
+
+
+            Data->InitOffSet.x = jEffectData["OffSet"][0].get<float>();
+            Data->InitOffSet.y = jEffectData["OffSet"][1].get<float>();
+            Data->InitOffSet.z = jEffectData["OffSet"][2].get<float>();
+            Data->InitOffSet.w = jEffectData["OffSet"][3].get<float>();
+
+
+
+            Data->InitRotation.x = jEffectData["Rotation"][0].get<float>();
+            Data->InitRotation.y = jEffectData["Rotation"][1].get<float>();
+            Data->InitRotation.z = jEffectData["Rotation"][2].get<float>();
+            Data->InitRotation.w = jEffectData["Rotation"][3].get<float>();
+
+
+            Data->InitScale.x = jEffectData["Scale"][0].get<float>();
+            Data->InitScale.y = jEffectData["Scale"][1].get<float>();
+            Data->InitScale.z = jEffectData["Scale"][2].get<float>();
+            Data->InitScale.w = jEffectData["Scale"][3].get<float>();
 
             stringID ID = stringID(Name);
             m_Datas.emplace(ID.m_Hash, Data);
@@ -102,6 +123,29 @@ HRESULT CEffectData_Manager::Save_To_Json(wstring& ModelName, EffectData Data)
     jMeta["LifeTime"] = Data.fLifeTime;
 
     jMeta["Speed"] = Data.fSpeed;
+    jMeta["Loop"] = Data.m_bLoop;
+
+    json OffSet = json::array();
+    OffSet.push_back(Data.InitOffSet.x);
+    OffSet.push_back(Data.InitOffSet.y);
+    OffSet.push_back(Data.InitOffSet.z);
+    OffSet.push_back(Data.InitOffSet.w);
+    jMeta["OffSet"] = OffSet;
+
+
+    json Rotation = json::array();
+    Rotation.push_back(Data.InitRotation.x);
+    Rotation.push_back(Data.InitRotation.y);
+    Rotation.push_back(Data.InitRotation.z);
+    Rotation.push_back(Data.InitRotation.w);
+    jMeta["Rotation"] = Rotation;
+
+    json Scale = json::array();
+    Scale.push_back(Data.InitScale.x);
+    Scale.push_back(Data.InitScale.y);
+    Scale.push_back(Data.InitScale.z);
+    Scale.push_back(Data.InitScale.w);
+    jMeta["Scale"] = Scale;
 
     string FinalPath = "../../Resource/Data/EffectData/"+WStringToUTF8(ModelName)+".json";
     ofstream file(FinalPath);

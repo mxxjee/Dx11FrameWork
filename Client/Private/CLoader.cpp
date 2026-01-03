@@ -474,6 +474,12 @@ HRESULT CLoader::Register_Shaders()
         "DefaultTechnique");
     m_pGameInstance->Register_Shader(L"VtxPosParticle", pInstance);
 
+    pInstance = CShader::Create(m_pDevice,
+        m_pDeviceContext, VTXMESH::desc, L"../../Resource/Shader/Shader_MeshEffect.hlsl",
+        "DefaultTechnique");
+    m_pGameInstance->Register_Shader(L"MeshEffect", pInstance);
+
+
     return S_OK;
 }
 
@@ -574,7 +580,7 @@ HRESULT CLoader::Register_Models()
     
     
     //MeshEffectf
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Effect/", XMMatrixIdentity());
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Effect/", MoriblinSwordMatrix);
 
     return S_OK;
 }

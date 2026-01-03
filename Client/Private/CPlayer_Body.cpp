@@ -219,6 +219,9 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 	{
 		Event.Name = "AttackBegin";
 		pAnim->AddNotify(2, Event);
+
+		Event.Name = "SlashBegin";
+		pAnim->AddNotify(4, Event);
 	}
 		
 	pAnim = m_pModel->Find_Animation(L"shield_lp");
@@ -323,6 +326,13 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
 			if (pPlayer)
 				pPlayer->OnAttackBegin();
+		});
+
+	m_pGameInstance->RegisterListners("SlashBegin", [](const GameEvent& event)
+		{
+			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
+			if (pPlayer)
+				pPlayer->AnimNotify_SlashStart();
 		});
 
 	m_pGameInstance->RegisterListners("Shield_Loop", [](const GameEvent& event)

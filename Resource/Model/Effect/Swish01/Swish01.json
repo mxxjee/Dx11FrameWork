@@ -1,0 +1,52 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "slash_00.dds",
+            "METALNESS": "",
+            "MaterialName": "lambert2",
+            "Normal": "slash_00_nml.dds",
+            "OPACITY": "slash_00.dds",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 1,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 432,
+            "MaterialName": "lambert2",
+            "MeshIdx": 0,
+            "Name": "Swish_01__lambert2",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 108
+        }
+    ],
+    "ModelName": "Swish01"
+}

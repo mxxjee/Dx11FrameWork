@@ -1,6 +1,7 @@
 #pragma once
 #include "CBase.h"
-#include "Client_Defines.h"
+#include "EffectData.h"
+
 
 
 NS_BEGIN(Client)

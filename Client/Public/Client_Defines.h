@@ -190,12 +190,6 @@ struct stringID
 	}
 };
 
-struct EffectData
-{
-	_float4 vColor = _float4(1.f, 1.f, 1.f, 1.f);
-	_float fLifeTime = 5.f;
-	_float fSpeed = 3.f;
-};
 
 /*각 숫자는 우선순위를의미한다*/
 enum InteractionType

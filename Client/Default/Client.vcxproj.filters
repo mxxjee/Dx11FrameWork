@@ -391,6 +391,9 @@
     <ClInclude Include="..\Public\CEffectData_Manager.h">
       <Filter>96.Managers\EffectDataManager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\EffectData.h">
+      <Filter>02.GameObjects\98.Effect\MeshEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1251,6 +1254,9 @@
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
     <FxCompile Include="..\..\Resource\Shader\Shader_VtxPosTex_Particle.hlsl">
+      <Filter>97.ShaderFiles</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\Shader_MeshEffect.hlsl">
       <Filter>97.ShaderFiles</Filter>
     </FxCompile>
   </ItemGroup>

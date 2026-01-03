@@ -487,6 +487,19 @@ void CModel::Start_Transition()
 
 }
 
+void CModel::Set_Shader(CShader* pShader)
+{
+	if (m_pShader)
+	{
+		Safe_Release(m_pShader);
+		m_pShader = pShader;
+		Safe_AddRef(m_pShader);
+
+	}
+
+
+}
+
 bool CModel::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
 {
 	bool bHit = false;

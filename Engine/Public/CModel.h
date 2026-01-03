@@ -55,6 +55,7 @@ public:
 
     void                Start_Transition();
     void                Set_TransitionTime(_float fTime) { m_fTranslation = fTime; }
+    void                Set_Shader(CShader* pShader);
 public:
     /*레이충돌*/
     bool        Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);

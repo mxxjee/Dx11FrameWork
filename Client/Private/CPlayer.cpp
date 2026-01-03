@@ -26,6 +26,7 @@
 
 #include "CMaterial.h"
 #include "CTexture.h"
+#include "CMeshEffect.h"
 
 
 
@@ -95,6 +96,11 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
 
     if (FAILED(Ready_States()))
         return E_FAIL;
+
+
+    if (FAILED(Ready_Effects()))
+        return E_FAIL;
+
     
     if (FAILED(Ready_Expressions()))
         return E_FAIL;
@@ -279,8 +285,9 @@ void CPlayer::Update_Input(_float fTimeDelta)
 
 
     //NPC¹æÀÌ ¾Æ´Ò¶§¸¸ Á¡ÇÁ/¾îÅÃ/½¯µå °¡´É
-    if (iCurrentLevel != ENUM_TO_UINT(LEVEL_ID::ROOM) &&
-        iCurrentLevel != ENUM_TO_UINT(LEVEL_ID::SPAWN))
+    // /////////ÀÌÆåÆ®²ôÅº¸é 
+    //if (iCurrentLevel != ENUM_TO_UINT(LEVEL_ID::ROOM) &&
+    //    iCurrentLevel != ENUM_TO_UINT(LEVEL_ID::SPAWN))
     {
         if (m_ActionControl.m_bCanAttack)
             m_Input.m_bisAttack = m_pInputManager->IsKeyHeld(KeyCode::B);
@@ -1096,6 +1103,34 @@ void CPlayer::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop, bo
     m_pAnimBody->Reserve_Animation(AnimKey, bNextAnimLoop, immediately);
 }
 
+HRESULT CPlayer::Ready_Effects()
+{
+    m_PlayerEffects.resize(PLAYER_EFFECT_END);
+
+    //SlashEffect
+    CMeshEffect::MESHEFFECT_DESC Desc;
+    Desc.modelName = L"Swish01";
+    Desc.ObjTag = L"Swish01";
+
+
+    Desc.PassName = "Slash";
+
+    CTransform::TRANSFORM_DESC TransDesc;
+    Desc.TransformDesc = &TransDesc;
+
+    CMeshEffect* pSlashEffect = dynamic_cast<CMeshEffect*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MeshEffect"), &Desc));
+    if (pSlashEffect)
+        m_PlayerEffects[SLASH1].push_back(pSlashEffect);
+
+
+
+
+
+
+
+    return S_OK;
+}
+
 
 
 
@@ -1393,6 +1428,35 @@ void CPlayer::Set_Flash(bool b)
              this);
      }
         
+}
+
+void CPlayer::AnimNotify_SlashStart()
+{
+  
+    for (auto& pObj : m_PlayerEffects[SLASH1])
+    {
+        /*const _float4x4* matrix = m_pAnimBody->Get_Model()->Get_BoneMatrix("root");
+        pObj->Spawn(matrix, m_pTransformCom->Get_WorldMatrixPtr());*/
+
+
+        
+        _float4 vPos;
+        
+        pObj->Spawn();
+
+       
+        XMStoreFloat4(&vPos, XMVectorSetW(m_pTransformCom->Get_State(STATE::POSITION) + XMVector3Normalize(+m_pTransformCom->Get_State(STATE::LOOK)) +
+            XMLoadFloat4(&pObj->Get_EffectData()->InitOffSet), 1.f));
+
+        
+        pObj->Get_Transform()->Set_State(STATE::POSITION,
+            vPos);
+
+        pObj->Get_Transform()->Rotation(m_pTransformCom->Get_Rotation_ByEular());
+
+        pObj->Play();
+    }
+
 }
 
 void CPlayer::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)

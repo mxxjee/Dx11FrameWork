@@ -98,29 +98,12 @@ VS_OUT VS_MAIN(VS_IN In)
 
 }
 
-//이후 RS단계에서 GPU가 내부적으로 w나누기 수행
-PS_OUT PS_MAIN(PS_IN Input) 
+PS_OUT PS_MAIN(PS_IN Input) : SV_Target0
 {
     PS_OUT Out;
-    vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
     
-    
-    
-    vector vNormalDesc =g_NormalTexture.Sample(DefaultSampler, Input.vTexcoord);
-    float2 vNormalXY = vNormalDesc.rg * 2.0f - 1.0f;
-    float fNormalZ = sqrt(saturate(1.0f - dot(vNormalXY, vNormalXY)));
-    
-    vector vNormal = vector(vNormalXY.x, vNormalXY.y, fNormalZ, 0.0f);
-    
-    
-    float3x3 WorldMatrix = float3x3(Input.vTangent.xyz, Input.vBinormal.xyz * -1.f, Input.vNormal.xyz);
-    vNormal = vector(mul(vNormal.xyz, WorldMatrix), 0.f);
-    
-    
-    Out.vDiffuse = vMtrlDiffuse*1.5f;
-    Out.vNormal = vector(vNormal.xyz * 0.5f + 0.5f, 0.f);
-    Out.VDepth = vector(Input.vProjPos.z / Input.vProjPos.w,
-                        Input.vProjPos.w, 0.f, 0.f);
+    Out.vDiffuse= g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
+   
     
     return Out;
     
@@ -128,25 +111,7 @@ PS_OUT PS_MAIN(PS_IN Input)
 }
 
 
-//미니맵전용
-MINIMAP_OUT PS_MINIMAP(PS_IN Input)
-{
-    MINIMAP_OUT Out;
-    
-    Out.vColor = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
-   
-    return Out;
-    
-}
-
-float4 PS_Eye(PS_IN Input) : SV_Target0
-{
-    return float4(1.f, 0.f, 0.f, 1.f);
-    
-
-}
-
-float4 PS_MeshEffect(PS_IN Input) : SV_Target0
+float4 PS_Slash(PS_IN Input) : SV_Target0
 {
     float2 vTexCoord = Input.vTexcoord;
     vTexCoord.x = Input.vTexcoord.y; // 원래 Y를 X로
@@ -154,7 +119,7 @@ float4 PS_MeshEffect(PS_IN Input) : SV_Target0
     float4 vColor = g_DiffuseTexture.Sample(DefaultSampler, vTexCoord);
     
   
-    //if ((vTexCoord.x) > g_Progress.x)
+    //if ((1-vTexCoord.x) > g_Progress.x)
     //    discard;
     
     
@@ -162,6 +127,40 @@ float4 PS_MeshEffect(PS_IN Input) : SV_Target0
     vColor.rgb *= vColor.a;
     
     return vColor;
+    
+    //PS_OUT Out;
+    
+    //float2 vTexCoord = Input.vTexcoord;
+    //vTexCoord.x = Input.vTexcoord.y; // 원래 Y를 X로
+    //vTexCoord.y = Input.vTexcoord.x; // 원래 X를 Y로 
+    //float4 vColor = g_DiffuseTexture.Sample(DefaultSampler, vTexCoord);
+    
+  
+    ////if ((1-vTexCoord.x) > g_Progress.x)
+    ////    discard;
+    
+    
+    //vColor *= g_TintColor;
+    //vColor.rgb *= vColor.a;
+    
+    //vector vNormalDesc = g_NormalTexture.Sample(DefaultSampler, Input.vTexcoord);
+    //float2 vNormalXY = vNormalDesc.rg * 2.0f - 1.0f;
+    //float fNormalZ = sqrt(saturate(1.0f - dot(vNormalXY, vNormalXY)));
+    
+    //vector vNormal = vector(vNormalXY.x, vNormalXY.y, fNormalZ, 0.0f);
+    
+    
+    //float3x3 WorldMatrix = float3x3(Input.vTangent.xyz, Input.vBinormal.xyz * -1.f, Input.vNormal.xyz);
+    //vNormal = vector(mul(vNormal.xyz, WorldMatrix), 0.f);
+    
+    
+    //Out.vDiffuse = vColor * 1.5f;
+    //Out.vNormal = vector(vNormal.xyz * 0.5f + 0.5f, 0.f);
+    //Out.VDepth = vector(Input.vProjPos.z / Input.vProjPos.w,
+    //                    Input.vProjPos.w, 0.f, 0.f);
+    
+    
+    //return Out;
     
 
 }
@@ -184,34 +183,7 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
 
     }
-
-    pass Minimap
-    {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-
-        //이 pass가 선택되면 VertexShader는 이렇게 컴파일하세요.
-                                //버전 , 진입함수 설정
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MINIMAP();
-    }
-
-        //패스값 나눠지는지 테스트용
-    pass face_low__MI_eye
-    {
-        SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
-
-        VertexShader = compile vs_5_0 VS_MAIN();
-        GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN();
-
-    }
-
-    pass MeshEffect
+    pass Slash
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Alpha, 0);
@@ -219,7 +191,7 @@ technique11 DefaultTechnique
 
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MeshEffect();
+        PixelShader = compile ps_5_0 PS_Slash();
     }
 
     
