@@ -282,22 +282,7 @@ HRESULT CLevel_Spawn::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
 HRESULT CLevel_Spawn::Ready_Layer_Particle(const _wstring& strLayerTag)
 {
-    CMeshEffect::MESHEFFECT_DESC Desc;
-    Desc.modelName = L"Swish01";
-    Desc.ObjTag = L"Swish01";
-
-
-    Desc.PassName = "Slash";
-
-    CTransform::TRANSFORM_DESC TransDesc;
-    TransDesc.vLocalPosition = _float4(13.6f, 1.3f, 5.3f, 1.f);
-    Desc.TransformDesc = &TransDesc;
-
-    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-        PROTO_OBJ_NAME(L"MeshEffect"),
-        ENUM_TO_UINT(LEVEL_ID::SPAWN),
-        strLayerTag, &Desc)))
-        return E_FAIL;
+ 
     
     return S_OK;
 }

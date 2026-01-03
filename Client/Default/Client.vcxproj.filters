@@ -394,7 +394,12 @@
     <ClInclude Include="..\Public\EffectData.h">
       <Filter>02.GameObjects\98.Effect\MeshEffect</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CTrailEffect.h" />
+    <ClInclude Include="..\Public\CTrailEffect.h">
+      <Filter>02.GameObjects\98.Effect\TrailEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CEffect.h">
+      <Filter>02.GameObjects\98.Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1226,7 +1231,12 @@
     <ClCompile Include="..\Private\CEffectData_Manager.cpp">
       <Filter>96.Managers\EffectDataManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CTrailEffect.cpp" />
+    <ClCompile Include="..\Private\CTrailEffect.cpp">
+      <Filter>02.GameObjects\98.Effect\TrailEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CEffect.cpp">
+      <Filter>02.GameObjects\98.Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

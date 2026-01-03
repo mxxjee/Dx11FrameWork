@@ -810,6 +810,9 @@ void CPlayer::OnAttackEnd()
     if (pPlayerSword)
         pPlayerSword->Set_Active(false);
 
+    
+
+
 }
 
 void CPlayer::Set_ShieldEnable(bool b)
@@ -1114,7 +1117,7 @@ HRESULT CPlayer::Ready_Effects()
     CMeshEffect::MESHEFFECT_DESC Desc;
     Desc.modelName = L"Swish01";
     Desc.ObjTag = L"Swish01";
-
+    Desc.ShaderName = L"MeshEffect";
 
     Desc.PassName = "Slash";
 
@@ -1123,11 +1126,19 @@ HRESULT CPlayer::Ready_Effects()
 
     CMeshEffect* pSlashEffect = dynamic_cast<CMeshEffect*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MeshEffect"), &Desc));
     if (pSlashEffect)
+    {
+        m_pGameInstance->Add_GameObject_To_Layer(m_iSceneID, L"Particle_Layer", pSlashEffect);
         m_PlayerEffects[SLASH1].push_back(pSlashEffect);
-
+        
+    }
 
     /////
-    m_pTrailEffect = CTrailEffect::Create(m_pDevice, m_pContext,nullptr);
+    CTrailEffect::TrailDesc TrailEffect;
+    TrailEffect.ShaderName = L"Default";
+    TrailEffect.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
+
+
+    m_pTrailEffect = CTrailEffect::Create(m_pDevice, m_pContext,&TrailEffect);
     if (m_pTrailEffect)
         m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Particle_Layer", m_pTrailEffect);
 
@@ -1459,9 +1470,7 @@ void CPlayer::AnimNotify_SlashStart()
 
        
         XMStoreFloat4(&vPos, XMVectorSetW(m_pTransformCom->Get_State(STATE::POSITION) + XMVector3Normalize(+m_pTransformCom->Get_State(STATE::LOOK)) +
-            XMLoadFloat4(&pObj->Get_EffectData()->InitOffSet), 1.f));
-
-        
+            XMLoadFloat4(&pObj->Get_EffectData()->InitOffSet), 1.f)); 
         pObj->Get_Transform()->Set_State(STATE::POSITION,
             vPos);
 
@@ -1471,6 +1480,22 @@ void CPlayer::AnimNotify_SlashStart()
     }
 
 }
+
+void CPlayer::AnimNotify_SlashEnd()
+{
+
+    if (m_pTrailEffect)
+    {
+
+        m_pTrailEffect->Stop_Trail();
+
+
+    }
+  
+
+}
+
+
 
 void CPlayer::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {

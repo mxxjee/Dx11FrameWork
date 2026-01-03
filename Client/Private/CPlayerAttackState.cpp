@@ -26,7 +26,7 @@ void CPlayerAttackState::Enter(CPlayer* pPlayer)
     pPlayer->Set_CanAttackEnable(false);
     pPlayer->Set_CanMove(false);
 
-   // pPlayer->AnimNotify_SlashStart();
+//    pPlayer->AnimNotify_SlashStart();
 
     m_bChange = false;
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CGameObject.h"
+#include "CEffect.h"
 
 namespace Engine
 {
@@ -17,23 +17,29 @@ struct TrailNode
 
 NS_BEGIN(Client)
 class CTrailEffect
-    :public CGameObject
+    :public CEffect
 {
 public:
-    struct TrailDesc:CGameObject::GAMEOBJECT_DESC
+    struct TrailDesc: CEffect::EFFECT_DESC
     {
         _float3 TopOffset = _float3(0.f, 1.5f,0.f);
         _float3 BottomOffSet= _float3(0.f, 0.f, 0.f);
 
         _float fWidth = 1.f;
 
-        _float fLifeTime = 10.f;
+        _float fLifeTime = 0.3f;
 
     };
 protected:
     CTrailEffect(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CTrailEffect(const CTrailEffect& rhs);
     virtual ~CTrailEffect() = default;
+
+#ifdef _DEBUG
+public:
+    virtual void        Render_DebugImgui();
+#endif // _DEBUG
+
 
 public:
     virtual HRESULT     Initialize_Prototype(); /*원형 객체가 생성될때 부르는 Initialize*/
@@ -52,8 +58,6 @@ public:
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
-protected:
-    CShader* m_pShader = { nullptr };
 
 private:
     deque<TrailNode> m_TrailList;
@@ -67,7 +71,7 @@ private:
 private:
     HRESULT         Ready_Component();
 private:
-    _uint       m_iMaxRect = 500;//몇개그릴건지?
+    _uint       m_iMaxRect = 50;//몇개그릴건지?
     _float      m_fWidth = 1.f;    //넙이
     _float      m_fLifeTime = 3.f;
 
@@ -82,6 +86,8 @@ private:
 private:
     _uint           m_iVertexStride = {};       //정점 구조체 하나의 크기
     CTexture* m_pTexture = nullptr;
+
+
 
 };
 

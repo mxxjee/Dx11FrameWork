@@ -21,7 +21,7 @@ class CInteractionObject;
 class CInventory_Manager;
 class CPlayerState;
 class CGameManager;
-class CMeshEffect;
+class CEffect;
 class CTrailEffect;
 
 class CPlayer :
@@ -278,8 +278,10 @@ private:
 
 public:
     void        AnimNotify_SlashStart();
+    void        AnimNotify_SlashEnd();
+
 private:
-    vector<list<CMeshEffect*>>     m_PlayerEffects;
+    vector<list<CEffect*>>     m_PlayerEffects;
     CTrailEffect* m_pTrailEffect = nullptr;
 
 };

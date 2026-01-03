@@ -10,12 +10,12 @@
 USING(Client)
 
 CMeshEffect::CMeshEffect(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
-    :CGameObject(pDevice,pContext)
+    :CEffect(pDevice,pContext)
 {
 }
 
 CMeshEffect::CMeshEffect(const CMeshEffect& rhs)
-    : CGameObject(rhs)
+    : CEffect(rhs)
 {
 }
 
@@ -42,7 +42,6 @@ HRESULT CMeshEffect::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
 
-    m_pEffectData_Manager = CEffectData_Manager::GetInstance();
     EffectData* pData=m_pEffectData_Manager->Find_Data(m_pModel->Get_ModelData().name);
     if (pData)
     {
@@ -101,35 +100,13 @@ void CMeshEffect::Update_Late(_float fTimeDelta)
 void CMeshEffect::Update_Render(_float fTimeDelta)
 {
     __super::Update_Render(fTimeDelta);
-    m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::NONALPHA), this);
-
+  
 
 }
 
 HRESULT CMeshEffect::Render()
 {
-    if (m_pParentMatrix && m_pSocketMatrix)
-    {
-        _matrix SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix);
-        for (size_t i = 0; i < 3; ++i)
-            SocketMatrix.r[i] = XMVector3Normalize(SocketMatrix.r[i]);
-
-
-        //따라가려는 소켓매트릭스 x 원래 parent매트릿그
-        _matrix ParentMatrix = SocketMatrix * XMLoadFloat4x4(m_pParentMatrix);
-
-
-
-
-        _matrix LocalMatrix = XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr());
-
-        XMStoreFloat4x4(&m_CombinedWorldMatrix, XMMatrixMultiply(LocalMatrix, ParentMatrix));
-
-    }
-
-    else
-        m_CombinedWorldMatrix = m_pTransformCom->Get_World();
-
+   
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
 
@@ -144,8 +121,7 @@ HRESULT CMeshEffect::Render()
         {
             Mesh.second->Set_PassName(m_PassName);
             Mesh.second->Bind_ShaderResource(m_pShader, "g_DiffuseTexture", aiTextureType::aiTextureType_DIFFUSE);
-            Mesh.second->Bind_ShaderResource(m_pShader, "g_NormalTexture", aiTextureType::aiTextureType_NORMALS);
-
+          
             if (FAILED(m_pShader->Begin(Mesh.second->Get_PassName())))
                 return E_FAIL;
 
@@ -225,7 +201,7 @@ HRESULT CMeshEffect::Ready_Resource(void* pArg)
 HRESULT CMeshEffect::Bind_ShaderResources()
 {
     /*Combined Matrix를 직접던진다.*/
-    if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", m_CombinedWorldMatrix)))
+    if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", *m_pTransformCom->Get_WorldMatrixPtr())))
         return E_FAIL;
 
     if (FAILED(m_pShader->Bind_Vector("g_TintColor", m_LocalData.vColor)))
@@ -341,11 +317,13 @@ void CMeshEffect::Render_DebugImgui()
 
 void CMeshEffect::Free()
 {
+    Safe_Release(m_pModel);
+
     __super::Free();
 
 
-    Safe_Release(m_pModel);
-    Safe_Release(m_pShader);
+
+    
 
 }
 
@@ -362,10 +340,7 @@ void CMeshEffect::Spawn(const _float4x4* pSocketMatrix, const _float4x4* pParent
         m_pGameInstance->Add_GameObject_To_Layer(m_iSceneID, L"Particle_Layer", this);
 
     }
-   
 
-    m_pSocketMatrix = pSocketMatrix;
-    m_pParentMatrix = pParentMatrix;
 
 }
 
@@ -386,22 +361,5 @@ void CMeshEffect::Stop()
     m_bStop = true;
 }
 
-//void CMeshEffect::Update_Matrix()
-//{
-//    ScalingMatrix = XMMatrixScaling(m_LocalData.InitScale.x,
-//        m_LocalData.InitScale.y,
-//        m_LocalData.InitScale.z);
-//
-//    _float fPitch = XMConvertToRadians(m_LocalData.InitRotation.x);
-//    _float fYaw = XMConvertToRadians(m_LocalData.InitRotation.y);
-//    _float fRoll = XMConvertToRadians(m_LocalData.InitRotation.z);
-//
-//    _vector vQuat = XMQuaternionRotationRollPitchYaw(fPitch, fYaw, fRoll);
-//    RotationMatrix = XMMatrixRotationQuaternion(vQuat);
-//
-//    TranslateMatrix = XMMatrixTranslation(m_LocalData.InitOffSet.x,
-//        m_LocalData.InitOffSet.y,
-//        m_LocalData.InitOffSet.z);
-//}
 
 

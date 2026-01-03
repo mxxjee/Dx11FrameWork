@@ -58,6 +58,18 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
     return color;
 }
 
+float4 PS_Test(PS_IN Input): SV_Target0
+{
+    float4 color = texture0.Sample(sampler0, Input.vTexcoord);
+    
+    color *= g_TintColor;
+    color.rgb *= color.a;
+    
+
+    
+    return color;
+}
+
 float4 PS_MINIMAP(PS_IN Input) : SV_Target0
 {
     float4 color = texture0.Sample(sampler0, Input.vTexcoord);
@@ -271,13 +283,13 @@ technique11 DefaultTechnique
     {
         SetRasterizerState(RS_Default);
         SetDepthStencilState(DSS_Default, 0);
-        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+        SetBlendState(BS_Blend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         //이 pass가 선택되면 VertexShader는 이렇게 컴파일하세요.
                                 //버전 , 진입함수 설정
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN();
+        PixelShader = compile ps_5_0 PS_Test();
 
     }
 

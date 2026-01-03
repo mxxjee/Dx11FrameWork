@@ -159,6 +159,7 @@
     <ClInclude Include="..\Public\CClosedDoor.h" />
     <ClInclude Include="..\Public\CDialogue_Manager.h" />
     <ClInclude Include="..\Public\CDungeonBlock.h" />
+    <ClInclude Include="..\Public\CEffect.h" />
     <ClInclude Include="..\Public\CEffectData_Manager.h" />
     <ClInclude Include="..\Public\CEventTrigger.h" />
     <ClInclude Include="..\Public\CExplosion.h" />
@@ -305,6 +306,7 @@
     <ClCompile Include="..\Private\CClosedDoor.cpp" />
     <ClCompile Include="..\Private\CDialogue_Manager.cpp" />
     <ClCompile Include="..\Private\CDungeonBlock.cpp" />
+    <ClCompile Include="..\Private\CEffect.cpp" />
     <ClCompile Include="..\Private\CEffectData_Manager.cpp" />
     <ClCompile Include="..\Private\CEventTrigger.cpp" />
     <ClCompile Include="..\Private\CExplosion.cpp" />
