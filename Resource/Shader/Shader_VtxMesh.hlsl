@@ -145,6 +145,22 @@ float4 PS_Eye(PS_IN Input) : SV_Target0
     
 
 }
+
+float4 PS_MeshEffect(PS_IN Input) : SV_Target0
+{
+    float2 vTexCoord = Input.vTexcoord;
+    
+    
+    float4 vColor = g_DiffuseTexture.Sample(DefaultSampler, vTexCoord);
+    if ((Input.vTexcoord.x) > g_Progress.x)
+        discard;
+    
+    
+    
+    return saturate(vColor * g_TintColor);
+    
+
+}
 /*렌더링 방법을 정의한다.*/
 technique11 DefaultTechnique
 {
@@ -189,6 +205,17 @@ technique11 DefaultTechnique
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_MAIN();
 
+    }
+
+    pass MeshEffect
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Alpha, 0);
+        SetBlendState(BS_Blend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MeshEffect();
     }
 
     

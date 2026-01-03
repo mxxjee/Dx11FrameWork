@@ -159,6 +159,7 @@
     <ClInclude Include="..\Public\CClosedDoor.h" />
     <ClInclude Include="..\Public\CDialogue_Manager.h" />
     <ClInclude Include="..\Public\CDungeonBlock.h" />
+    <ClInclude Include="..\Public\CEffectData_Manager.h" />
     <ClInclude Include="..\Public\CEventTrigger.h" />
     <ClInclude Include="..\Public\CExplosion.h" />
     <ClInclude Include="..\Public\CFadeScreen.h" />
@@ -182,6 +183,7 @@
     <ClInclude Include="..\Public\CLevel_Dungeon.h" />
     <ClInclude Include="..\Public\CLoadingUI.h" />
     <ClInclude Include="..\Public\CMagicPowder.h" />
+    <ClInclude Include="..\Public\CMeshEffect.h" />
     <ClInclude Include="..\Public\CMJackyEscapeState.h" />
     <ClInclude Include="..\Public\CMJackyIdleState.h" />
     <ClInclude Include="..\Public\CMJackyLiftState.h" />
@@ -301,6 +303,7 @@
     <ClCompile Include="..\Private\CClosedDoor.cpp" />
     <ClCompile Include="..\Private\CDialogue_Manager.cpp" />
     <ClCompile Include="..\Private\CDungeonBlock.cpp" />
+    <ClCompile Include="..\Private\CEffectData_Manager.cpp" />
     <ClCompile Include="..\Private\CEventTrigger.cpp" />
     <ClCompile Include="..\Private\CExplosion.cpp" />
     <ClCompile Include="..\Private\CFadeScreen.cpp" />
@@ -324,6 +327,7 @@
     <ClCompile Include="..\Private\CLevel_Dungeon.cpp" />
     <ClCompile Include="..\Private\CLoadingUI.cpp" />
     <ClCompile Include="..\Private\CMagicPowder.cpp" />
+    <ClCompile Include="..\Private\CMeshEffect.cpp" />
     <ClCompile Include="..\Private\CMJackyEscapeState.cpp" />
     <ClCompile Include="..\Private\CMJackyIdleState.cpp" />
     <ClCompile Include="..\Private\CMJackyLiftState.cpp" />

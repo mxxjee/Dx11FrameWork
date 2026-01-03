@@ -18,6 +18,7 @@
 
 #include "CLayer.h"
 #include "CInput_Manager.h"
+#include "CMeshEffect.h"
 
 
 
@@ -57,6 +58,11 @@ HRESULT CLevel_Spawn::Initialize(LevelArgs& args)
 
     if (FAILED(Ready_Layer_Trigger(L"Trigger_Layer")))
         return E_FAIL;
+
+    if (FAILED(Ready_Layer_Particle(L"Particle_Layer")))
+        return E_FAIL;
+
+
 
     UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
     pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Find(L"FadeScreen"));
@@ -271,6 +277,25 @@ HRESULT CLevel_Spawn::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
     }
 
+    return S_OK;
+}
+
+HRESULT CLevel_Spawn::Ready_Layer_Particle(const _wstring& strLayerTag)
+{
+    CMeshEffect::MESHEFFECT_DESC Desc;
+    Desc.modelName = L"SlashEffect";
+    Desc.ObjTag = L"SlashEffect";
+
+    CTransform::TRANSFORM_DESC TransDesc;
+    TransDesc.vLocalPosition = _float4(13.6f, 1.3f, 5.3f, 1.f);
+    Desc.TransformDesc = &TransDesc;
+
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+        PROTO_OBJ_NAME(L"MeshEffect"),
+        ENUM_TO_UINT(LEVEL_ID::SPAWN),
+        strLayerTag, &Desc)))
+        return E_FAIL;
+    
     return S_OK;
 }
 

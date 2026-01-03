@@ -64,6 +64,11 @@ bool CAnimModelObject::Is_AnimEnd()
 }
 
 #ifdef _DEBUG
+void CAnimModelObject::Render_DebugImgui()
+{
+    __super::Render_DebugImgui();
+    Render_CurrentState_Animation();
+}
 void CAnimModelObject::Render_CurrentState_Animation()
 {
     ImGui::Separator();

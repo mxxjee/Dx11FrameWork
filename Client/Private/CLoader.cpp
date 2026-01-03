@@ -87,6 +87,7 @@
 #include "CUI_Cursor.h"
 #include "CUI_ItemInfo.h"
 
+#include "CMeshEffect.h"
 
 
 
@@ -234,7 +235,7 @@ HRESULT CLoader::Loading_Logo()
     if (FAILED(Register_Textures()))
         return E_FAIL;
 
-    m_iCurcount += 30.f;
+    m_iCurcount += 30;
 
 
     lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
@@ -262,13 +263,18 @@ HRESULT CLoader::Loading_Logo()
     m_iCurcount += 30;
 
 
+    lstrcpy(m_szFPS, TEXT("파티클(를) 로딩 중 입니다."));
+    if (FAILED(Register_Particles()))
+        return E_FAIL;
+
+
+
 
     lstrcpy(m_szFPS, TEXT("객체원형을(를) 로딩 중 입니다."));
     if (FAILED(Register_GameObjects()))
         return E_FAIL;
 
     m_iCurcount += 40;
-
 
 
     m_isFinished = true;
@@ -396,7 +402,7 @@ HRESULT CLoader::Loading_Dungeon()
 
 HRESULT CLoader::Loading_Boss()
 {
-    m_fMinTime = rand() % +2 + 2;
+    m_fMinTime = rand() % +2 + 2.f;
 
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
     for (size_t i = 0; i < 88899999; i++)
@@ -565,6 +571,10 @@ HRESULT CLoader::Register_Models()
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Rooms/", XMMatrixIdentity());
 
     m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Weathercock/Weathercock.json", XMMatrixIdentity());
+    
+    
+    //MeshEffectf
+    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Effect/", XMMatrixIdentity());
 
     return S_OK;
 }
@@ -797,6 +807,14 @@ HRESULT CLoader::Register_GameObjects()
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"CloseDoor", CClosedDoor::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
+    return S_OK;
+}
+
+HRESULT CLoader::Register_Particles()
+{
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"MeshEffect", CMeshEffect::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+    
     return S_OK;
 }
 

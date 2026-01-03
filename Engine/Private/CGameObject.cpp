@@ -183,6 +183,12 @@ void CGameObject::PushOut(_float3 vOutPush)
         m_pTransformCom->AddPosition(vOutPush);
 }
 
+void CGameObject::Render_DebugImgui()
+{
+    if (m_pTransformCom)
+        m_pTransformCom->OnInspectorUI();
+}
+
 
 
 

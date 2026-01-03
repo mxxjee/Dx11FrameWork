@@ -23,7 +23,7 @@
       <Filter>01.Levels\Logo</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CLoader.h">
-      <Filter>96.Managers\Loader</Filter>
+      <Filter>01.Levels\Loader</Filter>
     </ClInclude>
     <ClInclude Include="..\Public\CPanel.h">
       <Filter>02.GameObjects\99.UI\00.Panel</Filter>
@@ -384,6 +384,12 @@
     </ClInclude>
     <ClInclude Include="..\Public\CLoadingUI.h">
       <Filter>02.GameObjects\99.UI\00.Panel\05.Loading UI\UI_Back</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMeshEffect.h">
+      <Filter>02.GameObjects\98.Effect\MeshEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CEffectData_Manager.h">
+      <Filter>96.Managers\EffectDataManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -755,9 +761,6 @@
     <Filter Include="02.GameObjects\00.WorldObjects\02.InteractionObject\CInteraction_Statue">
       <UniqueIdentifier>{952ab6d4-ae7f-4597-968a-2ff06f124dd5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="96.Managers\Loader">
-      <UniqueIdentifier>{db198de7-dbcd-45bd-8a12-7a3ca30bec2c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\Player_State\Powder">
       <UniqueIdentifier>{9747f137-6fe4-4571-ae54-cfe2d5009456}</UniqueIdentifier>
     </Filter>
@@ -836,6 +839,15 @@
     <Filter Include="02.GameObjects\99.UI\00.Panel\05.Loading UI\UI">
       <UniqueIdentifier>{2c5b55a1-bcfa-4d38-bef4-3dff52b6c5f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\98.Effect\MeshEffect">
+      <UniqueIdentifier>{16b2d3af-b28d-4efe-8cdb-7bd73a757321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.Levels\Loader">
+      <UniqueIdentifier>{db198de7-dbcd-45bd-8a12-7a3ca30bec2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="96.Managers\EffectDataManager">
+      <UniqueIdentifier>{2f937ce7-8e42-44d7-8de0-f179ca86ee76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -854,7 +866,7 @@
       <Filter>01.Levels\Logo</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLoader.cpp">
-      <Filter>96.Managers\Loader</Filter>
+      <Filter>01.Levels\Loader</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CLevelDebugWindow.cpp">
       <Filter>999.ImguiObject\LevelDebugWindow</Filter>
@@ -1200,6 +1212,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CLoadingUI.cpp">
       <Filter>02.GameObjects\99.UI\00.Panel\05.Loading UI\UI_Back</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMeshEffect.cpp">
+      <Filter>02.GameObjects\98.Effect\MeshEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CEffectData_Manager.cpp">
+      <Filter>96.Managers\EffectDataManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

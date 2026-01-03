@@ -6,7 +6,6 @@ HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 #include "Shader_Light.hlsli"
 #include "Engine_Shader_Defines.hlsli"
 
-float4 g_TintColor = float4(1.0, 0.871, 0.722, 0.529);
 float3 fBlueColor = float3(0.2, 0.4, 1.0);
 
 struct VS_IN

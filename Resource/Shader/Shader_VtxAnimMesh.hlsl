@@ -20,7 +20,7 @@ Texture2D g_MaskTexture;
 
 float4 g_DamageColor = float4(1.f, 0.f, 0.f, 1.f);
 float b_Damage = false;
-float g_Time;
+
 
 
 ////////임시로 정해놓은 오브젝트의 메테리얼값, 실제는 텍스처를 읽어서 처리해야함

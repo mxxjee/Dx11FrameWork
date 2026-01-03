@@ -154,7 +154,7 @@ bool CMeshComponent::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist
 
 
 }
-
+ 
 HRESULT CMeshComponent::Bind_ShaderResource(CShader* pShader, const _char* pConstName, aiTextureType eMaterialType, _uint Textureindex)
 {
 	CheckNullResult(m_pMaterial,E_FAIL);

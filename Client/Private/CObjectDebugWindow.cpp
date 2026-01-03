@@ -32,13 +32,13 @@ void CObjectDebugWindow::Update()
 
     if (pSelectObject)
     {
-        CTransform* pTransform = nullptr;
-        if (pTransform = pSelectObject->Get_Transform())
-            pTransform->OnInspectorUI();
+        pSelectObject->Render_DebugImgui();
+
 
 
         if (pSelectModelObj)
         {
+
             if(pSelectAnimModelObj)
                 pSelectAnimModelObj->Render_CurrentState_Animation();
         }

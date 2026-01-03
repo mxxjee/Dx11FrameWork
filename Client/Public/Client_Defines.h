@@ -174,6 +174,29 @@ struct InvenSlot
 	bool				m_bUsedInUI = false;
 };
 
+struct stringID
+{
+	unsigned int m_Hash;//실제 키 해시값
+
+#ifdef _DEBUG
+	wstring		m_DebugName;
+#endif
+
+	stringID() {};
+	stringID(wstring ModelName)
+	{
+		m_Hash = (unsigned int)hash<wstring>()(ModelName);
+
+	}
+};
+
+struct EffectData
+{
+	_float4 vColor = _float4(1.f, 1.f, 1.f, 1.f);
+	_float fLifeTime = 5.f;
+	_float fSpeed = 3.f;
+};
+
 /*각 숫자는 우선순위를의미한다*/
 enum InteractionType
 {

@@ -1,0 +1,52 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "slash_02.png",
+            "METALNESS": "",
+            "MaterialName": "lambert2",
+            "Normal": "",
+            "OPACITY": "slash_02.png",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 1,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 450,
+            "MaterialName": "lambert2",
+            "MeshIdx": 0,
+            "Name": "SwordSlash_00_new__lambert2",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 114
+        }
+    ],
+    "ModelName": "SlashEffect"
+}

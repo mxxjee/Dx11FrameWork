@@ -72,6 +72,13 @@ public:
     virtual     void    OnCollisionExit(_uint iGroup, CCollider_Base* pOther){};
     virtual     void    PushOut(_float3 vOutPush);
 
+#ifdef _DEBUG
+public:
+    virtual void        Render_DebugImgui();
+
+#endif // _DEBUG
+
+
 public:
     void        Set_SceneID(_uint iSceneID) { m_iSceneID = iSceneID; }
 protected:

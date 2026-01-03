@@ -439,14 +439,11 @@ void CTransform::OnInspectorUI()
 		_float4 vFinalPos = _float4(vPos.x, vPos.y, vPos.z, 1.f);
 		Set_State(STATE::POSITION, XMLoadFloat4(&vFinalPos));
 	}
-		
-
-	ImGui::Spacing();
+	
 
 	_float3 vScale = Get_Scale_ByFloat3();
 	if (ImGui::DragFloat3("Scale", &vScale.x, 0.1f))
 		Set_Scale(_float4(vScale.x, vScale.y, vScale.z, 1.f));
-	ImGui::Spacing();
 
 	_float3 vRotation= MathUtils::QuaternionToEuler(Get_SRT(SRTType::ROTATION));
 

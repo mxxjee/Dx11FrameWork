@@ -31,6 +31,7 @@ public:
     HRESULT                 Ready_Layer_NPC(const _wstring & strLayerTag);
     HRESULT                 Ready_Layer_InteractionObject(const _wstring & strLayerTag);
     HRESULT                 Ready_Layer_Trigger(const _wstring & strLayerTag);
+    HRESULT                 Ready_Layer_Particle(const _wstring& strLayerTag);
 
 
     HRESULT                 Ready_Player_Static(const _wstring& strLayerTag);

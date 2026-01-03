@@ -20,6 +20,10 @@ SamplerState sampler0 : register(s0);
 float g_BlurValue =10.f;
 float2 OffSet = float2(2, 2);
 
+float4 g_TintColor = float4(1.f, 1.f, 1.f, 1.f);
+
+float g_Time;
+float g_Speed;
 
 
 #endif
