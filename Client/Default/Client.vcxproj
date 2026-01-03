@@ -268,6 +268,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CTerrain.h" />
+    <ClInclude Include="..\Public\CTrailEffect.h" />
     <ClInclude Include="..\Public\CTreasureChest.h" />
     <ClInclude Include="..\Public\CTrigger_Box.h" />
     <ClInclude Include="..\Public\CUICreator.h" />
@@ -413,6 +414,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CTerrain.cpp" />
+    <ClCompile Include="..\Private\CTrailEffect.cpp" />
     <ClCompile Include="..\Private\CTreasureChest.cpp" />
     <ClCompile Include="..\Private\CTrigger_Box.cpp" />
     <ClCompile Include="..\Private\CUI_Cursor.cpp" />

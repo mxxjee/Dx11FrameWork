@@ -394,6 +394,7 @@
     <ClInclude Include="..\Public\EffectData.h">
       <Filter>02.GameObjects\98.Effect\MeshEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CTrailEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -851,6 +852,9 @@
     <Filter Include="96.Managers\EffectDataManager">
       <UniqueIdentifier>{2f937ce7-8e42-44d7-8de0-f179ca86ee76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\98.Effect\TrailEffect">
+      <UniqueIdentifier>{24b2eb5a-a769-4265-b689-53add719bc35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1222,6 +1226,7 @@
     <ClCompile Include="..\Private\CEffectData_Manager.cpp">
       <Filter>96.Managers\EffectDataManager</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CTrailEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">

@@ -28,6 +28,9 @@
 #include "CTexture.h"
 #include "CMeshEffect.h"
 
+#include "CTrailEffect.h"
+
+
 
 
 
@@ -1123,8 +1126,10 @@ HRESULT CPlayer::Ready_Effects()
         m_PlayerEffects[SLASH1].push_back(pSlashEffect);
 
 
-
-
+    /////
+    m_pTrailEffect = CTrailEffect::Create(m_pDevice, m_pContext,nullptr);
+    if (m_pTrailEffect)
+        m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Particle_Layer", m_pTrailEffect);
 
 
 
@@ -1433,6 +1438,14 @@ void CPlayer::Set_Flash(bool b)
 void CPlayer::AnimNotify_SlashStart()
 {
   
+    if (m_pTrailEffect)
+    {
+
+        m_pTrailEffect->Start_Trail(m_pAnimBody->Get_Model()->Get_BoneMatrix("itemA_L"),
+            m_pTransformCom->Get_WorldMatrixPtr());
+
+
+    }
     for (auto& pObj : m_PlayerEffects[SLASH1])
     {
         /*const _float4x4* matrix = m_pAnimBody->Get_Model()->Get_BoneMatrix("root");

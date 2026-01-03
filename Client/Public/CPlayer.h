@@ -22,7 +22,7 @@ class CInventory_Manager;
 class CPlayerState;
 class CGameManager;
 class CMeshEffect;
-
+class CTrailEffect;
 
 class CPlayer :
     public CAnimModelObject
@@ -280,7 +280,7 @@ public:
     void        AnimNotify_SlashStart();
 private:
     vector<list<CMeshEffect*>>     m_PlayerEffects;
-
+    CTrailEffect* m_pTrailEffect = nullptr;
 
 };
 
