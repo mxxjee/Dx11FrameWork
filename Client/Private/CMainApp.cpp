@@ -587,13 +587,16 @@ void CMainApp::Free()
 	
 	CItem_Manager::GetInstance()->DestroyInstance();
 	CInventory_Manager::GetInstance()->DestroyInstance();
-	CEffectData_Manager::GetInstance()->DestroyInstance();
-	CEffectPoolManager::GetInstance()->DestroyInstance();
-
+	
 	CDialogue_Manager::GetInstance()->DestroyInstance();
 	CQuest_Manager::GetInstance()->DestroyInstance();
 	CRoom_Manager::GetInstance()->DestroyInstance();
 	CInput_Manager::GetInstance()->DestroyInstance();
+
+	CEffectData_Manager::GetInstance()->DestroyInstance();
+	CEffectPoolManager::GetInstance()->DestroyInstance();
+
+
 	m_pGameInstance->Release_Engine();
 
 

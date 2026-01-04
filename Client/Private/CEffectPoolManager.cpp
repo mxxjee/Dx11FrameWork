@@ -66,7 +66,7 @@ CEffect* CEffectPoolManager::Request_Spawn(const wstring& ProtoTag, void* pArg)
         Safe_AddRef(pEffect);//풀에저장하므로 addref
 		m_ClonDatas[Hash].push_back(pEffect);
 
-        Safe_Release(pEffect);
+         Safe_Release(pEffect);
 		return pEffect;
 
 	}

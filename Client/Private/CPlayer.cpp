@@ -910,17 +910,46 @@ void CPlayer::Free()
     }
 
     m_States.clear();
-
-    for (auto& pVec : m_PlayerEffects)
+    if (!m_PlayerEffects.empty())
     {
-        for (auto& ppInfo : pVec)
+        for (int i = 0; i < EFFECT_TYPE_END; ++i)
         {
-            Safe_Delete(ppInfo);
+            for (auto& pInfo : m_PlayerEffects[i])
+            {
+                // ★ [수정] 그냥 Safe_Delete(pInfo) 하면 안 됨!
+                // 반드시 원래 타입으로 캐스팅해서 지워야 wstring 소멸자가 불립니다.
 
+                if (i == SLASH1) // QuadEffect 타입인 경우
+                {
+                    CQuadEffect::QUADEFFECT_DESC* pDesc = static_cast<CQuadEffect::QUADEFFECT_DESC*>(pInfo);
+                    Safe_Delete(pDesc);
+                }
+                else if (i == SLASH2) // MeshEffect 타입인 경우
+                {
+                    CMeshEffect::MESHEFFECT_DESC* pDesc = static_cast<CMeshEffect::MESHEFFECT_DESC*>(pInfo);
+                    Safe_Delete(pDesc);
+                }
+                else if (i == SLASHTRAIL) // Trail 타입
+                {
+                    CTrailEffect::TrailDesc* pDesc = static_cast<CTrailEffect::TrailDesc*>(pInfo);
+                    Safe_Delete(pDesc);
+                }
+                else
+                {
+                    // 혹시 모르니 기본 처리 (하지만 위험함)
+                    Safe_Delete(pInfo);
+                }
+            }
+            m_PlayerEffects[i].clear();
         }
+
     }
+   
+    m_PlayerEffects.clear();
     __super::Free();
 }
+
+
 
 
 void CPlayer::Damage_Behavior()
@@ -1121,7 +1150,7 @@ void CPlayer::Reserve_Animation_To_Body(_wstring AnimKey, bool bNextAnimLoop, bo
 
 HRESULT CPlayer::Ready_Effects()
 {
-    m_PlayerEffects.resize(PLAYER_EFFECT_END);
+    m_PlayerEffects.resize(EFFECT_TYPE_END);
 
 #pragma region 메쉬이펙트
     /*

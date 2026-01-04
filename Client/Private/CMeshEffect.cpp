@@ -91,9 +91,6 @@ void CMeshEffect::Update(_float fTimeDelta)
                 m_pEffectPool_Manager->Request_Return(this);
                 Set_Active(false);
 
-                CLayer* pLayer = m_pGameInstance->Find_Layer(m_iSceneID, L"Particle_Layer");
-                pLayer->RequestDestroy(this);
-
 
                 m_fTime = 0.f;
                 m_fAlpha = 1.f;
