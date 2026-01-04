@@ -35,6 +35,7 @@ HRESULT CLoadingUI::Initialize_Copytype(void* pArg)
     m_pUICom->PlayAnim(UIAnimType::ALPHA);
     m_pUICom->PlayAnim(UIAnimType::ROTATION);
 
+    m_passName = "Loading";
 
     return S_OK;
 }

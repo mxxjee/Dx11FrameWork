@@ -319,6 +319,14 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 
 	}
 
+	pAnim = m_pModel->Find_Animation(L"slash_hold_ed");
+	if (pAnim)
+	{
+		Event.Name = "PlayerSlashHoldEnd_Start";
+		pAnim->AddNotify(1, Event);
+
+	}
+
 	return S_OK;
 }
 
@@ -388,6 +396,17 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 			CIInteractable* pObj =CInteraction_Manager::GetInstance()->Get_CurrentTarget();
 			if (pPlayer)
 				pPlayer->Set_CarryAndThrowState(dynamic_cast<CInteractionObject*>(pObj));
+
+
+
+
+		});
+
+	m_pGameInstance->RegisterListners("PlayerSlashHoldEnd_Start", [](const GameEvent& event)
+		{
+			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
+			if (pPlayer)
+				pPlayer->AnimNotify_Slash_Hold_Ed_Start();
 
 
 

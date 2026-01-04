@@ -48,6 +48,8 @@
 
 #include "CLoadingUI.h"
 #include "CEffectData_Manager.h"
+#include "CEffectPoolManager.h"
+
 
 
 
@@ -126,6 +128,9 @@ HRESULT CMainApp::Initialize()
 HRESULT CMainApp::Initialize_Cilent()
 {
 	if (FAILED(CInteraction_Manager::GetInstance()->Initialize()))
+		return E_FAIL;
+
+	if (FAILED(CEffectPoolManager::GetInstance()->Initialize()))
 		return E_FAIL;
 
 	if (FAILED(CEffectData_Manager::GetInstance()->Initialize()))
@@ -583,6 +588,7 @@ void CMainApp::Free()
 	CItem_Manager::GetInstance()->DestroyInstance();
 	CInventory_Manager::GetInstance()->DestroyInstance();
 	CEffectData_Manager::GetInstance()->DestroyInstance();
+	CEffectPoolManager::GetInstance()->DestroyInstance();
 
 	CDialogue_Manager::GetInstance()->DestroyInstance();
 	CQuest_Manager::GetInstance()->DestroyInstance();

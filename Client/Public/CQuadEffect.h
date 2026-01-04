@@ -71,9 +71,6 @@ private:
     CTexture* m_pTexture = nullptr;
     CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
     string                  m_passName = "";
-    
-    _float              m_fAlpha = 1.f;
-    _float              m_fFadeOutSpeed = 2.f;
     _float              m_fProgress = 1.f;
 };
 

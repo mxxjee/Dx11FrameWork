@@ -89,6 +89,7 @@
 
 #include "CMeshEffect.h"
 #include "CQuadEffect.h"
+#include "CTrailEffect.h"
 
 
 
@@ -202,25 +203,27 @@ void CLoader::Output()
 
 HRESULT CLoader::Loading_Town()
 {
+    m_fMinTime = 2.f;
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
-    for (size_t i = 0; i < 88899999; i++)
-    {
-        int a = 10;
-    }
+    Sleep(500);
+    m_iCurcount += 20;
+
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
 
 
 
     lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
-    for (size_t i = 0; i < 88889999; i++)
-    {
-        int a = 10;
-    }
+    Sleep(1500);
+    m_iCurcount += 30;
+
+    lstrcpy(m_szFPS, TEXT("로딩완료!"));
+    Sleep(800);
+    m_iCurcount += 10;
 
 
     lstrcpy(m_szFPS, TEXT("맵 로딩중입니다."));
     Load_TownMapData();
-
+    m_iCurcount += 50;
     lstrcpy(m_szFPS, TEXT("로딩완료!"));
 
 
@@ -342,25 +345,31 @@ HRESULT CLoader::Loading_Room()
 
 HRESULT CLoader::Loading_Spawn()
 {
+    m_fMinTime = 2.f;
+    m_iCurcount = 0;
+
+
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
-    for (size_t i = 0; i < 88899999; i++)
-    {
-        int a = 10;
-    }
+    Sleep(500);
+    m_iCurcount += 20;
+
     lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
  
 
 
     lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
-    for (size_t i = 0; i < 88889999; i++)
-    {
-        int a = 10;
-    }
+    Sleep(1500);
+    m_iCurcount += 30;
 
+ 
 
     lstrcpy(m_szFPS, TEXT("맵 로딩중입니다."));
+    Sleep(800);
+    m_iCurcount += 30;
 
     lstrcpy(m_szFPS, TEXT("로딩완료!"));
+    Sleep(800);
+    m_iCurcount += 30;
 
 
 
@@ -810,6 +819,8 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"QuadEffect", CQuadEffect::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Trail", CTrailEffect::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Wall", CWall::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;

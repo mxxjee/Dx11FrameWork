@@ -11,7 +11,16 @@ struct EffectData
 	
 	_float4		InitOffSet = _float4(0.f, 0.f, 0.f, 1.f);
 	_float4		InitRotation = _float4(0.f, 0.f, 0.f, 0.f);
-	_float4		InitScale = _float4(0.f, 0.f, 0.f, 1.f);
+	_float4		InitScale = _float4(1.f, 1.f, 1.f, 1.f);
 
 
+};
+
+enum EFFECT_TYPE
+{
+	//플레이어일반공격
+	SLASH1, 
+	SLASH2,//차징공격
+	SLASHTRAIL,//일반공격트레일
+	PLAYER_EFFECT_END
 };

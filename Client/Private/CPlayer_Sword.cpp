@@ -101,7 +101,7 @@ HRESULT CPlayer_Sword::Ready_Components(void* pArg)
 	for (int i = 0; i < CollisionPos::END; ++i)
 	{
 		CBounding_Sphere::BOUNDING_SPHERE_DESC      CollDesc{};
-		CollDesc.fRadius = 0.4f;
+		CollDesc.fRadius = 0.5f;
 		CollDesc.vCenter = _float3(0.f,  0.f, (CollDesc.fRadius*2) * i);
 
 		pColliderDesc.m_BoundingDesc = &CollDesc;

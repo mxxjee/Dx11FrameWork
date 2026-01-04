@@ -65,7 +65,8 @@ HRESULT CLevel_Loading::Initialize(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeTyp
 void CLevel_Loading::Update_Priority(_float fTimeDelta)
 {
     __super::Update_Priority(fTimeDelta);
-    if (m_pLoader->IsFinished())
+#pragma region 원래꺼(시간초만 따져서 씬옮기기)
+  /*  if (m_pLoader->IsFinished())
     {
         m_fTime += fTimeDelta;
 
@@ -84,6 +85,27 @@ void CLevel_Loading::Update_Priority(_float fTimeDelta)
 
         MSG_BOX("다음 씬 불러오기 실패");
         m_fTime = 0.f;
+    }*/
+#pragma endregion
+
+    __super::Update_Priority(fTimeDelta);
+    if (m_pLoader->IsFinished() && m_fTimeRatio >= 1.0f && m_fRealRatio >= 1.0f && m_fProgress >= 0.99f)
+    {
+        m_fTime += fTimeDelta;
+    }
+
+    if (m_fTime >= m_fNextTime)
+    {
+        LevelArgs args;
+        args.changeType = m_eChangeType;
+        args.m_iLevelID = ENUM_TO_UINT(m_eNextLevelID);
+        if (SUCCEEDED(m_pGameInstance->Level_Changer(ENUM_TO_UINT(m_eNextLevelID), args)))
+            return;
+
+        MSG_BOX("다음 씬 불러오기 실패");
+
+        m_fTime = 0.f;
+
     }
 }
 
@@ -95,9 +117,22 @@ void CLevel_Loading::Update(const _float fTimeDelta)
     CheckNull(m_pLoader);
 
 
-    
+    //시간진행률 계산
 
+    m_fAccLoadingTime += fTimeDelta;
+    m_fTimeRatio = m_fAccLoadingTime / m_pLoader->Get_Loading_MinTime();
 
+    //실제 리소스 로딩률
+    m_fRealRatio = (float)m_pLoader->Get_CurrentLoadCount() / m_pLoader->Get_TotalLoadCount();
+    m_fTargetRatio = min(m_fTimeRatio, m_fRealRatio);
+    m_fProgress = MathUtils::Lerp(m_fProgress, m_fTargetRatio, 1.f);
+
+    for (auto& pObj : m_pLoadingUI)
+    {
+        if (pObj)
+            pObj->Set_Progress(m_fProgress);
+
+    }
 
 }
 
@@ -125,6 +160,7 @@ void CLevel_Loading::Render()
 HRESULT CLevel_Loading::Ready_UI_Layer()
 {
     //UI 요소 추가.
+
     if (FAILED(UICreator::Create_Loading_UI(L"UI_Layer", m_pLoadingUI)))
         return E_FAIL;
 
@@ -158,6 +194,12 @@ void CLevel_Loading::OnExit()
 
     pFadeScreen->PlayFadeOut();
     m_pGameInstance->Set_IsLoading(false);
+
+    for (auto& pObj : m_pLoadingUI)
+    {
+        Safe_Release(pObj);
+
+    }
 }
 
 

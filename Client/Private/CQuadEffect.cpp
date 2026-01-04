@@ -3,6 +3,9 @@
 #include "CVIBuffer_Rect.h"
 #include "CShader.h"
 #include "CTexture.h"
+#include "CEffectPoolManager.h"
+#include "CLayer.h"
+
 
 USING(Client)
 
@@ -15,6 +18,9 @@ CQuadEffect::CQuadEffect(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContex
 CQuadEffect::CQuadEffect(const CQuadEffect& rhs)
     :CEffect(rhs)
 {
+    m_pTexture = nullptr;
+    m_pVIBufferCom = nullptr;
+
 }
 
 HRESULT CQuadEffect::Initialize_Prototype()
@@ -38,7 +44,7 @@ HRESULT CQuadEffect::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
 
-    EffectData* pData = m_pEffectData_Manager->Find_Data(tag);
+    EffectData* pData = m_pEffectData_Manager->Find_Data(m_DataName);
     if (pData)
     {
         m_LocalData = *pData;
@@ -48,13 +54,13 @@ HRESULT CQuadEffect::Initialize_Copytype(void* pArg)
         _vector vPos = m_pTransformCom->Get_State(STATE::POSITION);
         m_pTransformCom->Set_State(STATE::POSITION, vPos + XMVectorSetW(XMLoadFloat4(&m_LocalData.InitOffSet), 0.f));
 
-        Make_LocalMatrix();
-
+    
 
     }
     /*spawn시에 필요한 행렬만들어주기*/
 
   //  Update_Matrix();
+    Make_LocalMatrix();
 
     return S_OK;
 }
@@ -80,7 +86,13 @@ void CQuadEffect::Update(_float fTimeDelta)
             m_fAlpha -= fTimeDelta * m_fFadeOutSpeed;
             if (m_fAlpha <= 0)
             {
+                //풀에게돌려주고, 리스트에서삭제
+                m_pEffectPool_Manager->Request_Return(this);
                 Set_Active(false);
+
+                CLayer* pLayer = m_pGameInstance->Find_Layer(m_iSceneID, L"Particle_Layer");
+                pLayer->RequestDestroy(this);
+
                 m_fTime = 0.f;
                 m_fAlpha = 1.f;
             }
@@ -159,6 +171,7 @@ HRESULT CQuadEffect::Ready_Resource(void* pArg)
         m_pTexture = m_pGameInstance->Find_Texture(pQuad_Desc->TextureKey);
         if (m_pTexture)
             Safe_AddRef(m_pTexture);
+
     }
 
     return S_OK;
@@ -191,9 +204,12 @@ CGameObject* CQuadEffect::Clone(void* pArg)
 
 void CQuadEffect::Free()
 {
-    __super::Free();
     Safe_Release(m_pTexture);
+
+
     Safe_Release(m_pVIBufferCom);
+    __super::Free();
+ 
 }
 
 void CQuadEffect::Set_Texture(const _wstring& NewTexKey)
@@ -203,7 +219,6 @@ void CQuadEffect::Set_Texture(const _wstring& NewTexKey)
     {
         Safe_Release(m_pTexture);
         m_pTexture = pNewTex;
-        Safe_AddRef(m_pTexture);
     }
 }
 
@@ -238,64 +253,6 @@ void CQuadEffect::Stop()
 void CQuadEffect::Render_DebugImgui()
 {
     __super::Render_DebugImgui();
-    if (ImGui::ColorEdit4("Color", (float*)&m_LocalData.vColor))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-        Make_LocalMatrix();
-    }
-
-    if (ImGui::DragFloat4("InitOffSet", (float*)&m_LocalData.InitOffSet))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-        Make_LocalMatrix();
-        //Update_Matrix();
-    }
-
-    if (ImGui::DragFloat4("InitRotation", (float*)&m_LocalData.InitRotation))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-        Make_LocalMatrix();
-        // Update_Matrix();
-    }
-
-    if (ImGui::DragFloat4("InitScale", (float*)&m_LocalData.InitScale))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-        Make_LocalMatrix();
-        // Update_Matrix();
-    }
-
-    if (ImGui::DragFloat("LifeTime", (float*)&m_LocalData.fLifeTime))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-
-    }
-
-    if (ImGui::DragFloat("Speed", (float*)&m_LocalData.fSpeed))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-
-    }
-
-    if (ImGui::Checkbox("Loop", (bool*)&m_LocalData.m_bLoop))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-
-    }
-
-    if (ImGui::Button("Play"))
-        Play();
-
-
-    if (ImGui::Button("Stop"))
-        Stop();
-
-
-    if (ImGui::Button("Save"))
-    {
-        m_pEffectData_Manager->Save_To_Json(m_DataName, m_LocalData);
-
-
-    }
+  
 
 }

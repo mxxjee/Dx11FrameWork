@@ -4,6 +4,9 @@
 #include "CMeshComponent.h"
 #include "CShader.h"
 #include "CEffectData_Manager.h"
+#include "CEffectPoolManager.h"
+#include "CLayer.h"
+
 
 
 
@@ -29,9 +32,7 @@ HRESULT CMeshEffect::Initialize_Prototype()
 
 HRESULT CMeshEffect::Initialize_Copytype(void* pArg)
 {
-    
-
-
+    MESHEFFECT_DESC* pDesc = static_cast<MESHEFFECT_DESC*>(pArg);
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
@@ -41,8 +42,8 @@ HRESULT CMeshEffect::Initialize_Copytype(void* pArg)
     if (FAILED(Ready_Resource(pArg)))
         return E_FAIL;
 
-
-    EffectData* pData=m_pEffectData_Manager->Find_Data(m_pModel->Get_ModelData().name);
+    m_DataName = pDesc->modelName;
+    EffectData* pData=m_pEffectData_Manager->Find_Data(m_DataName);
     if (pData)
     {
         m_LocalData = *pData;
@@ -58,6 +59,10 @@ HRESULT CMeshEffect::Initialize_Copytype(void* pArg)
     /*spawn시에 필요한 행렬만들어주기*/
 
   //  Update_Matrix();
+    Make_LocalMatrix();
+
+
+
     return S_OK;
 }
 
@@ -72,7 +77,34 @@ void CMeshEffect::Update_Priority(_float fTimeDelta)
 void CMeshEffect::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
+    if (!m_bStop)
+        m_fTime += fTimeDelta * m_LocalData.fSpeed;
 
+
+    if (m_fTime >= m_LocalData.fLifeTime)
+    {
+        if (!m_LocalData.m_bLoop)
+        {
+            m_fAlpha -= fTimeDelta * m_fFadeOutSpeed;
+            if (m_fAlpha <= 0)
+            {
+                m_pEffectPool_Manager->Request_Return(this);
+                Set_Active(false);
+
+                CLayer* pLayer = m_pGameInstance->Find_Layer(m_iSceneID, L"Particle_Layer");
+                pLayer->RequestDestroy(this);
+
+
+                m_fTime = 0.f;
+                m_fAlpha = 1.f;
+            }
+        }
+
+
+        m_fTime = 0.f;
+
+
+    }
   
 }
 
@@ -80,19 +112,7 @@ void CMeshEffect::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
 
-    if(!m_bStop)
-        m_fTime += fTimeDelta * m_LocalData.fSpeed;
-
-
-    if (m_fTime >= m_LocalData.fLifeTime)
-    {
-        if (!m_LocalData.m_bLoop)
-            Set_Active(false);
-
-        m_fTime = 0.f;
-        
-        
-    }
+    
 
 
 }
@@ -208,7 +228,8 @@ HRESULT CMeshEffect::Bind_ShaderResources()
     _float4 vTime = _float4(m_fTime, 0.f, 0.f, 0.f);
     m_pGameInstance->CopyData_Buffer("LoadingBuffer", &vTime, sizeof(_float4));
 
-
+    if (FAILED(m_pShader->Bind_Float("g_Alpha", m_fAlpha)))
+        return E_FAIL;
 
     return S_OK;
 }
@@ -241,72 +262,7 @@ void CMeshEffect::Render_DebugImgui()
 {
     __super::Render_DebugImgui();
 
-    if(ImGui::ColorEdit4("Color", (float*)&m_LocalData.vColor))
-    {
-        m_pEffectData_Manager->Update_Data(m_ModelName, m_LocalData);
-
-    }
-
-    if (ImGui::DragFloat4("InitOffSet", (float*)&m_LocalData.InitOffSet))
-    {
-        m_pEffectData_Manager->Update_Data(m_ModelName, m_LocalData);
-        m_pTransformCom->Set_State(STATE::POSITION,
-            m_LocalData.InitOffSet);
-        //Update_Matrix();
-    }
-
-    if (ImGui::DragFloat4("InitRotation", (float*)&m_LocalData.InitRotation))
-    {
-        m_pEffectData_Manager->Update_Data(m_ModelName, m_LocalData);
-        m_pTransformCom->Rotation(
-            _float3(m_LocalData.InitRotation.x,
-                m_LocalData.InitRotation.y,
-                m_LocalData.InitRotation.z));
-       // Update_Matrix();
-    }
-
-    if (ImGui::DragFloat4("InitScale", (float*)&m_LocalData.InitScale))
-    {
-        m_pEffectData_Manager->Update_Data(m_ModelName, m_LocalData);
-        m_pTransformCom->Set_Scale(m_LocalData.InitScale);
-       // Update_Matrix();
-    }
-
-    if (ImGui::DragFloat("LifeTime", (float*)&m_LocalData.fLifeTime))
-    {
-        m_pEffectData_Manager->Update_Data(m_ModelName, m_LocalData);
-
-    }
-
-    if (ImGui::DragFloat("Speed", (float*)&m_LocalData.fSpeed))
-    {
-        m_pEffectData_Manager->Update_Data(m_ModelName, m_LocalData);
-
-    }
-
-    if (ImGui::Checkbox("Loop", (bool*)&m_LocalData.m_bLoop))
-    {
-        m_pEffectData_Manager->Update_Data(m_ModelName, m_LocalData);
-
-    }
-
-    if (ImGui::Button("Play"))
-    {
-        Play();
-
-
-    }
-    if (ImGui::Button("Stop"))
-        Stop();
-
-
-    if(ImGui::Button("Save"))
-    {                                                                                                                     
-        wstring name = m_pModel->Get_ModelData().name;
-        m_pEffectData_Manager->Save_To_Json(m_ModelName, m_LocalData);
-
-
-    }
+  
 
 }
 #endif // _DEBUG
@@ -352,6 +308,7 @@ void CMeshEffect::Play()
     ///InitData
     m_bStop = false;
     m_fTime = 0.f;
+    m_fAlpha = 1.f;
 }
 
 void CMeshEffect::Stop()

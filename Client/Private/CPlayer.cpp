@@ -30,6 +30,7 @@
 
 #include "CTrailEffect.h"
 #include "CQuadEffect.h"
+#include "CEffectPoolManager.h"
 
 
 
@@ -40,7 +41,7 @@ CPlayer::CPlayer(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pCont
     :CAnimModelObject(pDevice,pContext),
     m_pInputManager(CInput_Manager::GetInstance()),
     m_pInventoryManager(CInventory_Manager::GetInstance())
-   
+
 {
     Safe_AddRef(m_pInputManager);
 }
@@ -62,6 +63,9 @@ HRESULT CPlayer::Initialize_Prototype()
 HRESULT CPlayer::Initialize_Copytype(void* pArg)
 {
     m_pGameManager=CGameManager::GetInstance();
+    m_pEffectPoolManager = CEffectPoolManager::GetInstance();
+
+    
     CModelObject::MODELOBJECT_DESC desc;
     CTransform::TRANSFORM_DESC TransDesc;
 
@@ -158,14 +162,6 @@ void CPlayer::Update(_float fTimeDelta)
 
     }
  
-   //State_Change();     //애니메이션 완료 이후에 어떻게 바꿔줄것인지
- /*   if (m_pNextState != nullptr)
-    {
-        m_pCurState = m_pNextState;
-        m_pNextState = nullptr;
-      
-    }*/
-
 
     if (m_pCurState)
         m_pCurState->Update(this, fTimeDelta);
@@ -709,6 +705,8 @@ HRESULT CPlayer::Ready_Expressions()
 }
 void CPlayer::Set_Expression(EXPRESSION expression)
 {
+    CheckNull(m_pMouthTex);
+
     if (expression == EXPRESSION::IDLE)
         m_pMouthTex->Set_Texture(0);
 
@@ -907,8 +905,20 @@ void CPlayer::Free()
     {
         if (pair.second)
             Safe_Release(pair.second);
+
+
     }
 
+    m_States.clear();
+
+    for (auto& pVec : m_PlayerEffects)
+    {
+        for (auto& ppInfo : pVec)
+        {
+            Safe_Delete(ppInfo);
+
+        }
+    }
     __super::Free();
 }
 
@@ -1134,37 +1144,37 @@ HRESULT CPlayer::Ready_Effects()
         
     }*/
 #pragma endregion
-    CQuadEffect::QUADEFFECT_DESC Desc;
-    Desc.TextureKey = L"fire_02";
-    Desc.ObjTag = L"Slash_Quad";
-    Desc.ShaderName = L"Default";
-    Desc.PassName = "Slash";
-    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
-    Desc.DataName = Desc.ObjTag;
-
-
+    CQuadEffect::QUADEFFECT_DESC* Desc=new CQuadEffect::QUADEFFECT_DESC();
+    Desc->TextureKey = L"fire_02";
+    Desc->ObjTag = L"Slash_Quad";
+    Desc->ShaderName = L"Default";
+    Desc->PassName = "Slash";
+    Desc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
+    Desc->DataName = L"Slash_Quad";
     CTransform::TRANSFORM_DESC TransDesc;
-    Desc.TransformDesc = &TransDesc;
+    Desc->TransformDesc = &TransDesc;
 
-    CQuadEffect* pSlashEffect = dynamic_cast<CQuadEffect*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"QuadEffect"), &Desc));
-    if (pSlashEffect)
-    {
-        m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Particle_Layer", pSlashEffect);
-        m_PlayerEffects[SLASH1].push_back(pSlashEffect);
+    m_PlayerEffects[ENUM_TO_UINT(SLASH1)].push_back(Desc);
 
-    }
 
     /////
-    CTrailEffect::TrailDesc TrailEffect;
-    TrailEffect.ShaderName = L"Default";
-    TrailEffect.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
+    CTrailEffect::TrailDesc* TrailEffect=new CTrailEffect::TrailDesc();
+    TrailEffect->ShaderName = L"Default";
+    TrailEffect->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
+    m_PlayerEffects[ENUM_TO_UINT(SLASHTRAIL)].push_back(TrailEffect);
 
+    /// //////
+    CMeshEffect::MESHEFFECT_DESC* MeshDesc=new CMeshEffect::MESHEFFECT_DESC;
+    MeshDesc->modelName = L"rollcut";
+    MeshDesc->ObjTag = L"rollcut";
+    MeshDesc->ShaderName = L"MeshEffect";
+    MeshDesc->DataName = L"rollcut";
+    MeshDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
+    MeshDesc->PassName = "Alpha";
 
-    m_pTrailEffect = CTrailEffect::Create(m_pDevice, m_pContext,&TrailEffect);
-    if (m_pTrailEffect)
-        m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Particle_Layer", m_pTrailEffect);
+    MeshDesc->TransformDesc = &TransDesc;
 
-
+	m_PlayerEffects[SLASH2].push_back(MeshDesc);
 
     return S_OK;
 }
@@ -1471,31 +1481,48 @@ void CPlayer::Set_Flash(bool b)
 void CPlayer::AnimNotify_SlashStart()
 {
   
-    if (m_pTrailEffect)
+    if (!m_pTrailEffect)
     {
+        CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(L"Trail", m_PlayerEffects[SLASHTRAIL].front());
+        if (pEffect)
+        {
+            m_pTrailEffect = dynamic_cast<CTrailEffect*>(pEffect);
+            if (m_pTrailEffect)
+                m_pTrailEffect->Start_Trail(m_pAnimBody->Get_Model()->Get_BoneMatrix("itemA_L"),
+                    m_pTransformCom->Get_WorldMatrixPtr());
 
-        m_pTrailEffect->Start_Trail(m_pAnimBody->Get_Model()->Get_BoneMatrix("itemA_L"),
-            m_pTransformCom->Get_WorldMatrixPtr());
-
-
+        }
     }
-    for (auto& pObj : m_PlayerEffects[SLASH1])
+    
+  
+    
+
+	
+
+    
+    for (auto& pInfo : m_PlayerEffects[SLASH1])
     {
-        pObj->Spawn();
+        CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(L"QuadEffect", pInfo);
+        if (pEffect)
+        {
+            pEffect->Spawn();
+            _matrix vPlayerMatrix = XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr());
+            _matrix LocalMatrix = pEffect->Get_LocalMatrix();
+
+
+            _float4x4 CombinedMatrix;
+            XMStoreFloat4x4(&CombinedMatrix,
+                LocalMatrix * vPlayerMatrix);
+
+
+    
+            pEffect->Get_Transform()->Set_WorldMatrix(CombinedMatrix);
+            pEffect->Play();
+
+        }
+      
 
         
-        _matrix vPlayerMatrix = XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr());
-        _matrix LocalMatrix = pObj->Get_LocalMatrix();
-
-
-        _float4x4 CombinedMatrix;
-        XMStoreFloat4x4(&CombinedMatrix,
-            LocalMatrix * vPlayerMatrix);
-
-        
-        //_vector vWorldPos = XMVector3TransformCoord(XMLoadFloat4(&pObj->Get_EffectData()->InitOffSet), vPlayerMatrix);
-        pObj->Get_Transform()->Set_WorldMatrix(CombinedMatrix);
-
         
      
         //pObj->Get_Transform()->Rotation(_float3(
@@ -1509,23 +1536,44 @@ void CPlayer::AnimNotify_SlashStart()
         //pObj->Get_Transform()->Set_Scale(pObj->Get_EffectData()->InitScale);
 
 
-        pObj->Play();
     }
 
 }
 
 void CPlayer::AnimNotify_SlashEnd()
 {
-
     if (m_pTrailEffect)
     {
-
         m_pTrailEffect->Stop_Trail();
+        m_pTrailEffect = nullptr;
+    }
+}
 
+void CPlayer::AnimNotify_Slash_Hold_Ed_Start()
+{
+    CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(L"MeshEffect", m_PlayerEffects[SLASH2].front());
+    if (pEffect)
+    {
+        pEffect->Spawn();
+        _matrix vPlayerMatrix = XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr());
+        _matrix LocalMatrix = pEffect->Get_LocalMatrix();
+
+
+        _float4x4 CombinedMatrix;
+        XMStoreFloat4x4(&CombinedMatrix,
+            LocalMatrix * vPlayerMatrix);
+
+
+
+        pEffect->Get_Transform()->Set_WorldMatrix(CombinedMatrix);
+        pEffect->Play();
 
     }
-  
 
+}
+
+void CPlayer::AnimNotify_Slash_Hold_Ed_End()
+{
 }
 
 

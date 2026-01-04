@@ -1006,7 +1006,7 @@ HRESULT UICreator::Create_Loading_UI(wstring LayerTag, vector<CLoadingUI*>& UIVe
 
         Desc.ObjTag = L"Loading_UI" + to_wstring(i);
         Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
-        Desc.TextureKey = L"loadingUI";
+        Desc.TextureKey = L"MarkerWarp_00^w";
 
 
         Desc.iIdx = i;
@@ -1038,19 +1038,29 @@ HRESULT UICreator::Create_Loading_UI(wstring LayerTag, vector<CLoadingUI*>& UIVe
         UIDesc._AnimInfo[ENUM_TO_UINT(UIAnimType::ALPHA)].bPingpong = true;
 
 
-
-
-        CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Loading"), &Desc);
-        if (pObj)
+        CBase* pFindObj = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::LOADING), L"UI_Layer", Desc.ObjTag);
+        if (!pFindObj)
         {
-            CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
-            if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOADING), LayerTag, pInstance)))
-                return E_FAIL;
+            CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Loading"), &Desc);
+            if (pObj)
+            {
+                CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+                if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::LOADING), LayerTag, pInstance)))
+                    return E_FAIL;
 
-            CLoadingUI* pUI = dynamic_cast<CLoadingUI*>(pObj);
-            UIVec.push_back(pUI);
+                CLoadingUI* pUI = dynamic_cast<CLoadingUI*>(pObj);
+                UIVec.push_back(pUI);
 
+            }
         }
+
+        else
+        {
+            CLoadingUI* pUI = dynamic_cast<CLoadingUI*>(pFindObj);
+            UIVec.push_back(pUI);
+        }
+
+        
 
     }
     return S_OK;

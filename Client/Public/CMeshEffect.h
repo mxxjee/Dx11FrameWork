@@ -79,11 +79,10 @@ protected:
     
 
 public:
-    EffectData              m_LocalData;
     float                   m_fTime = 0.f;
     wstring                 m_ModelName = L"";
+    
 
-  
 
 
 };

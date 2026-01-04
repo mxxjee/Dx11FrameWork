@@ -2,6 +2,7 @@
 #include "CAnimModelObject.h"
 #include "VertexData.h"
 #include "Client_Defines.h"
+#include "EffectData.h"
 
 /*움직임과 상태제어만 한다.
 상태에 따른 애니메이션처리는 Body객체가 한다.*/
@@ -23,14 +24,13 @@ class CPlayerState;
 class CGameManager;
 class CEffect;
 class CTrailEffect;
+class CEffectPoolManager;
+
 
 class CPlayer :
     public CAnimModelObject
 {
-    enum PLAYER_EFFECT
-    {
-        SLASH1,SLASH2 ,PLAYER_EFFECT_END                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
-   };
+   
 
 public:
     enum HoldKey
@@ -277,12 +277,19 @@ private:
     CTexture*               m_pMouthTex = nullptr;
 
 public:
+    /*PArticle animnotify*/
     void        AnimNotify_SlashStart();
     void        AnimNotify_SlashEnd();
 
+    void        AnimNotify_Slash_Hold_Ed_Start();
+    void        AnimNotify_Slash_Hold_Ed_End();
+
+
+
 private:
-    vector<list<CEffect*>>     m_PlayerEffects;
+    vector<list<void*>>     m_PlayerEffects;
     CTrailEffect* m_pTrailEffect = nullptr;
+    CEffectPoolManager* m_pEffectPoolManager = nullptr;
 
 };
 

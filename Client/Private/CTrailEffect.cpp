@@ -4,7 +4,7 @@
 #include "CShader.h"
 #include "CTexture.h"
 #include "CEffectData_Manager.h"
-
+#include "CEffectPoolManager.h"
 
 
 USING(Client)
@@ -280,11 +280,11 @@ HRESULT CTrailEffect::Render()
     return S_OK;
 }
 
-CTrailEffect* CTrailEffect::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, void* pArg)
+CTrailEffect* CTrailEffect::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
 {
     CTrailEffect* pInstance = new CTrailEffect(_pDevice, _pDeviceContext);
 
-    if (FAILED(pInstance->Initialize_Copytype(pArg)))
+    if (FAILED(pInstance->Initialize_Prototype()))
     {
         MSG_BOX("Failed to Created : CTrailEffect");
         Safe_Release(pInstance);
@@ -344,10 +344,14 @@ void CTrailEffect::Start_Trail(const _float4x4* pWeaponWorldMatrix, const _float
 void CTrailEffect::Stop_Trail()
 {
     m_bStop = true;
+    Set_Active(false);
+    m_pEffectPool_Manager->Request_Return(this);
+    m_TrailList.clear();
 }
 
 void CTrailEffect::Free()
 {
     __super::Free();
+    Safe_Release(m_pTexture);
 }
 

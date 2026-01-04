@@ -98,14 +98,15 @@ VS_OUT VS_MAIN(VS_IN In)
 
 }
 
-PS_OUT PS_MAIN(PS_IN Input) : SV_Target0
+float4 PS_MAIN(PS_IN Input) : SV_Target0
 {
     PS_OUT Out;
     
     Out.vDiffuse= g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
-   
+     
+    Out.vDiffuse *= g_Alpha;
     
-    return Out;
+    return Out.vDiffuse;
     
    
 }
@@ -183,6 +184,19 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MAIN();
 
     }
+
+    pass Alpha
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Alpha, 0);
+        SetBlendState(BS_Blend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN();
+    }
+
+
     pass Slash
     {
         SetRasterizerState(RS_Default);

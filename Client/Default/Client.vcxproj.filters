@@ -401,6 +401,9 @@
     <ClInclude Include="..\Public\CEffect.h">
       <Filter>02.GameObjects\98.Effect\QuadEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CEffectPoolManager.h">
+      <Filter>96.Managers\EffectPoolManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -864,6 +867,9 @@
     <Filter Include="02.GameObjects\98.Effect\QuadEffect">
       <UniqueIdentifier>{6836be10-702c-4dbd-b6d7-698e5afb724f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="96.Managers\EffectPoolManager">
+      <UniqueIdentifier>{0b12e909-12f1-483b-928e-9381fab063fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1241,6 +1247,9 @@
     <ClCompile Include="..\Private\CQuadEffect.cpp" />
     <ClCompile Include="..\Private\CEffect.cpp">
       <Filter>02.GameObjects\98.Effect\QuadEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CEffectPoolManager.cpp">
+      <Filter>96.Managers\EffectPoolManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

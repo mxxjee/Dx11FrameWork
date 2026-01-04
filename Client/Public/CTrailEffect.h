@@ -54,7 +54,7 @@ public:
     virtual HRESULT Render();
 
 public:
-    static CTrailEffect* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext,void *pArg);
+    static CTrailEffect* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 

@@ -254,7 +254,5 @@ CTexture* CTexture::Clone(void* pArg)
 void CTexture::Free()
 {
 
-
-
 	m_Textures.clear();
 }

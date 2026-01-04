@@ -401,6 +401,8 @@ void CLevel_Spawn::OnPause(_uint iNextLeve)
 
 void CLevel_Spawn::OnExit()
 {
+    __super::OnExit();
+
     CInteraction_Manager::GetInstance()->Clear();
     m_pGameInstance->Clear_SceneColliders(m_iLevelID);
 

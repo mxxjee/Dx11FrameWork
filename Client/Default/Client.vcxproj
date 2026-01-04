@@ -161,6 +161,7 @@
     <ClInclude Include="..\Public\CDungeonBlock.h" />
     <ClInclude Include="..\Public\CEffect.h" />
     <ClInclude Include="..\Public\CEffectData_Manager.h" />
+    <ClInclude Include="..\Public\CEffectPoolManager.h" />
     <ClInclude Include="..\Public\CEventTrigger.h" />
     <ClInclude Include="..\Public\CExplosion.h" />
     <ClInclude Include="..\Public\CFadeScreen.h" />
@@ -309,6 +310,7 @@
     <ClCompile Include="..\Private\CDungeonBlock.cpp" />
     <ClCompile Include="..\Private\CEffect.cpp" />
     <ClCompile Include="..\Private\CEffectData_Manager.cpp" />
+    <ClCompile Include="..\Private\CEffectPoolManager.cpp" />
     <ClCompile Include="..\Private\CEventTrigger.cpp" />
     <ClCompile Include="..\Private\CExplosion.cpp" />
     <ClCompile Include="..\Private\CFadeScreen.cpp" />

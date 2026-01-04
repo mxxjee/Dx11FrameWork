@@ -1,6 +1,8 @@
 #include "CEffect.h"
 #include "CEffectData_Manager.h"
 #include "CShader.h"
+#include "CEffectPoolManager.h"
+
 
 USING(Client)
 
@@ -81,6 +83,7 @@ HRESULT CEffect::Initialize_Copytype(void* pArg)
 	EFFECT_DESC* pDesc = static_cast<EFFECT_DESC*>(pArg);
 
 	m_pEffectData_Manager = CEffectData_Manager::GetInstance();
+	m_pEffectPool_Manager = CEffectPoolManager::GetInstance();
 
 	if (FAILED(__super::Initialize_Copytype(pArg)))
 		return E_FAIL;
@@ -104,13 +107,82 @@ void CEffect::Update(_float fTimeDelta)
 void CEffect::Update_Late(_float fTimeDelta)
 {
 	__super::Update_Late(fTimeDelta);
+
+    _float4x4 CombinedMatrix;
+
+    if (m_pParentMatrix)
+        XMStoreFloat4x4(&CombinedMatrix, XMMatrixMultiply(LocalMatrix,
+            XMLoadFloat4x4(m_pParentMatrix)));
+
+    else
+        CombinedMatrix = *m_pTransformCom->Get_WorldMatrixPtr();
+
+    m_pTransformCom->Set_WorldMatrix(CombinedMatrix);
 }
 
 
 void CEffect::Render_DebugImgui()
 {
 	__super::Render_DebugImgui();
+    if (ImGui::ColorEdit4("Color", (float*)&m_LocalData.vColor))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+        Make_LocalMatrix();
+    }
 
+    if (ImGui::DragFloat4("InitOffSet", (float*)&m_LocalData.InitOffSet))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+        Make_LocalMatrix();
+        //Update_Matrix();
+    }
+
+    if (ImGui::DragFloat4("InitRotation", (float*)&m_LocalData.InitRotation))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+        Make_LocalMatrix();
+        // Update_Matrix();
+    }
+
+    if (ImGui::DragFloat4("InitScale", (float*)&m_LocalData.InitScale))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+        Make_LocalMatrix();
+        // Update_Matrix();
+    }
+
+    if (ImGui::DragFloat("LifeTime", (float*)&m_LocalData.fLifeTime))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+
+    }
+
+    if (ImGui::DragFloat("Speed", (float*)&m_LocalData.fSpeed))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+
+    }
+
+    if (ImGui::Checkbox("Loop", (bool*)&m_LocalData.m_bLoop))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+
+    }
+
+    if (ImGui::Button("Play"))
+        Play();
+
+
+    if (ImGui::Button("Stop"))
+        Stop();
+
+
+    if (ImGui::Button("Save"))
+    {
+        m_pEffectData_Manager->Save_To_Json(m_DataName, m_LocalData);
+
+
+    }
 }
 void CEffect::Update_Render(_float fTimeDelta)
 {
