@@ -17,6 +17,15 @@ struct MaterialData
 
 	MaterialData() {}
 	
+	CTexture* Get_Texture(aiTextureType eType)
+	{
+		auto iter = m_Textures.find(eType);
+		if (iter == m_Textures.end())
+			return nullptr;
+
+		return iter->second;
+
+	}
 
 };
 

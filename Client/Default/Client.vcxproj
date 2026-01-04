@@ -257,6 +257,7 @@
     <ClInclude Include="..\Public\CPlayer_Body.h" />
     <ClInclude Include="..\Public\CPlayer_Shield.h" />
     <ClInclude Include="..\Public\CPlayer_Sword.h" />
+    <ClInclude Include="..\Public\CQuadEffect.h" />
     <ClInclude Include="..\Public\CQuestCondition.h" />
     <ClInclude Include="..\Public\CQuest_Manager.h" />
     <ClInclude Include="..\Public\CRangeCollider.h" />
@@ -404,6 +405,7 @@
     <ClCompile Include="..\Private\CPlayer_Body.cpp" />
     <ClCompile Include="..\Private\CPlayer_Shield.cpp" />
     <ClCompile Include="..\Private\CPlayer_Sword.cpp" />
+    <ClCompile Include="..\Private\CQuadEffect.cpp" />
     <ClCompile Include="..\Private\CQuestCondition.cpp" />
     <ClCompile Include="..\Private\CQuest_Manager.cpp" />
     <ClCompile Include="..\Private\CRangeCollider.cpp" />

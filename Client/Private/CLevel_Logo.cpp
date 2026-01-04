@@ -279,7 +279,7 @@ HRESULT CLevel_Logo::Ready_Layer_MainCamera(const _wstring& strLayerTag)
         pTargetCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP), false);
         pTargetCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP), false);
         pTargetCam->Set_RenderMask(ENUM_TO_UINT(RENDERGROUP::UI), false);
-        pTargetCam->Set_Distance(55.f);
+        pTargetCam->Set_Distance(50.f);
 
     }
 

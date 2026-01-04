@@ -397,8 +397,9 @@
     <ClInclude Include="..\Public\CTrailEffect.h">
       <Filter>02.GameObjects\98.Effect\TrailEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CQuadEffect.h" />
     <ClInclude Include="..\Public\CEffect.h">
-      <Filter>02.GameObjects\98.Effect</Filter>
+      <Filter>02.GameObjects\98.Effect\QuadEffect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -860,6 +861,9 @@
     <Filter Include="02.GameObjects\98.Effect\TrailEffect">
       <UniqueIdentifier>{24b2eb5a-a769-4265-b689-53add719bc35}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\98.Effect\QuadEffect">
+      <UniqueIdentifier>{6836be10-702c-4dbd-b6d7-698e5afb724f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1234,8 +1238,9 @@
     <ClCompile Include="..\Private\CTrailEffect.cpp">
       <Filter>02.GameObjects\98.Effect\TrailEffect</Filter>
     </ClCompile>
+    <ClCompile Include="..\Private\CQuadEffect.cpp" />
     <ClCompile Include="..\Private\CEffect.cpp">
-      <Filter>02.GameObjects\98.Effect</Filter>
+      <Filter>02.GameObjects\98.Effect\QuadEffect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1279,10 +1284,10 @@
     <None Include="..\..\Resource\Shader\Default.hlsli">
       <Filter>97.ShaderFiles</Filter>
     </None>
-    <None Include="..\..\Resource\Shader\Shader_Light.hlsli">
-      <Filter>97.ShaderFiles\Light</Filter>
-    </None>
     <None Include="..\..\Resource\Shader\GlobalBuffer.hlsli">
+      <Filter>97.ShaderFiles</Filter>
+    </None>
+    <None Include="..\..\Resource\Shader\Shader_Light.hlsli">
       <Filter>97.ShaderFiles</Filter>
     </None>
   </ItemGroup>

@@ -18,6 +18,7 @@ public:
     {
         wstring      ShaderName = L"Default";
         _uint eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+        wstring      DataName = L"";
 
     }EFFECT_DESC;
 
@@ -62,11 +63,21 @@ protected:
     EffectData              m_LocalData;
     CEffectData_Manager* m_pEffectData_Manager = nullptr;
 
+public:
+    _matrix        Get_LocalMatrix() { return LocalMatrix; }
+    _float4x4       Get_LocalMatrix_ByFloat4x4() { _float4x4 Result; XMStoreFloat4x4(&Result, LocalMatrix); return Result; }
 protected:
     CShader*            m_pShader = { nullptr };
     _uint                   m_eRenderGroup = 0;
     float                   m_fTime = 0.f;      //현재 파티클 진행시간
     bool                    m_bStop = false;
+
+    wstring             m_DataName = L"";
+
+    _matrix             LocalMatrix;
+
+protected:
+    void        Make_LocalMatrix();
 };
 
 NS_END

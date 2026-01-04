@@ -141,7 +141,7 @@ void CTerrain_Manager::Update_Render(_float fTimeDelta)
 		{
 
 			pair.second->Update_Render(fTimeDelta);
-			pair.second->Update_Render_MiniMapPriority();
+			//pair.second->Update_Render_MiniMapPriority();
 
 
 		}

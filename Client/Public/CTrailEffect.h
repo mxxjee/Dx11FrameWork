@@ -22,8 +22,8 @@ class CTrailEffect
 public:
     struct TrailDesc: CEffect::EFFECT_DESC
     {
-        _float3 TopOffset = _float3(0.f, 1.5f,0.f);
-        _float3 BottomOffSet= _float3(0.f, 0.f, 0.f);
+        _float3 TopOffset = _float3(0.f, 1.0f,0.f);
+        _float3 BottomOffSet= _float3(0.f, 0.5f, 0.f);
 
         _float fWidth = 1.f;
 

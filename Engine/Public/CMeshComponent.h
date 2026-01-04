@@ -32,7 +32,7 @@ public:
     virtual void Free() override;
 
     HRESULT                 Render();
-
+    bool                Has_aiTexture(aiTextureType eType);
   
 public:
     bool                Intersects_Ray(_vector origin, _vector rayDir, _float& Dist);

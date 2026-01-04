@@ -204,8 +204,6 @@ HRESULT CMeshEffect::Bind_ShaderResources()
     if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", *m_pTransformCom->Get_WorldMatrixPtr())))
         return E_FAIL;
 
-    if (FAILED(m_pShader->Bind_Vector("g_TintColor", m_LocalData.vColor)))
-        return E_FAIL;
 
     _float4 vTime = _float4(m_fTime, 0.f, 0.f, 0.f);
     m_pGameInstance->CopyData_Buffer("LoadingBuffer", &vTime, sizeof(_float4));
@@ -303,7 +301,7 @@ void CMeshEffect::Render_DebugImgui()
 
 
     if(ImGui::Button("Save"))
-    {
+    {                                                                                                                     
         wstring name = m_pModel->Get_ModelData().name;
         m_pEffectData_Manager->Save_To_Json(m_ModelName, m_LocalData);
 

@@ -29,7 +29,7 @@
 #include "CMeshEffect.h"
 
 #include "CTrailEffect.h"
-
+#include "CQuadEffect.h"
 
 
 
@@ -1113,6 +1113,8 @@ HRESULT CPlayer::Ready_Effects()
 {
     m_PlayerEffects.resize(PLAYER_EFFECT_END);
 
+#pragma region ∏ﬁΩ¨¿Ã∆Â∆Æ
+    /*
     //SlashEffect
     CMeshEffect::MESHEFFECT_DESC Desc;
     Desc.modelName = L"Swish01";
@@ -1127,9 +1129,29 @@ HRESULT CPlayer::Ready_Effects()
     CMeshEffect* pSlashEffect = dynamic_cast<CMeshEffect*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"MeshEffect"), &Desc));
     if (pSlashEffect)
     {
-        m_pGameInstance->Add_GameObject_To_Layer(m_iSceneID, L"Particle_Layer", pSlashEffect);
+        m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Particle_Layer", pSlashEffect);
         m_PlayerEffects[SLASH1].push_back(pSlashEffect);
         
+    }*/
+#pragma endregion
+    CQuadEffect::QUADEFFECT_DESC Desc;
+    Desc.TextureKey = L"fire_02";
+    Desc.ObjTag = L"Slash_Quad";
+    Desc.ShaderName = L"Default";
+    Desc.PassName = "Slash";
+    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
+    Desc.DataName = Desc.ObjTag;
+
+
+    CTransform::TRANSFORM_DESC TransDesc;
+    Desc.TransformDesc = &TransDesc;
+
+    CQuadEffect* pSlashEffect = dynamic_cast<CQuadEffect*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"QuadEffect"), &Desc));
+    if (pSlashEffect)
+    {
+        m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Particle_Layer", pSlashEffect);
+        m_PlayerEffects[SLASH1].push_back(pSlashEffect);
+
     }
 
     /////
@@ -1459,22 +1481,33 @@ void CPlayer::AnimNotify_SlashStart()
     }
     for (auto& pObj : m_PlayerEffects[SLASH1])
     {
-        /*const _float4x4* matrix = m_pAnimBody->Get_Model()->Get_BoneMatrix("root");
-        pObj->Spawn(matrix, m_pTransformCom->Get_WorldMatrixPtr());*/
-
-
-        
-        _float4 vPos;
-        
         pObj->Spawn();
 
-       
-        XMStoreFloat4(&vPos, XMVectorSetW(m_pTransformCom->Get_State(STATE::POSITION) + XMVector3Normalize(+m_pTransformCom->Get_State(STATE::LOOK)) +
-            XMLoadFloat4(&pObj->Get_EffectData()->InitOffSet), 1.f)); 
-        pObj->Get_Transform()->Set_State(STATE::POSITION,
-            vPos);
+        
+        _matrix vPlayerMatrix = XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr());
+        _matrix LocalMatrix = pObj->Get_LocalMatrix();
 
-        pObj->Get_Transform()->Rotation(m_pTransformCom->Get_Rotation_ByEular());
+
+        _float4x4 CombinedMatrix;
+        XMStoreFloat4x4(&CombinedMatrix,
+            LocalMatrix * vPlayerMatrix);
+
+        
+        //_vector vWorldPos = XMVector3TransformCoord(XMLoadFloat4(&pObj->Get_EffectData()->InitOffSet), vPlayerMatrix);
+        pObj->Get_Transform()->Set_WorldMatrix(CombinedMatrix);
+
+        
+     
+        //pObj->Get_Transform()->Rotation(_float3(
+        //    pObj->Get_EffectData()->InitRotation.x,
+        //    pObj->Get_EffectData()->InitRotation.y,
+        //    pObj->Get_EffectData()->InitRotation.z));
+
+        //pObj->Get_Transform()->Set_State(STATE::POSITION,
+        //    vWorldPos);
+
+        //pObj->Get_Transform()->Set_Scale(pObj->Get_EffectData()->InitScale);
+
 
         pObj->Play();
     }

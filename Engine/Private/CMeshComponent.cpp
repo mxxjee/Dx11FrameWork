@@ -114,6 +114,15 @@ HRESULT CMeshComponent::Render()
 	return S_OK;
 }
 
+bool CMeshComponent::Has_aiTexture(aiTextureType eType)
+{
+	CTexture* pTex = m_pMaterial->Get_Texture(eType);
+	if (pTex)
+		return true;
+
+	return false;
+}
+
 bool CMeshComponent::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
 {
 	bool isHit = false;

@@ -25,5 +25,7 @@ float4 g_TintColor = float4(1.f, 1.f, 1.f, 1.f);
 float g_Time;
 float g_Speed;
 
+float4 m_bHasNormalMap = float4(1.f, 0.f, 0.f, 0.f);
+
 
 #endif

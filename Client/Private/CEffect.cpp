@@ -18,6 +18,8 @@ CEffect::CEffect(const CEffect& rhs)
 HRESULT CEffect::Render()
 {
 	__super::Render();
+	if (FAILED(m_pShader->Bind_Vector("g_TintColor", m_LocalData.vColor)))
+		return E_FAIL;
 
 	return S_OK;
 }
@@ -41,11 +43,35 @@ void CEffect::Free()
 	Safe_Release(m_pShader);
 }
 
+void CEffect::Make_LocalMatrix()
+{
+	_matrix Scaling = XMMatrixScaling(m_LocalData.InitScale.x,
+		m_LocalData.InitScale.y,
+		m_LocalData.InitScale.z);
+
+	_float Roll = XMConvertToRadians(m_LocalData.InitRotation.x);
+	_float Pitch = XMConvertToRadians(m_LocalData.InitRotation.y);
+	_float Yaw = XMConvertToRadians(m_LocalData.InitRotation.z);
+
+	_matrix Rotation = XMMatrixRotationRollPitchYaw(Roll, Pitch, Yaw);
+
+	_matrix Translate = XMMatrixTranslation(m_LocalData.InitOffSet.x,
+		m_LocalData.InitOffSet.y,
+		m_LocalData.InitOffSet.z);
+
+	LocalMatrix = Scaling * Rotation * Translate;
+
+
+}
+
 
 HRESULT CEffect::Initialize_Prototype()
 {
+	
 	if (FAILED(__super::Initialize_Prototype()))
 		return E_FAIL;
+
+
 
 	return S_OK;
 }
@@ -60,6 +86,7 @@ HRESULT CEffect::Initialize_Copytype(void* pArg)
 		return E_FAIL;
 	m_eRenderGroup = pDesc->eRenderGroup;
 	m_pShader = m_pGameInstance->Find_Shader(pDesc->ShaderName);
+	m_DataName = pDesc->DataName;
 
 	return S_OK;
 }

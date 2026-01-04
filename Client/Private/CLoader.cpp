@@ -88,6 +88,8 @@
 #include "CUI_ItemInfo.h"
 
 #include "CMeshEffect.h"
+#include "CQuadEffect.h"
+
 
 
 
@@ -518,6 +520,7 @@ HRESULT CLoader::Register_Textures()
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Items/", L".dds");
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Inventory/", L".png");
     m_pGameInstance->Load_Textures(L"../../Resource/UI/AreaUI/", L".png");
+    m_pGameInstance->Load_Textures(L"../../Resource/Particle/Textures/", L".dds");
 
   
 
@@ -802,6 +805,9 @@ HRESULT CLoader::Register_GameObjects()
         return E_FAIL;
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"MagicPowder", CMagicPowder::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"QuadEffect", CQuadEffect::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
 

@@ -33,7 +33,7 @@ public:
     const char* Get_Name() { return m_szName; }
     _float         Get_CurrentTrackPoistion() { return m_fCurrentTrackPosition; }
     _uint       Get_CurrentKeyFrameIndex(int num) { return m_CurrentKeyFrameIndices[num]; }
-   
+    _float           Get_CurrentAnimRatio() {return m_fCurrentTrackPosition / m_fDuration;}
     CChannel*         Get_Channel_BoneIdx(int BoneNum);
     _matrix           Get_CurrentKeyFrameBonSRT(int BoneIdx);
     int               Get_ChannelIdx(int BoneNum);

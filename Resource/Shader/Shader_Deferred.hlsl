@@ -254,7 +254,6 @@ PS_OUT_BACKBUFFER PS_MAIN_COMBINED(PS_IN In)
        
   
     float4 color = vDiffuse*vShade+vSpecular;
-    //color = pow(saturate(color), 1.0 / 1.7); //¹à±âº¸Á¤
     color.a = 1.f;
 
     Out.vColor = color;

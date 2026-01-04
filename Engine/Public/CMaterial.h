@@ -25,6 +25,8 @@ public:
     virtual void Free() override;
 
 public:
+    CTexture* Get_Texture(aiTextureType eType);
+
     HRESULT         Bind_ShaderResource(class CShader* pShader, const string& Variable,aiTextureType eType, int idx=0);
     const MaterialData* Get_MaterialData() { return &m_MatData; }
 private:

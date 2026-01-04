@@ -58,16 +58,39 @@ float4 PS_MAIN(PS_IN Input) : SV_Target0
     return color;
 }
 
-float4 PS_Test(PS_IN Input): SV_Target0
+float4 PS_Effect(PS_IN Input): SV_Target0
 {
     float4 color = texture0.Sample(sampler0, Input.vTexcoord);
+    
     
     color *= g_TintColor;
     color.rgb *= color.a;
     
+    color *= g_Alpha;
 
     
     return color;
+}
+
+
+float4 PS_Slash(PS_IN Input) : SV_Target0
+{
+    float2 vTexCoord = Input.vTexcoord;
+    vTexCoord.x = Input.vTexcoord.y; // 원래 Y를 X로
+    vTexCoord.y = Input.vTexcoord.x; // 원래 X를 Y로 
+    float4 vColor = texture0.Sample(DefaultSampler, vTexCoord);
+    
+    if ((1 - Input.vTexcoord.x) > g_Progress.x)
+        vColor.a = 0.f;
+    
+    
+    vColor*= g_TintColor;
+    vColor.rgb *= vColor.a;
+    
+    vColor *= g_Alpha;
+
+    
+    return vColor;
 }
 
 float4 PS_MINIMAP(PS_IN Input) : SV_Target0
@@ -279,17 +302,31 @@ technique11 DefaultTechnique
 
     }
 
-    pass Test
+    pass Effect
     {
         SetRasterizerState(RS_Default);
-        SetDepthStencilState(DSS_Default, 0);
+        SetDepthStencilState(DSS_Alpha, 0);
         SetBlendState(BS_Blend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
 
         //이 pass가 선택되면 VertexShader는 이렇게 컴파일하세요.
                                 //버전 , 진입함수 설정
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_Test();
+        PixelShader = compile ps_5_0 PS_Effect();
+
+    }
+
+    pass Slash
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Alpha, 0);
+        SetBlendState(BS_Blend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        //이 pass가 선택되면 VertexShader는 이렇게 컴파일하세요.
+                                //버전 , 진입함수 설정
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_Slash();
 
     }
 

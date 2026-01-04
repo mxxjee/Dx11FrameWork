@@ -258,7 +258,7 @@ HRESULT CTrailEffect::Render()
     if (FAILED(m_pShader->Bind_Float("g_Alpha",1.f)))
         return E_FAIL; 
 
-    m_pShader->Begin("Test"); // 0번 패스 실행
+    m_pShader->Begin("Effect"); // 0번 패스 실행
 
 
     // 4. 파이프라인 설정
@@ -329,6 +329,7 @@ HRESULT CTrailEffect::Ready_Component()
     {
         return E_FAIL;
     }
+    return S_OK;
 }
 
 void CTrailEffect::Start_Trail(const _float4x4* pWeaponWorldMatrix, const _float4x4* ParentMatrix)

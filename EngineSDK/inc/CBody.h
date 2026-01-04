@@ -76,7 +76,7 @@ public:
 
 protected:
     _uint                   m_eRenderGroup = 0;
-
+    bool            m_bHasNormal = true;
 
 };
 NS_END

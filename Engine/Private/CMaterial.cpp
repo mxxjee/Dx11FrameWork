@@ -102,6 +102,12 @@ void CMaterial::Free()
 	Safe_Release(m_pGameInstance);
 }
 
+CTexture* CMaterial::Get_Texture(aiTextureType eType)
+{
+
+	return m_MatData.Get_Texture(eType);
+}
+
 HRESULT CMaterial::Bind_ShaderResource(CShader* pShader, const string& Variable, aiTextureType eType, int idx )
 {
 	CheckNullResult(pShader, E_FAIL);
