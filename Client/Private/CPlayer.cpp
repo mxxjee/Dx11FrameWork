@@ -1180,8 +1180,7 @@ HRESULT CPlayer::Ready_Effects()
     Desc->PassName = "Slash";
     Desc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
     Desc->DataName = L"Slash_Quad";
-    CTransform::TRANSFORM_DESC TransDesc;
-    Desc->TransformDesc = &TransDesc;
+
 
     m_PlayerEffects[ENUM_TO_UINT(SLASH1)].push_back(Desc);
 
@@ -1201,7 +1200,6 @@ HRESULT CPlayer::Ready_Effects()
     MeshDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
     MeshDesc->PassName = "Alpha";
 
-    MeshDesc->TransformDesc = &TransDesc;
 
 	m_PlayerEffects[SLASH2].push_back(MeshDesc);
 

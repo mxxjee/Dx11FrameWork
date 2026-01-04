@@ -60,9 +60,12 @@ CEffect* CEffectPoolManager::Request_Spawn(const wstring& ProtoTag, void* pArg)
 	if (pEffect)
 	{
        
-		if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(m_pGameInstance->Get_CurrentLevelID(), L"Particle_Layer", pEffect)))
-			return nullptr;
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(m_pGameInstance->Get_CurrentLevelID(), L"Particle_Layer", pEffect)))
+        {
+            Safe_Release(pEffect);
+            return nullptr;
 
+        }
         Safe_AddRef(pEffect);//풀에저장하므로 addref
 		m_ClonDatas[Hash].push_back(pEffect);
 
@@ -90,7 +93,9 @@ void CEffectPoolManager::Free()
         for (auto& pObj : pair.second)
         {
             Safe_Release(pObj);
-
         }
+        // pair.second.clear(); // 벡터 비우기 (선택)
     }
+
+    m_ClonDatas.clear();
 }
