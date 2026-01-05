@@ -192,9 +192,6 @@ HRESULT CMeshEffect::Ready_Resource(void* pArg)
         if (pDesc->ShaderName != L"")
             m_pModel->Set_Shader(m_pGameInstance->Find_Shader(pDesc->ShaderName));
 
-
-        m_pShader = m_pModel->Get_Shader();
-        Safe_AddRef(m_pShader);
         m_ModelName = m_pModel->Get_ModelData().name;
 
     }

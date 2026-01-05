@@ -94,7 +94,7 @@ void CEffectPoolManager::Free()
         {
             Safe_Release(pObj);
         }
-        // pair.second.clear(); // 벡터 비우기 (선택)
+    
     }
 
     m_ClonDatas.clear();
