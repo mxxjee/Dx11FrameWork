@@ -197,7 +197,7 @@ HRESULT CLevel_Town::Ready_Lights()
     LightDesc.eType = LIGHT::DIRECTIONAL;
     LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
     LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-    LightDesc.vAmbient = _float4(0.5f, 0.5f, 0.5f, 1.f);
+    LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
     LightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
 
     if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, LightDesc)))
@@ -809,24 +809,24 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
 
         //directionlightÁ¶Àý
-        CLight* pDirectionLight = m_pGameInstance->Get_DirectionLight(m_iLevelID);
-        CheckNull(pDirectionLight);
+        //CLight* pDirectionLight = m_pGameInstance->Get_DirectionLight(m_iLevelID);
+        //CheckNull(pDirectionLight);
 
-        LIGHT_DESC NewLightDesc = *pDirectionLight->Get_LightDesc();
-        _vector vDiffuseColor = XMLoadFloat4(&NewLightDesc.vDiffuse);
-        _vector vAmbient = XMLoadFloat4(&NewLightDesc.vAmbient);
-        _vector vSpecular = XMLoadFloat4(&NewLightDesc.vSpecular);
+        //LIGHT_DESC NewLightDesc = *pDirectionLight->Get_LightDesc();
+        //_vector vDiffuseColor = XMLoadFloat4(&NewLightDesc.vDiffuse);
+        //_vector vAmbient = XMLoadFloat4(&NewLightDesc.vAmbient);
+        //_vector vSpecular = XMLoadFloat4(&NewLightDesc.vSpecular);
 
-        /*  LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-        LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-        LightDesc.vAmbient = _float4(0.5f, 0.5f, 0.5f, 1.f);
-        LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);*/
+        ///*  LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+        //LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+        //LightDesc.vAmbient = _float4(0.5f, 0.5f, 0.5f, 1.f);
+        //LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);*/
 
-        XMStoreFloat4(&NewLightDesc.vDiffuse, XMVectorLerp(vDiffuseColor, XMVectorSet(1.f,1.f, 1.f, 1.f), 0.2f));
-        XMStoreFloat4(&NewLightDesc.vAmbient, XMVectorLerp(vAmbient, XMVectorSet(0.5f, 0.5f, 0.5f, 1.f), 0.2f));
-        XMStoreFloat4(&NewLightDesc.vSpecular, XMVectorLerp(vSpecular, XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.2f));
-      
-        pDirectionLight->Set_LightDesc(NewLightDesc);
+        //XMStoreFloat4(&NewLightDesc.vDiffuse, XMVectorLerp(vDiffuseColor, XMVectorSet(1.f,1.f, 1.f, 1.f), 0.2f));
+        //XMStoreFloat4(&NewLightDesc.vAmbient, XMVectorLerp(vAmbient, XMVectorSet(0.5f, 0.5f, 0.5f, 1.f), 0.2f));
+        //XMStoreFloat4(&NewLightDesc.vSpecular, XMVectorLerp(vSpecular, XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.2f));
+      /*
+        pDirectionLight->Set_LightDesc(NewLightDesc);*/
 
 
 

@@ -1,83 +1,83 @@
 ﻿{
     "Materials":  [
                       {
-                          "Ambient":  "MI_SandySoilRock_01_occ.dds",
+                          "Ambient":  "MI_SandySoilRock_01_occ.png",
                           "Diffuse":  "MI_SandySoilRock_01_alb.png",
                           "METALNESS":  "",
                           "MaterialName":  "MI_SandySoilRock_01",
-                          "Normal":  "MI_SandySoilRock_01_nml.dds",
+                          "Normal":  "MI_SandySoilRock_01_nml.png",
                           "OPACITY":  "MI_SandySoilRock_01_alb.png",
                           "Specular":  "MI_SandySoilRock_01_smt.png"
                       },
                       {
-                          "Ambient":  "MI_TabahlTree_01_occ.dds",
+                          "Ambient":  "MI_TabahlTree_01_occ.png",
                           "Diffuse":  "MI_TabahlTree_01_alb.png",
                           "METALNESS":  "",
                           "MaterialName":  "MI_TabahlTree_01",
-                          "Normal":  "MI_TabahlTree_01_nml.dds",
+                          "Normal":  "MI_TabahlTree_01_nml.png",
                           "OPACITY":  "MI_TabahlTree_01_alb.png",
                           "Specular":  "MI_TabahlTree_01_smt.png"
                       },
                       {
-                          "Ambient":  "MI_Tree_01_occ.dds",
+                          "Ambient":  "MI_Tree_01_occ.png",
                           "Diffuse":  "MI_Tree_01_alb.png",
                           "METALNESS":  "",
                           "MaterialName":  "MI_Tree_01",
-                          "Normal":  "MI_Tree_01_nml.dds",
+                          "Normal":  "MI_Tree_01_nml.png",
                           "OPACITY":  "MI_Tree_01_alb.png",
                           "Specular":  "MI_Tree_01_smt.png"
                       },
                       {
-                          "Ambient":  "MI_Tree_02_occ.dds",
+                          "Ambient":  "MI_Tree_02_occ.png",
                           "Diffuse":  "MI_Tree_02_alb.png",
                           "METALNESS":  "",
                           "MaterialName":  "MI_Tree_02",
-                          "Normal":  "MI_Tree_02_nml.dds",
+                          "Normal":  "MI_Tree_02_nml.png",
                           "OPACITY":  "MI_Tree_02_alb.png",
                           "Specular":  "MI_Tree_02_smt.png"
                       },
                       {
-                          "Ambient":  "MI_f_grass_a_01_occ.dds",
+                          "Ambient":  "MI_f_grass_a_01_occ.png",
                           "Diffuse":  "MI_f_grass_a_01_alb.png",
                           "METALNESS":  "",
                           "MaterialName":  "MI_f_grass_a_01",
-                          "Normal":  "MI_f_grass_a_01_nml.dds",
+                          "Normal":  "MI_f_grass_a_01_nml.png",
                           "OPACITY":  "MI_f_grass_a_01_alb.png",
                           "Specular":  "MI_f_grass_a_01_smt.png"
                       },
                       {
-                          "Ambient":  "MI_f_grass_a_03_occ.dds",
+                          "Ambient":  "MI_f_grass_a_03_occ.png",
                           "Diffuse":  "MI_f_grass_a_03_alb.png",
                           "METALNESS":  "",
                           "MaterialName":  "MI_f_grass_a_03",
-                          "Normal":  "MI_f_grass_a_03_nml.dds",
+                          "Normal":  "MI_f_grass_a_03_nml.png",
                           "OPACITY":  "MI_f_grass_a_03_alb.png",
                           "Specular":  "MI_f_grass_a_03_smt.png"
                       },
                       {
-                          "Ambient":  "MI_f_grass_b_01_occ.dds",
+                          "Ambient":  "MI_f_grass_b_01_occ.png",
                           "Diffuse":  "MI_f_grass_b_01_alb.png",
                           "METALNESS":  "",
                           "MaterialName":  "MI_f_grass_b_01",
-                          "Normal":  "MI_f_grass_b_01_nml.dds",
+                          "Normal":  "MI_f_grass_b_01_nml.png",
                           "OPACITY":  "MI_f_grass_b_01_alb.png",
                           "Specular":  "MI_f_grass_b_01_smt.png"
                       },
                       {
-                          "Ambient":  "MI_f_hole_a_01_occ.dds",
+                          "Ambient":  "MI_f_hole_a_01_occ.png",
                           "Diffuse":  "MI_f_hole_a_01_alb.png",
                           "METALNESS":  "",
                           "MaterialName":  "MI_f_hole_a_01",
-                          "Normal":  "MI_f_hole_a_01_nml.dds",
+                          "Normal":  "MI_f_hole_a_01_nml.png",
                           "OPACITY":  "MI_f_hole_a_01_alb.png",
                           "Specular":  "MI_f_hole_a_01_smt.png"
                       },
                       {
-                          "Ambient":  "MI_f_sand_a_01_occ.dds",
+                          "Ambient":  "MI_f_sand_a_01_occ.png",
                           "Diffuse":  "MI_f_sand_a_01_alb.png",
                           "METALNESS":  "",
                           "MaterialName":  "MI_f_sand_a_01",
-                          "Normal":  "MI_f_sand_a_01_nml.dds",
+                          "Normal":  "MI_f_sand_a_01_nml.png",
                           "OPACITY":  "MI_f_sand_a_01_alb.png",
                           "Specular":  "MI_f_sand_a_01_smt.png"
                       }

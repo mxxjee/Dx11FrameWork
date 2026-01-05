@@ -103,6 +103,8 @@ PS_OUT PS_MAIN(PS_IN Input)
 {
     PS_OUT Out;
     vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
+    if(vMtrlDiffuse.a<0.5f)
+        discard;
     
     vector vNormalDesc =g_NormalTexture.Sample(DefaultSampler, Input.vTexcoord);
     float2 vNormalXY = vNormalDesc.rg * 2.0f - 1.0f;
