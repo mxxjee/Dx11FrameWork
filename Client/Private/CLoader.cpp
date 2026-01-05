@@ -90,6 +90,7 @@
 #include "CMeshEffect.h"
 #include "CQuadEffect.h"
 #include "CTrailEffect.h"
+#include "CMeshEffect_RollCut.h"
 
 
 
@@ -822,6 +823,11 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Trail", CTrailEffect::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"MeshEffect_RollCut", CMeshEffect_RollCut::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    //////////////////////////////
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Wall", CWall::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 

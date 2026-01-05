@@ -74,9 +74,8 @@ void CQuadEffect::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
     CheckTrue(m_bStop);
-    m_fTime += fTimeDelta*m_LocalData.fSpeed;
-
-    m_fProgress = m_fTime;
+    m_fProgress += fTimeDelta*m_LocalData.fSpeed;
+    m_fTime += fTimeDelta;
 
     if(m_fTime>=m_LocalData.fLifeTime)
     {
@@ -87,11 +86,10 @@ void CQuadEffect::Update(_float fTimeDelta)
             if (m_fAlpha <= 0)
             {
                 //풀에게돌려주고, 리스트에서삭제
+                Stop();
                 m_pEffectPool_Manager->Request_Return(this);
                 Set_Active(false);
 
-                m_fTime = 0.f;
-                m_fAlpha = 1.f;
             }
                
         }
@@ -244,6 +242,10 @@ void CQuadEffect::Play()
 void CQuadEffect::Stop()
 {
     m_bStop = true;
+
+    m_fTime = 0.f;
+    m_fAlpha = 1.f;
+    m_fProgress = 0.f;
 }
 
 

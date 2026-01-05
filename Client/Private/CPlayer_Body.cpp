@@ -9,6 +9,7 @@
 #include "CInteraction_Manager.h"
 #include "Client_Defines.h"
 
+#include "CPlayer_AnimNotifyTypes.h"
 
 
 
@@ -343,14 +344,15 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 		{
 			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
 			if (pPlayer)
-				pPlayer->AnimNotify_SlashStart();
+				pPlayer->AnimNotify_Start(PLAYER_ANIMNOTIFY_TYPE::SLASH_START);
+
 		});
 
 	m_pGameInstance->RegisterListners("SlashEnd", [](const GameEvent& event)
 		{
 			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
 			if (pPlayer)
-				pPlayer->AnimNotify_SlashEnd();
+				pPlayer->AnimNotify_End(PLAYER_ANIMNOTIFY_TYPE::SLASH_END);
 		});
 
 	m_pGameInstance->RegisterListners("Shield_Loop", [](const GameEvent& event)
@@ -406,7 +408,8 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 		{
 			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
 			if (pPlayer)
-				pPlayer->AnimNotify_Slash_Hold_Ed_Start();
+				pPlayer->AnimNotify_Start(PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_ED_START);
+
 
 
 

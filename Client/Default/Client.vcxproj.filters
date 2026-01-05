@@ -397,12 +397,20 @@
     <ClInclude Include="..\Public\CTrailEffect.h">
       <Filter>02.GameObjects\98.Effect\TrailEffect</Filter>
     </ClInclude>
-    <ClInclude Include="..\Public\CQuadEffect.h" />
-    <ClInclude Include="..\Public\CEffect.h">
-      <Filter>02.GameObjects\98.Effect\QuadEffect</Filter>
-    </ClInclude>
     <ClInclude Include="..\Public\CEffectPoolManager.h">
       <Filter>96.Managers\EffectPoolManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CQuadEffect.h">
+      <Filter>02.GameObjects\98.Effect\QuadEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CEffect.h">
+      <Filter>02.GameObjects\98.Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMeshEffect_RollCut.h">
+      <Filter>02.GameObjects\98.Effect\MeshEffect\RollCut</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPlayer_AnimNotifyTypes.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\AnimnotifyType</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -870,6 +878,12 @@
     <Filter Include="96.Managers\EffectPoolManager">
       <UniqueIdentifier>{0b12e909-12f1-483b-928e-9381fab063fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\98.Effect\MeshEffect\RollCut">
+      <UniqueIdentifier>{77eeb7eb-aa05-416b-8ed4-a7caa73ff727}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\AnimnotifyType">
+      <UniqueIdentifier>{8583b293-041c-438f-9b8a-a4f663fc1943}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1244,12 +1258,17 @@
     <ClCompile Include="..\Private\CTrailEffect.cpp">
       <Filter>02.GameObjects\98.Effect\TrailEffect</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CQuadEffect.cpp" />
-    <ClCompile Include="..\Private\CEffect.cpp">
-      <Filter>02.GameObjects\98.Effect\QuadEffect</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CEffectPoolManager.cpp">
       <Filter>96.Managers\EffectPoolManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQuadEffect.cpp">
+      <Filter>02.GameObjects\98.Effect\QuadEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CEffect.cpp">
+      <Filter>02.GameObjects\98.Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMeshEffect_RollCut.cpp">
+      <Filter>02.GameObjects\98.Effect\MeshEffect\RollCut</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

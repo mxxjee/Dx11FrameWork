@@ -5,7 +5,7 @@
             "Diffuse": "MI_SandySoilRock_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_SandySoilRock_01",
-            "Normal": "",
+            "Normal": "MI_SandySoilRock_01_nml.png",
             "OPACITY": "MI_SandySoilRock_01_alb.png",
             "Specular": "MI_SandySoilRock_01_smt.png"
         },
@@ -14,7 +14,7 @@
             "Diffuse": "MI_TabahlTree_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_TabahlTree_01",
-            "Normal": "",
+            "Normal": "MI_TabahlTree_01_nml.png",
             "OPACITY": "MI_TabahlTree_01_alb.png",
             "Specular": "MI_TabahlTree_01_smt.png"
         },
@@ -23,7 +23,7 @@
             "Diffuse": "MI_f_g_grass_a_01__1_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_g_grass_a_01__1",
-            "Normal": "",
+            "Normal": "MI_f_g_grass_a_01__1_nml.png",
             "OPACITY": "MI_f_g_grass_a_01__1_alb.png",
             "Specular": "MI_f_g_grass_a_01__1_smt.png"
         },
@@ -32,7 +32,7 @@
             "Diffuse": "MI_f_grass_a_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_grass_a_01",
-            "Normal": "",
+            "Normal": "MI_f_grass_a_01_nml.png",
             "OPACITY": "MI_f_grass_a_01_alb.png",
             "Specular": "MI_f_grass_a_01_smt.png"
         },
@@ -50,7 +50,7 @@
             "Diffuse": "MI_f_grass_b_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_grass_b_01",
-            "Normal": "",
+             "Normal": "MI_f_grass_b_01b_nml.png",
             "OPACITY": "MI_f_grass_b_01_alb.png",
             "Specular": "MI_f_grass_b_01_smt.png"
         },
@@ -59,7 +59,7 @@
             "Diffuse": "MI_f_sand_a_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_sand_a_01",
-            "Normal": "",
+            "Normal": "MI_f_sand_a_01_nml.png",
             "OPACITY": "MI_f_sand_a_01_alb.png",
             "Specular": "MI_f_sand_a_01_smt.png"
         },
@@ -68,7 +68,7 @@
             "Diffuse": "MI_f_wall_a_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_wall_a_01",
-            "Normal": "",
+            "Normal": "MI_f_wall_a_01_nml.png",
             "OPACITY": "MI_f_wall_a_01_alb.png",
             "Specular": "MI_f_wall_a_01_smt.png"
         }

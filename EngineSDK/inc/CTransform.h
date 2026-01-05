@@ -116,6 +116,8 @@ public:
 
 public:
     void        Set_Speed(float _fSpeed) { m_fSpeedPerSec = _fSpeed; }
+    
+    _float      Get_RotationPerSec() { return m_fRotationPerSec; }
     _vector     Get_MoveResultPos() {return m_vMoveResultPos;}
     void        Set_MoveResultPos(_vector vPos) { m_vMoveResultPos = vPos; }
 #ifdef _DEBUG

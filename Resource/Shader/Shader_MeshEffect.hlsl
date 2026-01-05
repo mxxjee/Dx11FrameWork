@@ -19,6 +19,8 @@ Texture2D g_AmbientTexture;
 
 Texture2D g_MaskTexture;
 
+float       g_fRadian = 0.f;
+
 
 ////////임시로 정해놓은 오브젝트의 메테리얼값, 실제는 텍스처를 읽어서 처리해야함
 
@@ -120,51 +122,47 @@ float4 PS_Slash(PS_IN Input) : SV_Target0
     float4 vColor = g_DiffuseTexture.Sample(DefaultSampler, vTexCoord);
     
   
-    //if ((1-vTexCoord.x) > g_Progress.x)
-    //    discard;
-    
-    
+  
     vColor *= g_TintColor;
     vColor.rgb *= vColor.a;
     
     return vColor;
-    
-    //PS_OUT Out;
-    
-    //float2 vTexCoord = Input.vTexcoord;
-    //vTexCoord.x = Input.vTexcoord.y; // 원래 Y를 X로
-    //vTexCoord.y = Input.vTexcoord.x; // 원래 X를 Y로 
-    //float4 vColor = g_DiffuseTexture.Sample(DefaultSampler, vTexCoord);
-    
   
-    ////if ((1-vTexCoord.x) > g_Progress.x)
-    ////    discard;
-    
-    
-    //vColor *= g_TintColor;
-    //vColor.rgb *= vColor.a;
-    
-    //vector vNormalDesc = g_NormalTexture.Sample(DefaultSampler, Input.vTexcoord);
-    //float2 vNormalXY = vNormalDesc.rg * 2.0f - 1.0f;
-    //float fNormalZ = sqrt(saturate(1.0f - dot(vNormalXY, vNormalXY)));
-    
-    //vector vNormal = vector(vNormalXY.x, vNormalXY.y, fNormalZ, 0.0f);
-    
-    
-    //float3x3 WorldMatrix = float3x3(Input.vTangent.xyz, Input.vBinormal.xyz * -1.f, Input.vNormal.xyz);
-    //vNormal = vector(mul(vNormal.xyz, WorldMatrix), 0.f);
-    
-    
-    //Out.vDiffuse = vColor * 1.5f;
-    //Out.vNormal = vector(vNormal.xyz * 0.5f + 0.5f, 0.f);
-    //Out.VDepth = vector(Input.vProjPos.z / Input.vProjPos.w,
-    //                    Input.vProjPos.w, 0.f, 0.f);
-    
-    
-    //return Out;
-    
-
+   
 }
+
+
+float4 PS_RollCut(PS_IN Input) : SV_Target0
+{
+    //float2 center = float2(0.5f, 0.5f);
+    //float2 uv = Input.vTexcoord - center;
+    
+    //float cosTheta = cos(g_fRadian);
+    //float sinTheta = sin(g_fRadian);
+    
+    //float2 ResultUV;
+    //ResultUV.x = center.x * cosTheta - center.y * sinTheta;
+    //ResultUV.y = center.x * sinTheta + center.y * cosTheta;
+    
+    //ResultUV += center;
+    
+    Input.vTexcoord.x -= g_Progress;
+    float4 vColor = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
+    
+    vColor.a = vColor.r;
+    
+    if(vColor.a<0.5f)
+        discard;
+    
+   
+    vColor.rgb *= g_TintColor.rgb;
+    vColor.a *= g_Alpha;
+    
+    return vColor;
+
+   
+}
+
 /*렌더링 방법을 정의한다.*/
 technique11 DefaultTechnique
 {
@@ -206,6 +204,18 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_Slash();
+    }
+
+
+    pass RollCut
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Alpha, 0);
+        SetBlendState(BS_AlphaBlend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_RollCut();
     }
 
     

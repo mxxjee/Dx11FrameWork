@@ -3,6 +3,8 @@
 #include "VertexData.h"
 #include "Client_Defines.h"
 #include "EffectData.h"
+#include "CPlayer_AnimNotifyTypes.h"
+
 
 /*움직임과 상태제어만 한다.
 상태에 따른 애니메이션처리는 Body객체가 한다.*/
@@ -276,15 +278,19 @@ private:
 
     CTexture*               m_pMouthTex = nullptr;
 
+
+
 public:
-    /*PArticle animnotify*/
-    void        AnimNotify_SlashStart();
-    void        AnimNotify_SlashEnd();
+    void        AnimNotify_Start(PLAYER_ANIMNOTIFY_TYPE eType);
+    void        AnimNotify_End(PLAYER_ANIMNOTIFY_TYPE eType);
+
+private:
+	/*PArticle animnotify*/
+	void        AnimNotify_SlashStart();
+	void        AnimNotify_SlashEnd();
 
     void        AnimNotify_Slash_Hold_Ed_Start();
     void        AnimNotify_Slash_Hold_Ed_End();
-
-
 
 private:
     vector<list<void*>>     m_PlayerEffects;

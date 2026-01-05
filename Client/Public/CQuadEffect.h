@@ -71,7 +71,7 @@ private:
     CTexture* m_pTexture = nullptr;
     CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
     string                  m_passName = "";
-    _float              m_fProgress = 1.f;
+
 };
 
 NS_END

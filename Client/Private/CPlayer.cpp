@@ -31,6 +31,8 @@
 #include "CTrailEffect.h"
 #include "CQuadEffect.h"
 #include "CEffectPoolManager.h"
+#include "CMeshEffect_RollCut.h"
+
 
 
 
@@ -926,9 +928,16 @@ void CPlayer::Free()
                 }
                 else if (i == SLASH2) // MeshEffect 타입인 경우
                 {
-                    CMeshEffect::MESHEFFECT_DESC* pDesc = static_cast<CMeshEffect::MESHEFFECT_DESC*>(pInfo);
+                    CMeshEffect_RollCut::Effect_RollCutDesc* pDesc = static_cast<CMeshEffect_RollCut::Effect_RollCutDesc*>(pInfo);
                     Safe_Delete(pDesc);
                 }
+
+                else if (i == SLASH_CHARGE_COMPLETE) // MeshEffect 타입인 경우
+                {
+                    CQuadEffect::QUADEFFECT_DESC* pDesc = static_cast<CQuadEffect::QUADEFFECT_DESC*>(pInfo);
+                    Safe_Delete(pDesc);
+                }
+
                 else if (i == SLASHTRAIL) // Trail 타입
                 {
                     CTrailEffect::TrailDesc* pDesc = static_cast<CTrailEffect::TrailDesc*>(pInfo);
@@ -1191,17 +1200,29 @@ HRESULT CPlayer::Ready_Effects()
     TrailEffect->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
     m_PlayerEffects[ENUM_TO_UINT(SLASHTRAIL)].push_back(TrailEffect);
 
-    /// //////
-    CMeshEffect::MESHEFFECT_DESC* MeshDesc=new CMeshEffect::MESHEFFECT_DESC;
-    MeshDesc->modelName = L"rollcut";
-    MeshDesc->ObjTag = L"rollcut";
-    MeshDesc->ShaderName = L"MeshEffect";
-    MeshDesc->DataName = L"rollcut";
-    MeshDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
-    MeshDesc->PassName = "Alpha";
 
+    ///////////////////RollCut Effect///////////
+    //차징완료시 퍼지는Effect
+    CQuadEffect::QUADEFFECT_DESC* ChargeCompleteDesc = new CQuadEffect::QUADEFFECT_DESC();
+    ChargeCompleteDesc->TextureKey = L"ripple_02";
+    ChargeCompleteDesc->ObjTag = L"CharingComplete";
+    ChargeCompleteDesc->ShaderName = L"Default";
+    ChargeCompleteDesc->PassName = "ChargeComplete";
+    ChargeCompleteDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
+    ChargeCompleteDesc->DataName = L"CharingComplete";
 
-	m_PlayerEffects[SLASH2].push_back(MeshDesc);
+    m_PlayerEffects[ENUM_TO_UINT(SLASH_CHARGE_COMPLETE)].push_back(ChargeCompleteDesc);
+
+    //바람Effect
+    CMeshEffect_RollCut::Effect_RollCutDesc* RollCutDesc = new CMeshEffect_RollCut::Effect_RollCutDesc();
+    RollCutDesc->modelName = L"Rollcut_Bending";
+    RollCutDesc->ObjTag = L"rollcut";
+    RollCutDesc->ShaderName = L"MeshEffect";
+    RollCutDesc->PassName = "RollCut";
+    RollCutDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
+    RollCutDesc->DataName = L"rollcut";
+    RollCutDesc->fRoationPerSec = 0.f;
+	m_PlayerEffects[SLASH2].push_back(RollCutDesc);
 
     return S_OK;
 }
@@ -1578,21 +1599,12 @@ void CPlayer::AnimNotify_SlashEnd()
 
 void CPlayer::AnimNotify_Slash_Hold_Ed_Start()
 {
-    CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(L"MeshEffect", m_PlayerEffects[SLASH2].front());
+    CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(L"MeshEffect_RollCut", m_PlayerEffects[SLASH2].front());
     if (pEffect)
     {
-        pEffect->Spawn();
-        _matrix vPlayerMatrix = XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr());
-        _matrix LocalMatrix = pEffect->Get_LocalMatrix();
 
-
-        _float4x4 CombinedMatrix;
-        XMStoreFloat4x4(&CombinedMatrix,
-            LocalMatrix * vPlayerMatrix);
-
-
-
-        pEffect->Get_Transform()->Set_WorldMatrix(CombinedMatrix);
+        pEffect->Set_ParentMatrix(m_pTransformCom->Get_WorldMatrixPtr());
+        pEffect->Set_SocketMatrix(m_pAnimBody->Get_SocketMatrix("root"));
         pEffect->Play();
 
     }
@@ -1601,6 +1613,60 @@ void CPlayer::AnimNotify_Slash_Hold_Ed_Start()
 
 void CPlayer::AnimNotify_Slash_Hold_Ed_End()
 {
+}
+
+void CPlayer::AnimNotify_Start(PLAYER_ANIMNOTIFY_TYPE eType)
+{
+    switch (eType)
+    {
+    case PLAYER_ANIMNOTIFY_TYPE::SLASH_START:
+        AnimNotify_SlashStart();
+        break;
+ 
+    case PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_LP_START:
+    {   
+        CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(L"QuadMeshEffect", m_PlayerEffects[SLASH_CHARGE_COMPLETE].front());
+        if (pEffect)
+        {
+    
+            pEffect->Set_ParentMatrix(m_pTransformCom->Get_WorldMatrixPtr());
+            pEffect->Set_SocketMatrix(m_pAnimBody->Get_SocketMatrix("root"));
+            pEffect->Play();
+    
+        }
+            //원형으로 커지는 Effect
+
+    }
+        break;
+   
+    case PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_ED_START:
+        AnimNotify_Slash_Hold_Ed_Start();
+        break;
+
+    default:
+        break;
+    }
+}
+
+void CPlayer::AnimNotify_End(PLAYER_ANIMNOTIFY_TYPE eType)
+{
+    switch (eType)
+    {
+
+    case PLAYER_ANIMNOTIFY_TYPE::SLASH_END:
+        AnimNotify_SlashEnd();
+        break;
+
+    case PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_LP_END:
+        break;
+
+    case PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_ED_END:
+        AnimNotify_Slash_Hold_Ed_End();
+        break;
+
+    default:
+        break;
+    }
 }
 
 

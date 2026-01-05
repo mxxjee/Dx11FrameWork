@@ -19,8 +19,9 @@ HRESULT CEffectPoolManager::Initialize()
 
 CEffect* CEffectPoolManager::Request_Spawn(const wstring& ProtoTag, void* pArg)
 {
-    //1. 먼저 풀에있는지 조사한다
-    _uint Hash = hash<wstring>()(ProtoTag);
+    //1. 먼저 풀에있는지 조사한다.태그로
+    CEffect::EFFECT_DESC* pEffectDesc = static_cast<CEffect::EFFECT_DESC*>(pArg);
+    _uint Hash = hash<wstring>()(pEffectDesc->DataName);
 
     auto iter = m_ClonDatas.find(Hash);
     //있다면, 비활성화되어있는것을 리턴한다.

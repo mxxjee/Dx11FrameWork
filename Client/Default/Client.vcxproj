@@ -186,6 +186,7 @@
     <ClInclude Include="..\Public\CLoadingUI.h" />
     <ClInclude Include="..\Public\CMagicPowder.h" />
     <ClInclude Include="..\Public\CMeshEffect.h" />
+    <ClInclude Include="..\Public\CMeshEffect_RollCut.h" />
     <ClInclude Include="..\Public\CMJackyEscapeState.h" />
     <ClInclude Include="..\Public\CMJackyIdleState.h" />
     <ClInclude Include="..\Public\CMJackyLiftState.h" />
@@ -255,6 +256,7 @@
     <ClInclude Include="..\Public\CPlayerStateGetItem.h" />
     <ClInclude Include="..\Public\CPlayerPowderState.h" />
     <ClInclude Include="..\Public\CPlayerTalkState.h" />
+    <ClInclude Include="..\Public\CPlayer_AnimNotifyTypes.h" />
     <ClInclude Include="..\Public\CPlayer_Body.h" />
     <ClInclude Include="..\Public\CPlayer_Shield.h" />
     <ClInclude Include="..\Public\CPlayer_Sword.h" />
@@ -335,6 +337,7 @@
     <ClCompile Include="..\Private\CLoadingUI.cpp" />
     <ClCompile Include="..\Private\CMagicPowder.cpp" />
     <ClCompile Include="..\Private\CMeshEffect.cpp" />
+    <ClCompile Include="..\Private\CMeshEffect_RollCut.cpp" />
     <ClCompile Include="..\Private\CMJackyEscapeState.cpp" />
     <ClCompile Include="..\Private\CMJackyIdleState.cpp" />
     <ClCompile Include="..\Private\CMJackyLiftState.cpp" />

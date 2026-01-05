@@ -73,6 +73,7 @@ public:
     _float4x4       Get_LocalMatrix_ByFloat4x4() { _float4x4 Result; XMStoreFloat4x4(&Result, LocalMatrix); return Result; }
 
     void        Set_ParentMatrix(const _float4x4* pParentMatrix) { m_pParentMatrix = pParentMatrix; }
+    void        Set_SocketMatrix(const _float4x4* pSocketMatrix) { m_pSocketMatrix = pSocketMatrix; }
 protected:
     CShader*            m_pShader = { nullptr };
     _uint                   m_eRenderGroup = 0;
@@ -89,7 +90,10 @@ protected:
 protected:
     _float              m_fAlpha = 1.f;
     _float              m_fFadeOutSpeed = 2.f;
+    _float              m_fProgress = 1.f;
+
     const _float4x4* m_pParentMatrix = nullptr;
+    const _float4x4* m_pSocketMatrix = nullptr;
 
 };
 

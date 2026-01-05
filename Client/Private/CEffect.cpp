@@ -108,11 +108,27 @@ void CEffect::Update_Late(_float fTimeDelta)
 {
 	__super::Update_Late(fTimeDelta);
 
-    _float4x4 CombinedMatrix;
+    Make_LocalMatrix();
 
-    if (m_pParentMatrix)
-        XMStoreFloat4x4(&CombinedMatrix, XMMatrixMultiply(LocalMatrix,
-            XMLoadFloat4x4(m_pParentMatrix)));
+    _float4x4 CombinedMatrix;
+    if (m_pParentMatrix && m_pSocketMatrix)
+    {
+        //먼저 socket*m_pParentMatrix
+
+        _matrix SocketWorld = XMMatrixMultiply(XMLoadFloat4x4(m_pSocketMatrix),
+            XMLoadFloat4x4(m_pParentMatrix));
+
+        XMStoreFloat4x4(&CombinedMatrix, XMMatrixMultiply(LocalMatrix, SocketWorld));
+    }
+
+    //ParentMAtrix만있을경우
+    else if (m_pParentMatrix)
+    {
+        XMStoreFloat4x4(&CombinedMatrix, XMMatrixMultiply(LocalMatrix, XMLoadFloat4x4(m_pParentMatrix)));
+
+    }
+       
+
 
     else
         CombinedMatrix = *m_pTransformCom->Get_WorldMatrixPtr();

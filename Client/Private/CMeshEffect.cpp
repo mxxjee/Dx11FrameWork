@@ -78,8 +78,11 @@ void CMeshEffect::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
     if (!m_bStop)
-        m_fTime += fTimeDelta * m_LocalData.fSpeed;
+    {
+        m_fTime += fTimeDelta;
+        m_fProgress += fTimeDelta * m_LocalData.fSpeed;
 
+    }
 
     if (m_fTime >= m_LocalData.fLifeTime)
     {
@@ -88,17 +91,13 @@ void CMeshEffect::Update(_float fTimeDelta)
             m_fAlpha -= fTimeDelta * m_fFadeOutSpeed;
             if (m_fAlpha <= 0)
             {
+                Stop();
                 m_pEffectPool_Manager->Request_Return(this);
                 Set_Active(false);
-
-
-                m_fTime = 0.f;
-                m_fAlpha = 1.f;
             }
         }
 
 
-        m_fTime = 0.f;
 
 
     }
@@ -124,9 +123,10 @@ void CMeshEffect::Update_Render(_float fTimeDelta)
 HRESULT CMeshEffect::Render()
 {
    
+    __super::Render();
+
     if (FAILED(Bind_ShaderResources()))
         return E_FAIL;
-
 
     for (auto& Mesh : m_pModel->Get_Meshs())
     {
@@ -219,7 +219,7 @@ HRESULT CMeshEffect::Bind_ShaderResources()
         return E_FAIL;
 
 
-    _float4 vTime = _float4(m_fTime, 0.f, 0.f, 0.f);
+    _float4 vTime = _float4(m_fProgress, 0.f, 0.f, 0.f);
     m_pGameInstance->CopyData_Buffer("LoadingBuffer", &vTime, sizeof(_float4));
 
     if (FAILED(m_pShader->Bind_Float("g_Alpha", m_fAlpha)))
@@ -278,16 +278,7 @@ void CMeshEffect::Free()
 void CMeshEffect::Spawn(const _float4x4* pSocketMatrix, const _float4x4* pParentMatrix)
 {
     
-    _uint iCurrentLevelID = m_pGameInstance->Get_CurrentLevelID();
-
-
-    //레벨이 달라졋을때만 레이어에넣기
-    if (iCurrentLevelID != m_iSceneID)
-    {
-        m_iSceneID = iCurrentLevelID;
-        m_pGameInstance->Add_GameObject_To_Layer(m_iSceneID, L"Particle_Layer", this);
-
-    }
+  
 
 
 }
@@ -308,6 +299,9 @@ void CMeshEffect::Play()
 void CMeshEffect::Stop()
 {
     m_bStop = true;
+    m_fProgress = 0.f;
+    m_fTime = 0.f;
+    m_fAlpha = 1.f;
 }
 
 

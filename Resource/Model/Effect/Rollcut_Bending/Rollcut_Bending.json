@@ -2,11 +2,11 @@
     "Materials": [
         {
             "Ambient": "",
-            "Diffuse": "ripple_00.png",
+            "Diffuse": "smoke_01.png",
             "METALNESS": "",
             "MaterialName": "lambert2",
             "Normal": "",
-            "OPACITY": "ripple_00.png",
+            "OPACITY": "smoke_01.png",
             "Specular": ""
         }
     ],
@@ -14,10 +14,10 @@
     "Meshes": [
         {
             "IBPath": "Mesh_0.ib",
-            "IndexCount": 1962,
+            "IndexCount": 1536,
             "MaterialName": "lambert2",
             "MeshIdx": 0,
-            "Name": "RollCut_01__lambert2",
+            "Name": "BendRing_00__lambert2",
             "Transform": [
                 [
                     1.0,
@@ -45,8 +45,8 @@
                 ]
             ],
             "VBPath": "Mesh_0.vb",
-            "VertexCount": 461
+            "VertexCount": 297
         }
     ],
-    "ModelName": "rollcut"
+    "ModelName": "Rollcut_Bending"
 }

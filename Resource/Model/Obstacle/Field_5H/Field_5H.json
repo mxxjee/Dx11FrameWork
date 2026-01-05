@@ -5,7 +5,7 @@
             "Diffuse": "MI_SandySoilRock_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_SandySoilRock_01",
-            "Normal": "",
+            "Normal": "MI_SandySoilRock_01_nml.png",
             "OPACITY": "MI_SandySoilRock_01_alb.png",
             "Specular": "MI_SandySoilRock_01_smt.png"
         },
