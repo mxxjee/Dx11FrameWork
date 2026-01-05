@@ -68,7 +68,7 @@
             "Diffuse": "MI_f_grass_a_03_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_grass_a_03",
-            "Normal": "",
+            "Normal": "MI_f_grass_a_03_nml.png",
             "OPACITY": "MI_f_grass_a_03_alb.png",
             "Specular": "MI_f_grass_a_03_smt.png"
         },
@@ -77,7 +77,7 @@
             "Diffuse": "MI_f_grass_b_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_grass_b_01",
-            "Normal": "MI_f_grass_a_03_nml.png",
+            "Normal": "MI_f_grass_b_01b_nml.png",
             "OPACITY": "MI_f_grass_b_01_alb.png",
             "Specular": "MI_f_grass_b_01_smt.png"
         },

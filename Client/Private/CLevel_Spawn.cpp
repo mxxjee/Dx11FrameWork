@@ -105,8 +105,8 @@ HRESULT CLevel_Spawn::Ready_Lights()
     LightDesc.eType = LIGHT::DIRECTIONAL;
     LightDesc.vDirection = _float4(1.f, -1.f, -1.f, 0.f);
     LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-    LightDesc.vAmbient = _float4(1.f, 1.f,1.f, 1.f);
-    LightDesc.vSpecular = _float4(0.8f, 0.8f, 0.8f, 0.8f);
+    LightDesc.vAmbient = _float4(0.8f, 0.8f,0.8f, 1.f);
+    LightDesc.vSpecular = _float4(0.3f, 0.3f, 0.3f, 0.8f);
 
     if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, LightDesc)))
         return E_FAIL;

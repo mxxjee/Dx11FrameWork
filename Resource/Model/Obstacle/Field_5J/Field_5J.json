@@ -5,7 +5,7 @@
             "Diffuse": "MI_FieldFlower1_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_FieldFlower1_01",
-            "Normal": "",
+            "Normal": "MI_FieldFlower1_01_nml.png",
             "OPACITY": "MI_FieldFlower1_01_alb.png",
             "Specular": "MI_FieldFlower1_01_smt.png"
         },
@@ -14,7 +14,7 @@
             "Diffuse": "MI_LivelyobjFl10_02_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_LivelyobjFl10_02_01",
-            "Normal": "",
+            "Normal": "MI_LivelyobjFl10_02_01_nml.png",
             "OPACITY": "MI_LivelyobjFl10_02_01_alb.png",
             "Specular": "MI_LivelyobjFl10_02_01_smt.png"
         },
@@ -23,7 +23,7 @@
             "Diffuse": "MI_TravellersTree_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_TravellersTree_01",
-            "Normal": "",
+            "Normal": "MI_TravellersTree_01_nml.png",
             "OPACITY": "MI_TravellersTree_01_alb.png",
             "Specular": "MI_TravellersTree_01_smt.png"
         },
@@ -32,7 +32,7 @@
             "Diffuse": "MI_TravellersTree_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_TravellersTree_02",
-            "Normal": "",
+            "Normal": "MI_TravellersTree_01_nml.png",
             "OPACITY": "MI_TravellersTree_01_alb.png",
             "Specular": "MI_TravellersTree_01_smt.png"
         },
@@ -41,7 +41,7 @@
             "Diffuse": "MI_f_Kanaletto_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_Kanaletto_01",
-            "Normal": "",
+            "Normal": "MI_f_Kanaletto_01_nml.png",
             "OPACITY": "MI_f_Kanaletto_01_alb.png",
             "Specular": "MI_f_Kanaletto_01_smt.png"
         },
@@ -50,7 +50,7 @@
             "Diffuse": "MI_f_Kanaletto_04_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_Kanaletto_04",
-            "Normal": "",
+            "Normal": "MI_f_Kanaletto_04_nml.png",
             "OPACITY": "MI_f_Kanaletto_04_alb.png",
             "Specular": "MI_f_Kanaletto_04_smt.png"
         },
@@ -59,7 +59,7 @@
             "Diffuse": "MI_f_Kanaletto_06_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_Kanaletto_07",
-            "Normal": "",
+            "Normal": "MI_f_Kanaletto_06_nml.png",
             "OPACITY": "MI_f_Kanaletto_06_alb.png",
             "Specular": "MI_f_Kanaletto_06_smt.png"
         },
@@ -68,7 +68,7 @@
             "Diffuse": "MI_f_Kanaletto_flowerbed_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_Kanaletto_flowerbed_01",
-            "Normal": "",
+            "Normal": "MI_f_Kanaletto_flowerbed_01_nml.png",
             "OPACITY": "MI_f_Kanaletto_flowerbed_01_alb.png",
             "Specular": "MI_f_Kanaletto_flowerbed_01_smt.png"
         },
@@ -77,7 +77,7 @@
             "Diffuse": "MI_f_f_k_grd_a_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_f_k_grd_a_01",
-            "Normal": "",
+            "Normal": "MI_f_f_k_grd_a_01_nml.png",
             "OPACITY": "MI_f_f_k_grd_a_01_alb.png",
             "Specular": "MI_f_f_k_grd_a_01_smt.png"
         },
@@ -86,7 +86,7 @@
             "Diffuse": "MI_f_g_grass_a_01__1_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_g_grass_a_01__1",
-            "Normal": "",
+            "Normal": "MI_f_g_grass_a_01__1_nml.png",
             "OPACITY": "MI_f_g_grass_a_01__1_alb.png",
             "Specular": "MI_f_g_grass_a_01__1_smt.png"
         },
@@ -95,7 +95,7 @@
             "Diffuse": "MI_f_grass_a_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_grass_a_01",
-            "Normal": "",
+            "Normal": "MI_f_grass_a_01_nml.png",
             "OPACITY": "MI_f_grass_a_01_alb.png",
             "Specular": "MI_f_grass_a_01_smt.png"
         },
@@ -104,7 +104,7 @@
             "Diffuse": "MI_f_grass_a_03_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_grass_a_03",
-            "Normal": "",
+            "Normal": "MI_f_grass_a_03_nml.png",
             "OPACITY": "MI_f_grass_a_03_alb.png",
             "Specular": "MI_f_grass_a_03_smt.png"
         },
@@ -113,7 +113,7 @@
             "Diffuse": "MI_f_grass_b_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_grass_b_01",
-            "Normal": "",
+            "Normal": "MI_f_grass_b_01_nml.png",
             "OPACITY": "MI_f_grass_b_01_alb.png",
             "Specular": "MI_f_grass_b_01_smt.png"
         },
@@ -122,7 +122,7 @@
             "Diffuse": "MI_f_stair_d_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_stair_d_01",
-            "Normal": "",
+            "Normal": "MI_f_stair_d_01_nml.png",
             "OPACITY": "MI_f_stair_d_01_alb.png",
             "Specular": "MI_f_stair_d_01_smt.png"
         },
@@ -131,7 +131,7 @@
             "Diffuse": "MI_f_wall_a_01_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_wall_a_01",
-            "Normal": "",
+            "Normal": "MI_f_wall_a_01_nml.png",
             "OPACITY": "MI_f_wall_a_01_alb.png",
             "Specular": "MI_f_wall_a_01_smt.png"
         },
@@ -140,7 +140,7 @@
             "Diffuse": "MI_f_wall_a_01a_alb.png",
             "METALNESS": "",
             "MaterialName": "MI_f_wall_a_01a_w",
-            "Normal": "",
+            "Normal": "MI_f_wall_a_01a_nml.png",
             "OPACITY": "MI_f_wall_a_01a_alb.png",
             "Specular": "MI_f_wall_a_01a_smt.png"
         }
