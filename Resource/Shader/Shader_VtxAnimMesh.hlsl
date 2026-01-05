@@ -12,6 +12,7 @@ vector g_vMaterialSpecular = vector(1.f, 1.f, 1.f, 1.f);
 
 
 Texture2D g_DiffuseTexture;
+Texture2D g_NormalTexture;
 Texture2D g_SpecularTexture;
 Texture2D g_AmbientTexture;
 
@@ -41,6 +42,8 @@ struct VS_OUT
 {
     float4 vPosition : SV_POSITION;     // 얘는 PS단계 전 W나누기를 자동으로 수행한다.(완전한 NDC공간)
     float4 vNormal : NORMAL;
+    float4 vTangent : TANGENT;
+    float4 vBinormal : BINORMAL;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
     float4 vProjPos : TEXCOORD2;        //따로 W나누기를 수행하지 않으므로 투영행렬만 곱한결과 저장
@@ -50,6 +53,8 @@ struct PS_IN
 {
     float4 vPosition : SV_POSITION;
     float4 vNormal : NORMAL;
+    float4 vTangent : TANGENT;
+    float4 vBinormal : BINORMAL;
     float2 vTexcoord : TEXCOORD0;
     float4 vWorldPos : TEXCOORD1;
     float4 vProjPos : TEXCOORD2;
@@ -70,34 +75,37 @@ struct PS_OUT
 VS_OUT VS_MAIN(VS_IN In) 
 {
     VS_OUT Out;
-    
+
+    // 1. 애니메이션 뼈 가중치 계산
     float fWeightW = 1.f - (In.vBlendWeight.x + In.vBlendWeight.y + In.vBlendWeight.z);
     
-    
     matrix BoneMatrix = g_BoneMatrices[In.vBlendIndex.x] * In.vBlendWeight.x +
-        g_BoneMatrices[In.vBlendIndex.y] * In.vBlendWeight.y +
-        g_BoneMatrices[In.vBlendIndex.z] * In.vBlendWeight.z +
-        g_BoneMatrices[In.vBlendIndex.w] * fWeightW;
-    
+                        g_BoneMatrices[In.vBlendIndex.y] * In.vBlendWeight.y +
+                        g_BoneMatrices[In.vBlendIndex.z] * In.vBlendWeight.z +
+                        g_BoneMatrices[In.vBlendIndex.w] * fWeightW;
+
+    // 2. 포지션 변환 (Local -> Bone -> World -> ViewProj)
     vector vPosition = mul(vector(In.vPosition, 1.f), BoneMatrix);
-    
     vPosition = mul(vPosition, g_WorldMatrix);
-    vPosition = mul(vPosition, g_ViewProjMatrix);
+    Out.vWorldPos = vPosition; // 월드 포지션 저장
+    
+    Out.vPosition = mul(vPosition, g_ViewProjMatrix);
+    Out.vProjPos = Out.vPosition;
+
+    // 3. 노멀/탄젠트/바이노멀 변환 (Bone과 World를 모두 곱해야 함)
+    // 방향 벡터이므로 w는 0으로 처리하여 이동값은 무시하고 회전/스케일만 적용
     
     
-    //계산완료된 vPosition(x,y,z,w)중 w는 z값을 보관중이다.
-    Out.vPosition = vPosition;
-    
-    Out.vNormal = mul(vector(In.vNormal, 0.f), BoneMatrix); 
-    Out.vNormal = mul(Out.vNormal, g_WorldMatrix);
-    Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
+    Out.vNormal = float4(normalize(
+    mul(mul(float4(In.vNormal, 0.f), BoneMatrix), g_WorldMatrix).xyz), 0.f);
+
+    Out.vTangent = float4(normalize(
+    mul(mul(float4(In.vTangent, 0.f), BoneMatrix), g_WorldMatrix).xyz), 0.f);
+
+    Out.vBinormal = float4(normalize(
+    mul(mul(float4(In.vBinormal, 0.f), BoneMatrix), g_WorldMatrix).xyz), 0.f);
 
     Out.vTexcoord = In.vTexcoord;
-    Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
-    Out.vProjPos = Out.vPosition;
-    
-    
-    //sdfsdf
     
     return Out;
     
@@ -107,88 +115,45 @@ VS_OUT VS_MAIN(VS_IN In)
 //이후 RS단계에서 GPU가 내부적으로 w나누기 수행
 PS_OUT PS_MAIN(PS_IN Input) 
 {
+    
     PS_OUT Out;
-    
-    float4 fDiffuseColor, fAmbientColor, fSpeculrColor;
-    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
-    
-    
-                        //0~1값으로 치환
-    Out.vNormal = float4(Input.vNormal.xyz * 0.5f + 0.5f, 0.f);
 
-  
-    
-    float3 Tmpcolor = saturate(Out.vDiffuse.rgb + float3(2.5, 0.0, 0.0));
-    Out.vDiffuse.rgb = lerp(Out.vDiffuse.rgb, Tmpcolor, b_Damage);
-    
-    float flash = abs(sin(g_Time * 20));
-    if (flash > 0.5)
+    float4 albedo = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
+    if (albedo.a < 0.3f)
         discard;
-    
-    /*Depth_RenderTarget에 기록하자*/
-    
-    Out.vDepth = float4(Input.vProjPos.z / Input.vProjPos.w, ///0~1사이 
-                        Input.vPosition.w, //월드 z, 
-                        0.f, 0.f);
-   
+
+    // 1. 노멀맵 (Tangent Space)
+    float3 nTS;
+    float3 normalTex = g_NormalTexture.Sample(DefaultSampler, Input.vTexcoord).xyz;
+    nTS.xy = normalTex.xy * 2.0f - 1.0f;
+    nTS.z = sqrt(saturate(1.0f - dot(nTS.xy, nTS.xy)));
+
+    // 2. 정점 기준 벡터 (World Space)
+    float3 N = normalize(Input.vNormal.xyz);
+    float3 T = normalize(Input.vTangent.xyz);
+
+    // Binormal은 절대 입력값 쓰지 말 것
+    float3 B = -normalize(cross(T, N));
+
+    //만약 여전히 반 갈라지면 여기 한 줄만 토글
+    // B *= -1.0f;
+
+    // 3. TBN
+    float3x3 TBN = float3x3(T, B, N);
+
+    // 4. Tangent → World
+    float3 nWS = normalize(mul(nTS, TBN));
+
+    // GBuffer 출력
+    Out.vDiffuse = albedo * 1.15f;
+    Out.vNormal = float4(nWS * 0.5f + 0.5f, 0.f);
+    Out.vDepth = float4(
+        Input.vProjPos.z / Input.vProjPos.w,
+        Input.vProjPos.w,
+        0.f, 0.f
+    );
+
     return Out;
-    
-    
-    ////음영값 (diffuse 세기)
-    //float fShade = Compute_Shade(g_vLightDirection, Input.vNormal);
-    
-  
-    ////specular 세기 = 반사벡터를 구해서  카메라 시야벡터 * (-1)와 내적
-    //float fSpecular = Compute_Specular(g_vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition,80);
-    
- 
-    //fDiffuseColor = g_vLightDiffuse * MtrlDiffuseColor * fShade;
-    //fAmbientColor = g_vLightAmbient * g_vMaterialAmbient * (MtrlDiffuseColor * 0.5f);
-    
-
-    //float4 MtrlSpecularColor = g_SpecularTexture.Sample(DefaultSampler, Input.vTexcoord);
-    //fSpeculrColor = g_vLightSpecular * MtrlSpecularColor * fSpecular * 0.5f;
-
-    
-    
-
-    
-    //////////////////점 조명에 대한 연산/////////////////////
-    //for (int i = 0; i < g_PointLightNum; ++i)
-    //{
-    //    //1.어디방향으로 빛이오는지 계산하자.
-    //    vector vLightDirection = g_vPL_Position[i] - Input.vWorldPos;
-    //    float Distance = length(vLightDirection);
-        
-    //    float fShade = Compute_Shade(vLightDirection, Input.vNormal);
-    //    float fAttenuation = Compute_Attenuation(g_vPL_Range[i].r, Distance);
-    //    float fSpecular = Compute_Specular(vLightDirection, Input.vNormal, Input.vWorldPos, g_CamPosition, 80);
-        
-        
-    //    ///이거 이상함.
-    //    fDiffuseColor += g_vPL_Diffuse[i] * MtrlDiffuseColor * fShade * fAttenuation;
-    //    //fAmbientColor += g_vPL_Ambient[i] * g_vMaterialAmbient * fAttenuation;
-    //   // fSpeculrColor += g_vPL_Specular[i] * MtrlSpecularColor * fSpecular;
-        
-
-    //}
-     
-    float4 ResultColor = fDiffuseColor + fAmbientColor + fSpeculrColor;
-    ResultColor = saturate(ResultColor);
-    
-    //fAmbientColor *= 0.8f;
-        //데미지 여부에 따른 피격효과\
-    
-    //float3 Tmpcolor = saturate(ResultColor.rgb + float3(2.5, 0.0, 0.0));
-    //ResultColor.rgb = lerp(ResultColor.rgb, Tmpcolor, b_Damage);
-    
-    //float flash = abs(sin(g_Time*20));
-    //if(flash>0.5)
-    //    discard;
-    
-    
-    //return ResultColor;
-
 }
 
 float4 PS_Eye(PS_IN Input) : SV_Target0
@@ -198,16 +163,44 @@ float4 PS_Eye(PS_IN Input) : SV_Target0
 
 }
 
-PS_OUT PS_Alpha(PS_IN Input)
+PS_OUT PS_NonNormal(PS_IN Input)
+{
+    PS_OUT Out;
+    vector vMtrlDiffuse = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
+    if (vMtrlDiffuse.a < 0.5f)
+        discard;
+    
+    vector vNormalDesc = vector(0.5f, 0.5f, 1.0f, 0.f);
+    float2 vNormalXY = vNormalDesc.rg * 2.0f - 1.0f;
+    float fNormalZ = sqrt(saturate(1.0f - dot(vNormalXY, vNormalXY)));
+    
+    vector vNormal = vector(vNormalXY.x, vNormalXY.y, fNormalZ, 0.0f);
+    
+    
+    float3x3 WorldMatrix = float3x3(Input.vTangent.xyz, Input.vBinormal.xyz , Input.vNormal.xyz);
+    vNormal = vector(mul(vNormal.xyz, WorldMatrix), 0.f);
+    
+    //밝기보정
+    Out.vDiffuse = vMtrlDiffuse * 1.5f;
+    Out.vNormal = vector(vNormal.xyz * 0.5f + 0.5f, 0.f);
+    Out.vDepth = vector(Input.vProjPos.z / Input.vProjPos.w,
+                        Input.vProjPos.w, 0.f, 0.f);
+    
+    return Out;
+    
+}
+
+
+PS_OUT PS_Alpha(PS_IN In)
 {
     PS_OUT Out;
     
     float4 fDiffuseColor, fAmbientColor, fSpeculrColor;
-    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
+    Out.vDiffuse = g_DiffuseTexture.Sample(DefaultSampler, In.vTexcoord);
     
     
                         //0~1값으로 치환
-    Out.vNormal = float4(Input.vNormal.xyz * 0.5f + 0.5f, 0.f);
+    Out.vNormal = float4(In.vNormal.xyz * 0.5f + 0.5f, 0.f);
 
   
     
@@ -216,8 +209,8 @@ PS_OUT PS_Alpha(PS_IN Input)
     
     /*Depth_RenderTarget에 기록하자*/
     
-    Out.vDepth = float4(Input.vProjPos.z / Input.vProjPos.w, ///0~1사이 
-                        Input.vPosition.w, //월드 z, 
+    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, ///0~1사이 
+                        In.vPosition.w, //월드 z, 
                         0.f, 0.f);
    
     return Out;
@@ -266,7 +259,7 @@ technique11 DefaultTechnique
                                 //버전 , 진입함수 설정
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_MAIN();
+        PixelShader = compile ps_5_0 PS_NonNormal();
 
     }
 

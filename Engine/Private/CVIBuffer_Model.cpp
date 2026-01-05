@@ -140,16 +140,16 @@ HRESULT CVIBuffer_Model::Initialize_AnimMeshVertexBuffer(_matrix& Matrix, const 
 
 	m_pVertexPositions.resize(m_iNumVertices);
 
-	for (_uint i = 0; i < m_iNumVertices; ++i)
-	{
-		m_pVertexPositions[i] = Vertices[i].vPosition;
+	//for (_uint i = 0; i < m_iNumVertices; ++i)
+	//{
+	//	m_pVertexPositions[i] = Vertices[i].vPosition;
 
-		//노말도 돌려줘야함.
-		_vector vNormal = XMVector3TransformCoord(XMLoadFloat3(&Vertices[i].vNormal), Matrix);
-		XMStoreFloat3(&Vertices[i].vNormal, vNormal);
+	//	//노말도 돌려줘야함.
+	//	_vector vNormal = XMVector3TransformCoord(XMLoadFloat3(&Vertices[i].vNormal), Matrix);
+	//	XMStoreFloat3(&Vertices[i].vNormal, vNormal);
 
-	}
-	
+	//}
+	//
 
 
 	D3D11_SUBRESOURCE_DATA VertexData;

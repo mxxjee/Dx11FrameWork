@@ -540,16 +540,15 @@ HRESULT CLoader::Register_Textures()
 HRESULT CLoader::Register_Models()
 {
    
-    _matrix matrix = XMMatrixRotationY(XMConvertToRadians(180.f));
-     matrix = XMMatrixMultiply(matrix, XMMatrixScaling(1.2f, 1.2f, 1.2f));
-
+    _matrix matrix =XMMatrixScaling(0.035f, 0.035f, 0.035f);
+ //   matrix = XMMatrixMultiply(matrix, XMMatrixRotationY(XMConvertToRadians(180.f)));
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/LinkAnim", matrix);
   
     _matrix NPCmatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
     
     _matrix GreenZolMatrix = XMMatrixScaling(0.7f, 0.7f, 0.7f);
-    GreenZolMatrix = XMMatrixMultiply(GreenZolMatrix,XMMatrixRotationY(XMConvertToRadians(180.f)));
+    GreenZolMatrix = XMMatrixMultiply(GreenZolMatrix, XMMatrixRotationY(XMConvertToRadians(180.f)));
 
 
     _matrix MoriblinSwordMatrix= XMMatrixRotationY(XMConvertToRadians(180.f));
@@ -576,10 +575,10 @@ HRESULT CLoader::Register_Models()
     m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/RichardAnim/RichardAnim.json", NPCmatrix);
    
     m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Fairy/Fairy.json", NPCmatrix);
-    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Kid_Green/Kid_Green.json", NPCmatrix);
-    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Tarin/Tarin.json", NPCmatrix);
+    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Kid_Green/Kid_Green.json", XMMatrixIdentity());
+    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Tarin/Tarin.json", XMMatrixIdentity());
     m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Witch/Witch.json", NPCmatrix);
-    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Marin/Marin.json", NPCmatrix);
+    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Marin/Marin.json", XMMatrixIdentity());
     m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Kid_Blue/Kid_Blue.json", NPCmatrix);
 
 

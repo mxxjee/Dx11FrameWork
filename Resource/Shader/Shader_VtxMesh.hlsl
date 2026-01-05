@@ -116,7 +116,7 @@ PS_OUT PS_MAIN(PS_IN Input)
     float3x3 WorldMatrix = float3x3(Input.vTangent.xyz, Input.vBinormal.xyz * -1.f, Input.vNormal.xyz);
     vNormal = vector(mul(vNormal.xyz, WorldMatrix), 0.f);
     
-    
+    //¹à±âº¸Á¤
     Out.vDiffuse = vMtrlDiffuse*1.5f;
     Out.vNormal = vector(vNormal.xyz * 0.5f + 0.5f, 0.f);
     Out.VDepth = vector(Input.vProjPos.z / Input.vProjPos.w,

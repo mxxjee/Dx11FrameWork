@@ -95,87 +95,38 @@ PS_OUT_BACKBUFFER PS_MAIN_DEBUG(PS_IN In)
 PS_OUT_LIGHT PS_MAIN_DIRECTIONAL(PS_IN In)
 {
     PS_OUT_LIGHT Out;
-    float4 vNormalDesc = g_NormalTexture.Sample(DefaultSampler, In.vTexcoord);
 
-    
+    // --- Normal unpack + normalize ( 필수)
+    float3 normalTex = g_NormalTexture.Sample(DefaultSampler, In.vTexcoord).xyz;
+    float3 N = normalize(normalTex * 2.f - 1.f);
 
-    /* 0~1 -> -1~1 */
+    // --- Light dir (World Space 기준이어야 함)
+    float3 L = normalize(-g_vLightDirection.xyz);
 
-    float4 vNormal = float4(vNormalDesc.xyz * 2.f - 1.f, 0.f);
-    vector vShade = max(dot(normalize(g_vLightDirection) * -1.f, vNormal), 0.f) + (g_vLightAmbient * g_vMtrlAmbient);
+    // --- Diffuse
+    float NdotL = saturate(dot(N, L));
+    Out.vShade = g_vLightDiffuse * (NdotL + g_vLightAmbient * g_vMtrlAmbient);
 
-    Out.vShade = g_vLightDiffuse * saturate(vShade);
-    
-    
+    // --- World position 복원 (기존 코드 유지)
+    float4 vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexcoord);
 
-    
-
-    vector vReflect = reflect(normalize(g_vLightDirection), vNormal);
-
-    
-
-    //픽셀에맞는 z갑 꺼내오기 
-
-    vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexcoord);
-
-    
-
-    vector vWorldPos;
-
-    //specular 구하기
-
-    //1.Look을 구한다(카메라위치에서 worldpos를 바라봄)
-
-    //사각형 버퍼의 PS이므로 월드좌표를 모르기 때문에 다른 타겟으로부터 얻어온다.
-
-    //월드좌표 먼저구하기
-
-    
-
-    
-
-    //>>>>로컬 * 월드 * 뷰*투영*(/1.z) 까지 단계로 만들기<<<<
-
-    //texcoord를 사용하여 NDC공간 상의 점으로변경
-
+    float4 vWorldPos;
     vWorldPos.x = In.vTexcoord.x * 2.f - 1.f;
-
     vWorldPos.y = In.vTexcoord.y * (-2.f) + 1.f;
-
     vWorldPos.z = vDepthDesc.x;
-
     vWorldPos.w = 1.f;
 
-    
-
-    
-
-    
-
-    //>>>>로컬 * 월드 * 뷰*투영 까지 단계로 만들기<<<<
-
     vWorldPos *= vDepthDesc.y;
-
-    
-
-   //>>>>로컬 * 월드 * 뷰까지 단계로 만들기<<<<
-
     vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
-
-
-
-    
-
-    //>>>>로컬 * 월드 까지 단계로 만들기<<<<
-
     vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
 
-    
+    float3 V = normalize(g_MainCamPosition.xyz - vWorldPos.xyz);
 
-    vector vLook = vWorldPos - g_CamPosition;
-
-    Out.vSpecular =(g_vLightSpecular * g_vMtrlSpecular) * pow(max(dot(normalize(vReflect) * -1.f, normalize(vLook)), 0.f), 30.f);
-    
+    // --- Specular
+    float3 R = reflect(-L, N);
+    Out.vSpecular =
+        (g_vLightSpecular * g_vMtrlSpecular) *
+        pow(saturate(dot(R, V)), 30.f);
 
     return Out;
     
