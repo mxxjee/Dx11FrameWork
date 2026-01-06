@@ -895,68 +895,6 @@ CGameObject* CPlayer::Clone(void* pArg)
     return pInstance;
 }
 
-void CPlayer::Free()
-{
-    Safe_Release(m_pInputManager);
-    Safe_Release(m_pNavigationCom);
-    Safe_Release(m_pGravity);
-    Safe_Release(m_pCollider);
-
-
-    for (auto& pair : m_States)
-    {
-        if (pair.second)
-            Safe_Release(pair.second);
-
-
-    }
-
-    m_States.clear();
-    if (!m_PlayerEffects.empty())
-    {
-        for (int i = 0; i < EFFECT_TYPE_END; ++i)
-        {
-            for (auto& pInfo : m_PlayerEffects[i])
-            {
-                // ★ [수정] 그냥 Safe_Delete(pInfo) 하면 안 됨!
-                // 반드시 원래 타입으로 캐스팅해서 지워야 wstring 소멸자가 불립니다.
-
-                if (i == SLASH1) // QuadEffect 타입인 경우
-                {
-                    CQuadEffect::QUADEFFECT_DESC* pDesc = static_cast<CQuadEffect::QUADEFFECT_DESC*>(pInfo);
-                    Safe_Delete(pDesc);
-                }
-                else if (i == SLASH2) // MeshEffect 타입인 경우
-                {
-                    CMeshEffect_RollCut::Effect_RollCutDesc* pDesc = static_cast<CMeshEffect_RollCut::Effect_RollCutDesc*>(pInfo);
-                    Safe_Delete(pDesc);
-                }
-
-                else if (i == SLASH_CHARGE_COMPLETE) // MeshEffect 타입인 경우
-                {
-                    CQuadEffect::QUADEFFECT_DESC* pDesc = static_cast<CQuadEffect::QUADEFFECT_DESC*>(pInfo);
-                    Safe_Delete(pDesc);
-                }
-
-                else if (i == SLASHTRAIL) // Trail 타입
-                {
-                    CTrailEffect::TrailDesc* pDesc = static_cast<CTrailEffect::TrailDesc*>(pInfo);
-                    Safe_Delete(pDesc);
-                }
-                else
-                {
-                    // 혹시 모르니 기본 처리 (하지만 위험함)
-                    Safe_Delete(pInfo);
-                }
-            }
-            m_PlayerEffects[i].clear();
-        }
-
-    }
-   
-    m_PlayerEffects.clear();
-    __super::Free();
-}
 
 
 
@@ -1197,26 +1135,41 @@ HRESULT CPlayer::Ready_Effects()
     /////
     CTrailEffect::TrailDesc* TrailEffect=new CTrailEffect::TrailDesc();
     TrailEffect->ShaderName = L"Default";
-    TrailEffect->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
+    TrailEffect->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
     m_PlayerEffects[ENUM_TO_UINT(SLASHTRAIL)].push_back(TrailEffect);
 
-
-    ///////////////////RollCut Effect///////////
+#pragma region Complete Effect
+    ///////////////////Complete Effect///////////
     //차징완료시 퍼지는Effect
     CQuadEffect::QUADEFFECT_DESC* ChargeCompleteDesc = new CQuadEffect::QUADEFFECT_DESC();
     ChargeCompleteDesc->TextureKey = L"ripple_02";
     ChargeCompleteDesc->ObjTag = L"CharingComplete";
     ChargeCompleteDesc->ShaderName = L"Default";
     ChargeCompleteDesc->PassName = "ChargeComplete";
-    ChargeCompleteDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
+    ChargeCompleteDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
     ChargeCompleteDesc->DataName = L"CharingComplete";
 
     m_PlayerEffects[ENUM_TO_UINT(SLASH_CHARGE_COMPLETE)].push_back(ChargeCompleteDesc);
+#pragma endregion
 
+
+
+    //////////칼날타고 흘러내리는 별////////////
+    CQuadEffect::QUADEFFECT_DESC* ChargeStartEffect = new CQuadEffect::QUADEFFECT_DESC();
+    ChargeStartEffect->TextureKey = L"glow_01";
+    ChargeStartEffect->ObjTag = L"ChargeStartEffect";
+    ChargeStartEffect->ShaderName = L"Default";
+    ChargeStartEffect->PassName = "Effect";
+    ChargeStartEffect->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+    ChargeStartEffect->DataName = L"ChargeStartEffect";
+    m_PlayerEffects[ENUM_TO_UINT(SLASH_CHARGE_ST)].push_back(ChargeStartEffect);
+
+
+#pragma region RollCutEffect
     //바람Effect
     CMeshEffect_RollCut::Effect_RollCutDesc* RollCutDesc = new CMeshEffect_RollCut::Effect_RollCutDesc();
     RollCutDesc->modelName = L"Rollcut_Bending";
-    RollCutDesc->ObjTag = L"rollcut";
+    RollCutDesc->ObjTag = L"Rollcut_Bending";
     RollCutDesc->ShaderName = L"MeshEffect";
     RollCutDesc->PassName = "RollCut";
     RollCutDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
@@ -1224,6 +1177,21 @@ HRESULT CPlayer::Ready_Effects()
     RollCutDesc->fRoationPerSec = 0.f;
 	m_PlayerEffects[SLASH2].push_back(RollCutDesc);
 
+    //소용슬래시?
+    CMeshEffect_RollCut::Effect_RollCutDesc* RollSlashDesc = new CMeshEffect_RollCut::Effect_RollCutDesc();
+    RollSlashDesc->modelName = L"rollcut";
+    RollSlashDesc->ObjTag = L"rollcut";
+    RollSlashDesc->ShaderName = L"MeshEffect";
+    RollSlashDesc->PassName = "RollSlash";
+    RollSlashDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+    RollSlashDesc->DataName = L"rollcut";
+    RollSlashDesc->fRoationPerSec = -500.f;
+    m_PlayerEffects[SLASH2].push_back(RollSlashDesc);
+
+
+
+
+#pragma endregion
     return S_OK;
 }
 
@@ -1555,16 +1523,11 @@ void CPlayer::AnimNotify_SlashStart()
         {
             pEffect->Spawn();
             _matrix vPlayerMatrix = XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr());
-            _matrix LocalMatrix = pEffect->Get_LocalMatrix();
-
-
-            _float4x4 CombinedMatrix;
-            XMStoreFloat4x4(&CombinedMatrix,
-                LocalMatrix * vPlayerMatrix);
-
+         
+            
 
     
-            pEffect->Get_Transform()->Set_WorldMatrix(CombinedMatrix);
+            pEffect->Set_OrigniMatrix(vPlayerMatrix);
             pEffect->Play();
 
         }
@@ -1599,15 +1562,31 @@ void CPlayer::AnimNotify_SlashEnd()
 
 void CPlayer::AnimNotify_Slash_Hold_Ed_Start()
 {
-    CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(L"MeshEffect_RollCut", m_PlayerEffects[SLASH2].front());
-    if (pEffect)
+    for (auto& pInfo : m_PlayerEffects[SLASH2])
     {
+        CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(L"MeshEffect_RollCut", pInfo);
+        if (pEffect)
+        {
 
-        pEffect->Set_ParentMatrix(m_pTransformCom->Get_WorldMatrixPtr());
-        pEffect->Set_SocketMatrix(m_pAnimBody->Get_SocketMatrix("root"));
-        pEffect->Play();
-        pChargeCompletePtr = nullptr;
+            pEffect->Set_ParentMatrix(m_pTransformCom->Get_WorldMatrixPtr());
+            pEffect->Set_SocketMatrix(m_pAnimBody->Get_SocketMatrix("root"));
+            pEffect->Play();
+
+        }
+
     }
+  
+
+
+    //pEffect = m_pEffectPoolManager->Request_Spawn(L"MeshEffect_RollCut", m_PlayerEffects[SLASH2].back);
+    //if (pEffect)
+    //{
+
+    //    pEffect->Set_ParentMatrix(m_pTransformCom->Get_WorldMatrixPtr());
+    //    pEffect->Set_SocketMatrix(m_pAnimBody->Get_SocketMatrix("root"));
+    //    pEffect->Play();
+    //    pChargeCompletePtr = nullptr;
+    //}
 
 }
 
@@ -1625,7 +1604,19 @@ void CPlayer::AnimNotify_Start(PLAYER_ANIMNOTIFY_TYPE eType)
         break;
  
    
+    case PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_ST_START:
+    {
+        CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(L"QuadEffect", m_PlayerEffects[SLASH_CHARGE_ST].front());
+        if (pEffect)
+        {
+    
+            pEffect->Set_ParentMatrix(m_pTransformCom->Get_WorldMatrixPtr());
+            pEffect->Set_SocketMatrix(m_pAnimBody->Get_SocketMatrix("itemA_L"));
+            pEffect->Play();
 
+        }
+    }
+        break;
    
     case PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_ED_START:
         AnimNotify_Slash_Hold_Ed_Start();
@@ -1651,9 +1642,14 @@ void CPlayer::AnimNotify_End(PLAYER_ANIMNOTIFY_TYPE eType)
         CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(L"QuadEffect", m_PlayerEffects[SLASH_CHARGE_COMPLETE].front());
         if (pEffect)
         {
+            _matrix vPlayerMatrix = XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr());
 
-            pEffect->Set_ParentMatrix(m_pTransformCom->Get_WorldMatrixPtr());
-            pEffect->Set_SocketMatrix(m_pAnimBody->Get_SocketMatrix("root"));
+
+
+
+            pEffect->Set_OrigniMatrix(vPlayerMatrix);
+ 
+   
             pEffect->Play();
 
         }
@@ -1838,3 +1834,68 @@ void CPlayer::Check_Interaction_ExitCollision(CCollider_Base* pOther)
         m_ActionControl.m_bPush = false;
 
 }
+
+void CPlayer::Free()
+{
+    Safe_Release(m_pInputManager);
+    Safe_Release(m_pNavigationCom);
+    Safe_Release(m_pGravity);
+    Safe_Release(m_pCollider);
+
+
+    for (auto& pair : m_States)
+    {
+        if (pair.second)
+            Safe_Release(pair.second);
+
+
+    }
+
+    m_States.clear();
+    if (!m_PlayerEffects.empty())
+    {
+        for (int i = 0; i < EFFECT_TYPE_END; ++i)
+        {
+            for (auto& pInfo : m_PlayerEffects[i])
+            {
+                Safe_Delete(pInfo);
+                //// ★ [수정] 그냥 Safe_Delete(pInfo) 하면 안 됨!
+                //// 반드시 원래 타입으로 캐스팅해서 지워야 wstring 소멸자가 불립니다.
+
+                //if (i == SLASH1) // QuadEffect 타입인 경우
+                //{
+                //    CQuadEffect::QUADEFFECT_DESC* pDesc = static_cast<CQuadEffect::QUADEFFECT_DESC*>(pInfo);
+                //    Safe_Delete(pDesc);
+                //}
+                //else if (i == SLASH2) // MeshEffect 타입인 경우
+                //{
+                //    CMeshEffect_RollCut::Effect_RollCutDesc* pDesc = static_cast<CMeshEffect_RollCut::Effect_RollCutDesc*>(pInfo);
+                //    Safe_Delete(pDesc);
+                //}
+
+                //else if (i == SLASH_CHARGE_COMPLETE) // MeshEffect 타입인 경우
+                //{
+                //    CQuadEffect::QUADEFFECT_DESC* pDesc = static_cast<CQuadEffect::QUADEFFECT_DESC*>(pInfo);
+                //    Safe_Delete(pDesc);
+                //}
+
+                //else if (i == SLASHTRAIL) // Trail 타입
+                //{
+                //    CTrailEffect::TrailDesc* pDesc = static_cast<CTrailEffect::TrailDesc*>(pInfo);
+                //    Safe_Delete(pDesc);
+                //}
+                //else
+                //{
+                //    // 혹시 모르니 기본 처리 (하지만 위험함)
+                //    Safe_Delete(pInfo);
+                //}
+            }
+            m_PlayerEffects[i].clear();
+        }
+
+    }
+
+    m_PlayerEffects.clear();
+    __super::Free();
+}
+

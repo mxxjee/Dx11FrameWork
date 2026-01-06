@@ -226,19 +226,32 @@ void CQuadEffect::Play()
 
     ScaleLerpTime = 0.f;
 
-
     Make_LocalMatrix();
 
-    _float4x4 CombinedMatrix;
-    if (m_pParentMatrix && m_pSocketMatrix) {
-        _matrix SocketWorld = XMMatrixMultiply(XMLoadFloat4x4(m_pSocketMatrix), XMLoadFloat4x4(m_pParentMatrix));
+    if (m_pParentMatrix && m_pSocketMatrix)
+    {
+        //먼저 socket*m_pParentMatrix
+
+        _matrix SocketWorld = XMMatrixMultiply(XMLoadFloat4x4(m_pSocketMatrix),
+            XMLoadFloat4x4(m_pParentMatrix));
+
         XMStoreFloat4x4(&CombinedMatrix, XMMatrixMultiply(LocalMatrix, SocketWorld));
     }
-    else if (m_pParentMatrix) {
+
+    //ParentMAtrix만있을경우
+    else if (m_pParentMatrix)
+    {
         XMStoreFloat4x4(&CombinedMatrix, XMMatrixMultiply(LocalMatrix, XMLoadFloat4x4(m_pParentMatrix)));
+
     }
-    else {
-        CombinedMatrix = *m_pTransformCom->Get_WorldMatrixPtr();
+
+
+
+    else
+    {
+
+        XMStoreFloat4x4(&CombinedMatrix, XMMatrixMultiply(LocalMatrix, OriginMatrix));
+
     }
 
     m_pTransformCom->Set_WorldMatrix(CombinedMatrix);

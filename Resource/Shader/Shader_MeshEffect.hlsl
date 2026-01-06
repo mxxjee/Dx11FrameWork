@@ -125,11 +125,36 @@ float4 PS_Slash(PS_IN Input) : SV_Target0
   
     vColor *= g_TintColor;
     vColor.rgb *= vColor.a;
+
+    return vColor;
+  
+   
+}
+
+
+float4 PS_RollSlash(PS_IN Input) : SV_Target0
+{
+  
+    float2 vTexCoord = Input.vTexcoord;
+    float4 vColor = g_DiffuseTexture.Sample(DefaultSampler, vTexCoord);
+   
+    vColor *= g_TintColor;
+    vColor.rgb *= vColor.a;
+    
+ 
+    vColor *= g_fIntensity;
+    
+ 
+    vColor *= (1.5f - Input.vTexcoord.y);
+    vColor *= g_Alpha;
+    
+ 
     
     return vColor;
   
    
 }
+
 
 
 float4 PS_RollCut(PS_IN Input) : SV_Target0
@@ -151,13 +176,13 @@ float4 PS_RollCut(PS_IN Input) : SV_Target0
     
     vColor.a = vColor.r;
     
-    if(vColor.a<0.5f)
-        discard;
+ 
     
    
     vColor.rgb *= g_TintColor.rgb;
     vColor.a *= g_Alpha;
-    
+    if (vColor.a < 0.5f)
+        discard;
     return vColor;
 
    
@@ -207,6 +232,7 @@ technique11 DefaultTechnique
     }
 
 
+
     pass RollCut
     {
         SetRasterizerState(RS_Default);
@@ -216,6 +242,17 @@ technique11 DefaultTechnique
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
         PixelShader = compile ps_5_0 PS_RollCut();
+    }
+
+    pass RollSlash
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Alpha, 0);
+        SetBlendState(BS_Blend, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_RollSlash();
     }
 
     

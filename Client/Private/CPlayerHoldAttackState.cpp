@@ -1,5 +1,6 @@
 #include "CPlayerHoldAttackState.h"
 #include "CPlayer.h"
+#include "EffectData.h"
 
 USING(Client)
 
@@ -28,6 +29,12 @@ void CPlayerHoldAttackState::Enter(CPlayer* pPlayer)
     m_bChangeState = false;
 
     m_eNextAnim = NextAnim::NONE;
+
+    m_pGameInstance->Invoke(0.2f, 0.f, false, false, [this, pPlayer]()
+        {
+            pPlayer->AnimNotify_Start(PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_ST_START);
+
+        }, pPlayer);
 
 
     m_pGameInstance->Invoke(1.f, 0.f, false, false, [this,pPlayer]()

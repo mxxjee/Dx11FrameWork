@@ -84,9 +84,9 @@ protected:
 
     _matrix             LocalMatrix;
 
-protected:
+public:
     void        Make_LocalMatrix();
-
+    void        Set_OrigniMatrix(_matrix Matrix) { OriginMatrix = Matrix; }
 protected:
     _float              m_fAlpha = 1.f;
     _float              m_fFadeOutSpeed = 2.f;
@@ -97,8 +97,15 @@ protected:
 
 
     _float      ScaleLerpTime = 0.f;
+    _float      MoveLerpTime = 0.f;
+
+
     _float4     CurrentScale;
+    _float4     CurrentMove;
+
+
     _float4x4   CombinedMatrix;
+    _matrix     OriginMatrix;
 };
 
 NS_END

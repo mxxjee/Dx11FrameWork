@@ -1,52 +1,52 @@
 {
     "Materials": [
-        {
-            "Ambient": "",
-            "Diffuse": "smoke_01.png",
-            "METALNESS": "",
-            "MaterialName": "lambert2",
-            "Normal": "",
-            "OPACITY": "smoke_01.png",
-            "Specular": ""
-        }
+      {
+        "Ambient": "",
+        "Diffuse": "smoke_01.dds",
+        "METALNESS": "",
+        "MaterialName": "Rollcut_Bending_lambert2",
+        "Normal": "",
+        "OPACITY": "smoke_01.dds",
+        "Specular": ""
+      }
     ],
     "MeshNums": 1,
     "Meshes": [
-        {
-            "IBPath": "Mesh_0.ib",
-            "IndexCount": 1536,
-            "MaterialName": "lambert2",
-            "MeshIdx": 0,
-            "Name": "BendRing_00__lambert2",
-            "Transform": [
-                [
-                    1.0,
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                [
-                    0.0,
-                    1.0,
-                    -0.0,
-                    0.0
-                ],
-                [
-                    -0.0,
-                    -0.0,
-                    1.0,
-                    -0.0
-                ],
-                [
-                    0.0,
-                    0.0,
-                    -0.0,
-                    1.0
-                ]
-            ],
-            "VBPath": "Mesh_0.vb",
-            "VertexCount": 297
-        }
+      {
+        "IBPath": "Mesh_0.ib",
+        "IndexCount": 1536,
+        "MaterialName": "Rollcut_Bending_lambert2",
+        "MeshIdx": 0,
+        "Name": "BendRing_00__lambert2",
+        "Transform": [
+          [
+            1.0,
+            0.0,
+            -0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            -0.0,
+            0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            1.0,
+            -0.0
+          ],
+          [
+            0.0,
+            0.0,
+            -0.0,
+            1.0
+          ]
+        ],
+        "VBPath": "Mesh_0.vb",
+        "VertexCount": 297
+      }
     ],
     "ModelName": "Rollcut_Bending"
 }

@@ -87,6 +87,8 @@ float4 PS_Trail(PS_IN Input) : SV_Target0
     color.rgb *= color.a;
     
     color *= g_Alpha;
+    color *= g_fIntensity;
+    
 
     
     return color;

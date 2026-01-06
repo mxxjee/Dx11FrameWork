@@ -258,6 +258,9 @@ HRESULT CTrailEffect::Render()
     if (FAILED(m_pShader->Bind_Float("g_Alpha",1.f)))
         return E_FAIL; 
 
+    if (FAILED(m_pShader->Bind_Float("g_fIntensity", m_LocalData.fIntensity)))
+        return E_FAIL;
+
     m_pShader->Begin("Effect"); // 0번 패스 실행
 
 

@@ -15,6 +15,9 @@ public:
         class CGameObject* pTarget = nullptr;
         void* TransformDesc = nullptr;
         _uint m_iLevelID = 3;
+
+        tagGameObjectDesc() {}
+        virtual ~tagGameObjectDesc(){}
     }GAMEOBJECT_DESC;
 
 protected:

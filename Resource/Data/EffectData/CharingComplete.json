@@ -35,7 +35,7 @@
     "bUseMoveAnim": false,
     "bUseRotationAnim": false,
     "bUseScaleAnim": true,
-    "fIntensity": 1.0,
+    "fIntensity": 10.0,
     "fMoveSpeed": 0.0,
     "fRotationSpeed": 0.0,
     "fScaleSpeed": 20.0,

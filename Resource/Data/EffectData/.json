@@ -1,9 +1,9 @@
 {
     "Color": [
         1.0,
-        0.6000000238418579,
-        0.0313725508749485,
-        0.6941176652908325
+        0.6003459692001343,
+        0.029411792755126953,
+        0.686274528503418
     ],
     "LifeTime": 5.0,
     "Loop": false,
@@ -25,5 +25,30 @@
         0.0,
         1.0
     ],
-    "Speed": 3.0
+    "Speed": 3.0,
+    "TargetScale": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+    ],
+    "bUseMoveAnim": false,
+    "bUseRotationAnim": false,
+    "bUseScaleAnim": false,
+    "fIntensity": 1.0,
+    "fMoveSpeed": 0.0,
+    "fRotationSpeed": 0.0,
+    "fScaleSpeed": 1.0,
+    "vMoveDir": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+    ],
+    "vRotationAxis": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+    ]
 }

@@ -32,13 +32,19 @@ HRESULT CEffect::Render()
 void CEffect::Spawn(const _float4x4* pSocketMatrix, const _float4x4* pParentMatrix)
 {
     ScaleLerpTime = 0.f;
+    MoveLerpTime = 0.f;
+
     CurrentScale = m_LocalData.InitScale;
+    CurrentMove = m_LocalData.InitOffSet;
 }
 
 void CEffect::Play()
 {
     ScaleLerpTime = 0.f;
+    MoveLerpTime = 0.f;
+
     CurrentScale = m_LocalData.InitScale;
+    CurrentMove = m_LocalData.InitOffSet;
 
 }
 
@@ -71,9 +77,9 @@ void CEffect::Make_LocalMatrix()
 
 	_matrix Rotation = XMMatrixRotationRollPitchYaw(Roll, Pitch, Yaw);
 
-	_matrix Translate = XMMatrixTranslation(m_LocalData.InitOffSet.x,
-		m_LocalData.InitOffSet.y,
-		m_LocalData.InitOffSet.z);
+	_matrix Translate = XMMatrixTranslation(CurrentMove.x,
+        CurrentMove.y,
+        CurrentMove.z);
 
 	LocalMatrix = Scaling * Rotation * Translate;
 
@@ -126,6 +132,7 @@ HRESULT CEffect::Initialize_Copytype(void* pArg)
  
 
     CurrentScale = m_LocalData.InitScale;
+    CurrentMove = m_LocalData.InitOffSet;
     Make_LocalMatrix();
     return S_OK;
 }
@@ -140,6 +147,10 @@ void CEffect::Update(_float fTimeDelta)
     CheckTrue(m_bStop);
 
 	__super::Update(fTimeDelta);
+
+    bool m_bAnimated = m_LocalData.bUseMoveAnim || m_LocalData.bUseScaleAnim || m_LocalData.bUseRotationAnim;
+
+
     if (m_LocalData.bUseScaleAnim)
     {
         //진행도 누적
@@ -155,8 +166,33 @@ void CEffect::Update(_float fTimeDelta)
         //루프 처리 (끝나면 다시 0으로)
         if (ScaleLerpTime >= 1.f && m_LocalData.m_bLoop)
             ScaleLerpTime = 0.f;
+
+
+
     }
-    else
+
+    if (m_LocalData.bUseMoveAnim)
+    {
+        //진행도 누적
+        MoveLerpTime += fTimeDelta * m_LocalData.fMoveSpeed;
+        if (MoveLerpTime > 1.f) MoveLerpTime = 1.f;
+
+        //보간 값 계산
+
+
+        XMStoreFloat4(&CurrentMove, XMVectorLerp(XMLoadFloat4(&m_LocalData.InitOffSet),
+            XMLoadFloat4(&m_LocalData.InitOffSet) * XMLoadFloat4(&m_LocalData.vMoveDir),
+            MoveLerpTime));
+
+
+        //루프 처리 (끝나면 다시 0으로)
+        if (MoveLerpTime >= 1.f && m_LocalData.m_bLoop)
+            MoveLerpTime = 0.f;
+
+
+    }
+
+    if(!m_bAnimated)
     {
         //애니메이션을 안 쓸 때는 실시간으로 InitScale을 따라가야 ImGui 수정이 반영됨!
         CurrentScale = m_LocalData.InitScale;
@@ -194,7 +230,11 @@ void CEffect::Update_Late(_float fTimeDelta)
 
 
     else
-        CombinedMatrix = *m_pTransformCom->Get_WorldMatrixPtr();
+    {
+
+        XMStoreFloat4x4(&CombinedMatrix, XMMatrixMultiply(LocalMatrix, OriginMatrix));
+        
+    }
 
     m_pTransformCom->Set_WorldMatrix(CombinedMatrix);
 }
@@ -287,7 +327,7 @@ void CEffect::Render_DebugImgui()
     }
 
 
-    if (ImGui::DragFloat("MoveSpeed", (float*)&m_LocalData.fRotationSpeed))
+    if (ImGui::DragFloat("MoveSpeed", (float*)&m_LocalData.fMoveSpeed))
     {
         m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
     }

@@ -83,8 +83,6 @@ HRESULT CAnimBody::Render()
 			if (!m_bHasNormal)
 				Mesh.second->Set_PassName("NonNormal");
 
-			else
-				Mesh.second->Set_PassName("Default");
 
 			Mesh.second->Bind_ShaderResource(m_pShader, "g_DiffuseTexture", aiTextureType::aiTextureType_DIFFUSE);
 			if (m_bHasNormal)

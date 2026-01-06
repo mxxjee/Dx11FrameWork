@@ -1,6 +1,7 @@
 #pragma once
 #include "Engine_Define.h"
 
+
 struct EffectData
 {
 	_float4 vColor = _float4(1.f, 1.f, 1.f, 1.f);
@@ -34,8 +35,10 @@ enum EFFECT_TYPE
 {
 	//플레이어일반공격
 	SLASH1,
+	SLASH_CHARGE_ST,
 	SLASH_CHARGE_COMPLETE,
 	SLASH2,//차징공격
 	SLASHTRAIL,//일반공격트레일
 	EFFECT_TYPE_END
 };
+

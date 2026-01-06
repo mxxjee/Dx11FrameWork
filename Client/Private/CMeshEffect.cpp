@@ -200,7 +200,7 @@ HRESULT CMeshEffect::Ready_Resource(void* pArg)
 HRESULT CMeshEffect::Bind_ShaderResources()
 {
     /*Combined Matrix를 직접던진다.*/
-    if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", *m_pTransformCom->Get_WorldMatrixPtr())))
+    if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", CombinedMatrix)))
         return E_FAIL;
 
 
@@ -272,6 +272,7 @@ void CMeshEffect::Spawn(const _float4x4* pSocketMatrix, const _float4x4* pParent
 
 void CMeshEffect::Play()
 {
+    __super::Play();
     if (!m_bActive)
         Set_Active(true);
 
@@ -283,6 +284,7 @@ void CMeshEffect::Play()
 
 void CMeshEffect::Stop()
 {
+    __super::Stop();
     m_bStop = true;
     m_fProgress = 0.f;
     m_fTime = 0.f;

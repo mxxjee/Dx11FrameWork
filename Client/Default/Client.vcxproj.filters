@@ -1261,14 +1261,14 @@
     <ClCompile Include="..\Private\CEffectPoolManager.cpp">
       <Filter>96.Managers\EffectPoolManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\Private\CQuadEffect.cpp">
-      <Filter>02.GameObjects\98.Effect\QuadEffect</Filter>
-    </ClCompile>
     <ClCompile Include="..\Private\CEffect.cpp">
       <Filter>02.GameObjects\98.Effect</Filter>
     </ClCompile>
     <ClCompile Include="..\Private\CMeshEffect_RollCut.cpp">
       <Filter>02.GameObjects\98.Effect\MeshEffect\RollCut</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CQuadEffect.cpp">
+      <Filter>02.GameObjects\98.Effect\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

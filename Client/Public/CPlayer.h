@@ -293,7 +293,7 @@ private:
     void        AnimNotify_Slash_Hold_Ed_End();
 
 private:
-    vector<list<void*>>     m_PlayerEffects;
+    vector<list<tagGameObjectDesc*>>     m_PlayerEffects;
     CTrailEffect* m_pTrailEffect = nullptr;
     CEffectPoolManager* m_pEffectPoolManager = nullptr;
     CEffect*           pChargeCompletePtr = nullptr;
