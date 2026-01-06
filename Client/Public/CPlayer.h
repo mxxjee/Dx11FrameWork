@@ -296,6 +296,7 @@ private:
     vector<list<void*>>     m_PlayerEffects;
     CTrailEffect* m_pTrailEffect = nullptr;
     CEffectPoolManager* m_pEffectPoolManager = nullptr;
+    CEffect*           pChargeCompletePtr = nullptr;
 
 };
 

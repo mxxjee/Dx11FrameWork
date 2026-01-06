@@ -75,23 +75,18 @@ VS_OUT VS_MAIN(VS_IN In)
 {
     VS_OUT Out;
     vector vPosition = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
-   
-    
     vPosition = mul(vPosition, g_ViewProjMatrix);
     
     
     //계산완료된 vPosition(x,y,z,w)중 w는 z값을 보관중이다.
     Out.vPosition = vPosition;
-    
-    Out.vNormal = normalize(mul(vector(In.vNormal, 0.f), g_WorldMatrix));
-    Out.vTangent = normalize(mul(vector(In.vTangent.xyz, 0.f), g_WorldMatrix));
-    Out.vBinormal = normalize(mul(vector(In.vBinormal.xyz, 0.f), g_WorldMatrix));
-    
+    Out.vNormal = normalize(mul(float4(In.vNormal, 0.f), g_WorldMatrix));
+    Out.vTangent = normalize(mul(float4(In.vTangent.xyz, 0.f), g_WorldMatrix));
+    Out.vBinormal = normalize(mul(float4(In.vBinormal.xyz, 0.f), g_WorldMatrix));
     Out.vTexcoord = In.vTexcoord;
     Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
     Out.vProjPos = Out.vPosition;
-    
-    //sdfsdf
+
    
     return Out;
     

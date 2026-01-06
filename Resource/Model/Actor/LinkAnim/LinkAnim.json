@@ -2159,7 +2159,7 @@
             "Diffuse": "MI_eye_alb.0.png",
             "METALNESS": "",
             "MaterialName": "LinkAnim_MI_eye",
-            "Normal": "",
+            "Normal": "MI_eye_nml.png",
             "OPACITY": "",
             "Specular": ""
         },
@@ -2168,7 +2168,7 @@
             "Diffuse": "MI_mouth_alb.0.png",
             "METALNESS": "",
             "MaterialName": "LinkAnim_MI_mouth",
-            "Normal": "",
+            "Normal": "MI_mouth_nml.png",
             "OPACITY": "",
             "Specular": ""
         },

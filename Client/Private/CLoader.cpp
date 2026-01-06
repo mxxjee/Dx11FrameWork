@@ -204,7 +204,7 @@ void CLoader::Output()
 
 HRESULT CLoader::Loading_Town()
 {
-    m_fMinTime = 2.f;
+    m_fMinTime = 1.f;
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
     Sleep(500);
     m_iCurcount += 20;
@@ -234,7 +234,7 @@ HRESULT CLoader::Loading_Town()
 
 HRESULT CLoader::Loading_Logo()
 {
-    m_fMinTime = 3.f;
+    m_fMinTime = 1.f;
 
 
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
@@ -311,7 +311,7 @@ HRESULT CLoader::Loading_UI()
 
 HRESULT CLoader::Loading_Room()
 {
-    m_fMinTime = 2.f;
+    m_fMinTime = 1.f;
 
 
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
@@ -346,7 +346,7 @@ HRESULT CLoader::Loading_Room()
 
 HRESULT CLoader::Loading_Spawn()
 {
-    m_fMinTime = 2.f;
+    m_fMinTime = 1.f;
     m_iCurcount = 0;
 
 
@@ -380,7 +380,7 @@ HRESULT CLoader::Loading_Spawn()
 
 HRESULT CLoader::Loading_Dungeon()
 {
-    m_fMinTime = 3.f;
+    m_fMinTime = 2.f;
 
     lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
     for (size_t i = 0; i < 88899999; i++)

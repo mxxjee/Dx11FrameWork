@@ -328,6 +328,15 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 
 	}
 
+	//slash_hold_lp
+	//pAnim = m_pModel->Find_Animation(L"slash_hold_st");
+	//if (pAnim)
+	//{
+	//	Event.Name = "PlayerSlashHoldStart_End";
+	//	pAnim->AddNotify(23, Event);
+
+	//}
+
 	return S_OK;
 }
 
@@ -409,6 +418,18 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
 			if (pPlayer)
 				pPlayer->AnimNotify_Start(PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_ED_START);
+
+
+
+
+
+		});
+
+	m_pGameInstance->RegisterListners("PlayerSlashHoldStart_End", [](const GameEvent& event)
+		{
+			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
+			if (pPlayer)
+				pPlayer->AnimNotify_End(PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_ST_END);
 
 
 

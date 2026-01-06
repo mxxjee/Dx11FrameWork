@@ -1220,7 +1220,7 @@ HRESULT CPlayer::Ready_Effects()
     RollCutDesc->ShaderName = L"MeshEffect";
     RollCutDesc->PassName = "RollCut";
     RollCutDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::ALPHA);
-    RollCutDesc->DataName = L"rollcut";
+    RollCutDesc->DataName = L"Rollcut_Bending";
     RollCutDesc->fRoationPerSec = 0.f;
 	m_PlayerEffects[SLASH2].push_back(RollCutDesc);
 
@@ -1606,13 +1606,14 @@ void CPlayer::AnimNotify_Slash_Hold_Ed_Start()
         pEffect->Set_ParentMatrix(m_pTransformCom->Get_WorldMatrixPtr());
         pEffect->Set_SocketMatrix(m_pAnimBody->Get_SocketMatrix("root"));
         pEffect->Play();
-
+        pChargeCompletePtr = nullptr;
     }
 
 }
 
 void CPlayer::AnimNotify_Slash_Hold_Ed_End()
 {
+    
 }
 
 void CPlayer::AnimNotify_Start(PLAYER_ANIMNOTIFY_TYPE eType)
@@ -1623,21 +1624,8 @@ void CPlayer::AnimNotify_Start(PLAYER_ANIMNOTIFY_TYPE eType)
         AnimNotify_SlashStart();
         break;
  
-    case PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_LP_START:
-    {   
-        CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(L"QuadMeshEffect", m_PlayerEffects[SLASH_CHARGE_COMPLETE].front());
-        if (pEffect)
-        {
-    
-            pEffect->Set_ParentMatrix(m_pTransformCom->Get_WorldMatrixPtr());
-            pEffect->Set_SocketMatrix(m_pAnimBody->Get_SocketMatrix("root"));
-            pEffect->Play();
-    
-        }
-            //원형으로 커지는 Effect
+   
 
-    }
-        break;
    
     case PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_ED_START:
         AnimNotify_Slash_Hold_Ed_Start();
@@ -1657,7 +1645,21 @@ void CPlayer::AnimNotify_End(PLAYER_ANIMNOTIFY_TYPE eType)
         AnimNotify_SlashEnd();
         break;
 
-    case PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_LP_END:
+    case PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_ST_END:
+    {
+       
+        CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(L"QuadEffect", m_PlayerEffects[SLASH_CHARGE_COMPLETE].front());
+        if (pEffect)
+        {
+
+            pEffect->Set_ParentMatrix(m_pTransformCom->Get_WorldMatrixPtr());
+            pEffect->Set_SocketMatrix(m_pAnimBody->Get_SocketMatrix("root"));
+            pEffect->Play();
+
+        }
+        //원형으로 커지는 Effect
+
+    }
         break;
 
     case PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_ED_END:

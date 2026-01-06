@@ -86,27 +86,27 @@ VS_OUT VS_MAIN(VS_IN In)
 
     // 2. 포지션 변환 (Local -> Bone -> World -> ViewProj)
     vector vPosition = mul(vector(In.vPosition, 1.f), BoneMatrix);
-    vPosition = mul(vPosition, g_WorldMatrix);
-    Out.vWorldPos = vPosition; // 월드 포지션 저장
+    vector vNormal = mul(vector(In.vNormal, 0.f), BoneMatrix);
     
-    Out.vPosition = mul(vPosition, g_ViewProjMatrix);
-    Out.vProjPos = Out.vPosition;
+    matrix matWVP;
+    matWVP = mul(g_WorldMatrix, g_ViewProjMatrix);
+    
 
     // 3. 노멀/탄젠트/바이노멀 변환 (Bone과 World를 모두 곱해야 함)
     // 방향 벡터이므로 w는 0으로 처리하여 이동값은 무시하고 회전/스케일만 적용
+   
+    Out.vPosition = mul(vPosition, matWVP);
+    Out.vNormal = normalize(mul(vNormal, g_WorldMatrix));
+    Out.vTangent = normalize(mul(vector(In.vTangent.xyz, 0.f), g_WorldMatrix));
+    
+    float handedness = (dot(cross(In.vNormal, In.vTangent), In.vTangent) < 0.f) ? -1.f : 1.f;
+    Out.vTangent = float4(normalize(In.vTangent), handedness);
     
     
-    Out.vNormal = float4(normalize(
-    mul(mul(float4(In.vNormal, 0.f), BoneMatrix), g_WorldMatrix).xyz), 0.f);
-
-    Out.vTangent = float4(normalize(
-    mul(mul(float4(In.vTangent, 0.f), BoneMatrix), g_WorldMatrix).xyz), 0.f);
-
-    Out.vBinormal = float4(normalize(
-    mul(mul(float4(In.vBinormal, 0.f), BoneMatrix), g_WorldMatrix).xyz), 0.f);
-
+    Out.vBinormal = normalize(mul(vector(In.vBinormal.xyz, 0.f), g_WorldMatrix));
     Out.vTexcoord = In.vTexcoord;
-    
+    Out.vWorldPos = mul(vector(In.vPosition, 1.f), g_WorldMatrix);
+    Out.vProjPos = Out.vPosition;
     return Out;
     
 
@@ -121,6 +121,9 @@ PS_OUT PS_MAIN(PS_IN Input)
     float4 albedo = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
     if (albedo.a < 0.3f)
         discard;
+    
+  
+    
 
     // 1. 노멀맵 (Tangent Space)
     float3 nTS;
@@ -133,7 +136,7 @@ PS_OUT PS_MAIN(PS_IN Input)
     float3 T = normalize(Input.vTangent.xyz);
 
     // Binormal은 절대 입력값 쓰지 말 것
-    float3 B = -normalize(cross(T, N));
+    float3 B = -normalize(cross(N, T));
 
     //만약 여전히 반 갈라지면 여기 한 줄만 토글
     // B *= -1.0f;
@@ -151,7 +154,16 @@ PS_OUT PS_MAIN(PS_IN Input)
         Input.vProjPos.z / Input.vProjPos.w,
         Input.vProjPos.w,
         0.f, 0.f
+    
     );
+    
+    float3 Tmpcolor = saturate(Out.vDiffuse.rgb + float3(2.5, 0.0, 0.0));
+    Out.vDiffuse.rgb = lerp(Out.vDiffuse.rgb, Tmpcolor, b_Damage);
+    
+    float flash = abs(sin(g_Time * 20));
+    if (flash > 0.5)
+        discard;
+
 
     return Out;
 }
@@ -186,6 +198,15 @@ PS_OUT PS_NonNormal(PS_IN Input)
     Out.vDepth = vector(Input.vProjPos.z / Input.vProjPos.w,
                         Input.vProjPos.w, 0.f, 0.f);
     
+    
+       
+    float3 Tmpcolor = saturate(Out.vDiffuse.rgb + float3(2.5, 0.0, 0.0));
+    Out.vDiffuse.rgb = lerp(Out.vDiffuse.rgb, Tmpcolor, b_Damage);
+    
+    float flash = abs(sin(g_Time * 20));
+    if (flash > 0.5)
+        discard;
+    
     return Out;
     
 }
@@ -212,6 +233,8 @@ PS_OUT PS_Alpha(PS_IN In)
     Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, ///0~1사이 
                         In.vPosition.w, //월드 z, 
                         0.f, 0.f);
+    
+    
    
     return Out;
 }

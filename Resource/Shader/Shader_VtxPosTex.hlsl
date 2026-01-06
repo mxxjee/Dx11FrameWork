@@ -68,6 +68,8 @@ float4 PS_Effect(PS_IN Input): SV_Target0
     
     color *= g_Alpha;
 
+    color.rgb*= g_fIntensity;
+    
     
     return color;
 }
@@ -140,6 +142,8 @@ float4 PS_RollCut(PS_IN Input) : SV_Target0
 
 float4 PS_ChargeComplete(PS_IN Input) : SV_Target0
 {
+    float2 centeredUV = Input.vTexcoord - 0.5f; // 중심을 (0,0)으로 이동
+
     float dist = distance(Input.vTexcoord, float2(0.5f, 0.5f));
 
     if(dist<g_Progress.x)
@@ -415,7 +419,7 @@ technique11 DefaultTechnique
                                 //버전 , 진입함수 설정
         VertexShader = compile vs_5_0 VS_MAIN();
         GeometryShader = NULL;
-        PixelShader = compile ps_5_0 PS_ChargeComplete();
+        PixelShader = compile ps_5_0 PS_Effect();
 
     }
 

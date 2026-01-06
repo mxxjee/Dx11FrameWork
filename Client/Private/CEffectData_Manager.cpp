@@ -101,6 +101,38 @@ HRESULT CEffectData_Manager::Load_AllData()
             Data->InitScale.z = jEffectData["Scale"][2].get<float>();
             Data->InitScale.w = jEffectData["Scale"][3].get<float>();
 
+            if (jEffectData.contains("TargetScale"))
+            {
+                Data->TargetScale.x = jEffectData["TargetScale"][0].get<float>();
+                Data->TargetScale.y = jEffectData["TargetScale"][1].get<float>();
+                Data->TargetScale.z = jEffectData["TargetScale"][2].get<float>();
+                Data->TargetScale.w = jEffectData["TargetScale"][3].get<float>();
+
+                Data->fScaleSpeed = jEffectData["fScaleSpeed"].get<float>();
+
+                Data->vRotationAxis.x = jEffectData["vRotationAxis"][0].get<float>();
+                Data->vRotationAxis.y = jEffectData["vRotationAxis"][1].get<float>();
+                Data->vRotationAxis.z = jEffectData["vRotationAxis"][2].get<float>();
+                Data->vRotationAxis.w = jEffectData["vRotationAxis"][3].get<float>();
+                Data->fRotationSpeed = jEffectData["fRotationSpeed"].get<float>();
+
+                Data->vMoveDir.x = jEffectData["vMoveDir"][0].get<float>();
+                Data->vMoveDir.y = jEffectData["vMoveDir"][1].get<float>();
+                Data->vMoveDir.z = jEffectData["vMoveDir"][2].get<float>();
+                Data->vMoveDir.w = jEffectData["vMoveDir"][3].get<float>();
+                Data->fMoveSpeed = jEffectData["fMoveSpeed"].get<float>();
+
+
+                Data->bUseScaleAnim = jEffectData["bUseScaleAnim"].get<bool>();
+                Data->bUseRotationAnim = jEffectData["bUseRotationAnim"].get<bool>();
+                Data->bUseMoveAnim = jEffectData["bUseMoveAnim"].get<bool>();
+               
+            }
+
+            if (jEffectData.contains("fIntensity"))
+                Data->fIntensity = jEffectData["fIntensity"].get<float>();
+
+
             stringID ID = stringID(Name);
             m_Datas.emplace(ID.m_Hash, Data);
         }
@@ -125,6 +157,9 @@ HRESULT CEffectData_Manager::Save_To_Json(wstring& ModelName, EffectData Data)
     jMeta["Speed"] = Data.fSpeed;
     jMeta["Loop"] = Data.m_bLoop;
 
+
+
+
     json OffSet = json::array();
     OffSet.push_back(Data.InitOffSet.x);
     OffSet.push_back(Data.InitOffSet.y);
@@ -147,6 +182,40 @@ HRESULT CEffectData_Manager::Save_To_Json(wstring& ModelName, EffectData Data)
     Scale.push_back(Data.InitScale.w);
     jMeta["Scale"] = Scale;
 
+    /////////메쉬자체의 애니값///////
+    ///////Scale//////////
+    jMeta["bUseScaleAnim"] = Data.bUseScaleAnim;
+
+    json TargetScale = json::array();
+    TargetScale.push_back(Data.TargetScale.x);
+    TargetScale.push_back(Data.TargetScale.y);
+    TargetScale.push_back(Data.TargetScale.z);
+    TargetScale.push_back(1.f);
+    jMeta["TargetScale"] = TargetScale;
+    jMeta["fScaleSpeed"] = Data.fScaleSpeed;
+
+    ///////Rotation//////////
+    jMeta["bUseRotationAnim"] = Data.bUseRotationAnim;
+
+    json vRotationAxis = json::array();
+    vRotationAxis.push_back(Data.vRotationAxis.x);
+    vRotationAxis.push_back(Data.vRotationAxis.y);
+    vRotationAxis.push_back(Data.vRotationAxis.z);
+    vRotationAxis.push_back(1.f);
+    jMeta["vRotationAxis"] = vRotationAxis;
+    jMeta["fRotationSpeed"] = Data.fRotationSpeed;
+
+    ///////Rotation//////////
+    jMeta["bUseMoveAnim"] = Data.bUseMoveAnim;
+    json vMoveDir = json::array();
+    vMoveDir.push_back(Data.vMoveDir.x);
+    vMoveDir.push_back(Data.vMoveDir.y);
+    vMoveDir.push_back(Data.vMoveDir.z);
+    vMoveDir.push_back(0.f);
+
+    jMeta["vMoveDir"] = vMoveDir;
+    jMeta["fMoveSpeed"] = Data.fMoveSpeed;
+    jMeta["fIntensity"] = Data.fIntensity;
     string FinalPath = "../../Resource/Data/EffectData/"+WStringToUTF8(ModelName)+".json";
     ofstream file(FinalPath);
     file << std::setw(4) << jMeta;

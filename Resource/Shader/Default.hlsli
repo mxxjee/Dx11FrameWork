@@ -26,6 +26,7 @@ float g_Time;
 float g_Speed;
 
 float4 m_bHasNormalMap = float4(1.f, 0.f, 0.f, 0.f);
+float g_fIntensity = 1.f;
 
 
 #endif

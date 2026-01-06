@@ -30,10 +30,18 @@ void CPlayerHoldAttackState::Enter(CPlayer* pPlayer)
     m_eNextAnim = NextAnim::NONE;
 
 
+    m_pGameInstance->Invoke(1.f, 0.f, false, false, [this,pPlayer]()
+        {
+            OnChargeCompleteEnter(pPlayer);
+        },pPlayer);
 }
 
 bool CPlayerHoldAttackState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
+
+   
+
+
 
     //Hold상태일 시 움직이는 애니메이션에 따른 처리
     Hold_Movement(pPlayer);
@@ -45,6 +53,7 @@ bool CPlayerHoldAttackState::Update(CPlayer* pPlayer, _float fTimeDelta)
 
     else if (m_bChangeState)
         ChangeState(pPlayer);
+
 
     return true;
 }
@@ -153,6 +162,13 @@ void CPlayerHoldAttackState::ChangeState(CPlayer* pPlayer)
     }
 
     m_bChangeState = false;
+}
+
+void CPlayerHoldAttackState::OnChargeCompleteEnter(CPlayer* pPlayer)
+{
+    //이펙트소환
+    pPlayer->AnimNotify_End(PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_ST_END);
+
 }
 
 void CPlayerHoldAttackState::Hold_Movement(CPlayer* pPlayer)

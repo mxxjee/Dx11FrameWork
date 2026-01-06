@@ -15,6 +15,15 @@ sampler PointSampler = sampler_state
 
 };
 
+sampler MirrorSampler = sampler_state
+{
+    Filter = MIN_MAG_MIP_POINT;
+    AddressU = mirror;
+    AddressV = mirror;
+
+};
+
+
 ///////RS//////
 RasterizerState RS_Default
 {

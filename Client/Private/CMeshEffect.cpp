@@ -33,6 +33,8 @@ HRESULT CMeshEffect::Initialize_Prototype()
 HRESULT CMeshEffect::Initialize_Copytype(void* pArg)
 {
     MESHEFFECT_DESC* pDesc = static_cast<MESHEFFECT_DESC*>(pArg);
+    m_DataName = pDesc->modelName;
+
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
@@ -42,24 +44,7 @@ HRESULT CMeshEffect::Initialize_Copytype(void* pArg)
     if (FAILED(Ready_Resource(pArg)))
         return E_FAIL;
 
-    m_DataName = pDesc->modelName;
-    EffectData* pData=m_pEffectData_Manager->Find_Data(m_DataName);
-    if (pData)
-    {
-        m_LocalData = *pData;
-        m_pTransformCom->Rotation(_float3(m_LocalData.InitRotation.x, m_LocalData.InitRotation.y, m_LocalData.InitRotation.z));
-        m_pTransformCom->Set_Scale(m_LocalData.InitScale);
 
-        _vector vPos = m_pTransformCom->Get_State(STATE::POSITION);
-        m_pTransformCom->Set_State(STATE::POSITION,vPos+XMVectorSetW(XMLoadFloat4(&m_LocalData.InitOffSet),0.f));
-
-
-       
-    }
-    /*spawn시에 필요한 행렬만들어주기*/
-
-  //  Update_Matrix();
-    Make_LocalMatrix();
 
 
 

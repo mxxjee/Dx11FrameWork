@@ -13,6 +13,20 @@ struct EffectData
 	_float4		InitRotation = _float4(0.f, 0.f, 0.f, 0.f);
 	_float4		InitScale = _float4(1.f, 1.f, 1.f, 1.f);
 
+	bool	bUseScaleAnim = false;
+	_float4 TargetScale;
+	_float  fScaleSpeed = 1.0f;
+
+	bool    bUseRotationAnim = false;
+	_float4 vRotationAxis = { 0.f, 0.f, 1.f,1.f };
+	_float  fRotationSpeed = 0.0f;
+
+	bool    bUseMoveAnim = false;
+	_float4 vMoveDir = { 0.f, 1.f, 0.f,0.f }; 
+	_float  fMoveSpeed = 0.0f;
+	
+	_float  fIntensity = 1.f;
+
 
 };
 

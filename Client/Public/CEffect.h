@@ -95,6 +95,10 @@ protected:
     const _float4x4* m_pParentMatrix = nullptr;
     const _float4x4* m_pSocketMatrix = nullptr;
 
+
+    _float      ScaleLerpTime = 0.f;
+    _float4     CurrentScale;
+    _float4x4   CombinedMatrix;
 };
 
 NS_END
