@@ -91,6 +91,7 @@
 #include "CQuadEffect.h"
 #include "CTrailEffect.h"
 #include "CMeshEffect_RollCut.h"
+#include "CMeshEffect_HitSpark.h"
 
 
 
@@ -438,6 +439,7 @@ HRESULT CLoader::Loading_Boss()
     lstrcpy(m_szFPS, TEXT("로딩완료!"));
     m_iCurcount += 30;
 
+    m_iCurcount += 30;
 
     m_isFinished = true;
 
@@ -823,8 +825,6 @@ HRESULT CLoader::Register_GameObjects()
         return E_FAIL;
 
 
-    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"MeshEffect_RollCut", CMeshEffect_RollCut::Create(m_pDevice, m_pDeviceContext))))
-        return E_FAIL;
 
     //////////////////////////////
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Wall", CWall::Create(m_pDevice, m_pDeviceContext))))
@@ -842,7 +842,14 @@ HRESULT CLoader::Register_Particles()
 {
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"MeshEffect", CMeshEffect::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
-    
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"MeshEffect_RollCut", CMeshEffect_RollCut::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"MeshEffect_HitSpark", CMeshEffect_HitSpark::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+
     return S_OK;
 }
 

@@ -18,6 +18,7 @@ CTrailEffect::CTrailEffect(const CTrailEffect& rhs)
 {
 }
 
+#ifdef _DEBUG
 void CTrailEffect::Render_DebugImgui()
 {
     __super::Render_DebugImgui();
@@ -89,6 +90,7 @@ void CTrailEffect::Render_DebugImgui()
 
 
 }
+#endif // _DEBUG
 
 HRESULT CTrailEffect::Initialize_Prototype()
 {

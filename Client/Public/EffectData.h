@@ -15,7 +15,7 @@ struct EffectData
 	_float4		InitScale = _float4(1.f, 1.f, 1.f, 1.f);
 
 	bool	bUseScaleAnim = false;
-	_float4 TargetScale;
+	_float4 TargetScale = { 1.f,1.f,1.f,1.f };
 	_float  fScaleSpeed = 1.0f;
 
 	bool    bUseRotationAnim = false;
@@ -39,6 +39,7 @@ enum EFFECT_TYPE
 	SLASH_CHARGE_COMPLETE,
 	SLASH2,//차징공격
 	SLASHTRAIL,//일반공격트레일
+	HITSPARKLE,
 	EFFECT_TYPE_END
 };
 

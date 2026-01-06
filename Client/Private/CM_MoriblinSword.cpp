@@ -591,6 +591,9 @@ void CM_MoriblinSword::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 			_float3 vDir;
 			XMStoreFloat3(&vDir, m_pTransformCom->Get_State(STATE::LOOK));
 			m_pTransformCom->AddImpulse(-0.3f, vDir);
+
+			_float4x4 CombinedMatrix = pPart->Get_CombinedWorldMatrix();
+			Spawn_HitSparkle(XMLoadFloat4x4(&CombinedMatrix));
 		}
 
 
@@ -611,6 +614,8 @@ void CM_MoriblinSword::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 
 		}
 		
+	
+
 	}
 		break;
 	

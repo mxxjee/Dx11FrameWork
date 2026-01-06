@@ -134,13 +134,17 @@ void CMeshEffect_RollCut::Stop()
 
 }
 
+#ifdef _DEBUG
 void CMeshEffect_RollCut::Render_DebugImgui()
 {
     __super::Render_DebugImgui();
 
     if (ImGui::DragFloat("RotationPerSec", (float*)&fRotationPerSpeed))
     {
-        
+
 
     }
 }
+
+#endif // _DEBUG
+

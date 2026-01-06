@@ -647,6 +647,7 @@ void CTransform::Set_Scale(_float4 vScale)
 	Set_State(STATE::UP, XMVector3Normalize(vUp) * vScale.y);
 	Set_State(STATE::LOOK, XMVector3Normalize(vLook) * vScale.z);
 
+	
 
 }
 

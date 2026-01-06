@@ -148,7 +148,21 @@ void CLevel_Town::Update(const _float fTimeDelta)
         pTestObject->Get_Transform()->Set_State(STATE::POSITION, vPos);
 
     }
+     
+    if(CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::M))
+    {
+        CGameObject* pObj = m_pGameInstance->Find_GameObject(m_iLevelID,
+            L"UI_Layer", L"MinimapQuad");
 
+        if (pObj)
+        {
+            if (pObj->Is_Active())
+                pObj->Set_Active(false);
+            else
+                pObj->Set_Active(true);
+
+        }
+    }
 
 
     return;
@@ -1163,6 +1177,55 @@ void CLevel_Town::OnEnter()
 
 
         },pPlayer);
+
+
+
+
+    //////////////////////////////
+    //for (int i = 0; i < 5; ++i)
+    //{
+    //    CMonster::MonsterDesc Moriblindesc;
+
+    //    CMonster_Body::MONSTER_BODY_DESC MoriblinbodyDesc;
+    //    MoriblinbodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+    //    MoriblinbodyDesc.modelName = L"MoriblinSword";
+    //    MoriblinbodyDesc.m_iLevelID = m_iLevelID;
+
+    //    Moriblindesc.BodyDesc = &MoriblinbodyDesc;
+
+
+    //    Moriblindesc.iAttack = 10;
+    //    Moriblindesc.MaxHp = 3;
+    //    Moriblindesc.fActionRange = 3.f;
+    //    Moriblindesc.m_iLevelID = m_iLevelID;
+    //    Moriblindesc.RoamRadius = 5.f;
+
+    //    //첫 스폰위치
+    //    Moriblindesc.iHomeIdx = (5+i*2);
+
+    //    Moriblindesc.ObjTag = L"MoriblinSword" + to_wstring(100*i);
+    //    CTransform::TRANSFORM_DESC MoriblinTransDesc = {};
+
+    //    _vector vPos = m_pGameInstance->Get_CellPos_By_MainCells(Moriblindesc.iHomeIdx);
+
+    //    MoriblinTransDesc.vLocalRotation = { 0.f,180.f,0.f,1.f };
+    //    XMStoreFloat4(&MoriblinTransDesc.vLocalPosition, vPos);
+
+    //    MoriblinTransDesc.fSpeedPerSec = 2.f;
+    //    MoriblinTransDesc.fRotationPerSec = 10.f;
+
+    //    Moriblindesc.TransformDesc = &MoriblinTransDesc;
+
+
+
+    //    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+    //        PROTO_OBJ_NAME(L"CM_MoriblinSword"),
+    //        ENUM_TO_UINT(LEVEL_ID::TOWN),
+    //        L"Monster_Layer", &Moriblindesc)))
+    //        return;
+    //}
+   
+
 }
 
 void CLevel_Town::OnResume(_uint iPreLevel)

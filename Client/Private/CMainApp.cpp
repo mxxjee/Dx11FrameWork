@@ -584,7 +584,9 @@ void CMainApp::Free()
 #ifdef _DEBUG
 	Safe_Release(pImGui_Manager);
 #endif
-	
+
+	CEffectPoolManager::GetInstance()->DestroyInstance();
+
 	CItem_Manager::GetInstance()->DestroyInstance();
 	CInventory_Manager::GetInstance()->DestroyInstance();
 	
@@ -594,11 +596,9 @@ void CMainApp::Free()
 	CInput_Manager::GetInstance()->DestroyInstance();
 
 	CEffectData_Manager::GetInstance()->DestroyInstance();
-	CEffectPoolManager::GetInstance()->DestroyInstance();
-
+	
 
 	m_pGameInstance->Release_Engine();
-
 
 
 

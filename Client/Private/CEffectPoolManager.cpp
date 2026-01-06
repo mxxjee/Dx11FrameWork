@@ -1,6 +1,8 @@
 #include "CEffectPoolManager.h"
 #include "CEffect.h"
 #include "CGameInstance.h"
+#include "CLevel.h"
+
 
 
 IMPLEMENT_SINGLETON(CEffectPoolManager)
@@ -55,13 +57,18 @@ CEffect* CEffectPoolManager::Request_Spawn(const wstring& ProtoTag, void* pArg)
 
 	CEffect* pEffect = dynamic_cast<CEffect*>(m_pGameInstance->Clone_Prototype(
 		PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), pArg));
-	pEffect->Set_SceneID(m_pGameInstance->Get_CurrentLevelID());
+	
+    _uint iCurrentID = m_pGameInstance->Get_CurrentLevelID();
+    if (iCurrentID == ENUM_TO_UINT(LEVEL_ID::LOADING))
+        iCurrentID = m_pGameInstance->Get_CurrentLevel()->Get_NextLevelID();
+
+    pEffect->Set_SceneID(iCurrentID);
 
    
 	if (pEffect)
 	{
        
-        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(m_pGameInstance->Get_CurrentLevelID(), L"Particle_Layer", pEffect)))
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(iCurrentID, L"Particle_Layer", pEffect)))
         {
             Safe_Release(pEffect);
             return nullptr;
@@ -93,7 +100,7 @@ void CEffectPoolManager::Free()
     {
         for (auto& pObj : pair.second)
         {
-            Safe_Release(pObj);
+           Safe_Release(pObj);
         }
     
     }

@@ -112,6 +112,8 @@ HRESULT CEffect::Initialize_Copytype(void* pArg)
 	m_DataName = pDesc->DataName;
 
 
+    XMStoreFloat4x4(&CombinedMatrix, XMMatrixIdentity());
+    XMStoreFloat4x4(&OriginMatrix, XMMatrixIdentity());
 
     EffectData* pData = m_pEffectData_Manager->Find_Data(m_DataName);
     if (pData)
@@ -179,9 +181,19 @@ void CEffect::Update(_float fTimeDelta)
 
         //보간 값 계산
 
+        
+        _vector vMoveDir= XMVector4Normalize(XMLoadFloat4(&m_LocalData.vMoveDir));
+
+        //originmarix가있다면 그 look방향 * 내가갈방향
+        if (!XMMatrixIsIdentity(XMLoadFloat4x4(&OriginMatrix)))
+        {
+            _vector vLook=XMLoadFloat4x4(&OriginMatrix).r[ENUM_TO_UINT(STATE::LOOK)];
+            vMoveDir = vLook * XMVector4Normalize(XMLoadFloat4(&m_LocalData.vMoveDir));
+
+        }
 
         XMStoreFloat4(&CurrentMove, XMVectorLerp(XMLoadFloat4(&m_LocalData.InitOffSet),
-            XMLoadFloat4(&m_LocalData.InitOffSet) * XMLoadFloat4(&m_LocalData.vMoveDir),
+            XMLoadFloat4(&m_LocalData.InitOffSet) * vMoveDir,
             MoveLerpTime));
 
 
@@ -232,14 +244,14 @@ void CEffect::Update_Late(_float fTimeDelta)
     else
     {
 
-        XMStoreFloat4x4(&CombinedMatrix, XMMatrixMultiply(LocalMatrix, OriginMatrix));
+        XMStoreFloat4x4(&CombinedMatrix, XMMatrixMultiply(LocalMatrix, XMLoadFloat4x4(&OriginMatrix)));
         
     }
 
     m_pTransformCom->Set_WorldMatrix(CombinedMatrix);
 }
 
-
+#ifdef _DEBUG
 void CEffect::Render_DebugImgui()
 {
 	__super::Render_DebugImgui();
@@ -367,6 +379,7 @@ void CEffect::Render_DebugImgui()
 
     }
 }
+#endif // _DEBUG
 void CEffect::Update_Render(_float fTimeDelta)
 {
 	__super::Update_Render(fTimeDelta);

@@ -100,6 +100,8 @@ public:
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
+protected:
+    void        Spawn_HitSparkle(_matrix Matrix);
 public: 
     virtual void        Set_Dead();
     void        Set_CollisionEnable(bool _b);
@@ -164,6 +166,10 @@ protected:
     int             m_iNextCell;            //다음으로 이동할 셀.
 
     vector<int>     m_RandomCells;      //정찰할때 사용할 randomcell들을 담는다.
+
+
+protected:
+    vector<tagGameObjectDesc*>     m_HitParticle;
 };
 
 NS_END

@@ -1,0 +1,54 @@
+{
+    "Color": [
+        1.0,
+        0.38235294818878174,
+        0.0,
+        1.0
+    ],
+    "LifeTime": 0.0,
+    "Loop": false,
+    "OffSet": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+    ],
+    "Rotation": [
+        -90.0,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "Scale": [
+        0.5,
+        0.5,
+        0.5,
+        1.0
+    ],
+    "Speed": 3.0,
+    "TargetScale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        1.0
+    ],
+    "bUseMoveAnim": false,
+    "bUseRotationAnim": false,
+    "bUseScaleAnim": false,
+    "fIntensity": 2.0,
+    "fMoveSpeed": 0.0,
+    "fRotationSpeed": 0.0,
+    "fScaleSpeed": 5.0,
+    "vMoveDir": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+    ],
+    "vRotationAxis": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+    ]
+}

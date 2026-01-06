@@ -280,6 +280,36 @@ void CMeshEffect::Play()
     m_bStop = false;
     m_fTime = 0.f;
     m_fAlpha = 1.f;
+
+    Make_LocalMatrix();
+
+    if (m_pParentMatrix && m_pSocketMatrix)
+    {
+        //먼저 socket*m_pParentMatrix
+
+        _matrix SocketWorld = XMMatrixMultiply(XMLoadFloat4x4(m_pSocketMatrix),
+            XMLoadFloat4x4(m_pParentMatrix));
+
+        XMStoreFloat4x4(&CombinedMatrix, XMMatrixMultiply(LocalMatrix, SocketWorld));
+    }
+
+    //ParentMAtrix만있을경우
+    else if (m_pParentMatrix)
+    {
+        XMStoreFloat4x4(&CombinedMatrix, XMMatrixMultiply(LocalMatrix, XMLoadFloat4x4(m_pParentMatrix)));
+
+    }
+
+
+
+    else
+    {
+
+        XMStoreFloat4x4(&CombinedMatrix, XMMatrixMultiply(LocalMatrix, XMLoadFloat4x4(&OriginMatrix)));
+
+    }
+
+    m_pTransformCom->Set_WorldMatrix(CombinedMatrix);
 }
 
 void CMeshEffect::Stop()

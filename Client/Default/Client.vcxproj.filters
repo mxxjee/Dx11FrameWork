@@ -412,6 +412,9 @@
     <ClInclude Include="..\Public\CPlayer_AnimNotifyTypes.h">
       <Filter>02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\AnimnotifyType</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CMeshEffect_HitSpark.h">
+      <Filter>02.GameObjects\98.Effect\MeshEffect\HitSpark</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -884,6 +887,9 @@
     <Filter Include="02.GameObjects\00.WorldObjects\01.Models\02.Actors\Player\AnimnotifyType">
       <UniqueIdentifier>{8583b293-041c-438f-9b8a-a4f663fc1943}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\98.Effect\MeshEffect\HitSpark">
+      <UniqueIdentifier>{1083d366-67be-4d47-b2be-56e8f884de2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1269,6 +1275,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CQuadEffect.cpp">
       <Filter>02.GameObjects\98.Effect\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMeshEffect_HitSpark.cpp">
+      <Filter>02.GameObjects\98.Effect\MeshEffect\HitSpark</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

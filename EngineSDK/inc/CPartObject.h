@@ -45,6 +45,7 @@ protected:
     _float4x4       m_CombinedWorldMatrix = {};     //로컬 * parent matrix
 
 public:
+    _float4x4       Get_CombinedWorldMatrix() { return m_CombinedWorldMatrix; }
     //m_combineWorldMAtrix를 도출하는함수
     void    SetUp_CombinedWorldMatrix(_fmatrix ParentMatrix); 
 

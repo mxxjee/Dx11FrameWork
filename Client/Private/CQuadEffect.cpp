@@ -250,7 +250,7 @@ void CQuadEffect::Play()
     else
     {
 
-        XMStoreFloat4x4(&CombinedMatrix, XMMatrixMultiply(LocalMatrix, OriginMatrix));
+        XMStoreFloat4x4(&CombinedMatrix, XMMatrixMultiply(LocalMatrix, XMLoadFloat4x4(&OriginMatrix)));
 
     }
 
@@ -268,9 +268,12 @@ void CQuadEffect::Stop()
 }
 
 
+#ifdef _DEBUG
+
 void CQuadEffect::Render_DebugImgui()
 {
     __super::Render_DebugImgui();
-  
+
 
 }
+#endif // _DEBUG

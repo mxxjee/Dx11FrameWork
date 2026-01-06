@@ -29,6 +29,7 @@ namespace UICreator
 	HRESULT		Create_ItemGet_UI(wstring LayerTag);
 	HRESULT		Create_ItemGet_Desc_UI(wstring LayerTag);
 	HRESULT		Create_See_Desc_UI(wstring LayerTag);
+	HRESULT		Create_EmptySlot_UI(wstring LayerTag);
 
 
 	HRESULT		Create_InvenSlot(wstring LayerTag);

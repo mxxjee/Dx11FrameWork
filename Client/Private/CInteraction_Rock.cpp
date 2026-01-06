@@ -8,6 +8,8 @@
 #include "CNavigation.h"
 #include "CPlayer.h"
 #include "CBody.h"
+#include "CInventory_Manager.h"
+
 USING(Client)
 CInteraction_Rock::CInteraction_Rock(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
     :CInteractionObject(pDevice,pContext)
@@ -26,6 +28,8 @@ HRESULT CInteraction_Rock::Initialize_Copytype(void* pArg)
 
     m_pCollider->Set_Trigger(false);
     m_BehaviorType = Interact_Behavior_Type::CARRYABLE;
+
+    m_pInventory_Manager = CInventory_Manager::GetInstance();
 
     return S_OK;
 }
@@ -138,11 +142,25 @@ void CInteraction_Rock::Exit_InteractRange()
 
 void CInteraction_Rock::Enter_Interaction()
 {
+    InvenSlot* pSlot = m_pInventory_Manager->Get_XSlot();
+    if (pSlot == nullptr || pSlot->ItemType != ItemType::POWER_BRACELET)
+    {
+        wstring wstr = L"아직 들기엔 무거운거같은데..";
+        m_pGameInstance->BroadCastEvent(L"UpdateEmptySlotText", &wstr);
+        m_pGameInstance->BroadCastEvent(L"OnEmptySlotUIShow", nullptr);
+        
+        m_bCanCarry = false;
+        return;
+    }
+
+
     CheckTrue(m_pPlayer->Get_ActionControl()->m_bCarry);
     m_bCall_Exit_Interaction = false;
 
+
     m_pPlayer->Get_ActionControl()->m_bCarry = true;
     m_pGameInstance->SetActiveGroup(L"Interaction_PopUp_Carry", false);
+    m_bCanCarry = true;
 
     //anim notify에 의해 들게된다..
 
@@ -155,7 +173,11 @@ void CInteraction_Rock::Stay_Interaction(_float fTimeDelta)
 void CInteraction_Rock::Exit_Interaction()
 {
     //인터렉션 취소(A한번 더누름)
-
+    if (!m_bCanCarry)
+    {
+        m_pGameInstance->BroadCastEvent(L"OnEmptySlotUIHide", nullptr);
+        return;
+    }
     CheckTrue(m_bCall_Exit_Interaction);
     m_bCall_Exit_Interaction = true;
 

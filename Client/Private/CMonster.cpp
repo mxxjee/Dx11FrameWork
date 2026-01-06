@@ -12,7 +12,8 @@
 #include "CPartObject.h"
 #include "CCell.h"
 #include "CCamera_Base.h"
-
+#include "CMeshEffect_HitSpark.h"
+#include "CEffectPoolManager.h"
 
 
 
@@ -82,7 +83,33 @@ HRESULT CMonster::Initialize_Copytype(void* pArg)
     //    m_pNavigationCom->Set_CurrentIdx(m_pTransformCom->Get_State(STATE::POSITION));
 
     //
+#pragma region 스파클
 
+        /////////큰 hitsparkle//////
+    CMeshEffect::MESHEFFECT_DESC* MeshEffectDesc =new CMeshEffect::MESHEFFECT_DESC();
+    MeshEffectDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+    MeshEffectDesc->modelName = L"HitFlash";
+    MeshEffectDesc->ShaderName = L"MeshEffect";
+    MeshEffectDesc->PassName = "Default";
+    MeshEffectDesc->DataName = L"HitFlash";
+    MeshEffectDesc->ObjTag = L"HitFlash";
+
+    m_HitParticle.push_back(MeshEffectDesc);
+
+
+    ///작은 스파클/////
+    CMeshEffect::MESHEFFECT_DESC* SparkleEffectDesc = new CMeshEffect::MESHEFFECT_DESC();
+    SparkleEffectDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+    SparkleEffectDesc->modelName = L"HitSpark";
+    SparkleEffectDesc->ShaderName = L"MeshEffect";
+    SparkleEffectDesc->PassName = "Default";
+    SparkleEffectDesc->DataName = L"HitSpark";
+    SparkleEffectDesc->ObjTag = L"HitSpark";
+
+    m_HitParticle.push_back(SparkleEffectDesc);
+
+ 
+#pragma endregion
   
     
     return S_OK;
@@ -409,7 +436,31 @@ void CMonster::Free()
     }
 
     Safe_Release(m_pCollider);
+
+    for (auto& pInfo : m_HitParticle)
+        Safe_Delete(pInfo);
+
+    m_HitParticle.clear();
+
     __super::Free();
+}
+
+void CMonster::Spawn_HitSparkle(_matrix Matrix)
+{
+    CEffect* pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(L"MeshEffect", m_HitParticle[0]);
+    if (pEffect)
+    {
+        pEffect->Set_OrigniMatrix(Matrix);
+        pEffect->Play();
+    }
+
+    CEffect* pSparkleEffect = CEffectPoolManager::GetInstance()->Request_Spawn(L"MeshEffect_HitSpark", m_HitParticle[1]);
+    if (pSparkleEffect)
+    {
+        pSparkleEffect->Set_OrigniMatrix(Matrix);
+        pSparkleEffect->Play();
+    }
+
 }
 
 void CMonster::Set_Dead()
@@ -473,10 +524,15 @@ void CMonster::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
             _float3 vDir;
             XMStoreFloat3(&vDir, m_pTransformCom->Get_State(STATE::LOOK));
             m_pTransformCom->AddImpulse(-0.3f, vDir);
+
+            _float4x4 CombinedMatrix = pPart->Get_CombinedWorldMatrix();
+            Spawn_HitSparkle(XMLoadFloat4x4(&CombinedMatrix));
         }
-            
+
+     
     }
        
+    
         break;
     }
 

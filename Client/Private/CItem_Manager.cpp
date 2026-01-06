@@ -30,6 +30,7 @@ HRESULT CItem_Manager::Initialize()
     pMushroomItem->ItemType = ItemType::MUSHROOM;
     pMushroomItem->ItemDesc = L"¹ö¼¸À» ÁÖ¿ü´Ù!\nÇâ±ßÇÑ ³¿»õ°¡ Äà¼Ó¿¡ ÆÛÁø´Ù.";
     pMushroomItem->TexKey = L"Mushroom";
+    pMushroomItem->m_bCanUse = true;
     pMushroomItem->InfoDesc = L"½£ ¼ÓÀÇ ÀÌ»óÇÑ ¹ö¼¸";
 
     m_ItmInfos[ENUM_TO_UINT(ItemType::MUSHROOM)] = (pMushroomItem);
@@ -45,6 +46,7 @@ HRESULT CItem_Manager::Initialize()
     pFeatherItem->ItemType = ItemType::FEATHER;
     pFeatherItem->ItemDesc = L"±êÅÐÀ» ¾ò¾ú´Ù!\n¸ðÀ¸¸é ¹«½¼ÀÏÀÌ »ý±æ±î...?";
     pFeatherItem->TexKey = L"Feather";
+    pFeatherItem->m_bCanUse = false;
     pFeatherItem->InfoDesc = L"Áö´Ï°í ÀÖÀ¸¸é °¡º±°Ô Á¡ÇÁÇÒ ¼ö ÀÖ´Ù.";
     m_ItmInfos[ENUM_TO_UINT(ItemType::FEATHER)] = (pFeatherItem);
 
@@ -53,6 +55,7 @@ HRESULT CItem_Manager::Initialize()
     pPowerBracelet->ItemDesc = L"ÆÄ¿öÆÈÂî¸¦ ¾ò¾ú´Ù!\nÈûÀÌ ³ÑÃÄ³­´Ù!¹¹µçÁö µé ¼ö ÀÖÀ» °Í °°Àº ±âºÐ!";
     pPowerBracelet->TexKey = L"PowerBracelet";
     pPowerBracelet->InfoDesc = L"ÈûÀÌ ¼Ú¾Æ³ª´Â ½ÅºñÇÑ ÆÈÂî.";
+    pPowerBracelet->m_bCanUse = false;
     m_ItmInfos[ENUM_TO_UINT(ItemType::POWER_BRACELET)] = (pPowerBracelet);
 
     ITMINFO* pMagicPowder = new ITMINFO;

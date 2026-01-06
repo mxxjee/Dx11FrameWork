@@ -86,7 +86,8 @@ protected:
 
 public:
     void        Make_LocalMatrix();
-    void        Set_OrigniMatrix(_matrix Matrix) { OriginMatrix = Matrix; }
+    _float4x4   Get_CombinedMatrix() {return CombinedMatrix; }
+    void        Set_OrigniMatrix(_matrix Matrix) { XMStoreFloat4x4(&OriginMatrix, Matrix); }
 protected:
     _float              m_fAlpha = 1.f;
     _float              m_fFadeOutSpeed = 2.f;
@@ -105,7 +106,7 @@ protected:
 
 
     _float4x4   CombinedMatrix;
-    _matrix     OriginMatrix;
+    _float4x4     OriginMatrix;
 };
 
 NS_END

@@ -3,6 +3,8 @@
 
 NS_BEGIN(Client)
 class CInteraction_TriggerBox;
+class CInventory_Manager;
+
 class CInteraction_Rock :
     public CInteractionObject
 {
@@ -36,8 +38,8 @@ public:
 
 private:
     class     CInteraction_TriggerBox* m_pTriggerBox = nullptr;
-
-
+    class       CInventory_Manager* m_pInventory_Manager = nullptr;
+    bool        m_bCanCarry = false;
 };
 NS_END
 

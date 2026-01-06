@@ -51,6 +51,7 @@ public:
 
 		~tagCShaderInfo()
 		{
+			if (m_pPassInfos.empty()) return;
 
 			for (auto& pair : m_pPassInfos)
 			{

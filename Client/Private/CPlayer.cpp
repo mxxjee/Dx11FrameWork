@@ -287,8 +287,8 @@ void CPlayer::Update_Input(_float fTimeDelta)
 
     //NPC¹æÀÌ ¾Æ´Ò¶§¸¸ Á¡ÇÁ/¾îÅÃ/½¯µå °¡´É
     // /////////ÀÌÆåÆ®²ôÅº¸é 
-    //if (iCurrentLevel != ENUM_TO_UINT(LEVEL_ID::ROOM) &&
-    //    iCurrentLevel != ENUM_TO_UINT(LEVEL_ID::SPAWN))
+    if (iCurrentLevel != ENUM_TO_UINT(LEVEL_ID::ROOM) &&
+        iCurrentLevel != ENUM_TO_UINT(LEVEL_ID::SPAWN))
     {
         if (m_ActionControl.m_bCanAttack)
             m_Input.m_bisAttack = m_pInputManager->IsKeyHeld(KeyCode::B);
@@ -301,12 +301,17 @@ void CPlayer::Update_Input(_float fTimeDelta)
             m_Input.m_bisShield = false;
 
         m_Input.m_bisShieldRelease = m_pInputManager->IsKeyReleased(KeyCode::T);
-        if (m_Input.m_bisJump = m_pInputManager->IsKeyPressed(KeyCode::R) && m_iState != ENUM_TO_UINT(CPlayer::PLAYER_STATE::JUMP))
-        {
-            m_pGravity->Jump(20);
-            m_pGravity->SetOnGround(false);
 
+        if (m_pInventoryManager->Get_XSlot() != nullptr && m_pInventoryManager->Get_XSlot()->ItemType == ItemType::FEATHER)
+        {
+            if (m_Input.m_bisJump = m_pInputManager->IsKeyPressed(KeyCode::X) && m_iState != ENUM_TO_UINT(CPlayer::PLAYER_STATE::JUMP))
+            {
+                m_pGravity->Jump(20);
+                m_pGravity->SetOnGround(false);
+
+            }
         }
+    
     }
 
 

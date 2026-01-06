@@ -1490,6 +1490,165 @@ HRESULT UICreator::Create_See_Desc_UI(wstring LayerTag)
     return S_OK;
 }
 
+HRESULT UICreator::Create_EmptySlot_UI(wstring LayerTag)
+{
+    
+    UIGroup ItemEmptyGroup;
+    ItemEmptyGroup.Key = L"ItemEmptyGroup";
+
+
+#pragma region 박스만들기
+    _float OriginY = (g_iWinSizeY >> 1) + 250.f;
+
+    CUI::tagUIDesc        ItemGetFrameDesc = {};
+
+    ItemGetFrameDesc.ObjTag = L"ItemEmptyFrame";
+    ItemGetFrameDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+    ItemGetFrameDesc.TextureKey = L"KeyGetFame2";
+
+    ItemGetFrameDesc.iIdx = 0;
+
+    ItemGetFrameDesc.fSizeX = 1166 * 0.7f;
+    ItemGetFrameDesc.fSizeY = 365.f * 0.7f;
+    ItemGetFrameDesc.fX = g_iWinSizeX >> 1;
+    ItemGetFrameDesc.fY = OriginY;
+
+
+    CTransform::TRANSFORM_DESC TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    ItemGetFrameDesc.TransformDesc = &TransDesc;
+
+    //AlphaAnim등록
+    CUIComponent::UICOMP_DESC  UIDesc = {};
+    ItemGetFrameDesc.UICompDesc = &UIDesc;
+
+    CBase* pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &ItemGetFrameDesc);
+    if (pObj)
+    {
+        CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+            return E_FAIL;
+
+
+        ItemEmptyGroup.push_back(pInstance);
+
+    }
+#pragma endregion
+
+#pragma region 말하는 폰트만들기
+    CFontUI::FONTUI_DESC FontUIDesc;
+    FontUIDesc.FontName = L"Dialogue_Default";
+    FontUIDesc.vDefaultFontColor = _float4(1.f, 1.f, 1.f, 0.5f);
+    FontUIDesc.ObjTag = L"EmptyDesc_Text";
+    FontUIDesc.fSizeX = 0.5f;
+    FontUIDesc.fSizeY = 0.5f;
+    FontUIDesc.m_bUseTypingEffect = true;
+    FontUIDesc.vPosition = _float2(638.58f, 580.80f);
+
+    FontUIDesc.fX = ItemGetFrameDesc.fX + 25.f;
+    FontUIDesc.fY = OriginY + 50.f;
+    FontUIDesc.m_bRandomColor = false;
+    FontUIDesc.Depth = 0.5f - (0.01f);
+
+    FontUIDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+    TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    FontUIDesc.TransformDesc = &TransDesc;
+
+    UIDesc = {};
+    FontUIDesc.UICompDesc = &UIDesc;
+
+    pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FontUI"), &FontUIDesc);
+    CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+        return E_FAIL;
+
+
+    ItemEmptyGroup.push_back(pInstance);
+    m_pGameInstance->Register_UIGroup(ItemEmptyGroup);
+
+
+
+    //폰트 이벤트 바인딩
+    CGameInstance::GetInstance()->RegisterEvent(L"UpdateEmptySlotText", [](void* pData)
+        {
+            wstring* pwstrText = static_cast<wstring*>(pData);
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"ItemEmptyGroup");
+            if (pGroup)
+            {
+                CGameObject* pObj = pGroup->Find(L"EmptyDesc_Text");
+                CheckNull(pObj);
+
+                CFontUI* pText = dynamic_cast<CFontUI*>(pObj);
+                CheckNull(pText);
+                pText->Set_Text(*pwstrText);
+
+            }
+        });
+#pragma endregion
+
+    ////////////활성/비활성화 
+
+    m_pGameInstance->RegisterEvent(L"OnEmptySlotUIShow", [](void* pData)
+        {
+            CInventory_Manager::ItemGetEvent* ItemEvent = static_cast<CInventory_Manager::ItemGetEvent*>(pData);
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"ItemEmptyGroup");
+            if (pGroup)
+            {
+                for (auto& pair : pGroup->Objects)
+                {
+                    CGameObject* pObj = pair.second;
+                    CUI* pUI = dynamic_cast<CUI*>(pObj);
+                    CheckNull(pUI);
+
+                    pUI->Set_ActiveAnim(0, [pUI]()
+                        {
+                            pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 10.f, false, false);
+                        });
+
+                    if (!pUI->Is_Active())
+                        pUI->OnActivated(true);
+                }
+
+            }
+        });
+
+    m_pGameInstance->RegisterEvent(L"OnEmptySlotUIHide", [](void* pData)
+        {
+            UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"ItemEmptyGroup");
+            if (pGroup)
+            {
+                for (auto& pair : pGroup->Objects)
+                {
+                    CGameObject* pObj = pair.second;
+                    if (pObj->Get_Tag() == L"EmptyDesc_Text")
+                    {
+                        pObj->Set_Active(false);
+                        continue;
+
+                    }
+
+                    CUI* pUI = dynamic_cast<CUI*>(pObj);
+                    CheckNull(pUI);
+
+                    pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 10.f, false, true, false);
+
+                }
+
+
+            }
+        });
+
+
+    m_pGameInstance->SetActiveGroup(ItemEmptyGroup.Key, false);
+
+
+    return S_OK;
+}
+
 HRESULT UICreator::Create_InvenSlot(wstring LayerTag)
 {
     UIGroup InvenSlotGroup;

@@ -243,7 +243,7 @@ bool CInventory_Manager::Use_Item(ItemType eType, int iCount)
 
 void CInventory_Manager::Set_SlotKey(ItemType eType, KeyCode code)
 {
-	
+	int A = 10;
 	InvenSlot* pSlot = Find_Inven(eType);
 
 	CheckNull(pSlot);

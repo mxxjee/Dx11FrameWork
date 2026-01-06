@@ -1,0 +1,52 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "",
+            "METALNESS": "",
+            "MaterialName": "lambert2",
+            "Normal": "",
+            "OPACITY": "",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 1,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 600,
+            "MaterialName": "lambert2",
+            "MeshIdx": 0,
+            "Name": "HitFlash_00__lambert2",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 112
+        }
+    ],
+    "ModelName": "HitFlash"
+}

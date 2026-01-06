@@ -19,6 +19,9 @@
 #include "CLayer.h"
 #include "CInput_Manager.h"
 #include "CMeshEffect.h"
+#include "CEffectPoolManager.h"
+
+#include "CInput_Manager.h"
 
 
 
@@ -78,6 +81,50 @@ HRESULT CLevel_Spawn::Initialize(LevelArgs& args)
 void CLevel_Spawn::Update_Priority(_float fTimeDelta)
 {
     __super::Update_Priority(fTimeDelta);
+    //if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::B))
+    //{
+
+    //    /////////큰 hitsparkle//////
+    //    CMeshEffect::MESHEFFECT_DESC MeshEffectDesc;
+    //    MeshEffectDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+    //    MeshEffectDesc.modelName = L"HitFlash";
+    //    MeshEffectDesc.ShaderName = L"MeshEffect";
+    //    MeshEffectDesc.PassName = "Default";
+    //    MeshEffectDesc.DataName = L"HitFlash";
+    //    MeshEffectDesc.ObjTag = L"HitFlash";
+
+    //    CEffect* pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(L"MeshEffect", &MeshEffectDesc);
+    //    if (pEffect)
+    //    {
+    //        CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+    //        if (pPlayer)
+    //            pEffect->Set_OrigniMatrix(XMLoadFloat4x4(pPlayer->Get_Transform()->Get_WorldMatrixPtr()));
+
+    //        pEffect->Play();
+    //    }
+
+    //    ///작은 스파클/////
+
+    //    MeshEffectDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+    //    MeshEffectDesc.modelName = L"HitSpark";
+    //    MeshEffectDesc.ShaderName = L"MeshEffect";
+    //    MeshEffectDesc.PassName = "Default";
+    //    MeshEffectDesc.DataName = L"HitSpark";
+    //    MeshEffectDesc.ObjTag = L"HitSpark";
+
+    //    CEffect* pSparkleEffect = CEffectPoolManager::GetInstance()->Request_Spawn(L"MeshEffect_HitSpark", &MeshEffectDesc);
+    //    if (pSparkleEffect)
+    //    {
+    //        CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+    //        _float4x4 vCombinedMatrix = *pPlayer->Get_Transform()->Get_WorldMatrixPtr();
+
+
+    //        if (pPlayer)
+    //            pSparkleEffect->Set_OrigniMatrix(XMLoadFloat4x4(&vCombinedMatrix));
+
+    //        pSparkleEffect->Play();
+    //    }
+    //}
 }
 
 void CLevel_Spawn::Update(const _float fTimeDelta)
@@ -283,7 +330,7 @@ HRESULT CLevel_Spawn::Ready_Layer_Trigger(const _wstring& strLayerTag)
 HRESULT CLevel_Spawn::Ready_Layer_Particle(const _wstring& strLayerTag)
 {
  
-    
+
     return S_OK;
 }
 
@@ -302,6 +349,14 @@ HRESULT CLevel_Spawn::Ready_Player_Static(const _wstring& strLayerTag)
         CInteraction_Manager::GetInstance()->Set_MainPlayer(pObj);
 
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="strLayerTag"></param>
+    /// <returns></returns>
+    /// 
+  
 
     return S_OK;
 }
@@ -368,13 +423,13 @@ void CLevel_Spawn::OnEnter()
     /// <summary>
     /// ////
     /// </summary>
-    m_pPlayer->Show_Weapons();
+    //m_pPlayer->Show_Weapons();
 
     //////현재씬의 itneraction 등록 
     CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::SPAWN));
 
     //1초후에 페이드아웃 
-    m_pGameInstance->Invoke(1.f, 0.f, false, false, []()
+    m_pGameInstance->Invoke(2.f, 0.f, false, false, []()
         {
             UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"FadeScreenGroup");
             CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Find(L"FadeScreen"));
