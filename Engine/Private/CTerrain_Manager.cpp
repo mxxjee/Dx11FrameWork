@@ -139,9 +139,14 @@ void CTerrain_Manager::Update_Render(_float fTimeDelta)
 	{
 		if (pair.second)
 		{
+			if (!pair.second->Is_Active())
+				continue;
+
 
 			pair.second->Update_Render(fTimeDelta);
-			//pair.second->Update_Render_MiniMapPriority();
+
+			if(m_bUpdateMinimap)
+				pair.second->Update_Render_MiniMapPriority();
 
 
 		}
@@ -443,6 +448,7 @@ const vector<LOADTERRAINDATA>& CTerrain_Manager::Load_Terrains_Runtime(const str
 		Data.vScale = _float4(vScale.x, vScale.y, vScale.z, 1.f);
 		Data.vRotation = _float4(vRot.x, vRot.y, vRot.z, 1.f);
 		Data.vIndex = vIndex;
+		Data.iTileID = TileID;
 
 		LoadDatas.push_back(Data);
 
@@ -480,6 +486,23 @@ void CTerrain_Manager::ProcessDestroy()
 
 
 		Safe_Release(pObj);
+	}
+}
+
+void CTerrain_Manager::Set_Active_Group(int StartTileID, int EndTileID, bool _bActive)
+{
+	for (auto& pair : m_TerrainMap)
+	{
+		if (pair.second)
+		{
+			int TargetTileID = pair.second->Get_TileID();
+
+			if (TargetTileID >= StartTileID && TargetTileID <= EndTileID)
+				pair.second->Set_Active(_bActive);
+			else
+				pair.second->Set_Active(!_bActive);
+
+		}
 	}
 }
 

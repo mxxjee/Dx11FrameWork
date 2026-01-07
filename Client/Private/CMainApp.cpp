@@ -17,7 +17,7 @@
 #include "CLevel_Spawn.h"
 #include "CLevel_Dungeon.h"
 #include "CLevel_Boss.h"
-
+#include "CLevel_Ending.h"
 
 #include "CImGui_Manager.h"
 #include "CImgui_Button.h"
@@ -426,7 +426,12 @@ void CMainApp::Register_Levels()
 		{
 			return CLevel_Boss::Create(m_pDevice, m_pContext, args);
 		});
-
+	 
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::ENDING), [this](LevelArgs& args)->CLevel*
+		{
+			args.m_bCached = false;
+			return CLevel_Ending::Create(m_pDevice, m_pContext, args);
+		});
 
 
 }

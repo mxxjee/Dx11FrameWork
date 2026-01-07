@@ -105,27 +105,28 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
 void CLevel_Town::Update_Priority(_float fTimeDelta)
 {
     __super::Update_Priority(fTimeDelta);
-    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::P))
+
+    //엔딩씬 테스트
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::E))
     {
-    //    LevelArgs args;
-    //    args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
-    //    args.changeType = LEVELCHANGETYPE::PUSH;
-    //    //args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-    //    args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
 
+        pFadeScreen->Set_FadeInEndFunc([this]()
+            {
+                LevelArgs args;
+                args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ENDING);
+                args.changeType = LEVELCHANGETYPE::PUSH;
+                args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+                args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
-    //    if (FAILED(m_pGameInstance->Level_Changer(
-    //        ENUM_TO_UINT(LEVEL_ID::UI),
-    //        args)))
-    //        return;
+                if (FAILED(m_pGameInstance->Level_Changer(
+                    ENUM_TO_UINT(LEVEL_ID::LOADING),
+                    args)))
+                    return;
+
+            });
+
+        pFadeScreen->PlayFadeIn();
     }
-
-    //if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Space))
-    //{
-    //    CGameManager::GetInstance()->Get_MainPlayer()->On_Heal(5);
-
-
-    //}
 
 
 
@@ -157,10 +158,15 @@ void CLevel_Town::Update(const _float fTimeDelta)
         if (pObj)
         {
             if (pObj->Is_Active())
+            {
                 pObj->Set_Active(false);
+                m_pGameInstance->Set_EnableUpdateMinimap(false);
+            }
             else
+            {
                 pObj->Set_Active(true);
-
+                m_pGameInstance->Set_EnableUpdateMinimap(true);
+            }
         }
     }
 
@@ -206,7 +212,7 @@ void CLevel_Town::Render()
 }
 
 HRESULT CLevel_Town::Ready_Lights()
-{
+{ 
     LIGHT_DESC      LightDesc{};
     LightDesc.eType = LIGHT::DIRECTIONAL;
     LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
@@ -216,7 +222,6 @@ HRESULT CLevel_Town::Ready_Lights()
 
     if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, LightDesc)))
         return E_FAIL;
-
 
     //////////////물 조명//////////
     LIGHT_DESC       WaterLight;

@@ -186,6 +186,11 @@ HRESULT CLoader::Loading()
     case Client::LEVEL_ID::END:
         break;
 
+    case Client::LEVEL_ID::ENDING:
+        Loading_Ending();
+        break;
+
+
     default:
         break;
     }
@@ -446,6 +451,39 @@ HRESULT CLoader::Loading_Boss()
     return S_OK;
 }
 
+HRESULT CLoader::Loading_Ending()
+{
+    m_fMinTime = rand() % +2 + 2.f;
+
+    lstrcpy(m_szFPS, TEXT("텍스쳐를 로딩 중 입니다."));
+    for (size_t i = 0; i < 88899999; i++)
+    {
+        int a = 10;
+    }
+    lstrcpy(m_szFPS, TEXT("모델을(를) 로딩 중 입니다."));
+    m_iCurcount += 30;
+
+
+
+    lstrcpy(m_szFPS, TEXT("ㅅㅖ이더을(를) 로딩 중 입니다."));
+    for (size_t i = 0; i < 88889999; i++)
+    {
+        int a = 10;
+    }
+    m_iCurcount += 30;
+
+
+    lstrcpy(m_szFPS, TEXT("맵 로딩중입니다."));
+    lstrcpy(m_szFPS, TEXT("로딩완료!"));
+    m_iCurcount += 30;
+
+    m_iCurcount += 30;
+
+    m_isFinished = true;
+
+    return S_OK;
+}
+
 HRESULT CLoader::Register_Shaders()
 {
 	wchar_t buffer[MAX_PATH];
@@ -543,7 +581,7 @@ HRESULT CLoader::Register_Models()
 {
    
     _matrix matrix =XMMatrixScaling(0.035f, 0.035f, 0.035f);
- //   matrix = XMMatrixMultiply(matrix, XMMatrixRotationY(XMConvertToRadians(180.f)));
+    matrix = XMMatrixMultiply(matrix, XMMatrixRotationY(XMConvertToRadians(180.f)));
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/LinkAnim", matrix);
   

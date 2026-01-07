@@ -48,6 +48,9 @@ public:
     void                        ProcessDestroy();
 
 public:
+    void        Set_Active_Group(int StartTileID, int EndTileID, bool _bActive);
+
+public:
     static CTerrain_Manager* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext);
    virtual void                Free() override;
     _float3             Get_PickingWorldPos() { return PickingWolrdPos; }
@@ -56,6 +59,7 @@ public:
 public:
     void                Set_EnableUpdate(bool b) { m_bUpdate = b; }
     void                Set_EnalbeUpdateRender(bool b) { m_bUpdateRender = b; }
+    void                Set_EnableUpdateMinimap(bool b) { m_bUpdateMinimap = b; }
 private:
     ComPtr<ID3D11Device>		m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext>	m_pDeviceContext = { nullptr };
@@ -78,7 +82,7 @@ private:
     CGameInstance*                  m_pGameInstance = nullptr;
     bool                            m_bUpdate = true;
     bool                            m_bUpdateRender = true;     //town¾ÀÀÌ ³Ñ¾î°¬À»¶§ ·»´õ¸¦²ö´Ù.
-
+    bool                            m_bUpdateMinimap = true;
 
 };
 

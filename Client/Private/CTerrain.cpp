@@ -46,8 +46,10 @@ HRESULT CTerrain::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
 
+
     TERRAINOBJECT_DESC* pDesc = static_cast<TERRAINOBJECT_DESC*>(pArg);
     m_TerrainChunk.iIdxZX = pDesc->vIndex;
+    m_iTileID = pDesc->iTileID;
 
     Bound AABB;
     _vector vPos = m_pTransformCom->Get_State(STATE::POSITION);

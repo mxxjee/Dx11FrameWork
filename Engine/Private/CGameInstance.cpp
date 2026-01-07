@@ -802,6 +802,16 @@ void CGameInstance::Set_EnalbeUpdateRender(bool b)
 	return m_pTerrainManager->Set_EnalbeUpdateRender(b);
 }
 
+void CGameInstance::Set_EnableUpdateMinimap(bool b)
+{
+	return m_pTerrainManager->Set_EnableUpdateMinimap(b);
+}
+
+void CGameInstance::Set_Active_Group(int StartTileID, int EndTileID, bool _bActive)
+{
+	return m_pTerrainManager->Set_Active_Group(StartTileID, EndTileID, _bActive);
+}
+
 _float3 CGameInstance::Get_PickingWorldPos()
 {
 	return m_pTerrainManager->Get_PickingWorldPos();

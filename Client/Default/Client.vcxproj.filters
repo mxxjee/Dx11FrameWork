@@ -415,6 +415,9 @@
     <ClInclude Include="..\Public\CMeshEffect_HitSpark.h">
       <Filter>02.GameObjects\98.Effect\MeshEffect\HitSpark</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CLevel_Ending.h">
+      <Filter>01.Levels\Ending</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -890,6 +893,9 @@
     <Filter Include="02.GameObjects\98.Effect\MeshEffect\HitSpark">
       <UniqueIdentifier>{1083d366-67be-4d47-b2be-56e8f884de2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Levels\Ending">
+      <UniqueIdentifier>{b7bb02ad-b5cf-4b7d-8ddb-7d0f9b84704e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1278,6 +1284,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CMeshEffect_HitSpark.cpp">
       <Filter>02.GameObjects\98.Effect\MeshEffect\HitSpark</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_Ending.cpp">
+      <Filter>01.Levels\Ending</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

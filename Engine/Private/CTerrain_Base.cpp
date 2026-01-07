@@ -92,7 +92,7 @@ HRESULT CTerrain_Base::Ready_Resources(void* pArg)
     m_ShaderName = pTerrain_Desc->ShaderName;
     m_passName = pTerrain_Desc->passName;
     m_eRenderGroup = pTerrain_Desc->eRenderGroup;
-
+    m_iTileID = pTerrain_Desc->iTileID;
 
     m_pTexture = m_pGameInstance->Find_Texture(pTerrain_Desc->TextureKey);
     if (m_pTexture)

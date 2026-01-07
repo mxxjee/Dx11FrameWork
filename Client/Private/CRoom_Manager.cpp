@@ -378,27 +378,8 @@ HRESULT CRoom_Manager::Load_NPC(const string& RoomName, const wstring& ModelName
 
     _uint iIdx = 0;
 
-    for (auto& ExpressionEye : jNPCData["Expressions_eye"])
-    {
-        Expression_Eye[iIdx] = ExpressionEye;
-        ++iIdx;
-    }
+    Load_NPC_ExpressionData(ModelName, Expression_Eye, Expression_Mouth, Expression_Mouth_Open);
 
-    iIdx = 0;
-
-    for (auto& ExpressionMouth : jNPCData["Expressions_Mouth"])
-    {
-        Expression_Mouth[iIdx] = ExpressionMouth;
-        ++iIdx;
-    }
-
-    iIdx = 0;
-
-    for (auto& ExpressionMouth : jNPCData["Expressions_Mouth_Open"])
-    {
-        Expression_Mouth_Open[iIdx] = ExpressionMouth;
-        ++iIdx;
-    }
 
     memcpy(&pDesc.iExpressionIdxEye, Expression_Eye,sizeof(_uint)*CNPC::EXPRESSION::END);
     memcpy(&pDesc.iExpressionIdx_Mouth , Expression_Mouth, sizeof(_uint) * CNPC::EXPRESSION::END);
@@ -444,6 +425,43 @@ HRESULT CRoom_Manager::Load_NPC(const string& RoomName, const wstring& ModelName
    
     return E_FAIL;
 
+}
+
+HRESULT CRoom_Manager::Load_NPC_ExpressionData(wstring ModelName, _uint* EyeOut, _uint* _MouthOut, _uint* _MoutOpenOut)
+{
+    string BaseFilePath = "../../Resource/Data/NPC/";
+
+    string strModelName = WStringToUTF8(ModelName);
+    string FullPath = BaseFilePath + strModelName + ".json";
+
+    ifstream file(FullPath);
+    json jNPCData = json::parse(file);
+
+    int iIdx = 0;
+
+    for (auto& ExpressionEye : jNPCData["Expressions_eye"])
+    {
+        EyeOut[iIdx] = ExpressionEye;
+        ++iIdx;
+    }
+
+    iIdx = 0;
+
+    for (auto& ExpressionMouth : jNPCData["Expressions_Mouth"])
+    {
+        _MouthOut[iIdx] = ExpressionMouth;
+        ++iIdx;
+    }
+
+    iIdx = 0;
+
+    for (auto& ExpressionMouth : jNPCData["Expressions_Mouth_Open"])
+    {
+        _MoutOpenOut[iIdx] = ExpressionMouth;
+        ++iIdx;
+    }
+
+    return S_OK;
 }
 
 HRESULT CRoom_Manager::Load_Interaction(const string& RoomName, const wstring& ModelName, _float3 vPos, RoomPackage* pOut)

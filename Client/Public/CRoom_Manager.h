@@ -45,8 +45,12 @@ private:                                //룸이름+.json을 로드한 후 pacakge의 값�
                                 _float3 vPos, 
                                 RoomPackage* pOut);
 
+
     HRESULT         Load_Interaction(const string& RoomName, const wstring& ModelName, _float3 vPos, RoomPackage* pOut);
  
+public:
+    HRESULT           Load_NPC_ExpressionData(wstring ModelName, _uint* EyeOut, _uint* _MouthOut, _uint* _MoutOpenOut);
+
 private:
     CLayer*         m_pEnviromentLayer = nullptr;       //Level_Room의 enviromnetlayer(참조)
     CLayer*         m_pNPCLayer= nullptr;               //Level_Room의 NPClayer(참조)

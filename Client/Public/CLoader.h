@@ -37,6 +37,7 @@ private:
     HRESULT        Loading_Spawn();
     HRESULT        Loading_Dungeon();
     HRESULT        Loading_Boss();
+    HRESULT        Loading_Ending();
 
     /// load resource //
     HRESULT         Register_Shaders();

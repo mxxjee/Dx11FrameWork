@@ -257,6 +257,9 @@ public:
 	Triangle*					PickTerrain(const _wstring& Key);
 	void						Set_EnableUpdate(bool b);
 	void						Set_EnalbeUpdateRender(bool b);
+	void						Set_EnableUpdateMinimap(bool b);
+
+	void						Set_Active_Group(int StartTileID, int EndTiileID, bool _bActive);
 
 	HRESULT						Save_All_Terrains(const string& path, int iNum=-1);
 	HRESULT             Load_Terrains_MapTool(const string& LoadPath);

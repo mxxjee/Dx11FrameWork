@@ -81,6 +81,9 @@ void CLevelDebugWindow::Update()
                     break;
 
 
+                case LEVEL_ID::ENDING:
+                    LevelName = "ENDING";
+                    break;
                 case LEVEL_ID::UI:
                     LevelName = "UI";
                     break;

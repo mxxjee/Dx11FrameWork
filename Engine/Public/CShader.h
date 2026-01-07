@@ -62,7 +62,7 @@ public:
 			m_pTechnique.Reset();
 			for (auto& pair : m_GlobalDatas)
 			{
-				pair.second.Reset();
+				pair.second.Reset(); 
 			}
 			m_GlobalDatas.clear();
 			

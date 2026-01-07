@@ -20,6 +20,7 @@ public:
         string  passName = "";
 
         _uint eRenderGroup = 0;
+        int         iTileID = -1;
 
 
     }TERRAIN_DESC;
@@ -53,7 +54,7 @@ public:
 
 public:
     virtual         void Update_Render_MiniMapPriority() {};
-
+    int             Get_TileID() { return m_iTileID; }
 protected:
     CVIBuffer* m_pVIBufferCom = { nullptr };
     CTexture* m_pTexture = { nullptr };
@@ -67,6 +68,7 @@ protected:
 
 protected:
     Chunk           m_TerrainChunk;
+    int             m_iTileID = -1;
 };
 
 NS_END

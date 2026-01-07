@@ -58,7 +58,7 @@ void CMapLoader::Load_Terrain(const string& LoadPath)
         bodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
         bodyDesc.modelName = StringToWString(TargetData.ModelName);
         desc.BodyDesc = &bodyDesc;
-
+        desc.iTileID = TargetData.iTileID;
         desc.ObjTag = L"Terrain" + bodyDesc.modelName;
         desc.vIndex = TargetData.vIndex;
 

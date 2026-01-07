@@ -15,10 +15,11 @@ class CTerrain final:
     public CTerrain_Base
 {
 public:
-    typedef struct tagTerrainObjectDesc :CGameObject::GAMEOBJECT_DESC
+    typedef struct tagTerrainObjectDesc :CTerrain_Base::TERRAIN_DESC
     {
         void* BodyDesc = nullptr;
         _float2 vIndex = _float2(0.f, 0.f);
+
 
     }TERRAINOBJECT_DESC;
 
@@ -41,6 +42,7 @@ public:
 private:
     HRESULT     Ready_Components(void* pArg);
     HRESULT     Ready_PartObjects(void* pArg);
+
 
 public:
     static CTerrain* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);

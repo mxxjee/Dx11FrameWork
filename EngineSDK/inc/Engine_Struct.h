@@ -43,6 +43,7 @@ namespace Engine
 
 	typedef struct tagLoadTerrainData
 	{
+		int		iTileID = -1;
 		_float4 vPosition;
 		_float4 vScale;
 		_float4 vRotation;
