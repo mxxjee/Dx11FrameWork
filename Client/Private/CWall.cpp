@@ -91,6 +91,14 @@ void CWall::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
 {
 }
 
+void CWall::Set_Active(bool _b)
+{
+    __super::Set_Active(_b);
+    m_pCollider->Set_Active(false);
+
+    m_pGameInstance->UnRegister_Collider(m_pCollider, ENUM_TO_UINT(LEVEL_ID::BOSS));
+}
+
 HRESULT CWall::Ready_Component(void* pArg)
 {
     WALL_DESC* pDesc = static_cast<WALL_DESC*>(pArg);

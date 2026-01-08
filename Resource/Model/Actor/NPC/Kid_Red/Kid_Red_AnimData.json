@@ -671,6 +671,678 @@
             "Name": "wait",
             "NumChannels": 36,
             "TickPerSecond": 25.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 4840,
+                    "BoneName": "arm_L_a",
+                    "NumKeyFrames": 110
+                },
+                {
+                    "BinaryOffset": 4840,
+                    "BinarySize": 2684,
+                    "BoneName": "arm_L_b",
+                    "NumKeyFrames": 61
+                },
+                {
+                    "BinaryOffset": 7524,
+                    "BinarySize": 2772,
+                    "BoneName": "arm_L_b_aux1",
+                    "NumKeyFrames": 63
+                },
+                {
+                    "BinaryOffset": 10296,
+                    "BinarySize": 4840,
+                    "BoneName": "arm_R_a",
+                    "NumKeyFrames": 110
+                },
+                {
+                    "BinaryOffset": 15136,
+                    "BinarySize": 3036,
+                    "BoneName": "arm_R_b",
+                    "NumKeyFrames": 69
+                },
+                {
+                    "BinaryOffset": 18172,
+                    "BinarySize": 2640,
+                    "BoneName": "arm_R_b_aux1",
+                    "NumKeyFrames": 60
+                },
+                {
+                    "BinaryOffset": 20812,
+                    "BinarySize": 88,
+                    "BoneName": "attach_L",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 20900,
+                    "BinarySize": 88,
+                    "BoneName": "attach_R",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 20988,
+                    "BinarySize": 4840,
+                    "BoneName": "clavicle_L",
+                    "NumKeyFrames": 110
+                },
+                {
+                    "BinaryOffset": 25828,
+                    "BinarySize": 924,
+                    "BoneName": "clavicle_L_aux1",
+                    "NumKeyFrames": 21
+                },
+                {
+                    "BinaryOffset": 26752,
+                    "BinarySize": 4840,
+                    "BoneName": "clavicle_R",
+                    "NumKeyFrames": 110
+                },
+                {
+                    "BinaryOffset": 31592,
+                    "BinarySize": 924,
+                    "BoneName": "clavicle_R_aux1",
+                    "NumKeyFrames": 21
+                },
+                {
+                    "BinaryOffset": 32516,
+                    "BinarySize": 4840,
+                    "BoneName": "fingers_L_a",
+                    "NumKeyFrames": 110
+                },
+                {
+                    "BinaryOffset": 37356,
+                    "BinarySize": 4356,
+                    "BoneName": "fingers_L_b",
+                    "NumKeyFrames": 99
+                },
+                {
+                    "BinaryOffset": 41712,
+                    "BinarySize": 4840,
+                    "BoneName": "fingers_R_a",
+                    "NumKeyFrames": 110
+                },
+                {
+                    "BinaryOffset": 46552,
+                    "BinarySize": 4752,
+                    "BoneName": "fingers_R_b",
+                    "NumKeyFrames": 108
+                },
+                {
+                    "BinaryOffset": 51304,
+                    "BinarySize": 3960,
+                    "BoneName": "hand_L",
+                    "NumKeyFrames": 90
+                },
+                {
+                    "BinaryOffset": 55264,
+                    "BinarySize": 3960,
+                    "BoneName": "hand_R",
+                    "NumKeyFrames": 90
+                },
+                {
+                    "BinaryOffset": 59224,
+                    "BinarySize": 4840,
+                    "BoneName": "head",
+                    "NumKeyFrames": 110
+                },
+                {
+                    "BinaryOffset": 64064,
+                    "BinarySize": 4840,
+                    "BoneName": "leg_L_a",
+                    "NumKeyFrames": 110
+                },
+                {
+                    "BinaryOffset": 68904,
+                    "BinarySize": 3520,
+                    "BoneName": "leg_L_b",
+                    "NumKeyFrames": 80
+                },
+                {
+                    "BinaryOffset": 72424,
+                    "BinarySize": 4840,
+                    "BoneName": "leg_L_c",
+                    "NumKeyFrames": 110
+                },
+                {
+                    "BinaryOffset": 77264,
+                    "BinarySize": 1980,
+                    "BoneName": "leg_L_d",
+                    "NumKeyFrames": 45
+                },
+                {
+                    "BinaryOffset": 79244,
+                    "BinarySize": 4840,
+                    "BoneName": "leg_R_a",
+                    "NumKeyFrames": 110
+                },
+                {
+                    "BinaryOffset": 84084,
+                    "BinarySize": 3476,
+                    "BoneName": "leg_R_b",
+                    "NumKeyFrames": 79
+                },
+                {
+                    "BinaryOffset": 87560,
+                    "BinarySize": 4840,
+                    "BoneName": "leg_R_c",
+                    "NumKeyFrames": 110
+                },
+                {
+                    "BinaryOffset": 92400,
+                    "BinarySize": 2420,
+                    "BoneName": "leg_R_d",
+                    "NumKeyFrames": 55
+                },
+                {
+                    "BinaryOffset": 94820,
+                    "BinarySize": 4840,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 110
+                },
+                {
+                    "BinaryOffset": 99660,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 99748,
+                    "BinarySize": 4840,
+                    "BoneName": "spine_a",
+                    "NumKeyFrames": 110
+                },
+                {
+                    "BinaryOffset": 104588,
+                    "BinarySize": 4840,
+                    "BoneName": "spine_b",
+                    "NumKeyFrames": 110
+                },
+                {
+                    "BinaryOffset": 109428,
+                    "BinarySize": 2860,
+                    "BoneName": "thumb_L_a",
+                    "NumKeyFrames": 65
+                },
+                {
+                    "BinaryOffset": 112288,
+                    "BinarySize": 2992,
+                    "BoneName": "thumb_L_b",
+                    "NumKeyFrames": 68
+                },
+                {
+                    "BinaryOffset": 115280,
+                    "BinarySize": 2816,
+                    "BoneName": "thumb_R_a",
+                    "NumKeyFrames": 64
+                },
+                {
+                    "BinaryOffset": 118096,
+                    "BinarySize": 2992,
+                    "BoneName": "thumb_R_b",
+                    "NumKeyFrames": 68
+                },
+                {
+                    "BinaryOffset": 121088,
+                    "BinarySize": 4840,
+                    "BoneName": "waist",
+                    "NumKeyFrames": 110
+                }
+            ],
+            "Duration": 109.0,
+            "Name": "appeal",
+            "NumChannels": 36,
+            "TickPerSecond": 25.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 2332,
+                    "BoneName": "arm_L_a",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 2332,
+                    "BinarySize": 836,
+                    "BoneName": "arm_L_b",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 3168,
+                    "BinarySize": 2332,
+                    "BoneName": "arm_L_b_aux1",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 5500,
+                    "BinarySize": 2332,
+                    "BoneName": "arm_R_a",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 7832,
+                    "BinarySize": 836,
+                    "BoneName": "arm_R_b",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 8668,
+                    "BinarySize": 2332,
+                    "BoneName": "arm_R_b_aux1",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 11000,
+                    "BinarySize": 88,
+                    "BoneName": "attach_L",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 11088,
+                    "BinarySize": 88,
+                    "BoneName": "attach_R",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 11176,
+                    "BinarySize": 2288,
+                    "BoneName": "clavicle_L",
+                    "NumKeyFrames": 52
+                },
+                {
+                    "BinaryOffset": 13464,
+                    "BinarySize": 88,
+                    "BoneName": "clavicle_L_aux1",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 13552,
+                    "BinarySize": 2244,
+                    "BoneName": "clavicle_R",
+                    "NumKeyFrames": 51
+                },
+                {
+                    "BinaryOffset": 15796,
+                    "BinarySize": 88,
+                    "BoneName": "clavicle_R_aux1",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 15884,
+                    "BinarySize": 2332,
+                    "BoneName": "fingers_L_a",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 18216,
+                    "BinarySize": 2332,
+                    "BoneName": "fingers_L_b",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 20548,
+                    "BinarySize": 2332,
+                    "BoneName": "fingers_R_a",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 22880,
+                    "BinarySize": 2332,
+                    "BoneName": "fingers_R_b",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 25212,
+                    "BinarySize": 2332,
+                    "BoneName": "hand_L",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 27544,
+                    "BinarySize": 2332,
+                    "BoneName": "hand_R",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 29876,
+                    "BinarySize": 2332,
+                    "BoneName": "head",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 32208,
+                    "BinarySize": 2332,
+                    "BoneName": "leg_L_a",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 34540,
+                    "BinarySize": 88,
+                    "BoneName": "leg_L_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 34628,
+                    "BinarySize": 2332,
+                    "BoneName": "leg_L_c",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 36960,
+                    "BinarySize": 484,
+                    "BoneName": "leg_L_d",
+                    "NumKeyFrames": 11
+                },
+                {
+                    "BinaryOffset": 37444,
+                    "BinarySize": 2332,
+                    "BoneName": "leg_R_a",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 39776,
+                    "BinarySize": 308,
+                    "BoneName": "leg_R_b",
+                    "NumKeyFrames": 7
+                },
+                {
+                    "BinaryOffset": 40084,
+                    "BinarySize": 2332,
+                    "BoneName": "leg_R_c",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 42416,
+                    "BinarySize": 88,
+                    "BoneName": "leg_R_d",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 42504,
+                    "BinarySize": 2332,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 44836,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 44924,
+                    "BinarySize": 2332,
+                    "BoneName": "spine_a",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 47256,
+                    "BinarySize": 2332,
+                    "BoneName": "spine_b",
+                    "NumKeyFrames": 53
+                },
+                {
+                    "BinaryOffset": 49588,
+                    "BinarySize": 2200,
+                    "BoneName": "thumb_L_a",
+                    "NumKeyFrames": 50
+                },
+                {
+                    "BinaryOffset": 51788,
+                    "BinarySize": 2244,
+                    "BoneName": "thumb_L_b",
+                    "NumKeyFrames": 51
+                },
+                {
+                    "BinaryOffset": 54032,
+                    "BinarySize": 2244,
+                    "BoneName": "thumb_R_a",
+                    "NumKeyFrames": 51
+                },
+                {
+                    "BinaryOffset": 56276,
+                    "BinarySize": 2288,
+                    "BoneName": "thumb_R_b",
+                    "NumKeyFrames": 52
+                },
+                {
+                    "BinaryOffset": 58564,
+                    "BinarySize": 2332,
+                    "BoneName": "waist",
+                    "NumKeyFrames": 53
+                }
+            ],
+            "Duration": 52.0,
+            "Name": "panic",
+            "NumChannels": 36,
+            "TickPerSecond": 25.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 3388,
+                    "BoneName": "arm_L_a",
+                    "NumKeyFrames": 77
+                },
+                {
+                    "BinaryOffset": 3388,
+                    "BinarySize": 3080,
+                    "BoneName": "arm_L_b",
+                    "NumKeyFrames": 70
+                },
+                {
+                    "BinaryOffset": 6468,
+                    "BinarySize": 1100,
+                    "BoneName": "arm_L_b_aux1",
+                    "NumKeyFrames": 25
+                },
+                {
+                    "BinaryOffset": 7568,
+                    "BinarySize": 3344,
+                    "BoneName": "arm_R_a",
+                    "NumKeyFrames": 76
+                },
+                {
+                    "BinaryOffset": 10912,
+                    "BinarySize": 3388,
+                    "BoneName": "arm_R_b",
+                    "NumKeyFrames": 77
+                },
+                {
+                    "BinaryOffset": 14300,
+                    "BinarySize": 132,
+                    "BoneName": "arm_R_b_aux1",
+                    "NumKeyFrames": 3
+                },
+                {
+                    "BinaryOffset": 14432,
+                    "BinarySize": 88,
+                    "BoneName": "attach_L",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 14520,
+                    "BinarySize": 88,
+                    "BoneName": "attach_R",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 14608,
+                    "BinarySize": 1100,
+                    "BoneName": "clavicle_L",
+                    "NumKeyFrames": 25
+                },
+                {
+                    "BinaryOffset": 15708,
+                    "BinarySize": 1012,
+                    "BoneName": "clavicle_L_aux1",
+                    "NumKeyFrames": 23
+                },
+                {
+                    "BinaryOffset": 16720,
+                    "BinarySize": 1144,
+                    "BoneName": "clavicle_R",
+                    "NumKeyFrames": 26
+                },
+                {
+                    "BinaryOffset": 17864,
+                    "BinarySize": 1012,
+                    "BoneName": "clavicle_R_aux1",
+                    "NumKeyFrames": 23
+                },
+                {
+                    "BinaryOffset": 18876,
+                    "BinarySize": 3344,
+                    "BoneName": "fingers_L_a",
+                    "NumKeyFrames": 76
+                },
+                {
+                    "BinaryOffset": 22220,
+                    "BinarySize": 2112,
+                    "BoneName": "fingers_L_b",
+                    "NumKeyFrames": 48
+                },
+                {
+                    "BinaryOffset": 24332,
+                    "BinarySize": 88,
+                    "BoneName": "fingers_R_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 24420,
+                    "BinarySize": 88,
+                    "BoneName": "fingers_R_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 24508,
+                    "BinarySize": 2244,
+                    "BoneName": "hand_L",
+                    "NumKeyFrames": 51
+                },
+                {
+                    "BinaryOffset": 26752,
+                    "BinarySize": 1760,
+                    "BoneName": "hand_R",
+                    "NumKeyFrames": 40
+                },
+                {
+                    "BinaryOffset": 28512,
+                    "BinarySize": 3388,
+                    "BoneName": "head",
+                    "NumKeyFrames": 77
+                },
+                {
+                    "BinaryOffset": 31900,
+                    "BinarySize": 3388,
+                    "BoneName": "leg_L_a",
+                    "NumKeyFrames": 77
+                },
+                {
+                    "BinaryOffset": 35288,
+                    "BinarySize": 3388,
+                    "BoneName": "leg_L_b",
+                    "NumKeyFrames": 77
+                },
+                {
+                    "BinaryOffset": 38676,
+                    "BinarySize": 3388,
+                    "BoneName": "leg_L_c",
+                    "NumKeyFrames": 77
+                },
+                {
+                    "BinaryOffset": 42064,
+                    "BinarySize": 88,
+                    "BoneName": "leg_L_d",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 42152,
+                    "BinarySize": 3388,
+                    "BoneName": "leg_R_a",
+                    "NumKeyFrames": 77
+                },
+                {
+                    "BinaryOffset": 45540,
+                    "BinarySize": 1540,
+                    "BoneName": "leg_R_b",
+                    "NumKeyFrames": 35
+                },
+                {
+                    "BinaryOffset": 47080,
+                    "BinarySize": 3388,
+                    "BoneName": "leg_R_c",
+                    "NumKeyFrames": 77
+                },
+                {
+                    "BinaryOffset": 50468,
+                    "BinarySize": 88,
+                    "BoneName": "leg_R_d",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 50556,
+                    "BinarySize": 3388,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 77
+                },
+                {
+                    "BinaryOffset": 53944,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 54032,
+                    "BinarySize": 3388,
+                    "BoneName": "spine_a",
+                    "NumKeyFrames": 77
+                },
+                {
+                    "BinaryOffset": 57420,
+                    "BinarySize": 3344,
+                    "BoneName": "spine_b",
+                    "NumKeyFrames": 76
+                },
+                {
+                    "BinaryOffset": 60764,
+                    "BinarySize": 1188,
+                    "BoneName": "thumb_L_a",
+                    "NumKeyFrames": 27
+                },
+                {
+                    "BinaryOffset": 61952,
+                    "BinarySize": 1672,
+                    "BoneName": "thumb_L_b",
+                    "NumKeyFrames": 38
+                },
+                {
+                    "BinaryOffset": 63624,
+                    "BinarySize": 88,
+                    "BoneName": "thumb_R_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 63712,
+                    "BinarySize": 88,
+                    "BoneName": "thumb_R_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 63800,
+                    "BinarySize": 2992,
+                    "BoneName": "waist",
+                    "NumKeyFrames": 68
+                }
+            ],
+            "Duration": 76.0,
+            "Name": "show",
+            "NumChannels": 36,
+            "TickPerSecond": 25.0
         }
     ]
 }

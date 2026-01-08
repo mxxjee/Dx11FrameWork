@@ -39,6 +39,7 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
     if(FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
+ 
     NPC_DESC* pNpcDesc = static_cast<NPC_DESC*>(pArg);
     m_SceneName = pNpcDesc->SceneName;
     m_fTargetDistance = pNpcDesc->TalkRange;
@@ -174,6 +175,7 @@ void CNPC::Set_Active(bool _b)
 
 bool CNPC::IsInteratable()
 {
+    CheckFalseResult(m_bActive, false);
     CheckNullResult(m_pTriggerBox, false);
     CheckFalseResult(m_pTriggerBox->Is_Active(), false);
 
@@ -188,7 +190,7 @@ void CNPC::Enter_InteractRange()
     _vector ShowPos = MathUtils::WorldToScreen(m_pTransformCom->Get_State(STATE::POSITION),
         m_pGameInstance->Get_ViewMatrix(0), m_pGameInstance->Get_ProjMatrix(0), g_iWinSizeX, g_iWinSizeY);
 
-    CheckTrue(m_pGameManager->Get_UseCutScene());
+    CheckTrue(m_pGameManager->Get_UseCutScene() && m_pGameManager->Get_CutSceneType()==CGameManager::CUTSCENE_TYPE::START);
     m_pGameInstance->BroadCastEvent(L"OnTalkUIShow", (void*)&ShowPos);
 
 }

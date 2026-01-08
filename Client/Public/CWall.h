@@ -38,8 +38,12 @@ public:
     virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther);
     virtual     void    OnCollisionStay(_uint iGroup, CCollider_Base* pOther);
     virtual     void    OnCollisionExit(_uint iGroup, CCollider_Base* pOther);
+    virtual     void    PushOut(_float3 vOutPush) {}
 
-
+public:
+    virtual void    Set_Active(bool _b);
+public:
+    CCollider_Base* Get_Collider() { return m_pCollider; }
 private:
     HRESULT         Ready_Component(void* pArg);
 

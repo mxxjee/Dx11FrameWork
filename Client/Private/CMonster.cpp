@@ -148,7 +148,7 @@ void CMonster::Update_Late(_float fTimeDelta)
 
 void CMonster::Update_Render(_float fTimeDelta)
 {
-    if (Is_Visible())
+    if (m_bStartDissolve||Is_Visible())
     {
         __super::Update_Render(fTimeDelta);
         m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::NONALPHA), this);
@@ -498,14 +498,16 @@ void CMonster::Set_CollisionEnable(bool _b)
 
 void CMonster::Update_DeadState(_float fTimeDelta)
 {
-    if (iHp <= 0)
+    if (iHp <= 0&& !m_bStartDissolve)
     {
         if(!m_ActionControl.m_bDead)
             m_ActionControl.m_bDead = true;
 
         Set_CollisionEnable(false);
         m_bStartDissolve = true;
+        m_fDissolveAlpha = 0.f;
         m_fDissolveSpeed = 1.5f;
+        m_pAnimBody->Set_PassName("Dissolve"); // 패스 전환 보장
     }
     if (m_bStartDissolve)
     {
@@ -514,7 +516,7 @@ void CMonster::Update_DeadState(_float fTimeDelta)
         m_fDissolveAlpha += fTimeDelta * m_fDissolveSpeed;
         m_pAnimBody->Set_DissolveClipAlph(m_fDissolveAlpha);
 
-        if (m_fDissolveAlpha <= 0.f)
+        if (m_fDissolveAlpha >= 1.f)
             Set_Dead();
     }
 

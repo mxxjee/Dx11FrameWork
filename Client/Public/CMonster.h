@@ -107,7 +107,7 @@ public:
     virtual void        Set_CollisionEnable(bool _b);
 
                 //매프레임마다 죽음 확인
-    void        Update_DeadState(_float fTimeDelta);
+    virtual void        Update_DeadState(_float fTimeDelta);
     virtual void        Patrol();
 
 protected:

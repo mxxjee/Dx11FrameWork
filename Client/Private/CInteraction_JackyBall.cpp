@@ -12,6 +12,12 @@
 #include "CM_Jacky.h"
 
 #include "CNavigation.h"
+#include "CModel.h"
+#include "CLayer.h"
+#include "CImGui_Manager.h"
+#include "CInteraction_Manager.h"
+
+
 
 
 
@@ -33,7 +39,7 @@ HRESULT CInteraction_JackyBall::Initialize_Copytype(void* pArg)
 
     m_pCollider->Set_Trigger(false);
     m_BehaviorType = Interact_Behavior_Type::CARRYABLE;
-
+    m_fDissolveAlpha = 0.f;
 
     return S_OK;
 }
@@ -75,6 +81,9 @@ HRESULT CInteraction_JackyBall::Ready_PartObjects(void* pArg)
 
 void CInteraction_JackyBall::Update(_float fTimeDelta)
 {
+    Dead_Behavior(fTimeDelta);
+
+    CheckTrue(m_bDead);
     __super::Update(fTimeDelta);
 
     if (!CanInteractive)
@@ -120,13 +129,16 @@ void CInteraction_JackyBall::Update(_float fTimeDelta)
 
 void CInteraction_JackyBall::Update_Late(_float fTimeDelta)
 {
+    CheckTrue(m_bDead);
     __super::Update_Late(fTimeDelta);
     m_pTriggerBox->Update_Late(fTimeDelta);
 }
 
 bool CInteraction_JackyBall::IsInteratable()
 {
+    CheckFalseResult(m_bActive, false);
     CheckFalseResult(CanInteractive,false);
+
 
     CheckTrueResult(m_bInteraction,false);
     CheckNullResult(m_pTriggerBox, false);
@@ -253,6 +265,54 @@ void CInteraction_JackyBall::OnCollisionEnter(_uint iGroup, CCollider_Base* pOth
         Set_InteractionMode(false);
     }
 
+}
+
+void CInteraction_JackyBall::Set_EnableCollision(bool b)
+{
+    __super::Set_EnableCollision(b);
+
+    if (m_pTriggerBox)
+        m_pTriggerBox->Set_Active(false);
+
+}
+
+void CInteraction_JackyBall::Set_Dead()
+{
+    m_bDead = true;
+
+}
+
+void CInteraction_JackyBall::Dead_Behavior(_float fTimeDelta)
+{
+    CheckFalse(m_bDead);
+    m_fDissolveSpeed = 1.f;
+
+    m_pBody->Get_Model()->Set_UpdateAnimation(false);
+    //alpha값조절
+    m_fDissolveAlpha += fTimeDelta * m_fDissolveSpeed;
+    m_pBody->Set_DissolveClipAlph(m_fDissolveAlpha);
+
+    /*완전한 삭제처리*/
+    if (m_fDissolveAlpha >= 1.f)
+    {
+        Set_Active(false);
+        Set_EnableCollision(false);
+        CInteraction_Manager::GetInstance()->UnRegisterInteractable(this);
+
+        CLayer* pLayer = m_pGameInstance->Find_Layer(m_iSceneID, L"Interaction_Layer");
+        pLayer->RequestDestroy(this);
+
+        
+#if _DEBUG
+        //selectobjec관련들 다 초기화
+        CImGui_Manager::GetInstance()->Reset_Window("ObjectDebugWindow");
+        CImGui_Manager::GetInstance()->Reset_Window("StateDebugWindow");
+
+
+#endif
+      
+
+    }
 }
 
 void CInteraction_JackyBall::Throw()

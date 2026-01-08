@@ -10,6 +10,7 @@
 #include "CFadeScreen.h"
 #include "CLevel_Town.h"
 #include "CNPC.h"
+#include "CNPC_KidRed.h"
 
 
 IMPLEMENT_SINGLETON(CDialogue_Manager)
@@ -25,6 +26,8 @@ HRESULT CDialogue_Manager::Initialize()
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Kid_Blue_Script.json");
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Fairy_Script.json");
     LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Witch_Script.json");
+    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Kid_Red_Script.json");
+
 
     
     m_pGameInstance = CGameInstance::GetInstance();
@@ -340,6 +343,20 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
 
             }, pOwner);
 
+    }
+
+   else if (strCommand == "End_RedKid")
+    {
+       
+        CNPC* pKid_Red_NPC = dynamic_cast<CNPC*>(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"NPC_Layer", L"NPC_Kid_Red"));
+      
+        if (pKid_Red_NPC)
+        {
+            CNPC_KidRed* ppNPC = dynamic_cast<CNPC_KidRed*>(pKid_Red_NPC);
+            if (ppNPC)
+                ppNPC->End_RedKid();
+        }
+    
     }
 
 }

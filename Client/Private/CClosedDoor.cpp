@@ -182,6 +182,7 @@ void CClosedDoor::Close()
 
 void CClosedDoor::Open()
 {
+
     m_bOpenUpdate = true;
 }
 

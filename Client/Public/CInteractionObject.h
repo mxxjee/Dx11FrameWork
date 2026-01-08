@@ -64,6 +64,8 @@ public:
     virtual HRESULT     Ready_PartObjects(void* pArg);
 
 public:
+    CBody* Get_Body() { return m_pBody; }
+public:
     void        Set_Call_Exit_Interaction(bool b) { m_bCall_Exit_Interaction = b; }
 
 protected:
@@ -73,6 +75,7 @@ protected:
     CCollider_Base*         m_pCollider = nullptr; //    콜라이더 정보
     CBody*                  m_pBody = nullptr;
     _uint                   m_eRenderGroup = 0;
+
 
 
 public:
@@ -101,6 +104,7 @@ public:
     void                Set_ParentMatrix(const _float4x4* matrix) { m_pParentMatrix = matrix; }
     void                Set_SocketMatrix(const _float4x4* matrix) { m_pSocketMatrix = matrix; }
 
+    virtual void                Set_EnableCollision(bool b);
 public:
     virtual void        Throw();
 
@@ -117,8 +121,9 @@ protected:
 
     _float3 Pos=_float3(0.f,0.f,0.f);
 
-private:
+protected:
      bool m_bUseNavMesh=true;
+     bool m_bDead = false;
 };
 NS_END
 

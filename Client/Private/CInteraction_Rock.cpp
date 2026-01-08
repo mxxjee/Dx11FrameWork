@@ -108,6 +108,7 @@ void CInteraction_Rock::Update(_float fTimeDelta)
 
 bool CInteraction_Rock::IsInteratable()
 {
+    CheckFalseResult(m_bActive, false);
     CheckNullResult(m_pTriggerBox, false);
     bool bResult= m_pTriggerBox->Is_Collision();
 

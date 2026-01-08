@@ -94,6 +94,7 @@ HRESULT CInteraction_Mushroom::Render()
 
 bool CInteraction_Mushroom::IsInteratable()
 {
+    CheckFalseResult(m_bActive, false);
     CheckNullResult(m_pTriggerBox, false);
     CheckTrueResult(!m_pTriggerBox->Is_Active(),false);
 
@@ -105,7 +106,7 @@ bool CInteraction_Mushroom::IsInteratable()
 void CInteraction_Mushroom::Enter_InteractRange()
 {
     CheckTrue(m_bInteraction);
-    CheckFalse(m_bActive);
+    CheckFalse(CGameObject::m_bActive);
 
     _vector ShowPos = MathUtils::WorldToScreen(m_pTransformCom->Get_State(STATE::POSITION),
         m_pGameInstance->Get_ViewMatrix(0), m_pGameInstance->Get_ProjMatrix(0), g_iWinSizeX, g_iWinSizeY);
@@ -118,7 +119,7 @@ void CInteraction_Mushroom::Enter_InteractRange()
 void CInteraction_Mushroom::Exit_InteractRange()
 {
     CheckTrue(m_bInteraction);
-    CheckFalse(m_bActive);
+    CheckFalse(CGameObject::m_bActive);
 
 
     m_pGameInstance->BroadCastEvent(L"OnGetUIHide", (void*)nullptr);
@@ -127,7 +128,7 @@ void CInteraction_Mushroom::Exit_InteractRange()
 
 void CInteraction_Mushroom::Enter_Interaction()
 {
-    CheckFalse(m_bActive);
+    CheckFalse(CGameObject::m_bActive);
     CheckTrue(m_pPlayer->Get_ActionControl()->m_bCarry);
     m_bCall_Exit_Interaction = false;
 

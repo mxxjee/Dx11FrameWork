@@ -49,6 +49,10 @@ public:
     virtual void        Exit_State(int newState);
     virtual void        AIState_Change(_float fTimeDelta) override;
     virtual void        Update_Movement(_float fTimeDelta) override;
+    virtual void        Update_DeadState(_float fTimeDelta);
+
+public:
+    virtual void        Set_Dead();
 
 public:
     virtual HRESULT     Initialize_Prototype(); /*원형 객체가 생성될때 부르는 Initialize*/
@@ -100,7 +104,7 @@ private:
 public:
     virtual string Convert_String_To_Enum(_uint eState);
     virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther);
-
+    void            Set_DeadEvent(std::function<void()> Func) { m_AfterDeadEvent = Func; }
 private:
     bool        m_bCanMove = false;       //true면움직임 시작, false면 움직임X
 
@@ -116,6 +120,10 @@ private:
 
     /// 트리거박스밟으면 활성화. 공격시작
     bool            m_bStart = false;
+
+private:
+    std::function<void()>       m_AfterDeadEvent = nullptr;
+
 };
 NS_END
 

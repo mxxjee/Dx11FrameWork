@@ -112,6 +112,8 @@ void Cinteraction_Statue::Update(_float fTimeDelta)
 bool Cinteraction_Statue::IsInteratable()
 {
     CheckNullResult(m_pTriggerBox, false);
+    CheckFalseResult(m_bActive,false);
+
     return m_pTriggerBox->Is_Collision();
     return false;
 

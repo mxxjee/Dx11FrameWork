@@ -464,17 +464,23 @@ HRESULT CLevel_Dungeon::Ready_Events()
 	m_pGameInstance->RegisterListners("Go_Boss", [this](const GameEvent& evt)
 		{
 
-			LevelArgs args;
-			args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::BOSS);
-			args.changeType = LEVELCHANGETYPE::PUSH;
-			args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-			args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+			pFadeScreen->Set_FadeInEndFunc([this]()
+				{
+					LevelArgs args;
+					args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::BOSS);
+					args.changeType = LEVELCHANGETYPE::PUSH;
+					args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+					args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
 
-			if (FAILED(m_pGameInstance->Level_Changer(
-				ENUM_TO_UINT(LEVEL_ID::LOADING),
-				args)))
-				return;
+					if (FAILED(m_pGameInstance->Level_Changer(
+						ENUM_TO_UINT(LEVEL_ID::LOADING),
+						args)))
+						return;
+
+				});
+
+			pFadeScreen->PlayFadeIn();
 		});
 
 	return S_OK;

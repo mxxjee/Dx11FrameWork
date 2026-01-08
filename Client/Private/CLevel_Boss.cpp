@@ -26,8 +26,10 @@
 #include "CM_Jacky.h"
 #include "CInteraction_JackyBall.h"
 #include "CEventTrigger.h"
+#include "CRoom_Manager.h"
 
-
+#include "CNPC.h"
+#include "CNPC_KidRed.h"
 
 
 
@@ -59,6 +61,9 @@ HRESULT CLevel_Boss::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_Trigger(L"Trigger_Layer")))
         return E_FAIL;
 
+    if (FAILED(Ready_Layer_NPC(L"NPC_Layer")))
+        return E_FAIL;
+
     if (FAILED(Ready_Events()))
         return E_FAIL;
 
@@ -77,6 +82,7 @@ void CLevel_Boss::Update_Priority(_float fTimeDelta)
 void CLevel_Boss::Update(const _float fTimeDelta)
 {
     __super::Update(fTimeDelta);
+
 
 }
 
@@ -166,9 +172,16 @@ HRESULT CLevel_Boss::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
         Desc.TransformDesc = &TransDesc;
 
-        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),PROTO_OBJ_NAME(L"CloseDoor"),ENUM_TO_UINT(LEVEL_ID::BOSS), strLayerTag,&Desc)))
-            return E_FAIL;
+        CGameObject* pObj = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC),  PROTO_OBJ_NAME(L"CloseDoor"), &Desc));
 
+        if (pObj)
+        {
+            if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::BOSS),strLayerTag, pObj)))
+                return E_FAIL;
+
+        }
+        
+        
     }
 
 #pragma endregion
@@ -181,7 +194,7 @@ HRESULT CLevel_Boss::Ready_Layer_Enviroment(const _wstring& strLayerTag)
         _float4(12.611f,-0.361f,    18.303f,1.f),
         _float4(6.364f,-1.1f,   12.938f,1.f),
         _float4(18.734f,-1.0f,  12.738f,1.f),
-        _float4(12.687f,0.2f,   12.685f,1.f)
+        _float4(12.687f,-0.7f,   12.685f,1.f)
     };
 
     _float3 vExtents[] = {
@@ -206,11 +219,16 @@ HRESULT CLevel_Boss::Ready_Layer_Enviroment(const _wstring& strLayerTag)
         
         WallDesc.TransformDesc = &TransDesc;
 
-        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-            PROTO_OBJ_NAME(L"Wall"),
-            ENUM_TO_UINT(LEVEL_ID::BOSS),
-            strLayerTag, &WallDesc)))
-            return E_FAIL;
+        CGameObject* pObj = dynamic_cast<CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Wall"), &WallDesc));
+
+        if (pObj)
+        {
+            if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::BOSS), strLayerTag, pObj)))
+                return E_FAIL;
+
+            m_pWalls.push_back(dynamic_cast<CWall*>(pObj));
+
+        }
 
     }
 #pragma endregion
@@ -235,7 +253,7 @@ HRESULT CLevel_Boss::Ready_Layer_Monster(const _wstring& strLayerTag)
     JackyDesc.ObjTag =L"Jacky";
 
     JackyDesc.iAttack = 10;
-    JackyDesc.MaxHp = 5;
+    JackyDesc.MaxHp = 1;//5;//테스트
     JackyDesc.fActionRange = 3.f;
     JackyDesc.m_iLevelID = m_iLevelID;
     JackyDesc.RoamRadius = 0.f;
@@ -305,6 +323,51 @@ HRESULT CLevel_Boss::Ready_Layer_Trigger(const _wstring& strLayerTag)
     return S_OK;
 }
 
+HRESULT CLevel_Boss::Ready_Layer_NPC(const _wstring& strLayerTag)
+{
+    CNPC::NPC_DESC pNPCDesc;
+
+    CTransform::TRANSFORM_DESC pNPCTransDesc;
+
+    pNPCTransDesc.fSpeedPerSec = 0.7f;
+    pNPCTransDesc.vLocalPosition = _float4(12.699f, 0.06f, 6.673f, 1.f);
+    pNPCTransDesc.vLocalScale = _float4(0.8f, 0.8f, 0.8f, 1.f);
+
+    pNPCDesc.ObjTag = L"NPC_Kid_Red";
+    pNPCDesc.pTarget = nullptr;
+    pNPCDesc.ModelName = L"Kid_Red";
+
+    pNPCDesc.m_iLevelID = m_iLevelID;
+    pNPCDesc.TalkRange = 4.f;
+    pNPCDesc.bUseNavMesh = false;
+
+
+    _uint Expression_Eye[ENUM_TO_UINT(CNPC::EXPRESSION::END)] = {};
+    _uint Expression_Mouth[ENUM_TO_UINT(CNPC::EXPRESSION::END)] = {};
+    _uint Expression_Mouth_Open[ENUM_TO_UINT(CNPC::EXPRESSION::END)] = {};
+
+    CRoom_Manager::GetInstance()->Load_NPC_ExpressionData(L"Kid_Red", Expression_Eye, Expression_Mouth, Expression_Mouth_Open);
+
+    memcpy(&pNPCDesc.iExpressionIdxEye, Expression_Eye, sizeof(_uint) * CNPC::EXPRESSION::END);
+    memcpy(&pNPCDesc.iExpressionIdx_Mouth, Expression_Mouth, sizeof(_uint) * CNPC::EXPRESSION::END);
+    memcpy(&pNPCDesc.iOpenIdx_Mouth, Expression_Mouth_Open, sizeof(_uint) * CNPC::EXPRESSION::END);
+
+
+
+    pNPCDesc.TransformDesc = &pNPCTransDesc;
+
+    CNPC* pNpc_KidRed = CNPC_KidRed::Create(m_pDevice, m_pContext, &pNPCDesc);
+    if (pNpc_KidRed)
+    {
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), strLayerTag, pNpc_KidRed)))
+            return E_FAIL;
+
+        pNpc_KidRed->Set_Active(false);
+    }
+
+    return S_OK;
+}
+
 HRESULT CLevel_Boss::Ready_Events()
 {
     CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
@@ -323,7 +386,12 @@ HRESULT CLevel_Boss::Ready_Events()
 
     m_EnterFirstEvent.Name = "Enter_DungeonRoom";
 
-
+    //엔딩으로갈땐 하얀색페이드
+    m_pGameInstance->RegisterListners("Go_to_Ending", [this](GameEvent Evnet)
+        {
+            pFadeScreen->Set_Texture(L"Default");
+            pFadeScreen->PlayFadeIn();
+        });
 
     return S_OK;
 }
@@ -371,8 +439,42 @@ void CLevel_Boss::OnEnter()
             pJackyBall = dynamic_cast<CInteraction_JackyBall*>(pInteraction);
 
             if (pJacky && pJackyBall)
+            {
                 pJacky->Set_ChaseTargetObj(pJackyBall);
+                pJacky->Set_DeadEvent([this]()
+                    {
+                        
+                        GameEvent Event;
+                        Event.Name = "OpenDoor";
 
+                        m_pGameInstance->Emit(Event);
+
+                        for (auto& pObj : m_pWalls)
+                            pObj->Set_Active(false);
+                        m_pGameInstance->Invoke(1.f, 0.f, false, false, [pGameInstance = m_pGameInstance]()
+                            {
+
+                                CGameObject* pNpc = pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"NPC_Layer", L"NPC_Kid_Red");
+                                pNpc->Set_Active(true);
+                                if (pNpc)
+                                {
+                                    CNPC_KidRed* ppNpc = dynamic_cast<CNPC_KidRed*>(pNpc);
+                                    if (ppNpc)
+                                    {
+                                        CGameManager::GetInstance()->Set_EndingStep(EndingStep::START_DIALOGUE);
+                                        ppNpc->Set_StartEvent(true, CNPC_KidRed::State::WALK);
+                                        CGameManager::GetInstance()->Get_MainPlayer()->Enter_EndCutScene();
+
+                                        
+                                    }
+                                }
+                            }, CGameManager::GetInstance()->Get_MainPlayer());
+
+                      
+
+                        
+                    });
+            }
         }
     }
 }

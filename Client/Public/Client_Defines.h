@@ -17,6 +17,10 @@ namespace Client
 	static const unsigned int g_iWinSizeX = 1280;
 	static const unsigned int g_iWinSizeY = 720;
                     
+	enum EndingStep
+	{
+		START_DIALOGUE,ESCAPE_BOSS,FOLLOW_KID,GO_TOWN,TOWN_ARRIVAL,EPILOGUE,END
+	};
 
 	enum class LEVEL_ID {STATIC,LOGO,LOADING,SPAWN,TOWN,ROOM,DUNGEON,BOSS,ENDING,UI,MAPTOOL,END};
 	enum class COLLISION_GROUP{

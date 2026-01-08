@@ -620,6 +620,7 @@ HRESULT CLoader::Register_Models()
     m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Witch/Witch.json", NPCmatrix);
     m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Marin/Marin.json", XMMatrixIdentity());
     m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Kid_Blue/Kid_Blue.json", NPCmatrix);
+    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Kid_Red/Kid_Red.json", NPCmatrix);
 
 
     m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle/", PreMatrix);

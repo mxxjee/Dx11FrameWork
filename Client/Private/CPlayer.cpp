@@ -126,7 +126,7 @@ HRESULT CPlayer::Initialize_Copytype(void* pArg)
     }
         
     
-    if (m_pGameManager->Get_UseCutScene())
+    if (m_pGameManager->Get_UseCutScene()&&m_pGameManager->Get_CutSceneType()==CGameManager::CUTSCENE_TYPE::START)
         StartCutScene();//컷씬상태에 맞는 메쉬,등등 설정
       
 
@@ -147,6 +147,10 @@ void CPlayer::Update(_float fTimeDelta)
     /*컷씬중일땐 움직임x*/
     //무조건 a키.
     m_Input.m_bInteract = CInteraction_Manager::GetInstance()->OnInteractKeyPresed();
+
+    //엔딩씬 컷신진행중.. 상태전이
+    if (m_pGameManager->Get_UseCutScene() && m_pGameManager->Get_CutSceneType() == CGameManager::CUTSCENE_TYPE::ENDING)
+        Update_EndingCutScene(fTimeDelta);
 
     //돌아보기
     if (m_bRichardChapter)
@@ -235,11 +239,46 @@ void CPlayer::StartCutScene()
     Set_HideWeapons();
 }
 
+void CPlayer::Enter_EndCutScene()
+{
+    m_Input.m_bisMove = false;
+    Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
+
+}
+
 void CPlayer::EndCutScene()
 {
     //불변수 false만들고, 움직임가능하게 처리.
     CheckNull(m_pGameManager);
     m_pGameManager->Set_UseCutScene(false);
+}
+
+void CPlayer::Update_EndingCutScene(_float fTimeDelta)
+{
+    Set_CanMove(false);
+
+    EndingStep Step = m_pGameManager->Get_EndingStep();
+    switch (Step)
+    {
+    case EndingStep::FOLLOW_KID:
+    {
+        CGameObject* pKid = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"NPC_Layer", L"NPC_Kid_Red");
+        if (pKid)
+        {
+            _vector vPoint = pKid->Get_Transform()->Get_State(STATE::POSITION);
+
+            m_Input.m_bisMove = true;       //WALK상태애니메이션 실행을 위한 상태변경
+
+            m_pTransformCom->Set_Speed(1.2f);
+            m_pTransformCom->LookAtSmooth(vPoint,2.f,fTimeDelta);
+            m_pTransformCom->Chase(vPoint, fTimeDelta, m_pNavigationCom);
+            
+
+        }
+
+    }
+        break;
+    }
 }
 
 void CPlayer::Enter_State(int newState)

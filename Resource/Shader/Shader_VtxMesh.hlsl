@@ -191,6 +191,62 @@ float4 PS_MeshEffect(PS_IN Input) : SV_Target0
     return vColor;
     
 
+
+}
+PS_OUT PS_Dissove(PS_IN Input)
+{
+    PS_OUT Out;
+
+    float4 albedo = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
+    float4 NewAlpha = g_AlphaTexture.Sample(DefaultSampler, Input.vTexcoord);
+    albedo.a = NewAlpha;
+    
+    if (albedo.a < g_AlphClipValue)
+        discard;
+        
+
+    
+    
+
+    // 1. 노멀맵 (Tangent Space)
+    float3 nTS;
+    float3 normalTex;
+    if (g_bUseNormal)
+        normalTex = g_NormalTexture.Sample(DefaultSampler, Input.vTexcoord).xyz;
+    else
+        normalTex = float3(0.5f, 0.5f, 1.0f);
+   
+    nTS.xy = normalTex.xy * 2.0f - 1.0f;
+    nTS.z = sqrt(saturate(1.0f - dot(nTS.xy, nTS.xy)));
+
+    // 2. 정점 기준 벡터 (World Space)
+    float3 N = normalize(Input.vNormal.xyz);
+    float3 T = normalize(Input.vTangent.xyz);
+
+    // Binormal은 절대 입력값 쓰지 말 것
+    float3 B = -normalize(cross(N, T));
+
+    //만약 여전히 반 갈라지면 여기 한 줄만 토글
+    // B *= -1.0f;
+
+    // 3. TBN
+    float3x3 TBN = float3x3(T, B, N);
+
+    // 4. Tangent → World
+    float3 nWS = normalize(mul(nTS, TBN));
+
+    // GBuffer 출력
+    Out.vDiffuse = albedo * 1.15f;
+    Out.vNormal = float4(nWS * 0.5f + 0.5f, 0.f);
+    Out.VDepth = float4(
+        Input.vProjPos.z / Input.vProjPos.w,
+        Input.vProjPos.w,
+        0.f, 0.f
+    
+    );
+    
+
+    return Out;
 }
 /*렌더링 방법을 정의한다.*/
 technique11 DefaultTechnique
@@ -263,5 +319,17 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_MeshEffect();
     }
 
+    pass Dissolve
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        //이 pass가 선택되면 VertexShader는 이렇게 컴파일하세요.
+                                //버전 , 진입함수 설정
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_Dissove();
+    }
     
 }

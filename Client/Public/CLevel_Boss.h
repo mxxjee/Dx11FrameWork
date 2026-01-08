@@ -9,6 +9,7 @@ NS_BEGIN(Client)
 class CFadeScreen;
 class CGameManager;
 class CInteraction_JackyBall;
+class CWall;
 
 class CLevel_Boss :
     public CLevel
@@ -33,6 +34,8 @@ public:
     HRESULT                 Ready_Layer_Monster(const _wstring& strLayerTag);
     HRESULT                 Ready_Layer_Interaction(const _wstring& strLayerTag);
     HRESULT                 Ready_Layer_Trigger(const _wstring& strLayerTag);
+    HRESULT                 Ready_Layer_NPC(const _wstring& strLayerTag);
+
     HRESULT                 Ready_Events();
 public:
     virtual void        OnEnter() override;           //씬 진입시 매번호출
@@ -53,6 +56,9 @@ private:
 
     GameEvent       m_EnterFirstEvent;
     CInteraction_JackyBall* pJackyBall;
+
+    vector<CWall*>       m_pWalls;
+      
 };
 
 

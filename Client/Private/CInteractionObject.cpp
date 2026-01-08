@@ -44,7 +44,6 @@ HRESULT CInteractionObject::Initialize_Copytype(void* pArg)
     /*부모 컴포넌트 값세팅 */
     Interaction_DESC* pDesc = static_cast<Interaction_DESC*>(pArg);
 
-
     m_eRenderGroup = pDesc->eRenderGroup;
     m_eInteractionType = pDesc->eInteractionType;
     m_eInteractionType = pDesc->eInteract_Object_Type;
@@ -286,6 +285,7 @@ HRESULT CInteractionObject::Ready_PartObjects(void* pArg)
 
 bool CInteractionObject::IsInteratable()
 {
+
     return false;
 }
 
@@ -307,7 +307,7 @@ void CInteractionObject::Exit_InteractRange()
 
 void CInteractionObject::Enter_Interaction()
 {
-    CheckFalse(m_bActive);
+    CheckFalse(CGameObject::m_bActive);
     m_bCall_Exit_Interaction = false;
 
 }
@@ -318,7 +318,7 @@ void CInteractionObject::Stay_Interaction(_float fTimeDelta)
 
 void CInteractionObject::Exit_Interaction()
 {
-    CheckFalse(m_bActive);
+    CheckFalse(CGameObject::m_bActive);
     CheckTrue(m_bCall_Exit_Interaction);
     m_bCall_Exit_Interaction = true;
 }
@@ -340,6 +340,12 @@ void CInteractionObject::Set_InteractionMode(bool b)
     }
 
 
+}
+
+void CInteractionObject::Set_EnableCollision(bool b)
+{
+    if (m_pCollider)
+        m_pCollider->Set_Active(false);
 }
 
 void CInteractionObject::Throw()

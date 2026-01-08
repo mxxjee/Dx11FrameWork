@@ -25,6 +25,11 @@
 #include "CMJackyThrowState.h"
 #include "CInteraction_TriggerBox.h"
 #include "CMJackyEscapeState.h"
+#include "CLayer.h"
+
+#ifdef _DEBUG
+#include "CImGui_Manager.h"
+#endif // _DEBUG
 
 USING(Client)
 
@@ -297,6 +302,7 @@ HRESULT CM_Jacky::Ready_EventLisnters()
 
 void CM_Jacky::Enter_State(int newState)
 {
+    __super::Enter_State(newState);
     switch (newState)
     {
     case ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::IDLE):
@@ -336,6 +342,18 @@ void CM_Jacky::Enter_State(int newState)
 
 
         m_vTargetPos = vMyPos + XMVector3Normalize(vMyPos - vPlayerPos);
+
+
+    }
+
+    break;
+
+    case ENUM_TO_UINT(CMonster::DIE):
+    {
+        m_pChaseTarget->Get_Body()->Set_EnableDissolve(true);
+        m_pChaseTarget->Get_Body()->Set_DissolveTexture(L"dissolve_02");
+        m_pChaseTarget->Get_Body()->Set_PassName("Dissolve");
+        m_pChaseTarget->Set_Dead();
 
 
     }
@@ -394,6 +412,39 @@ void CM_Jacky::AIState_Change(_float fTimeDelta)
 
 void CM_Jacky::Update_Movement(_float fTimeDelta)
 {
+}
+
+void CM_Jacky::Update_DeadState(_float fTimeDelta)
+{
+    __super::Update_DeadState(fTimeDelta);
+
+    if (m_bStartDissolve)
+    { 
+        m_pChaseTarget->Set_Dead();
+
+    }
+}
+
+void CM_Jacky::Set_Dead()
+{
+    CheckFalse(m_bActive);
+
+    Set_Active(false);
+
+    if (m_AfterDeadEvent)
+        m_AfterDeadEvent();
+
+
+    CLayer* pLayer = m_pGameInstance->Find_Layer(m_iLevelID, L"Monster_Layer");
+    pLayer->RequestDestroy(this);
+
+#if _DEBUG
+    //selectobjec관련들 다 초기화
+    CImGui_Manager::GetInstance()->Reset_Window("ObjectDebugWindow");
+    CImGui_Manager::GetInstance()->Reset_Window("StateDebugWindow");
+
+#endif
+
 }
 
 CM_Jacky* CM_Jacky::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -654,6 +705,10 @@ void CM_Jacky::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
                         _float3 vDir;
                         XMStoreFloat3(&vDir, m_pTransformCom->Get_State(STATE::LOOK));
                         m_pTransformCom->AddImpulse(-0.3f, vDir);
+
+                        const _float4x4* CombinedMatrix = m_pChaseTarget->Get_Transform()->Get_WorldMatrixPtr();
+
+                        Spawn_HitSparkle(XMLoadFloat4x4(CombinedMatrix));
 
                     }
 

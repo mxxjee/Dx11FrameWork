@@ -32,7 +32,7 @@ class CEffectPoolManager;
 class CPlayer :
     public CAnimModelObject
 {
-   
+
 
 public:
     enum HoldKey
@@ -89,7 +89,10 @@ public:
 public:
     /*컷씬함수*/
     void        StartCutScene();//컷씬상태에 맞는 메쉬,등등 설정
+    void        Enter_EndCutScene();//정지, idle상태
     void        EndCutScene();
+
+    void        Update_EndingCutScene(_float fTimeDelta);
 private:
     void        Enter_State(int newState);
     void        Update_State(float fTimeDelta);          //바로실행해야할것들 처리
@@ -283,6 +286,7 @@ private:
 public:
     void        AnimNotify_Start(PLAYER_ANIMNOTIFY_TYPE eType);
     void        AnimNotify_End(PLAYER_ANIMNOTIFY_TYPE eType);
+
 
 private:
 	/*PArticle animnotify*/

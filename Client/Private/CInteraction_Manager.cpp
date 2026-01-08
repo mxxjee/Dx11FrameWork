@@ -48,7 +48,8 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 	for (auto pInteratable : m_InteractableObjects)
 	{
 		CheckTrue(m_pMainPlayer->Get_ActionControl()->m_bCarry);
-	
+
+
 		if (!pInteratable)
 			continue;
 

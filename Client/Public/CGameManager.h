@@ -1,5 +1,6 @@
 #pragma once
 #include "CBase.h"
+#include "Client_Defines.h"
 
 namespace Engine
 {
@@ -17,6 +18,11 @@ class CGameManager :
 {
     DECLARE_SINGLETON(CGameManager)
 
+public:
+    enum CUTSCENE_TYPE
+    {
+        START,ENDING,END
+    };
 private:
     explicit CGameManager() {};
     virtual ~CGameManager() = default;
@@ -50,12 +56,17 @@ public:
 public:
     void        Set_FirstLoading(bool b) { m_bFirstLoading = b; }
     void        Set_UseCutScene(bool b) { m_bUseCutScene = b; }
+    void        Set_CutSceneType(CUTSCENE_TYPE eType) { m_eCutSceneType = eType; }
+
     void        Set_OpenInventory(bool b) { m_bOpenInventory = b; }
  
 
     bool        Get_IsFirstLoading() { return m_bFirstLoading; }
     bool        Get_UseCutScene() { return m_bUseCutScene;}
+    CUTSCENE_TYPE Get_CutSceneType() { return m_eCutSceneType; }
 
+    void        Set_EndingStep(EndingStep pStep) { m_eEndingStep = pStep; }
+    EndingStep        Get_EndingStep() { return m_eEndingStep; }
     bool        Get_IsOpenInventory() { return m_bOpenInventory; }
 
 private:
@@ -71,6 +82,9 @@ private:
 
 
     bool        m_bOpenInventory = false;
+
+    CUTSCENE_TYPE m_eCutSceneType=CUTSCENE_TYPE::START;
+    EndingStep      m_eEndingStep = EndingStep::END;
 
 };
 NS_END

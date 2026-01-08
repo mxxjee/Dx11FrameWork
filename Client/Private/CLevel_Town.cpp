@@ -135,7 +135,7 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
         pFadeScreen->Set_FadeInEndFunc([this]()
             {
                 LevelArgs args;
-                args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::DUNGEON);
+                args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::BOSS);
                 args.changeType = LEVELCHANGETYPE::PUSH;
                 args.loadingChangeType = LEVELCHANGETYPE::PUSH;
                 args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
@@ -547,7 +547,7 @@ HRESULT CLevel_Town::Ready_Layer_NPC(const _wstring& strLayerTag)
     pDesc.ModelName = L"Kid_Green";
     pDesc.SceneName = "Level_Town";
     pDesc.m_iLevelID = m_iLevelID;
-    pDesc.TalkRange = 3.f;
+    pDesc.TalkRange = 1.5f;
 
 
     _uint        iExpressionIdxEye[CNPC::EXPRESSION::END] = { 0,2,4,3 };

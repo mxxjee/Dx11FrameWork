@@ -1,0 +1,59 @@
+{
+  "NPCScripts": [
+    {
+      "ModelID": "NPC_Kid_Red",
+      "Chapters": [
+        {
+          "ChapterID": "Ending_START",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0, 
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "건희",
+              "Text": "와아...! 여기 엄청 깊은 데야..\n나 처음엔 그냥 집 지하로 들어왔을 뿐이었는데.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "링크",
+              "Text": "그러다 길을 잃은 거구나.",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "건희",
+              "Text": "응...\n문이 이어져서 내려오다 보니까 여기까지 왔어...",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "링크",
+              "Text": "그래서 혼자였구나...\n이제 걱정 안해도돼.",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "건희",
+              "Text": "밖에 나가면 바로 마을이야?",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "링크",
+              "Text": "응. 여기로 나가면 햇빛이랑 사람들이 있어.",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "건희",
+              "Text": "헤헤..\n그럼 나 먼저 올라갈래!\n 이번엔 길 안 잃을 거야!",
+              "strActionCommand": "End_RedKid",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

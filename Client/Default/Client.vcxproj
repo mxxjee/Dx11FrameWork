@@ -196,6 +196,7 @@
     <ClInclude Include="..\Public\CMJackyThrowState.h" />
     <ClInclude Include="..\Public\CM_Gidbos.h" />
     <ClInclude Include="..\Public\CM_Jacky.h" />
+    <ClInclude Include="..\Public\CNPC_KidRed.h" />
     <ClInclude Include="..\Public\CNPC_Kid_Blue.h" />
     <ClInclude Include="..\Public\CLevelDebugWindow.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -349,6 +350,7 @@
     <ClCompile Include="..\Private\CMJackyThrowState.cpp" />
     <ClCompile Include="..\Private\CM_Gidbos.cpp" />
     <ClCompile Include="..\Private\CM_Jacky.cpp" />
+    <ClCompile Include="..\Private\CNPC_KidRed.cpp" />
     <ClCompile Include="..\Private\CNPC_Kid_Blue.cpp" />
     <ClCompile Include="..\Private\CLevelDebugWindow.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>

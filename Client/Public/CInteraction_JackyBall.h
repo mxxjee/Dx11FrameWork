@@ -28,7 +28,11 @@ public:
 
 public:
     virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther);
+    virtual void                Set_EnableCollision(bool b);
+    void            Set_Dead();
 
+public:
+    void        Dead_Behavior(_float fTimeDelta);
 public:
             //누가잡았는지 세팅하는 함수
     void        Set_Owner(CGameObject* pOwner) { m_pOwner = pOwner; }
@@ -53,6 +57,10 @@ private:
     bool            CanInteractive = true;
     _float           m_fInteractionCoolTime = 1.f;
     _float           m_fTime = 0.f;
+
+private:
+    _float          m_fDissolveSpeed = 1.f;
+    _float          m_fDissolveAlpha = 0.f;
 
 };
 NS_END

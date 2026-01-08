@@ -418,6 +418,9 @@
     <ClInclude Include="..\Public\CLevel_Ending.h">
       <Filter>01.Levels\Ending</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CNPC_KidRed.h">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Kid_Red</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -896,6 +899,9 @@
     <Filter Include="01.Levels\Ending">
       <UniqueIdentifier>{b7bb02ad-b5cf-4b7d-8ddb-7d0f9b84704e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.GameObjects\00.WorldObjects\01.Models\00.NPC\Kid_Red">
+      <UniqueIdentifier>{5a91958a-446f-4cb5-bf27-a5afef6471a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1287,6 +1293,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CLevel_Ending.cpp">
       <Filter>01.Levels\Ending</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CNPC_KidRed.cpp">
+      <Filter>02.GameObjects\00.WorldObjects\01.Models\00.NPC\Kid_Red</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
