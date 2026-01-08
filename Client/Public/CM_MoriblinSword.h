@@ -31,6 +31,8 @@ private:
     void        Attack_Behavior(float fTimeDelta);
     void        Patrol_Behavior(float fTimeDelta);
 
+    virtual void        Set_CollisionEnable(bool _b);
+
 public:
     virtual void        Enter_State(int newState);
     virtual void        Exit_State(int newState);

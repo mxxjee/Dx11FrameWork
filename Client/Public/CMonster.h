@@ -104,7 +104,7 @@ protected:
     void        Spawn_HitSparkle(_matrix Matrix);
 public: 
     virtual void        Set_Dead();
-    void        Set_CollisionEnable(bool _b);
+    virtual void        Set_CollisionEnable(bool _b);
 
                 //매프레임마다 죽음 확인
     void        Update_DeadState(_float fTimeDelta);
@@ -155,7 +155,13 @@ protected:
     float           m_fInitSpeed = 0.f;
     bool            m_bCanMove = true;
     bool            m_bCanCollision = true;
+
+    float           m_fDissolveSpeed =0.1f;
+    float           m_fDissolveAlpha = 0.f;
+    bool            m_bStartDissolve = false;
+
 public:
+    void            Set_StartDissolve(bool b) { m_bStartDissolve = b; }
     void            Reset_RandomCell();
  
 protected:

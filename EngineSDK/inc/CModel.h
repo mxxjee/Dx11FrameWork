@@ -92,6 +92,7 @@ public:
 public:
     void            Set_VisibleMesh(const _wstring& MeshName,bool bVisible);
     void            End_Transition();
+    void            Set_UpdateAnimation(bool b) { m_bUpdateAnimation = b; }
 private:
     UMap<wstring, CMeshComponent*>          m_Meshs;
     vector<class CBone*>                    m_Bones;
@@ -127,5 +128,6 @@ private:
 
 private:
     class CGameObject*              m_pOwner = nullptr;
+    bool                            m_bUpdateAnimation = true;
 };
 NS_END

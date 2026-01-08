@@ -394,6 +394,16 @@ void CM_MoriblinSword::Patrol_Behavior(float fTimeDelta)
 	
 }
 
+void CM_MoriblinSword::Set_CollisionEnable(bool _b)
+{
+	__super::Set_CollisionEnable(false);
+
+	for (auto& collision : m_pWeapons)
+		collision->Set_Active(false);
+
+
+}
+
 void CM_MoriblinSword::Enter_State(int newState)
 {
 	//Idle 진입상태시 약간의 대기시간
@@ -423,7 +433,11 @@ void CM_MoriblinSword::Enter_State(int newState)
 
 	}
 
-       
+	if (newState == CMonster::DIE)
+	{
+		m_pAnimBody->Set_PassName("Dissolve");
+
+	}
 }
 
 void CM_MoriblinSword::Exit_State(int newState)

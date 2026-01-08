@@ -80,9 +80,6 @@ HRESULT CAnimBody::Render()
 		if (Mesh.second)
 		{
 			m_bHasNormal = Mesh.second->Has_aiTexture(aiTextureType::aiTextureType_NORMALS);
-			if (!m_bHasNormal)
-				Mesh.second->Set_PassName("NonNormal");
-
 
 			Mesh.second->Bind_ShaderResource(m_pShader, "g_DiffuseTexture", aiTextureType::aiTextureType_DIFFUSE);
 			if (m_bHasNormal)

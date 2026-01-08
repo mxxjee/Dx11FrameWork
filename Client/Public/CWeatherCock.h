@@ -32,12 +32,18 @@ public:
     virtual HRESULT     Ready_Components(void* pArg);
     virtual HRESULT     Ready_PartObjects(void* pArg);
     
+#ifdef _DEBUG
+    /*Imgui 디버그용..현재 상태와 애니메이션출력*/
+    virtual void        Render_DebugImgui();
+
+#endif // _DEBUG
 public:
     static CWeatherCock* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex, void* pArg);
     virtual void Free() override;
 
 private:
     CBoxColliderComponent* m_pCollider = nullptr;
+    float       m_fDissolveAlpha = 0.f;
 
 
 };

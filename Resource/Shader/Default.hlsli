@@ -29,4 +29,10 @@ float4 m_bHasNormalMap = float4(1.f, 0.f, 0.f, 0.f);
 float g_fIntensity = 1.f;
 
 
+Texture2D g_AlphaTexture;
+float g_AlphClipValue = 0.f;
+
+int g_bUseNormal = true;
+
+
 #endif

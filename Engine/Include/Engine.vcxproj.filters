@@ -457,6 +457,9 @@
     <Filter Include="00.System\09.UI\UIGroup">
       <UniqueIdentifier>{f3701809-ff44-4d7c-87d8-137562059ccc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.Utility\99.EtcUtils\MaterialUtil">
+      <UniqueIdentifier>{bf678bcf-acc7-407b-aade-8a1d248fd794}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -897,6 +900,9 @@
     </ClInclude>
     <ClInclude Include="..\Public\UIGroup.h">
       <Filter>00.System\09.UI\UIGroup</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MaterialUtil.h">
+      <Filter>01.Utility\99.EtcUtils\MaterialUtil</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

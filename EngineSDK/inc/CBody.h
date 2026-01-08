@@ -1,5 +1,6 @@
 #pragma once
 #include "CPartObject.h"
+#include "MaterialUtil.h"
 
 /*mesh와 shader를 들고있음.
 부모의 상태에 따라 애니메이션을 제어하는 역할.
@@ -74,9 +75,16 @@ public:
     virtual CGameObject* Clone(void* pArg) override;
     virtual void Free() override;
 
+public:
+    void        Set_PassName(string Name);
+public:
+    void      Set_EnableDissolve(bool b) { m_DissolveDesc.m_bEnableDissolve = b; }
+    void      Set_DissolveTexture(wstring TextureName);
+    void      Set_DissolveClipAlph(float f) { m_DissolveDesc.m_fClipDissolve = f; }
 protected:
     _uint                   m_eRenderGroup = 0;
-    bool            m_bHasNormal = true;
+    int            m_bHasNormal = true;
+    DISSOLVE_DESC       m_DissolveDesc;
 
 };
 NS_END

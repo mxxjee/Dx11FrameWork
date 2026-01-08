@@ -179,7 +179,7 @@ void CM_GreenZol::Change_State(int newState)
 
 	m_pCurState = m_States[newState];
 	m_pCurState->Enter(this);
-
+	Enter_State(m_iState);
 	//시간초기화..
 	m_eCurState = static_cast<MONSTER_BASE_STATE>(newState);
 	m_fTime = 0.f;

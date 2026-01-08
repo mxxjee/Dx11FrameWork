@@ -4,6 +4,8 @@
 #include "CShader.h"
 #include "CGameInstance.h"
 #include "CAnimation.h"
+#include "CTexture.h"
+
 
 
 
@@ -80,15 +82,12 @@ HRESULT CBody::Render()
 
         if (Mesh.second)
         {
-            m_bHasNormal = Mesh.second->Has_aiTexture(aiTextureType::aiTextureType_NORMALS);
-            if (!m_bHasNormal)
-                Mesh.second->Set_PassName("NonNormal");
-
+            m_bHasNormal = Mesh.second->Has_aiTexture(aiTextureType::aiTextureType_NORMALS) ? 1 : 0;
 
             Mesh.second->Bind_ShaderResource(m_pShader, "g_DiffuseTexture", aiTextureType::aiTextureType_DIFFUSE);
             
 
-            if(m_bHasNormal)
+            if (m_bHasNormal)
                 Mesh.second->Bind_ShaderResource(m_pShader, "g_NormalTexture", aiTextureType::aiTextureType_NORMALS);
 
 
@@ -173,6 +172,20 @@ HRESULT CBody::Bind_ShaderResources()
     if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", m_CombinedWorldMatrix)))
         return E_FAIL;
 
+    if (FAILED(m_pShader->Bind_RawValue("g_bUseNormal", &m_bHasNormal,sizeof(int))))
+        return E_FAIL;
+
+    if (m_DissolveDesc.m_bEnableDissolve)
+    {
+        if (m_DissolveDesc.m_pDissolveTexture)
+            if (FAILED(m_DissolveDesc.m_pDissolveTexture->Bind_ShaderResource(m_pShader, "g_AlphaTexture", 0)))
+                return E_FAIL;
+
+
+        if (FAILED(m_pShader->Bind_Float("g_AlphClipValue", m_DissolveDesc.m_fClipDissolve)))
+            return E_FAIL;
+
+    }
 
     return S_OK;
 }
@@ -209,6 +222,37 @@ void CBody::Free()
 
     Safe_Release(m_pModel);
     Safe_Release(m_pShader);
+    Safe_Release(m_DissolveDesc.m_pDissolveTexture);
+
+}
+
+void CBody::Set_PassName(string Name)
+{
+    for (auto& Mesh : m_pModel->Get_Meshs())
+    {
+        /*모든 메쉬를 순회하면서 바인드한다.
+           각 메쉬들의 위치와 소유한 메테리얼의 이미지 바인딩.
+           이후 메쉬를 그리는 작업*/
+
+        if (Mesh.second)
+        {
+            Mesh.second->Set_PassName(Name);
+
+        }
+
+
+
+    }
+}
+
+void CBody::Set_DissolveTexture(wstring TextureName)
+{
+    CTexture* FindTexutre = m_pGameInstance->Find_Texture(TextureName);
+    if (FindTexutre)
+    {
+        m_DissolveDesc.m_pDissolveTexture = FindTexutre;
+        Safe_AddRef(FindTexutre);
+    }
 }
 
 

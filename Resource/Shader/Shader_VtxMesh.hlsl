@@ -102,6 +102,11 @@ PS_OUT PS_MAIN(PS_IN Input)
         discard;
     
     vector vNormalDesc =g_NormalTexture.Sample(DefaultSampler, Input.vTexcoord);
+    if (g_bUseNormal)
+        vNormalDesc = g_NormalTexture.Sample(DefaultSampler, Input.vTexcoord);
+    else
+        vNormalDesc = vector(0.5f, 0.5f, 1.0f,0.f);
+    
     float2 vNormalXY = vNormalDesc.rg * 2.0f - 1.0f;
     float fNormalZ = sqrt(saturate(1.0f - dot(vNormalXY, vNormalXY)));
     

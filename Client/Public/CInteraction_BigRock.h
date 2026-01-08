@@ -35,7 +35,7 @@ public:
     // CGameObject을(를) 통해 상속됨
     virtual CGameObject* Clone(void* pArg) override;
     virtual     void    Free() override;
-
+    virtual     void    PushOut(_float3 vOutPush) {}//밀리지않음
 
 private:
     class     CInteraction_TriggerBox* m_pTriggerBox = nullptr;

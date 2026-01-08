@@ -129,7 +129,27 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
     }
 
 
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::R))
+    {
 
+        pFadeScreen->Set_FadeInEndFunc([this]()
+            {
+                LevelArgs args;
+                args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::DUNGEON);
+                args.changeType = LEVELCHANGETYPE::PUSH;
+                args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+                args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
+      
+                if (FAILED(m_pGameInstance->Level_Changer(
+                    ENUM_TO_UINT(LEVEL_ID::LOADING),
+                    args)))
+                    return;
+
+            });
+
+        pFadeScreen->PlayFadeIn();
+    }
    
    
 }
@@ -254,7 +274,7 @@ HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
     ModelDesc.ObjTag = L"WeatherCock";
 
     CTransform::tagTransformDesc TransDesc;
-    TransDesc.vLocalPosition = _float4(30.5f,10.f,39.f,1.f);
+    TransDesc.vLocalPosition = _float4(30.8f,10.f,39.f,1.f);
     TransDesc.vLocalScale = _float4(1.5f, 1.5f,1.5f, 1.f);
 
     ModelDesc.TransformDesc = &TransDesc;
@@ -1186,50 +1206,6 @@ void CLevel_Town::OnEnter()
 
 
 
-    //////////////////////////////
-    //for (int i = 0; i < 5; ++i)
-    //{
-    //    CMonster::MonsterDesc Moriblindesc;
-
-    //    CMonster_Body::MONSTER_BODY_DESC MoriblinbodyDesc;
-    //    MoriblinbodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
-    //    MoriblinbodyDesc.modelName = L"MoriblinSword";
-    //    MoriblinbodyDesc.m_iLevelID = m_iLevelID;
-
-    //    Moriblindesc.BodyDesc = &MoriblinbodyDesc;
-
-
-    //    Moriblindesc.iAttack = 10;
-    //    Moriblindesc.MaxHp = 3;
-    //    Moriblindesc.fActionRange = 3.f;
-    //    Moriblindesc.m_iLevelID = m_iLevelID;
-    //    Moriblindesc.RoamRadius = 5.f;
-
-    //    //첫 스폰위치
-    //    Moriblindesc.iHomeIdx = (5+i*2);
-
-    //    Moriblindesc.ObjTag = L"MoriblinSword" + to_wstring(100*i);
-    //    CTransform::TRANSFORM_DESC MoriblinTransDesc = {};
-
-    //    _vector vPos = m_pGameInstance->Get_CellPos_By_MainCells(Moriblindesc.iHomeIdx);
-
-    //    MoriblinTransDesc.vLocalRotation = { 0.f,180.f,0.f,1.f };
-    //    XMStoreFloat4(&MoriblinTransDesc.vLocalPosition, vPos);
-
-    //    MoriblinTransDesc.fSpeedPerSec = 2.f;
-    //    MoriblinTransDesc.fRotationPerSec = 10.f;
-
-    //    Moriblindesc.TransformDesc = &MoriblinTransDesc;
-
-
-
-    //    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-    //        PROTO_OBJ_NAME(L"CM_MoriblinSword"),
-    //        ENUM_TO_UINT(LEVEL_ID::TOWN),
-    //        L"Monster_Layer", &Moriblindesc)))
-    //        return;
-    //}
-   
 
 }
 

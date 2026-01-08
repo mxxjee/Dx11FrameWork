@@ -44,7 +44,7 @@ HRESULT CMonster::Initialize_Prototype()
 HRESULT CMonster::Initialize_Copytype(void* pArg)
 {
     CMonster::MONSTER_DESC* desc=static_cast<CMonster::MONSTER_DESC*>(pArg);
-   
+    m_fDissolveAlpha =0.f;
     
     CTransform::TRANSFORM_DESC* transdesc = static_cast<CTransform::TRANSFORM_DESC*>(desc->TransformDesc);
     m_fInitSpeed=transdesc->fSpeedPerSec;
@@ -208,7 +208,11 @@ bool CMonster::Is_Visible()
 void CMonster::Enter_State(int newState)
 {
     //둘이다를때만 enter_state진입
- 
+    if (newState == CMonster::DIE)
+    {
+        m_pAnimBody->Set_PassName("Dissolve");
+
+    }
 }
 
 
@@ -318,8 +322,12 @@ HRESULT CMonster::Ready_PartObjects(void* pArg)
 
         m_pBody = dynamic_cast<CBody*>(Find_PartObject(L"Part_Body"));
         
-        if(m_pBody)
+        if (m_pBody)
+        {
             m_pAnimBody = dynamic_cast<CAnimBody*>(m_pBody);
+            m_pAnimBody->Set_EnableDissolve(true);
+            m_pAnimBody->Set_DissolveTexture(L"dissolve_02");
+        }
     }
     return S_OK;
 }
@@ -484,12 +492,32 @@ void CMonster::Set_Dead()
 void CMonster::Set_CollisionEnable(bool _b)
 {
     m_pCollider->Set_Active(_b);
+
+
 }
 
 void CMonster::Update_DeadState(_float fTimeDelta)
 {
     if (iHp <= 0)
-        m_ActionControl.m_bDead = true;
+    {
+        if(!m_ActionControl.m_bDead)
+            m_ActionControl.m_bDead = true;
+
+        Set_CollisionEnable(false);
+        m_bStartDissolve = true;
+        m_fDissolveSpeed = 1.5f;
+    }
+    if (m_bStartDissolve)
+    {
+        m_pAnimBody->Get_Model()->Set_UpdateAnimation(false);
+        //alpha값조절
+        m_fDissolveAlpha += fTimeDelta * m_fDissolveSpeed;
+        m_pAnimBody->Set_DissolveClipAlph(m_fDissolveAlpha);
+
+        if (m_fDissolveAlpha <= 0.f)
+            Set_Dead();
+    }
+
 
 }
 

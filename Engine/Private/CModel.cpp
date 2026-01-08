@@ -390,7 +390,7 @@ HRESULT CModel::Bind_Bones(CShader* pShader, const char* pConstName, CMeshCompon
 void CModel::Play_Animation(_float fTimeDelta)
 {
 
-
+	CheckFalse(m_bUpdateAnimation);
 	//모든 메쉬들을 순회하며 bone정보를 업데이트한다.
 	//m_iCurrentAnimationIndex에 해당하는 애니메이션 중, 현재 재생시간에 맞는 상태행렬을 실제 뼈에게 전달*/
 	//갱신해준 뼈들의 TransformMatrix를 기반으로 하여 실제 뼈의 상태(CombinedMatrix)행렬을 만든다.

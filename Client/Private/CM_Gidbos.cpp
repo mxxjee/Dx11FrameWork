@@ -29,6 +29,8 @@ CM_Gidbos::CM_Gidbos(const CM_Gidbos& rhs)
 
 void CM_Gidbos::Enter_State(int newState)
 {
+	__super::Enter_State(newState);
+
 	switch (newState)
 	{
 	case ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::IDLE):

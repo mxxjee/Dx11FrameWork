@@ -35,7 +35,11 @@ HRESULT CWeatherCock::Initialize_Prototype(void* pArg)
 
 
 
+    m_pAnimBody->Set_EnableDissolve(true);
+    m_pAnimBody->Set_DissolveTexture(L"dissolve_02");
     m_pAnimBody->Get_Model()->Set_Animation(L"wait",true);
+
+    m_pAnimBody->Set_PassName("Dissolve");
 
     return S_OK;
 }
@@ -126,6 +130,21 @@ HRESULT CWeatherCock::Ready_PartObjects(void* pArg)
     return S_OK;
 }
 
+#ifdef _DEBUG
+void CWeatherCock::Render_DebugImgui()
+{
+    __super::Render_DebugImgui();
+
+
+    if (ImGui::DragFloat("DissolveAlpha", (float*)&m_fDissolveAlpha,0.01f,0.f,1.f))
+    {
+        if (m_pAnimBody)
+            m_pAnimBody->Set_DissolveClipAlph(m_fDissolveAlpha);
+        
+    }
+
+}
+#endif
 CWeatherCock* CWeatherCock::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContex, void* pArg)
 {
     CWeatherCock* pInstance = new CWeatherCock(_pDevice, _pDeviceContex);
