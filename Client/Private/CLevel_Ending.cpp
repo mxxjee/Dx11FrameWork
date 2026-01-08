@@ -66,6 +66,7 @@ void CLevel_Ending::Render()
 HRESULT CLevel_Ending::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 {
 	m_pGameInstance->Set_Active_Group(48, 127, true);
+	m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::TOWN));
 
 	return S_OK;
 }

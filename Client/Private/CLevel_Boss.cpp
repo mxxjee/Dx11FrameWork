@@ -390,6 +390,22 @@ HRESULT CLevel_Boss::Ready_Events()
     m_pGameInstance->RegisterListners("Go_to_Ending", [this](GameEvent Evnet)
         {
             pFadeScreen->Set_Texture(L"Default");
+
+            pFadeScreen->Set_FadeInEndFunc([this]()
+                {
+                    LevelArgs args;
+                    args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ENDING);
+                    args.changeType = LEVELCHANGETYPE::PUSH;
+                    args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+                    args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
+
+                    if (FAILED(m_pGameInstance->Level_Changer(
+                        ENUM_TO_UINT(LEVEL_ID::LOADING),
+                        args)))
+                        return;
+
+                });
             pFadeScreen->PlayFadeIn();
         });
 

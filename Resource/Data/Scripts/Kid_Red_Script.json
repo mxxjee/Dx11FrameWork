@@ -11,46 +11,47 @@
           "Steps": [
             {
               "Speaker": "건희",
-              "Text": "와아...! 여기 엄청 깊은 데야..\n나 처음엔 그냥 집 지하로 들어왔을 뿐이었는데.",
+              "Text": "우씨... 여긴 어떻게 찾았어?\n나만의 비밀기지란 말이야!",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "건희",
+              "Text": "도와달라 한 적 없어!\n내 친구도 쫓아내고 엉망으로 만들었잖아!",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "링크",
+              "Text": "오해하게 해서 미안해. 널 지키려던 거였어.",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "건희",
+              "Text": "이런 게 무슨 방범대야!\n내 친구랑 비밀기지 다 돌려내!",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             },
             {
               "Speaker": "링크",
-              "Text": "그러다 길을 잃은 거구나.",
+              "Text": "미안하지만 가야 해.\n밖으로 나가면 사람들을 만날 수 있어.",
               "strActionCommand": "",
               "actionTiming": "ON_START"
             },
             {
               "Speaker": "건희",
-              "Text": "응...\n문이 이어져서 내려오다 보니까 여기까지 왔어...",
+              "Text": "흥! 앞으로 말 걸지 마. 나 먼저 갈 거야!",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             },
             {
               "Speaker": "링크",
-              "Text": "그래서 혼자였구나...\n이제 걱정 안해도돼.",
-              "strActionCommand": "",
-              "actionTiming": "ON_START"
-            },
-            {
-              "Speaker": "건희",
-              "Text": "밖에 나가면 바로 마을이야?",
-              "strActionCommand": "",
-              "actionTiming": "ON_START"
-            },
-            {
-              "Speaker": "링크",
-              "Text": "응. 여기로 나가면 햇빛이랑 사람들이 있어.",
-              "strActionCommand": "",
-              "actionTiming": "ON_START"
-            },
-            {
-              "Speaker": "건희",
-              "Text": "헤헤..\n그럼 나 먼저 올라갈래!\n 이번엔 길 안 잃을 거야!",
+              "Text": "잠깐, 건희야! 혼자 가면 위험해! 어서 쫓아가자.",
               "strActionCommand": "End_RedKid",
               "actionTiming": "ON_FINISH"
             }
+           
           ]
         }
       ]
