@@ -160,9 +160,18 @@ void CLevel_Ending::OnEnter()
 {
 	__super::OnEnter();
 
+	/*카메라 바로 스냅 및 초기화*/
+	{
+		GameEvent Event;
+		Event.Name = "Init_Camera";
+		Event.Payload.Ptrs["Player"] = CGameManager::GetInstance()->Get_MainPlayer();
+
+		m_pGameInstance->Emit(Event);
+	}
+
+
 	CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
 	CheckNull(pPlayer);
-
 
 	vector<CCell*>* m_Cells = m_pGameInstance->Get_MainCells();
 	if (m_Cells)

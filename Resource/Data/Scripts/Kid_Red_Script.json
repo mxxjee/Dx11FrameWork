@@ -47,7 +47,7 @@
             },
             {
               "Speaker": "링크",
-              "Text": "잠깐, 건희야! 혼자 가면 위험해! 어서 쫓아가자.",
+              "Text": "잠깐, 건희야! 혼자 가면 위험해!\n(어서 쫓아가자.)",
               "strActionCommand": "End_RedKid",
               "actionTiming": "ON_FINISH"
             }
