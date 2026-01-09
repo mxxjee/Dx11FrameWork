@@ -329,7 +329,6 @@ HRESULT CLevel_Spawn::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
 HRESULT CLevel_Spawn::Ready_Layer_Particle(const _wstring& strLayerTag)
 {
- 
 
     return S_OK;
 }
@@ -440,7 +439,29 @@ void CLevel_Spawn::OnEnter()
  
 
   
+    //¹æÆĞhit
+    CMeshEffect::MESHEFFECT_DESC MeshEffectDesc;
+    MeshEffectDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+    MeshEffectDesc.modelName = L"flash_00";
+    MeshEffectDesc.ShaderName = L"MeshEffect";
+    MeshEffectDesc.PassName = "Default";
+    MeshEffectDesc.DataName = L"flash_00";
+    MeshEffectDesc.ObjTag = L"flash_00";
 
+
+
+    CEffect* pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(L"MeshEffect", &MeshEffectDesc);
+
+    if (pEffect)
+    {
+     
+        const _float4x4* pPlayerMatrix = m_pPlayer->Get_Transform()->Get_WorldMatrixPtr();
+
+        pEffect->Set_OrigniMatrix(XMLoadFloat4x4(pPlayerMatrix));
+        pEffect->Play();
+    }
+
+    return;
 
 
 

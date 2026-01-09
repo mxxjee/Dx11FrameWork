@@ -163,6 +163,8 @@ void CPlayerHoldShield::Hit_Shield(CPlayer* pPlayer)
     pPlayer->Reserve_Animation_To_Body(L"shieldhit", false,true);
     m_ePhase = Phase::Hit;
 
+
+
 }
 
 void CPlayerHoldShield::Change_Other_State(CPlayer* pPlayer)

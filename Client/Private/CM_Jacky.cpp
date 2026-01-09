@@ -707,7 +707,6 @@ void CM_Jacky::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
                         m_pTransformCom->AddImpulse(-0.3f, vDir);
 
                         const _float4x4* CombinedMatrix = m_pChaseTarget->Get_Transform()->Get_WorldMatrixPtr();
-
                         Spawn_HitSparkle(XMLoadFloat4x4(CombinedMatrix));
 
                     }

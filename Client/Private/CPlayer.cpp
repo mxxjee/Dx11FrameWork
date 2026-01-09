@@ -1289,6 +1289,22 @@ HRESULT CPlayer::Ready_Effects()
 
 
 #pragma endregion
+
+
+#pragma region ½¯µåÀÌÆåÆ®
+    {
+        CMeshEffect::MESHEFFECT_DESC* GuardEffectDesc=new CMeshEffect::MESHEFFECT_DESC();
+        GuardEffectDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+        GuardEffectDesc->modelName = L"flash_00";
+        GuardEffectDesc->ShaderName = L"MeshEffect";
+        GuardEffectDesc->PassName = "Default";
+        GuardEffectDesc->DataName = L"flash_00";
+        GuardEffectDesc->ObjTag = L"flash_00";
+        m_PlayerEffects[GUARDEFFECT].push_back(GuardEffectDesc);
+
+
+    }
+#pragma endregion
     return S_OK;
 }
 
@@ -1501,6 +1517,8 @@ void CPlayer::Shield_Hit_Behavior()
     {
         
         pShieldState->Hit_Shield(this);
+        //ÀÌÆåÆ®Àç»ý
+
 
     }
 }
