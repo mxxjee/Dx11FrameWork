@@ -364,6 +364,11 @@ CQuestCondition* CQuest_Manager::Make_Condition_From_Json(const json& json_cond)
 		{
 			return new CLocation_Condition(ENUM_TO_UINT(LEVEL_ID::TOWN));
 		}
+
+		if (State == "GO_DUNGEON")
+		{
+			return new CLocation_Condition(ENUM_TO_UINT(LEVEL_ID::DUNGEON));
+		}
 	}
 
 	else if (strType == "VARIABLE")

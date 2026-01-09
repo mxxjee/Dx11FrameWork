@@ -37,6 +37,18 @@
 
         }
       ]
+    },
+    {
+      "iQuestID": 3001,
+      "strTitle": "리차드 집 들어가기",
+      "strDescription": "리차드 집 들어가기.",
+
+      "Conditions": [
+        {
+          "Type": "LOCATION",
+          "State": "GO_DUNGEON"
+        }
+      ]
     }
   ]
 }

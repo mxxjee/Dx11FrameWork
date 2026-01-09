@@ -505,6 +505,10 @@ void CLevel_Boss::OnPause(_uint iNextLeve)
 
 void CLevel_Boss::OnExit()
 {
+    __super::OnExit();
+
+    m_pGameInstance->Clear_SceneColliders(ENUM_TO_UINT(LEVEL_ID::BOSS));
+
 }
 
 void CLevel_Boss::Close_Door()

@@ -42,6 +42,13 @@ HRESULT CMapLoader::Load_Boss()
     return S_OK;
 }
 
+HRESULT CMapLoader::Load_Ending()
+{
+    Load_NavMesh(LEVEL_ID::ENDING, "../../Resource/Data/Map/Ending_Nav.dat");
+
+    return S_OK;
+}
+
 
 
 ///////////////////읽어와서 구조체만 모아둠.

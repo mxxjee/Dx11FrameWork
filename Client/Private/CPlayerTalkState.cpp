@@ -25,6 +25,10 @@ void CPlayerTalkState::Enter(CPlayer* pPlayer)
 
 bool CPlayerTalkState::Update(CPlayer* pPlayer, _float fTimeDelta)
 {
+	if(pPlayer->Get_Target())
+		pPlayer->Get_Transform()->LookAtSmooth(pPlayer->Get_Target()->Get_Transform()->Get_State(STATE::POSITION), 5.f, fTimeDelta);
+
+
 	if (!pActionControl->m_bTalk)
 	{
 		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));

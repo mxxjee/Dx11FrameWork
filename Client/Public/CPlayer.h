@@ -60,6 +60,7 @@ public:
         DAMANGE,
         PRATFALL,   //컷신용
         POWDER,
+        UPSTAIR,
         END
     };
 
@@ -91,6 +92,7 @@ public:
     void        StartCutScene();//컷씬상태에 맞는 메쉬,등등 설정
     void        Enter_EndCutScene();//정지, idle상태
     void        EndCutScene();
+    void       Enter_NewEndingStep();
 
     void        Update_EndingCutScene(_float fTimeDelta);
 private:
@@ -282,6 +284,9 @@ private:
     CTexture*               m_pMouthTex = nullptr;
 
 
+private:
+    EndingStep CurrentStep = EndingStep::END;
+    EndingStep PrevStep = EndingStep::END;
 
 public:
     void        AnimNotify_Start(PLAYER_ANIMNOTIFY_TYPE eType);

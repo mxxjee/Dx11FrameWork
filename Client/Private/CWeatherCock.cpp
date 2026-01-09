@@ -6,6 +6,10 @@
 
 #include "CAnimBody.h"
 #include "CModel.h"
+#include "CGameManager.h"
+#include "CPlayer.h"
+
+
 
 
 
@@ -24,6 +28,8 @@ CWeatherCock::CWeatherCock(const CWeatherCock& rhs)
 
 HRESULT CWeatherCock::Initialize_Prototype(void* pArg)
 {
+    m_pGameManager = CGameManager::GetInstance();
+
     if (FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
@@ -53,6 +59,19 @@ void CWeatherCock::Update_Priority(_float fTimeDelta)
 void CWeatherCock::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
+  /*  if (m_pGameManager->Get_EndingStep() == EndingStep::DISSOLVE_COCK)
+    {
+        m_fDissolveAlpha += fTimeDelta;
+        if (m_pAnimBody)
+            m_pAnimBody->Set_DissolveClipAlph(m_fDissolveAlpha);
+
+        if (m_fDissolveAlpha >= 1.f)
+        {
+            Set_Active(false);
+            m_pGameManager->Set_EndingStep(EndingStep::TOWN_ARRIVAL);
+            m_pGameManager->Get_MainPlayer()->Set_Active(true);
+        }
+    }*/
 }
 
 void CWeatherCock::Update_Late(_float fTimeDelta)
@@ -136,12 +155,12 @@ void CWeatherCock::Render_DebugImgui()
     __super::Render_DebugImgui();
 
 
-    if (ImGui::DragFloat("DissolveAlpha", (float*)&m_fDissolveAlpha,0.01f,0.f,1.f))
+  /*  if (ImGui::DragFloat("DissolveAlpha", (float*)&m_fDissolveAlpha,0.01f,0.f,1.f))
     {
         if (m_pAnimBody)
             m_pAnimBody->Set_DissolveClipAlph(m_fDissolveAlpha);
         
-    }
+    }*/
 
 }
 #endif

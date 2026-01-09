@@ -359,6 +359,128 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
     
     }
 
+   else if (strCommand == "KidRed_Angry")
+    {
+        CNPC* pKid_Red_NPC = dynamic_cast<CNPC*>(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"NPC_Layer", L"NPC_Kid_Red"));
+        pKid_Red_NPC->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::ENDING), L"NPC_Layer", L"NPC_Mom"));
+
+
+        if (pKid_Red_NPC)
+        {
+            CNPC_KidRed* ppNPC = dynamic_cast<CNPC_KidRed*>(pKid_Red_NPC);
+            if (ppNPC)
+                ppNPC->Set_Camera_To_NPC(CNPC::EXPRESSION::SAD,L"panic");
+        }
+
+    }
+
+    else if (strCommand == "Mom_Angry")
+    {
+        CNPC* pMamasha = dynamic_cast<CNPC*>(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::ENDING), L"NPC_Layer", L"NPC_Mom"));
+        pMamasha->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"NPC_Layer", L"NPC_Kid_Red"));
+
+
+        if (pMamasha)
+        {
+            CNPC* ppNPC = dynamic_cast<CNPC*>(pMamasha);
+            if (ppNPC)
+                ppNPC->Set_Camera_To_NPC(CNPC::EXPRESSION::SAD,L"talk");
+        }
+
+    }
+
+    else if (strCommand == "KidRed_Sad")
+    {
+        CNPC* pKid_Red_NPC = dynamic_cast<CNPC*>(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"NPC_Layer", L"NPC_Kid_Red"));
+
+        if (pKid_Red_NPC)
+        {
+            CNPC_KidRed* ppNPC = dynamic_cast<CNPC_KidRed*>(pKid_Red_NPC);
+            if (ppNPC)
+                ppNPC->Set_Camera_To_NPC(CNPC::EXPRESSION::SAD, L"wait");
+        }
+
+    }
+
+    else if (strCommand == "KidRed_Apologize")
+    {
+        CNPC* pKid_Red_NPC = dynamic_cast<CNPC*>(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"NPC_Layer", L"NPC_Kid_Red"));
+        pKid_Red_NPC->Set_Target(CGameManager::GetInstance()->Get_MainPlayer());
+        if (pKid_Red_NPC)
+        {
+            CNPC_KidRed* ppNPC = dynamic_cast<CNPC_KidRed*>(pKid_Red_NPC);
+            if (ppNPC)
+                ppNPC->Set_Camera_To_NPC(CNPC::EXPRESSION::SAD, L"talk");
+        }
+
+    }
+
+
+    else if (strCommand == "Mom_Happy")
+    {
+        CNPC* pMamasha = dynamic_cast<CNPC*>(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::ENDING), L"NPC_Layer", L"NPC_Mom"));
+        pMamasha->Set_Target(CGameManager::GetInstance()->Get_MainPlayer());
+        if (pMamasha)
+        {
+            CNPC* ppNPC = dynamic_cast<CNPC*>(pMamasha);
+            if (ppNPC)
+                ppNPC->Set_Camera_To_NPC(CNPC::EXPRESSION::HAPPY,L"talk");
+        }
+
+    }
+
+    else if (strCommand == "Link_Talk")
+    {
+        CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+        pPlayer->Set_Target(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::ENDING), L"NPC_Layer", L"NPC_Mom"));
+
+        if (pPlayer)
+        {
+            pPlayer->Get_ActionControl()->m_bTalk = true;
+            pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::TALK));
+
+            GameEvent InteractionNPC;
+            InteractionNPC.Name = "Enter_Interaction_NPC";
+            InteractionNPC.Payload.Floats["Float_X"] = 0.f;
+            InteractionNPC.Payload.Floats["Float_Y"] = 5.f;
+            InteractionNPC.Payload.Floats["Float_Z"] = -5.f;
+
+            InteractionNPC.Payload.Ptrs["NPC"] = pPlayer;
+
+            m_pGameInstance->Emit(InteractionNPC);
+
+            /*크레딧올라오기/카메라 초기화*/
+            /*모든 챕터를 Ending으로변경*/
+            m_pGameInstance->Invoke(3.f, 0.f, false, false, [this,pPlayer]()
+                {
+                    CNPC* pKid_Red_NPC = dynamic_cast<CNPC*>(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"NPC_Layer", L"NPC_Kid_Red"));
+                    if (pKid_Red_NPC)
+                        pKid_Red_NPC->Set_TriggerBoxEnable(true);
+                    GameEvent Event;
+                    Event.Name = "Ending_Camera";
+                    Event.Payload.Ptrs["Player"] = CGameManager::GetInstance()->Get_MainPlayer();
+
+                    Event.Payload.Floats["Float_X"] = 0.f;
+                    Event.Payload.Floats["Float_Y"] = 7.f;
+                    Event.Payload.Floats["Float_Z"] = -8.f;
+
+                    CGameInstance::GetInstance()->Emit(Event);
+
+                    pPlayer->Set_Target(nullptr);
+
+                    pPlayer->Get_ActionControl()->m_bTalk = false;
+                    pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
+
+                    CGameManager::GetInstance()->Set_EndingStep(EndingStep::ENDINGMESSAGE);
+                    CGameManager::GetInstance()->Set_UseCutScene(false);
+
+
+
+
+                },CGameManager::GetInstance()->Get_MainPlayer());
+        }
+
+    }
 }
 
 void CDialogue_Manager::LoadScriptDatabase(const string& strFilePath)

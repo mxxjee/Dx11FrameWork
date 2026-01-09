@@ -150,8 +150,11 @@ void CPlayer::Update(_float fTimeDelta)
 
     //엔딩씬 컷신진행중.. 상태전이
     if (m_pGameManager->Get_UseCutScene() && m_pGameManager->Get_CutSceneType() == CGameManager::CUTSCENE_TYPE::ENDING)
+    {
+        Enter_NewEndingStep();
         Update_EndingCutScene(fTimeDelta);
 
+    }
     //돌아보기
     if (m_bRichardChapter)
     {
@@ -241,9 +244,7 @@ void CPlayer::StartCutScene()
 
 void CPlayer::Enter_EndCutScene()
 {
-    m_Input.m_bisMove = false;
-    Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
-
+ 
 }
 
 void CPlayer::EndCutScene()
@@ -251,6 +252,49 @@ void CPlayer::EndCutScene()
     //불변수 false만들고, 움직임가능하게 처리.
     CheckNull(m_pGameManager);
     m_pGameManager->Set_UseCutScene(false);
+}
+
+void CPlayer::Enter_NewEndingStep()
+{
+    CheckTrue(m_pGameManager->Get_CutSceneType() != CGameManager::CUTSCENE_TYPE::ENDING);
+
+    CurrentStep = m_pGameManager->Get_EndingStep();
+    if (CurrentStep != PrevStep)
+    {
+        switch (CurrentStep)
+        {
+        case Client::START_DIALOGUE:
+            m_Input.m_bisMove = false;
+            Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
+
+            break;
+        case Client::ESCAPE_BOSS:
+            break;
+        case Client::FOLLOW_KID:
+
+            break;
+        case Client::GO_TOWN:
+            break;
+        case Client::DISSOLVE_COCK:
+            m_Input.m_bisMove = false;       //WALK상태애니메이션 실행을 위한 상태변경
+
+            break;
+        case Client::TOWN_ARRIVAL:
+            m_Input.m_bisMove = false;
+            Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
+            m_pTransformCom->Rotation(_float3(0.f, 180.f,0.f));
+            break;
+        case Client::EPILOGUE:
+            break;
+        case Client::END:
+            break;
+        default:
+            break;
+        }
+
+        PrevStep = CurrentStep;
+
+    }
 }
 
 void CPlayer::Update_EndingCutScene(_float fTimeDelta)
@@ -261,23 +305,31 @@ void CPlayer::Update_EndingCutScene(_float fTimeDelta)
     switch (Step)
     {
     case EndingStep::FOLLOW_KID:
-    {
-        CGameObject* pKid = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"NPC_Layer", L"NPC_Kid_Red");
-        if (pKid)
+    {   
         {
-            _vector vPoint = pKid->Get_Transform()->Get_State(STATE::POSITION);
+            CGameObject* pKid = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"NPC_Layer", L"NPC_Kid_Red");
+            if (pKid)
+            {
+                _vector vPoint = pKid->Get_Transform()->Get_State(STATE::POSITION);
 
-            m_Input.m_bisMove = true;       //WALK상태애니메이션 실행을 위한 상태변경
+                m_Input.m_bisMove = true;       //WALK상태애니메이션 실행을 위한 상태변경
 
-            m_pTransformCom->Set_Speed(1.2f);
-            m_pTransformCom->LookAtSmooth(vPoint,2.f,fTimeDelta);
-            m_pTransformCom->Chase(vPoint, fTimeDelta, m_pNavigationCom);
-            
-
+                m_pTransformCom->Set_Speed(1.2f);
+                m_pTransformCom->Chase(vPoint, fTimeDelta, m_pNavigationCom);
+            }
         }
+        
+
+            break;
+
+    case EndingStep::TOWN_ARRIVAL:
+    {
+        m_Input.m_bisMove = false;
+        Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
 
     }
-        break;
+    break;
+        }
     }
 }
 
@@ -1112,6 +1164,7 @@ HRESULT CPlayer::Ready_States()
 
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::PRATFALL), CPlayerPratFallState::Create());
     m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::POWDER), CPlayerPowderState::Create());
+    m_States.emplace(ENUM_TO_UINT(CPlayer::PLAYER_STATE::UPSTAIR), CPlayerUpStairState::Create());
 
 
     /// <summary>

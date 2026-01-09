@@ -128,7 +128,7 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
         pFadeScreen->PlayFadeIn();
     }
 
-
+    /*
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::R))
     {
 
@@ -150,7 +150,7 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
 
         pFadeScreen->PlayFadeIn();
     }
-   
+   */
    
 }
 

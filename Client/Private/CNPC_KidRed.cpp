@@ -4,6 +4,7 @@
 #include "CQuest_Manager.h"
 #include "CInteraction_Manager.h"
 #include "CGameManager.h"
+#include "CInteraction_TriggerBox.h"
 
 
 USING(Client)
@@ -118,6 +119,8 @@ void CNPC_KidRed::Walk_EndFirstChapter(_float fTimeDelta)
 
             m_pGameInstance->Emit(Event);
             m_pGameManager->Set_EndingStep(EndingStep::GO_TOWN);
+            m_iState = State::WAIT;
+
         }
 
     }
@@ -138,12 +141,35 @@ void CNPC_KidRed::Wait_EndFirstChapter(_float fTimeDelta)
 
 }
 
+void CNPC_KidRed::Wait_TownArrival(_float fTimeDelta)
+{
+    CheckFalse(m_pGameManager->Get_EndingStep() == EndingStep::TOWN_ARRIVAL);
+    //도착했을떈 대기상태
+    Set_Expression(EXPRESSION::SAD);
+    m_pAnimBody->Reserve_Animation(L"wait", true, false);
+
+    m_pGameInstance->Invoke(2.f, 0.f, false, false, [this]()
+        {
+            m_pTriggerBox->Set_Active(false);
+            m_pGameManager->Set_EndingStep(EndingStep::EPILOGUE);
+            m_pDialogue_Manager->StartDialogue("NPC_Kid_Red");
+            CInteraction_Manager::GetInstance()->Set_CurrentTarget(this);
+
+            m_iState = State::TALK;
+
+
+        },this);
+
+}
+
 void CNPC_KidRed::Enter_InteractRange()
 {
 }
 
 void CNPC_KidRed::Enter_Interaction()
 {
+    __super::Enter_Interaction();
+
 }
 
 void CNPC_KidRed::Stay_Interaction(_float fTimeDelta)
@@ -184,7 +210,7 @@ void CNPC_KidRed::Update_State(_float fTimeDelta)
     {
 
         Wait_EndFirstChapter(fTimeDelta);
-
+        Wait_TownArrival(fTimeDelta);
     }
     break;
 
@@ -222,7 +248,7 @@ void CNPC_KidRed::End_RedKid()
     CGameManager::GetInstance()->Set_UseCutScene(true);
     CGameManager::GetInstance()->Set_EndingStep(EndingStep::ESCAPE_BOSS);
 
-    m_pGameInstance->Invoke(3.f, false, false, false, [this]()
+    m_pGameInstance->Invoke(2.f, false, false, false, [this]()
         {
             CGameManager::GetInstance()->Set_EndingStep(EndingStep::FOLLOW_KID);
             m_iState = State::WALK;

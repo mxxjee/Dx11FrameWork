@@ -259,6 +259,7 @@
     <ClInclude Include="..\Public\CPlayerStateGetItem.h" />
     <ClInclude Include="..\Public\CPlayerPowderState.h" />
     <ClInclude Include="..\Public\CPlayerTalkState.h" />
+    <ClInclude Include="..\Public\CPlayerUpStairState.h" />
     <ClInclude Include="..\Public\CPlayer_AnimNotifyTypes.h" />
     <ClInclude Include="..\Public\CPlayer_Body.h" />
     <ClInclude Include="..\Public\CPlayer_Shield.h" />
@@ -280,6 +281,7 @@
     <ClInclude Include="..\Public\CTreasureChest.h" />
     <ClInclude Include="..\Public\CTrigger_Box.h" />
     <ClInclude Include="..\Public\CUICreator.h" />
+    <ClInclude Include="..\Public\CUI_Credit.h" />
     <ClInclude Include="..\Public\CUI_Cursor.h" />
     <ClInclude Include="..\Public\CUI_Interactable.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -413,6 +415,7 @@
     <ClCompile Include="..\Private\CPlayerStateGetItem.cpp" />
     <ClCompile Include="..\Private\CPlayerPowderState.cpp" />
     <ClCompile Include="..\Private\CPlayerTalkState.cpp" />
+    <ClCompile Include="..\Private\CPlayerUpStairState.cpp" />
     <ClCompile Include="..\Private\CPlayer_Body.cpp" />
     <ClCompile Include="..\Private\CPlayer_Shield.cpp" />
     <ClCompile Include="..\Private\CPlayer_Sword.cpp" />
@@ -432,6 +435,7 @@
     <ClCompile Include="..\Private\CTrailEffect.cpp" />
     <ClCompile Include="..\Private\CTreasureChest.cpp" />
     <ClCompile Include="..\Private\CTrigger_Box.cpp" />
+    <ClCompile Include="..\Private\CUI_Credit.cpp" />
     <ClCompile Include="..\Private\CUI_Cursor.cpp" />
     <ClCompile Include="..\Private\CUI_Interactable.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>

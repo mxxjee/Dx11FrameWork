@@ -193,11 +193,11 @@ void CInteraction_JackyBall::Enter_InteractRange()
 
  
 
-    _vector ShowPos = MathUtils::WorldToScreen(m_pTransformCom->Get_State(STATE::POSITION),
+    _vector ShowPos = MathUtils::WorldToScreen(m_pPlayer->Get_Transform()->Get_State(STATE::POSITION),
         m_pGameInstance->Get_ViewMatrix(0), m_pGameInstance->Get_ProjMatrix(0), g_iWinSizeX, g_iWinSizeY);
 
 
-    m_pGameInstance->BroadCastEvent(L"OnCarryUIShow", (void*)&ShowPos);
+     m_pGameInstance->BroadCastEvent(L"OnCarryUIShow", (void*)&ShowPos);
 
 }
 

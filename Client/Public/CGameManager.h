@@ -69,6 +69,11 @@ public:
     EndingStep        Get_EndingStep() { return m_eEndingStep; }
     bool        Get_IsOpenInventory() { return m_bOpenInventory; }
 
+
+public:
+    void        Set_UseInteractionUI(bool b) { m_bUseInteractionUI = b; }
+    bool        Get_UseInteractionUI() { return m_bUseInteractionUI; }
+
 private:
     CPlayer* m_pMainPlayer=nullptr;
   
@@ -85,6 +90,8 @@ private:
 
     CUTSCENE_TYPE m_eCutSceneType=CUTSCENE_TYPE::START;
     EndingStep      m_eEndingStep = EndingStep::END;
+
+    bool        m_bUseInteractionUI = true;
 
 };
 NS_END

@@ -93,6 +93,9 @@
 #include "CMeshEffect_RollCut.h"
 #include "CMeshEffect_HitSpark.h"
 
+#include "CUI_Credit.h"
+
+
 
 
 
@@ -572,7 +575,9 @@ HRESULT CLoader::Register_Textures()
     m_pGameInstance->Load_Textures(L"../../Resource/UI/AreaUI/", L".png");
     m_pGameInstance->Load_Textures(L"../../Resource/Particle/Textures/", L".dds");
 
-  
+    m_pGameInstance->Load_Textures(L"../../Resource/UI/Credit/", L".png");
+
+
 
     return S_OK;
 }
@@ -784,6 +789,9 @@ HRESULT CLoader::Register_GameObjects()
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"UI_ItemInfo", CUI_ItemInfo::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"UI_Credit", CUI_Credit::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
 
     ////////////////Monsters//////////////////
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Monster", CMonster::Create(m_pDevice, m_pDeviceContext))))

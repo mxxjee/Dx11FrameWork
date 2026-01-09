@@ -23,7 +23,7 @@
             },
             {
               "Speaker": "???",
-              "Text": "설마… 내가 누군지 모르겠어?",
+              "Text": "설마... 내가 누군지 모르겠어?",
               "strActionCommand": "PLAY_ANIM:NPC_BOW",
               "actionTiming": "ON_START"
             },
@@ -100,6 +100,25 @@
               "Speaker": "마린",
               "Text": "어서 마을을 둘러보고 사람들을 도와줘!",
               "strActionCommand": "GIVE_ITEM:9001:1000",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Ending",
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "마린",
+              "Text": "정말 고생 많았어, 링크.\n네가 없었다면 이 섬의 평화도 없었을 거야.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "마린",
+              "Text": "이제 코호린트 섬의 바람을 느끼며 조금 쉬어도 괜찮아.",
+              "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             }
           ]

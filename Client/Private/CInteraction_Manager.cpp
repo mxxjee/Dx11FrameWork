@@ -6,6 +6,7 @@
 #include "CPlayer.h"
 #include "CGameInstance.h"
 #include "CLayer.h"
+#include "CGameManager.h"
 
 USING(Client)
 IMPLEMENT_SINGLETON(CInteraction_Manager)
@@ -43,6 +44,8 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 	
 	//최적의 InteratableOBject를 찾아서 저장
 	CIInteractable* pBest = nullptr;
+
+	CheckTrue(CGameManager::GetInstance()->Get_EndingStep() == EndingStep::EPILOGUE);
 
 	//전체 리스트를 돌면서 상호작용가능한 조건을 가지는 애들을 간추리기
 	for (auto pInteratable : m_InteractableObjects)
@@ -106,24 +109,27 @@ bool CInteraction_Manager::OnInteractKeyPresed()
 		if (!m_pCurrentTarget)
 			return false;
 
-
-		if (!m_pCurrentTarget->m_bPrevInteracting)
+		if (CGameManager::GetInstance()->Get_EndingStep() != EndingStep::EPILOGUE)
 		{
-			m_pCurrentTarget->Enter_Interaction();
-			m_pCurrentTarget->m_bPrevInteracting = true;
-			return true;
-		}
-
-		else
-		{
-			if (m_pCurrentTarget->Get_Interaction_Priority() != ENUM_TO_UINT(InteractionType::NPC))
+			if (!m_pCurrentTarget->m_bPrevInteracting)
 			{
-				m_pCurrentTarget->Exit_Interaction();
-				m_pCurrentTarget->m_bPrevRange = false;
+				m_pCurrentTarget->Enter_Interaction();
+				m_pCurrentTarget->m_bPrevInteracting = true;
 				return true;
 			}
 
+			else
+			{
+				if (m_pCurrentTarget->Get_Interaction_Priority() != ENUM_TO_UINT(InteractionType::NPC))
+				{
+					m_pCurrentTarget->Exit_Interaction();
+					m_pCurrentTarget->m_bPrevRange = false;
+					return true;
+				}
+
+			}
 		}
+
 
 		m_pCurrentTarget->Pressed_InteractionKey();
 

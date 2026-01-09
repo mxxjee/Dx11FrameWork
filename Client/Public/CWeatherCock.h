@@ -7,6 +7,7 @@ namespace  Engine
 
 }
 NS_BEGIN(Client)
+class CGameManager;
 class CWeatherCock :
     public CAnimModelObject
 {
@@ -44,6 +45,7 @@ public:
 private:
     CBoxColliderComponent* m_pCollider = nullptr;
     float       m_fDissolveAlpha = 0.f;
+    CGameManager* m_pGameManager = nullptr;
 
 
 };

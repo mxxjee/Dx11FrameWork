@@ -33,6 +33,7 @@
           "ChapterID": "Q1001_ACTIVE_PERM",
           "iQuestOffered": 0,
           "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
           "Steps": [
             {
               "Speaker": "타린",
@@ -44,8 +45,8 @@
         },
         {
           "ChapterID": "Q1001_COMPLETABLE_READY",
-          "iQuestOffered": 0,
-          "iQuestRequiredToUnlock": 0,
+          "iQuestOffered": 1001,
+          "iQuestRequiredToUnlock": 1001,
           "Steps": [
             {
               "Speaker": "타린",
@@ -83,7 +84,7 @@
         },
         {
           "ChapterID": "Q2001_Start",
-          "iQuestOffered": 2001,
+          "iQuestOffered": 0,
           "iQuestRequiredToUnlock": 0,
           "strNextPermanentChapterID": "Q2001_ACTIVE_PERM",
           "Steps": [
@@ -145,15 +146,50 @@
             }
           ]
         },
+
         {
           "ChapterID": "Wait",
-          "iQuestOffered": 2001,
+          "iQuestOffered": 0,
           "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "Wait",
+          "Steps": [
+            {
+              "Speaker": "타린",
+              "Text": "어서 들어가봐!",
+              "strActionCommand": "",
+              "actionTiming": ""
+            }
+          ]
+        },
+        {
+          "ChapterID": "Wait",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock":0 ,
           "strNextPermanentChapterID": "",
           "Steps": [
             {
               "Speaker": "타린",
               "Text": "어서 들어가봐!",
+              "strActionCommand": "",
+              "actionTiming": ""
+            }
+          ]
+        },
+        {
+          "ChapterID": "Ending",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "Ending",
+          "Steps": [
+            {
+              "Speaker": "타린",
+              "Text": "허허, 역시 내 눈은 틀리지 않았구만!\n방패에 새겨진 그 이름에 부끄럽지 않은 활약이었어.",
+              "strActionCommand": "",
+              "actionTiming": ""
+            },
+            {
+              "Speaker": "타린",
+              "Text": "자, 이제 맛있는 거라도 좀 먹으러 가자고!",
               "strActionCommand": "",
               "actionTiming": ""
             }

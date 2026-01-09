@@ -28,7 +28,8 @@ public:
 public:
     HRESULT                 Ready_Layer_Enviroment(const _wstring& strLayerTag);
     HRESULT                 Ready_Lights();
-    HRESULT                 Ready_Layer_NPC(const _wstring& strLayerTag); HRESULT                 Ready_Layer_Player(const _wstring& strLayerTag);
+    HRESULT                 Ready_Layer_NPC(const _wstring& strLayerTag);
+    HRESULT                 Ready_Layer_UI(const _wstring& strLayerTag); 
 
 public:
     virtual void        OnEnter() override;           //씬 진입시 매번호출

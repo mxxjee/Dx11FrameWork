@@ -135,6 +135,16 @@ void CNPC::Update_Late(_float fTimeDelta)
     m_pCollider->Update_Collider(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
 
     Update_Mouth(fTimeDelta);
+    //타겟이있을때는 플레이어가 아닌타겟을쳐다보게.
+    if (m_pTarget)
+    {
+        _vector TargetPos = m_pTarget->Get_Transform()->Get_State(STATE::POSITION);
+        m_pTransformCom->LookAtSmooth(TargetPos, 5.f, fTimeDelta);
+
+    }
+
+
+        
 }
 
 void CNPC::Update_Render(_float fTimeDelta)
@@ -190,7 +200,9 @@ void CNPC::Enter_InteractRange()
     _vector ShowPos = MathUtils::WorldToScreen(m_pTransformCom->Get_State(STATE::POSITION),
         m_pGameInstance->Get_ViewMatrix(0), m_pGameInstance->Get_ProjMatrix(0), g_iWinSizeX, g_iWinSizeY);
 
-    CheckTrue(m_pGameManager->Get_UseCutScene() && m_pGameManager->Get_CutSceneType()==CGameManager::CUTSCENE_TYPE::START);
+    CheckTrue(m_pGameManager->Get_UseCutScene());
+    CheckFalse(m_pGameManager->Get_UseInteractionUI());
+
     m_pGameInstance->BroadCastEvent(L"OnTalkUIShow", (void*)&ShowPos);
 
 }
@@ -198,6 +210,8 @@ void CNPC::Enter_InteractRange()
 void CNPC::Stay_InteractRange(_float fTimeDelta)
 {
     /*플레이어 쳐다보기*/
+    CheckTrue(m_pTarget != nullptr);
+
     CheckFalse(m_pTriggerBox->Is_Active());
     _vector PlayerPos = m_pPlayer->Get_Transform()->Get_State(STATE::POSITION);
     _vector vUp = XMVector3Normalize(m_pTransformCom->Get_State(STATE::UP));
@@ -213,8 +227,28 @@ void CNPC::Exit_InteractRange()
     m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", (void*)nullptr);
 }
 
+void CNPC::Set_Camera_To_NPC(EXPRESSION expression, wstring AnimKey)
+{
+    GameEvent InteractionNPC;
+    InteractionNPC.Name = "Enter_Interaction_NPC";
+    InteractionNPC.Payload.Floats["Float_X"] = 0.f;
+    InteractionNPC.Payload.Floats["Float_Y"] = 5.f;
+    InteractionNPC.Payload.Floats["Float_Z"] = -5.f;
+
+    InteractionNPC.Payload.Ptrs["NPC"] = this;
+
+    m_pGameInstance->Emit(InteractionNPC);
+
+    Set_Expression(expression);
+    m_pAnimBody->Reserve_Animation(AnimKey, true, true);
+
+}
+
+
+
 void CNPC::Enter_Interaction()
 {
+
     m_bTalking = true;
     CheckFalse(m_pTriggerBox->Is_Active());
     m_pAnimBody->Reserve_Animation(L"talk", true);
@@ -223,9 +257,13 @@ void CNPC::Enter_Interaction()
 
     m_pGameInstance->Emit(Enter_Interaction_Event);
 
+    if (m_pGameManager->Get_EndingStep() == EndingStep::ENDINGMESSAGE)
+        m_pQuest_Manager->Set_NPC_Chapter(DialogueTag, "Ending");
+
 
     m_pDialogue_Manager->StartDialogue(DialogueTag);
 
+   
     m_bIsTalking = true;
 }
 
@@ -276,6 +314,12 @@ void CNPC::Pressed_InteractionKey()
 
     if (!m_pDialogue_Manager->AdvanceDialogueStep())
         Exit_Interaction();
+}
+
+void CNPC::Set_TriggerBoxEnable(bool b)
+{
+    CheckNull(m_pTriggerBox);
+    m_pTriggerBox->Set_Active(false);
 }
 
 HRESULT CNPC::Ready_Components(void* pArg)

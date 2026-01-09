@@ -32,9 +32,35 @@ HRESULT CCamera_Manager::Initialize()
 	
 	//이벤트등록
 	//NPC 이벤트 시작시 필요한 콜백 등록(카메라 역할)
+
+	m_pGameInstance->RegisterListners("Ending_Camera", [this](const GameEvent& evt)
+		{
+			CGameObject* pPlayer = static_cast<CGameObject*>(evt.Payload.Ptrs.at("Player"));
+			CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(Get_MainCamera());
+
+			CheckNull(pCameraBase);
+			CheckNull(pPlayer);
+
+			CMainCamera* pMainCamera = dynamic_cast<CMainCamera*>(pCameraBase);
+			if (pMainCamera)
+				pMainCamera->Set_Target(pPlayer, false);
+
+			else
+				pCameraBase->Set_Target(pPlayer);
+
+
+			pCameraBase->Set_Offset(_float3(
+				evt.Payload.Floats.at("Float_X"),
+				evt.Payload.Floats.at("Float_Y"),
+				evt.Payload.Floats.at("Float_Z")));
+
+			pCameraBase->Set_Lock(false);
+
+
+		});
 	m_pGameInstance->RegisterListners("Enter_Interaction_NPC", [this](const GameEvent& evt)
 		{
-                                                                                                                                                                                                                                                      			CGameObject* pNpc = static_cast<CGameObject*>(evt.Payload.Ptrs.at("NPC"));
+            CGameObject* pNpc = static_cast<CGameObject*>(evt.Payload.Ptrs.at("NPC"));
 			CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(Get_MainCamera());
 		
 			CheckNull(pNpc);
@@ -94,6 +120,42 @@ HRESULT CCamera_Manager::Initialize()
 			pCameraBase->Set_Lock(false);
 
 		});
+
+	m_pGameInstance->RegisterListners("Init_Camera_With_NewValue", [this](const GameEvent& evt)
+		{
+
+			CGameObject* pPlayer = static_cast<CGameObject*>(evt.Payload.Ptrs.at("Player"));
+			CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(Get_MainCamera());
+
+			CheckNull(pCameraBase);
+			CheckNull(pPlayer);
+
+			CMainCamera* pMainCamera = dynamic_cast<CMainCamera*>(pCameraBase);
+
+			pMainCamera->Set_Offset(_float3(
+				evt.Payload.Floats.at("Float_X"),
+				evt.Payload.Floats.at("Float_Y"),
+				evt.Payload.Floats.at("Float_Z")));
+
+			pMainCamera->Set_LocalRoation(_float4(evt.Payload.Floats.at("Rotate_X"),
+				evt.Payload.Floats.at("Rotate_Y"),
+				evt.Payload.Floats.at("Rotate_Z"),
+				0.f));
+
+
+			if (pMainCamera)
+				pMainCamera->Set_Target(pPlayer, true);
+
+			else
+				pCameraBase->Set_Target(pPlayer);
+
+
+		
+
+			pCameraBase->Set_Lock(false);
+
+		});
+
 
 	m_pGameInstance->RegisterListners("Complete_Init_Camera", [this](const GameEvent& evt)
 		{

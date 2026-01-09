@@ -40,6 +40,20 @@
               "actionTiming": "ON_START"
             }
           ]
+        },
+        {
+          "ChapterID": "Ending",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "병준",
+              "Text": "저를 구해주러 숲속까지 와줘서 정말 고마웠어요.\n이제 숲 근처에는 절대 안 갈 거예요!",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
         }
       ]
     }

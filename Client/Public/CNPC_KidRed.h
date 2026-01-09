@@ -34,6 +34,7 @@ private:
     void        Walk_EndFirstChapter(_float fTimeDelta);
 
     void        Wait_EndFirstChapter(_float fTimeDelta);
+    void        Wait_TownArrival(_float fTimeDelta);
 public:
     ///범위감지용///
     virtual void        Enter_InteractRange();

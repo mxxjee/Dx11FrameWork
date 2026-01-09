@@ -74,6 +74,10 @@ public:
     virtual void        Stay_InteractRange(_float fTimeDelta);       //상호작용가능한 범위에잇을떄 계속호출
     virtual void        Exit_InteractRange();      //ㅓ범위나갔을때 호출
 
+public:
+    //엔딩컷씬에 필요한 줌인줌아웃이벤트
+    void        Set_Camera_To_NPC(EXPRESSION   expression,wstring AnimKey);
+  
 
     /// ///실제 인터렉션 할때 호출되는함수
 
@@ -83,6 +87,9 @@ public:
 
     virtual _int	Get_Interaction_Priority() { return InteractionType::NPC; }//우선순위 젤높음
     virtual void	Pressed_InteractionKey();
+
+public:
+    void        Set_TriggerBoxEnable(bool b);
 private:
     HRESULT         Ready_Components(void* pArg);
     virtual HRESULT     Ready_PartObjects(void* pArg);
