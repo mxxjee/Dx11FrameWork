@@ -107,7 +107,7 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
     __super::Update_Priority(fTimeDelta);
 
     //엔딩씬 테스트
-    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::E))
+    /*if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::E))
     {
 
         pFadeScreen->Set_FadeInEndFunc([this]()
@@ -126,7 +126,7 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
             });
 
         pFadeScreen->PlayFadeIn();
-    }
+    }*/
 
     /*
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::R))
@@ -1205,7 +1205,50 @@ void CLevel_Town::OnEnter()
 
 
 
+#pragma region 이펙트를 위한 몬스터테스트
+    for (int i = 0; i < 4; ++i)
+    {
+        _vector vPos = (*m_Cells)[5+i]->Get_CenterPos();
+        CMonster::MonsterDesc Moriblindesc;
 
+        CMonster_Body::MONSTER_BODY_DESC MoriblinbodyDesc;
+        MoriblinbodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
+        MoriblinbodyDesc.modelName = L"MoriblinSword";
+        MoriblinbodyDesc.m_iLevelID = m_iLevelID;
+
+        Moriblindesc.BodyDesc = &MoriblinbodyDesc;
+
+
+        Moriblindesc.iAttack = 10;
+        Moriblindesc.MaxHp = 3;
+        Moriblindesc.fActionRange = 3.f;
+        Moriblindesc.m_iLevelID = m_iLevelID;
+        Moriblindesc.RoamRadius = 1.f;
+
+        //첫 스폰위치
+        Moriblindesc.iHomeIdx = 5 + i;
+
+        Moriblindesc.ObjTag = L"MoriblinSword" + to_wstring(i*10);
+        CTransform::TRANSFORM_DESC MoriblinTransDesc = {};
+
+        MoriblinTransDesc.vLocalRotation = { 0.f,180.f,0.f,1.f };
+        XMStoreFloat4(&MoriblinTransDesc.vLocalPosition, vPos);
+
+        MoriblinTransDesc.fSpeedPerSec = 2.f;
+        MoriblinTransDesc.fRotationPerSec = 10.f;
+
+        Moriblindesc.TransformDesc = &MoriblinTransDesc;
+
+
+
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+            PROTO_OBJ_NAME(L"CM_MoriblinSword"),
+            ENUM_TO_UINT(LEVEL_ID::TOWN),
+            L"Monster_Layer", &Moriblindesc)))
+            return;
+
+    }
+#pragma endregion 
 
 }
 

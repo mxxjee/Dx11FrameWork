@@ -24,15 +24,18 @@ HRESULT CMeshEffect_HitSpark::Initialize_Prototype()
 
 HRESULT CMeshEffect_HitSpark::Initialize_Copytype(void* pArg)
 {
+	HITSPARK_DESC* pDesc = static_cast<HITSPARK_DESC*>(pArg);
+	m_bUseParentRotation = pDesc->bUseParentRotation;
+
 	if (FAILED(__super::Initialize_Copytype(pArg)))
 		return E_FAIL;
 
 	_float fInitRotateZ[] = { 45.f,135.f,225.f,315.f };
-	_float4 fInitPosition[] = { _float4(0.f,2.f,0.f,1.f),
-	 _float4(0.f,2.f,0.f,1.f),
-	_float4(0.f,2.f,0.f,1.f),
-	_float4(0.f,2.f,0.f,1.f),
-	};
+	//_float4 fInitPosition[] = { _float4(0.f,2.f,0.f,1.f),
+	// _float4(0.f,2.f,0.f,1.f),
+	//_float4(0.f,2.f,0.f,1.f),
+	//_float4(0.f,2.f,0.f,1.f),
+	//};
 
 	m_InitSpeed = 3.f;
 
@@ -41,7 +44,7 @@ HRESULT CMeshEffect_HitSpark::Initialize_Copytype(void* pArg)
 	{
 		m_InitRotationZ[i] = fInitRotateZ[i];
 
-		m_InitPosition[i]= fInitPosition[i];
+		m_InitPosition[i]= m_LocalData.InitOffSet;
 		m_CurrentPos[i] = m_InitPosition[i];
 	}
 
@@ -151,7 +154,7 @@ void CMeshEffect_HitSpark::Play()
 	__super::Play();
 	m_LocalData.InitRotation.y = 0.f;
 	for (int i = 0; i < 4;++i)
-		m_CurrentPos[i] = m_InitPosition[i];
+		m_CurrentPos[i] = m_LocalData.InitOffSet;
 
 
 }
@@ -166,8 +169,14 @@ void CMeshEffect_HitSpark::Stop()
 void CMeshEffect_HitSpark::Make_PartWorldMatrix()
 {
 	_matrix Scaling = XMMatrixScaling(m_InitScale.x, m_InitScale.y, m_InitScale.z);
-	_vector vWorldPos = XMLoadFloat4(&(_float4&)CombinedMatrix.m[3][0]);
-	_matrix matOnlyTranslation = XMMatrixTranslationFromVector(vWorldPos);
+	_matrix mat = XMLoadFloat4x4(&OriginMatrix);
+
+	if(!m_bUseParentRotation)
+	{
+		_vector vWorldPos = XMLoadFloat4(&(_float4&)CombinedMatrix.m[3][0]);
+		mat = XMMatrixTranslationFromVector(vWorldPos);
+	}
+
 	for (int i = 0; i < 4; ++i)
 	{
 
@@ -181,7 +190,7 @@ void CMeshEffect_HitSpark::Make_PartWorldMatrix()
 
 
 
-		m_PartsWorldMatrix[i] = m_LocalMatrix[i] * matOnlyTranslation;
+		m_PartsWorldMatrix[i] = m_LocalMatrix[i] * mat;
 	}
 
 }
@@ -203,25 +212,19 @@ void CMeshEffect_HitSpark::Render_DebugImgui()
 
 
 	//파츠의 스케일지정
-	if (ImGui::DragFloat4("InitScale", (float*)&m_InitScale))
+	if (ImGui::DragFloat4("InitOffSet", (float*)&m_LocalData.InitOffSet))
 	{
-		// Update_Matrix();
-	}
-
-	//파츠의 스케일지정
-
-	if (ImGui::DragFloat("m_InitSpeed", (float*)&m_InitSpeed))
-	{
+		m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+		Make_LocalMatrix();
 	}
 
 
-	//파츠의 스케일지정
-	for (int i = 0; i < 4; ++i)
+	if (ImGui::Checkbox("Loop", (bool*)&m_LocalData.m_bLoop))
 	{
-		if (ImGui::DragFloat4(string("m_InitPosition" + to_string(i)).c_str(), (float*)&m_InitPosition[i]))
-		{
-		}
+		m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+
 	}
+
 
 	if (ImGui::DragFloat("LifeTime", (float*)&m_LocalData.fLifeTime))
 	{

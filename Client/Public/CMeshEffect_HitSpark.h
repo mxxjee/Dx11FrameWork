@@ -6,6 +6,13 @@ class CMeshEffect_HitSpark :
     public CMeshEffect
 {
 public:
+    typedef struct tagMeshEffect_HitSpark_Desc:public CMeshEffect::MESHEFFECT_DESC
+    {
+        bool    bUseParentRotation = false;
+
+
+    }HITSPARK_DESC;
+public:
     CMeshEffect_HitSpark(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CMeshEffect_HitSpark(const CMeshEffect_HitSpark& rhs);
     virtual ~CMeshEffect_HitSpark() = default;
@@ -57,6 +64,9 @@ private:
     _matrix     m_PartsWorldMatrix[4];
 
     int         iTargetIdx = 0;
+
+    bool        m_bUseParentRotation = false;
+
 
 };
 NS_END

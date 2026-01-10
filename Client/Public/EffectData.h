@@ -4,29 +4,31 @@
 
 struct EffectData
 {
-	_float4 vColor = _float4(1.f, 1.f, 1.f, 1.f);
-	_float fLifeTime = 5.f;
-	_float fSpeed = 3.f;
+    // 1. 큰 덩어리 (16바이트들) - 가장 먼저 배치
+    _float4 vColor = _float4(1.f, 1.f, 1.f, 1.f);
+    _float4 InitOffSet = _float4(0.f, 0.f, 0.f, 1.f);
+    _float4 InitRotation = _float4(0.f, 0.f, 0.f, 0.f);
+    _float4 InitScale = _float4(1.f, 1.f, 1.f, 1.f);
+    _float4 TargetScale = { 1.f, 1.f, 1.f, 1.f };
+    _float4 vRotationAxis = { 0.f, 0.f, 1.f, 1.f };
+    _float4 vMoveDir = { 0.f, 1.f, 0.f, 0.f };
 
-	bool  m_bLoop = false;		//루프가 끝나면 자동으로 disalbe
-	
-	_float4		InitOffSet = _float4(0.f, 0.f, 0.f, 1.f);
-	_float4		InitRotation = _float4(0.f, 0.f, 0.f, 0.f);
-	_float4		InitScale = _float4(1.f, 1.f, 1.f, 1.f);
+    // 2. 4바이트 데이터들
+    _float fLifeTime = 5.f;
+    _float fSpeed = 3.f;
+    _float fScaleSpeed = 1.0f;
+    _float fRotationSpeed = 0.0f;
+    _float fMoveSpeed = 0.0f;
+    _float fIntensity = 1.f;
 
-	bool	bUseScaleAnim = false;
-	_float4 TargetScale = { 1.f,1.f,1.f,1.f };
-	_float  fScaleSpeed = 1.0f;
+    // 3. 1바이트 데이터들 (가급적 마지막에 몰아넣기)
+    bool m_bLoop = false;
+    bool bUseScaleAnim = false;
+    bool bUseRotationAnim = false;
+    bool bUseMoveAnim = false;
 
-	bool    bUseRotationAnim = false;
-	_float4 vRotationAxis = { 0.f, 0.f, 1.f,1.f };
-	_float  fRotationSpeed = 0.0f;
-
-	bool    bUseMoveAnim = false;
-	_float4 vMoveDir = { 0.f, 1.f, 0.f,0.f }; 
-	_float  fMoveSpeed = 0.0f;
-	
-	_float  fIntensity = 1.f;
+    // 4. 구조체 전체 크기를 16의 배수로 맞추기 위한 패딩 (선택사항이나 권장)
+    // _float pad[3];
 
 
 };

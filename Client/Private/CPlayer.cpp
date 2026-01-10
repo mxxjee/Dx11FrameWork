@@ -32,6 +32,8 @@
 #include "CQuadEffect.h"
 #include "CEffectPoolManager.h"
 #include "CMeshEffect_RollCut.h"
+#include "CMeshEffect_HitSpark.h"
+
 
 
 
@@ -148,6 +150,32 @@ void CPlayer::Update(_float fTimeDelta)
     //무조건 a키.
     m_Input.m_bInteract = CInteraction_Manager::GetInstance()->OnInteractKeyPresed();
 
+    /*이펙트테스트코드*/
+    if (m_pInputManager->IsKeyPressed(KeyCode::G))
+    {
+        for (auto& pInfo : m_PlayerEffects[GUARDEFFECT])
+        {
+            CEffect::EFFECT_DESC* pDesc = static_cast<CEffect::EFFECT_DESC*>(pInfo);
+
+            CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(pDesc->ProtoName, pInfo);
+            if (pEffect)
+            {
+                pEffect->Spawn();
+
+                CPartObject* pPlayerShield = Find_PartObject(L"Player_Shield");
+                _float4x4 ShieldMatrix = pPlayerShield->Get_CombinedWorldMatrix();
+
+                _matrix vShieldMatrix = XMLoadFloat4x4(&ShieldMatrix);
+
+
+
+
+                pEffect->Set_OrigniMatrix(vShieldMatrix);
+                pEffect->Play();
+
+            }
+        }
+    }
     //엔딩씬 컷신진행중.. 상태전이
     if (m_pGameManager->Get_UseCutScene() && m_pGameManager->Get_CutSceneType() == CGameManager::CUTSCENE_TYPE::ENDING)
     {
@@ -1218,6 +1246,7 @@ HRESULT CPlayer::Ready_Effects()
     }*/
 #pragma endregion
     CQuadEffect::QUADEFFECT_DESC* Desc=new CQuadEffect::QUADEFFECT_DESC();
+    Desc->ProtoName = L"QuadEffect";
     Desc->TextureKey = L"fire_02";
     Desc->ObjTag = L"Slash_Quad";
     Desc->ShaderName = L"Default";
@@ -1231,6 +1260,7 @@ HRESULT CPlayer::Ready_Effects()
 
     /////
     CTrailEffect::TrailDesc* TrailEffect=new CTrailEffect::TrailDesc();
+    TrailEffect->ProtoName = L"Trail";
     TrailEffect->ShaderName = L"Default";
     TrailEffect->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
     m_PlayerEffects[ENUM_TO_UINT(SLASHTRAIL)].push_back(TrailEffect);
@@ -1239,6 +1269,7 @@ HRESULT CPlayer::Ready_Effects()
     ///////////////////Complete Effect///////////
     //차징완료시 퍼지는Effect
     CQuadEffect::QUADEFFECT_DESC* ChargeCompleteDesc = new CQuadEffect::QUADEFFECT_DESC();
+    ChargeCompleteDesc->ProtoName = L"QuadEffect";
     ChargeCompleteDesc->TextureKey = L"ripple_02";
     ChargeCompleteDesc->ObjTag = L"CharingComplete";
     ChargeCompleteDesc->ShaderName = L"Default";
@@ -1253,6 +1284,7 @@ HRESULT CPlayer::Ready_Effects()
 
     //////////칼날타고 흘러내리는 별////////////
     CQuadEffect::QUADEFFECT_DESC* ChargeStartEffect = new CQuadEffect::QUADEFFECT_DESC();
+    ChargeStartEffect->ProtoName = L"QuadEffect";
     ChargeStartEffect->TextureKey = L"glow_01";
     ChargeStartEffect->ObjTag = L"ChargeStartEffect";
     ChargeStartEffect->ShaderName = L"Default";
@@ -1265,6 +1297,7 @@ HRESULT CPlayer::Ready_Effects()
 #pragma region RollCutEffect
     //바람Effect
     CMeshEffect_RollCut::Effect_RollCutDesc* RollCutDesc = new CMeshEffect_RollCut::Effect_RollCutDesc();
+    RollCutDesc->ProtoName = L"MeshEffect_RollCut";
     RollCutDesc->modelName = L"Rollcut_Bending";
     RollCutDesc->ObjTag = L"Rollcut_Bending";
     RollCutDesc->ShaderName = L"MeshEffect";
@@ -1276,6 +1309,7 @@ HRESULT CPlayer::Ready_Effects()
 
     //소용슬래시?
     CMeshEffect_RollCut::Effect_RollCutDesc* RollSlashDesc = new CMeshEffect_RollCut::Effect_RollCutDesc();
+    RollCutDesc->ProtoName = L"MeshEffect_RollCut";
     RollSlashDesc->modelName = L"rollcut";
     RollSlashDesc->ObjTag = L"rollcut";
     RollSlashDesc->ShaderName = L"MeshEffect";
@@ -1294,12 +1328,43 @@ HRESULT CPlayer::Ready_Effects()
 #pragma region 쉴드이펙트
     {
         CMeshEffect::MESHEFFECT_DESC* GuardEffectDesc=new CMeshEffect::MESHEFFECT_DESC();
+        GuardEffectDesc->ProtoName = L"MeshEffect";
         GuardEffectDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
         GuardEffectDesc->modelName = L"flash_00";
         GuardEffectDesc->ShaderName = L"MeshEffect";
         GuardEffectDesc->PassName = "Default";
         GuardEffectDesc->DataName = L"flash_00";
         GuardEffectDesc->ObjTag = L"flash_00";
+        m_PlayerEffects[GUARDEFFECT].push_back(GuardEffectDesc);
+
+
+    }
+
+    {
+        CMeshEffect::MESHEFFECT_DESC* GuardEffectDesc = new CMeshEffect::MESHEFFECT_DESC();
+        GuardEffectDesc->ProtoName = L"MeshEffect";
+        GuardEffectDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+        GuardEffectDesc->modelName = L"ring_01";
+        GuardEffectDesc->ShaderName = L"MeshEffect";
+        GuardEffectDesc->PassName = "Default";
+        GuardEffectDesc->DataName = L"ring_01";
+        GuardEffectDesc->ObjTag = L"ring_01";
+        m_PlayerEffects[GUARDEFFECT].push_back(GuardEffectDesc);
+
+
+    }
+
+    //스파클
+    {
+        CMeshEffect_HitSpark::HITSPARK_DESC* GuardEffectDesc = new CMeshEffect_HitSpark::HITSPARK_DESC();
+        GuardEffectDesc->ProtoName = L"MeshEffect_HitSpark";
+        GuardEffectDesc->bUseParentRotation = true;
+        GuardEffectDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+        GuardEffectDesc->modelName = L"HitSpark";
+        GuardEffectDesc->ShaderName = L"MeshEffect";
+        GuardEffectDesc->PassName = "Default";
+        GuardEffectDesc->DataName = L"HitSpark_Guard";
+        GuardEffectDesc->ObjTag = L"HitSpark_Guard";
         m_PlayerEffects[GUARDEFFECT].push_back(GuardEffectDesc);
 
 
@@ -1518,7 +1583,29 @@ void CPlayer::Shield_Hit_Behavior()
         
         pShieldState->Hit_Shield(this);
         //이펙트재생
+        for (auto& pInfo : m_PlayerEffects[GUARDEFFECT])
+        {
+            CEffect::EFFECT_DESC* pDesc = static_cast<CEffect::EFFECT_DESC*>(pInfo);
 
+            CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(pDesc->ProtoName, pInfo);
+            if (pEffect)
+            {
+                pEffect->Spawn();
+
+                CPartObject* pPlayerShield = Find_PartObject(L"Player_Shield");
+                _float4x4 ShieldMatrix = pPlayerShield->Get_CombinedWorldMatrix();
+
+                _matrix vShieldMatrix = XMLoadFloat4x4(&ShieldMatrix);
+
+
+
+
+                pEffect->Set_OrigniMatrix(vShieldMatrix);
+                pEffect->Play();
+
+            }
+        }
+       
 
     }
 }

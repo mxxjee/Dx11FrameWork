@@ -98,7 +98,9 @@ HRESULT CMonster::Initialize_Copytype(void* pArg)
 
 
     ///작은 스파클/////
-    CMeshEffect::MESHEFFECT_DESC* SparkleEffectDesc = new CMeshEffect::MESHEFFECT_DESC();
+    CMeshEffect_HitSpark::HITSPARK_DESC* SparkleEffectDesc = new CMeshEffect_HitSpark::HITSPARK_DESC();
+    SparkleEffectDesc->ProtoName = L"MeshEffect_HitSpark";
+    SparkleEffectDesc->bUseParentRotation = false;
     SparkleEffectDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
     SparkleEffectDesc->modelName = L"HitSpark";
     SparkleEffectDesc->ShaderName = L"MeshEffect";

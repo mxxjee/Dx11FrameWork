@@ -23,6 +23,7 @@ public:
         wstring      ShaderName = L"Default";
         _uint eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
         wstring      DataName = L"";
+        wstring     ProtoName = L"";
 
     }EFFECT_DESC;
 

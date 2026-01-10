@@ -19,6 +19,7 @@ class CMeshEffect :
 public:
     typedef struct tagMeshEffectDesc : public CEffect::tagEffectDesc
     {
+       
         wstring    modelName;               //이 body가 사용할 모델이름
         string      PassName="Default";
        
