@@ -5,7 +5,8 @@
         0.36274510622024536,
         1.0
     ],
-    "LifeTime": 0.20000000298023224,
+    "DataName": "flash_00",
+    "LifeTime": 0.30000001192092896,
     "Loop": false,
     "OffSet": [
         0.0,
@@ -27,15 +28,16 @@
     ],
     "Speed": 3.0,
     "TargetScale": [
-        0.5,
-        0.5,
-        0.5,
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
         1.0
     ],
+    "Type": "Mesh",
     "bUseMoveAnim": false,
     "bUseRotationAnim": false,
     "bUseScaleAnim": true,
-    "fIntensity": 2.0,
+    "fIntensity": 1.0,
     "fMoveSpeed": 0.0,
     "fRotationSpeed": 0.0,
     "fScaleSpeed": 50.0,

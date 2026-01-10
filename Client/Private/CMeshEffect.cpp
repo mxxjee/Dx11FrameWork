@@ -47,7 +47,24 @@ HRESULT CMeshEffect::Initialize_Copytype(void* pArg)
 
 
 
+    EffectData* pData = m_pEffectData_Manager->Find_Data(m_DataName);
+    if (pData)
+    {
+        m_LocalData = *(static_cast<MeshEffectData*>(pData));
+        m_pTransformCom->Rotation(_float3(m_LocalData.InitRotation.x, m_LocalData.InitRotation.y, m_LocalData.InitRotation.z));
+        m_pTransformCom->Set_Scale(m_LocalData.InitScale);
 
+        _vector vPos = m_pTransformCom->Get_State(STATE::POSITION);
+        m_pTransformCom->Set_State(STATE::POSITION, vPos + XMVectorSetW(XMLoadFloat4(&m_LocalData.InitOffSet), 0.f));
+
+
+
+    }
+
+    m_pDataRef = &m_LocalData;
+    CurrentScale = m_pDataRef->InitScale;
+    CurrentMove = m_pDataRef->InitOffSet;
+    Make_LocalMatrix();
     return S_OK;
 }
 
@@ -62,37 +79,76 @@ void CMeshEffect::Update_Priority(_float fTimeDelta)
 void CMeshEffect::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
-    if (!m_bStop)
+
+    bool m_bAnimated = m_LocalData.bUseMoveAnim || m_LocalData.bUseScaleAnim || m_LocalData.bUseRotationAnim;
+
+    if (m_LocalData.bUseScaleAnim)
     {
-        m_fTime += fTimeDelta;
-        m_fProgress += fTimeDelta * m_LocalData.fSpeed;
+        //진행도 누적
+        ScaleLerpTime += fTimeDelta * m_LocalData.fScaleSpeed;
+        if (ScaleLerpTime > 1.f) ScaleLerpTime = 1.f;
+
+        //보간 값 계산
+        XMStoreFloat4(&CurrentScale, XMVectorLerp(
+            XMLoadFloat4(&m_LocalData.InitScale),
+            XMLoadFloat4(&m_LocalData.TargetScale),
+            ScaleLerpTime));
+
+        //루프 처리 (끝나면 다시 0으로)
+        if (ScaleLerpTime >= 1.f && m_LocalData.m_bLoop)
+            ScaleLerpTime = 0.f;
+
+
 
     }
 
-    if (m_fTime >= m_LocalData.fLifeTime)
+    if (m_LocalData.bUseMoveAnim)
     {
-        if (!m_LocalData.m_bLoop)
+        //진행도 누적
+        MoveLerpTime += fTimeDelta * m_LocalData.fMoveSpeed;
+        if (MoveLerpTime > 1.f) MoveLerpTime = 1.f;
+
+        //보간 값 계산
+
+
+        _vector vMoveDir = XMVector4Normalize(XMLoadFloat4(&m_LocalData.vMoveDir));
+
+        //originmarix가있다면 그 look방향 * 내가갈방향
+        if (!XMMatrixIsIdentity(XMLoadFloat4x4(&OriginMatrix)))
         {
-            m_fAlpha -= fTimeDelta * m_fFadeOutSpeed;
-            if (m_fAlpha <= 0)
-            {
-                Stop();
-                m_pEffectPool_Manager->Request_Return(this);
-                Set_Active(false);
-            }
+            _vector vLook = XMLoadFloat4x4(&OriginMatrix).r[ENUM_TO_UINT(STATE::LOOK)];
+            vMoveDir = vLook * XMVector4Normalize(XMLoadFloat4(&m_LocalData.vMoveDir));
+
         }
 
+        XMStoreFloat4(&CurrentMove, XMVectorLerp(XMLoadFloat4(&m_LocalData.InitOffSet),
+            XMLoadFloat4(&m_LocalData.InitOffSet) * vMoveDir,
+            MoveLerpTime));
 
+
+        //루프 처리 (끝나면 다시 0으로)
+        if (MoveLerpTime >= 1.f && m_LocalData.m_bLoop)
+            MoveLerpTime = 0.f;
 
 
     }
+
+    if (!m_bAnimated)
+    {
+        //애니메이션을 안 쓸 때는 실시간으로 InitScale을 따라가야 ImGui 수정이 반영됨!
+        CurrentScale = m_LocalData.InitScale;
+        ScaleLerpTime = 0.f;
+    }
+
+
+    
   
 }
 
 void CMeshEffect::Update_Late(_float fTimeDelta)
 {
     __super::Update_Late(fTimeDelta);
-
+    
     
 
 
@@ -239,7 +295,63 @@ CGameObject* CMeshEffect::Clone(void* pArg)
 #ifdef _DEBUG
 void CMeshEffect::Render_DebugImgui()
 {
+    if (ImGui::Checkbox("bUseScaleAnim", (bool*)&m_LocalData.bUseScaleAnim))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, static_cast<MeshEffectData*>(&m_LocalData));
+
+    }
+
+    if (ImGui::DragFloat4("TargetScale", (float*)&m_LocalData.TargetScale))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, static_cast<MeshEffectData*>(&m_LocalData));
+    }
+
+
+    if (ImGui::DragFloat("ScaleSpeed", (float*)&m_LocalData.fScaleSpeed))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, static_cast<MeshEffectData*>(&m_LocalData));
+    }
+
+
+    ///////////
+    if (ImGui::Checkbox("bUseRotationAnim", (bool*)&m_LocalData.bUseRotationAnim))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, static_cast<MeshEffectData*>(&m_LocalData));
+
+    }
+
+    if (ImGui::DragFloat4("RotationAxis", (float*)&m_LocalData.vRotationAxis))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, static_cast<MeshEffectData*>(&m_LocalData));
+    }
+
+
+    if (ImGui::DragFloat("RotationSpeed", (float*)&m_LocalData.fRotationSpeed))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, static_cast<MeshEffectData*>(&m_LocalData));
+    }
+    //////////////
+    if (ImGui::Checkbox("bUseMoveAnim", (bool*)&m_LocalData.bUseMoveAnim))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, static_cast<MeshEffectData*>(&m_LocalData));
+
+    }
+
+    if (ImGui::DragFloat4("MoveDir", (float*)&m_LocalData.vMoveDir))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, static_cast<MeshEffectData*>(&m_LocalData));
+    }
+
+
+    if (ImGui::DragFloat("MoveSpeed", (float*)&m_LocalData.fMoveSpeed))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, static_cast<MeshEffectData*>(&m_LocalData));
+    }
+
     __super::Render_DebugImgui();
+    //////////////////////
+   
+    /////////////
 
   
 

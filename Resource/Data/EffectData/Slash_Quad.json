@@ -5,6 +5,7 @@
         0.0,
         1.0
     ],
+    "DataName": "Slash_Quad",
     "LifeTime": 0.5,
     "Loop": false,
     "OffSet": [
@@ -32,10 +33,11 @@
         0.0,
         1.0
     ],
+    "Type": "Mesh",
     "bUseMoveAnim": false,
     "bUseRotationAnim": false,
     "bUseScaleAnim": false,
-    "fIntensity": 2.0,
+    "fIntensity": 1.0,
     "fMoveSpeed": 0.0,
     "fRotationSpeed": 0.0,
     "fScaleSpeed": 1.0,

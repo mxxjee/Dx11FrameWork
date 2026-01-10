@@ -5,6 +5,7 @@
         1.0,
         1.0
     ],
+    "DataName": "ChargeStartEffect",
     "LifeTime": 0.0,
     "Loop": false,
     "OffSet": [
@@ -32,6 +33,7 @@
         1.0,
         1.0
     ],
+    "Type": "Mesh",
     "bUseMoveAnim": true,
     "bUseRotationAnim": false,
     "bUseScaleAnim": false,

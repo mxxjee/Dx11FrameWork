@@ -72,6 +72,9 @@ private:
     CVIBuffer_Rect* m_pVIBufferCom = { nullptr };
     string                  m_passName = "";
 
+protected:
+    MeshEffectData          m_LocalData;
+
 };
 
 NS_END

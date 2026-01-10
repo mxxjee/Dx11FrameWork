@@ -16,14 +16,48 @@ CEffect::CEffect(const CEffect& rhs)
 {
 }
 
+HRESULT CEffect::Initialize_Prototype()
+{
 
+    if (FAILED(__super::Initialize_Prototype()))
+        return E_FAIL;
+
+
+
+    return S_OK;
+}
+
+HRESULT CEffect::Initialize_Copytype(void* pArg)
+{
+    EFFECT_DESC* pDesc = static_cast<EFFECT_DESC*>(pArg);
+
+    m_pEffectData_Manager = CEffectData_Manager::GetInstance();
+    m_pEffectPool_Manager = CEffectPoolManager::GetInstance();
+
+    if (FAILED(__super::Initialize_Copytype(pArg)))
+        return E_FAIL;
+    m_eRenderGroup = pDesc->eRenderGroup;
+    m_pShader = m_pGameInstance->Find_Shader(pDesc->ShaderName);
+    m_DataName = pDesc->DataName;
+
+
+    XMStoreFloat4x4(&CombinedMatrix, XMMatrixIdentity());
+    XMStoreFloat4x4(&OriginMatrix, XMMatrixIdentity());
+
+    /*spawn시에 필요한 행렬만들어주기*/
+
+  //  Update_Matrix();
+
+
+    return S_OK;
+}
 HRESULT CEffect::Render()
 {
 	__super::Render();
-	if (FAILED(m_pShader->Bind_Vector("g_TintColor", m_LocalData.vColor)))
+	if (FAILED(m_pShader->Bind_Vector("g_TintColor", m_pDataRef->vColor)))
 		return E_FAIL;
 
-    if (FAILED(m_pShader->Bind_Float("g_fIntensity", m_LocalData.fIntensity)))
+    if (FAILED(m_pShader->Bind_Float("g_fIntensity", m_pDataRef->fIntensity)))
         return E_FAIL;
 
 	return S_OK;
@@ -34,8 +68,9 @@ void CEffect::Spawn(const _float4x4* pSocketMatrix, const _float4x4* pParentMatr
     ScaleLerpTime = 0.f;
     MoveLerpTime = 0.f;
 
-    CurrentScale = m_LocalData.InitScale;
-    CurrentMove = m_LocalData.InitOffSet;
+
+    CurrentScale = m_pDataRef->InitScale;
+    CurrentMove = m_pDataRef->InitOffSet;
 }
 
 void CEffect::Play()
@@ -43,8 +78,8 @@ void CEffect::Play()
     ScaleLerpTime = 0.f;
     MoveLerpTime = 0.f;
 
-    CurrentScale = m_LocalData.InitScale;
-    CurrentMove = m_LocalData.InitOffSet;
+    CurrentScale = m_pDataRef->InitScale;
+    CurrentMove = m_pDataRef->InitOffSet;
 
 }
 
@@ -71,9 +106,9 @@ void CEffect::Make_LocalMatrix()
         CurrentScale.y,
         CurrentScale.z);
 
-	_float Roll = XMConvertToRadians(m_LocalData.InitRotation.x);
-	_float Pitch = XMConvertToRadians(m_LocalData.InitRotation.y);
-	_float Yaw = XMConvertToRadians(m_LocalData.InitRotation.z);
+	_float Roll = XMConvertToRadians(m_pDataRef->InitRotation.x);
+    _float Pitch = XMConvertToRadians(m_pDataRef->InitRotation.y);
+    _float Yaw = XMConvertToRadians(m_pDataRef->InitRotation.z);
 
 	_matrix Rotation = XMMatrixRotationRollPitchYaw(Roll, Pitch, Yaw);
 
@@ -87,57 +122,7 @@ void CEffect::Make_LocalMatrix()
 }
 
 
-HRESULT CEffect::Initialize_Prototype()
-{
-	
-	if (FAILED(__super::Initialize_Prototype()))
-		return E_FAIL;
 
-
-
-	return S_OK;
-}
-
-HRESULT CEffect::Initialize_Copytype(void* pArg)
-{
-	EFFECT_DESC* pDesc = static_cast<EFFECT_DESC*>(pArg);
-
-	m_pEffectData_Manager = CEffectData_Manager::GetInstance();
-	m_pEffectPool_Manager = CEffectPoolManager::GetInstance();
-
-	if (FAILED(__super::Initialize_Copytype(pArg)))
-		return E_FAIL;
-	m_eRenderGroup = pDesc->eRenderGroup;
-	m_pShader = m_pGameInstance->Find_Shader(pDesc->ShaderName);
-	m_DataName = pDesc->DataName;
-
-
-    XMStoreFloat4x4(&CombinedMatrix, XMMatrixIdentity());
-    XMStoreFloat4x4(&OriginMatrix, XMMatrixIdentity());
-
-    EffectData* pData = m_pEffectData_Manager->Find_Data(m_DataName);
-    if (pData)
-    {
-        m_LocalData = *pData;
-        m_pTransformCom->Rotation(_float3(m_LocalData.InitRotation.x, m_LocalData.InitRotation.y, m_LocalData.InitRotation.z));
-        m_pTransformCom->Set_Scale(m_LocalData.InitScale);
-
-        _vector vPos = m_pTransformCom->Get_State(STATE::POSITION);
-        m_pTransformCom->Set_State(STATE::POSITION, vPos + XMVectorSetW(XMLoadFloat4(&m_LocalData.InitOffSet), 0.f));
-
-
-
-    }
-    /*spawn시에 필요한 행렬만들어주기*/
-
-  //  Update_Matrix();
- 
-
-    CurrentScale = m_LocalData.InitScale;
-    CurrentMove = m_LocalData.InitOffSet;
-    Make_LocalMatrix();
-    return S_OK;
-}
 
 void CEffect::Update_Priority(_float fTimeDelta)
 {
@@ -149,67 +134,34 @@ void CEffect::Update(_float fTimeDelta)
     CheckTrue(m_bStop);
 	__super::Update(fTimeDelta);
 
-    bool m_bAnimated = m_LocalData.bUseMoveAnim || m_LocalData.bUseScaleAnim || m_LocalData.bUseRotationAnim;
+    m_fProgress += fTimeDelta * m_pDataRef->fSpeed;
+    m_fTime += fTimeDelta;
 
-
-    if (m_LocalData.bUseScaleAnim)
+    if (!m_bStop)
     {
-        //진행도 누적
-        ScaleLerpTime += fTimeDelta * m_LocalData.fScaleSpeed;
-        if (ScaleLerpTime > 1.f) ScaleLerpTime = 1.f;
-
-        //보간 값 계산
-        XMStoreFloat4(&CurrentScale, XMVectorLerp(
-            XMLoadFloat4(&m_LocalData.InitScale),
-            XMLoadFloat4(&m_LocalData.TargetScale),
-            ScaleLerpTime));
-
-        //루프 처리 (끝나면 다시 0으로)
-        if (ScaleLerpTime >= 1.f && m_LocalData.m_bLoop)
-            ScaleLerpTime = 0.f;
-
-
+        m_fTime += fTimeDelta;
+        m_fProgress += fTimeDelta * m_pDataRef->fSpeed;
 
     }
 
-    if (m_LocalData.bUseMoveAnim)
+    if (m_fTime >= m_pDataRef->fLifeTime)
     {
-        //진행도 누적
-        MoveLerpTime += fTimeDelta * m_LocalData.fMoveSpeed;
-        if (MoveLerpTime > 1.f) MoveLerpTime = 1.f;
-
-        //보간 값 계산
-
-        
-        _vector vMoveDir= XMVector4Normalize(XMLoadFloat4(&m_LocalData.vMoveDir));
-
-        //originmarix가있다면 그 look방향 * 내가갈방향
-        if (!XMMatrixIsIdentity(XMLoadFloat4x4(&OriginMatrix)))
+        if (!m_pDataRef->m_bLoop)
         {
-            _vector vLook=XMLoadFloat4x4(&OriginMatrix).r[ENUM_TO_UINT(STATE::LOOK)];
-            vMoveDir = vLook * XMVector4Normalize(XMLoadFloat4(&m_LocalData.vMoveDir));
-
+            m_fAlpha -= fTimeDelta * m_fFadeOutSpeed;
+            if (m_fAlpha <= 0)
+            {
+                Stop();
+                m_pEffectPool_Manager->Request_Return(this);
+                Set_Active(false);
+            }
         }
 
-        XMStoreFloat4(&CurrentMove, XMVectorLerp(XMLoadFloat4(&m_LocalData.InitOffSet),
-            XMLoadFloat4(&m_LocalData.InitOffSet) * vMoveDir,
-            MoveLerpTime));
 
-
-        //루프 처리 (끝나면 다시 0으로)
-        if (MoveLerpTime >= 1.f && m_LocalData.m_bLoop)
-            MoveLerpTime = 0.f;
 
 
     }
-
-    if(!m_bAnimated)
-    {
-        //애니메이션을 안 쓸 때는 실시간으로 InitScale을 따라가야 ImGui 수정이 반영됨!
-        CurrentScale = m_LocalData.InitScale;
-        ScaleLerpTime = 0.f;
-    }
-
+ 
 }
 
 void CEffect::Update_Late(_float fTimeDelta)
@@ -253,116 +205,73 @@ void CEffect::Update_Late(_float fTimeDelta)
 #ifdef _DEBUG
 void CEffect::Render_DebugImgui()
 {
-	__super::Render_DebugImgui();
-    if (ImGui::ColorEdit4("Color", (float*)&m_LocalData.vColor))
+    CheckNull(m_pDataRef);
+
+    const char* items[] = { "MESH", "PARTICLE" };
+    int current_item = (int)m_pDataRef->eType; // 현재 내 타입
+
+    if (ImGui::Combo("Effect Type", &current_item, items, IM_ARRAYSIZE(items)))
     {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+        EFFECT_DESC_TYPE eNewType = (EFFECT_DESC_TYPE)current_item;
+        m_pDataRef->eType = eNewType;
+        m_pEffectData_Manager->Update_Data(m_DataName, m_pDataRef);
+
+    }
+	__super::Render_DebugImgui();
+    if (ImGui::ColorEdit4("Color", (float*)&m_pDataRef->vColor))
+    {
+        m_pEffectData_Manager->Update_Data(m_DataName, m_pDataRef);
         Make_LocalMatrix();
     }
 
-    if (ImGui::DragFloat("Itensity", (float*)&m_LocalData.fIntensity))
+    if (ImGui::DragFloat("Itensity", (float*)&m_pDataRef->fIntensity))
     {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+        m_pEffectData_Manager->Update_Data(m_DataName, m_pDataRef);
 
     }
 
-    if (ImGui::DragFloat4("InitOffSet", (float*)&m_LocalData.InitOffSet))
+    if (ImGui::DragFloat4("InitOffSet", (float*)&m_pDataRef->InitOffSet))
     {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+        m_pEffectData_Manager->Update_Data(m_DataName, m_pDataRef);
         Make_LocalMatrix();
         //Update_Matrix();
     }
 
-    if (ImGui::DragFloat4("InitRotation", (float*)&m_LocalData.InitRotation))
+    if (ImGui::DragFloat4("InitRotation", (float*)&m_pDataRef->InitRotation))
     {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+        m_pEffectData_Manager->Update_Data(m_DataName, m_pDataRef);
         Make_LocalMatrix();
         // Update_Matrix();
     }
 
-    if (ImGui::DragFloat4("InitScale", (float*)&m_LocalData.InitScale))
+    if (ImGui::DragFloat4("InitScale", (float*)&m_pDataRef->InitScale))
     {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+        m_pEffectData_Manager->Update_Data(m_DataName, m_pDataRef);
         Make_LocalMatrix();
-        CurrentScale = m_LocalData.InitScale;
+        CurrentScale = m_pDataRef->InitScale;
 
         // Update_Matrix();
     }
 
-    //////////////////////
-    if (ImGui::Checkbox("bUseScaleAnim", (bool*)&m_LocalData.bUseScaleAnim))
+    if (ImGui::DragFloat("LifeTime", (float*)&m_pDataRef->fLifeTime))
     {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+        m_pEffectData_Manager->Update_Data(m_DataName, m_pDataRef);
 
     }
 
-    if (ImGui::DragFloat4("TargetScale", (float*)&m_LocalData.TargetScale))
+    if (ImGui::DragFloat("Speed", (float*)&m_pDataRef->fSpeed))
     {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-    }
-
-
-    if (ImGui::DragFloat("ScaleSpeed", (float*)&m_LocalData.fScaleSpeed))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-    }
-
-
-    ///////////
-    if (ImGui::Checkbox("bUseRotationAnim", (bool*)&m_LocalData.bUseRotationAnim))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+        m_pEffectData_Manager->Update_Data(m_DataName, m_pDataRef);
 
     }
 
-    if (ImGui::DragFloat4("RotationAxis", (float*)&m_LocalData.vRotationAxis))
+    if (ImGui::Checkbox("Loop", (bool*)&m_pDataRef->m_bLoop))
     {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-    }
-
-
-    if (ImGui::DragFloat("RotationSpeed", (float*)&m_LocalData.fRotationSpeed))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-    }
-    //////////////
-    if (ImGui::Checkbox("bUseMoveAnim", (bool*)&m_LocalData.bUseMoveAnim))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+        m_pEffectData_Manager->Update_Data(m_DataName, m_pDataRef);
 
     }
 
-    if (ImGui::DragFloat4("MoveDir", (float*)&m_LocalData.vMoveDir))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-    }
-
-
-    if (ImGui::DragFloat("MoveSpeed", (float*)&m_LocalData.fMoveSpeed))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-    }
-    /////////////
-    if (ImGui::DragFloat("LifeTime", (float*)&m_LocalData.fLifeTime))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-
-    }
-
-
-
-    if (ImGui::DragFloat("Speed", (float*)&m_LocalData.fSpeed))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-
-    }
-
-    if (ImGui::Checkbox("Loop", (bool*)&m_LocalData.m_bLoop))
-    {
-        m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
-
-    }
-
+   
     if (ImGui::Button("Play"))
         Play();
 
@@ -373,7 +282,7 @@ void CEffect::Render_DebugImgui()
 
     if (ImGui::Button("Save"))
     {
-        m_pEffectData_Manager->Save_To_Json(m_DataName, m_LocalData);
+        m_pEffectData_Manager->Save_To_Json(m_DataName, m_pDataRef);
 
 
     }

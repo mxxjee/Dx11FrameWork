@@ -12,7 +12,7 @@ HRESULT CEffectData_Manager::Initialize()
     return S_OK;
 }
 
-void CEffectData_Manager::Register_Data(wstring& ModelName, EffectData& Data)
+void CEffectData_Manager::Register_Data(wstring& ModelName, EffectData* Data)
 {
     EffectData* pData = Find_Data(ModelName);
     if (pData != nullptr)
@@ -20,7 +20,18 @@ void CEffectData_Manager::Register_Data(wstring& ModelName, EffectData& Data)
 
     else
     {
-        EffectData* pNewData = new EffectData(Data);
+        EffectData* pNewData = nullptr;
+
+        if(Data->eType==EFFECT_DESC_TYPE::MESH)
+            pNewData= new MeshEffectData(*static_cast<MeshEffectData*>(Data));
+
+        else if(Data->eType == EFFECT_DESC_TYPE::PARTICLE)
+            pNewData = new ParticleData(*static_cast<ParticleData*>(Data));
+
+        else
+        {
+            pNewData = new EffectData(*Data);
+        }
 
         stringID ID = stringID(ModelName);
         m_Datas.emplace(ID.m_Hash, pNewData);
@@ -29,15 +40,27 @@ void CEffectData_Manager::Register_Data(wstring& ModelName, EffectData& Data)
 }
 
 
-void CEffectData_Manager::Update_Data(wstring& ModelName, EffectData& Data)
+void CEffectData_Manager::Update_Data(wstring& ModelName, EffectData* Data)
 {
     EffectData* pData = Find_Data(ModelName);
     if (pData)
     {
-        //요걸수정..
-        (*pData) = Data;
-       
+        if (pData->eType == EFFECT_DESC_TYPE::MESH && Data->eType == EFFECT_DESC_TYPE::MESH)
+        {
+            MeshEffectData* pDest = static_cast<MeshEffectData*>(pData);
+            MeshEffectData* pSrc = static_cast<MeshEffectData*>(Data);
+
+            *pDest = *pSrc; // 값 복사!
+        }
+        else if (pData->eType == EFFECT_DESC_TYPE::PARTICLE && Data->eType == EFFECT_DESC_TYPE::PARTICLE)
+        {
+            ParticleData* pDest = static_cast<ParticleData*>(pData);
+            ParticleData* pSrc = static_cast<ParticleData*>(Data);
+
+            *pDest = *pSrc; // 값 복사!
+        }
     }
+   
 
 
     //새로만들어서 수정
@@ -66,7 +89,9 @@ HRESULT CEffectData_Manager::Load_AllData()
         if (entry.path().extension() == ".json")
         {
             string FullPath = entry.path().string();
-            wstring Name = entry.path().stem().wstring();
+
+            string FileNameS = entry.path().stem().string();
+            wstring FileNameW = entry.path().stem().wstring();
 
             ifstream file(FullPath);
             json jEffectData = json::parse(file);
@@ -74,14 +99,28 @@ HRESULT CEffectData_Manager::Load_AllData()
             EffectData* Data = nullptr;
 
             //타입에따라 new
-            string Type = jEffectData["DataName"];
+            string strType = "Mesh";
+            EFFECT_DESC_TYPE eType = EFFECT_DESC_TYPE::MESH;
 
-            if (Type == "MESH")
-                Data = new MeshData();
+            if (jEffectData.contains("Type"))
+            {
+                strType = jEffectData["Type"].get<string>();
+            }
+
+            if (strType == "Mesh")
+            {
+                Data = new MeshEffectData();
+                eType= EFFECT_DESC_TYPE::MESH;
+            }
 
             else
-                Data= new ParticleData();
-         
+            {
+                Data = new ParticleData();
+                eType = EFFECT_DESC_TYPE::PARTICLE;
+            }
+
+            Data->eType = eType;
+
             Data->vColor.x= jEffectData["Color"][0].get<float>();
             Data->vColor.y = jEffectData["Color"][1].get<float>();
             Data->vColor.z = jEffectData["Color"][2].get<float>();
@@ -111,16 +150,31 @@ HRESULT CEffectData_Manager::Load_AllData()
             Data->InitScale.z = jEffectData["Scale"][2].get<float>();
             Data->InitScale.w = jEffectData["Scale"][3].get<float>();
 
-            Data->fIntensity = jEffectData["fIntensity"].get<float>();
+            if (jEffectData.contains("fIntensity"))
+                Data->fIntensity = jEffectData["fIntensity"].get<float>();
 
-           if(Data->eType==EFFECT_DESC_TYPE::MESH)
+            else
+                Data->fIntensity = 1.f;
+
+            //없으면 파일명사용
+            if (jEffectData.contains("DataName"))
+            {
+                Data->DataName = jEffectData["DataName"].get<string>();
+            }
+            else
+            {
+                // [정답] 기존 파일은 파일명을 이름으로 사용
+                Data->DataName = FileNameS;
+            }
+
+           if(eType==EFFECT_DESC_TYPE::MESH)
                 Load_To_Json_Mesh(jEffectData, Data);
 
            else
                Load_To_Json_Particle(jEffectData, Data);
 
             
-            stringID ID = stringID(Name);
+            stringID ID = stringID(FileNameW);
             m_Datas.emplace(ID.m_Hash, Data);
         }
     }
@@ -129,32 +183,55 @@ HRESULT CEffectData_Manager::Load_AllData()
 
 HRESULT CEffectData_Manager::Load_To_Json_Mesh(json& Json, EffectData* Data)
 {
-    MeshData* pDesc = static_cast<MeshData*>(Data);
+    MeshEffectData* pDesc = static_cast<MeshEffectData*>(Data);
+
+    if (Json.contains("TargetScale"))
+    {
+        pDesc->TargetScale.x = Json["TargetScale"][0].get<float>();
+        pDesc->TargetScale.y = Json["TargetScale"][1].get<float>();
+        pDesc->TargetScale.z = Json["TargetScale"][2].get<float>();
+        pDesc->TargetScale.w = Json["TargetScale"][3].get<float>();
+
+        pDesc->fScaleSpeed = Json["fScaleSpeed"].get<float>();
+    }
+	
+    if (Json.contains("vRotationAxis"))
+    {
+        pDesc->vRotationAxis.x = Json["vRotationAxis"][0].get<float>();
+        pDesc->vRotationAxis.y = Json["vRotationAxis"][1].get<float>();
+        pDesc->vRotationAxis.z = Json["vRotationAxis"][2].get<float>();
+        pDesc->vRotationAxis.w = Json["vRotationAxis"][3].get<float>();
+        pDesc->fRotationSpeed = Json["fRotationSpeed"].get<float>();
+    }
+
+    if (Json.contains("vMoveDir"))
+    {
+        pDesc->vMoveDir.x = Json["vMoveDir"][0].get<float>();
+        pDesc->vMoveDir.y = Json["vMoveDir"][1].get<float>();
+        pDesc->vMoveDir.z = Json["vMoveDir"][2].get<float>();
+        pDesc->vMoveDir.w = Json["vMoveDir"][3].get<float>();
+        pDesc->fMoveSpeed = Json["fMoveSpeed"].get<float>();
 
 
-	pDesc->TargetScale.x = Json["TargetScale"][0].get<float>();
-	pDesc->TargetScale.y = Json["TargetScale"][1].get<float>();
-	pDesc->TargetScale.z = Json["TargetScale"][2].get<float>();
-	pDesc->TargetScale.w = Json["TargetScale"][3].get<float>();
+    }
+	
+    if (Json.contains("bUseScaleAnim"))
+    {
+        pDesc->bUseScaleAnim = Json["bUseScaleAnim"].get<bool>();
+    }
 
-	pDesc->fScaleSpeed = Json["fScaleSpeed"].get<float>();
+    if (Json.contains("bUseRotationAnim"))
+    {
+        pDesc->bUseRotationAnim = Json["bUseRotationAnim"].get<bool>();
 
-	pDesc->vRotationAxis.x = Json["vRotationAxis"][0].get<float>();
-	pDesc->vRotationAxis.y = Json["vRotationAxis"][1].get<float>();
-	pDesc->vRotationAxis.z = Json["vRotationAxis"][2].get<float>();
-	pDesc->vRotationAxis.w = Json["vRotationAxis"][3].get<float>();
-	pDesc->fRotationSpeed = Json["fRotationSpeed"].get<float>();
+    }
 
-	pDesc->vMoveDir.x = Json["vMoveDir"][0].get<float>();
-	pDesc->vMoveDir.y = Json["vMoveDir"][1].get<float>();
-	pDesc->vMoveDir.z = Json["vMoveDir"][2].get<float>();
-	pDesc->vMoveDir.w = Json["vMoveDir"][3].get<float>();
-	pDesc->fMoveSpeed = Json["fMoveSpeed"].get<float>();
+    if (Json.contains("bUseMoveAnim"))
+    {
+        pDesc->bUseMoveAnim= Json["bUseMoveAnim"].get<bool>();
 
+    }
 
-	pDesc->bUseScaleAnim = Json["bUseScaleAnim"].get<bool>();
-	pDesc->bUseRotationAnim = Json["bUseRotationAnim"].get<bool>();
-	pDesc->bUseMoveAnim = Json["bUseMoveAnim"].get<bool>();
 
 
 
@@ -170,7 +247,7 @@ HRESULT CEffectData_Manager::Load_To_Json_Particle(json& Json, EffectData* Data)
     return S_OK;
 }
 
-HRESULT CEffectData_Manager::Save_To_Json(wstring& ModelName, EffectData Data)
+HRESULT CEffectData_Manager::Save_To_Json(wstring& ModelName, EffectData* Data)
 {
     json jMeta;
 
@@ -178,7 +255,7 @@ HRESULT CEffectData_Manager::Save_To_Json(wstring& ModelName, EffectData Data)
     jMeta["DataName"] = strModelName;
 
     string Type;
-    switch (Data.eType)
+    switch (Data->eType)
     {
     case EFFECT_DESC_TYPE::MESH:
         Type = "Mesh";
@@ -191,44 +268,44 @@ HRESULT CEffectData_Manager::Save_To_Json(wstring& ModelName, EffectData Data)
     jMeta["Type"] = Type;
 
     json Color = json::array();
-    Color.push_back(Data.vColor.x);
-    Color.push_back(Data.vColor.y);
-    Color.push_back(Data.vColor.z);
-    Color.push_back(Data.vColor.w);
+    Color.push_back(Data->vColor.x);
+    Color.push_back(Data->vColor.y);
+    Color.push_back(Data->vColor.z);
+    Color.push_back(Data->vColor.w);
     jMeta["Color"] = Color;
 
 
-    jMeta["LifeTime"] = Data.fLifeTime;
+    jMeta["LifeTime"] = Data->fLifeTime;
 
-    jMeta["Speed"] = Data.fSpeed;
-    jMeta["Loop"] = Data.m_bLoop;
+    jMeta["Speed"] = Data->fSpeed;
+    jMeta["Loop"] = Data->m_bLoop;
 
     json OffSet = json::array();
-    OffSet.push_back(Data.InitOffSet.x);
-    OffSet.push_back(Data.InitOffSet.y);
-    OffSet.push_back(Data.InitOffSet.z);
-    OffSet.push_back(Data.InitOffSet.w);
+    OffSet.push_back(Data->InitOffSet.x);
+    OffSet.push_back(Data->InitOffSet.y);
+    OffSet.push_back(Data->InitOffSet.z);
+    OffSet.push_back(Data->InitOffSet.w);
     jMeta["OffSet"] = OffSet;
 
 
     json Rotation = json::array();
-    Rotation.push_back(Data.InitRotation.x);
-    Rotation.push_back(Data.InitRotation.y);
-    Rotation.push_back(Data.InitRotation.z);
-    Rotation.push_back(Data.InitRotation.w);
+    Rotation.push_back(Data->InitRotation.x);
+    Rotation.push_back(Data->InitRotation.y);
+    Rotation.push_back(Data->InitRotation.z);
+    Rotation.push_back(Data->InitRotation.w);
     jMeta["Rotation"] = Rotation;
 
     json Scale = json::array();
-    Scale.push_back(Data.InitScale.x);
-    Scale.push_back(Data.InitScale.y);
-    Scale.push_back(Data.InitScale.z);
-    Scale.push_back(Data.InitScale.w);
+    Scale.push_back(Data->InitScale.x);
+    Scale.push_back(Data->InitScale.y);
+    Scale.push_back(Data->InitScale.z);
+    Scale.push_back(Data->InitScale.w);
     jMeta["Scale"] = Scale;
-    jMeta["fIntensity"] = Data.fIntensity;
+    jMeta["fIntensity"] = Data->fIntensity;
 
     //타입에 따른 저장방식 변경
 
-    if (Data.eType == EFFECT_DESC_TYPE::MESH)
+    if (Data->eType == EFFECT_DESC_TYPE::MESH)
         Save_To_Json_Mesh(jMeta, Data);
 
     else
@@ -243,11 +320,11 @@ HRESULT CEffectData_Manager::Save_To_Json(wstring& ModelName, EffectData Data)
     return S_OK;
 }
 
-HRESULT CEffectData_Manager::Save_To_Json_Mesh(json& Json,EffectData Data)
+HRESULT CEffectData_Manager::Save_To_Json_Mesh(json& Json,EffectData* Data)
 {
     /////////메쉬자체의 애니값///////
     ///////Scale//////////
-    MeshData* pMeshData = static_cast<MeshData*>(&Data);
+    MeshEffectData* pMeshData = static_cast<MeshEffectData*>(Data);
 
     Json["bUseScaleAnim"] = pMeshData->bUseScaleAnim;
 
@@ -285,11 +362,11 @@ HRESULT CEffectData_Manager::Save_To_Json_Mesh(json& Json,EffectData Data)
     return S_OK;
 }
 
-HRESULT CEffectData_Manager::Save_To_Json_Particle(json& Json,EffectData Data)
+HRESULT CEffectData_Manager::Save_To_Json_Particle(json& Json,EffectData* Data)
 {
     /////////메쉬자체의 애니값///////
    ///////Scale//////////
-    ParticleData* pParticleData = static_cast<ParticleData*>(&Data);
+    ParticleData* pParticleData = static_cast<ParticleData*>(Data);
 
     Json["NumInstance"] = pParticleData->iNumInstance;
 
@@ -330,7 +407,7 @@ void CEffectData_Manager::Free()
         {
             wstring DataName = StringToWString(pData.second->DataName);
 
-            Save_To_Json(DataName, *pData.second);
+            Save_To_Json(DataName, pData.second);
             Safe_Delete(pData.second);;
 
         }

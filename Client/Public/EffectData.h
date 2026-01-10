@@ -3,6 +3,7 @@
 
 enum class EFFECT_DESC_TYPE{MESH,PARTICLE,END};
 
+enum class EFFECT_TEXTYPE{DIFFUSE,NOISE,ALPHAMASK,END};
 //공통데이터
 struct EffectData
 {
@@ -24,9 +25,9 @@ struct EffectData
     _bool   m_bLoop = false;
 
 };
-struct MeshData :public EffectData
+struct MeshEffectData :public EffectData
 {
-    MeshData() { eType == EFFECT_DESC_TYPE::MESH; }
+    MeshEffectData() { eType = EFFECT_DESC_TYPE::MESH; }
     //16바이트
     _float4 TargetScale = { 1.f, 1.f, 1.f, 1.f };
     _float4 vRotationAxis = { 0.f, 0.f, 1.f, 1.f };
@@ -54,10 +55,22 @@ struct ParticleData :public EffectData
 
     _uint   iNumInstance = 10;
     _float3 vRange = { 1.f, 1.f, 1.f };
-    _float2 vSizeRange = { 0.1f, 0.5f };   // Min, Max
+    
+    //안쓰고싶으면 start와 end를 같은갑승로 넣는다.
+    //기존:_float2 vSizeRange = { 0.1f, 0.5f };   // Min, Max
+
+    _float2 vSizeRange_Start = { 0.1f,0.3f };//생성될 때 크기 (Min, Max)
+    _float2 vSizeRange = { 0.5f, 0.8f };   // 죽을 때 크기 (Min, Max)
+
+
     _float2 vSpeedRange = { 1.f, 5.f };    // Min, Max
     _float2 vLifeTimeRange = { 1.f, 2.f }; // Min, Max
     _float  fGravity = 0.f;
+
+
+    //0:Diffuse
+    //
+    wstring TexKey[ENUM_TO_UINT(EFFECT_TEXTYPE::END)] = {};
 
 };
 

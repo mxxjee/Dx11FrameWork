@@ -5,6 +5,7 @@
         0.0,
         1.0
     ],
+    "DataName": "HitFlash",
     "LifeTime": 0.0,
     "Loop": false,
     "OffSet": [
@@ -32,10 +33,11 @@
         0.009999999776482582,
         1.0
     ],
+    "Type": "Mesh",
     "bUseMoveAnim": false,
     "bUseRotationAnim": false,
     "bUseScaleAnim": false,
-    "fIntensity": 2.0,
+    "fIntensity": 1.0,
     "fMoveSpeed": 0.0,
     "fRotationSpeed": 0.0,
     "fScaleSpeed": 5.0,

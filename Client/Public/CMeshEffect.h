@@ -77,7 +77,7 @@ public:
 protected:
     _uint                   m_eRenderGroup = 0;
     string                  m_PassName = "";
-    
+    MeshEffectData          m_LocalData;
 
 public:
     float                   m_fTime = 0.f;

@@ -200,13 +200,13 @@ void CMeshEffect_HitSpark::Render_DebugImgui()
 {
 	if (ImGui::ColorEdit4("Color", (float*)&m_LocalData.vColor))
 	{
-		m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+		m_pEffectData_Manager->Update_Data(m_DataName, static_cast<MeshEffectData*>(&m_LocalData));
 		Make_LocalMatrix();
 	}
 
 	if (ImGui::DragFloat("Itensity", (float*)&m_LocalData.fIntensity))
 	{
-		m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+		m_pEffectData_Manager->Update_Data(m_DataName, static_cast<MeshEffectData*>(&m_LocalData));
 
 	}
 
@@ -214,21 +214,21 @@ void CMeshEffect_HitSpark::Render_DebugImgui()
 	//파츠의 스케일지정
 	if (ImGui::DragFloat4("InitOffSet", (float*)&m_LocalData.InitOffSet))
 	{
-		m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+		m_pEffectData_Manager->Update_Data(m_DataName, static_cast<MeshEffectData*>(&m_LocalData));
 		Make_LocalMatrix();
 	}
 
 
 	if (ImGui::Checkbox("Loop", (bool*)&m_LocalData.m_bLoop))
 	{
-		m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+		m_pEffectData_Manager->Update_Data(m_DataName, static_cast<MeshEffectData*>(&m_LocalData));
 
 	}
 
 
 	if (ImGui::DragFloat("LifeTime", (float*)&m_LocalData.fLifeTime))
 	{
-		m_pEffectData_Manager->Update_Data(m_DataName, m_LocalData);
+		m_pEffectData_Manager->Update_Data(m_DataName, static_cast<MeshEffectData*>(&m_LocalData));
 
 	}
 
@@ -242,7 +242,7 @@ void CMeshEffect_HitSpark::Render_DebugImgui()
 
 	if (ImGui::Button("Save"))
 	{
-		m_pEffectData_Manager->Save_To_Json(m_DataName, m_LocalData);
+		m_pEffectData_Manager->Save_To_Json(m_DataName, static_cast<MeshEffectData*>(&m_LocalData));
 
 
 	}

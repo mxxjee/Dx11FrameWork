@@ -23,9 +23,9 @@ private:
 public:
     //데이터 로드
     HRESULT         Initialize();
-    void            Register_Data(wstring& ModelName, EffectData& Data);
+    void            Register_Data(wstring& ModelName, EffectData* Data);
 
-    void            Update_Data(wstring& ModelName, EffectData& Data);//Info,json 파일 갱신
+    void            Update_Data(wstring& ModelName, EffectData* Data);//Info,json 파일 갱신
     
     EffectData*     Find_Data(wstring ModelName);
 
@@ -34,10 +34,10 @@ public:
     HRESULT         Load_To_Json_Particle(json& Json, EffectData* Data);
 
 
-    HRESULT             Save_To_Json(wstring& ModelName, EffectData Data);
+    HRESULT             Save_To_Json(wstring& ModelName, EffectData* Data);
 
-    HRESULT             Save_To_Json_Mesh(json& Json,EffectData Data);
-    HRESULT             Save_To_Json_Particle(json& Json,EffectData Data);
+    HRESULT             Save_To_Json_Mesh(json& Json,EffectData* Data);
+    HRESULT             Save_To_Json_Particle(json& Json,EffectData* Data);
 
 
 protected:

@@ -1,15 +1,16 @@
 {
     "Color": [
-        0.36274510622024536,
-        0.7201079726219177,
+        0.0,
+        0.5607843399047852,
         1.0,
-        0.4274509847164154
+        1.0
     ],
+    "DataName": "ring_01",
     "LifeTime": 0.05000000074505806,
     "Loop": false,
     "OffSet": [
         0.0,
-        0.4000000059604645,
+        0.5,
         -0.20000000298023224,
         1.0
     ],
@@ -32,10 +33,11 @@
         1.2000000476837158,
         1.0
     ],
+    "Type": "Mesh",
     "bUseMoveAnim": false,
     "bUseRotationAnim": false,
     "bUseScaleAnim": true,
-    "fIntensity": 1.0,
+    "fIntensity": 50.0,
     "fMoveSpeed": 0.0,
     "fRotationSpeed": 0.0,
     "fScaleSpeed": 5.0,

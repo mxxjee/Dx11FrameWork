@@ -5,6 +5,7 @@
         0.0,
         1.0
     ],
+    "DataName": "HitSpark",
     "LifeTime": 0.019999999552965164,
     "Loop": false,
     "OffSet": [
@@ -32,10 +33,11 @@
         1.0,
         1.0
     ],
+    "Type": "Mesh",
     "bUseMoveAnim": false,
     "bUseRotationAnim": false,
     "bUseScaleAnim": false,
-    "fIntensity": 5.0,
+    "fIntensity": 1.0,
     "fMoveSpeed": 0.0,
     "fRotationSpeed": 0.0,
     "fScaleSpeed": 1.0,

@@ -88,6 +88,8 @@ private:
     CTexture* m_pTexture = nullptr;
 
 
+    MeshEffectData m_LocalData;
+
 
 };
 

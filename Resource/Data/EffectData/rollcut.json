@@ -5,6 +5,7 @@
         0.003921568859368563,
         0.5568627715110779
     ],
+    "DataName": "rollcut",
     "LifeTime": 0.20000000298023224,
     "Loop": false,
     "OffSet": [
@@ -32,6 +33,7 @@
         0.0,
         1.0
     ],
+    "Type": "Mesh",
     "bUseMoveAnim": false,
     "bUseRotationAnim": false,
     "bUseScaleAnim": false,

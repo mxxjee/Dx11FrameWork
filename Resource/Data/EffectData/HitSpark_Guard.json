@@ -5,6 +5,7 @@
         1.0,
         1.0
     ],
+    "DataName": "HitSpark_Guard",
     "LifeTime": 0.009999999776482582,
     "Loop": false,
     "OffSet": [
@@ -32,6 +33,7 @@
         1.0,
         1.0
     ],
+    "Type": "Mesh",
     "bUseMoveAnim": false,
     "bUseRotationAnim": false,
     "bUseScaleAnim": false,

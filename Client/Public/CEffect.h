@@ -56,7 +56,7 @@ public:
     _uint       Get_SceneID() { return m_iSceneID; }
 
 public:
-    const EffectData* Get_EffectData() { return &m_LocalData; }
+    virtual const EffectData* Get_EffectData() { return m_pDataRef; }
 
 public:
 
@@ -65,7 +65,7 @@ public:
     virtual void     Stop();
     virtual void     Free() override;
 protected:
-    EffectData              m_LocalData;
+    EffectData*         m_pDataRef=nullptr;
     CEffectData_Manager* m_pEffectData_Manager = nullptr;
     CEffectPoolManager* m_pEffectPool_Manager = nullptr;
 

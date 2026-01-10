@@ -24,13 +24,13 @@ void CTrailEffect::Render_DebugImgui()
     __super::Render_DebugImgui();
     if (ImGui::ColorEdit4("Color", (float*)&m_LocalData.vColor))
     {
-        m_pEffectData_Manager->Update_Data(tag, m_LocalData);
+        m_pEffectData_Manager->Update_Data(tag, static_cast<MeshEffectData*>(&m_LocalData));
 
     }
 
     if (ImGui::DragFloat4("InitOffSet", (float*)&m_LocalData.InitOffSet))
     {
-        m_pEffectData_Manager->Update_Data(tag, m_LocalData);
+        m_pEffectData_Manager->Update_Data(tag, static_cast<MeshEffectData*>(&m_LocalData));
         m_pTransformCom->Set_State(STATE::POSITION,
             m_LocalData.InitOffSet);
         //Update_Matrix();
@@ -38,7 +38,7 @@ void CTrailEffect::Render_DebugImgui()
 
     if (ImGui::DragFloat4("InitRotation", (float*)&m_LocalData.InitRotation))
     {
-        m_pEffectData_Manager->Update_Data(tag, m_LocalData);
+        m_pEffectData_Manager->Update_Data(tag, static_cast<MeshEffectData*>(&m_LocalData));
         m_pTransformCom->Rotation(
             _float3(m_LocalData.InitRotation.x,
                 m_LocalData.InitRotation.y,
@@ -48,26 +48,26 @@ void CTrailEffect::Render_DebugImgui()
 
     if (ImGui::DragFloat4("InitScale", (float*)&m_LocalData.InitScale))
     {
-        m_pEffectData_Manager->Update_Data(tag, m_LocalData);
+        m_pEffectData_Manager->Update_Data(tag, static_cast<MeshEffectData*>(&m_LocalData));
         m_pTransformCom->Set_Scale(m_LocalData.InitScale);
         // Update_Matrix();
     }
 
     if (ImGui::DragFloat("LifeTime", (float*)&m_LocalData.fLifeTime))
     {
-        m_pEffectData_Manager->Update_Data(tag, m_LocalData);
+        m_pEffectData_Manager->Update_Data(tag, static_cast<MeshEffectData*>(&m_LocalData));
 
     }
 
     if (ImGui::DragFloat("Speed", (float*)&m_LocalData.fSpeed))
     {
-        m_pEffectData_Manager->Update_Data(tag, m_LocalData);
+        m_pEffectData_Manager->Update_Data(tag, static_cast<MeshEffectData*>(&m_LocalData));
 
     }
 
     if (ImGui::Checkbox("Loop", (bool*)&m_LocalData.m_bLoop))
     {
-        m_pEffectData_Manager->Update_Data(tag, m_LocalData);
+        m_pEffectData_Manager->Update_Data(tag, static_cast<MeshEffectData*>(&m_LocalData));
 
     }
 
@@ -83,7 +83,7 @@ void CTrailEffect::Render_DebugImgui()
 
     if (ImGui::Button("Save"))
     {
-        m_pEffectData_Manager->Save_To_Json(tag, m_LocalData);
+        m_pEffectData_Manager->Save_To_Json(tag, m_pDataRef);
 
 
     }
@@ -128,7 +128,7 @@ HRESULT CTrailEffect::Initialize_Copytype(void* pArg)
     EffectData* pData = m_pEffectData_Manager->Find_Data(pDesc->ObjTag);
     if (pData)
     {
-        m_LocalData = *pData;
+        m_LocalData = *(static_cast<MeshEffectData*>(pData));
         m_pTransformCom->Rotation(_float3(m_LocalData.InitRotation.x, m_LocalData.InitRotation.y, m_LocalData.InitRotation.z));
         m_pTransformCom->Set_Scale(m_LocalData.InitScale);
 
@@ -140,6 +140,13 @@ HRESULT CTrailEffect::Initialize_Copytype(void* pArg)
     }
 
     m_pTexture = m_pGameInstance->Find_Texture(L"slash_02");
+    m_pDataRef = &m_LocalData;
+
+    CurrentScale = m_pDataRef->InitScale;
+    CurrentMove = m_pDataRef->InitOffSet;
+    Make_LocalMatrix();
+
+
     return S_OK;
 }
 
