@@ -16,7 +16,7 @@ public:
     typedef struct tagVIBuffer_Particle_Desc
     {
         _uint       iNumInstance = {};      //생성할 입자개수
-        _float2     vSize = {};     //입자크기(x,y)
+        _float2     vSize = {};     //입자크기(x,y)(min,max)
         _float3     vCenter = {};       //파티클이 시작할 센터(로컬)
         _float3     vRange = {};    //파티클 움직일 범위
         _float2     vSpeed = {};    //파티클 움직이리 속도

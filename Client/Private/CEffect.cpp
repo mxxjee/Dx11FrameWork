@@ -147,7 +147,6 @@ void CEffect::Update_Priority(_float fTimeDelta)
 void CEffect::Update(_float fTimeDelta)
 {
     CheckTrue(m_bStop);
-
 	__super::Update(fTimeDelta);
 
     bool m_bAnimated = m_LocalData.bUseMoveAnim || m_LocalData.bUseScaleAnim || m_LocalData.bUseRotationAnim;

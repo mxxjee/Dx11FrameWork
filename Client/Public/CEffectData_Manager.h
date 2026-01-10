@@ -30,8 +30,14 @@ public:
     EffectData*     Find_Data(wstring ModelName);
 
     HRESULT         Load_AllData();
+    HRESULT         Load_To_Json_Mesh(json& Json, EffectData* Data);
+    HRESULT         Load_To_Json_Particle(json& Json, EffectData* Data);
+
 
     HRESULT             Save_To_Json(wstring& ModelName, EffectData Data);
+
+    HRESULT             Save_To_Json_Mesh(json& Json,EffectData Data);
+    HRESULT             Save_To_Json_Particle(json& Json,EffectData Data);
 
 
 protected:
