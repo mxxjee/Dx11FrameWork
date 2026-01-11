@@ -84,7 +84,8 @@ struct ParticleEffetData :public EffectData
     //0:Diffuse
     //
     wstring TexKey[ENUM_TO_UINT(EFFECT_TEXTYPE::END)] = {L"Default",L"Default",L"Default"};
-
+    bool    bLinearSpawn = true;//true면 순차생성, false면 한번에생성
+    _float fSpawnDuration = 1.0f;//전체 파티클이 생성되는데 걸리는시간
 };
 
 

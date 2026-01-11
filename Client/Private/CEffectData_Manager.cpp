@@ -399,7 +399,17 @@ HRESULT CEffectData_Manager::Load_To_Json_Particle(json& Json, EffectData* Data)
 
     }
 
+    if (Json.contains("bLinearSpawn"))
+    {
+        pDesc->bLinearSpawn = Json["bLinearSpawn"].get<bool>();
 
+    }
+
+    if (Json.contains("fSpawnDuration"))
+    {
+        pDesc->fSpawnDuration = Json["fSpawnDuration"].get<float>();
+
+    }
     return S_OK;
 }
 
@@ -594,6 +604,9 @@ HRESULT CEffectData_Manager::Save_To_Json_Particle(json& Json,EffectData* Data)
     Json["DIFFUSE"] = WStringToUTF8(pParticleData->TexKey[0]);
     Json["NOISE"] = WStringToUTF8(pParticleData->TexKey[1]);
     Json["ALPHAMASK"] = WStringToUTF8(pParticleData->TexKey[2]);
+
+    Json["bLinearSpawn"] = pParticleData->bLinearSpawn;
+    Json["fSpawnDuration"] = pParticleData->fSpawnDuration;
 
     return S_OK;
 }

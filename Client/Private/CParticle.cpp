@@ -85,6 +85,15 @@ HRESULT CParticle::Initialize_Copytype(void* pArg)
 	//모든 이펙트 입자 초기화
 	Reset_All_Particles();
 
+
+	//패스이름목록 표시하기위해
+	if (m_pShader)
+	{
+		for (auto& pInfo : m_pShader->Get_ShaderInfo().m_pPassInfos)
+			passNames.push_back(pInfo.first);
+
+	}
+
 	return S_OK;
 }
 
@@ -100,6 +109,8 @@ void CParticle::Update(_float fTimeDelta)
 	vector<VTXPARTICLE> vInstanceData;
 	vInstanceData.reserve(m_ParticlePool.size());
 
+	m_fProgress += fTimeDelta * m_pParticleData->fSpeed;
+
 	for (auto& particle : m_ParticlePool)
 	{
 		//리스폰체크
@@ -107,8 +118,6 @@ void CParticle::Update(_float fTimeDelta)
 		{
 			if (m_pParticleData->m_bLoop)
 				Reset_Single_Particle(particle);
-			else
-				continue;
 
 		}
 
@@ -117,6 +126,14 @@ void CParticle::Update(_float fTimeDelta)
 		{
 			//라이프타임계산
 			particle.fAge += fTimeDelta;
+			if (particle.fAge < 0.f)
+			{
+				// 아직 태어날 시간이 안 됨.
+				// 화면엔 안 그리지만,객체는 살려둠
+				bIsAnyAlive = true;
+				continue; // 아래의 Lerp 계산이나 push_back을 건너뜀!
+			}
+
 			if (particle.fAge >= particle.fLifeTime)
 			{
 				particle.bAlive = false;
@@ -176,9 +193,12 @@ void CParticle::Update(_float fTimeDelta)
 			tInstance.vUV_Info = vUV_Info;
 			tInstance.vLifeTime = _float2(particle.fAge, particle.fLifeTime);
 
-			vInstanceData.push_back(tInstance);
+			if(particle.fAge>=0.0f)
+				vInstanceData.push_back(tInstance);
 
 		}
+
+	
 	}
 
 	//버퍼에갱신
@@ -270,49 +290,67 @@ void CParticle::Reset_All_Particles()
 
 	_float fInterval = 0.f;
 	if (m_pParticleData->iNumInstance > 1)
-		fInterval = m_pParticleData->vLifeTimeRange.y / (_float)m_pParticleData->iNumInstance;
-
+	{
+		// Duration이 0이면 아주 작은 값을 넣어서 0 나누기 방지
+		_float fDuration = max(m_pParticleData->fSpawnDuration, 0.001f);
+		fInterval = m_pParticleData->fSpawnDuration / (_float)m_pParticleData->iNumInstance;
+	}
+		
 	CGameInstance* pInst = m_pGameInstance;
 
 	//전체리셋(폭발형이면 모두 Alive=true, 지속형이면 Alive=false 후 순차생성)
-	for (auto& particle : m_ParticlePool)
+	for (size_t i=0;i<m_ParticlePool.size();++i)
 	{
 		// 1. 기본값 리셋 (위치=Center, 나이=0)
-		Reset_Single_Particle(particle);
-		particle.bAlive = true;
+		Reset_Single_Particle(m_ParticlePool[i]);
+		m_ParticlePool[i].bAlive = true;
 
 		if (m_pParticleData->m_bLoop)
 		{
-			// 수명의 0% ~ 90% 사이 랜덤 시간만큼 이미 지났다고 가정
-			_float fSafeLifeTime = particle.fLifeTime * 0.9f;
+			_float fSafeLifeTime = m_ParticlePool[i].fLifeTime * 0.9f;
 			_float fRandomAge = pInst->Random(0.f, fSafeLifeTime);
 
-			// 나이 적용
-			particle.fAge = fRandomAge;
-
+			m_ParticlePool[i].fAge = fRandomAge;
+	
+			
 			// 그 시간만큼 물리 이동 시뮬레이션
-			_vector vPos = XMLoadFloat3(&particle.vPos);
-			_vector vDir = XMLoadFloat3(&particle.vDir);
+			_vector vPos = XMLoadFloat3(&m_ParticlePool[i].vPos);
+			_vector vDir = XMLoadFloat3(&m_ParticlePool[i].vDir);
 			_vector vGravity = XMVectorSet(0.f, m_pParticleData->fGravity, 0.f, 0.f);
 
 			// 현재위치 += (방향 * 속도 * 시간) + (중력 * 시간)
-			vPos += (vDir * particle.fSpeed * fRandomAge) + (vGravity * fRandomAge);
+			vPos += (vDir * m_ParticlePool[i].fSpeed * fRandomAge) + (vGravity * fRandomAge);
 
 			// 회전도 미리 적용
-			particle.fRotation += particle.fRotationSpeed * fRandomAge;
+			m_ParticlePool[i].fRotation += m_ParticlePool[i].fRotationSpeed * fRandomAge;
 
-			XMStoreFloat3(&particle.vPos, vPos);
+			XMStoreFloat3(&m_ParticlePool[i].vPos, vPos);
 		}
 
+		else
+		{
+			if (!m_pParticleData->bLinearSpawn)
+			{
+				m_ParticlePool[i].fAge = 0.f;
+			}
+
+			else
+			{
+				m_ParticlePool[i].fAge = -1.f * (i * fInterval);
+				if (m_ParticlePool[i].fAge < 0.0f)
+					continue;
+
+			}
+		}
 		// 초기 데이터 강제 생성 (첫 프레임 렌더링용)
 
 
 		// 진행률 계산
-		_float fLifeRatio = (particle.fLifeTime > 0.f) ? (particle.fAge / particle.fLifeTime) : 0.f;
+		_float fLifeRatio = (m_ParticlePool[i].fLifeTime > 0.f) ? (m_ParticlePool[i].fAge / m_ParticlePool[i].fLifeTime) : 0.f;
 
 		// 크기 보간
 		_float2 vCurSize;
-		XMStoreFloat2(&vCurSize, XMVectorLerp(XMLoadFloat2(&particle.vSizeStart), XMLoadFloat2(&particle.vSizeEnd), fLifeRatio));
+		XMStoreFloat2(&vCurSize, XMVectorLerp(XMLoadFloat2(&m_ParticlePool[i].vSizeStart), XMLoadFloat2(&m_ParticlePool[i].vSizeEnd), fLifeRatio));
 
 		// 색상 보간
 		_float4 vCurColor;
@@ -336,7 +374,7 @@ void CParticle::Reset_All_Particles()
 		}
 
 		// 행렬 계산 (순수 로컬)
-		_matrix LocalMatrix = XMMatrixScaling(vCurSize.x, vCurSize.y, 1.f) * XMMatrixRotationZ(particle.fRotation) * XMMatrixTranslation(particle.vPos.x, particle.vPos.y, particle.vPos.z);
+		_matrix LocalMatrix = XMMatrixScaling(vCurSize.x, vCurSize.y, 1.f) * XMMatrixRotationZ(m_ParticlePool[i].fRotation) * XMMatrixTranslation(m_ParticlePool[i].vPos.x, m_ParticlePool[i].vPos.y, m_ParticlePool[i].vPos.z);
 
 		// 인스턴스 데이터 생성 및 삽입
 		VTXPARTICLE tInstance;
@@ -346,10 +384,11 @@ void CParticle::Reset_All_Particles()
 		XMStoreFloat4(&tInstance.vTranslation, LocalMatrix.r[3]);
 		tInstance.vColor = vCurColor;
 		tInstance.vUV_Info = vUV_Info;
-		tInstance.vLifeTime = _float2(particle.fAge, particle.fLifeTime);
+		tInstance.vLifeTime = _float2(m_ParticlePool[i].fAge, m_ParticlePool[i].fLifeTime);
 
 		// [핵심] 여기서 데이터를 넣어줘야 Update_Buffer가 의미가 있습니다.
-		vInstanceData.push_back(tInstance);
+		if(m_ParticlePool[i].fAge>=0.f)
+			vInstanceData.push_back(tInstance);
 	}
 
 	// 3. 강제 업로드 (이제 데이터가 들어있으므로 정상 작동)
@@ -479,6 +518,30 @@ void CParticle::Render_TextureList()
 	}
 }
 
+void CParticle::Render_Passes()
+{
+	if (ImGui::BeginCombo("Shader Pass", m_PassName.c_str()))
+	{
+		for (int n = 0; n < passNames.size(); n++)
+		{
+			// 현재 이 항목이 선택되어 있는지 체크
+			bool is_selected = (m_PassName == passNames[n]);
+
+			if (ImGui::Selectable(passNames[n].c_str(), is_selected))
+			{
+				// [클릭 시 실행] 값 변경
+				m_PassName = passNames[n];
+				m_bNeedToReset = true;
+			}
+
+			// 선택된 항목에 포커스 맞추기 (ImGui 국룰)
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+}
+
 CParticle* CParticle::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
 {
 	CParticle* pInstance = new CParticle(pDevice, pContext);
@@ -524,6 +587,8 @@ void CParticle::Play()
 
 	// 다시 처음부터 재생
 	Reset_All_Particles();
+	m_fProgress = 0.f;
+
 }
 
 void CParticle::Stop()
@@ -573,6 +638,12 @@ void CParticle::Render_DebugImgui()
 		//Update_Matrix();
 	}
 
+	if (ImGui::DragFloat("Spped", (float*)&m_pDataRef->fSpeed))
+	{
+		m_pEffectData_Manager->Update_Data(m_DataName, m_pDataRef);
+
+	}
+
 	if (ImGui::Checkbox("Loop", (bool*)&m_pDataRef->m_bLoop))
 	{
 		m_pEffectData_Manager->Update_Data(m_DataName, m_pDataRef);
@@ -596,12 +667,34 @@ void CParticle::Render_DebugImgui()
 	//속도,방향
 	if (ImGui::DragFloat2("Speed Range", (float*)&m_pParticleData->vSpeedRange, 0.1f))
 		m_bNeedToReset = true;
+
+	if (ImGui::DragFloat2("Rotation SpeedRange Range", (float*)&m_pParticleData->vRotationSpeedRange, 0.1f))
+		m_bNeedToReset = true;
+
 	if (ImGui::Checkbox("Random Dir", &m_pParticleData->bUseRandomDir))
+		m_bNeedToReset = true;
+
+	if (ImGui::Checkbox("bLinearSpawn", &m_pParticleData->bLinearSpawn))
+		m_bNeedToReset = true;
+
+	if (ImGui::DragFloat("fSpawnDuration", &m_pParticleData->fSpawnDuration))
 		m_bNeedToReset = true;
 
 	if (ImGui::DragFloat2("LifeTime Range", (float*)&m_pParticleData->vLifeTimeRange, 0.1f))
 		m_bNeedToReset = true;
 
+	if (ImGui::Checkbox("bIsSpriteAnim", &m_pParticleData->bIsSpriteAnim))
+		m_bNeedToReset = true;
+
+	if (m_pParticleData->bIsSpriteAnim)
+	{
+		if (ImGui::DragFloat2("Sprite Count", (float*)&m_pParticleData->vSpriteCount, 1.f))
+			m_bNeedToReset = true;
+
+		if (ImGui::DragFloat("Sprite Speed", (float*)&m_pParticleData->vSpriteSpeed, 0.1f))
+			m_bNeedToReset = true;
+
+	}
 	if (!m_pParticleData->bUseRandomDir)
 		if (ImGui::DragFloat3("Fixed Dir", (float*)&m_pParticleData->vMoveDir, 0.01f))
 			m_bNeedToReset = true;
@@ -609,6 +702,11 @@ void CParticle::Render_DebugImgui()
 	//텍스처목록
 	Render_TextureList();
 
+
+	//패스정보
+	Render_Passes();
+
+	
 	if (ImGui::Button("Play"))
 		Play();
 
@@ -623,6 +721,7 @@ void CParticle::Render_DebugImgui()
 		m_pEffectData_Manager->Save_To_Json(m_DataName, m_pDataRef);
 		m_bNeedToReset = true; // 강제 리셋
 	}
+
 
 
 	if (m_bNeedToReset)
@@ -664,6 +763,10 @@ HRESULT CParticle::Bind_ShaderResources()
 		if (FAILED(m_Textures[ENUM_TO_UINT(EFFECT_TEXTYPE::DIFFUSE)]->Bind_ShaderResource(m_pShader, "g_DiffuseTexture", 0)))
 			return E_FAIL;
 
+
+	if (m_Textures[ENUM_TO_UINT(EFFECT_TEXTYPE::NOISE)])
+		if (FAILED(m_Textures[ENUM_TO_UINT(EFFECT_TEXTYPE::NOISE)]->Bind_ShaderResource(m_pShader, "g_NoiseTexture", 0)))
+			return E_FAIL;
 
 	return S_OK;
 }

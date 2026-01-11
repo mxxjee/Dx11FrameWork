@@ -83,6 +83,7 @@ private:
     void    Reset_Single_Particle(PARTICLE_INFO& tParticle); // 개별 입자 리스폰
 
     void        Render_TextureList();
+    void        Render_Passes();
 public:
     static CParticle* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual CGameObject* Clone(void* pArg) override;
@@ -94,6 +95,8 @@ protected:
     bool            m_bNeedToReset = false;
     ParticleEffetData   m_LocalData;
     bool            m_bNew = false;
+
+    vector<string>  passNames;
 };
 NS_END
 
