@@ -107,7 +107,13 @@ HRESULT CEffectData_Manager::Load_AllTexture()
 
 
         }
+
     }
+
+    m_TextureKeyList.push_back(L"Default");
+    CTexture* pTex = m_pGameInstance->Find_Texture(L"Default");
+    if (pTex)
+        m_Textures.push_back(pTex);
 
 
     return S_OK;

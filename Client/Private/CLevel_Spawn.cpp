@@ -442,25 +442,7 @@ void CLevel_Spawn::OnEnter()
 
   
     //파티클테스트
-    CParticle::PARTICLE_DESC Desc;
-    Desc.ProtoName = L"Particle";
-    Desc.DataName = L"Particle_Test";
-    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
-    Desc.passName = "Default";
-    Desc.ShaderName = L"VtxPosParticle";
-    Desc.ObjTag = L"Particle";
-
-    CEffect* pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(Desc.ProtoName, &Desc);
-
-    if (pEffect)
-    {
-     
-        const _float4x4* pPlayerMatrix = m_pPlayer->Get_Transform()->Get_WorldMatrixPtr();
-
-        pEffect->Set_OrigniMatrix(XMLoadFloat4x4(pPlayerMatrix));
-        pEffect->Play();
-    }
-
+    
     return;
 
 

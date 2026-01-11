@@ -9,6 +9,8 @@
 #include "CModel.h"
 
 #include "CInventory_Manager.h"
+#include "CParticle.h"
+#include "CEffectPoolManager.h"
 
 
 
@@ -138,6 +140,9 @@ void CNPC_Witch::Reigster_AnimNotify()
         Event.Name = "Hide_Mushroom"; 
         pAnim->AddNotify(66, Event);
 
+        Event.Name = "Witch_Effect";
+        pAnim->AddNotify(309, Event);
+
         Event.Name = "End_Mix";
         pAnim->AddNotify(426, Event);
 
@@ -171,6 +176,33 @@ void CNPC_Witch::Ready_Events()
             m_pMagicPowder->Set_Active(false);
 
           
+        });
+
+
+    m_pGameInstance->RegisterListners("Witch_Effect", [this](const GameEvent evt)
+        {
+
+            CParticle::PARTICLE_DESC Desc;
+            Desc.ProtoName = L"Particle";
+            Desc.DataName = L"Smoke";
+            Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+            Desc.passName = "Smoke";
+            Desc.ShaderName = L"VtxPosParticle";
+            Desc.ObjTag = L"Smoke";
+
+            CEffect* pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(Desc.ProtoName, &Desc);
+
+            if (pEffect)
+            {
+
+                const _float4x4* Matrix =m_pTransformCom->Get_WorldMatrixPtr();
+
+                pEffect->Set_OrigniMatrix(XMLoadFloat4x4(Matrix));
+                pEffect->Play();
+            }
+
+
+
         });
 
 }

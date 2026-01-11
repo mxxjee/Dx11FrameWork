@@ -7,15 +7,15 @@
         1.0
     ],
     "DIFFUSE": "smoke_00",
-    "DataName": "Particle_Test",
-    "LifeTime": 5.0,
+    "DataName": "Smoke",
+    "LifeTime": 10.0,
     "Loop": false,
-    "NOISE": "fresnel_00",
+    "NOISE": "Default",
     "OffSet": [
         0.0,
-        2.0,
         0.0,
-        1.0
+        0.6000000238418579,
+        0.0
     ],
     "Rotation": [
         0.0,
@@ -29,13 +29,13 @@
         1.0,
         1.0
     ],
-    "Speed": 0.10000000149011612,
+    "Speed": 3.0,
     "Type": "Particle",
     "bIsSpriteAnim": false,
     "bLinearSpawn": true,
     "bUseRandomDir": false,
     "fGravity": 0.0,
-    "fIntensity": 2.0,
+    "fIntensity": 3.0,
     "fSpawnDuration": 0.10000000149011612,
     "iNumInstance": 5,
     "vCenter": [
@@ -50,34 +50,34 @@
         0.0
     ],
     "vLifeTimeRange": [
-        5.0,
-        5.0
+        2.0,
+        4.0
     ],
     "vMoveDir": [
         0.0,
-        0.5,
+        0.10000000149011612,
         0.0
     ],
     "vRange": [
         0.0,
         1.0,
-        1.0
+        0.0
     ],
     "vRotationSpeedRange": [
-        -1.0,
-        1.0
+        0.0,
+        0.0
     ],
     "vSizeRange_End": [
         2.0,
         2.0
     ],
     "vSizeRange_Start": [
-        2.0,
-        2.0
+        1.0,
+        1.0
     ],
     "vSpeedRange": [
-        0.20000000298023224,
-        0.20000000298023224
+        3.0,
+        3.0
     ],
     "vSpriteCount": [
         1.0,

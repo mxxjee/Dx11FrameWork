@@ -107,26 +107,13 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
     __super::Update_Priority(fTimeDelta);
 
     //엔딩씬 테스트
-    /*if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::E))
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::E))
     {
+        GameEvent Event;
+        Event.Name = "Go_WitchRoom";
 
-        pFadeScreen->Set_FadeInEndFunc([this]()
-            {
-                LevelArgs args;
-                args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ENDING);
-                args.changeType = LEVELCHANGETYPE::PUSH;
-                args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-                args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
-
-                if (FAILED(m_pGameInstance->Level_Changer(
-                    ENUM_TO_UINT(LEVEL_ID::LOADING),
-                    args)))
-                    return;
-
-            });
-
-        pFadeScreen->PlayFadeIn();
-    }*/
+        m_pGameInstance->Emit(Event);
+    }
 
     /*
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::R))

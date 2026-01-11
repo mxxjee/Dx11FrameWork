@@ -421,7 +421,7 @@ void CParticle::Reset_Single_Particle(PARTICLE_INFO& tParticle)
 	{
 		_float fDirX = pInst->Random(-1.f, 1.f);
 		_float fDirY = pInst->Random(-1.f, 1.f);
-		_float fDirZ = pInst->Random(-1.f, 1.f);
+		_float fDirZ = pInst->Random(0.f, 0.f);
 		XMStoreFloat3(&tParticle.vDir, XMVector3Normalize(XMVectorSet(fDirX, fDirY, fDirZ, 0.f)));
 	}
 	else
