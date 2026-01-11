@@ -133,6 +133,7 @@ HRESULT CMainApp::Initialize_Cilent()
 	if (FAILED(CEffectPoolManager::GetInstance()->Initialize()))
 		return E_FAIL;
 
+	m_pGameInstance->Load_Textures(L"../../Resource/Particle/Textures/", L".dds");
 	if (FAILED(CEffectData_Manager::GetInstance()->Initialize()))
 		return E_FAIL;
 

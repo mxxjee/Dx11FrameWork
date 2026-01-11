@@ -116,12 +116,8 @@ void CVIBuffer_Particle::Spread(_float fTimeDelta)
 void CVIBuffer_Particle::Free()
 {
     __super::Free();
-    if (false == m_isClone)
-    {
-        Safe_Delete_Array(m_pSpeeds);
-        Safe_Delete_Array(m_pInstanceVertices);
+	Safe_Delete_Array(m_pSpeeds);
+	Safe_Delete_Array(m_pInstanceVertices);
 
-    }
 
-    
 }

@@ -54,6 +54,7 @@ struct ParticleEffetData :public EffectData
     ParticleEffetData() { eType = EFFECT_DESC_TYPE::PARTICLE; }
 
     _uint   iNumInstance = 10;              //입자개수
+    _float3     vCenter = { 0.f,0.f,0.f };
     _float3 vRange = { 1.f, 1.f, 1.f };     //파티클 생성범위
 
 
@@ -82,7 +83,7 @@ struct ParticleEffetData :public EffectData
 
     //0:Diffuse
     //
-    wstring TexKey[ENUM_TO_UINT(EFFECT_TEXTYPE::END)] = {L""};
+    wstring TexKey[ENUM_TO_UINT(EFFECT_TEXTYPE::END)] = {L"Default",L"Default",L"Default"};
 
 };
 

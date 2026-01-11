@@ -112,8 +112,8 @@ HRESULT CVIBuffer_Particle_Rect::Initialize_Prototype(const PARTICLE_DESC* pInit
 
     for (size_t i = 0; i < m_iNumInstance; ++i)
     {
-        _float fScale = m_pGameInstance->Random(pParticleDesc->vSize.x, pParticleDesc->vSize.y);
-        m_pSpeeds[i] = m_pGameInstance->Random(pParticleDesc->vSpeed.x, pParticleDesc->vSpeed.y);
+        _float fScale = m_pGameInstance->Random(pParticleDesc->vSizeRange_Start.x, pParticleDesc->vSizeRange_Start.y);
+        m_pSpeeds[i] = m_pGameInstance->Random(pParticleDesc->vSpeedRange.x, pParticleDesc->vSpeedRange.y);
 
                             //(1.0.0.0)*(fScale)
 
@@ -123,15 +123,15 @@ HRESULT CVIBuffer_Particle_Rect::Initialize_Prototype(const PARTICLE_DESC* pInit
 
   
         m_pInstanceVertices[i].vTranslation = _float4(
-            m_pGameInstance->Random(pParticleDesc->vCenter.x - pParticleDesc->vRange.x * 0.5f, pParticleDesc->vCenter.x + pParticleDesc->vRange.x * 0.5f),
-            m_pGameInstance->Random(pParticleDesc->vCenter.y - pParticleDesc->vRange.y * 0.5f, pParticleDesc->vCenter.y + pParticleDesc->vRange.y * 0.5f),
-            m_pGameInstance->Random(pParticleDesc->vCenter.z - pParticleDesc->vRange.z * 0.5f, pParticleDesc->vCenter.z + pParticleDesc->vRange.z * 0.5f),
+            m_pGameInstance->Random(pParticleDesc->vCenter.x + pParticleDesc->vRange.x * -0.5f, pParticleDesc->vCenter.x + pParticleDesc->vRange.x * 0.5f),
+            m_pGameInstance->Random(pParticleDesc->vCenter.y + pParticleDesc->vRange.y * -0.5f, pParticleDesc->vCenter.y + pParticleDesc->vRange.y * 0.5f),
+            m_pGameInstance->Random(pParticleDesc->vCenter.z + pParticleDesc->vRange.z * -0.5f, pParticleDesc->vCenter.z + pParticleDesc->vRange.z * 0.5f),
             1.f
         );
 
 
         //LifeTime(현재값, 최대lifetime)
-        m_pInstanceVertices[i].vLifeTime = _float2(0.f, m_pGameInstance->Random(pParticleDesc->vLifeTime.x, pParticleDesc->vLifeTime.y));
+        m_pInstanceVertices[i].vLifeTime = _float2(0.f, m_pGameInstance->Random(pParticleDesc->vLifeTimeRange.x, pParticleDesc->vLifeTimeRange.y));
     
     }
 #pragma endregion

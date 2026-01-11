@@ -6,6 +6,8 @@ HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 #include "Shader_Light.hlsli"
 #include "Engine_Shader_Defines.hlsli"
 
+Texture2D g_DiffuseTexture;
+
 struct VS_IN
 {
     float3 vPosition : POSITION;
@@ -15,7 +17,8 @@ struct VS_IN
     
     
     float2 vLifeTime : TEXCOORD0;
-    
+    float4 vColor : TEXCOORD1;
+    float4 vUV_Info : TEXCOORD2;
 
 };
 
@@ -24,7 +27,8 @@ struct VS_OUT
     float4 vPosition : POSITION;
     float2 vPSize : PSIZE;
     float2 vLifeTime : TEXCOORD0;
-    
+    float4 vColor : TEXCOORD1;
+    float4 vUV_Info : TEXCOORD2;
 };
 
 ///GS단계,,고로 VS _ OUT까지는 투영전단계
@@ -43,7 +47,8 @@ VS_OUT VS_MAIN(VS_IN In)
     //픽셀사이즈 : 가로 행 길이 x 세로행 길이
     Out.vPSize = float2(length(In.TransformationMatrix._11_12_13), length(In.TransformationMatrix._21_22_23));
     Out.vLifeTime = In.vLifeTime;
-    
+    Out.vColor = In.vColor;
+    Out.vUV_Info = In.vUV_Info;
     return Out;
     
 
@@ -54,7 +59,8 @@ struct GS_IN
     float4 vPosition : POSITION;
     float2 vPSize : PSIZE; 
     float2 vLifeTime : TEXCOORD0;
-    
+    float4 vColor : TEXCOORD1;
+    float4 vUV_Info : TEXCOORD2;
 };
 
 //투영이후의 점
@@ -63,7 +69,7 @@ struct GS_OUT
     float4 vPosition : SV_POSITION;
     float2 vTexcoord : TEXCOORD0;
     float2 vLifeTime : TEXCOORD1;
-    
+    float4 vColor : COLOR0;
 };
 
 //점1개씩 꺼내서 삼각형을 만든다.
@@ -76,25 +82,33 @@ void GS_MAIN(point GS_IN In[1], inout TriangleStream<GS_OUT> OutStream)
     float3 vRight = normalize(cross(float3(0.f, 1.f, 0.f), vLook)) * In[0].vPSize.x;
     float3 vUp = normalize(cross(vLook, vRight)) * In[0].vPSize.y;
     
+    
     matrix matVP = g_ViewProjMatrix;
     
+    float2 uvOffset = In[0].vUV_Info.xy;
+    float2 uvScale = In[0].vUV_Info.zw;
+    
     Out[0].vPosition = mul(vector(In[0].vPosition.xyz + vRight + vUp, 1.f), matVP);
-    Out[0].vTexcoord = float2(0.f, 0.f);
+    Out[0].vTexcoord = uvOffset + float2(0.f, 0.f) * uvScale;
     Out[0].vLifeTime = In[0].vLifeTime;
+    Out[0].vColor = In[0].vColor; //색상
     
     Out[1].vPosition = mul(vector(In[0].vPosition.xyz - vRight + vUp, 1.f), matVP);
-    Out[1].vTexcoord = float2(1.f, 0.f);
+    Out[1].vTexcoord = uvOffset + float2(1.f, 0.f) * uvScale;
     Out[1].vLifeTime = In[0].vLifeTime;
+    Out[1].vColor = In[0].vColor; //색상
     
     
     Out[2].vPosition = mul(vector(In[0].vPosition.xyz  - vRight - vUp, 1.f), matVP);
-    Out[2].vTexcoord = float2(1.f, 1.f);
+    Out[2].vTexcoord = uvOffset + float2(1.f, 1.f) * uvScale;
     Out[2].vLifeTime = In[0].vLifeTime;
+    Out[2].vColor = In[0].vColor; //색상
     
     
     Out[3].vPosition = mul(vector(In[0].vPosition.xyz + vRight - vUp, 1.f), matVP);
-    Out[3].vTexcoord = float2(0.f, 1.f);
+    Out[3].vTexcoord = uvOffset + float2(0.f, 1.f) * uvScale;
     Out[3].vLifeTime = In[0].vLifeTime;
+    Out[3].vColor = In[0].vColor;
     
     
     OutStream.Append(Out[0]);
@@ -116,6 +130,7 @@ struct PS_IN
     float4 vPosition : SV_POSITION;
     float2 vTexcoord : TEXCOORD0;
     float2 vLifeTime : TEXCOORD1;
+    float4 vColor : COLOR0;
 };
 
 struct PS_OUT
@@ -128,16 +143,18 @@ struct PS_OUT
 PS_OUT PS_MAIN(PS_IN Input) 
 {
     PS_OUT Out;
-    float4 color = texture0.Sample(sampler0, Input.vTexcoord);
-
-    //alphatest
-    if(color.a<=0.3f)
+    float4 color = g_DiffuseTexture.Sample(DefaultSampler, Input.vTexcoord);
+    color.a = color.r;
+    
+    
+    color *= Input.vColor;
+    if (color.a <= 0.01f)
         discard;
     
-    color.a = saturate(Input.vLifeTime.y - Input.vLifeTime.x);
-    color.rgb = (1.f - color.rgb) + (1.f - color.a);
-    Out.vColor = color;
+    color.rgb *= g_TintColor;
+    color.rgb *= g_fIntensity;
     
+    Out.vColor = color;
     
     return Out;
 }

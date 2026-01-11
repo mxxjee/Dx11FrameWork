@@ -22,6 +22,8 @@
 #include "CEffectPoolManager.h"
 
 #include "CInput_Manager.h"
+#include "CParticle.h"
+
 
 
 
@@ -329,7 +331,7 @@ HRESULT CLevel_Spawn::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
 HRESULT CLevel_Spawn::Ready_Layer_Particle(const _wstring& strLayerTag)
 {
-
+   
     return S_OK;
 }
 
@@ -439,18 +441,16 @@ void CLevel_Spawn::OnEnter()
  
 
   
-    //방패hit
-    CMeshEffect::MESHEFFECT_DESC MeshEffectDesc;
-    MeshEffectDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
-    MeshEffectDesc.modelName = L"flash_00";
-    MeshEffectDesc.ShaderName = L"MeshEffect";
-    MeshEffectDesc.PassName = "Default";
-    MeshEffectDesc.DataName = L"flash_00";
-    MeshEffectDesc.ObjTag = L"flash_00";
+    //파티클테스트
+    CParticle::PARTICLE_DESC Desc;
+    Desc.ProtoName = L"Particle";
+    Desc.DataName = L"Particle_Test";
+    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+    Desc.passName = "Default";
+    Desc.ShaderName = L"VtxPosParticle";
+    Desc.ObjTag = L"Particle";
 
-
-
-    CEffect* pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(L"MeshEffect", &MeshEffectDesc);
+    CEffect* pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(Desc.ProtoName, &Desc);
 
     if (pEffect)
     {

@@ -103,6 +103,8 @@ typedef struct tagVertexInstance
 	XMFLOAT4		vTranslation;
 	XMFLOAT2		vLifeTime;			//셰이더에서 이를 사용하기위해서 구조체의 멤버로 씀
 
+	XMFLOAT4 vColor;   // [Fade Out] 색상
+	XMFLOAT4 vUV_Info; // [Sprite] xy:Offset, zw:Scale
 
 
 }VTXPARTICLE;

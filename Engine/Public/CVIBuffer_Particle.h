@@ -15,14 +15,19 @@ class ENGINE_DLL CVIBuffer_Particle abstract:
 public:
     typedef struct tagVIBuffer_Particle_Desc
     {
-        _uint       iNumInstance = {};      //생성할 입자개수
-        _float2     vSize = {};     //입자크기(x,y)(min,max)
-        _float3     vCenter = {};       //파티클이 시작할 센터(로컬)
-        _float3     vRange = {};    //파티클 움직일 범위
-        _float2     vSpeed = {};    //파티클 움직이리 속도
-        _float2     vLifeTime = {}; //파티클 생명시간
-        _bool       isLoop = {};    //루프여부
-        _float3     vPivot = {};        //spread 피봇
+        bool        isLoop = false;
+        _uint       iNumInstance = {};      //생성할 입자개수]
+        _float3 vRange = { 1.f, 1.f, 1.f };     //파티클 생성범위
+
+        _float3 vCenter = { 0.f,0.f,0.f };
+
+        _float2 vSizeRange_Start = { 0.1f,0.3f };//생성될 때 크기 (Min, Max)
+        _float2 vSizeRange_End = { 0.5f, 0.8f };   // 죽을 때 크기 (Min, Max)
+
+
+        _float2 vSpeedRange = { 1.f, 5.f };    // 파티클 이동속도(Min,Max)
+        _float2 vLifeTimeRange = { 1.f, 2.f }; // 수명(Min,Max)
+     
     }PARTICLE_DESC;
 
 

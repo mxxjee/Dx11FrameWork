@@ -94,6 +94,8 @@
 #include "CMeshEffect_HitSpark.h"
 
 #include "CUI_Credit.h"
+#include "CParticle.h"
+
 
 
 
@@ -573,8 +575,7 @@ HRESULT CLoader::Register_Textures()
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Items/", L".dds");
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Inventory/", L".png");
     m_pGameInstance->Load_Textures(L"../../Resource/UI/AreaUI/", L".png");
-    m_pGameInstance->Load_Textures(L"../../Resource/Particle/Textures/", L".dds");
-
+  
     m_pGameInstance->Load_Textures(L"../../Resource/UI/Credit/", L".png");
 
 
@@ -652,34 +653,37 @@ HRESULT CLoader::Register_Components()
         return E_FAIL;
 
 
-    CVIBuffer_Particle_Rect::PARTICLE_RECT_DESC	SnowDesc{};
-    SnowDesc.iNumInstance = 8000;
-    SnowDesc.vCenter = _float3(0.f, 0.f, 0.f);
-    SnowDesc.vSize = _float2(0.1f, 0.3f);
-    SnowDesc.vRange = _float3(130.f, 1.f, 130.f);
-    SnowDesc.vSpeed = _float2(2.f, 5.f);
-    SnowDesc.vLifeTime = _float2(3.f, 5.f);
-    SnowDesc.isLoop = true;
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Particle_Rect"), CVIBuffer_Particle_Rect::Create(m_pDevice, m_pDeviceContext,&SnowDesc))))
-        return E_FAIL;
+    //CVIBuffer_Particle_Rect::PARTICLE_RECT_DESC	SnowDesc{};
+    //SnowDesc.iNumInstance = 8000;
+    //SnowDesc.vCenter = _float3(0.f, 0.f, 0.f);
+    //SnowDesc.vSize = _float2(0.1f, 0.3f);
+    //SnowDesc.vRange = _float3(130.f, 1.f, 130.f);
+    //SnowDesc.vSpeed = _float2(2.f, 5.f);
+    //SnowDesc.vLifeTime = _float2(3.f, 5.f);
+    //SnowDesc.isLoop = true;
+    //if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Particle_Rect"), CVIBuffer_Particle_Rect::Create(m_pDevice, m_pDeviceContext,&SnowDesc))))
+    //    return E_FAIL;
 
 
 
-    CVIBuffer_Particle_Point::PARTICLE_DESC	ExploDesc{};
-    ExploDesc.iNumInstance = 800;
-    ExploDesc.vCenter = _float3(0.f, 0.f, 0.f);
-    ExploDesc.vSize = _float2(0.05f, 0.15f);
-    ExploDesc.vRange = _float3(0.5f, 0.5f, 0.5f);
-    ExploDesc.vSpeed = _float2(2.f, 5.f);
-    ExploDesc.vLifeTime = _float2(1.f, 1.5f);
-    ExploDesc.isLoop = true;
-    ExploDesc.vPivot = _float3(0.f, -0.5f, 0.f);
-    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Particle_Point"), CVIBuffer_Particle_Point::Create(m_pDevice, m_pDeviceContext, &ExploDesc))))
-        return E_FAIL;
+    //CVIBuffer_Particle_Point::PARTICLE_DESC	ExploDesc{};
+    //ExploDesc.iNumInstance = 800;
+    //ExploDesc.vCenter = _float3(0.f, 0.f, 0.f);
+    //ExploDesc.vSize = _float2(0.05f, 0.15f);
+    //ExploDesc.vRange = _float3(0.5f, 0.5f, 0.5f);
+    //ExploDesc.vSpeed = _float2(2.f, 5.f);
+    //ExploDesc.vLifeTime = _float2(1.f, 1.5f);
+    //ExploDesc.isLoop = true;
+    //ExploDesc.vPivot = _float3(0.f, -0.5f, 0.f);
+    //if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Particle_Point"), CVIBuffer_Particle_Point::Create(m_pDevice, m_pDeviceContext, &ExploDesc))))
+    //    return E_FAIL;
 
 
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Navigation"), CNavigation::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Particle_Point"), CVIBuffer_Particle_Point::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
     if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Triangle"), CVIBuffer_Triangle::Create(m_pDevice, m_pDeviceContext))))
@@ -894,6 +898,9 @@ HRESULT CLoader::Register_Particles()
         return E_FAIL;
 
     if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"MeshEffect_HitSpark", CMeshEffect_HitSpark::Create(m_pDevice, m_pDeviceContext))))
+        return E_FAIL;
+
+    if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Particle", CParticle::Create(m_pDevice, m_pDeviceContext))))
         return E_FAIL;
 
 

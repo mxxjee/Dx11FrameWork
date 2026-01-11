@@ -241,6 +241,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="..\Public\CPanel.h" />
+    <ClInclude Include="..\Public\CParticle.h" />
     <ClInclude Include="..\Public\CPlayer.h" />
     <ClInclude Include="..\Public\CPlayerAttackState.h" />
     <ClInclude Include="..\Public\CPlayerCarryState.h" />
@@ -397,6 +398,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\Private\CPanel.cpp" />
+    <ClCompile Include="..\Private\CParticle.cpp" />
     <ClCompile Include="..\Private\CPlayer.cpp" />
     <ClCompile Include="..\Private\CPlayerAttackState.cpp" />
     <ClCompile Include="..\Private\CPlayerCarryState.cpp" />

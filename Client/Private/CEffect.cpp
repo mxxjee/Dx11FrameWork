@@ -134,34 +134,42 @@ void CEffect::Update(_float fTimeDelta)
     CheckTrue(m_bStop);
 	__super::Update(fTimeDelta);
 
-    m_fProgress += fTimeDelta * m_pDataRef->fSpeed;
-    m_fTime += fTimeDelta;
-
-    if (!m_bStop)
+    if (m_pDataRef)
     {
-        m_fTime += fTimeDelta;
-        m_fProgress += fTimeDelta * m_pDataRef->fSpeed;
-
-    }
-
-    if (m_fTime >= m_pDataRef->fLifeTime)
-    {
-        if (!m_pDataRef->m_bLoop)
+        if (m_pDataRef->eType == EFFECT_DESC_TYPE::MESH)
         {
-            m_fAlpha -= fTimeDelta * m_fFadeOutSpeed;
-            if (m_fAlpha <= 0)
+            m_fProgress += fTimeDelta * m_pDataRef->fSpeed;
+            m_fTime += fTimeDelta;
+
+            if (!m_bStop)
             {
-                Stop();
-                m_pEffectPool_Manager->Request_Return(this);
-                Set_Active(false);
+                m_fTime += fTimeDelta;
+                m_fProgress += fTimeDelta * m_pDataRef->fSpeed;
+
+            }
+
+            if (m_fTime >= m_pDataRef->fLifeTime)
+            {
+                if (!m_pDataRef->m_bLoop)
+                {
+                    m_fAlpha -= fTimeDelta * m_fFadeOutSpeed;
+                    if (m_fAlpha <= 0)
+                    {
+                        Stop();
+                        m_pEffectPool_Manager->Request_Return(this);
+                        Set_Active(false);
+                    }
+                }
+
+
+
+
             }
         }
-
-
-
-
+       
+  
     }
- 
+   
 }
 
 void CEffect::Update_Late(_float fTimeDelta)

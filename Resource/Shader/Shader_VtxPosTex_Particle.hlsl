@@ -16,6 +16,7 @@ struct VS_IN
     float4 vUp : TEXCOORD2;
     float4 vLook : TEXCOORD3;
     float4 vTransition : TEXCOORD4;
+    
     float2 vLifeTime : TEXCOORD5;
     
 

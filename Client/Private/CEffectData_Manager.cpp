@@ -1,5 +1,7 @@
 #include "CEffectData_Manager.h"
 #include "Client_Defines.h"
+#include "CGameInstance.h"
+#include "CTexture.h"
 
 IMPLEMENT_SINGLETON(CEffectData_Manager)
 
@@ -7,7 +9,10 @@ USING(Client)
 
 HRESULT CEffectData_Manager::Initialize()
 {
+    m_pGameInstance = CGameInstance::GetInstance();
+
     Load_AllData();
+    Load_AllTexture();
 
     return S_OK;
 }
@@ -79,6 +84,33 @@ EffectData* CEffectData_Manager::Find_Data(wstring ModelName)
         return nullptr;
 
     return iter->second;
+}
+
+HRESULT CEffectData_Manager::Load_AllTexture()
+{
+    string path = "../../Resource/Particle/Textures/";
+
+    for (const auto& entry : fs::directory_iterator(path))
+    {
+        if (entry.path().extension() == ".dds" || entry.path().extension() == ".png")
+        {
+            // 파일명 추출 (예: "Smoke01")
+            wstring filename = entry.path().stem().wstring();
+
+            // 엔진에서 쓰는 프로토타입 키 형식으로 변환
+            // (규칙에 따라 다름. 예: "Prototype_Component_Texture_" + filename)
+            m_TextureKeyList.push_back(filename);
+
+            CTexture* pTex = m_pGameInstance->Find_Texture(filename);
+            if (pTex)
+                m_Textures.push_back(pTex);
+
+
+        }
+    }
+
+
+    return S_OK;
 }
 
 HRESULT CEffectData_Manager::Load_AllData()
@@ -263,6 +295,15 @@ HRESULT CEffectData_Manager::Load_To_Json_Particle(json& Json, EffectData* Data)
 
     }
 
+    if (Json.contains("vCenter"))
+    {
+        pDesc->vCenter.x = Json["vCenter"][0].get<float>();
+        pDesc->vCenter.y = Json["vCenter"][1].get<float>();
+        pDesc->vCenter.z = Json["vCenter"][2].get<float>();
+
+    }
+
+
     if (Json.contains("vSizeRange_End"))
     {
         pDesc->vSizeRange_End.x = Json["vSizeRange_End"][0].get<float>();
@@ -343,12 +384,6 @@ HRESULT CEffectData_Manager::Load_To_Json_Particle(json& Json, EffectData* Data)
 
     }
 
-    if (Json.contains("DIFFUSE"))
-    {
-        string TexKey = Json["DIFFUSE"].get<string>();
-        pDesc->TexKey[ENUM_TO_UINT(EFFECT_TEXTYPE::DIFFUSE)] = StringToWString(TexKey);
-
-    }
 
     if (Json.contains("NOISE"))
     {
@@ -496,6 +531,13 @@ HRESULT CEffectData_Manager::Save_To_Json_Particle(json& Json,EffectData* Data)
     Range.push_back(pParticleData->vRange.y);
     Range.push_back(pParticleData->vRange.z);
     Json["vRange"] = Range;
+
+    json Center = json::array();
+    Center.push_back(pParticleData->vCenter.x);
+    Center.push_back(pParticleData->vCenter.y);
+    Center.push_back(pParticleData->vCenter.z);
+    Json["vCenter"] = Center;
+
 
     json SizeRange_Start = json::array();
     SizeRange_Start.push_back(pParticleData->vSizeRange_Start.x);

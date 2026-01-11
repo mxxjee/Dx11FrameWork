@@ -427,6 +427,9 @@
     <ClInclude Include="..\Public\CUI_Credit.h">
       <Filter>02.GameObjects\99.UI\00.Panel\99.Credit</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CParticle.h">
+      <Filter>02.GameObjects\98.Effect\Particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -1314,6 +1317,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\CUI_Credit.cpp">
       <Filter>02.GameObjects\99.UI\00.Panel\99.Credit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CParticle.cpp">
+      <Filter>02.GameObjects\98.Effect\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
