@@ -26,7 +26,7 @@ void CEffectData_Manager::Register_Data(wstring& ModelName, EffectData* Data)
             pNewData= new MeshEffectData(*static_cast<MeshEffectData*>(Data));
 
         else if(Data->eType == EFFECT_DESC_TYPE::PARTICLE)
-            pNewData = new ParticleData(*static_cast<ParticleData*>(Data));
+            pNewData = new ParticleEffetData(*static_cast<ParticleEffetData*>(Data));
 
         else
         {
@@ -54,8 +54,8 @@ void CEffectData_Manager::Update_Data(wstring& ModelName, EffectData* Data)
         }
         else if (pData->eType == EFFECT_DESC_TYPE::PARTICLE && Data->eType == EFFECT_DESC_TYPE::PARTICLE)
         {
-            ParticleData* pDest = static_cast<ParticleData*>(pData);
-            ParticleData* pSrc = static_cast<ParticleData*>(Data);
+            ParticleEffetData* pDest = static_cast<ParticleEffetData*>(pData);
+            ParticleEffetData* pSrc = static_cast<ParticleEffetData*>(Data);
 
             *pDest = *pSrc; // 값 복사!
         }
@@ -115,7 +115,7 @@ HRESULT CEffectData_Manager::Load_AllData()
 
             else
             {
-                Data = new ParticleData();
+                Data = new ParticleEffetData();
                 eType = EFFECT_DESC_TYPE::PARTICLE;
             }
 
@@ -244,6 +244,127 @@ HRESULT CEffectData_Manager::Load_To_Json_Mesh(json& Json, EffectData* Data)
 
 HRESULT CEffectData_Manager::Load_To_Json_Particle(json& Json, EffectData* Data)
 {
+    ParticleEffetData* pDesc = static_cast<ParticleEffetData*>(Data);
+    if (Json.contains("iNumInstance"))
+        pDesc->iNumInstance = Json["iNumInstance"].get<int>();
+
+    if (Json.contains("vRange"))
+    {
+        pDesc->vRange.x = Json["vRange"][0].get<float>();
+        pDesc->vRange.y = Json["vRange"][1].get<float>();
+        pDesc->vRange.z = Json["vRange"][2].get<float>();
+
+    }
+        
+    if (Json.contains("vSizeRange_Start"))
+    {
+        pDesc->vSizeRange_Start.x = Json["vSizeRange_Start"][0].get<float>();
+        pDesc->vSizeRange_Start.y = Json["vSizeRange_Start"][1].get<float>();
+
+    }
+
+    if (Json.contains("vSizeRange_End"))
+    {
+        pDesc->vSizeRange_End.x = Json["vSizeRange_End"][0].get<float>();
+        pDesc->vSizeRange_End.y = Json["vSizeRange_End"][1].get<float>();
+
+    }
+
+    if (Json.contains("vSpeedRange"))
+    {
+        pDesc->vSpeedRange.x = Json["vSpeedRange"][0].get<float>();
+        pDesc->vSpeedRange.y = Json["vSpeedRange"][1].get<float>();
+
+    }
+
+
+    if (Json.contains("vLifeTimeRange"))
+    {
+        pDesc->vLifeTimeRange.x = Json["vLifeTimeRange"][0].get<float>();
+        pDesc->vLifeTimeRange.y = Json["vLifeTimeRange"][1].get<float>();
+
+    }
+
+    if (Json.contains("fGravity"))
+    {
+        pDesc->fGravity = Json["fGravity"].get<float>();
+     
+    }
+
+    if (Json.contains("vRotationSpeedRange"))
+    {
+        pDesc->vRotationSpeedRange.x = Json["vRotationSpeedRange"][0].get<float>();
+        pDesc->vRotationSpeedRange.y = Json["vRotationSpeedRange"][1].get<float>();
+
+    }
+
+    if (Json.contains("bIsSpriteAnim"))
+    {
+        pDesc->bIsSpriteAnim = Json["bIsSpriteAnim"].get<bool>();
+    }
+
+    if (Json.contains("vSpriteCount"))
+    {
+        pDesc->vSpriteCount.x = Json["vSpriteCount"][0].get<float>();
+        pDesc->vSpriteCount.y = Json["vSpriteCount"][1].get<float>();
+
+    }
+
+
+    if (Json.contains("vSpriteSpeed"))
+    {
+        pDesc->vSpriteSpeed = Json["vSpriteSpeed"].get<float>();
+
+    }
+
+    if (Json.contains("vColor_End"))
+    {
+        pDesc->vColor_End.x = Json["vColor_End"][0].get<float>();
+        pDesc->vColor_End.y= Json["vColor_End"][1].get<float>();
+        pDesc->vColor_End.z = Json["vColor_End"][2].get<float>();
+        pDesc->vColor_End.w = Json["vColor_End"][3].get<float>();
+
+    }
+
+    pDesc->bUseRandomDir = Json["bUseRandomDir"].get<bool>();
+    
+    if (Json.contains("vMoveDir"))
+    {
+        pDesc->vMoveDir.x = Json["vMoveDir"][0].get<float>();
+        pDesc->vMoveDir.y = Json["vMoveDir"][1].get<float>();
+        pDesc->vMoveDir.z = Json["vMoveDir"][2].get<float>();
+     
+    }
+
+    if (Json.contains("DIFFUSE"))
+    {
+        string TexKey = Json["DIFFUSE"].get<string>();
+        pDesc->TexKey[ENUM_TO_UINT(EFFECT_TEXTYPE::DIFFUSE)] = StringToWString(TexKey);
+
+    }
+
+    if (Json.contains("DIFFUSE"))
+    {
+        string TexKey = Json["DIFFUSE"].get<string>();
+        pDesc->TexKey[ENUM_TO_UINT(EFFECT_TEXTYPE::DIFFUSE)] = StringToWString(TexKey);
+
+    }
+
+    if (Json.contains("NOISE"))
+    {
+        string TexKey = Json["NOISE"].get<string>();
+        pDesc->TexKey[ENUM_TO_UINT(EFFECT_TEXTYPE::NOISE)] = StringToWString(TexKey);
+
+    }
+
+    if (Json.contains("ALPHAMASK"))
+    {
+        string TexKey = Json["ALPHAMASK"].get<string>();
+        pDesc->TexKey[ENUM_TO_UINT(EFFECT_TEXTYPE::ALPHAMASK)] = StringToWString(TexKey);
+
+    }
+
+
     return S_OK;
 }
 
@@ -366,9 +487,9 @@ HRESULT CEffectData_Manager::Save_To_Json_Particle(json& Json,EffectData* Data)
 {
     /////////메쉬자체의 애니값///////
    ///////Scale//////////
-    ParticleData* pParticleData = static_cast<ParticleData*>(Data);
+    ParticleEffetData* pParticleData = static_cast<ParticleEffetData*>(Data);
 
-    Json["NumInstance"] = pParticleData->iNumInstance;
+    Json["iNumInstance"] = pParticleData->iNumInstance;
 
     json Range = json::array();
     Range.push_back(pParticleData->vRange.x);
@@ -376,10 +497,15 @@ HRESULT CEffectData_Manager::Save_To_Json_Particle(json& Json,EffectData* Data)
     Range.push_back(pParticleData->vRange.z);
     Json["vRange"] = Range;
 
-    json SizeRange = json::array();
-    SizeRange.push_back(pParticleData->vSizeRange.x);
-    SizeRange.push_back(pParticleData->vSizeRange.y);
-    Json["vSizeRange"] = SizeRange;
+    json SizeRange_Start = json::array();
+    SizeRange_Start.push_back(pParticleData->vSizeRange_Start.x);
+    SizeRange_Start.push_back(pParticleData->vSizeRange_Start.y);
+    Json["vSizeRange_Start"] = SizeRange_Start;
+
+    json SizeRange_End = json::array();
+    SizeRange_End.push_back(pParticleData->vSizeRange_End.x);
+    SizeRange_End.push_back(pParticleData->vSizeRange_End.y);
+    Json["vSizeRange_End"] = SizeRange_End;
 
     json SpeedRange = json::array();
     SpeedRange.push_back(pParticleData->vSpeedRange.x);
@@ -393,6 +519,39 @@ HRESULT CEffectData_Manager::Save_To_Json_Particle(json& Json,EffectData* Data)
 
     Json["fGravity"] = pParticleData->fGravity;
 
+    json RotationSpeedRange = json::array();
+    RotationSpeedRange.push_back(pParticleData->vRotationSpeedRange.x);
+    RotationSpeedRange.push_back(pParticleData->vRotationSpeedRange.y);
+    Json["vRotationSpeedRange"] = RotationSpeedRange;
+
+    Json["bIsSpriteAnim"] = pParticleData->bIsSpriteAnim;
+
+    json SpriteCount = json::array();
+    SpriteCount.push_back(pParticleData->vSpriteCount.x);
+    SpriteCount.push_back(pParticleData->vSpriteCount.y);
+    Json["vSpriteCount"] = SpriteCount;
+
+    Json["vSpriteSpeed"] = pParticleData->vSpriteSpeed;
+    
+    json Color_End = json::array();
+    Color_End.push_back(pParticleData->vColor_End.x);
+    Color_End.push_back(pParticleData->vColor_End.y);
+    Color_End.push_back(pParticleData->vColor_End.z);
+    Color_End.push_back(pParticleData->vColor_End.w);
+    Json["vColor_End"] = Color_End;
+
+    Json["bUseRandomDir"] = pParticleData->bUseRandomDir;
+    
+    json MoveDir = json::array();
+    MoveDir.push_back(pParticleData->vMoveDir.x);
+    MoveDir.push_back(pParticleData->vMoveDir.y);
+    MoveDir.push_back(pParticleData->vMoveDir.z);
+    Json["vMoveDir"] = MoveDir;
+
+
+    Json["DIFFUSE"] = WStringToUTF8(pParticleData->TexKey[0]);
+    Json["NOISE"] = WStringToUTF8(pParticleData->TexKey[1]);
+    Json["ALPHAMASK"] = WStringToUTF8(pParticleData->TexKey[2]);
 
     return S_OK;
 }

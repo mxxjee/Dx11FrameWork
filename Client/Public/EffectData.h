@@ -49,28 +49,40 @@ struct MeshEffectData :public EffectData
 
 };
 
-struct ParticleData :public EffectData
+struct ParticleEffetData :public EffectData
 {
-    ParticleData() { eType = EFFECT_DESC_TYPE::PARTICLE; }
+    ParticleEffetData() { eType = EFFECT_DESC_TYPE::PARTICLE; }
 
-    _uint   iNumInstance = 10;
-    _float3 vRange = { 1.f, 1.f, 1.f };
-    
+    _uint   iNumInstance = 10;              //입자개수
+    _float3 vRange = { 1.f, 1.f, 1.f };     //파티클 생성범위
+
+
     //안쓰고싶으면 start와 end를 같은갑승로 넣는다.
     //기존:_float2 vSizeRange = { 0.1f, 0.5f };   // Min, Max
 
     _float2 vSizeRange_Start = { 0.1f,0.3f };//생성될 때 크기 (Min, Max)
-    _float2 vSizeRange = { 0.5f, 0.8f };   // 죽을 때 크기 (Min, Max)
+    _float2 vSizeRange_End = { 0.5f, 0.8f };   // 죽을 때 크기 (Min, Max)
 
 
-    _float2 vSpeedRange = { 1.f, 5.f };    // Min, Max
-    _float2 vLifeTimeRange = { 1.f, 2.f }; // Min, Max
-    _float  fGravity = 0.f;
+    _float2 vSpeedRange = { 1.f, 5.f };    // 파티클 이동속도(Min,Max)
+    _float2 vLifeTimeRange = { 1.f, 2.f }; // 수명(Min,Max)
+    _float  fGravity = 0.f; //중력
 
+    _float2 vRotationSpeedRange = { -1.f,1.f };//회전속도
+
+    _bool bIsSpriteAnim = false;
+    _float2 vSpriteCount = { 1,1 };//시트가로세로(ex)4x4->4,4)
+    _float  vSpriteSpeed = 1.0f;
+
+
+    _float4     vColor_End = { 1.f,1.f,1.f,0.f };   //끝날때 색상
+
+    _bool   bUseRandomDir = true;              // true: 사방으로 퍼짐 (폭발, 먼지)
+    _float3 vMoveDir = { 0.f, 1.f, 0.f };      // false일 때: 특정 방향으로만 이동 (연기 기둥, 분수)
 
     //0:Diffuse
     //
-    wstring TexKey[ENUM_TO_UINT(EFFECT_TEXTYPE::END)] = {};
+    wstring TexKey[ENUM_TO_UINT(EFFECT_TEXTYPE::END)] = {L""};
 
 };
 
