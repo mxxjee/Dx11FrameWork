@@ -1,0 +1,87 @@
+{
+    "ALPHAMASK": "Default",
+    "Color": [
+        0.0,
+        1.0,
+        0.7941174507141113,
+        1.0
+    ],
+    "DIFFUSE": "smoke_00",
+    "DataName": "Left_Smoke",
+    "LifeTime": 10.0,
+    "Loop": false,
+    "NOISE": "Default",
+    "OffSet": [
+        0.0,
+        0.10000000149011612,
+        1.0,
+        0.0
+    ],
+    "Rotation": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "Scale": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "Speed": 3.0,
+    "Type": "Particle",
+    "bIsSpriteAnim": false,
+    "bLinearSpawn": true,
+    "bUseRandomDir": false,
+    "fGravity": 0.0,
+    "fIntensity": 3.0,
+    "fSpawnDuration": 0.10000000149011612,
+    "iNumInstance": 1,
+    "vCenter": [
+        0.0,
+        0.0,
+        0.0
+    ],
+    "vColor_End": [
+        1.0,
+        1.0,
+        1.0,
+        0.0
+    ],
+    "vLifeTimeRange": [
+        2.0,
+        2.0
+    ],
+    "vMoveDir": [
+        0.10000000149011612,
+        0.0,
+        0.0
+    ],
+    "vRange": [
+        0.0,
+        1.0,
+        0.0
+    ],
+    "vRotationSpeedRange": [
+        0.0,
+        0.0
+    ],
+    "vSizeRange_End": [
+        2.0,
+        2.0
+    ],
+    "vSizeRange_Start": [
+        2.0,
+        2.0
+    ],
+    "vSpeedRange": [
+        3.0,
+        3.0
+    ],
+    "vSpriteCount": [
+        1.0,
+        1.0
+    ],
+    "vSpriteSpeed": 1.0
+}

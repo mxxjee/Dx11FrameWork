@@ -201,7 +201,23 @@ void CNPC_Witch::Ready_Events()
                 pEffect->Play();
             }
 
+            Desc.ProtoName = L"Particle";
+            Desc.DataName = L"Left_Smoke";
+            Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+            Desc.passName = "Smoke";
+            Desc.ShaderName = L"VtxPosParticle";
+            Desc.ObjTag = L"Left_Smoke";
 
+            pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(Desc.ProtoName, &Desc);
+
+            if (pEffect)
+            {
+
+                const _float4x4* Matrix = m_pTransformCom->Get_WorldMatrixPtr();
+
+                pEffect->Set_OrigniMatrix(XMLoadFloat4x4(Matrix));
+                pEffect->Play();
+            }
 
         });
 
