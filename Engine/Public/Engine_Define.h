@@ -63,7 +63,7 @@ using namespace DirectX;
 #include <filesystem>
 #include <queue>
 #include <set>
-
+#include <io.h>
 
 
 #include <experimental\filesystem>
@@ -106,6 +106,13 @@ using json = nlohmann::json;
 
 #endif
 #endif
+
+#include "fmod.h"
+#include "fmod.hpp"
+
+#pragma comment(lib, "fmodL_vc.lib")
+#pragma comment(lib, "fmod_vc.lib")
+
 
 namespace Engine
 {

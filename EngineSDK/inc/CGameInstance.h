@@ -395,6 +395,15 @@ public:
 	 HRESULT Debug_RT_Render(const _wstring& strMRTTag, class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
 
 #endif
+
+#pragma endregion
+	 void PlaySound(const wstring& pSoundKey, CHANNELID eID, float fVolume);
+	 void PlayBGM(const std::wstring& soundKey, float fVolume);
+	 void StopSound(CHANNELID eID);
+	 void StopAll();
+	 void SetChannelVolume(CHANNELID eID, float fVolume);
+
+#pragma region Sound_Manager
 #pragma endregion
  private:
 	 class CLevel_Manager* m_pLevelManager = { nullptr };
@@ -427,6 +436,8 @@ public:
 
 
 	 class CTarget_Manager* m_pTarget_Manager = { nullptr };
+
+	 class CSoundMgr* m_pSound_Manager = nullptr;
 
 private:
 	vector<D3D11_VIEWPORT>          m_ViewPorts;

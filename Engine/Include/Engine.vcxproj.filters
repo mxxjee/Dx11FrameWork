@@ -460,6 +460,9 @@
     <Filter Include="01.Utility\99.EtcUtils\MaterialUtil">
       <UniqueIdentifier>{bf678bcf-acc7-407b-aade-8a1d248fd794}</UniqueIdentifier>
     </Filter>
+    <Filter Include="00.System\21.Sound">
+      <UniqueIdentifier>{869dec21-b74b-4bee-af0c-79d984cd85c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CBase.h">
@@ -904,6 +907,9 @@
     <ClInclude Include="..\Public\MaterialUtil.h">
       <Filter>01.Utility\99.EtcUtils\MaterialUtil</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CSoundMgr.h">
+      <Filter>00.System\21.Sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CBase.cpp">
@@ -1294,6 +1300,9 @@
     </ClCompile>
     <ClCompile Include="..\Private\UIGroup.cpp">
       <Filter>00.System\09.UI\UIGroup</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSoundMgr.cpp">
+      <Filter>00.System\21.Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

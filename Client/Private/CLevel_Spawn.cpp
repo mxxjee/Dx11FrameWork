@@ -76,6 +76,8 @@ HRESULT CLevel_Spawn::Initialize(LevelArgs& args)
     if (FAILED(CQuest_Manager::GetInstance()->Initialize()))
         return E_FAIL;
 
+    m_pGameInstance->PlaySoundW(L"Intro.wav", CHANNELID::SOUND_BGM, 1.f);
+
 
     return S_OK;
 }
@@ -83,50 +85,7 @@ HRESULT CLevel_Spawn::Initialize(LevelArgs& args)
 void CLevel_Spawn::Update_Priority(_float fTimeDelta)
 {
     __super::Update_Priority(fTimeDelta);
-    //if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::B))
-    //{
-
-    //    /////////큰 hitsparkle//////
-    //    CMeshEffect::MESHEFFECT_DESC MeshEffectDesc;
-    //    MeshEffectDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
-    //    MeshEffectDesc.modelName = L"HitFlash";
-    //    MeshEffectDesc.ShaderName = L"MeshEffect";
-    //    MeshEffectDesc.PassName = "Default";
-    //    MeshEffectDesc.DataName = L"HitFlash";
-    //    MeshEffectDesc.ObjTag = L"HitFlash";
-
-    //    CEffect* pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(L"MeshEffect", &MeshEffectDesc);
-    //    if (pEffect)
-    //    {
-    //        CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
-    //        if (pPlayer)
-    //            pEffect->Set_OrigniMatrix(XMLoadFloat4x4(pPlayer->Get_Transform()->Get_WorldMatrixPtr()));
-
-    //        pEffect->Play();
-    //    }
-
-    //    ///작은 스파클/////
-
-    //    MeshEffectDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
-    //    MeshEffectDesc.modelName = L"HitSpark";
-    //    MeshEffectDesc.ShaderName = L"MeshEffect";
-    //    MeshEffectDesc.PassName = "Default";
-    //    MeshEffectDesc.DataName = L"HitSpark";
-    //    MeshEffectDesc.ObjTag = L"HitSpark";
-
-    //    CEffect* pSparkleEffect = CEffectPoolManager::GetInstance()->Request_Spawn(L"MeshEffect_HitSpark", &MeshEffectDesc);
-    //    if (pSparkleEffect)
-    //    {
-    //        CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
-    //        _float4x4 vCombinedMatrix = *pPlayer->Get_Transform()->Get_WorldMatrixPtr();
-
-
-    //        if (pPlayer)
-    //            pSparkleEffect->Set_OrigniMatrix(XMLoadFloat4x4(&vCombinedMatrix));
-
-    //        pSparkleEffect->Play();
-    //    }
-    //}
+  
 }
 
 void CLevel_Spawn::Update(const _float fTimeDelta)

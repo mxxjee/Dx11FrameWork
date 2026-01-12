@@ -27,6 +27,8 @@
 #include "CFont_Manager.h"
 #include "CTimerTask_Manager.h"
 #include "CTarget_Manager.h"
+#include "CSoundMgr.h"
+
 
 ////////////////Add-Ons////////////////
 #include "CShader.h"
@@ -78,6 +80,9 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	CheckNullResult(m_pEventBusManager, E_FAIL);
 
 	/* 사운드  디바이스 초기화 */
+	m_pSound_Manager = CSoundMgr::Get_Instance();
+	CheckNullResult(m_pSound_Manager, E_FAIL);
+	m_pSound_Manager->Init();
 
 	/* 타이머 매니져 초기화 */
 	m_pTimerManager = CTimer_Manager::Create();
@@ -1135,6 +1140,36 @@ HRESULT CGameInstance::Debug_RT_Render(const _wstring& strMRTTag, CShader* pShad
 }
 #endif
 
+#pragma region Sound_Manager
+void CGameInstance::PlaySound(const wstring& pSoundKey, CHANNELID eID, float fVolume)
+{
+	if (m_pSound_Manager)
+		m_pSound_Manager->PlaySound(pSoundKey, eID, fVolume);
+	
+}
+void CGameInstance::PlayBGM(const std::wstring& soundKey, float fVolume)
+{
+	if (m_pSound_Manager)
+		m_pSound_Manager->PlayBGM(soundKey, fVolume);
+}
+void CGameInstance::StopSound(CHANNELID eID)
+{
+	if (m_pSound_Manager)
+		m_pSound_Manager->StopSound(eID);
+}
+void CGameInstance::StopAll()
+{
+	if (m_pSound_Manager)
+		m_pSound_Manager->StopAll();
+}
+void CGameInstance::SetChannelVolume(CHANNELID eID, float fVolume)
+{
+	if (m_pSound_Manager)
+		m_pSound_Manager->SetChannelVolume(eID,fVolume);
+}
+#pragma endregion
+
+
 void CGameInstance::Release_Engine()
 {
 	Safe_Release(m_pTarget_Manager);
@@ -1171,6 +1206,8 @@ void CGameInstance::Release_Engine()
 	Safe_Release(m_pNavMeshManager);
 	Safe_Release(m_pEventBusManager);
 	
+	CSoundMgr::Get_Instance()->Destroy_Instance();
+
 
 
 	Safe_Release(m_pGraphicDev);
