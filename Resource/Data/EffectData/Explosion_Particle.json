@@ -35,15 +35,15 @@
     "bLinearSpawn": false,
     "bUseGravity": true,
     "bUseRandomDir": false,
-    "fGravity": -1.0,
+    "fGravity": -2.0,
     "fIntensity": 5.0,
     "fSpawnDuration": 1.0,
     "fSpread": [
+        3.0,
         1.0,
-        1.0,
-        1.0
+        3.0
     ],
-    "iNumInstance": 20,
+    "iNumInstance": 50,
     "vCenter": [
         0.0,
         0.0,
@@ -83,7 +83,7 @@
     ],
     "vSpeedRange": [
         3.0,
-        2.0
+        3.0
     ],
     "vSpriteCount": [
         1.0,
