@@ -1,21 +1,21 @@
 {
     "ALPHAMASK": "Default",
     "Color": [
-        0.0,
+        0.30392158031463623,
         1.0,
-        0.7921568751335144,
-        0.03921568766236305
+        0.6519606113433838,
+        1.0
     ],
-    "DIFFUSE": "smoke_00",
-    "DataName": "Smoke",
-    "LifeTime": 10.0,
+    "DIFFUSE": "glare_00",
+    "DataName": "Explosion_Particle",
+    "LifeTime": 1.0,
     "Loop": false,
     "NOISE": "Default",
     "OffSet": [
         0.0,
         0.0,
         0.6000000238418579,
-        0.0
+        1.0
     ],
     "Rotation": [
         0.0,
@@ -29,21 +29,21 @@
         1.0,
         1.0
     ],
-    "Speed": 1.0,
+    "Speed": 3.0,
     "Type": "Particle",
     "bIsSpriteAnim": false,
-    "bLinearSpawn": true,
+    "bLinearSpawn": false,
     "bUseGravity": true,
     "bUseRandomDir": false,
-    "fGravity": 0.5,
-    "fIntensity": 3.0,
-    "fSpawnDuration": 0.10000000149011612,
+    "fGravity": -1.0,
+    "fIntensity": 5.0,
+    "fSpawnDuration": 1.0,
     "fSpread": [
-        5.0,
-        0.5,
-        2.0
+        1.0,
+        1.0,
+        1.0
     ],
-    "iNumInstance": 200,
+    "iNumInstance": 20,
     "vCenter": [
         0.0,
         0.0,
@@ -57,11 +57,11 @@
     ],
     "vLifeTimeRange": [
         5.0,
-        10.0
+        5.0
     ],
     "vMoveDir": [
         0.0,
-        1.0,
+        5.0,
         0.0
     ],
     "vRange": [
@@ -70,20 +70,20 @@
         0.0
     ],
     "vRotationSpeedRange": [
-        20.0,
-        50.0
+        -1.0,
+        1.0
     ],
     "vSizeRange_End": [
-        3.0,
-        4.0
+        0.10000000149011612,
+        0.10000000149011612
     ],
     "vSizeRange_Start": [
-        0.5,
-        0.5
+        0.20000000298023224,
+        0.20000000298023224
     ],
     "vSpeedRange": [
-        0.30000001192092896,
-        1.0
+        3.0,
+        2.0
     ],
     "vSpriteCount": [
         1.0,

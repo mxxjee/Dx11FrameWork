@@ -12,7 +12,7 @@ class CParticle :
     public CEffect
 {
 public:
-    typedef struct ParticleDesc :public CEffect::EFFECT_DESC
+    typedef struct ParticleDesc :public CEffect::tagEffectDesc
     {
        
         string    passName = "Default";

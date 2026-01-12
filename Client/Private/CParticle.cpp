@@ -145,13 +145,38 @@ void CParticle::Update(_float fTimeDelta)
 			_float vRatio = particle.fAge / particle.fLifeTime;
 			
 			_vector vPos = XMLoadFloat3(&particle.vPos);
+
+			/*
 			_vector vDir = XMLoadFloat3(&particle.vDir);
 			_vector vGravity = XMVectorSet(0.f, m_pParticleData->fGravity, 0.f, 0.f);
 
-			vPos += (vDir * particle.fSpeed * fTimeDelta) + (vGravity * fTimeDelta);
-			XMStoreFloat3(&particle.vPos, vPos);
+			vPos += (vDir * particle.fSpeed * fTimeDelta) + (vGrzavity * fTimeDelta);
+			XMStoreFloat3(&particle.vPos, vPos);*/
 
+			if (m_pParticleData->bUseGravity)
+			{
+				_vector vCurrentVel = XMLoadFloat3(&particle.vDir) * particle.fSpeed;
 
+				//중력가속도
+				_vector vGravity = XMVectorSet(0.f, m_pParticleData->fGravity, 0.f, 0.f);
+				vCurrentVel += vGravity * fTimeDelta;
+
+				vPos += vCurrentVel * fTimeDelta;
+	
+				particle.fSpeed = XMVectorGetX(XMVector3Length(vCurrentVel));
+				XMStoreFloat3(&particle.vDir, XMVector3Normalize(vCurrentVel));
+				XMStoreFloat3(&particle.vPos, vPos);
+
+			}
+
+			else
+			{
+				_vector vDir = XMLoadFloat3(&particle.vDir);
+				vPos += (vDir * particle.fSpeed * fTimeDelta);
+				XMStoreFloat3(&particle.vPos, vPos);
+
+			}
+		
 			particle.fRotation += particle.fRotationSpeed * fTimeDelta;
 
 			_float2 vCurSize;
@@ -287,7 +312,7 @@ void CParticle::Reset_All_Particles()
 
 	vector<VTXPARTICLE> vInstanceData;
 	vInstanceData.reserve(m_ParticlePool.size());
-
+	
 	_float fInterval = 0.f;
 	if (m_pParticleData->iNumInstance > 1)
 	{
@@ -356,7 +381,7 @@ void CParticle::Reset_All_Particles()
 		_float4 vCurColor;
 		XMStoreFloat4(&vCurColor, XMVectorLerp(XMLoadFloat4(&m_pParticleData->vColor), XMLoadFloat4(&m_pParticleData->vColor_End), fLifeRatio));
 
-		// UV 계산 (기본값) - 필요하면 Update와 똑같이 복사해서 넣으세요
+		// UV 계산
 		_float4 vUV_Info = _float4(0.f, 0.f, 1.f, 1.f);
 		if (m_pParticleData->bIsSpriteAnim)
 		{
@@ -421,12 +446,25 @@ void CParticle::Reset_Single_Particle(PARTICLE_INFO& tParticle)
 	{
 		_float fDirX = pInst->Random(-1.f, 1.f);
 		_float fDirY = pInst->Random(-1.f, 1.f);
-		_float fDirZ = pInst->Random(0.f, 0.f);
+		_float fDirZ = pInst->Random(-1.f, 1.f);
 		XMStoreFloat3(&tParticle.vDir, XMVector3Normalize(XMVectorSet(fDirX, fDirY, fDirZ, 0.f)));
 	}
 	else
 	{
 		tParticle.vDir = m_pParticleData->vMoveDir;
+		_vector vBaseDir = XMLoadFloat3(&m_pParticleData->vMoveDir);
+
+		//퍼짐정도 설정
+		_float3 fSpread = m_pParticleData->fSpread;
+
+		_float fRandomX = m_pGameInstance->Random(-fSpread.x, fSpread.x);
+		_float fRandomY = m_pGameInstance->Random(-fSpread.y, fSpread.y);
+		_float fRandomZ = m_pGameInstance->Random(-fSpread.z, fSpread.z);
+
+		_vector vNoise = XMVectorSet(fRandomX, fRandomY, fRandomZ, 0.f);
+
+		XMStoreFloat3(&tParticle.vDir, XMVector3Normalize(vBaseDir + vNoise));
+
 	}
 
 	// 회전
@@ -638,7 +676,15 @@ void CParticle::Render_DebugImgui()
 		//Update_Matrix();
 	}
 
-	if (ImGui::DragFloat("Spped", (float*)&m_pDataRef->fSpeed))
+
+	if (ImGui::DragFloat4("InitRotation", (float*)&m_pDataRef->InitRotation))
+	{
+		m_pEffectData_Manager->Update_Data(m_DataName, m_pDataRef);
+		Make_LocalMatrix();
+		// Update_Matrix();
+	}
+
+	if (ImGui::DragFloat("Speed", (float*)&m_pDataRef->fSpeed))
 	{
 		m_pEffectData_Manager->Update_Data(m_DataName, m_pDataRef);
 
@@ -674,6 +720,13 @@ void CParticle::Render_DebugImgui()
 	if (ImGui::Checkbox("Random Dir", &m_pParticleData->bUseRandomDir))
 		m_bNeedToReset = true;
 
+	if (!m_pParticleData->bUseRandomDir)
+	{
+		if (ImGui::DragFloat3("Spread", (float*)&m_pParticleData->fSpread, 0.01f))
+			m_bNeedToReset = true;
+
+	}
+
 	if (ImGui::Checkbox("bLinearSpawn", &m_pParticleData->bLinearSpawn))
 		m_bNeedToReset = true;
 
@@ -685,6 +738,8 @@ void CParticle::Render_DebugImgui()
 
 	if (ImGui::Checkbox("bIsSpriteAnim", &m_pParticleData->bIsSpriteAnim))
 		m_bNeedToReset = true;
+
+
 
 	if (m_pParticleData->bIsSpriteAnim)
 	{
@@ -698,6 +753,20 @@ void CParticle::Render_DebugImgui()
 	if (!m_pParticleData->bUseRandomDir)
 		if (ImGui::DragFloat3("Fixed Dir", (float*)&m_pParticleData->vMoveDir, 0.01f))
 			m_bNeedToReset = true;
+
+
+
+
+
+	if (ImGui::Checkbox("bUseGravity", &m_pParticleData->bUseGravity))
+		m_bNeedToReset = true;
+
+	if (m_pParticleData->bUseGravity)
+	{
+		if (ImGui::DragFloat("Gravity", (_float*)&m_pParticleData->fGravity,100, -100,100))
+			m_bNeedToReset = true;
+
+	}
 
 	//텍스처목록
 	Render_TextureList();

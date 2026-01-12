@@ -416,6 +416,19 @@ HRESULT CEffectData_Manager::Load_To_Json_Particle(json& Json, EffectData* Data)
         pDesc->fSpawnDuration = Json["fSpawnDuration"].get<float>();
 
     }
+
+    if (Json.contains("fSpread"))
+    {
+        pDesc->fSpread.x = Json["fSpread"][0].get<float>();
+        pDesc->fSpread.y = Json["fSpread"][1].get<float>();
+        pDesc->fSpread.z = Json["fSpread"][2].get<float>();
+
+    }
+
+    if (Json.contains("bUseGravity"))
+    {
+        pDesc->bUseGravity = Json["bUseGravity"].get<bool>();
+    }
     return S_OK;
 }
 
@@ -474,7 +487,7 @@ HRESULT CEffectData_Manager::Save_To_Json(wstring& ModelName, EffectData* Data)
     Scale.push_back(Data->InitScale.w);
     jMeta["Scale"] = Scale;
     jMeta["fIntensity"] = Data->fIntensity;
-
+  
     //타입에 따른 저장방식 변경
 
     if (Data->eType == EFFECT_DESC_TYPE::MESH)
@@ -613,6 +626,14 @@ HRESULT CEffectData_Manager::Save_To_Json_Particle(json& Json,EffectData* Data)
 
     Json["bLinearSpawn"] = pParticleData->bLinearSpawn;
     Json["fSpawnDuration"] = pParticleData->fSpawnDuration;
+
+    json Spread = json::array();
+    Spread.push_back(pParticleData->fSpread.x);
+    Spread.push_back(pParticleData->fSpread.y);
+    Spread.push_back(pParticleData->fSpread.z);
+    Json["fSpread"] = Spread;
+
+    Json["bUseGravity"] = pParticleData->bUseGravity;
 
     return S_OK;
 }

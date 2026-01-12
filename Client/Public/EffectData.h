@@ -78,9 +78,11 @@ struct ParticleEffetData :public EffectData
 
     _float4     vColor_End = { 1.f,1.f,1.f,0.f };   //끝날때 색상
 
+    _bool  bUseGravity = true;
+
     _bool   bUseRandomDir = true;              // true: 사방으로 퍼짐 (폭발, 먼지)
     _float3 vMoveDir = { 0.f, 1.f, 0.f };      // false일 때: 특정 방향으로만 이동 (연기 기둥, 분수)
-
+    _float3  fSpread = _float3(-0.5f,-0.5f,-0.5f);     //퍼짐정도
     //0:Diffuse
     //
     wstring TexKey[ENUM_TO_UINT(EFFECT_TEXTYPE::END)] = {L"Default",L"Default",L"Default"};
@@ -99,6 +101,7 @@ enum EFFECT_TYPE
 	SLASHTRAIL,//일반공격트레일
 	HITSPARKLE,
 	GUARDEFFECT,
+    MAGICPOWDER,
 	EFFECT_TYPE_END
 };
 

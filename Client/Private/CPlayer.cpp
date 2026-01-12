@@ -35,6 +35,7 @@
 #include "CMeshEffect_HitSpark.h"
 
 
+#include "CParticle.h"
 
 
 
@@ -769,7 +770,7 @@ void CPlayer::Create_PowderParticle()
 {
     _uint iCurrentLevel = m_pGameInstance->Get_CurrentLevelID();
 
-    CMagicPowder::MAGICPOWDER_DESC Desc;
+   /* CMagicPowder::MAGICPOWDER_DESC Desc;
     Desc.m_iLevelID = iCurrentLevel;
     Desc.ObjTag = L"MagicPowder";
     Desc.fLifeTime = 1.f;
@@ -795,7 +796,25 @@ void CPlayer::Create_PowderParticle()
 
 
 
+    }*/
+    for (auto& pInfo : m_PlayerEffects[MAGICPOWDER])
+    {
+        CEffect::EFFECT_DESC* pDesc = static_cast<CEffect::EFFECT_DESC*>(pInfo);
+
+        CEffect* pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(pDesc->ProtoName, pInfo);
+
+        if (pEffect)
+        {
+
+            const _float4x4* SocketMatrix = m_pBody->Get_Model()->Get_BoneMatrix("itemA_L");
+            const _float4x4* Matrix = m_pTransformCom->Get_WorldMatrixPtr();
+
+            _matrix WorldMatrix = XMMatrixMultiply(XMLoadFloat4x4(SocketMatrix), XMLoadFloat4x4(Matrix));
+            pEffect->Set_OrigniMatrix(WorldMatrix);
+            pEffect->Play();
+        }
     }
+  
 
 
 }
@@ -1369,6 +1388,19 @@ HRESULT CPlayer::Ready_Effects()
 
 
     }
+#pragma endregion
+
+#pragma region magic powder
+
+    CParticle::PARTICLE_DESC* MagicPowderDesc=new CParticle::PARTICLE_DESC;
+    MagicPowderDesc->ProtoName = L"Particle";
+    MagicPowderDesc->DataName = L"MagicPowder";
+    MagicPowderDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+    MagicPowderDesc->passName = "Smoke";
+    MagicPowderDesc->ShaderName = L"VtxPosParticle";
+    MagicPowderDesc->ObjTag = L"MagicPowder";
+    m_PlayerEffects[MAGICPOWDER].push_back(MagicPowderDesc);
+
 #pragma endregion
     return S_OK;
 }

@@ -2,19 +2,19 @@
     "ALPHAMASK": "Default",
     "Color": [
         0.0,
+        0.6196078658103943,
         1.0,
-        0.7921568751335144,
         0.03921568766236305
     ],
     "DIFFUSE": "smoke_00",
-    "DataName": "Smoke",
-    "LifeTime": 10.0,
+    "DataName": "MagicPowder",
+    "LifeTime": 1.0,
     "Loop": false,
     "NOISE": "Default",
     "OffSet": [
         0.0,
-        0.0,
-        0.6000000238418579,
+        0.5,
+        -0.20000000298023224,
         0.0
     ],
     "Rotation": [
@@ -29,21 +29,21 @@
         1.0,
         1.0
     ],
-    "Speed": 1.0,
+    "Speed": 3.0,
     "Type": "Particle",
-    "bIsSpriteAnim": false,
+    "bIsSpriteAnim": true,
     "bLinearSpawn": true,
-    "bUseGravity": true,
+    "bUseGravity": false,
     "bUseRandomDir": false,
-    "fGravity": 0.5,
-    "fIntensity": 3.0,
-    "fSpawnDuration": 0.10000000149011612,
+    "fGravity": 0.0,
+    "fIntensity": 10.0,
+    "fSpawnDuration": 0.0,
     "fSpread": [
-        5.0,
-        0.5,
-        2.0
+        0.0,
+        0.0,
+        0.0
     ],
-    "iNumInstance": 200,
+    "iNumInstance": 100,
     "vCenter": [
         0.0,
         0.0,
@@ -56,33 +56,33 @@
         0.0
     ],
     "vLifeTimeRange": [
-        5.0,
-        10.0
+        2.0,
+        3.0
     ],
     "vMoveDir": [
         0.0,
-        1.0,
+        2.0,
         0.0
     ],
     "vRange": [
-        0.0,
-        0.0,
-        0.0
+        0.5,
+        0.30000001192092896,
+        0.5
     ],
     "vRotationSpeedRange": [
-        20.0,
-        50.0
+        5.0,
+        5.0
     ],
     "vSizeRange_End": [
-        3.0,
-        4.0
+        1.0,
+        1.0
     ],
     "vSizeRange_Start": [
         0.5,
         0.5
     ],
     "vSpeedRange": [
-        0.30000001192092896,
+        0.0,
         1.0
     ],
     "vSpriteCount": [

@@ -12,6 +12,8 @@
 #include "CParticle.h"
 #include "CEffectPoolManager.h"
 
+#include "CInput_Manager.h"
+
 
 
 
@@ -62,9 +64,46 @@ void CNPC_Witch::Update_Priority(_float fTimeDelta)
 void CNPC_Witch::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
-    if (m_bEnd)
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::E))
     {
-         
+
+        CParticle::PARTICLE_DESC Desc;
+        Desc.ProtoName = L"Particle";
+        Desc.DataName = L"Smoke";
+        Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+        Desc.passName = "Smoke";
+        Desc.ShaderName = L"VtxPosParticle";
+        Desc.ObjTag = L"Smoke";
+
+        CEffect* pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(Desc.ProtoName, &Desc);
+
+        if (pEffect)
+        {
+
+            const _float4x4* Matrix = m_pTransformCom->Get_WorldMatrixPtr();
+
+            pEffect->Set_OrigniMatrix(XMLoadFloat4x4(Matrix));
+            pEffect->Play();
+        }
+
+        Desc.ProtoName = L"Particle";
+        Desc.DataName = L"Explosion_Particle";
+        Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+        Desc.passName = "Default";
+        Desc.ShaderName = L"VtxPosParticle";
+        Desc.ObjTag = L"Explosion_Particle";
+
+        pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(Desc.ProtoName, &Desc);
+
+        if (pEffect)
+        {
+
+            const _float4x4* Matrix = m_pTransformCom->Get_WorldMatrixPtr();
+
+            pEffect->Set_OrigniMatrix(XMLoadFloat4x4(Matrix));
+            pEffect->Play();
+        }
+
     }
 }
 
@@ -202,11 +241,11 @@ void CNPC_Witch::Ready_Events()
             }
 
             Desc.ProtoName = L"Particle";
-            Desc.DataName = L"Left_Smoke";
+            Desc.DataName = L"Explosion_Particle";
             Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
-            Desc.passName = "Smoke";
+            Desc.passName = "Default";
             Desc.ShaderName = L"VtxPosParticle";
-            Desc.ObjTag = L"Left_Smoke";
+            Desc.ObjTag = L"Explosion_Particle";
 
             pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(Desc.ProtoName, &Desc);
 
@@ -218,6 +257,7 @@ void CNPC_Witch::Ready_Events()
                 pEffect->Set_OrigniMatrix(XMLoadFloat4x4(Matrix));
                 pEffect->Play();
             }
+
 
         });
 

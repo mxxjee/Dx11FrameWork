@@ -316,7 +316,7 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 	if (pAnim)
 	{
 		Event.Name = "PlayerPowder";
-		pAnim->AddNotify(4, Event);
+		pAnim->AddNotify(6, Event);
 
 	}
 

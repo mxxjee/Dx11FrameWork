@@ -33,10 +33,16 @@
     "Type": "Particle",
     "bIsSpriteAnim": false,
     "bLinearSpawn": true,
+    "bUseGravity": true,
     "bUseRandomDir": false,
     "fGravity": 0.0,
     "fIntensity": 3.0,
     "fSpawnDuration": 0.10000000149011612,
+    "fSpread": [
+        0.10000000149011612,
+        0.0,
+        0.0
+    ],
     "iNumInstance": 1,
     "vCenter": [
         0.0,
