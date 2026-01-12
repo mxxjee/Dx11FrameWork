@@ -61,6 +61,8 @@ public:
 protected:
     _uint                   m_iState = {};
     _uint                   m_iPreState{};
+    
+public:
     virtual CBody* Get_Body();
 
 protected:

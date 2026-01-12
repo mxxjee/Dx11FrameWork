@@ -1,21 +1,21 @@
 {
     "ALPHAMASK": "Default",
     "Color": [
-        0.4754902124404907,
-        0.5063437223434448,
         1.0,
-        0.03921568766236305
+        1.0,
+        1.0,
+        1.0
     ],
-    "DIFFUSE": "smoke_00",
-    "DataName": "MagicPowder",
+    "DIFFUSE": "glare_00",
+    "DataName": "Twinkle",
     "LifeTime": 1.0,
     "Loop": false,
     "NOISE": "Default",
     "OffSet": [
         0.0,
-        0.5,
+        1.0,
         0.0,
-        0.0
+        1.0
     ],
     "Rotation": [
         0.0,
@@ -34,16 +34,16 @@
     "bIsSpriteAnim": false,
     "bLinearSpawn": true,
     "bUseGravity": false,
-    "bUseRandomDir": false,
-    "fGravity": 0.0,
-    "fIntensity": 3.0,
-    "fSpawnDuration": 0.0,
+    "bUseRandomDir": true,
+    "fGravity": 0.10000000149011612,
+    "fIntensity": 10.0,
+    "fSpawnDuration": 1.0,
     "fSpread": [
-        0.5,
         0.0,
-        0.20000000298023224
+        0.0,
+        0.5
     ],
-    "iNumInstance": 50,
+    "iNumInstance": 7,
     "vCenter": [
         0.0,
         0.0,
@@ -56,30 +56,30 @@
         0.0
     ],
     "vLifeTimeRange": [
-        1.0,
-        2.0
+        0.5,
+        0.800000011920929
     ],
     "vMoveDir": [
         0.0,
-        0.10000000149011612,
-        1.0
-    ],
-    "vRange": [
-        1.0,
         0.0,
         0.0
     ],
+    "vRange": [
+        1.0,
+        1.0,
+        0.0
+    ],
     "vRotationSpeedRange": [
-        50.0,
+        20.0,
         50.0
     ],
     "vSizeRange_End": [
-        3.0,
-        3.0
+        0.07999999821186066,
+        0.07999999821186066
     ],
     "vSizeRange_Start": [
-        1.0,
-        1.0
+        0.07999999821186066,
+        0.07999999821186066
     ],
     "vSpeedRange": [
         0.0,

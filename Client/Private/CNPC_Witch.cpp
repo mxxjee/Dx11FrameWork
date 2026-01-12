@@ -182,6 +182,9 @@ void CNPC_Witch::Reigster_AnimNotify()
         Event.Name = "Witch_Effect";
         pAnim->AddNotify(309, Event);
 
+        Event.Name = "Witch_Effect2";
+        pAnim->AddNotify(400, Event);
+
         Event.Name = "End_Mix";
         pAnim->AddNotify(426, Event);
 
@@ -211,7 +214,7 @@ void CNPC_Witch::Ready_Events()
         {
 
             m_pAnimBody->Reserve_Animation(L"wait", false);
-            CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::MAGIC_POWDER, 20);
+            CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::MAGIC_POWDER, 50);
             m_pMagicPowder->Set_Active(false);
 
           
@@ -240,6 +243,15 @@ void CNPC_Witch::Ready_Events()
                 pEffect->Play();
             }
 
+          
+
+
+        });
+
+    m_pGameInstance->RegisterListners("Witch_Effect2", [this](const GameEvent evt)
+        {
+
+            CParticle::PARTICLE_DESC Desc;
             Desc.ProtoName = L"Particle";
             Desc.DataName = L"Explosion_Particle";
             Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
@@ -247,7 +259,7 @@ void CNPC_Witch::Ready_Events()
             Desc.ShaderName = L"VtxPosParticle";
             Desc.ObjTag = L"Explosion_Particle";
 
-            pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(Desc.ProtoName, &Desc);
+            CEffect* pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(Desc.ProtoName, &Desc);
 
             if (pEffect)
             {

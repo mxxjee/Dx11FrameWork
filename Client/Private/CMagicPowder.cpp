@@ -7,6 +7,14 @@
 #include "CCollider_Base.h"
 #include "CBounding_AABB.h"
 #include "CLayer.h"
+#include "CParticle.h"
+#include "CEffectPoolManager.h"
+#include "CGameManager.h"
+#include "CBody.h"
+#include "CPlayer.h"
+#include "CModel.h"
+
+
 
 USING(Client)
 
@@ -38,6 +46,50 @@ HRESULT CMagicPowder::Initialize_Copytype(void* pArg)
     if (FAILED(Ready_Components()))
         return E_FAIL;
 
+    CParticle::PARTICLE_DESC MagicPowderDesc;
+    MagicPowderDesc.ProtoName = L"Particle";
+    MagicPowderDesc.DataName = L"MagicPowder";
+    MagicPowderDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+    MagicPowderDesc.passName = "Smoke";
+    MagicPowderDesc.ShaderName = L"VtxPosParticle";
+    MagicPowderDesc.ObjTag = L"MagicPowder";
+
+    m_pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(L"Particle", &MagicPowderDesc);
+    if (m_pEffect)
+    {
+        CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+        if (pPlayer)
+        {
+   
+            m_pEffect->Set_OrigniMatrix(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
+            m_pEffect->Play();
+        }
+      
+    }
+
+
+    /////////////////////¹ÝÂ¦ÀÌ
+
+    CParticle::PARTICLE_DESC TwinkleDesc;
+    TwinkleDesc.ProtoName = L"Particle";
+    TwinkleDesc.DataName = L"Twinkle";
+    TwinkleDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+    TwinkleDesc.passName = "Smoke";
+    TwinkleDesc.ShaderName = L"VtxPosParticle";
+    TwinkleDesc.ObjTag = L"Twinkle";
+
+    m_pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(L"Particle", &TwinkleDesc);
+    if (m_pEffect)
+    {
+        CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+        if (pPlayer)
+        {
+
+            m_pEffect->Set_OrigniMatrix(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
+            m_pEffect->Play();
+        }
+
+    }
     m_fLifeTime = pDesc->fLifeTime;
     m_pGameInstance->Invoke(m_fLifeTime, false, false, false,[this]()
         {
@@ -45,10 +97,6 @@ HRESULT CMagicPowder::Initialize_Copytype(void* pArg)
             Set_Active(false);
             CGameInstance::GetInstance()->UnRegister_Collider(m_pCollider,m_iSceneID);
 
-            
-            CLayer* pLayer = m_pGameInstance->Find_Layer(m_iSceneID, L"Particle_Layer");
-            CheckNull(pLayer);
-            pLayer->RequestDestroy(this);
         },this);
 
 
@@ -63,7 +111,7 @@ void CMagicPowder::Update_Priority(_float fTimeDelta)
 void CMagicPowder::Update(_float fTimeDelta)
 {
     __super::Update(fTimeDelta);
-    m_pVIBuffer->Spread(fTimeDelta);
+ 
 }
 
 void CMagicPowder::Update_Late(_float fTimeDelta)
@@ -79,30 +127,19 @@ void CMagicPowder::Update_Render(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::NONALPHA), this);
 
-#ifdef _DEBUG
-    if (CGameInstance::m_bDrawDebug)
-    {
-        if (FAILED(m_pGameInstance->Add_DebugComponent(m_pCollider)))
-            return;
-    }
-
-#endif // _DEBUG
 
 }
 
 HRESULT CMagicPowder::Render()
 {
-    if (FAILED(Bind_ShaderResources()))
-        return E_FAIL;
+#ifdef _DEBUG
+    if (CGameInstance::m_bDrawDebug)
+    {
+        if (m_pCollider)
+            m_pCollider->Render();
 
-    if (FAILED(m_pShader->Begin("Default")))
-        return E_FAIL;
-
-    if (FAILED(m_pVIBuffer->Bind_Resource()))
-        return E_FAIL;          //IA´Ü°è
-
-    if (FAILED(m_pVIBuffer->Render()))
-        return E_FAIL;
+    }
+#endif // _DEBUG
 
     return S_OK;
 }
@@ -112,27 +149,7 @@ HRESULT CMagicPowder::Ready_Components()
     CComponent::COMPONENT_DESC Desc;
     Desc.pOwner = this;
 
-    CComponent* pVIBuffer_Particle = dynamic_cast<CVIBuffer_Particle_Point*>(m_pGameInstance->Clone_Prototype(
-        PROTOTYPE::COMPONENT, 0, PROTO_COMPONENT_NAME(L"VIBuffer_Particle_Point"), &Desc)
-        );
-
-    if (FAILED(Add_Component(
-        COMPONENT_TYPE::PARTICLE,
-        pVIBuffer_Particle,
-        reinterpret_cast<CComponent**>(&m_pVIBuffer)
-    )))
-        return E_FAIL;
-
-
-    /* For.Com_Shader */
-    m_pShader = m_pGameInstance->Find_Shader(L"VtxPosParticle");
-    Safe_AddRef(m_pShader);
-
-
-    /* For.Com_Texture */
-    m_pTexture = m_pGameInstance->Find_Texture(L"Snow");
-    Safe_AddRef(m_pTexture);
-
+  
 
     CCollider_Base::COLLIDER_DESC ColDesc;
     ColDesc.m_eColGroup = ENUM_TO_UINT(COLLISION_GROUP::PARTICLE);
@@ -158,15 +175,6 @@ HRESULT CMagicPowder::Ready_Components()
 
 HRESULT CMagicPowder::Bind_ShaderResources()
 {
-    if (FAILED(m_pTransformCom->Bind_ShaderResource(m_pShader, "g_WorldMatrix")))
-        return E_FAIL;
-
-    if (FAILED(m_pShader->Bind_Vector("g_CamPosition", CGameInstance::GetInstance()->Get_CamPosition(ENUM_TO_UINT(CAMERA_TYPE::TARGET)))))
-        return E_FAIL;
-
-    if (FAILED(m_pTexture->Bind_ShaderResource(m_pShader, "texture0", 0)))
-        return E_FAIL;
-
     return S_OK;
 }
 

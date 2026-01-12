@@ -770,10 +770,10 @@ void CPlayer::Create_PowderParticle()
 {
     _uint iCurrentLevel = m_pGameInstance->Get_CurrentLevelID();
 
-   /* CMagicPowder::MAGICPOWDER_DESC Desc;
+    CMagicPowder::MAGICPOWDER_DESC Desc;
     Desc.m_iLevelID = iCurrentLevel;
     Desc.ObjTag = L"MagicPowder";
-    Desc.fLifeTime = 1.f;
+    Desc.fLifeTime = 5.f;
 
     _vector vPos = m_pTransformCom->Get_State(STATE::POSITION);
     _vector vParticlePos = vPos + (XMVector3Normalize(m_pTransformCom->Get_State(STATE::LOOK)) * 2.f);
@@ -796,8 +796,8 @@ void CPlayer::Create_PowderParticle()
 
 
 
-    }*/
-    for (auto& pInfo : m_PlayerEffects[MAGICPOWDER])
+    }
+    /*for (auto& pInfo : m_PlayerEffects[MAGICPOWDER])
     {
         CEffect::EFFECT_DESC* pDesc = static_cast<CEffect::EFFECT_DESC*>(pInfo);
 
@@ -814,7 +814,7 @@ void CPlayer::Create_PowderParticle()
             pEffect->Play();
         }
     }
-  
+  */
 
 
 }

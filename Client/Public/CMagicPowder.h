@@ -9,6 +9,7 @@ class CCollider_Base;
 NS_END
 
 NS_BEGIN(Client)
+class CEffect;
 class CMagicPowder :
     public CGameObject
 {
@@ -49,7 +50,7 @@ public:
 
 private:
 	CCollider_Base* m_pCollider = nullptr;
-
+	class CEffect* m_pEffect = nullptr;
 	float m_fLifeTime = 0.f;
 };
 
