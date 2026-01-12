@@ -2,7 +2,7 @@
 #include "CNPC.h"
 NS_BEGIN(Client)
 
-
+class CEffect;
 class CNPC_Fairy :
     public CNPC
 {
@@ -33,6 +33,8 @@ public:
     virtual void Free() override;
     bool        m_bEnd = false;
 
-
+private:
+    class CEffect* m_pNormalEffect = nullptr;
+    class CEffect* m_pSpecialEffect = nullptr;
 };
 NS_END

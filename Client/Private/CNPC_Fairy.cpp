@@ -5,6 +5,8 @@
 #include "CModel.h"
 #include "CQuest_Manager.h"
 #include "CInteraction_TriggerBox.h"
+#include "CParticle.h"
+#include "CEffectPoolManager.h"
 
 
 
@@ -36,6 +38,9 @@ HRESULT CNPC_Fairy::Initialize_Prototype(void* pArg)
     //대화끝나면알아서 애니메이션재생
     m_pGameInstance->RegisterListners("Fairy_End", [this](const GameEvent& event)
         {
+            if (m_pNormalEffect)
+                m_pNormalEffect->Set_Loop(false);
+
             m_pAnimBody->Reserve_Animation(L"heel_st", false);
             m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", (void*)nullptr);
             m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide", (void*)nullptr);
@@ -44,10 +49,34 @@ HRESULT CNPC_Fairy::Initialize_Prototype(void* pArg)
 
         });
 
+    m_pGameInstance->RegisterListners("Start_SpecialEffect", [this](const GameEvent& event)
+        {
+            CParticle::PARTICLE_DESC FairySpecialDesc;
+            FairySpecialDesc.ProtoName = L"Particle";
+            FairySpecialDesc.DataName = L"FairySpecial";
+            FairySpecialDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+            FairySpecialDesc.passName = "Default";
+            FairySpecialDesc.ShaderName = L"VtxPosParticle";
+            FairySpecialDesc.ObjTag = L"FairySpecial";
+
+
+            m_pSpecialEffect = CEffectPoolManager::GetInstance()->Request_Spawn(FairySpecialDesc.ProtoName, &FairySpecialDesc);
+            if (m_pSpecialEffect)
+            {
+
+                m_pSpecialEffect->Set_OrigniMatrix(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
+                m_pSpecialEffect->Play();
+            }
+
+        });
 
     m_pGameInstance->RegisterListners("Fairy_Go_Loop", [this](const GameEvent& event)
         {
             m_pAnimBody->Reserve_Animation(L"heel_lp", false);
+
+           
+
+
         });
 
 
@@ -56,6 +85,26 @@ HRESULT CNPC_Fairy::Initialize_Prototype(void* pArg)
     Enter_Interaction_Event.Payload.Floats["Float_Z"] = -5.f;
     m_ipressionIdx_Eye[EXPRESSION::HAPPY] = 2;
     m_ipressionIdx_Mouth[EXPRESSION::HAPPY] = 2;
+
+
+    CParticle::PARTICLE_DESC FairyDesc;
+    FairyDesc.ProtoName = L"Particle";
+    FairyDesc.DataName = L"FairyParticle";
+    FairyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+    FairyDesc.passName = "Default";
+    FairyDesc.ShaderName = L"VtxPosParticle";
+    FairyDesc.ObjTag = L"FairyParticle";
+
+
+	m_pNormalEffect = CEffectPoolManager::GetInstance()->Request_Spawn(FairyDesc.ProtoName, &FairyDesc);
+	if (m_pNormalEffect)
+	{
+
+        m_pNormalEffect->Set_OrigniMatrix(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
+        m_pNormalEffect->Set_Loop(true);
+        m_pNormalEffect->Play();
+	}
+
 
 
     return S_OK;
@@ -89,6 +138,7 @@ HRESULT CNPC_Fairy::Render()
 void CNPC_Fairy::Exit_Interaction()
 {
     m_bTalking = false;
+    m_bIsTalking = false;
     m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide", nullptr);
     m_pAnimBody->Reserve_Animation(L"wait", true);
     
@@ -118,8 +168,13 @@ void CNPC_Fairy::Reigster_AnimNotify()
     
     if (pAnim)
     {
+
+        Event.Name = "Start_SpecialEffect";
+        pAnim->AddNotify(93, Event);
+
         Event.Name = "Fairy_Go_Loop";
         pAnim->AddNotify(127, Event);
+
     }
 
     pAnim = m_pAnimBody->Get_Model()->Find_Animation(L"heel_lp");

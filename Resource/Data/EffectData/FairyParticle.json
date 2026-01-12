@@ -1,19 +1,19 @@
 {
     "ALPHAMASK": "Default",
     "Color": [
-        0.8944636583328247,
+        0.7208766341209412,
         1.0,
-        0.10294115543365479,
+        0.13725489377975464,
         1.0
     ],
-    "DIFFUSE": "glow_01",
-    "DataName": "",
+    "DIFFUSE": "glare_00",
+    "DataName": "FairyParticle",
     "LifeTime": 1.0,
     "Loop": true,
     "NOISE": "Default",
     "OffSet": [
         0.0,
-        2.0,
+        1.0,
         0.0,
         1.0
     ],
@@ -33,17 +33,17 @@
     "Type": "Particle",
     "bIsSpriteAnim": false,
     "bLinearSpawn": true,
-    "bUseGravity": true,
+    "bUseGravity": false,
     "bUseRandomDir": false,
-    "fGravity": -5.0,
-    "fIntensity": 25.0,
-    "fSpawnDuration": 3.0,
+    "fGravity": 0.0,
+    "fIntensity": 20.0,
+    "fSpawnDuration": 1.0,
     "fSpread": [
-        -0.5,
-        -0.5,
-        -0.5
+        -5.0,
+        0.0,
+        0.5
     ],
-    "iNumInstance": 50,
+    "iNumInstance": 10,
     "vCenter": [
         0.0,
         0.0,
@@ -56,17 +56,17 @@
         0.0
     ],
     "vLifeTimeRange": [
-        1.0,
-        2.0
-    ],
-    "vMoveDir": [
-        0.0,
-        1.0,
+        0.5,
         1.0
     ],
+    "vMoveDir": [
+        2.0,
+        1.0,
+        0.0
+    ],
     "vRange": [
-        1.0,
-        1.0,
+        5.0,
+        3.0,
         1.0
     ],
     "vRotationSpeedRange": [
@@ -74,16 +74,16 @@
         1.0
     ],
     "vSizeRange_End": [
-        0.5,
-        0.5
+        0.10000000149011612,
+        0.10000000149011612
     ],
     "vSizeRange_Start": [
-        0.10000000149011612,
+        0.30000001192092896,
         0.30000001192092896
     ],
     "vSpeedRange": [
         1.0,
-        5.0
+        1.0
     ],
     "vSpriteCount": [
         1.0,

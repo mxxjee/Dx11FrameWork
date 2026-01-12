@@ -56,6 +56,8 @@ public:
     _uint       Get_SceneID() { return m_iSceneID; }
 
 public:
+    void        Set_Loop(bool b); 
+public:
     virtual const EffectData* Get_EffectData() { return m_pDataRef; }
 
 public:

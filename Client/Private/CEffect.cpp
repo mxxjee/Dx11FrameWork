@@ -63,6 +63,14 @@ HRESULT CEffect::Render()
 	return S_OK;
 }
 
+void CEffect::Set_Loop(bool b)
+{
+    if (m_pDataRef)
+        m_pDataRef->m_bLoop = b;
+
+   
+}
+
 void CEffect::Spawn(const _float4x4* pSocketMatrix, const _float4x4* pParentMatrix)
 {
     ScaleLerpTime = 0.f;
