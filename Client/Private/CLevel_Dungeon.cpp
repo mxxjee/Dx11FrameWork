@@ -421,7 +421,7 @@ HRESULT CLevel_Dungeon::Ready_Layer_Trigger(const _wstring& strLayerTag)
 	Goto_Third_Desc.EnterFunc = [this]()
 	{
 		Teleport(TELEPORT::GOTO_EXIT);
-
+	
 	};
 
 	if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::DUNGEON), strLayerTag, &Goto_Third_Desc)))
@@ -463,7 +463,7 @@ HRESULT CLevel_Dungeon::Ready_Events()
 
 	m_pGameInstance->RegisterListners("Go_Boss", [this](const GameEvent& evt)
 		{
-
+			m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 1.f);
 			pFadeScreen->Set_FadeInEndFunc([this]()
 				{
 					LevelArgs args;
@@ -522,7 +522,7 @@ void CLevel_Dungeon::Teleport(TELEPORT eType)
 	}
 
 	case TELEPORT::GOTO_EXIT:
-	{
+	{	
 		GameEvent gameEvent;
 		gameEvent.Name = "Go_Boss";
 
@@ -604,6 +604,8 @@ void CLevel_Dungeon::OnEnter()
 
 
 		}, pPlayer);
+
+	Play_LevelBGM();
 }
 
 void CLevel_Dungeon::OnResume(_uint iPreLevel)
@@ -622,6 +624,13 @@ void CLevel_Dungeon::OnExit()
 	m_pGameInstance->Clear_SceneColliders(m_iLevelID);
 	CheckNull(pFadeScreen);
 	pFadeScreen->PlayFadeIn();
+
+
+}
+
+void CLevel_Dungeon::Play_LevelBGM()
+{
+	m_pGameInstance->PlayBGM(L"BGM/Cave.wav", g_BGMVolume);
 
 }
 

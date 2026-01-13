@@ -65,6 +65,8 @@ private:
 	// 사운드 ,채널 객체 및 장치를 관리하는 객체 
 	FMOD_SYSTEM* m_pSystem;
 
+	std::wstring			m_CurrentBGM = L"";
+
 private:
 	list<tFadeInfo>		m_FadeList;		//페이드아웃을 할 사운드 리스트
 };

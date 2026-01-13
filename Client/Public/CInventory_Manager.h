@@ -70,6 +70,9 @@ public:
    
     void        Set_UpdateUISceneEvent(std::function<void()> Func) { Update_UISCene = Func; }
     void        Set_Update_OnUseItem(std::function<void()> Func) { Update_OnUseItem = Func; }
+
+public:
+    int         Get_SlotQueueSize() { return (int)m_SlotQueue.size(); }
 public:
     void            Free() override;
 

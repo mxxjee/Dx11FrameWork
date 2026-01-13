@@ -58,7 +58,8 @@ public:
     virtual void        OnPause(_uint iNextLeve) override;               //pause되었을때 호출
     virtual void        OnExit() override;
 
-
+public:
+    virtual void                    Play_LevelBGM();
 public:
     static  CLevel_Dungeon* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args);
     virtual     void        Free();

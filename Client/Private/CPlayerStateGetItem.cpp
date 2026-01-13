@@ -5,6 +5,7 @@
 #include "CInventory_Manager.h"
 #include "CMainCamera.h"
 #include "CInput_Manager.h"
+#include "CLevel.h"
 
 
 USING(Client)
@@ -142,6 +143,16 @@ void CPlayerStateGetItem::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
         {
             m_bChange = true;
             CInventory_Manager::GetInstance()->Set_End_in_SlotQueue(m_eGetItemType,true);
+            m_pGameInstance->PlaySoundW(L"System/Dialogue_End.wav", CHANNELID::SOUND_UI, g_UIVolume);
+             
+            if (CInventory_Manager::GetInstance()->Get_SlotQueueSize() <= 1)
+            {
+                CLevel* pLevel = m_pGameInstance->Get_CurrentLevel();
+                if (pLevel)
+                    pLevel->Play_LevelBGM();
+
+            }
+
         }
 
         

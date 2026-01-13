@@ -34,6 +34,7 @@ public:
     virtual     void        Free();
     
 public:
+    virtual void                    Play_LevelBGM() {};
     bool                    Is_Cached() { return m_eLevelArgs.m_bCached; }
     void                    Set_State(LEVELSTATE eState) { m_eLevelArgs.m_eState = eState; }
     const LEVELSTATE& Get_State()   const {return m_eLevelArgs.m_eState;}

@@ -1606,11 +1606,14 @@ void CPlayer::OnDamageBehavior()
 
     //Damage Animnotify...시간이후 깜빡거림
     
+    m_pGameInstance->PlaySoundW(L"LinkVoice/Link_Damage.wav", CHANNELID::SOUND_PLAYER_SFX1, g_VoiceVolume);
+
 }
 
 void CPlayer::Shield_Hit_Behavior()
 {
     CheckFalse(Get_Hold(CPlayer::HoldKey::HOLD_T));
+    CGameInstance::GetInstance()->PlaySoundW(L"Effects/GuardHit.wav", CHANNELID::SOSUND_PLAYER_SFX2, g_EffectVolume);
 
     //현재스테이트의 shield함수 실행
     CPlayerHoldShield* pShieldState = dynamic_cast<CPlayerHoldShield*>(m_pCurState);
@@ -1853,6 +1856,9 @@ void CPlayer::AnimNotify_Start(PLAYER_ANIMNOTIFY_TYPE eType)
             pEffect->Play();
 
         }
+
+        CGameInstance::GetInstance()->PlaySoundW(L"Effects/Charging_Start.wav", CHANNELID::SOSUND_PLAYER_SFX2, g_EffectVolume);
+
     }
         break;
    

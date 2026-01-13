@@ -71,6 +71,11 @@ void CLevel_Ending::Render()
 	SetWindowText(g_hWnd, szTitle);
 }
 
+void CLevel_Ending::Play_LevelBGM()
+{
+	m_pGameInstance->PlayBGM(L"BGM/Ending.wav", g_BGMVolume);
+}
+
 HRESULT CLevel_Ending::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 {
 	m_pGameInstance->Set_Active_Group(48, 127, true);
@@ -287,6 +292,13 @@ void CLevel_Ending::OnEnter()
 
 	//1초뒤 ending step 변경
 	m_pGameManager->Set_EndingStep(EndingStep::TOWN_ARRIVAL);
+
+	m_pGameInstance->Invoke(0.5f, 0.f, false, false, [this]()
+		{
+			Play_LevelBGM();
+
+		},CGameManager::GetInstance()->Get_MainPlayer());
+	
 }
 
 void CLevel_Ending::OnResume(_uint iPreLevel)

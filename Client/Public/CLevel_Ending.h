@@ -24,7 +24,8 @@ public:
     //æ¿¿« æ˜µ•¿Ã∆Æ
     virtual void            Render() override;         //æ¿¿« ∑ª¥ı.
 
-
+public:
+    virtual void                    Play_LevelBGM();
 public:
     HRESULT                 Ready_Layer_Enviroment(const _wstring& strLayerTag);
     HRESULT                 Ready_Lights();

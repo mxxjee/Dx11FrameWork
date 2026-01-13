@@ -223,6 +223,22 @@ void CLevel_Town::Render()
     SetWindowText(g_hWnd, szTitle);
 }
 
+void CLevel_Town::Play_LevelBGM()
+{
+    if (m_eArea == CLevel_Town::Area::TOWN)
+    {
+
+        if (!CInventory_Manager::GetInstance()->Find_Inven(ItemType::POWER_BRACELET))
+            m_pGameInstance->PlayBGM(L"BGM/Field_Normal.wav", g_BGMVolume);
+
+        else
+            m_pGameInstance->PlayBGM(L"BGM/Meve.wav", g_BGMVolume);
+    }
+
+    else
+        m_pGameInstance->PlayBGM(L"BGM/MysteryForest.wav", g_BGMVolume);
+}
+
 HRESULT CLevel_Town::Ready_Lights()
 { 
     LIGHT_DESC      LightDesc{};
@@ -751,8 +767,8 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 {
     /// <summary>
     /// 썡으로배치..
-    wstring TriggerTags[] = { L"mamasha_House1",L"mamasha_House2",L"TelephoneBox",L"MarinHouse",L"RichardHouse"};
-    string NextKeys[] = { "Mamasha_room","Mamasha_room","telephoneBox","MarinHouse","RichardHouse"};
+    wstring TriggerTags[] = { L"mamasha_House1",L"mamasha_House2",L"TelephoneBox",L"MarinHouse",L"RichardHouse" };
+    string NextKeys[] = { "Mamasha_room","Mamasha_room","telephoneBox","MarinHouse","RichardHouse" };
 
     _float4 TriggerPos[] = {
         _float4(30.75f,12.86f,51.f,1.f),
@@ -765,11 +781,11 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
     };
 
     size_t Size = sizeof(TriggerTags) / sizeof(TriggerTags[0]);
-    for (size_t i = 0; i <Size ; ++i)
+    for (size_t i = 0; i < Size; ++i)
     {
         CRoomTrigger::RoomTriggerDesc RoomTriggerDesc;
         RoomTriggerDesc.vCenter = _float3(0.f, 0.f, 0.f);
-        RoomTriggerDesc.vExtents = _float3(0.8f,0.5f, 0.8f);
+        RoomTriggerDesc.vExtents = _float3(0.8f, 0.5f, 0.8f);
         RoomTriggerDesc.ObjTag = L"Trigger" + TriggerTags[i];
         RoomTriggerDesc.m_nextKey = NextKeys[i];
         RoomTriggerDesc.m_iLevelID = m_iLevelID;
@@ -784,233 +800,235 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
     }
 
-    //숲속 카메라트리거
+        //숲속 카메라트리거
 #pragma region 필드카메라
-    CEventTrigger::EventTriggerDesc DefaultEventDesc;
-    DefaultEventDesc.vCenter = _float3(0.f, 0.f, 0.f);
-    DefaultEventDesc.vExtents = _float3(0.8f, 0.5f, 3.f);
-    DefaultEventDesc.ObjTag = L"Default_Trigger";
-    DefaultEventDesc.m_iLevelID = m_iLevelID;
+        CEventTrigger::EventTriggerDesc DefaultEventDesc;
+        DefaultEventDesc.vCenter = _float3(0.f, 0.f, 0.f);
+        DefaultEventDesc.vExtents = _float3(0.8f, 0.5f, 3.f);
+        DefaultEventDesc.ObjTag = L"Default_Trigger";
+        DefaultEventDesc.m_iLevelID = m_iLevelID;
 
-    CTransform::TRANSFORM_DESC DefaultEventTransform;
-    DefaultEventTransform.vLocalPosition = _float4(2.198f, 12.79f, 40.188f, 1.f);
+        CTransform::TRANSFORM_DESC DefaultEventTransform;
+        DefaultEventTransform.vLocalPosition = _float4(2.198f, 12.79f, 40.188f, 1.f);
 
-    DefaultEventDesc.TransformDesc = &DefaultEventTransform;
+        DefaultEventDesc.TransformDesc = &DefaultEventTransform;
 
-    DefaultEventDesc.EnterFunc = [this]()
-    {
-        m_eArea = Area::TOWN;
-    };
-
-
-
-    DefaultEventDesc.StayFunc = [this]()
-    {
-        m_Chapter = L"Default";
-        CCamera_Base* pCamBase = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
-        CheckNull(pCamBase);
-
-        CMainCamera* pMaincam = dynamic_cast<CMainCamera*>(pCamBase);
-        CheckNull(pMaincam);
-
-        _float3 vRotation = _float3(56.f, 0.f, 0.f);
-        _float3 vOffSet = _float3(0.f, 9.f, -6.f);
-
-        _float3 vCurFloatRot = pMaincam->Get_Transform()->Get_Rotation_ByEular();
-        _float3 vCurFloatOffset = pMaincam->Get_Offset();
-
-        _vector vCurRot = XMLoadFloat3(&vCurFloatRot);
-        _vector vCurOffSet = XMLoadFloat3(&vCurFloatOffset);
-
-        _vector fRotation = XMVectorLerp(vCurRot, XMLoadFloat3(&vRotation), 0.02f);
-        _vector vOffset = XMVectorLerp(vCurOffSet, XMLoadFloat3(&vOffSet), 0.02f);
-
-        
-
-        _float4 vResult;
-        _float3 fOffSet;
-        XMStoreFloat4(&vResult, fRotation);
-        XMStoreFloat3(&fOffSet, vOffset);
-        
-        pMaincam->Set_LocalRoation(vResult);
-        pCamBase->Set_Offset(fOffSet);
-        
-        pCamBase->Set_TargetOffset (vOffSet);
-        pCamBase->Set_TargetRotation(vRotation);
-
-
-        //directionlight조절
-        //CLight* pDirectionLight = m_pGameInstance->Get_DirectionLight(m_iLevelID);
-        //CheckNull(pDirectionLight);
-
-        //LIGHT_DESC NewLightDesc = *pDirectionLight->Get_LightDesc();
-        //_vector vDiffuseColor = XMLoadFloat4(&NewLightDesc.vDiffuse);
-        //_vector vAmbient = XMLoadFloat4(&NewLightDesc.vAmbient);
-        //_vector vSpecular = XMLoadFloat4(&NewLightDesc.vSpecular);
-
-        ///*  LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-        //LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-        //LightDesc.vAmbient = _float4(0.5f, 0.5f, 0.5f, 1.f);
-        //LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);*/
-
-        //XMStoreFloat4(&NewLightDesc.vDiffuse, XMVectorLerp(vDiffuseColor, XMVectorSet(1.f,1.f, 1.f, 1.f), 0.2f));
-        //XMStoreFloat4(&NewLightDesc.vAmbient, XMVectorLerp(vAmbient, XMVectorSet(0.5f, 0.5f, 0.5f, 1.f), 0.2f));
-        //XMStoreFloat4(&NewLightDesc.vSpecular, XMVectorLerp(vSpecular, XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.2f));
-      /*
-        pDirectionLight->Set_LightDesc(NewLightDesc);*/
+        DefaultEventDesc.EnterFunc = [this]()
+        {
+            m_eArea = Area::TOWN;
+        };
 
 
 
-    };
+        DefaultEventDesc.StayFunc = [this]()
+        {
+            m_Chapter = L"Default";
+            CCamera_Base* pCamBase = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
+            CheckNull(pCamBase);
+
+            CMainCamera* pMaincam = dynamic_cast<CMainCamera*>(pCamBase);
+            CheckNull(pMaincam);
+
+            _float3 vRotation = _float3(56.f, 0.f, 0.f);
+            _float3 vOffSet = _float3(0.f, 9.f, -6.f);
+
+            _float3 vCurFloatRot = pMaincam->Get_Transform()->Get_Rotation_ByEular();
+            _float3 vCurFloatOffset = pMaincam->Get_Offset();
+
+            _vector vCurRot = XMLoadFloat3(&vCurFloatRot);
+            _vector vCurOffSet = XMLoadFloat3(&vCurFloatOffset);
+
+            _vector fRotation = XMVectorLerp(vCurRot, XMLoadFloat3(&vRotation), 0.02f);
+            _vector vOffset = XMVectorLerp(vCurOffSet, XMLoadFloat3(&vOffSet), 0.02f);
 
 
-    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, &DefaultEventDesc)))
-        return E_FAIL;
+
+            _float4 vResult;
+            _float3 fOffSet;
+            XMStoreFloat4(&vResult, fRotation);
+            XMStoreFloat3(&fOffSet, vOffset);
+
+            pMaincam->Set_LocalRoation(vResult);
+            pCamBase->Set_Offset(fOffSet);
+
+            pCamBase->Set_TargetOffset(vOffSet);
+            pCamBase->Set_TargetRotation(vRotation);
+
+
+            //directionlight조절
+            //CLight* pDirectionLight = m_pGameInstance->Get_DirectionLight(m_iLevelID);
+            //CheckNull(pDirectionLight);
+
+            //LIGHT_DESC NewLightDesc = *pDirectionLight->Get_LightDesc();
+            //_vector vDiffuseColor = XMLoadFloat4(&NewLightDesc.vDiffuse);
+            //_vector vAmbient = XMLoadFloat4(&NewLightDesc.vAmbient);
+            //_vector vSpecular = XMLoadFloat4(&NewLightDesc.vSpecular);
+
+            ///*  LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+            //LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+            //LightDesc.vAmbient = _float4(0.5f, 0.5f, 0.5f, 1.f);
+            //LightDesc.vSpecular = _float4(1.f, 1.f, 1.f, 1.f);*/
+
+            //XMStoreFloat4(&NewLightDesc.vDiffuse, XMVectorLerp(vDiffuseColor, XMVectorSet(1.f,1.f, 1.f, 1.f), 0.2f));
+            //XMStoreFloat4(&NewLightDesc.vAmbient, XMVectorLerp(vAmbient, XMVectorSet(0.5f, 0.5f, 0.5f, 1.f), 0.2f));
+            //XMStoreFloat4(&NewLightDesc.vSpecular, XMVectorLerp(vSpecular, XMVectorSet(1.f, 1.f, 1.f, 1.f), 0.2f));
+          /*
+            pDirectionLight->Set_LightDesc(NewLightDesc);*/
+
+
+
+        };
+
+
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, &DefaultEventDesc)))
+            return E_FAIL;
 
 #pragma endregion
 
 #pragma region 숲카메라
-    //숲속 카메라트리거
-    CEventTrigger::EventTriggerDesc EventDesc;
-    EventDesc.vCenter = _float3(0.f, 0.f, 0.f);
-    EventDesc.vExtents = _float3(0.8f, 0.5f, 8.f);
-    EventDesc.ObjTag = L"Forest_Trigger";
-    EventDesc.m_iLevelID = m_iLevelID;
-    
-    CTransform::TRANSFORM_DESC EventTransform;
-    EventTransform.vLocalPosition = _float4(2.198f, 12.79f, 52.188f, 1.f);
+        //숲속 카메라트리거
+        CEventTrigger::EventTriggerDesc EventDesc;
+        EventDesc.vCenter = _float3(0.f, 0.f, 0.f);
+        EventDesc.vExtents = _float3(0.8f, 0.5f, 8.f);
+        EventDesc.ObjTag = L"Forest_Trigger";
+        EventDesc.m_iLevelID = m_iLevelID;
 
-    EventDesc.TransformDesc = &EventTransform;
-    EventDesc.EnterFunc = [this]()
-    {
-        GameEvent Event;
-        Event.Name = "Enter_Forest";
+        CTransform::TRANSFORM_DESC EventTransform;
+        EventTransform.vLocalPosition = _float4(2.198f, 12.79f, 52.188f, 1.f);
 
-        CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
-        m_eArea = Area::FOREST;
+        EventDesc.TransformDesc = &EventTransform;
+        EventDesc.EnterFunc = [this]()
+        {
+            GameEvent Event;
+            Event.Name = "Enter_Forest";
 
-        m_pGameInstance->Emit(Event);
-     
+            CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
+            m_eArea = Area::FOREST;
 
-
-    };
-    EventDesc.StayFunc = [this]()
-    {
-        m_Chapter = L"Forest";
-        CCamera_Base* pCamBase = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
-        CheckNull(pCamBase);
-
-        CMainCamera* pMaincam = dynamic_cast<CMainCamera*>(pCamBase);
-        CheckNull(pMaincam);
-
-        _float3 vTargetOffset = _float3(0.f, 7.5f, -4.f);
-
-        _float3 vCurFloatRot = pMaincam->Get_Transform()->Get_Rotation_ByEular();
-        _float3 vCurFloatOffset = pMaincam->Get_Offset();
-
-        _vector vCurRot = XMLoadFloat3(&vCurFloatRot);
-        _vector vCurOffSet = XMLoadFloat3(&vCurFloatOffset);
-
-        _vector fRotation = XMVectorLerp( vCurRot, XMVectorSet(65.f, 0.f, 0.f, 1.f), 0.02f);
-        _vector vOffset = XMVectorLerp(vCurOffSet,XMLoadFloat3(&vTargetOffset), 0.02f);
-
-        _float4 vResult;
-        _float3 fOffSet;
-        XMStoreFloat4(&vResult, fRotation);
-        XMStoreFloat3(&fOffSet, vOffset);
-
-        pMaincam->Set_LocalRoation(vResult);
-        pCamBase->Set_Offset(fOffSet);
-
-        pCamBase->Set_TargetOffset(vTargetOffset);
+            m_pGameInstance->Emit(Event);
+        
 
 
-        pCamBase->Set_TargetRotation(_float3(65.f, 0.f, 0.f));
+        };
+        EventDesc.StayFunc = [this]()
+        {
+            m_Chapter = L"Forest";
+            CCamera_Base* pCamBase = m_pGameInstance->Find_Camera(CAMERA_TYPE::TARGET);
+            CheckNull(pCamBase);
+
+            CMainCamera* pMaincam = dynamic_cast<CMainCamera*>(pCamBase);
+            CheckNull(pMaincam);
+
+            _float3 vTargetOffset = _float3(0.f, 7.5f, -4.f);
+
+            _float3 vCurFloatRot = pMaincam->Get_Transform()->Get_Rotation_ByEular();
+            _float3 vCurFloatOffset = pMaincam->Get_Offset();
+
+            _vector vCurRot = XMLoadFloat3(&vCurFloatRot);
+            _vector vCurOffSet = XMLoadFloat3(&vCurFloatOffset);
+
+            _vector fRotation = XMVectorLerp(vCurRot, XMVectorSet(65.f, 0.f, 0.f, 1.f), 0.02f);
+            _vector vOffset = XMVectorLerp(vCurOffSet, XMLoadFloat3(&vTargetOffset), 0.02f);
+
+            _float4 vResult;
+            _float3 fOffSet;
+            XMStoreFloat4(&vResult, fRotation);
+            XMStoreFloat3(&fOffSet, vOffset);
+
+            pMaincam->Set_LocalRoation(vResult);
+            pCamBase->Set_Offset(fOffSet);
+
+            pCamBase->Set_TargetOffset(vTargetOffset);
 
 
-        //directionlight조절
-        CLight* pDirectionLight = m_pGameInstance->Get_DirectionLight(m_iLevelID);
-        CheckNull(pDirectionLight);
-
-        //빛 변경값..나중에 설정하기!!어두워지기!
-     //   LIGHT_DESC NewLightDesc = *pDirectionLight->Get_LightDesc();
-     //   _vector vDiffuseColor = XMLoadFloat4(&NewLightDesc.vDiffuse);
-     //   _vector vAmbient = XMLoadFloat4(&NewLightDesc.vAmbient);
-     //   _vector vSpecular = XMLoadFloat4(&NewLightDesc.vSpecular);
-
-     //   
-     //   XMStoreFloat4(&NewLightDesc.vDiffuse, XMVectorLerp(vDiffuseColor, XMVectorSet(0.f, 0.1f, 0.5f, 1.f), 0.2f));
-     ////   XMStoreFloat4(&NewLightDesc.vAmbient, XMVectorLerp(vAmbient, XMVectorSet(0.2f, 0.2f, 0.2f, 1.f), 0.2f));
-     //   XMStoreFloat4(&NewLightDesc.vSpecular, XMVectorLerp(vSpecular, XMVectorSet(0.5f, 0.5f, 0.5f, 1.f), 0.2f));
-
-     //   pDirectionLight->Set_LightDesc(NewLightDesc);
+            pCamBase->Set_TargetRotation(_float3(65.f, 0.f, 0.f));
 
 
-    };
+            //directionlight조절
+            CLight* pDirectionLight = m_pGameInstance->Get_DirectionLight(m_iLevelID);
+            CheckNull(pDirectionLight);
+
+            //빛 변경값..나중에 설정하기!!어두워지기!
+         //   LIGHT_DESC NewLightDesc = *pDirectionLight->Get_LightDesc();
+         //   _vector vDiffuseColor = XMLoadFloat4(&NewLightDesc.vDiffuse);
+         //   _vector vAmbient = XMLoadFloat4(&NewLightDesc.vAmbient);
+         //   _vector vSpecular = XMLoadFloat4(&NewLightDesc.vSpecular);
+
+         //   
+         //   XMStoreFloat4(&NewLightDesc.vDiffuse, XMVectorLerp(vDiffuseColor, XMVectorSet(0.f, 0.1f, 0.5f, 1.f), 0.2f));
+         ////   XMStoreFloat4(&NewLightDesc.vAmbient, XMVectorLerp(vAmbient, XMVectorSet(0.2f, 0.2f, 0.2f, 1.f), 0.2f));
+         //   XMStoreFloat4(&NewLightDesc.vSpecular, XMVectorLerp(vSpecular, XMVectorSet(0.5f, 0.5f, 0.5f, 1.f), 0.2f));
+
+         //   pDirectionLight->Set_LightDesc(NewLightDesc);
 
 
-    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, &EventDesc)))
-        return E_FAIL;
-    
+        };
+
+
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, &EventDesc)))
+            return E_FAIL;
+
 #pragma endregion
-   
+
 
 
 #pragma region 타린트리거
-    CEventTrigger::EventTriggerDesc NewChapter_EventDesc;
-    NewChapter_EventDesc.vCenter = _float3(0.f, 0.f, 0.f);
-    NewChapter_EventDesc.vExtents = _float3(1.f, 1.f, 1.f);
-    NewChapter_EventDesc.ObjTag = L"Richard_Chapter_Trigger";    //리처드 챕터 트리거( 리처드 집이동 이벤트)
-    NewChapter_EventDesc.m_iLevelID = m_iLevelID;
+        CEventTrigger::EventTriggerDesc NewChapter_EventDesc;
+        NewChapter_EventDesc.vCenter = _float3(0.f, 0.f, 0.f);
+        NewChapter_EventDesc.vExtents = _float3(1.f, 1.f, 1.f);
+        NewChapter_EventDesc.ObjTag = L"Richard_Chapter_Trigger";    //리처드 챕터 트리거( 리처드 집이동 이벤트)
+        NewChapter_EventDesc.m_iLevelID = m_iLevelID;
 
-    CTransform::TRANSFORM_DESC NewChapter_EventTransform;
-    NewChapter_EventTransform.vLocalPosition = _float4(38.f, 10.5f, 34.5f, 1.f);
+        CTransform::TRANSFORM_DESC NewChapter_EventTransform;
+        NewChapter_EventTransform.vLocalPosition = _float4(38.f, 10.5f, 34.5f, 1.f);
 
-    NewChapter_EventDesc.TransformDesc = &NewChapter_EventTransform;
-   
-    //!나중에 흐름연결필요!
-    NewChapter_EventDesc.bActive_At_Begin = false;
+        NewChapter_EventDesc.TransformDesc = &NewChapter_EventTransform;
 
-    NewChapter_EventDesc.EnterFunc = [this]()
-    {
-        CLayer* pLayer = m_pGameInstance->Find_Layer(m_iLevelID, L"NPC_Layer");
-        if (pLayer)
+        //!나중에 흐름연결필요!
+        NewChapter_EventDesc.bActive_At_Begin = false;
+
+        NewChapter_EventDesc.EnterFunc = [this]()
         {
-            CGameObject* pNPC = pLayer->Find_GameObject(L"NPC_Tarin");
-            if (pNPC)
+            CLayer* pLayer = m_pGameInstance->Find_Layer(m_iLevelID, L"NPC_Layer");
+            if (pLayer)
             {
-                CNPC_Tarin* pNpc_Tarin = dynamic_cast<CNPC_Tarin*>(pNPC);
-                CheckNull(pNpc_Tarin);
-                pNpc_Tarin->Set_Active(true);
-                pNpc_Tarin->Set_StartEvent(true, CNPC_Tarin::State::WALK);
+                CGameObject* pNPC = pLayer->Find_GameObject(L"NPC_Tarin");
+                if (pNPC)
+                {
+                    CNPC_Tarin* pNpc_Tarin = dynamic_cast<CNPC_Tarin*>(pNPC);
+                    CheckNull(pNpc_Tarin);
+                    pNpc_Tarin->Set_Active(true);
+                    pNpc_Tarin->Set_StartEvent(true, CNPC_Tarin::State::WALK);
 
-                CPlayer* pPlayer=CGameManager::GetInstance()->Get_MainPlayer();
-                CheckNull(pPlayer);
-                
-                pPlayer->On_RichardChapterEvent(pNpc_Tarin);
+                    CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
+                    CheckNull(pPlayer);
 
-              
-                
+                    pPlayer->On_RichardChapterEvent(pNpc_Tarin);
+
+
+
+                }
             }
-        }
 
-        
-    };
 
-    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, &NewChapter_EventDesc)))
-        return E_FAIL;
+        };
+
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, &NewChapter_EventDesc)))
+            return E_FAIL;
 
 
 #pragma endregion
 
-    return S_OK;
+        return S_OK;
 }
+
 
 HRESULT CLevel_Town::Ready_EventListners()
 {
     m_pGameInstance->RegisterListners("FadeScreen_Before_WitchRoom", [this](const GameEvent& evt)
         {
             pFadeScreen->PlayFadeIn();
+            m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 1.f);
 
 
         });
@@ -1296,7 +1314,7 @@ void CLevel_Town::OnResume(_uint iPreLevel)
 
     __super::OnResume(iPreLevel);
     m_pGameInstance->Set_IsLoading(false);
-
+    Play_LevelBGM();
     
 }
  
@@ -1341,20 +1359,28 @@ void CLevel_Town::Change_Area()
 
     if (m_ePreArea != m_eArea)
     {
+        m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 1.f);
         switch (m_eArea)
         {
         case Client::CLevel_Town::TOWN:
             strKey = L"Town";
+
             break;
         case Client::CLevel_Town::FOREST:
             strKey = L"Forest";
             break;
-  
+
         default:
-                break;
+            break;
         }
 
         CGameInstance::GetInstance()->BroadCastEvent(L"UpdateLevelUI", &strKey);
+        m_pGameInstance->Invoke(1.f, 0.f, 0.f, false, [this]()
+            {
+                Play_LevelBGM();
+
+
+            },CGameManager::GetInstance()->Get_MainPlayer());
         m_pGameInstance->Invoke(6.f, 0.f, false, false, []()
             {
                 CGameInstance::GetInstance()->BroadCastEvent(L"OnLevelUIHide", nullptr);

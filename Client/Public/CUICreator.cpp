@@ -1115,6 +1115,14 @@ HRESULT UICreator::Create_ItemGet_UI(wstring LayerTag)
                                                             //텍스처 키 보내주기
     m_pGameInstance->RegisterEvent(L"OnItemGetIconShow", [](void* pData)
         {
+            m_pGameInstance->PlaySoundW(L"Effects/NewItem.wav", CHANNELID::SOUND_UI, g_UIVolume);
+            m_pGameInstance->Invoke(0.5f, 0.f, false, false, []()
+                {
+                    m_pGameInstance->PlaySoundW(L"BGM/ItemGet.wav", CHANNELID::SOUND_BGM, g_BGMVolume);
+
+                }, CGameManager::GetInstance()->Get_MainPlayer());
+
+
             CInventory_Manager::ItemGetEvent* ItemEvent = static_cast<CInventory_Manager::ItemGetEvent*>(pData);
             UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"ItemGetIconGroup");
             if (pGroup)
@@ -1259,6 +1267,8 @@ HRESULT UICreator::Create_ItemGet_Desc_UI(wstring LayerTag)
     //폰트 이벤트 바인딩
     CGameInstance::GetInstance()->RegisterEvent(L"UpdateItemDescText", [](void* pData)
         {
+
+            
             CInventory_Manager::ItemGetEvent* pItemEvent = static_cast<CInventory_Manager::ItemGetEvent*>(pData);
             UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"ItemGetDescGroup");
             if (pGroup)

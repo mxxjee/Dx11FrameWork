@@ -44,6 +44,8 @@ public:
     virtual void        OnExit() override;
 
 public:
+    virtual void                    Play_LevelBGM();
+public:
     void        Close_Door();
 public:
     static  CLevel_Boss* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args);

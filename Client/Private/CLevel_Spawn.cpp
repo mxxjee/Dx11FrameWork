@@ -76,7 +76,7 @@ HRESULT CLevel_Spawn::Initialize(LevelArgs& args)
     if (FAILED(CQuest_Manager::GetInstance()->Initialize()))
         return E_FAIL;
 
-    m_pGameInstance->PlaySoundW(L"Intro.wav", CHANNELID::SOUND_BGM, g_BGMVolume);
+    Play_LevelBGM();
 
 
     return S_OK;
@@ -247,6 +247,8 @@ HRESULT CLevel_Spawn::Ready_Layer_Trigger(const _wstring& strLayerTag)
     EventTriggerDesc.ObjTag = L"Trigger" + 0;
     EventTriggerDesc.EnterFunc = [this]()
     {
+        m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 1.f);
+
         pFadeScreen->Set_FadeInEndFunc([]()
             {
                 /*¾ÀÀÌµ¿*/
@@ -355,6 +357,12 @@ void CLevel_Spawn::EndCutScene()
 
 }
 
+void CLevel_Spawn::Play_LevelBGM()
+{
+    m_pGameInstance->PlayBGM(L"BGM/First_Spawn.wav", g_BGMVolume);
+
+}
+
 void CLevel_Spawn::OnEnter()
 {
 
@@ -421,7 +429,7 @@ void CLevel_Spawn::OnExit()
 {
     __super::OnExit();
 
-    m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, g_BGMVolume);
+
     CInteraction_Manager::GetInstance()->Clear();
     m_pGameInstance->Clear_SceneColliders(m_iLevelID);
 

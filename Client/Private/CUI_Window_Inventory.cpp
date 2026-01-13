@@ -79,29 +79,34 @@ void CUI_Window_Inventory::Update(_float fTimeDelta)
 	{
 		--m_iCurIdx;
 		m_bPressed = true;
+		m_pGameInstance->PlaySoundW(L"System/Hover.wav", CHANNELID::SOUND_UI, g_UIVolume);
 	}
 
 	if (m_pInput_Manager->IsKeyPressed(KeyCode::RightArrow))
 	{
 		++m_iCurIdx;
 		m_bPressed = true;
+		m_pGameInstance->PlaySoundW(L"System/Hover.wav", CHANNELID::SOUND_UI, g_UIVolume);
 	}
 
 	if (m_pInput_Manager->IsKeyPressed(KeyCode::UpArrow))
 	{
 		m_iCurIdx -= 4;
 		m_bPressed = true;
+		m_pGameInstance->PlaySoundW(L"System/Hover.wav", CHANNELID::SOUND_UI, g_UIVolume);
 	}
 	if (m_pInput_Manager->IsKeyPressed(KeyCode::DownArrow))
 	{
 		m_iCurIdx += 4;
 		m_bPressed = true;
+		m_pGameInstance->PlaySoundW(L"System/Hover.wav", CHANNELID::SOUND_UI, g_UIVolume);
 	}
 
 	if (m_pInput_Manager->IsKeyPressed(KeyCode::X))
 	{
 		Update_UpdateXSlot();
 		m_bPressed = true;
+
 	}
 
 
@@ -110,6 +115,7 @@ void CUI_Window_Inventory::Update(_float fTimeDelta)
 	if (m_bPressed)
 	{
 		m_iCurIdx = MathUtils::Clamp(m_iCurIdx, 0, maxIdx);
+		
 		Update_Cursor(iPreIdx);
 	}
 	
@@ -302,8 +308,7 @@ void CUI_Window_Inventory::Update_UpdateXSlot()
 		if (pSlot->Is_HasItem())
 		{
 			pSlot->Set_QuickSlot(true);
-
-		}
+					}
 		else
 			return;
 	}
@@ -320,6 +325,7 @@ void CUI_Window_Inventory::Update_UpdateXSlot()
 	
 	m_iXIdx = pSlot->Get_Idx();
 	m_pInventory_Manager->Set_SlotKey(pSlot->Get_ItemType(), KeyCode::X);
+	m_pGameInstance->PlaySoundW(L"System/XSlot.wav", CHANNELID::SOUND_UI, g_UIVolume);
 
 }
 

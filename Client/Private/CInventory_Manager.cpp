@@ -91,6 +91,9 @@ bool CInventory_Manager::Request_Add_To_Inven(ItemType itemType, int iCount)
 	}
 
 
+
+	CGameInstance::GetInstance()->StopSoundFade(SOUND_BGM, 1.f);
+
 	
 
 	return true;

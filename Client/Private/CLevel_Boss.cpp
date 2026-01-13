@@ -312,7 +312,7 @@ HRESULT CLevel_Boss::Ready_Layer_Trigger(const _wstring& strLayerTag)
         Event.Name = "Start_Boss";
         m_pGameInstance->Emit(Event);
 
-
+        
 
     };
 
@@ -510,6 +510,11 @@ void CLevel_Boss::OnExit()
 
     m_pGameInstance->Clear_SceneColliders(ENUM_TO_UINT(LEVEL_ID::BOSS));
 
+}
+
+void CLevel_Boss::Play_LevelBGM()
+{
+    m_pGameInstance->PlayBGM(L"BGM/Boss.wav", g_BGMVolume);
 }
 
 void CLevel_Boss::Close_Door()

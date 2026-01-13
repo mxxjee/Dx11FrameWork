@@ -82,6 +82,12 @@ void CLevel_NPCRoom::Render()
     SetWindowText(g_hWnd, szTitle);
 }
 
+void CLevel_NPCRoom::Play_LevelBGM()
+{
+    m_pGameInstance->PlayBGM(L"BGM/House.wav", g_BGMVolume);
+
+}
+
 void CLevel_NPCRoom::OnEnter()
 {
     CRoom_Manager::GetInstance()->Switch_Room(CRoom_Manager::GetInstance()->Get_RequestRoom());
@@ -150,6 +156,16 @@ void CLevel_NPCRoom::OnEnter()
             ppMainCam->Set_Lock(true);
 
         }
+    }
+
+    else
+    {
+        m_pGameInstance->Invoke(0.5f, 0.f, false, false, [this]()
+            {
+                Play_LevelBGM();
+
+            }, CGameManager::GetInstance()->Get_MainPlayer());
+
     }
 
 }
@@ -237,6 +253,16 @@ void CLevel_NPCRoom::OnResume(_uint iPreLevel)
             ppMainCam->Set_Lock(true);
 
         }
+    }
+
+    else
+    {
+        m_pGameInstance->Invoke(0.5f, 0.f, false, false, [this]()
+            {
+                Play_LevelBGM();
+
+            }, CGameManager::GetInstance()->Get_MainPlayer());
+
     }
 }
 

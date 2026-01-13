@@ -66,6 +66,9 @@ void CSoundMgr::StopSoundFade(CHANNELID eID, float fDuration)
     if (!isPlaying)
         return;
 
+    if (eID == CHANNELID::SOUND_BGM)
+        m_CurrentBGM = L"";
+
     //이미 페이드아웃중일경우 return
     auto iter = m_FadeList.begin();
     while (iter != m_FadeList.end())
@@ -137,6 +140,15 @@ void CSoundMgr::PlayBGM(const std::wstring& soundKey, float fVolume)
     if (iter == m_mapSound.end())
         return;
 
+    FMOD_BOOL isPlaying = FALSE;
+    if (m_pChannelArr[SOUND_BGM] != nullptr)
+        FMOD_Channel_IsPlaying(m_pChannelArr[SOUND_BGM], &isPlaying);
+    
+
+    if (isPlaying && soundKey == m_CurrentBGM)
+        return;
+
+
     //페이드아웃 목록에 BGMㅇ있따면 제거
     auto fadeIter = m_FadeList.begin();
     while (fadeIter != m_FadeList.end())
@@ -151,7 +163,7 @@ void CSoundMgr::PlayBGM(const std::wstring& soundKey, float fVolume)
     }
 
     FMOD_Channel_Stop(m_pChannelArr[SOUND_BGM]);
-
+    m_CurrentBGM = soundKey;
 
     FMOD_System_PlaySound(
         m_pSystem,
@@ -163,6 +175,8 @@ void CSoundMgr::PlayBGM(const std::wstring& soundKey, float fVolume)
     FMOD_Channel_SetMode(m_pChannelArr[SOUND_BGM], FMOD_LOOP_NORMAL);
     FMOD_Channel_SetVolume(m_pChannelArr[SOUND_BGM], fVolume);
     FMOD_System_Update(m_pSystem);
+
+  
 }
 
 void CSoundMgr::StopSound(CHANNELID eID)

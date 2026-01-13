@@ -27,6 +27,8 @@
 #include "CMJackyEscapeState.h"
 #include "CLayer.h"
 
+#include "CLevel.h"
+
 #ifdef _DEBUG
 #include "CImGui_Manager.h"
 #endif // _DEBUG
@@ -291,6 +293,10 @@ HRESULT CM_Jacky::Ready_EventLisnters()
             m_pGameInstance->Invoke(2.f, false, false, false, [this]()
                 {
                     //대기 후 1초뒤 양옆으로이동
+                    CLevel* pLevel = m_pGameInstance->Get_CurrentLevel();
+                    if (pLevel)
+                        pLevel->Play_LevelBGM();
+
                     m_ActionControl.m_bMove = true;
                 }, this);
 
@@ -354,6 +360,8 @@ void CM_Jacky::Enter_State(int newState)
         m_pChaseTarget->Get_Body()->Set_DissolveTexture(L"dissolve_02");
         m_pChaseTarget->Get_Body()->Set_PassName("Dissolve");
         m_pChaseTarget->Set_Dead();
+
+        m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 1.f);
 
 
     }

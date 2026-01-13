@@ -94,6 +94,7 @@ void CRoomTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
     case Client::COLLISION_GROUP::PLAYER:
         if (m_NextRoomKey == "Level_Town")
         {
+            m_pGameInstance->StopSoundFade(SOUND_BGM, 1.f);
             m_pFadeScreen->PlayFadeIn();
 
             m_pGameInstance->Invoke(2.f, 0.f, false, false, [m_pGameInstance= m_pGameInstance]()
@@ -107,7 +108,7 @@ void CRoomTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 
         else if (m_NextRoomKey == "Level_Dungeon")
         {
-
+            m_pGameInstance->StopSoundFade(SOUND_BGM, 1.f);
             m_pFadeScreen->Set_FadeInEndFunc([this]()
                 {
                     LevelArgs args;
@@ -131,6 +132,8 @@ void CRoomTrigger::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 
         else
         {
+            m_pGameInstance->StopSoundFade(SOUND_BGM, 1.f);
+
              CRoom_Manager::GetInstance()->Request_Room(m_NextRoomKey);
 
              CGameManager* pGameManager = CGameManager::GetInstance();

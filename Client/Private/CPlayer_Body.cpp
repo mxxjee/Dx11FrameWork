@@ -230,7 +230,15 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 		Event.Name = "SlashEnd";
 		pAnim->AddNotify(18, Event);
 	}
-		
+	
+	pAnim = m_pModel->Find_Animation(L"shield_st");
+	if (pAnim)
+	{
+		Event.Name = "Shield_Start";
+		pAnim->AddNotify(2, Event);
+	}
+
+
 	pAnim = m_pModel->Find_Animation(L"shield_lp");
 	if (pAnim)
 	{
@@ -384,6 +392,15 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 			CGameInstance::GetInstance()->PlaySoundW(L"LinkVoice/Link_ChargingEnd" + to_wstring(iRandom)+L".wav", CHANNELID::SOUND_PLAYER_SFX1, g_VoiceVolume);
 
 		});
+
+
+	m_pGameInstance->RegisterListners("Shield_Start", [](const GameEvent& event)
+		{
+			CGameInstance::GetInstance()->PlaySoundW(L"Effects/Shield.wav", CHANNELID::SOSUND_PLAYER_SFX2, g_EffectVolume);
+
+		});
+
+
 
 
 	m_pGameInstance->RegisterListners("AttackBegin", [](const GameEvent& event)
