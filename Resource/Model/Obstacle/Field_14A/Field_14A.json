@@ -128,7 +128,7 @@
                       },
                       {
                           "Ambient":  "",
-                          "Diffuse":  "",
+                          "Diffuse":  "Black.png",
                           "METALNESS":  "",
                           "MaterialName":  "MI_f_water_b_01",
                           "Normal":  "",

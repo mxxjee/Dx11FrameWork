@@ -71,8 +71,12 @@ void CWall::Update_Render(_float fTimeDelta)
 HRESULT CWall::Render()
 {
 #ifdef _DEBUG
-    if (m_pCollider)
-        m_pCollider->Render();
+    if (CGameInstance::m_bDrawDebug)
+    {
+        if (m_pCollider)
+            m_pCollider->Render();
+
+    }
 #endif // _DEBUG
 
 

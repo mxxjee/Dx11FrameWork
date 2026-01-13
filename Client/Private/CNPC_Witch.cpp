@@ -168,6 +168,7 @@ void CNPC_Witch::Reigster_AnimNotify()
     Event.Payload = payload;
 
     m_pAnimBody->Set_Animation_Speed(L"mix", 55.f);
+    m_pAnimBody->Set_Animation_Speed(L"give", 55.f);
 
     //st->lp
     CAnimation* pAnim = m_pAnimBody->Get_Model()->Find_Animation(L"mix");
@@ -178,6 +179,10 @@ void CNPC_Witch::Reigster_AnimNotify()
 
         Event.Name = "Hide_Mushroom"; 
         pAnim->AddNotify(66, Event);
+
+        Event.Name = "Play_WitchRoomMusic_Fast";
+        pAnim->AddNotify(80, Event);
+
 
         Event.Name = "Witch_Effect";
         pAnim->AddNotify(309, Event);
@@ -197,6 +202,8 @@ void CNPC_Witch::Reigster_AnimNotify()
         pAnim->AddNotify(20, Event);
 
     }
+    
+    
 }
 
 void CNPC_Witch::Ready_Events()
@@ -207,6 +214,8 @@ void CNPC_Witch::Ready_Events()
             m_pAnimBody->Reserve_Animation(L"mix", false);
             m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", (void*)nullptr);
             m_pSocketMushroom->Set_Active(true);
+
+         
         });
 
 
@@ -316,6 +325,13 @@ HRESULT CNPC_Witch::Register_Listners()
         {
             m_pSocketMushroom->Set_Active(true);
             m_bWait = true;
+           
+
+        });
+
+    m_pGameInstance->RegisterListners("Play_WitchRoomMusic_Fast", [this](const GameEvent& event)
+        {
+            m_pGameInstance->PlayBGM(L"BGM/WitchRoom_Fast.wav", g_BGMVolume);
         });
 
     m_pGameInstance->RegisterListners("Hide_Mushroom", [this](const GameEvent& event)

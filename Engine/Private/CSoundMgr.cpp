@@ -97,7 +97,7 @@ void CSoundMgr::StopSoundFade(CHANNELID eID, float fDuration)
 
 }
 
-void CSoundMgr::PlaySound(const std::wstring& soundKey, CHANNELID eID, float fVolume)
+void CSoundMgr::PlaySound(const std::wstring& soundKey, CHANNELID eID, float fVolume, bool bLoop)
 {
     auto iter = m_mapSound.find(soundKey);
     if (iter == m_mapSound.end())
@@ -129,9 +129,11 @@ void CSoundMgr::PlaySound(const std::wstring& soundKey, CHANNELID eID, float fVo
             &m_pChannelArr[eID]
         );
     }
-
+    
     FMOD_Channel_SetVolume(m_pChannelArr[eID], fVolume);
     FMOD_System_Update(m_pSystem);
+    if(bLoop)
+        FMOD_Channel_SetMode(m_pChannelArr[eID], FMOD_LOOP_NORMAL);
 }
 
 void CSoundMgr::PlayBGM(const std::wstring& soundKey, float fVolume)

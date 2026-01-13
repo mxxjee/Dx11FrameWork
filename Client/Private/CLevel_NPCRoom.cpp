@@ -84,7 +84,11 @@ void CLevel_NPCRoom::Render()
 
 void CLevel_NPCRoom::Play_LevelBGM()
 {
-    m_pGameInstance->PlayBGM(L"BGM/House.wav", g_BGMVolume);
+    if(CRoom_Manager::GetInstance()->Get_RequestRoom()=="MagicPowerHouse")
+        m_pGameInstance->PlayBGM(L"BGM/WitchRoom.wav", g_BGMVolume);
+
+    else
+        m_pGameInstance->PlayBGM(L"BGM/House.wav", g_BGMVolume);
 
 }
 
@@ -160,7 +164,7 @@ void CLevel_NPCRoom::OnEnter()
 
     else
     {
-        m_pGameInstance->Invoke(0.5f, 0.f, false, false, [this]()
+        m_pGameInstance->Invoke(0.2f, 0.f, false, false, [this]()
             {
                 Play_LevelBGM();
 
@@ -257,7 +261,7 @@ void CLevel_NPCRoom::OnResume(_uint iPreLevel)
 
     else
     {
-        m_pGameInstance->Invoke(0.5f, 0.f, false, false, [this]()
+        m_pGameInstance->Invoke(0.2f, 0.f, false, false, [this]()
             {
                 Play_LevelBGM();
 

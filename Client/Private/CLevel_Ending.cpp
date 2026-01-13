@@ -231,6 +231,11 @@ void CLevel_Ending::OnEnter()
 {
 	__super::OnEnter();
 
+	//플레이어 ui비활성화
+	m_pGameInstance->SetActiveGroup(L"HeartGroup", false);
+	m_pGameInstance->SetActiveGroup(L"QuickSlotGroup", false);
+
+
 	m_pGameInstance->Set_EnableUpdate(true);
 	m_pGameInstance->Set_EnalbeUpdateRender(true);
 	/*카메라 바로 스냅 및 초기화*/
@@ -288,13 +293,15 @@ void CLevel_Ending::OnEnter()
 	CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::ENDING));
 
 	CheckNull(pFadeScreen);
-	pFadeScreen->PlayFadeOut();
+
+
 
 	//1초뒤 ending step 변경
 	m_pGameManager->Set_EndingStep(EndingStep::TOWN_ARRIVAL);
 
 	m_pGameInstance->Invoke(0.5f, 0.f, false, false, [this]()
 		{
+			pFadeScreen->PlayFadeOut();
 			Play_LevelBGM();
 
 		},CGameManager::GetInstance()->Get_MainPlayer());

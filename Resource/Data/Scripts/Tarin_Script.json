@@ -93,9 +93,9 @@
             {
               "Speaker": "타린",
               "Text": "헉..헉..\n큰일이야.. 정말 큰일이야..!",
-              "strActionCommand": "",
+              "strActionCommand": "Tarin_Help",
               "Sound": "NPC/Tarin2.wav",
-              "actionTiming": ""
+              "actionTiming": "ON_START"
             },
             {
               "Speaker": "타린",

@@ -436,7 +436,7 @@ void CM_MoriblinSword::Enter_State(int newState)
 	if (newState == CMonster::DIE)
 	{
 		m_pAnimBody->Set_PassName("Dissolve");
-
+		
 	}
 }
 

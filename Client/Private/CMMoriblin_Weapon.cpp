@@ -5,6 +5,9 @@
 #include "CBounding_Sphere.h"
 #include "CM_MoriblinSword.h"
 #include "CPlayer.h"
+#include "CEffectPoolManager.h"
+#include "CEffect.h"
+#include "CMeshEffect.h"
 
 
 
@@ -45,8 +48,15 @@ HRESULT CMMoriblin_Weapon::Initialize_Copytype(void* pArg)
     m_pMoriblin = dynamic_cast<CM_MoriblinSword*>(m_pOwner);
 
 
-
-
+    CMeshEffect::MESHEFFECT_DESC* GuardEffectDesc = new CMeshEffect::MESHEFFECT_DESC();
+    GuardEffectDesc->ProtoName = L"MeshEffect";
+    GuardEffectDesc->eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+    GuardEffectDesc->modelName = L"ring_01";
+    GuardEffectDesc->ShaderName = L"MeshEffect";
+    GuardEffectDesc->PassName = "Default";
+    GuardEffectDesc->DataName = L"ring_01";
+    GuardEffectDesc->ObjTag = L"ring_01";
+    pGuardEffect = GuardEffectDesc;
 
     return S_OK;
 }
@@ -136,6 +146,8 @@ CGameObject* CMMoriblin_Weapon::Clone(void* pArg)
 
 void CMMoriblin_Weapon::Free()
 {
+    Safe_Delete(pGuardEffect);
+
     __super::Free();
 
 }
@@ -171,6 +183,13 @@ void CMMoriblin_Weapon::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
                     _float3 vDir;
                     XMStoreFloat3(&vDir, m_pOwner->Get_Transform()->Get_State(STATE::LOOK));
                     Get_Owner()->Get_Transform()->AddImpulse(-0.3f, vDir);
+
+                    CGameInstance::GetInstance()->PlaySoundW(L"Effects/Sword_Slash.wav", CHANNELID::SOUND_MONSTER_HIT_2, g_EffectVolume);
+
+                   /* _float4x4 CombinedMatrix = Get_CombinedWorldMatrix();
+                    PlayGuardEffect(XMLoadFloat4x4(&CombinedMatrix));*/
+
+
                 }
             }
         }
@@ -194,4 +213,14 @@ void CMMoriblin_Weapon::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)
 
 void CMMoriblin_Weapon::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
 {
+}
+
+void CMMoriblin_Weapon::PlayGuardEffect(_matrix Matrix)
+{
+    CEffect* pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(L"MeshEffect", pGuardEffect);
+    if (pEffect)
+    {
+        pEffect->Set_OrigniMatrix(Matrix);
+        pEffect->Play();
+    }
 }

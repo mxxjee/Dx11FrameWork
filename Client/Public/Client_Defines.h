@@ -15,6 +15,7 @@ extern float	g_BGMVolume;
 extern float	g_VoiceVolume;
 extern float	g_UIVolume;
 extern float	g_EffectVolume;
+extern float	g_AmbienceVolume;
 
 namespace Client
 {

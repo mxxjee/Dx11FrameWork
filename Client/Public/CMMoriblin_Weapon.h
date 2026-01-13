@@ -50,12 +50,15 @@ public:
 
 
 private:
+    void        PlayGuardEffect(_matrix Matrix);
+private:
     float m_fRadius = 0.f;
     _float3 m_vOffSet;
     wstring m_AnimKey = L"";
 
 private:
     CM_MoriblinSword* m_pMoriblin = nullptr;
+    CGameObject::GAMEOBJECT_DESC* pGuardEffect = nullptr;
 
 
 };

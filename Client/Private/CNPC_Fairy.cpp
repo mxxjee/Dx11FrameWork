@@ -7,6 +7,7 @@
 #include "CInteraction_TriggerBox.h"
 #include "CParticle.h"
 #include "CEffectPoolManager.h"
+#include "CLevel.h"
 
 
 
@@ -40,6 +41,9 @@ HRESULT CNPC_Fairy::Initialize_Prototype(void* pArg)
         {
             if (m_pNormalEffect)
                 m_pNormalEffect->Set_Loop(false);
+
+            m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 0.5f);
+
 
             m_pAnimBody->Reserve_Animation(L"heel_st", false);
             m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", (void*)nullptr);
@@ -133,6 +137,13 @@ void CNPC_Fairy::Update_Render(_float fTimeDelta)
 HRESULT CNPC_Fairy::Render()
 {
     return S_OK;
+}
+
+void CNPC_Fairy::Enter_Interaction()
+{
+    __super::Enter_Interaction();
+
+   
 }
 
 void CNPC_Fairy::Exit_Interaction()

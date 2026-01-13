@@ -1148,10 +1148,10 @@ void CGameInstance::StopSoundFade(CHANNELID eID, float fDuration)
 		m_pSound_Manager->StopSoundFade(eID, fDuration);
 
 }
-void CGameInstance::PlaySound(const wstring& pSoundKey, CHANNELID eID, float fVolume)
+void CGameInstance::PlaySound(const wstring& pSoundKey, CHANNELID eID, float fVolume, bool bLoop)
 {
 	if (m_pSound_Manager)
-		m_pSound_Manager->PlaySound(pSoundKey, eID, fVolume);
+		m_pSound_Manager->PlaySound(pSoundKey, eID, fVolume, bLoop);
 	
 }
 void CGameInstance::PlayBGM(const std::wstring& soundKey, float fVolume)

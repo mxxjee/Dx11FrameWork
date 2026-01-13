@@ -23,6 +23,9 @@ public:
     virtual HRESULT Render();
 
 public:
+
+    virtual void    Enter_Interaction();
+
     virtual void    Exit_Interaction();
 
 private:

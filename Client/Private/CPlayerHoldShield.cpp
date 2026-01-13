@@ -25,6 +25,7 @@ void CPlayerHoldShield::Enter(CPlayer* pPlayer)
     m_bExitState = false;
     pPlayer->Reset_ActionControl();
 
+    CGameInstance::GetInstance()->PlaySoundW(L"Effects/Shield.wav", CHANNELID::SOSUND_PLAYER_SFX2, g_EffectVolume);
 
 }
 

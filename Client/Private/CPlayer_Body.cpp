@@ -383,6 +383,9 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 
 			}
 
+			CGameInstance::GetInstance()->PlaySoundW(L"Effects/Sword_Slash.wav", CHANNELID::SOSUND_PLAYER_SFX2, g_EffectVolume);
+
+
 		});
 
 	m_pGameInstance->RegisterListners("Play_hold_ed_Sound", [](const GameEvent& event)
@@ -394,11 +397,11 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 		});
 
 
-	m_pGameInstance->RegisterListners("Shield_Start", [](const GameEvent& event)
+	/*m_pGameInstance->RegisterListners("Shield_Start", [](const GameEvent& event)
 		{
 			CGameInstance::GetInstance()->PlaySoundW(L"Effects/Shield.wav", CHANNELID::SOSUND_PLAYER_SFX2, g_EffectVolume);
 
-		});
+		});*/
 
 
 

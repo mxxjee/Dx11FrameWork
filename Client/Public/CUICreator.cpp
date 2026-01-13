@@ -72,6 +72,8 @@ HRESULT UICreator::Create_HeartGroup(wstring LayerTag)
     }
 
     m_pGameInstance->Register_UIGroup(HeartGroup);
+
+
     m_pGameInstance->RegisterEvent(L"OnHeartDamaged", [](void* pData)
         {
              int* iHp = reinterpret_cast<int*>(pData);

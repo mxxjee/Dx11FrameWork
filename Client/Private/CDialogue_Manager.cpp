@@ -233,6 +233,38 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
 
     }
 
+    else if (strCommand == "Meet_Fairy")
+    {
+        m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 0.3f);
+
+        m_pGameInstance->Invoke(0.3f, 0.f, false, false, []()
+            {
+                CGameInstance::GetInstance()->PlayBGM(L"BGM/FairyBGM.wav", g_BGMVolume);
+
+            }, CGameManager::GetInstance()->Get_MainPlayer());
+
+        
+
+
+    }
+
+    else if (strCommand == "Meet_Fairy_End")
+    {
+        m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 0.3f);
+
+        m_pGameInstance->Invoke(0.3f, 0.f, false, false, []()
+            {
+                CLevel* pLevel = CGameInstance::GetInstance()->Get_CurrentLevel();
+                if (pLevel)
+                    pLevel->Play_LevelBGM();
+
+            },CGameManager::GetInstance()->Get_MainPlayer());
+      
+
+
+
+    }
+
     else if (strCommand == "On_PlayerHeal")
     {
         CQuest_Manager::GetInstance()->Set_FactCheckValue(CQuest_Manager::QuestFact::SAVE_CHILD, true);
@@ -284,14 +316,24 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
         CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::SWROD, 1);
 
     }
+
+    else if (strCommand == "Tarin_Help")
+    {
+        m_pGameInstance->PlayBGM(L"BGM/Tarin_Help.wav", g_BGMVolume);
+
+    }
+
+
     else if (strCommand == "Witch_Mix")
     {
         GameEvent gameEvent;
         gameEvent.Name = "Play_Witch_Mix";
 
         CInventory_Manager::GetInstance()->Use_Item(ItemType::MUSHROOM, 1);
-
+        
         m_pGameInstance->Emit(gameEvent);
+
+        m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 0.5f);
 
     }
 

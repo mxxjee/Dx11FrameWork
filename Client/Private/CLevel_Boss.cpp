@@ -253,7 +253,7 @@ HRESULT CLevel_Boss::Ready_Layer_Monster(const _wstring& strLayerTag)
     JackyDesc.ObjTag =L"Jacky";
 
     JackyDesc.iAttack = 10;
-    JackyDesc.MaxHp = 1;//5;//테스트
+    JackyDesc.MaxHp = 5;//테스트
     JackyDesc.fActionRange = 3.f;
     JackyDesc.m_iLevelID = m_iLevelID;
     JackyDesc.RoamRadius = 0.f;
@@ -460,6 +460,7 @@ void CLevel_Boss::OnEnter()
                 pJacky->Set_DeadEvent([this]()
                     {
                         
+                        CGameInstance::GetInstance()->StopSoundFade(CHANNELID::SOUND_BGM, 0.5f);
                         GameEvent Event;
                         Event.Name = "OpenDoor";
 
@@ -467,6 +468,13 @@ void CLevel_Boss::OnEnter()
 
                         for (auto& pObj : m_pWalls)
                             pObj->Set_Active(false);
+
+                        m_pGameInstance->Invoke(1.5f, 0.f, false, false, []()
+                            {
+                                CGameInstance::GetInstance()->PlayBGM(L"BGM/BossEnd.wav", g_BGMVolume);
+
+                            }, CGameManager::GetInstance()->Get_MainPlayer());
+
                         m_pGameInstance->Invoke(1.f, 0.f, false, false, [pGameInstance = m_pGameInstance]()
                             {
 
@@ -482,6 +490,7 @@ void CLevel_Boss::OnEnter()
                                         ppNpc->Set_StartEvent(true, CNPC_KidRed::State::WALK);
                                         CGameManager::GetInstance()->Get_MainPlayer()->Enter_EndCutScene();
 
+                                        
                                         
                                     }
                                 }

@@ -233,6 +233,9 @@ void CLevel_Town::Play_LevelBGM()
 
         else
             m_pGameInstance->PlayBGM(L"BGM/Meve.wav", g_BGMVolume);
+
+        m_pGameInstance->PlaySoundW(L"Ambience/ambience_bird2.wav", CHANNELID::SOUND_AMBIENCE, g_AmbienceVolume,true);
+
     }
 
     else
@@ -975,7 +978,7 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 #pragma region 타린트리거
         CEventTrigger::EventTriggerDesc NewChapter_EventDesc;
         NewChapter_EventDesc.vCenter = _float3(0.f, 0.f, 0.f);
-        NewChapter_EventDesc.vExtents = _float3(1.f, 1.f, 1.f);
+        NewChapter_EventDesc.vExtents = _float3(2.f, 1.f, 1.f);
         NewChapter_EventDesc.ObjTag = L"Richard_Chapter_Trigger";    //리처드 챕터 트리거( 리처드 집이동 이벤트)
         NewChapter_EventDesc.m_iLevelID = m_iLevelID;
 
@@ -1008,6 +1011,17 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
 
                 }
+
+                m_pGameInstance->StopSoundFade(SOUND_BGM, 0.5f);
+                m_pGameInstance->StopSoundFade(SOUND_AMBIENCE, 0.5f);
+
+                m_pGameInstance->Invoke(0.8f, 0.f, false, false, []()
+                    {
+                        CGameInstance::GetInstance()->PlaySoundW(L"Effects/Something_Hapapend.wav", CHANNELID::SOUND_EFFECT, g_EffectVolume);
+
+                    }, CGameManager::GetInstance()->Get_MainPlayer());
+
+
             }
 
 
@@ -1029,6 +1043,7 @@ HRESULT CLevel_Town::Ready_EventListners()
         {
             pFadeScreen->PlayFadeIn();
             m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 1.f);
+            m_pGameInstance->StopSoundFade(CHANNELID::SOUND_AMBIENCE, 0.5f);
 
 
         });
@@ -1300,7 +1315,7 @@ void CLevel_Town::OnResume(_uint iPreLevel)
             }, pPlayer);
 
     }
-    
+    m_eArea = CLevel_Town::Area::TOWN;
     break;
 
 
@@ -1314,6 +1329,8 @@ void CLevel_Town::OnResume(_uint iPreLevel)
 
     __super::OnResume(iPreLevel);
     m_pGameInstance->Set_IsLoading(false);
+
+  
     Play_LevelBGM();
     
 }
@@ -1359,7 +1376,9 @@ void CLevel_Town::Change_Area()
 
     if (m_ePreArea != m_eArea)
     {
-        m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 1.f);
+        m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 0.5f);
+        m_pGameInstance->StopSoundFade(CHANNELID::SOUND_AMBIENCE, 0.5f);
+
         switch (m_eArea)
         {
         case Client::CLevel_Town::TOWN:
@@ -1375,7 +1394,7 @@ void CLevel_Town::Change_Area()
         }
 
         CGameInstance::GetInstance()->BroadCastEvent(L"UpdateLevelUI", &strKey);
-        m_pGameInstance->Invoke(1.f, 0.f, 0.f, false, [this]()
+        m_pGameInstance->Invoke(0.8f, 0.f, 0.f, false, [this]()
             {
                 Play_LevelBGM();
 

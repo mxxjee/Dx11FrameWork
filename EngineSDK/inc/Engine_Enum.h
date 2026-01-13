@@ -20,7 +20,7 @@ namespace Engine
 		SOUND_NPC_SFX2,
 		SOUND_NPC_SFX3,
 		SOUND_UI,
-
+		SOUND_AMBIENCE,
 		MAXCHANNEL
 	};
 

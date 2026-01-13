@@ -213,6 +213,7 @@ void CMonster::Enter_State(int newState)
     if (newState == CMonster::DIE)
     {
         m_pAnimBody->Set_PassName("Dissolve");
+        m_pGameInstance->PlaySoundW(L"Monster/Monster_Death.wav", CHANNELID::SOUND_MONSTER_DEATH, g_EffectVolume);
 
     }
 }
@@ -471,6 +472,9 @@ void CMonster::Spawn_HitSparkle(_matrix Matrix)
         pSparkleEffect->Play();
     }
 
+    m_pGameInstance->PlaySoundW(L"Effects/Hit.wav", CHANNELID::SOUND_MONSTER_HIT, g_EffectVolume);
+
+
 }
 
 void CMonster::Set_Dead()
@@ -502,9 +506,12 @@ void CMonster::Update_DeadState(_float fTimeDelta)
 {
     if (iHp <= 0&& !m_bStartDissolve)
     {
-        if(!m_ActionControl.m_bDead)
+        if (!m_ActionControl.m_bDead)
+        {
             m_ActionControl.m_bDead = true;
+            m_pGameInstance->PlaySoundW(L"Monster/Monster_Death.wav", CHANNELID::SOUND_MONSTER_DEATH, g_EffectVolume);
 
+        }
         Set_CollisionEnable(false);
         m_bStartDissolve = true;
         m_fDissolveAlpha = 0.f;
@@ -546,6 +553,7 @@ void CMonster::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
         m_ActionControl.m_bDamage = 1.f;
         --iHp;
 
+    
         CPartObject* pPart = dynamic_cast<CPartObject*>(pOwner);
         if (pPart)
         {

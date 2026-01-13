@@ -166,7 +166,9 @@ void CInteraction_Rock::Enter_Interaction()
     int iRandom = rand() % 2;
     m_pGameInstance->PlaySoundW(L"LinkVoice/Link_Rift" + to_wstring(iRandom)+L".wav",
         CHANNELID::SOUND_PLAYER_SFX1, g_VoiceVolume);
-
+    
+    m_pGameInstance->PlaySoundW(L"Effects/Lift.wav",
+        CHANNELID::SOSUND_PLAYER_SFX2, g_EffectVolume);
 
 
     //anim notify에 의해 들게된다..
@@ -193,6 +195,10 @@ void CInteraction_Rock::Exit_Interaction()
     m_pGameInstance->SetActiveGroup(L"Interaction_PopUp_Carry", false);
     m_pGameInstance->PlaySoundW(L"LinkVoice/Link_Throw.wav",
         CHANNELID::SOUND_PLAYER_SFX1, g_VoiceVolume);
+
+    m_pGameInstance->PlaySoundW(L"Effects/Throw.wav",
+        CHANNELID::SOSUND_PLAYER_SFX2, g_EffectVolume);
+
 
 }
 

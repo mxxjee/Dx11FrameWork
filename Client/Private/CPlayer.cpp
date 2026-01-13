@@ -1607,6 +1607,7 @@ void CPlayer::OnDamageBehavior()
     //Damage Animnotify...½Ã°£ÀÌÈÄ ±ôºý°Å¸²
     
     m_pGameInstance->PlaySoundW(L"LinkVoice/Link_Damage.wav", CHANNELID::SOUND_PLAYER_SFX1, g_VoiceVolume);
+    m_pGameInstance->PlaySoundW(L"Effects/Hit.wav", CHANNELID::SOSUND_PLAYER_SFX2, g_EffectVolume);
 
 }
 

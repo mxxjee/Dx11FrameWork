@@ -12,9 +12,9 @@
             {
               "Speaker": "숲의 요정",
               "Text": "어머.. 인간이 여길 찾아오다니.",
-              "strActionCommand": "",
               "Sound": "NPC/Fairy0.wav",
-              "actionTiming": "ON_FINISH"
+              "strActionCommand": "Meet_Fairy",
+              "actionTiming": "ON_START"
             },
             {
               "Speaker": "숲의 요정",
@@ -49,7 +49,7 @@
             {
               "Speaker": "숲의 요정",
               "Text": "가져다 주시면, 신비로운 곳으로 데려가드릴게요!",
-              "strActionCommand": "",
+              "strActionCommand": "Meet_Fairy_End",
               "actionTiming": "ON_FINISH"
             }
           ]
