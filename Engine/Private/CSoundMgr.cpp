@@ -34,6 +34,65 @@ void CSoundMgr::Release()
     m_pSystem = nullptr;
 }
 
+void CSoundMgr::Update(_float fTimeDelta)
+{
+    auto iter = m_FadeList.begin();
+    while (iter != m_FadeList.end())
+    {
+        iter->fTime += fTimeDelta;
+        
+        float fRatio = iter->fTime / iter->fDuration;
+        if (fRatio > 1)
+        {
+            FMOD_Channel_Stop(m_pChannelArr[iter->eID]);
+            iter = m_FadeList.erase(iter);
+        }
+
+        else
+        {
+            float fNewVol = iter->fStartVol * (1.f - fRatio);
+            FMOD_Channel_SetVolume(m_pChannelArr[iter->eID], fNewVol);
+            ++iter;
+        }
+    }
+}
+
+void CSoundMgr::StopSoundFade(CHANNELID eID, float fDuration)
+{
+    /*현재 재생중인지 체크*/
+    FMOD_BOOL       isPlaying = FALSE;
+    FMOD_Channel_IsPlaying(m_pChannelArr[eID], &isPlaying);
+
+    if (!isPlaying)
+        return;
+
+    //이미 페이드아웃중일경우 return
+    auto iter = m_FadeList.begin();
+    while (iter != m_FadeList.end())
+    {
+        if (iter->eID == eID)
+            return;
+
+        else
+            ++iter;
+
+    }
+
+    //현재 볼륨부터 서서히줄여나기기시작
+    float fCurrentVol = 0.f;
+    FMOD_Channel_GetVolume(m_pChannelArr[eID], &fCurrentVol);
+
+    //페이드리스트 만들어서 등록
+    tFadeInfo info;
+    info.eID = eID;
+    info.fTime = 0.f;
+    info.fDuration = fDuration;
+    info.fStartVol = fCurrentVol;
+
+    m_FadeList.push_back(info);
+
+}
+
 void CSoundMgr::PlaySound(const std::wstring& soundKey, CHANNELID eID, float fVolume)
 {
     auto iter = m_mapSound.find(soundKey);

@@ -349,6 +349,7 @@ void CLevel_Logo::OnEnter()
         });
 
 
+    m_pGameInstance->PlaySoundW(L"BGM/Menu.wav", CHANNELID::SOUND_BGM, g_BGMVolume);
 
 
   
@@ -371,6 +372,8 @@ void CLevel_Logo::OnPause(_uint iNextLevel)
 
 void CLevel_Logo::OnExit()
 {
+
+    m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 1.f);
 
     m_pGameInstance->UnRegisterEvent(L"FadeOutEnd");
 

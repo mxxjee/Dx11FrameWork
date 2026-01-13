@@ -160,6 +160,8 @@ bool CDialogue_Manager::AdvanceDialogueStep()
     
     m_CurrentWstr = CurrentStep.strText;
     m_CurrentSpeaker = CurrentStep.strSpeaker;
+    if (CurrentStep.IsHaveSound)
+        m_pGameInstance->PlaySoundW(CurrentStep.SoundFile, CHANNELID::SOUND_NPC_SFX1, g_VoiceVolume);
 
     
     CGameInstance::GetInstance()->BroadCastEvent(L"UpdateNPCText", &m_CurrentWstr);
@@ -585,6 +587,13 @@ void CDialogue_Manager::ParseDialogueChapter(const json& jChap, DialogueChapter&
 
             }
                 
+            if (jStep.contains("Sound"))
+            {
+                string SoundName = jStep.at("Sound").get<string>();
+                step.IsHaveSound = true;
+                step.SoundFile = StringToWString(SoundName);
+            }
+               
 
             chap.steps.push_back(step);
         }

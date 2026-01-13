@@ -8,6 +8,7 @@
           "iQuestOffered": 1001,
           "iQuestRequiredToUnlock": 0,
           "strNextPermanentChapterID": "Q1001_ACTIVE_PERM",
+          "Sound": "Marin0.wav",
           "Steps": [
             {
               "Speaker": "???",

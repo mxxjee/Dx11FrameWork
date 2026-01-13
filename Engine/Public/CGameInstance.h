@@ -397,6 +397,7 @@ public:
 #endif
 
 #pragma endregion
+	 void		StopSoundFade(CHANNELID eID, float fDuration);
 	 void PlaySound(const wstring& pSoundKey, CHANNELID eID, float fVolume);
 	 void PlayBGM(const std::wstring& soundKey, float fVolume);
 	 void StopSound(CHANNELID eID);

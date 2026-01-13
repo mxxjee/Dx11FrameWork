@@ -220,6 +220,7 @@ void CGameInstance::LateUpdate_Engine(float fTimedelta)
 	if(m_EngineDesc.eEngineMode==EngineMode::CLIENT)
 		m_pCollisionManager->Update_CollisionGroup(fTimedelta);
 
+	m_pSound_Manager->Update(fTimedelta);
 	m_pTimerTask_Manager->Update(fTimedelta);
 	m_pEventBusManager->DisPatch(fTimedelta);
 }
@@ -1141,6 +1142,12 @@ HRESULT CGameInstance::Debug_RT_Render(const _wstring& strMRTTag, CShader* pShad
 #endif
 
 #pragma region Sound_Manager
+void CGameInstance::StopSoundFade(CHANNELID eID, float fDuration)
+{
+	if (m_pSound_Manager)
+		m_pSound_Manager->StopSoundFade(eID, fDuration);
+
+}
 void CGameInstance::PlaySound(const wstring& pSoundKey, CHANNELID eID, float fVolume)
 {
 	if (m_pSound_Manager)

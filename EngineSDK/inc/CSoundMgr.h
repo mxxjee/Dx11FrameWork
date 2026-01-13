@@ -5,6 +5,15 @@ NS_BEGIN(Engine)
 
 class CSoundMgr
 {
+
+public:
+	struct tFadeInfo
+	{
+		CHANNELID		eID;
+		float			fTime = 0.f;
+		float			fDuration = 1.f;	//완전히 페이드아웃에 대해 걸리는시간
+		float			fStartVol;	//시작볼ㄹ ㅠㅁ
+	};
 public:
 	static CSoundMgr* Get_Instance()
 	{
@@ -30,6 +39,10 @@ public:
 	void Release();
 
 public:
+	void		Update(_float fTimeDelta);
+	void		StopSoundFade(CHANNELID eID, float fDuration=1.f);
+
+public:
 	void PlaySound(const wstring& pSoundKey, CHANNELID eID, float fVolume);
 	void PlayBGM(const std::wstring& soundKey, float fVolume);
 	void StopSound(CHANNELID eID);
@@ -51,6 +64,9 @@ private:
 
 	// 사운드 ,채널 객체 및 장치를 관리하는 객체 
 	FMOD_SYSTEM* m_pSystem;
+
+private:
+	list<tFadeInfo>		m_FadeList;		//페이드아웃을 할 사운드 리스트
 };
 
 NS_END

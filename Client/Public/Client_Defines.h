@@ -10,7 +10,10 @@
 
 extern HWND g_hWnd;
 extern HINSTANCE g_hInst;
-
+extern float	g_TotalVolume;
+extern float	g_BGMVolume;
+extern float	g_VoiceVolume;
+extern float	g_EffectVolume;
 
 namespace Client
 {
@@ -259,6 +262,8 @@ struct DialogueStep
 	Dialog_Action_Timing actionTiming= Dialog_Action_Timing::ON_START;
 	string strActionCommand = "";		//내릴 명령(이벤트 이름, 이벤트버스 통해처리)
 
+	bool	IsHaveSound = false;
+	wstring SoundFile = L"";		//재생할 사운드파일, 없으면 공백으로표기
 };
 
 ////2. 챕터단위
