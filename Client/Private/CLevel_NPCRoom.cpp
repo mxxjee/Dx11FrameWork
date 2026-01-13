@@ -99,9 +99,10 @@ void CLevel_NPCRoom::OnEnter()
 
     _float4 vSpawnPos = CRoom_Manager::GetInstance()->Get_SpawnPosition();
    
+ 
     m_pPlayer = CGameManager::GetInstance()->Get_MainPlayer();
     CheckNull(m_pPlayer);
-
+    m_pPlayer->Set_HideWeapons();
 
     m_pPlayer->Get_Transform()->Set_State(STATE::POSITION, XMLoadFloat4(&vSpawnPos));
     m_pPlayer->Get_Transform()->Rotation(_float3(0.f, 0.f, 0.f));
@@ -179,7 +180,8 @@ void CLevel_NPCRoom::OnResume(_uint iPreLevel)
     
     
     CheckNull(m_pPlayer);
- 
+
+    m_pPlayer->Set_HideWeapons();
     LEVEL_ID PrevID = (LEVEL_ID)iPreLevel;
     switch (PrevID)
     {
@@ -284,6 +286,7 @@ void CLevel_NPCRoom::OnExit()
     //m_pGameInstance->Clear_SceneColliders(m_iLevelID);
 
 
+    m_pPlayer->Show_Weapons();
 }
 
 CLevel_NPCRoom* CLevel_NPCRoom::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LevelArgs& args)

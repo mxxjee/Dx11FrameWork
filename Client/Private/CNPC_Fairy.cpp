@@ -72,6 +72,9 @@ HRESULT CNPC_Fairy::Initialize_Prototype(void* pArg)
                 m_pSpecialEffect->Play();
             }
 
+            m_pGameInstance->PlaySoundW(L"Effects/FairyParticle.wav", CHANNELID::SOUND_NPC_SFX2, g_EffectVolume);
+
+
         });
 
     m_pGameInstance->RegisterListners("Fairy_Go_Loop", [this](const GameEvent& event)

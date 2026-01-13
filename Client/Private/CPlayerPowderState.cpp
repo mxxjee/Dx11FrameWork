@@ -14,6 +14,8 @@ CPlayerPowderState::~CPlayerPowderState()
 void CPlayerPowderState::Enter(CPlayer* pPlayer)
 {
 
+	pPlayer->Set_HideWeapons();
+
 	pPlayerInput = pPlayer->Get_Input();
 	pActionControl = pPlayer->Get_ActionControl();
 
@@ -41,6 +43,8 @@ void CPlayerPowderState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
 
 void CPlayerPowderState::Exit(CPlayer* pPlayer)
 {
+	if(m_pGameInstance->Get_CurrentLevelID()!=ENUM_TO_UINT(LEVEL_ID::ROOM))
+		pPlayer->Show_Weapons();
 }
 
 CPlayerPowderState* CPlayerPowderState::Create()

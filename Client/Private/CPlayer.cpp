@@ -801,6 +801,9 @@ void CPlayer::Create_PowderParticle()
 
 
     }
+
+    m_pGameInstance->PlaySoundW(L"Effects/MagicPowder.wav", CHANNELID::SOSUND_PLAYER_SFX2, g_EffectVolume);
+
     /*for (auto& pInfo : m_PlayerEffects[MAGICPOWDER])
     {
         CEffect::EFFECT_DESC* pDesc = static_cast<CEffect::EFFECT_DESC*>(pInfo);

@@ -252,8 +252,7 @@ void CNPC_Witch::Ready_Events()
                 pEffect->Play();
             }
 
-          
-
+            m_pGameInstance->PlaySoundW(L"Effects/Explosion2.wav",CHANNELID::SOUND_NPC_SFX2,g_EffectVolume);
 
         });
 

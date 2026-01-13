@@ -70,6 +70,7 @@ private:
     Area            m_ePreArea = Area::END;
     Area            m_eArea = Area::TOWN;
 
+    bool        m_bTarinTriggerOnce = false;
 };
 NS_END
 

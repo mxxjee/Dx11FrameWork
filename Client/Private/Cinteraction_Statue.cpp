@@ -214,6 +214,7 @@ void Cinteraction_Statue::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
         m_bOpen = true;
         m_pTriggerBox->Set_Active(false);
         m_vOpenPos = m_pTransformCom->Get_State(STATE::POSITION) + XMVectorSet(2.5f, 0.f, 0.f, 0.f);
+        m_pGameInstance->PlaySoundW(L"Effects/Statue_Move.wav", CHANNELID::SOUND_EFFECT, g_EffectVolume);
 
 
     }

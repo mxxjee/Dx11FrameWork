@@ -992,6 +992,7 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
         NewChapter_EventDesc.EnterFunc = [this]()
         {
+            CheckTrue(m_bTarinTriggerOnce);
             CLayer* pLayer = m_pGameInstance->Find_Layer(m_iLevelID, L"NPC_Layer");
             if (pLayer)
             {
@@ -1024,7 +1025,8 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
 
             }
 
-
+           
+            m_bTarinTriggerOnce = true;
         };
 
         if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"EventTrigger"), ENUM_TO_UINT(LEVEL_ID::TOWN), strLayerTag, &NewChapter_EventDesc)))
@@ -1431,6 +1433,8 @@ void CLevel_Town::Teleport_RichardHouse()
         }
             
     }
+
+ 
 
     /*텔레포트 - 리차드집앞*/
     _vector vTeleportPos = XMVectorSet(79.f, 13.f, 95.f, 1.f);
