@@ -427,6 +427,10 @@ void CPlayer::Update_Input(_float fTimeDelta)
             if (m_Input.m_bisJump = m_pInputManager->IsKeyPressed(KeyCode::X) && m_iState != ENUM_TO_UINT(CPlayer::PLAYER_STATE::JUMP))
             {
                 m_pGravity->Jump(20);
+
+                int iRandom = rand() % 2;
+                m_pGameInstance->PlaySoundW(L"LinkVoice/Link_Jump" + to_wstring(iRandom)+L".wav", CHANNELID::SOUND_PLAYER_SFX1,g_VoiceVolume);
+
                 m_pGravity->SetOnGround(false);
 
             }

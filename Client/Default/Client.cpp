@@ -18,7 +18,7 @@ float	g_TotalVolume=1.f;
 float	g_BGMVolume=g_TotalVolume-0.5f;
 float	g_VoiceVolume=g_TotalVolume-0.3f;
 float	g_EffectVolume=g_TotalVolume-0.3f;
-float	g_UIVolume = g_TotalVolume - 0.3f;
+float	g_UIVolume = g_TotalVolume - 0.6f;
 
 
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.

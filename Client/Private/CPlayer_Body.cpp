@@ -221,6 +221,9 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 		Event.Name = "AttackBegin";
 		pAnim->AddNotify(2, Event);
 
+		Event.Name = "Play_SlashSound";
+		pAnim->AddNotify(5, Event);
+
 		Event.Name = "SlashBegin";
 		pAnim->AddNotify(0, Event);
 
@@ -326,6 +329,9 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 		Event.Name = "PlayerSlashHoldEnd_Start";
 		pAnim->AddNotify(1, Event);
 
+		Event.Name = "Play_hold_ed_Sound";
+		pAnim->AddNotify(7, Event);
+
 	}
 
 	//pAnim = m_pModel->Find_Animation(L"slash_hold_st");
@@ -350,6 +356,36 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 
 HRESULT CPlayer_Body::Ready_Animation_Listner()
 {
+	m_pGameInstance->RegisterListners("AttackBegin", [](const GameEvent& event)
+		{
+			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
+			if (pPlayer)
+				pPlayer->OnAttackBegin();
+		});
+
+	//Play_SlashSound
+	m_pGameInstance->RegisterListners("Play_SlashSound", [](const GameEvent& event)
+		{
+			bool bPlaySound = rand() % 2;
+
+			if (bPlaySound)
+			{
+				int iRandom = rand() % 2;
+				CGameInstance::GetInstance()->PlaySoundW(L"LinkVoice/Link_Swish" + to_wstring(iRandom) + L".wav", CHANNELID::SOUND_PLAYER_SFX1, g_VoiceVolume);
+
+			}
+
+		});
+
+	m_pGameInstance->RegisterListners("Play_hold_ed_Sound", [](const GameEvent& event)
+		{
+			int iRandom = rand() % 2;
+
+			CGameInstance::GetInstance()->PlaySoundW(L"LinkVoice/Link_ChargingEnd" + to_wstring(iRandom)+L".wav", CHANNELID::SOUND_PLAYER_SFX1, g_VoiceVolume);
+
+		});
+
+
 	m_pGameInstance->RegisterListners("AttackBegin", [](const GameEvent& event)
 		{
 			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
