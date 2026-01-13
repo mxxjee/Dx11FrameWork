@@ -76,7 +76,7 @@ HRESULT CLevel_Spawn::Initialize(LevelArgs& args)
     if (FAILED(CQuest_Manager::GetInstance()->Initialize()))
         return E_FAIL;
 
-    m_pGameInstance->PlaySoundW(L"Intro.wav", CHANNELID::SOUND_BGM, 1.f);
+    m_pGameInstance->PlaySoundW(L"Intro.wav", CHANNELID::SOUND_BGM, g_BGMVolume);
 
 
     return S_OK;
@@ -400,7 +400,8 @@ void CLevel_Spawn::OnEnter()
  
 
   
-    //파티클테스트
+    m_pGameInstance->PlayBGM(L"BGM/First_Spawn.wav", g_BGMVolume);
+
   
     return;
 
@@ -420,6 +421,7 @@ void CLevel_Spawn::OnExit()
 {
     __super::OnExit();
 
+    m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, g_BGMVolume);
     CInteraction_Manager::GetInstance()->Clear();
     m_pGameInstance->Clear_SceneColliders(m_iLevelID);
 

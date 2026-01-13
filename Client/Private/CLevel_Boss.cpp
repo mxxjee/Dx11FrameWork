@@ -477,6 +477,7 @@ void CLevel_Boss::OnEnter()
                                     CNPC_KidRed* ppNpc = dynamic_cast<CNPC_KidRed*>(pNpc);
                                     if (ppNpc)
                                     {
+                                        ppNpc->Set_Use_CameraEvent(false);
                                         CGameManager::GetInstance()->Set_EndingStep(EndingStep::START_DIALOGUE);
                                         ppNpc->Set_StartEvent(true, CNPC_KidRed::State::WALK);
                                         CGameManager::GetInstance()->Get_MainPlayer()->Enter_EndCutScene();

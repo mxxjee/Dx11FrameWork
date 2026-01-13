@@ -13,6 +13,7 @@ extern HINSTANCE g_hInst;
 extern float	g_TotalVolume;
 extern float	g_BGMVolume;
 extern float	g_VoiceVolume;
+extern float	g_UIVolume;
 extern float	g_EffectVolume;
 
 namespace Client

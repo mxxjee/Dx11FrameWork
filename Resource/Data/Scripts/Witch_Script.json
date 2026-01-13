@@ -13,6 +13,7 @@
               "Speaker": "마법 할머니",
               "Text": "흐음... 그 버섯냄새...\n 좋은 재료로군.",
               "strActionCommand": "",
+              "Sound": "NPC/Witch0.wav",
               "actionTiming": "ON_FINISH"
             },
             {
@@ -57,6 +58,7 @@
               "Speaker": "마법 할머니",
               "Text": "후후...\n숨고 싶은 것들은 가루를 싫어하거든.",
               "strActionCommand": "",
+              "Sound": "NPC/Witch1.wav",
               "actionTiming": "ON_START"
             },
             {

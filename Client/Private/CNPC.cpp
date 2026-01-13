@@ -313,7 +313,14 @@ void CNPC::Pressed_InteractionKey()
     CheckTrue(m_bWait);
 
     if (!m_pDialogue_Manager->AdvanceDialogueStep())
+    {
+        m_pGameInstance->PlaySoundW(L"System/Dialogue_End.wav", CHANNELID::SOUND_UI, g_UIVolume);
         Exit_Interaction();
+
+    }
+    else
+        m_pGameInstance->PlaySoundW(L"System/Dialogue_Next.wav", CHANNELID::SOUND_UI, g_UIVolume);
+
 }
 
 void CNPC::Set_TriggerBoxEnable(bool b)

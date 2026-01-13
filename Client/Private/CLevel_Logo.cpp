@@ -67,6 +67,8 @@ void CLevel_Logo::Update_Priority(_float fTimeDelta)
     
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::Enter))
     {
+        m_pGameInstance->PlaySoundW(L"System/Select_Start.wav", CHANNELID::SOUND_UI, g_EffectVolume);
+
         pFadeScreen->PlayFadeIn();
 
         pFadeScreen->Set_FadeInEndFunc([FadeScreen=pFadeScreen]()
@@ -349,7 +351,7 @@ void CLevel_Logo::OnEnter()
         });
 
 
-    m_pGameInstance->PlaySoundW(L"BGM/Menu.wav", CHANNELID::SOUND_BGM, g_BGMVolume);
+    m_pGameInstance->PlayBGM(L"BGM/Menu.wav", g_BGMVolume);
 
 
   
@@ -373,7 +375,7 @@ void CLevel_Logo::OnPause(_uint iNextLevel)
 void CLevel_Logo::OnExit()
 {
 
-    m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 1.f);
+    m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, g_BGMVolume);
 
     m_pGameInstance->UnRegisterEvent(L"FadeOutEnd");
 

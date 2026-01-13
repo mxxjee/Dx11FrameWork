@@ -9,7 +9,7 @@
     "DIFFUSE": "glare_00",
     "DataName": "FairyParticle",
     "LifeTime": 1.0,
-    "Loop": true,
+    "Loop": false,
     "NOISE": "Default",
     "OffSet": [
         0.0,

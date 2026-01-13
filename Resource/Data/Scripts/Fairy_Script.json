@@ -13,6 +13,7 @@
               "Speaker": "숲의 요정",
               "Text": "어머.. 인간이 여길 찾아오다니.",
               "strActionCommand": "",
+              "Sound": "NPC/Fairy0.wav",
               "actionTiming": "ON_FINISH"
             },
             {
@@ -63,6 +64,7 @@
               "Speaker": "숲의 요정",
               "Text": "아직 준비가 안된 것 같아요..",
               "strActionCommand": "",
+              "Sound": "NPC/Fairy0.wav",
               "actionTiming": "ON_FINISH"
             },
             {
@@ -83,6 +85,7 @@
               "Speaker": "숲의 요정",
               "Text": "이제 모든 준비가 된 것 같군요..!",
               "strActionCommand": "",
+              "Sound": "NPC/Fairy1.wav",
               "actionTiming": "ON_FINISH"
             },
             {

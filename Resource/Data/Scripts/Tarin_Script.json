@@ -13,6 +13,7 @@
               "Speaker": "타린",
               "Text": "어, 링크! 일어났구나\n난 타린이라고 한다. 몸은 어때?",
               "strActionCommand": "",
+              "Sound": "NPC/Tarin1.wav",
               "actionTiming": "ON_FINISH"
             },
             {
@@ -50,6 +51,7 @@
           "Steps": [
             {
               "Speaker": "타린",
+              "Sound": "NPC/Tarin0.wav",
               "Text": "바깥 구경은 좀 많이하고있는건가!",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
@@ -92,6 +94,7 @@
               "Speaker": "타린",
               "Text": "헉..헉..\n큰일이야.. 정말 큰일이야..!",
               "strActionCommand": "",
+              "Sound": "NPC/Tarin2.wav",
               "actionTiming": ""
             },
             {
@@ -129,6 +132,7 @@
             {
               "Speaker": "타린",
               "Text": "여기야... 리차드네 집.\n밖에서 보기엔 그냥 평범해 보이지?",
+              "Sound": "NPC/Tarin0.wav",
               "strActionCommand": "",
               "actionTiming": ""
             },

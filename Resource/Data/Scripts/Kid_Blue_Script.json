@@ -13,11 +13,13 @@
               "Speaker": "병준",
               "Text": "으으..무서워요..",
               "strActionCommand": "",
+              "Sound": "NPC/KidBlue0.wav",
               "actionTiming": "ON_FINISH"
             },
             {
               "Speaker": "병준",
               "Text": "숲 안에서 이상한 소리가 나서 가봤더니...\n길을 잃어버렸어요..",
+              "Sound": "NPC/KidBlue2.wav",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             },
@@ -51,6 +53,7 @@
               "Speaker": "병준",
               "Text": "저를 구해주러 숲속까지 와줘서 정말 고마웠어요.\n이제 숲 근처에는 절대 안 갈 거예요!",
               "strActionCommand": "",
+              "Sound": "NPC/KidBlue1.wav",
               "actionTiming": "ON_FINISH"
             }
           ]

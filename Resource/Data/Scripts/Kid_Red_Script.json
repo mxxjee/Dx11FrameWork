@@ -12,6 +12,7 @@
             {
               "Speaker": "건희",
               "Text": "우씨... 여긴 어떻게 찾았어?\n나만의 비밀기지란 말이야!",
+              "Sound": "NPC/KidRed0.wav",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             },
@@ -64,17 +65,20 @@
               "Speaker": "건희",
               "Text": "엄마! 저 사람이 내 친구들을\n다 쫓아내고 기지도 망쳤어!",
               "strActionCommand": "KidRed_Angry",
+              "Sound": "NPC/KidRed1.wav",
               "actionTiming": "ON_START"
             },
             {
               "Speaker": "마마샤",
               "Text": "건희 너! 위험한 곳에 가지 말랬지?\n구해준 분께 무슨 말버릇이니!",
+              "Sound": "NPC/Mamash0.wav",
               "strActionCommand": "Mom_Angry",
               "actionTiming": "ON_START"
             },
             {
               "Speaker": "건희",
               "Text": "히잉... 그치만...\n내가 얼마나 아끼던 기지였는데...",
+              "Sound": "NPC/KidRed2.wav",
               "strActionCommand": "KidRed_Sad",
               "actionTiming": "ON_START"
             },

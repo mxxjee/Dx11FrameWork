@@ -13,6 +13,7 @@
               "Speaker": "마마샤",
               "Text": "어서와요, 링크! 당신을 찾고 있었어요.",
               "strActionCommand": "",
+              "Sound": "NPC/Mamash0.wav",
               "actionTiming": "ON_FINISH"
             },
             {
@@ -62,6 +63,7 @@
               "Speaker": "마마샤",
               "Text": "숲이에요...\n숲에서 분명 무슨 일이 생겼을 거예요.",
               "strActionCommand": "",
+              "Sound": "NPC/Mamash2.wav",
               "actionTiming": "ON_FINISH"
             },
             {
@@ -81,6 +83,7 @@
             {
               "Speaker": "마마샤",
               "Text": "정말.. 정말 고마워요.\n이 은혜는 잊지 않을게요.",
+              "Sound": "NPC/Mamash1.wav",
               "strActionCommand": "Mom_Finish",
               "actionTiming": "ON_FINISH"
             }

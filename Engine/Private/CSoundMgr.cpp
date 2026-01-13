@@ -81,6 +81,7 @@ void CSoundMgr::StopSoundFade(CHANNELID eID, float fDuration)
     //현재 볼륨부터 서서히줄여나기기시작
     float fCurrentVol = 0.f;
     FMOD_Channel_GetVolume(m_pChannelArr[eID], &fCurrentVol);
+    FMOD_Channel_SetMode(m_pChannelArr[eID], FMOD_LOOP_OFF);
 
     //페이드리스트 만들어서 등록
     tFadeInfo info;
@@ -135,6 +136,22 @@ void CSoundMgr::PlayBGM(const std::wstring& soundKey, float fVolume)
     auto iter = m_mapSound.find(soundKey);
     if (iter == m_mapSound.end())
         return;
+
+    //페이드아웃 목록에 BGMㅇ있따면 제거
+    auto fadeIter = m_FadeList.begin();
+    while (fadeIter != m_FadeList.end())
+    {
+        if (fadeIter->eID == CHANNELID::SOUND_BGM)
+        {
+            fadeIter = m_FadeList.erase(fadeIter);
+        }
+        else
+            ++fadeIter;
+
+    }
+
+    FMOD_Channel_Stop(m_pChannelArr[SOUND_BGM]);
+
 
     FMOD_System_PlaySound(
         m_pSystem,

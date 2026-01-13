@@ -8,12 +8,13 @@
           "iQuestOffered": 1001,
           "iQuestRequiredToUnlock": 0,
           "strNextPermanentChapterID": "Q1001_ACTIVE_PERM",
-          "Sound": "Marin0.wav",
+
           "Steps": [
             {
               "Speaker": "???",
               "Text": "정신이 들어, 링크?",
               "strActionCommand": "",
+              "Sound": "NPC/Marin0.wav",
               "actionTiming": "ON_FINISH"
             },
             {
@@ -26,6 +27,7 @@
               "Speaker": "???",
               "Text": "설마... 내가 누군지 모르겠어?",
               "strActionCommand": "PLAY_ANIM:NPC_BOW",
+              "Sound": "NPC/Marin1.wav",
               "actionTiming": "ON_START"
             },
             {
@@ -76,6 +78,7 @@
               "Speaker": "마린",
               "Text": "응? 나한테 무슨 할 말 있어?",
               "strActionCommand": "",
+              "Sound": "NPC/Marin0.wav",
               "actionTiming": "ON_FINISH"
             },
             {
@@ -94,6 +97,7 @@
             {
               "Speaker": "마린",
               "Text": "응? 나한테 무슨 할 말 있어?",
+              "Sound": "NPC/Marin0.wav",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             },
@@ -114,6 +118,7 @@
               "Speaker": "마린",
               "Text": "정말 고생 많았어, 링크.\n네가 없었다면 이 섬의 평화도 없었을 거야.",
               "strActionCommand": "",
+              "Sound": "NPC/Marin2.wav",
               "actionTiming": "ON_FINISH"
             },
             {

@@ -168,8 +168,23 @@ void CNPC_KidRed::Enter_InteractRange()
 
 void CNPC_KidRed::Enter_Interaction()
 {
-    __super::Enter_Interaction();
 
+    m_bTalking = true;
+    CheckFalse(m_pTriggerBox->Is_Active());
+    m_pAnimBody->Reserve_Animation(L"talk", true);
+    m_pGameInstance->BroadCastEvent(L"OnTalkUIHide", (void*)nullptr);
+
+    if(m_bUseCameraEvent)
+        m_pGameInstance->Emit(Enter_Interaction_Event);
+
+    if (m_pGameManager->Get_EndingStep() == EndingStep::ENDINGMESSAGE)
+        m_pQuest_Manager->Set_NPC_Chapter(DialogueTag, "Ending");
+
+
+    m_pDialogue_Manager->StartDialogue(DialogueTag);
+
+
+    m_bIsTalking = true;
 }
 
 void CNPC_KidRed::Stay_Interaction(_float fTimeDelta)
