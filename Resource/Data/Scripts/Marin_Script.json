@@ -123,7 +123,7 @@
             },
             {
               "Speaker": "마린",
-              "Text": "이제 코호린트 섬의 바람을 느끼며 조금 쉬어도 괜찮아.",
+              "Text": "이제 코호린트 섬의 바람을 느끼며\n조금 쉬어도 괜찮아.",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             }

@@ -11,6 +11,8 @@
 #include "CLevel_Town.h"
 #include "CNPC.h"
 #include "CNPC_KidRed.h"
+#include "CGameManager.h"
+
 
 
 IMPLEMENT_SINGLETON(CDialogue_Manager)
@@ -45,7 +47,15 @@ void CDialogue_Manager::StartDialogue(string strModelID)
     
     size_t HashKey = hash<string>()(strModelID);
 
-    string strChapterID = CQuest_Manager::GetInstance()->Get_Optimal_ChapterID(strModelID);
+      
+    string strChapterID = "";
+    
+
+    if (CGameManager::GetInstance()->Get_EndingStep() != EndingStep::ENDINGMESSAGE)
+        strChapterID = CQuest_Manager::GetInstance()->Get_Optimal_ChapterID(strModelID);
+
+    else
+        strChapterID = CQuest_Manager::GetInstance()->Get_NPC_Chapter(strModelID);
 
     if (m_mapScripts.count(HashKey) && m_mapScripts.at(HashKey).Chapters.count(strChapterID))
     {

@@ -1001,7 +1001,7 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
                 {
                     CNPC_Tarin* pNpc_Tarin = dynamic_cast<CNPC_Tarin*>(pNPC);
                     CheckNull(pNpc_Tarin);
-                    pNpc_Tarin->Set_Active(true);
+                    pNpc_Tarin->Set_Active(true); 
                     pNpc_Tarin->Set_StartEvent(true, CNPC_Tarin::State::WALK);
 
                     CPlayer* pPlayer = CGameManager::GetInstance()->Get_MainPlayer();

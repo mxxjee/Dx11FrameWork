@@ -110,14 +110,14 @@
           "Steps": [
             {
               "Speaker": "마마샤",
-              "Text": "링크, 덕분에 우리 가족이 다시 웃을 수 있게 되었어요.",
+              "Text": "링크,\n덕분에 우리 가족이 다시 웃을 수 있게 되었어요.",
               "strActionCommand": "",
               "Sound": "NPC/Mamasha1.wav",
               "actionTiming": "ON_FINISH"
             },
             {
               "Speaker": "마마샤",
-              "Text": "당신은 우리 마을의 영원한 영웅이자 최고의 방범대원이에요.",
+              "Text": "당신은 우리 마을의 영원한 영웅이자\n최고의 방범대원이에요.",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             }
