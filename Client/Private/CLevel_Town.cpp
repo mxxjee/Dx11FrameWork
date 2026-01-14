@@ -117,20 +117,15 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
     //엔딩씬 테스트
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::E))
     {
-        /*GameEvent Event;
-        Event.Name = "Go_WitchRoom";
-
-        m_pGameInstance->Emit(Event);*/
-    
+        m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 1.f);
         pFadeScreen->Set_FadeInEndFunc([this]()
             {
                 LevelArgs args;
-                args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
+                args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::BOSS);
                 args.changeType = LEVELCHANGETYPE::PUSH;
                 args.loadingChangeType = LEVELCHANGETYPE::PUSH;
                 args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
 
-                CRoom_Manager::GetInstance()->Request_Room("RichardHouse");
 
                 if (FAILED(m_pGameInstance->Level_Changer(
                     ENUM_TO_UINT(LEVEL_ID::LOADING),
@@ -140,7 +135,8 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
             });
 
         pFadeScreen->PlayFadeIn();
-
+    
+      
     }
 
     /*

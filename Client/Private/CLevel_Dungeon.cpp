@@ -98,9 +98,10 @@ void CLevel_Dungeon::Render()
 HRESULT CLevel_Dungeon::Ready_Lights()
 {
 	LIGHT_DESC      LightDesc{};
+	LightDesc.LightName = L"Dungeon_DirectionLight";
 	LightDesc.eType = LIGHT::DIRECTIONAL;
 	LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-	LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+	LightDesc.vDiffuse = _float4(0.715f, 0.715f, 0.715f, 1.f);
 	LightDesc.vAmbient = _float4(0.5f, 0.5f, 0.5f, 1.f);
 	LightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
 

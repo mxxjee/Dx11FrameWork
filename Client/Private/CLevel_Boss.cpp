@@ -30,6 +30,7 @@
 
 #include "CNPC.h"
 #include "CNPC_KidRed.h"
+#include "CLight.h"
 
 
 
@@ -82,8 +83,10 @@ void CLevel_Boss::Update_Priority(_float fTimeDelta)
 void CLevel_Boss::Update(const _float fTimeDelta)
 {
     __super::Update(fTimeDelta);
-
-
+    Change_Value(fTimeDelta);
+   
+  
+    
 }
 
 void CLevel_Boss::Update_Late(_float fTimeDelta)
@@ -105,15 +108,30 @@ void CLevel_Boss::Render()
 
 HRESULT CLevel_Boss::Ready_Lights()
 {
-    LIGHT_DESC      LightDesc{};
-    LightDesc.eType = LIGHT::DIRECTIONAL;
-    LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-    LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-    LightDesc.vAmbient = _float4(0.5f, 0.5f, 0.5f, 1.f);
-    LightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
 
-    if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, LightDesc)))
-        return E_FAIL;
+    m_pGameInstance->Load_LightData(ENUM_TO_UINT(LEVEL_ID::BOSS),
+        "../../Resource/Data/Map/Lights/LightData_Boss.json");
+
+    /*첫 진입시에는 밝은 조명, 포인트조명 3개끄기 */
+    m_pDirectionalLight = m_pGameInstance->Get_DirectionLight(ENUM_TO_UINT(LEVEL_ID::BOSS));
+    if (m_pDirectionalLight)
+    {
+        LIGHT_DESC  pDesc = *m_pDirectionalLight->Get_LightDesc();
+        pDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+        m_pDirectionalLight->Set_LightDesc(pDesc);
+    }
+
+    wstring Names[] = { L"Light1",L"Light2",L"Light3" };
+
+    for (int i = 0; i < 3; ++i)
+    {
+        CLight* pLight = m_pGameInstance->Get_Light(ENUM_TO_UINT(LEVEL_ID::BOSS), Names[i]);
+        if (pLight)
+        {
+            m_PointLights.push_back(pLight);
+            pLight->Set_Active(false);
+        }
+    }
 
 
     return S_OK;
@@ -312,7 +330,7 @@ HRESULT CLevel_Boss::Ready_Layer_Trigger(const _wstring& strLayerTag)
         Event.Name = "Start_Boss";
         m_pGameInstance->Emit(Event);
 
-        
+        m_bValue = true;
 
     };
 
@@ -459,7 +477,7 @@ void CLevel_Boss::OnEnter()
                 pJacky->Set_ChaseTargetObj(pJackyBall);
                 pJacky->Set_DeadEvent([this]()
                     {
-                        
+                        m_bValue = false;
                         CGameInstance::GetInstance()->StopSoundFade(CHANNELID::SOUND_BGM, 0.5f);
                         GameEvent Event;
                         Event.Name = "OpenDoor";
@@ -547,4 +565,61 @@ CLevel_Boss* CLevel_Boss::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11Dev
 void CLevel_Boss::Free()
 {
     __super::Free();
+}
+
+void CLevel_Boss::Change_Value(_float fTimeDelta)
+{
+    if (m_bPreValue != m_bValue)
+    {
+        //Startboss값에 따라서 조명 제어
+        if (m_bValue)
+        {
+            //조명켜주기,
+            m_vTargetDiffuse = _float4(0.45f, 0.45f, 0.45f, 1.f);
+            m_pGameInstance->Invoke(1.f, 0.f, false, false, [this]()
+                {
+                    for (auto& p : m_PointLights)
+                    {
+                        if (!p->IsActive())
+                            p->Set_Active(true);
+                    }
+
+                }, CGameManager::GetInstance()->Get_MainPlayer());
+
+           
+        }
+        else
+        {
+            m_vTargetDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+            for (auto& p : m_PointLights)
+            {
+                if (p->IsActive())
+                    p->Set_Active(false);
+            }
+        }
+
+        m_bPreValue = m_bValue;
+    }
+
+
+    if (m_pDirectionalLight)
+    {
+
+        LIGHT_DESC Desc = *m_pDirectionalLight->Get_LightDesc();
+        _float Distance = XMVectorGetX(XMVector3Length(XMLoadFloat4(&Desc.vDiffuse) - XMLoadFloat4(&m_vTargetDiffuse)));
+        if (Distance > 0.01f)
+        {
+            _vector vNewDiffuse = XMVectorLerp(XMLoadFloat4(&Desc.vDiffuse), XMLoadFloat4(&m_vTargetDiffuse), 0.1f);
+            XMStoreFloat4(&Desc.vDiffuse, vNewDiffuse);
+            m_pDirectionalLight->Set_LightDesc(Desc);
+
+        }
+        else
+        {
+            LIGHT_DESC Desc = *m_pDirectionalLight->Get_LightDesc();
+            Desc.vDiffuse = m_vTargetDiffuse;
+            m_pDirectionalLight->Set_LightDesc(Desc);
+
+        }
+    }
 }

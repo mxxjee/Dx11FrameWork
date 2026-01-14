@@ -3,6 +3,7 @@
 namespace Engine
 {
     class CGameObject;
+    class CLight;
 }
 
 NS_BEGIN(Client)
@@ -60,7 +61,18 @@ private:
     CInteraction_JackyBall* pJackyBall;
 
     vector<CWall*>       m_pWalls;
-      
+
+    _float4         m_vTargetDiffuse = _float4(0.45f, 0.45f, 0.45f, 1.f);
+
+private:
+    void        Change_Value(_float fTimeDelta);
+private:
+    CLight* m_pDirectionalLight = nullptr;
+    vector<CLight*>     m_PointLights;
+
+private:
+    bool        m_bPreValue = true;
+    bool        m_bValue = false;
 };
 
 
