@@ -16,6 +16,12 @@ class CLevel_Boss :
     public CLevel
 {
 private:
+    typedef struct tagMovingLight
+    {
+        class CLight* pLight = nullptr;
+        _vector vDir;
+    }MOVING_LIGHT;
+private:
     explicit CLevel_Boss(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
     virtual ~CLevel_Boss() = default;
 
@@ -66,13 +72,22 @@ private:
 
 private:
     void        Change_Value(_float fTimeDelta);
+    void        Move_Lights(_float fTimeDelta);
 private:
     CLight* m_pDirectionalLight = nullptr;
-    vector<CLight*>     m_PointLights;
+    vector<MOVING_LIGHT>     m_PointLights;
 
 private:
     bool        m_bPreValue = true;
     bool        m_bValue = false;
+
+    _float          m_fTime = 0.f;
+    _float          m_fCoolTime = 3.f;
+
+    _float4         MinBound=_float4(0.f,0.f,0.f,1.f);
+    _float4         MaxBound = _float4(0.f, 0.f, 0.f, 1.f);
+
+
 };
 
 

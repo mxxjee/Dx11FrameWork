@@ -71,6 +71,9 @@ HRESULT CLevel_Boss::Initialize(LevelArgs& args)
     UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
     pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Find(L"FadeScreen"));
 
+    MinBound = _float4(7.205f, 0.f, 8.949f, 1.f);
+    MaxBound = _float4(17.893f, 0.f, 16.576f, 1.f);
+
 
     return S_OK;
 }
@@ -84,7 +87,7 @@ void CLevel_Boss::Update(const _float fTimeDelta)
 {
     __super::Update(fTimeDelta);
     Change_Value(fTimeDelta);
-   
+    Move_Lights(fTimeDelta);
   
     
 }
@@ -125,10 +128,28 @@ HRESULT CLevel_Boss::Ready_Lights()
 
     for (int i = 0; i < 3; ++i)
     {
+
         CLight* pLight = m_pGameInstance->Get_Light(ENUM_TO_UINT(LEVEL_ID::BOSS), Names[i]);
         if (pLight)
         {
-            m_PointLights.push_back(pLight);
+            MOVING_LIGHT LightInfo;
+            LightInfo.pLight = pLight;
+
+            _float X = m_pGameInstance->Random(-1.f, 1.f);
+            _float Z = m_pGameInstance->Random(-1.f, 1.f);
+
+            LightInfo.vDir = XMVectorSet(
+                X,
+                0.f,
+                Z
+                , 0.f
+
+            );
+
+            LightInfo.vDir= XMVector3Normalize(LightInfo.vDir);
+
+
+            m_PointLights.push_back(LightInfo);
             pLight->Set_Active(false);
         }
     }
@@ -478,7 +499,7 @@ void CLevel_Boss::OnEnter()
                 pJacky->Set_DeadEvent([this]()
                     {
                         m_bValue = false;
-                        CGameInstance::GetInstance()->StopSoundFade(CHANNELID::SOUND_BGM, 0.5f);
+                        CGameInstance::GetInstance()->StopSoundFade(CHANNELID::SOUND_BGM,0.1f);
                         GameEvent Event;
                         Event.Name = "OpenDoor";
 
@@ -580,8 +601,12 @@ void CLevel_Boss::Change_Value(_float fTimeDelta)
                 {
                     for (auto& p : m_PointLights)
                     {
-                        if (!p->IsActive())
-                            p->Set_Active(true);
+                        if (p.pLight)
+                        {
+                            if (!p.pLight->IsActive())
+                                p.pLight->Set_Active(true);
+                        }
+                      
                     }
 
                 }, CGameManager::GetInstance()->Get_MainPlayer());
@@ -593,8 +618,11 @@ void CLevel_Boss::Change_Value(_float fTimeDelta)
             m_vTargetDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
             for (auto& p : m_PointLights)
             {
-                if (p->IsActive())
-                    p->Set_Active(false);
+                if (p.pLight)
+                {
+                    if (p.pLight->IsActive())
+                        p.pLight->Set_Active(false);
+                }
             }
         }
 
@@ -620,6 +648,69 @@ void CLevel_Boss::Change_Value(_float fTimeDelta)
             Desc.vDiffuse = m_vTargetDiffuse;
             m_pDirectionalLight->Set_LightDesc(Desc);
 
+        }
+    }
+}
+
+void CLevel_Boss::Move_Lights(_float fTimeDelta)
+{
+    CheckFalse(m_bValue);
+
+    m_fTime += fTimeDelta;
+
+    //이동방향구하기 (쿨타임마다)
+    if (m_fTime >= m_fCoolTime)
+    {
+        for (auto& p : m_PointLights)
+        {
+            CLight* pLight = p.pLight;
+            if (pLight)
+            {
+                _float X = m_pGameInstance->Random(-1.f, 1.f);
+                _float Z = m_pGameInstance->Random(-1.f, 1.f);
+
+                p.vDir = XMVectorSet(
+                    X,
+                    0.f,
+                    Z
+                    , 0.f
+
+                );
+                p.vDir=XMVector3Normalize(p.vDir);
+            }
+        }
+
+        m_fTime = 0.f;
+    }
+   
+
+    //이동
+    for (auto& p : m_PointLights)
+    {
+        CLight* pLight = p.pLight;
+        if (pLight)
+        {
+            LIGHT_DESC pDesc = *pLight->Get_LightDesc();
+            _vector vPos = XMLoadFloat4(&pDesc.vPosition);
+            vPos += p.vDir * fTimeDelta * 3.f;
+
+            if (XMVectorGetX(vPos) > MaxBound.x || XMVectorGetX(vPos) < MinBound.x)
+            {
+                //방향반대로
+                p.vDir = XMVectorSetX(p.vDir,XMVectorGetX(p.vDir) * -1.f);
+                vPos = XMLoadFloat4(&pDesc.vPosition) + (p.vDir * fTimeDelta * 3.f);
+            }
+
+            if (XMVectorGetZ(vPos) > MaxBound.z || XMVectorGetZ(vPos) < MinBound.z)
+            {
+                //방향반대로
+                p.vDir = XMVectorSetZ(p.vDir, XMVectorGetZ(p.vDir) * -1.f);
+                vPos = XMLoadFloat4(&pDesc.vPosition) + (p.vDir * fTimeDelta * 3.f);
+            }
+
+            
+            XMStoreFloat4(&pDesc.vPosition, vPos);
+            pLight->Set_LightDesc(pDesc);
         }
     }
 }

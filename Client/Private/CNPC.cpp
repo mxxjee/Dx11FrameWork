@@ -36,6 +36,9 @@ CNPC::CNPC(const CNPC& rhs)
 
 HRESULT CNPC::Initialize_Prototype(void* pArg)
 {
+    m_pGameManager = CGameManager::GetInstance();
+
+
     if(FAILED(__super::Initialize_Copytype(pArg)))
         return E_FAIL;
 
@@ -88,8 +91,7 @@ HRESULT CNPC::Initialize_Prototype(void* pArg)
     
 
     DialogueTag = WStringToUTF8(tag);
-    m_pGameManager = CGameManager::GetInstance();
-    
+  
     memcpy(&m_ipressionIdx_Eye, &pNpcDesc->iExpressionIdxEye, sizeof(_uint) * EXPRESSION::END);
     memcpy(&m_ipressionIdx_Mouth, &pNpcDesc->iExpressionIdx_Mouth, sizeof(_uint) * EXPRESSION::END);
     memcpy(&m_iOpenIdx_Mouth, &pNpcDesc->iOpenIdx_Mouth, sizeof(_uint) * EXPRESSION::END);
@@ -326,7 +328,7 @@ void CNPC::Pressed_InteractionKey()
 void CNPC::Set_TriggerBoxEnable(bool b)
 {
     CheckNull(m_pTriggerBox);
-    m_pTriggerBox->Set_Active(false);
+    m_pTriggerBox->Set_Active(b);
 }
 
 HRESULT CNPC::Ready_Components(void* pArg)
@@ -444,11 +446,16 @@ void CNPC::Ready_Events()
 {
     Enter_Interaction_Event.Name = "Enter_Interaction_NPC";
     
-
-    //_float3(0.f, 3.f, -2.f)5
     CameraPayload.Floats["Float_X"] = 0.f;
     CameraPayload.Floats["Float_Y"] = 5.f;
-    CameraPayload.Floats["Float_Z"] = -3.f;
+
+    //_float3(0.f, 3.f, -2.f)5
+    if (m_pGameManager->Get_CutSceneType()!=CGameManager::CUTSCENE_TYPE::ENDING)
+        CameraPayload.Floats["Float_Z"] = -3.f;
+
+    else
+        CameraPayload.Floats["Float_Z"] = -5.f;
+
     
 
 
