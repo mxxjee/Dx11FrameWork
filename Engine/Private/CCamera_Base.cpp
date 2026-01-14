@@ -336,7 +336,7 @@ bool CCamera_Base::IsOutSidePlane(_uint PlaneDir, const _float3& MinBound, const
         m_Planes[PlaneDir].w;
 
     //양수라면, 평면바깥에존재
-    return distance<0.0f;
+    return distance<-3.0f;
 }
 void CCamera_Base::Free()
 {

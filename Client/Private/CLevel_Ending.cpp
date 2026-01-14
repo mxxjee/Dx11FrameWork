@@ -208,7 +208,7 @@ HRESULT CLevel_Ending::Ready_Layer_UI(const _wstring& strLayerTag)
 
 	Credit_Desc.fX = g_iWinSizeX-100.f;
 	Credit_Desc.fY = g_iWinSizeY+700.f;
-	Credit_Desc.fSpeed = 10.f;
+	Credit_Desc.fSpeed = 20.f;
 
 
 
