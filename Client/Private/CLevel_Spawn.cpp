@@ -109,7 +109,11 @@ void CLevel_Spawn::Render()
 
 HRESULT CLevel_Spawn::Ready_Lights()
 {
-    LIGHT_DESC      LightDesc{};
+    m_pGameInstance->Load_LightData(ENUM_TO_UINT(LEVEL_ID::SPAWN),
+        "../../Resource/Data/Map/Lights/LightData_Spawn.json");
+   /* LIGHT_DESC      LightDesc{};
+    
+     LightDesc.LightName = L"Spawn_DirectionLight";
     LightDesc.eType = LIGHT::DIRECTIONAL;
     LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
     LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
@@ -118,6 +122,19 @@ HRESULT CLevel_Spawn::Ready_Lights()
 
     if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, LightDesc)))
         return E_FAIL;
+
+
+    LIGHT_DESC      PointLightDesc{};
+
+    PointLightDesc.eType = LIGHT::POINT;
+    PointLightDesc.LightName = L"Spawn_PointLight";
+    PointLightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+    PointLightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
+    PointLightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
+    PointLightDesc.fRange = _float4(3.f, 0.f, 0.f, 1.f);
+
+    if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, PointLightDesc)))
+        return E_FAIL;*/
 
     return S_OK;
 }

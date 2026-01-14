@@ -53,6 +53,7 @@ private:
 	void		CreateObjectDebugWindow();
 	void		CreateCameraDebugWindow();
 	void		CreateStateDebugWindow();
+	void		CreateLightDebugWindow();
 #endif
 
 private:

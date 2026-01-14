@@ -184,6 +184,10 @@
     <ClInclude Include="..\Public\CLevel_Boss.h" />
     <ClInclude Include="..\Public\CLevel_Dungeon.h" />
     <ClInclude Include="..\Public\CLevel_Ending.h" />
+    <ClInclude Include="..\Public\CLightDebugWindow.h" />
+    <ClInclude Include="..\Public\CLightInspectorWindow.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="..\Public\CLoadingUI.h" />
     <ClInclude Include="..\Public\CMagicPowder.h" />
     <ClInclude Include="..\Public\CMeshEffect.h" />
@@ -341,6 +345,10 @@
     <ClCompile Include="..\Private\CLevel_Boss.cpp" />
     <ClCompile Include="..\Private\CLevel_Dungeon.cpp" />
     <ClCompile Include="..\Private\CLevel_Ending.cpp" />
+    <ClCompile Include="..\Private\CLightDebugWindow.cpp" />
+    <ClCompile Include="..\Private\CLightInspectorWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\Private\CLoadingUI.cpp" />
     <ClCompile Include="..\Private\CMagicPowder.cpp" />
     <ClCompile Include="..\Private\CMeshEffect.cpp" />

@@ -112,13 +112,13 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
     __super::Update_Priority(fTimeDelta);
 
     //엔딩씬 테스트
-  /*  if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::E))
+    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::E))
     {
         GameEvent Event;
         Event.Name = "Go_WitchRoom";
 
         m_pGameInstance->Emit(Event);
-    }*/
+    }
 
     /*
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::R))
@@ -244,30 +244,38 @@ void CLevel_Town::Play_LevelBGM()
 
 HRESULT CLevel_Town::Ready_Lights()
 { 
-    LIGHT_DESC      LightDesc{};
-    LightDesc.eType = LIGHT::DIRECTIONAL;
-    LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
-    LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
-    LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
-    LightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
+    //LIGHT_DESC      LightDesc{};
+    //LightDesc.LightName = L"Town_DirectionalLight";
 
-    if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, LightDesc)))
-        return E_FAIL;
+    //LightDesc.eType = LIGHT::DIRECTIONAL;
+    //LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
+    //LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+    //LightDesc.vAmbient = _float4(0.7f, 0.7f, 0.7f, 1.f);
+    //LightDesc.vSpecular = _float4(0.5f, 0.5f, 0.5f, 1.f);
 
-    //////////////물 조명//////////
-    LIGHT_DESC       WaterLight;
-    WaterLight.eType = LIGHT::POINT;
+    //if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, LightDesc)))
+    //    return E_FAIL;
 
-    WaterLight.vDiffuse = COLOR_BLUE;
-    WaterLight.fRange = _float4(3.f, 0.f, 0.f, 1.f);
-    WaterLight.vPosition = _float4(45.f,8.f, 90.f, 1.f);
-    WaterLight.vSpecular = WaterLight.vDiffuse;
-    WaterLight.vAmbient = _float4(0.1f, 0.3f, 0.1f, 1.f);
+    ////////////////물 조명//////////
+    //LIGHT_DESC       WaterLight;
+    //WaterLight.LightName = L"Water_Light";
+    //WaterLight.eType = LIGHT::POINT;
+
+    //WaterLight.vDiffuse = COLOR_BLUE;
+    //WaterLight.fRange = _float4(3.f, 0.f, 0.f, 1.f);
+    //WaterLight.vPosition = _float4(45.f,8.f, 90.f, 1.f);
+    //WaterLight.vSpecular = WaterLight.vDiffuse;
+    //WaterLight.vAmbient = _float4(0.1f, 0.3f, 0.1f, 1.f);
 
 
-    if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, WaterLight)))
-        return E_FAIL;
+    //if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, WaterLight)))
+    //    return E_FAIL;
 
+    m_pGameInstance->Load_LightData(ENUM_TO_UINT(LEVEL_ID::TOWN),
+        "../../Resource/Data/Map/Lights/LightData_Town.json");
+
+
+    m_pDirectionalLight = m_pGameInstance->Get_DirectionLight(ENUM_TO_UINT(LEVEL_ID::TOWN));
 
     return S_OK;
 }
@@ -947,23 +955,7 @@ HRESULT CLevel_Town::Ready_Layer_Trigger(const _wstring& strLayerTag)
             pCamBase->Set_TargetRotation(_float3(65.f, 0.f, 0.f));
 
 
-            //directionlight조절
-            CLight* pDirectionLight = m_pGameInstance->Get_DirectionLight(m_iLevelID);
-            CheckNull(pDirectionLight);
-
-            //빛 변경값..나중에 설정하기!!어두워지기!
-         //   LIGHT_DESC NewLightDesc = *pDirectionLight->Get_LightDesc();
-         //   _vector vDiffuseColor = XMLoadFloat4(&NewLightDesc.vDiffuse);
-         //   _vector vAmbient = XMLoadFloat4(&NewLightDesc.vAmbient);
-         //   _vector vSpecular = XMLoadFloat4(&NewLightDesc.vSpecular);
-
-         //   
-         //   XMStoreFloat4(&NewLightDesc.vDiffuse, XMVectorLerp(vDiffuseColor, XMVectorSet(0.f, 0.1f, 0.5f, 1.f), 0.2f));
-         ////   XMStoreFloat4(&NewLightDesc.vAmbient, XMVectorLerp(vAmbient, XMVectorSet(0.2f, 0.2f, 0.2f, 1.f), 0.2f));
-         //   XMStoreFloat4(&NewLightDesc.vSpecular, XMVectorLerp(vSpecular, XMVectorSet(0.5f, 0.5f, 0.5f, 1.f), 0.2f));
-
-         //   pDirectionLight->Set_LightDesc(NewLightDesc);
-
+       
 
         };
 
@@ -1232,31 +1224,6 @@ void CLevel_Town::OnEnter()
 
 
 
-    //요정파티클
-    /*CParticle::PARTICLE_DESC FairyDesc;
-    FairyDesc.ProtoName = L"Particle";
-    FairyDesc.DataName = L"FairyParticle";
-    FairyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
-    FairyDesc.passName = "Default";
-    FairyDesc.ShaderName = L"VtxPosParticle";
-    FairyDesc.ObjTag = L"FairyParticle";
-
-    CLayer* pNPCLayer = CGameInstance::GetInstance()->Find_Layer(ENUM_TO_UINT(LEVEL_ID::TOWN), L"NPC_Layer");
-    CGameObject* pFairy = nullptr;
-    if (pNPCLayer)
-    {
-        pFairy = pNPCLayer->Find_GameObject(L"NPC_Fairy");
-        if (pFairy)
-        {
-            CEffect* pFairyEffect = CEffectPoolManager::GetInstance()->Request_Spawn(FairyDesc.ProtoName, &FairyDesc);
-            if (pFairyEffect)
-            {
-                
-                pFairyEffect->Set_OrigniMatrix(XMLoadFloat4x4(pFairy->Get_Transform()->Get_WorldMatrixPtr()));
-                pFairyEffect->Play();
-            }
-        }
-    }*/
 
 }
 
@@ -1296,13 +1263,13 @@ void CLevel_Town::OnResume(_uint iPreLevel)
         m_pGameInstance->Set_EnableUpdate(true);
         CheckNull(pFadeScreen);
 
-        m_pGameInstance->Invoke(1.f, 0.f, false, false, [m_pFadeScreen=pFadeScreen]()
+        m_pGameInstance->Invoke(1.f, 0.f, false, false, [m_pFadeScreen = pFadeScreen]()
             {
                 m_pFadeScreen->PlayFadeOut();
 
-            },CGameManager::GetInstance()->Get_MainPlayer());
+            }, CGameManager::GetInstance()->Get_MainPlayer());
 
-       
+
         //NavMesh돌려놓기
         m_pGameInstance->Set_MainCells(ENUM_TO_UINT(LEVEL_ID::TOWN));
         pPlayer->Get_Transform()->Set_State(STATE::POSITION, m_pGameManager->Get_LastPosition_By_Vector());
@@ -1318,6 +1285,14 @@ void CLevel_Town::OnResume(_uint iPreLevel)
 
     }
     m_eArea = CLevel_Town::Area::TOWN;
+
+    if (m_pDirectionalLight)
+    {
+        LIGHT_DESC Desc = *m_pDirectionalLight->Get_LightDesc();
+        Desc.vDiffuse = _float4(1.f,1.f,1.f,1.f);
+        m_pDirectionalLight->Set_LightDesc(Desc);
+
+    }
     break;
 
 
@@ -1384,10 +1359,12 @@ void CLevel_Town::Change_Area()
         switch (m_eArea)
         {
         case Client::CLevel_Town::TOWN:
+            m_vTargetDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
             strKey = L"Town";
 
             break;
         case Client::CLevel_Town::FOREST:
+            m_vTargetDiffuse = _float4(0.373f, 0.557f, 1.f, 1.f);
             strKey = L"Forest";
             break;
 
@@ -1410,6 +1387,26 @@ void CLevel_Town::Change_Area()
             }, CGameManager::GetInstance()->Get_MainPlayer());
 
         m_ePreArea = m_eArea;
+    }
+
+    if (m_pDirectionalLight)
+    {
+        LIGHT_DESC Desc = *m_pDirectionalLight->Get_LightDesc();
+        _float Distance = XMVectorGetX(XMVector3Length(XMLoadFloat4(&Desc.vDiffuse) - XMLoadFloat4(&m_vTargetDiffuse)));
+        if (Distance > 0.01f)
+        {
+            _vector vNewDiffuse=XMVectorLerp(XMLoadFloat4(&Desc.vDiffuse), XMLoadFloat4(&m_vTargetDiffuse), 0.1f);
+            XMStoreFloat4(&Desc.vDiffuse, vNewDiffuse);
+            m_pDirectionalLight->Set_LightDesc(Desc);
+
+        }
+        else
+        {
+            LIGHT_DESC Desc = *m_pDirectionalLight->Get_LightDesc();
+            Desc.vDiffuse = m_vTargetDiffuse;
+            m_pDirectionalLight->Set_LightDesc(Desc);
+
+        }
     }
 }
 

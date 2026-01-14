@@ -2,7 +2,7 @@
 #include "CBase.h"
 
 NS_BEGIN(Engine)
-class CLight :
+class ENGINE_DLL CLight :
     public CBase
 {
 private:
@@ -16,6 +16,13 @@ public:
 public:
     HRESULT         Initialize(const LIGHT_DESC& LightDesc);
     void            Render(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
+
+
+
+public:
+    void Render_DebugImgui();
+
+
 
 private:
     LIGHT_DESC      m_LightDesc{};

@@ -430,6 +430,12 @@
     <ClInclude Include="..\Public\CParticle.h">
       <Filter>02.GameObjects\98.Effect\Particle</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CLightInspectorWindow.h">
+      <Filter>999.ImguiObject\LightInspectorWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLightDebugWindow.h">
+      <Filter>999.ImguiObject\LightDebugWindow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Client.ico">
@@ -917,6 +923,12 @@
     <Filter Include="02.GameObjects\99.UI\00.Panel\99.Credit">
       <UniqueIdentifier>{23713b8a-eccc-4b22-ac24-f48b00df5c46}</UniqueIdentifier>
     </Filter>
+    <Filter Include="999.ImguiObject\LightInspectorWindow">
+      <UniqueIdentifier>{8ceb1070-3120-475a-afaa-04906eb4e2ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="999.ImguiObject\LightDebugWindow">
+      <UniqueIdentifier>{2cee68ca-2894-49f7-b858-7683f760c104}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp">
@@ -1320,6 +1332,12 @@
     </ClCompile>
     <ClCompile Include="..\Private\CParticle.cpp">
       <Filter>02.GameObjects\98.Effect\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLightInspectorWindow.cpp">
+      <Filter>999.ImguiObject\LightInspectorWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLightDebugWindow.cpp">
+      <Filter>999.ImguiObject\LightDebugWindow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

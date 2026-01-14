@@ -9,7 +9,8 @@
 #include "CImGui_Manager.h"
 #include "CObjectDebugWindow.h"
 #include "CStateDebugWindow.h"
-
+#include "CLight.h"
+#include "CLightInspectorWindow.h"
 
 USING(Client)
 
@@ -93,7 +94,8 @@ void CLevelDebugWindow::Update()
                     LevelName = "Room";
                     break;
                 }
-
+                /// LightData표시
+                Show_LightData();
                 if (ImGui::CollapsingHeader(LevelName.c_str()))
                 {
                     auto& Layers = pGameInstance->Get_Layers(pLevel->Get_LevelID());
@@ -204,6 +206,48 @@ void CLevelDebugWindow::Update()
 void CLevelDebugWindow::Render()
 {
    
+}
+
+void CLevelDebugWindow::Show_LightData()
+{
+    if (ImGui::CollapsingHeader("Lights"))
+    {
+        int m_iCurrentID = pGameInstance->Get_CurrentLevelID();
+
+        CLight* MainDirection = pGameInstance->Get_DirectionLight(m_iCurrentID);
+        list<CLight*>  m_CurrentLevels_Lights = pGameInstance->Get_Lights(m_iCurrentID);
+
+        //표시할때는 direction도 함께표시
+        m_CurrentLevels_Lights.push_back(MainDirection);
+
+        for (auto& Light : m_CurrentLevels_Lights)
+        {
+            //현재 씬의 레이어/오브젝트 이름 표시
+			if (Light)
+			{
+				//각 오브젝트 표시 UI 선택가능
+				if (ImGui::Selectable(WStringToUTF8(Light->Get_LightDesc()->LightName).c_str(), pLightObject == Light))
+				{
+					CImgui_Base* pBase = CImGui_Manager::GetInstance()->Find_Window("LightInspectorWindow");
+					if (pBase)
+					{
+						CLightInspectorWindow* pWindow = dynamic_cast<CLightInspectorWindow*>(pBase);
+						if (pWindow)
+						{
+							pWindow->Set_SelectObject(Light);
+						}
+
+
+
+					}
+				}
+				
+
+
+			}
+
+        }
+    }
 }
 
 CLevelDebugWindow* CLevelDebugWindow::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg)

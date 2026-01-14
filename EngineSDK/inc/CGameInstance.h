@@ -286,6 +286,11 @@ public:
 
 	HRESULT					Bind_Directional_Light(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer, const LIGHT_DESC* pLightDesc);
 	void					Render_LightManager(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
+
+	list<class CLight*>     Get_Lights(_uint iLevelID);
+
+	HRESULT         Save_LightData();
+	HRESULT         Load_LightData(_uint iLevelID, string FilePath);
 #pragma endregion
 
 #pragma region Model_Manager

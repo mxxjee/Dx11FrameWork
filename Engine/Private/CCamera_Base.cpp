@@ -343,6 +343,7 @@ void CCamera_Base::Free()
     __super::Free();
     
     m_tRenderTarget.SRV.Reset();
+
     m_tRenderTarget.pColorTex.Reset();
     m_tRenderTarget.DSV.Reset();
   

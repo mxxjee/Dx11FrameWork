@@ -20,7 +20,7 @@ public:
     class CLight*          Get_Light(_uint iLevelID, _uint iIndex);
 
     class CLight*           Get_DirectionLight(_uint iLevelID);
-
+    list<class CLight*>     Get_Lights(_uint iLevelID);
     HRESULT         Bind_Lights(class CShader* pShader);
 
 public:
@@ -33,6 +33,17 @@ public:
     HRESULT         Bind_Point_Light(class CShader* pShader,class CVIBuffer_Rect* pVIBuffer);
     void            Render(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
 
+public:
+    HRESULT         Save_Data();
+    HRESULT         Load_Data(_uint iLevelID,string FilePath);
+  //  HRESULT         Add_NewLight();//¾À¿¡ »õ·Î¿î 
+
+private:
+    void        Save_DirectionLight(json& JSon);
+    void        Save_PointLights(json& JSon);
+
+    HRESULT        Load_DirectionLight(_uint iLevel,json& JSon);
+    HRESULT        Load_PointLights(_uint iLevel,json& Json);
 public:
     void        Clear_PointLightBuffer();
 public:

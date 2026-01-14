@@ -909,6 +909,21 @@ void CGameInstance::Render_LightManager(CShader* pShader, CVIBuffer_Rect* pVIBuf
 	return m_pLightManager->Render(pShader, pVIBuffer);
 }
 
+list<class CLight*> CGameInstance::Get_Lights(_uint iLevelID)
+{
+	return m_pLightManager->Get_Lights(iLevelID);
+}
+
+HRESULT CGameInstance::Save_LightData()
+{
+	return m_pLightManager->Save_Data();
+}
+
+HRESULT CGameInstance::Load_LightData(_uint iLevelID, string FilePath)
+{
+	return m_pLightManager->Load_Data(iLevelID,FilePath);
+}
+
 
 #pragma region Model_Manager
 HRESULT CGameInstance::Register_Model(const _wstring& Tag, CModel* pInstance)

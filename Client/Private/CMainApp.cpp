@@ -30,7 +30,8 @@
 #include "CObjectDebugWindow.h"
 #include "CCameraDebugWindow.h"
 #include "CStateDebugWindow.h"
-
+#include "CLightInspectorWindow.h"
+#include "CLightDebugWindow.h"
 
 
 
@@ -105,6 +106,7 @@ HRESULT CMainApp::Initialize()
 	CreateObjectDebugWindow();
 	CreateCameraDebugWindow();
 	CreateStateDebugWindow();
+	CreateLightDebugWindow();
 
 #endif
 	pImGui_Manager->Set_MapToolMode(MapToolMode::END);
@@ -772,6 +774,29 @@ void CMainApp::CreateStateDebugWindow()
 
 
 	pImGui_Manager->RegisterWindow(CStateDebugWindow::Create(m_pDevice, m_pContext, &Desc));
+
+}
+
+void CMainApp::CreateLightDebugWindow()
+{
+	CImgui_Window::IMGUIWINDOW_DESC Desc;
+	Desc.m_WindowTitle = "LightInspectorWindow";
+	Desc.m_WindowPos = ImVec2(g_iWinSizeX, 100);
+	//Desc.m_WindowSize = ImVec2(300, 500);
+	Desc.Tag = "LightInspectorWindow";
+
+
+	pImGui_Manager->RegisterWindow(CLightInspectorWindow::Create(m_pDevice, m_pContext, &Desc));
+
+	//////////////
+	CImgui_Window::IMGUIWINDOW_DESC DebugDesc;
+	DebugDesc.m_WindowTitle = "LightDebugWindow";
+	DebugDesc.m_WindowPos = ImVec2(g_iWinSizeX, 100);
+	//Desc.m_WindowSize = ImVec2(300, 500);
+	DebugDesc.Tag = "LightDebugWindow";
+
+
+	pImGui_Manager->RegisterWindow(CLightDebugWindow::Create(m_pDevice, m_pContext, &DebugDesc));
 
 }
 

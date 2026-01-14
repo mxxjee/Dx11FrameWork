@@ -38,6 +38,7 @@ HRESULT CLevel_NPCRoom::Initialize(LevelArgs& args)
         return E_FAIL;
 
     LIGHT_DESC      LightDesc{};
+    LightDesc.LightName = L"NPCRoom_DirectionLight";
     LightDesc.eType = LIGHT::DIRECTIONAL;
     LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
     LightDesc.vDiffuse = _float4(1.f, 1.f, 1.f, 1.f);

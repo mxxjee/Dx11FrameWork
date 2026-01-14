@@ -5,6 +5,8 @@ namespace Engine
 {
     class CGameInstance;
     class CGameObject;
+    class CLight;
+
 }
 NS_BEGIN(Client)
 class CLevelDebugWindow :
@@ -19,7 +21,9 @@ public:
     virtual HRESULT Initialize(void* pArg) override;
     virtual void Update() override;
     virtual void Render() override;
-
+    
+public:
+    void        Show_LightData();
 public:
     static CLevelDebugWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
     virtual void Free();
@@ -28,6 +32,8 @@ public:
 private:
     CGameInstance* pGameInstance = { nullptr };
     CGameObject* pSelectObject = { nullptr };
+    CLight* pLightObject = { nullptr };
+
 
 };
 NS_END

@@ -3,6 +3,12 @@
 #include "CLevel.h"
 #include "Client_Defines.h"
 
+NS_BEGIN(Engine)
+
+class CLight;
+
+NS_END
+  
 NS_BEGIN(Client)
 class CFadeScreen;
 class CGameManager;
@@ -71,6 +77,9 @@ private:
     Area            m_eArea = Area::TOWN;
 
     bool        m_bTarinTriggerOnce = false;
+    CLight*     m_pDirectionalLight = nullptr;
+    _float4     m_vTargetDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
+
 };
 NS_END
 
