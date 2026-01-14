@@ -37,7 +37,7 @@ HRESULT CLevel_NPCRoom::Initialize(LevelArgs& args)
     if(FAILED(CRoom_Manager::GetInstance()->Initialize(m_pDevice, m_pContext, pEnvLayer, pNPCLayer, pTriggerLayer)))
         return E_FAIL;
 
-    LIGHT_DESC      LightDesc{};
+  /*  LIGHT_DESC      LightDesc{};
     LightDesc.LightName = L"NPCRoom_DirectionLight";
     LightDesc.eType = LIGHT::DIRECTIONAL;
     LightDesc.vDirection = _float4(1.f, -1.f, 1.f, 0.f);
@@ -47,7 +47,7 @@ HRESULT CLevel_NPCRoom::Initialize(LevelArgs& args)
 
 
     if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, LightDesc)))
-        return E_FAIL;
+        return E_FAIL;*/
 
 
     UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");

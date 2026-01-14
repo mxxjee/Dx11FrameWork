@@ -23,6 +23,7 @@
     0.0,
     5.850034236907959
   ],
+  "LightData": "../../Resource/Data/Map/Lights/LightData_DefaultNPCRoom.json",
   "RoomName": "telephoneBox",
   "RoomTriggers": [
     {

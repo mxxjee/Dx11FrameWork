@@ -1,6 +1,7 @@
 #pragma once
 #include "CInteractionObject.h"
 NS_BEGIN(Client)
+class CEffect;
 
 class CInteraction_Mushroom :
     public CInteractionObject
@@ -38,6 +39,7 @@ public:
 
 private:
     class     CInteraction_TriggerBox* m_pTriggerBox = nullptr;
+    CEffect* m_pEffect = nullptr;
 
 
 };

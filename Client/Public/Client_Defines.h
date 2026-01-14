@@ -308,7 +308,7 @@ struct RoomPackage
 	string			m_navMeshFile = "";
 	_float3			m_vPlayerSpawnPoin=_float3(0.f,0.f,0.f);
 
-
+	string			LightDataPath = "";
 	RoomPackage() {};
 
 	~RoomPackage()

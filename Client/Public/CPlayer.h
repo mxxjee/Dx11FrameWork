@@ -16,7 +16,7 @@ namespace Engine
     class CNavigation;
     class CGravity;
     class CBoxColliderComponent;
-
+    class  CLight;
 
 }
 NS_BEGIN(Client)
@@ -228,6 +228,9 @@ public:
 
 #endif // _DEBUG
 
+public:
+    void        Set_PlayerLight(class CLight* pLight) { m_pPlayerLight = pLight; }
+
 private:
             //Damage진입시 수행Push_Behavior
     void    OnDamageBehavior();
@@ -307,6 +310,10 @@ private:
     CEffectPoolManager* m_pEffectPoolManager = nullptr;
     CEffect*           pChargeCompletePtr = nullptr;
 
+
+
+private:
+    class CLight* m_pPlayerLight = nullptr;
 };
 
 NS_END                                                                                                                                                                                                                                                                                                                      

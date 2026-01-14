@@ -26,6 +26,7 @@
     0.0,
     5.8
   ],
+  "LightData": "../../Resource/Data/Map/Lights/LightData_Richard.json",
   "RoomName": "RichardHouse",
   "RoomTriggers": [
     {

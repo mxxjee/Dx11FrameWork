@@ -36,6 +36,8 @@
 
 
 #include "CParticle.h"
+#include "CLight.h"
+
 
 
 
@@ -232,6 +234,17 @@ void CPlayer::Update_Late(_float fTimeDelta)
 
    
     //Motion_Change();
+
+    if (m_pPlayerLight)
+    {
+        LIGHT_DESC pDesc = *m_pPlayerLight->Get_LightDesc();
+
+        _vector vPos = m_pTransformCom->Get_State(STATE::POSITION);
+        //vPos = XMVectorSetY(vPos, XMVectorGetY(vPos)+3.f);
+        XMStoreFloat4(&pDesc.vPosition, vPos);
+        
+        m_pPlayerLight->Set_LightDesc(pDesc);
+    }
   
 }
 

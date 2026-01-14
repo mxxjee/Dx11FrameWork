@@ -103,6 +103,9 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
 
 
     /*이후에 바로 Spawnscene으로 가기*/
+    CLight* pLight = m_pGameInstance->Get_Light(ENUM_TO_UINT(LEVEL_ID::TOWN), L"Player_Pointlight");
+    if (pLight)
+        pLight->Set_Active(false);
 
     return S_OK;
 }
@@ -114,10 +117,30 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
     //엔딩씬 테스트
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::E))
     {
-        GameEvent Event;
+        /*GameEvent Event;
         Event.Name = "Go_WitchRoom";
 
-        m_pGameInstance->Emit(Event);
+        m_pGameInstance->Emit(Event);*/
+    
+        pFadeScreen->Set_FadeInEndFunc([this]()
+            {
+                LevelArgs args;
+                args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::ROOM);
+                args.changeType = LEVELCHANGETYPE::PUSH;
+                args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+                args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
+                CRoom_Manager::GetInstance()->Request_Room("RichardHouse");
+
+                if (FAILED(m_pGameInstance->Level_Changer(
+                    ENUM_TO_UINT(LEVEL_ID::LOADING),
+                    args)))
+                    return;
+
+            });
+
+        pFadeScreen->PlayFadeIn();
+
     }
 
     /*
@@ -1224,7 +1247,6 @@ void CLevel_Town::OnEnter()
 
 
 
-
 }
 
 void CLevel_Town::OnResume(_uint iPreLevel)
@@ -1361,11 +1383,39 @@ void CLevel_Town::Change_Area()
         case Client::CLevel_Town::TOWN:
             m_vTargetDiffuse = _float4(1.f, 1.f, 1.f, 1.f);
             strKey = L"Town";
+            m_pGameInstance->Invoke(1.f, 0.f, false, false, [this]()
+                {
+                    CLight* pLight = m_pGameInstance->Get_Light(ENUM_TO_UINT(LEVEL_ID::TOWN), L"Player_Pointlight");
+                    if (pLight)
+                        pLight->Set_Active(false);
 
+                    CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
+                    if (pPlayer)
+                        pPlayer->Set_PlayerLight(nullptr);
+ 
+                }, CGameManager::GetInstance()->Get_MainPlayer());
             break;
         case Client::CLevel_Town::FOREST:
             m_vTargetDiffuse = _float4(0.373f, 0.557f, 1.f, 1.f);
             strKey = L"Forest";
+
+            m_pGameInstance->Invoke(1.f, 0.f, false, false, [this]()
+                {
+
+                    //플레이어에게 pointlight전달
+                    CLight* pLight = m_pGameInstance->Get_Light(ENUM_TO_UINT(LEVEL_ID::TOWN), L"Player_Pointlight");
+                    if (pLight)
+                    {
+                        pLight->Set_Active(true);
+                        CPlayer* pPlayer = m_pGameManager->Get_MainPlayer();
+                        if(pPlayer)
+                            pPlayer->Set_PlayerLight(pLight);
+                    }
+
+
+                      
+
+                },CGameManager::GetInstance()->Get_MainPlayer());
             break;
 
         default:

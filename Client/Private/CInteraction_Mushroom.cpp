@@ -11,6 +11,9 @@
 #include "CLayer.h"
 
 #include "CInteraction_Manager.h"
+#include "CParticle.h"
+#include "CEffectPoolManager.h"
+#include "CGameManager.h"
 
 
 
@@ -33,6 +36,23 @@ HRESULT CInteraction_Mushroom::Initialize_Copytype(void* pArg)
         return E_FAIL;
 
     m_BehaviorType = Interact_Behavior_Type::ITEMABLE;
+
+
+    CParticle::PARTICLE_DESC TwinkleDesc;
+    TwinkleDesc.ProtoName = L"Particle";
+    TwinkleDesc.DataName = L"Item_Twinkle";
+    TwinkleDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONLIGHT);
+    TwinkleDesc.passName = "Smoke";
+    TwinkleDesc.ShaderName = L"VtxPosParticle";
+    TwinkleDesc.ObjTag = L"Item_Twinkle";
+
+    m_pEffect = CEffectPoolManager::GetInstance()->Request_Spawn(L"Particle", &TwinkleDesc);
+    if (m_pEffect)
+    {
+		m_pEffect->Set_OrigniMatrix(XMLoadFloat4x4(m_pTransformCom->Get_WorldMatrixPtr()));
+		m_pEffect->Play();
+
+    }
 
     return S_OK;
 }
@@ -138,7 +158,9 @@ void CInteraction_Mushroom::Enter_Interaction()
 
     Set_Active(false);
     m_pTriggerBox->Set_Active(false);
-    
+    if (m_pEffect)
+        m_pEffect->Set_Active(false);
+
     CLayer* pLayer = m_pGameInstance->Find_Layer(m_iSceneID, L"Interaction_Layer");
     if(pLayer)
         pLayer->RequestDestroy(this);

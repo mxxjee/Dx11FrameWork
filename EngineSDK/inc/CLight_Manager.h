@@ -18,6 +18,7 @@ private:
 public:
     const       LIGHT_DESC* Get_LightDesc(_uint iLevelID,_uint iIndex);
     class CLight*          Get_Light(_uint iLevelID, _uint iIndex);
+    class CLight*           Get_Light(_uint iLevelID, wstring LightName);
 
     class CLight*           Get_DirectionLight(_uint iLevelID);
     list<class CLight*>     Get_Lights(_uint iLevelID);

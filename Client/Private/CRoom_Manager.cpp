@@ -128,6 +128,7 @@ void CRoom_Manager::Switch_Room(const string& strRoomName)
             m_pGameInstance->Register_Collider(ppTrigger->Get_Collider(),ENUM_TO_UINT(LEVEL_ID::ROOM));
         }
         
+        m_pGameInstance->Load_LightData(ENUM_TO_UINT(LEVEL_ID::ROOM), pNextPackage->LightDataPath);
     }
     //새로운 로드
     else
@@ -258,9 +259,13 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
     for (auto& ModelName : jRoomData["NPC_ModelNames"])
         NPCModelNames.push_back(ModelName);
 
-
-  
-
+    //조명불러온다.
+    if (jRoomData.contains("LightData"))
+    {
+        m_pGameInstance->Load_LightData(ENUM_TO_UINT(LEVEL_ID::ROOM), jRoomData["LightData"]);
+        pOutPackage->LightDataPath = jRoomData["LightData"].get<string>();
+    }
+ 
     for (auto& PosInfo : PositionIfos)
     {
         if (PosInfo.TargetName == "Player_SpawnPoint")

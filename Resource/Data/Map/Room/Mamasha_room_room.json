@@ -35,6 +35,7 @@
     0.0,
     6.599999904632568
   ],
+  "LightData": "../../Resource/Data/Map/Lights/LightData_DefaultNPCRoom.json",
   "RoomName": "Mamasha_room",
   "RoomTriggers": [
     {

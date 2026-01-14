@@ -41,6 +41,20 @@ CLight* CLight_Manager::Get_Light(_uint iLevelID, _uint iIndex)
 
 }
 
+CLight* CLight_Manager::Get_Light(_uint iLevelID, wstring LightName)
+{
+    CheckTrueResult(m_Lights[iLevelID].empty(), nullptr);
+
+    for (auto& pLight : m_Lights[iLevelID])
+    {
+        const LIGHT_DESC* pDesc = pLight->Get_LightDesc();
+        if (pDesc->LightName == LightName)
+            return pLight;
+    }
+
+    return nullptr;
+}
+
 CLight* CLight_Manager::Get_DirectionLight(_uint iLevelID)
 {
     CLight* pLight = m_DirectionalLights[iLevelID];
@@ -337,6 +351,9 @@ void CLight_Manager::Save_PointLights(json& JSon)
 
 HRESULT CLight_Manager::Load_DirectionLight(_uint iLevelID, json& JSon)
 {
+    if (m_DirectionalLights[iLevelID])
+        Safe_Release(m_DirectionalLights[iLevelID]);
+
     if (JSon.contains("DirectionLight"))
     {
         json DirectionLightInfo = JSon["DirectionLight"];
@@ -399,6 +416,12 @@ HRESULT CLight_Manager::Load_DirectionLight(_uint iLevelID, json& JSon)
 
 HRESULT CLight_Manager::Load_PointLights(_uint iLevelID, json& Json)
 {
+    if (!m_Lights[iLevelID].empty())
+    {
+        for (auto& pLight : m_Lights[iLevelID])
+            Safe_Release(pLight);
+    }
+
     if (Json.contains("PointLight"))
     {
         for (auto& PointLightData : Json["PointLight"])

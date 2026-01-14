@@ -16,7 +16,9 @@ public:
 public:
     HRESULT         Initialize(const LIGHT_DESC& LightDesc);
     void            Render(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
-
+    
+public:
+    void        Set_Active(bool b) { m_bActive = b; }
 
 
 public:

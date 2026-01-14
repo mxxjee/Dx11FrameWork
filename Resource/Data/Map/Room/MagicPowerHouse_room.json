@@ -25,6 +25,7 @@
     0.0,
     6.599999904632568
   ],
+  "LightData": "../../Resource/Data/Map/Lights/LightData_Witch.json",
   "NavData": "../../Resource/Data/Map/Room/MagicPowerHouse_room_Nav.dat",
   "RoomName": "MagicPowerHouse",
   "RoomTriggers": [
