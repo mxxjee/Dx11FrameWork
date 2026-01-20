@@ -2,6 +2,7 @@
 #include "CBase.h"
 #include "Engine_LevelTypes.h"
 #include "UIGroup.h"
+#include "CShadow.h"
 
 /*엔진의 모든 매니저들을 관리한다.
 1. 엔진의 모든 매니저들을 업데이트/렌더한다.
@@ -106,11 +107,15 @@ public:
 	void            Render_Group(_uint eType);
 	void            Clear_RenderGroups();
 	int             Get_RenderGroupCount();
-
+	ComPtr<ID3D11DepthStencilView>		Get_DSV();
+	HRESULT         SetUp_ViewportDesc(_uint iWidth, _uint iHeight);
 
 	void			Bind_And_Render_Lights();
 	void			Bind_Rect_Matricies();
 	void			Render_Combined();
+
+	_uint           Get_ViewportWidth();
+	_uint           Get_ViewportHeight();
 
 #ifdef _DEBUG
 	void			Render_Debug();
@@ -386,7 +391,7 @@ public:
 	 HRESULT Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
 
 	 //MRT를 찾아서 바인딩
-	 HRESULT Begin_MRT(const _wstring& strMRTTag);
+	 HRESULT Begin_MRT(const _wstring& strMRTTag, ID3D11DepthStencilView* pDSV = nullptr);
 
 	 //다시 복원
 	 HRESULT End_MRT();
@@ -402,15 +407,24 @@ public:
 
 #endif
 
+
 #pragma endregion
+	
+#pragma region Sound_Manager
 	 void		StopSoundFade(CHANNELID eID, float fDuration);
-	 void PlaySound(const wstring& pSoundKey, CHANNELID eID, float fVolume,bool bLoop=false);
+	 void PlaySound(const wstring& pSoundKey, CHANNELID eID, float fVolume, bool bLoop = false);
 	 void PlayBGM(const std::wstring& soundKey, float fVolume);
 	 void StopSound(CHANNELID eID);
 	 void StopAll();
 	 void SetChannelVolume(CHANNELID eID, float fVolume);
 
-#pragma region Sound_Manager
+#pragma endregion
+
+#pragma region Shadow
+	 const _float4x4* Get_ShadowLight_Transform(D3DTS eTransformMatrix);
+	 const _float4x4* Get_ShadowLight_InverseTransform(D3DTS eTransformMatrix);
+	 HRESULT Add_ShadowLight(ID3D11DeviceContext* pContext, const CShadow::SHADOW_DESC& ShadowDesc);
+
 #pragma endregion
  private:
 	 class CLevel_Manager* m_pLevelManager = { nullptr };
@@ -445,6 +459,7 @@ public:
 	 class CTarget_Manager* m_pTarget_Manager = { nullptr };
 
 	 class CSoundMgr* m_pSound_Manager = nullptr;
+	 class CShadow* m_pShadow = nullptr;
 
 private:
 	vector<D3D11_VIEWPORT>          m_ViewPorts;

@@ -269,6 +269,7 @@
     <ClInclude Include="..\Public\CScreenShot_Manager.h" />
     <ClInclude Include="..\Public\CShader.h" />
     <ClInclude Include="..\Public\CShader_Manager.h" />
+    <ClInclude Include="..\Public\CShadow.h" />
     <ClInclude Include="..\Public\CSoundMgr.h" />
     <ClInclude Include="..\Public\CSphereColliderComponent.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -437,6 +438,7 @@
     <ClCompile Include="..\Private\CScreenShot_Manager.cpp" />
     <ClCompile Include="..\Private\CShader.cpp" />
     <ClCompile Include="..\Private\CShader_Manager.cpp" />
+    <ClCompile Include="..\Private\CShadow.cpp" />
     <ClCompile Include="..\Private\CSoundMgr.cpp" />
     <ClCompile Include="..\Private\CSphereColliderComponent.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>

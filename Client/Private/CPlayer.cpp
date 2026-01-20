@@ -154,7 +154,7 @@ void CPlayer::Update(_float fTimeDelta)
     m_Input.m_bInteract = CInteraction_Manager::GetInstance()->OnInteractKeyPresed();
 
     /*이펙트테스트코드*/
-    if (m_pInputManager->IsKeyPressed(KeyCode::G))
+   /* if (m_pInputManager->IsKeyPressed(KeyCode::G))
     {
         for (auto& pInfo : m_PlayerEffects[GUARDEFFECT])
         {
@@ -178,7 +178,7 @@ void CPlayer::Update(_float fTimeDelta)
 
             }
         }
-    }
+    }*/
     //엔딩씬 컷신진행중.. 상태전이
     if (m_pGameManager->Get_UseCutScene() && m_pGameManager->Get_CutSceneType() == CGameManager::CUTSCENE_TYPE::ENDING)
     {
@@ -1829,12 +1829,17 @@ void CPlayer::AnimNotify_Slash_Hold_Ed_Start()
             pEffect->Set_ParentMatrix(m_pTransformCom->Get_WorldMatrixPtr());
             pEffect->Set_SocketMatrix(m_pAnimBody->Get_SocketMatrix("root"));
             pEffect->Play();
-
+        
         }
 
     }
   
+    m_pGameInstance->Invoke(1.f, 0.f, false, false, [this]()
+        {
+            m_bReady = false;
+        }, this);
 
+  
 
     //pEffect = m_pEffectPoolManager->Request_Spawn(L"MeshEffect_RollCut", m_PlayerEffects[SLASH2].back);
     //if (pEffect)
@@ -1864,6 +1869,9 @@ void CPlayer::AnimNotify_Start(PLAYER_ANIMNOTIFY_TYPE eType)
    
     case PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_ST_START:
     {
+        CheckTrue(m_bReady);
+
+      
         CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(L"QuadEffect", m_PlayerEffects[SLASH_CHARGE_ST].front());
         if (pEffect)
         {
@@ -1899,7 +1907,9 @@ void CPlayer::AnimNotify_End(PLAYER_ANIMNOTIFY_TYPE eType)
 
     case PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_ST_END:
     {
-       
+        CheckTrue(m_bReady);
+        CGameInstance::GetInstance()->PlaySoundW(L"Effects/Charging_End.wav", CHANNELID::SOSUND_PLAYER_SFX2, g_EffectVolume);
+
         CEffect* pEffect = m_pEffectPoolManager->Request_Spawn(L"QuadEffect", m_PlayerEffects[SLASH_CHARGE_COMPLETE].front());
         if (pEffect)
         {
@@ -1912,8 +1922,10 @@ void CPlayer::AnimNotify_End(PLAYER_ANIMNOTIFY_TYPE eType)
  
    
             pEffect->Play();
-
+            
         }
+
+        m_bReady = true;
         //원형으로 커지는 Effect
 
     }

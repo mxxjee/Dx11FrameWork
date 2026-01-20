@@ -53,7 +53,7 @@ HRESULT CTarget_Manager::Add_MRT(const _wstring& strMRTTag, const _wstring& strT
     return S_OK;
 }
 
-HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag)
+HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag, ID3D11DepthStencilView* pDSV)
 {
     m_pContext->PSSetShader(nullptr, nullptr, 0);
     //내가 지정한 멀티렌더타겟안에있는 타겟들을 순서대로 장치에 동시에 바인딩한다
@@ -72,8 +72,13 @@ HRESULT CTarget_Manager::Begin_MRT(const _wstring& strMRTTag)
         pRTVs[iNumRenderTargets++] = RenderTarget->Get_RTV().Get();
     }
     
-    m_pContext->OMSetRenderTargets(iNumRenderTargets, pRTVs, m_pDSV.Get());
-    
+    if (nullptr != pDSV)
+    {
+        m_pContext->ClearDepthStencilView(pDSV, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
+    }
+
+    m_pContext->OMSetRenderTargets(iNumRenderTargets, pRTVs, nullptr == pDSV ? m_pDSV.Get() : pDSV);
+
 
     return S_OK;
 }

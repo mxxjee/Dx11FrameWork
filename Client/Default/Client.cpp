@@ -15,8 +15,8 @@ HINSTANCE g_hInst;                                // 현재 인스턴스입니�
 HWND    g_hWnd;
 
 float	g_TotalVolume=1.f;
-float	g_BGMVolume=g_TotalVolume-0.5f;
-float	g_VoiceVolume=g_TotalVolume-0.3f;
+float	g_BGMVolume=g_TotalVolume-0.8f;
+float	g_VoiceVolume=g_TotalVolume-0.1f;
 float	g_EffectVolume=g_TotalVolume-0.3f;
 float	g_UIVolume = g_TotalVolume - 0.6f;
 float	g_AmbienceVolume = g_TotalVolume-0.8f;

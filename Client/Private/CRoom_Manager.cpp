@@ -179,7 +179,7 @@ HRESULT CRoom_Manager::Load_Room_From_Json(const string& strRoomName, RoomPackag
 
  
     wstring WRoomName = StringToWString(RoomName);
-    RoomDesc.ObjTag = WRoomName + L"_Room";
+    RoomDesc.ObjTag = L"Room";
     
     CStaticBody::BODY_DESC  BodyDesc;
     BodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);

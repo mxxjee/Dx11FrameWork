@@ -65,6 +65,7 @@
               "Speaker": "마린",
               "Text": "저 문을 통해 마을로 나가면 돼.",
               "strActionCommand": "",
+              "Sound": "NPC/Marin0.wav",
               "actionTiming": "ON_FINISH"
             }
           ]

@@ -70,6 +70,12 @@ struct PS_OUT
     vector vDepth : SV_TARGET2;
 };
 
+struct PS_OUT_SHADOW
+{
+    vector vDepth : SV_TARGET0;
+    
+};
+
 /*버텍스 셰이더 단계의 함수
     버텍스 쉐이더 = 정점 갖고놀기
     정점과 행렬의 연산을 수 행*/
@@ -307,6 +313,16 @@ PS_OUT PS_Dissove(PS_IN Input)
 
     return Out;
 }
+
+PS_OUT_SHADOW PS_MAIN_SHADOW(PS_IN In)
+{
+    PS_OUT_SHADOW Out;
+    Out.vDepth = float4(In.vProjPos.z / In.vProjPos.w, In.vProjPos.w/1000.f, 0.f, 0.f);
+    
+    return Out;
+}
+
+
 /*렌더링 방법을 정의한다.*/
 technique11 DefaultTechnique
 {
@@ -368,5 +384,14 @@ technique11 DefaultTechnique
         PixelShader = compile ps_5_0 PS_Dissove();
     }
 
-    
+    pass Shadow
+    {
+        SetRasterizerState(RS_Default);
+        SetDepthStencilState(DSS_Default, 0);
+        SetBlendState(BS_Default, float4(0.f, 0.f, 0.f, 0.f), 0xffffffff);
+
+        VertexShader = compile vs_5_0 VS_MAIN();
+        GeometryShader = NULL;
+        PixelShader = compile ps_5_0 PS_MAIN_SHADOW();
+    }
 }

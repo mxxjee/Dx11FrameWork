@@ -42,7 +42,7 @@
             },
             {
               "Speaker": "마마샤",
-              "Text": "<파워 팔찌>예요.\n이걸로 돌을 들어 아이를 구해주세요.",
+              "Text": "<파워 팔찌>에요.\n이걸로 돌을 들어 아이를 구해주세요.",
               "strActionCommand": "",
               "actionTiming": "ON_START"
             },

@@ -32,7 +32,7 @@ public:
     virtual void        Update_Render(_float fTimeDelta);
 
     virtual HRESULT Render();
-
+    virtual HRESULT Render_Shadow();
 
 public:
     void Set_Animation_Speed(const wstring& AnimName, _float fSpeed);

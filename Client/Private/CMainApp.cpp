@@ -120,6 +120,16 @@ HRESULT CMainApp::Initialize()
 	Create_LoadingUI();
 
 
+	CShadow::SHADOW_DESC		ShadowDesc{};
+	ShadowDesc.vPosition = _float4(0.f, 30.f, -20.f, 1.f);
+	ShadowDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	ShadowDesc.fFovy = XMConvertToRadians(45.0f);
+	ShadowDesc.fNearZ = 0.1f;
+	ShadowDesc.fFarZ = 1000.f;
+
+	if (FAILED(m_pGameInstance->Add_ShadowLight(m_pContext.Get(), ShadowDesc)))
+		return E_FAIL;
+
 	if (FAILED(Start_Level(LEVEL_ID::LOGO,LEVELCHANGETYPE::REPLACETOP)))
 		return E_FAIL;
 

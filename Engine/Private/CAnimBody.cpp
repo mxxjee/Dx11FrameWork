@@ -109,6 +109,45 @@ HRESULT CAnimBody::Render()
 	return S_OK;
 }
 
+HRESULT CAnimBody::Render_Shadow()
+{
+	if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", m_CombinedWorldMatrix)))
+		return E_FAIL;
+
+	_float4x4 LightView = *m_pGameInstance->Get_ShadowLight_Transform(D3DTS::VIEW);
+	_float4x4 LightProj = *m_pGameInstance->Get_ShadowLight_Transform(D3DTS::PROJ);
+
+
+	_matrix matLightView = XMLoadFloat4x4(&LightView);
+	_matrix matLightProj = XMLoadFloat4x4(&LightProj);
+	_matrix matLightViewProj = matLightView * matLightProj;
+
+	_float4x4 LightViewProj;
+	XMStoreFloat4x4(&LightViewProj, matLightViewProj);
+
+	if (FAILED(m_pShader->Bind_Matrix("g_ViewProjMatrix", LightViewProj)))
+		return E_FAIL;
+
+	_uint   iNumMeshes = m_pModel->Get_ModelData().Meshes.size();
+
+	for (auto& Mesh : m_pModel->Get_Meshs())
+	{
+		if (Mesh.second)
+		{
+			if (FAILED(m_pModel->Bind_Bones(m_pShader, "g_BoneMatrices", Mesh.second)))
+				return E_FAIL;
+
+			if (FAILED(m_pShader->Begin("Shadow")))
+				return E_FAIL;
+
+			if (FAILED(m_pModel->Render(Mesh.second)))
+				return E_FAIL;
+		}
+
+	}
+	return S_OK;
+}
+
 void CAnimBody::Set_Animation_Speed(const wstring& AnimName, _float fSpeed)
 {
 	if (m_pModel)

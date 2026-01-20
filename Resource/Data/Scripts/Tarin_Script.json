@@ -11,7 +11,7 @@
           "Steps": [
             {
               "Speaker": "타린",
-              "Text": "어, 링크! 일어났구나\n난 타린이라고 한다. 몸은 어때?",
+              "Text": "어, 링크! 일어났구나!\n난 타린 이라고 한다. 몸은 어때?",
               "strActionCommand": "",
               "Sound": "NPC/Tarin1.wav",
               "actionTiming": "ON_FINISH"
@@ -24,7 +24,7 @@
             },
             {
               "Speaker": "타린",
-              "Text": "방패 뒤에 새겨진 이름을 봤지\n자, 이 방패 받아라!",
+              "Text": "방패 뒤에 새겨진 이름을 봤지.\n자, 이 방패 받아라!",
               "strActionCommand": "Get_Shield",
               "actionTiming": "ON_FINISH"
             }
@@ -40,6 +40,7 @@
               "Speaker": "타린",
               "Text": "어서 밖으로 나가보거라!",
               "strActionCommand": "",
+              "Sound": "NPC/Tarin1.wav",
               "actionTiming": "ON_FINISH"
             }
           ]
@@ -74,6 +75,7 @@
               "Speaker": "타린",
               "Text": "바깥 구경은 좀 많이하고있는건가!",
               "strActionCommand": "",
+              "Sound": "NPC/Tarin0.wav",
               "actionTiming": "ON_FINISH"
             },
             {

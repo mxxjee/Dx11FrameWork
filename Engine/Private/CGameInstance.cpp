@@ -173,6 +173,12 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	if (FAILED(m_pTarget_Manager->Initialize()))
 		return E_FAIL;
 
+
+	m_pShadow = CShadow::Create();
+	if (nullptr == m_pShadow)
+		return E_FAIL;
+
+
 	CheckNullResult(m_pTarget_Manager, E_FAIL);
 
 
@@ -471,6 +477,16 @@ int CGameInstance::Get_RenderGroupCount()
 	return m_pRenderer->Get_RenderGroupCount();
 }
 
+ComPtr<ID3D11DepthStencilView> CGameInstance::Get_DSV()
+{
+	return m_pRenderer->Get_DSV();
+}
+
+HRESULT CGameInstance::SetUp_ViewportDesc(_uint iWidth, _uint iHeight)
+{
+	return m_pRenderer->SetUp_ViewportDesc(iWidth,iHeight);
+}
+
 
 void CGameInstance::Bind_And_Render_Lights()
 {
@@ -485,6 +501,16 @@ void CGameInstance::Bind_Rect_Matricies()
 void CGameInstance::Render_Combined()
 {
 	return m_pRenderer->Render_Combined();
+}
+
+_uint CGameInstance::Get_ViewportWidth()
+{
+	return m_pRenderer->Get_ViewportWidth();
+}
+
+_uint CGameInstance::Get_ViewportHeight()
+{
+	return m_pRenderer->Get_ViewportHeight();
 }
 
 
@@ -1122,10 +1148,10 @@ HRESULT CGameInstance::Add_MRT(const _wstring& strMRTTag, const _wstring& strTar
 
 }
 
-HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag)
+HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag, ID3D11DepthStencilView* pDSV)
 {
 	CheckNullResult(m_pTarget_Manager, E_FAIL);
-	return m_pTarget_Manager->Begin_MRT(strMRTTag);
+	return m_pTarget_Manager->Begin_MRT(strMRTTag, pDSV);
 }
 
 HRESULT CGameInstance::End_MRT()
@@ -1194,11 +1220,28 @@ void CGameInstance::SetChannelVolume(CHANNELID eID, float fVolume)
 	if (m_pSound_Manager)
 		m_pSound_Manager->SetChannelVolume(eID,fVolume);
 }
+
 #pragma endregion
 
+#pragma region Shadow
+const _float4x4* CGameInstance::Get_ShadowLight_Transform(D3DTS eTransformMatrix)
+{
+	return m_pShadow->Get_Transform(eTransformMatrix);
+}
+const _float4x4* CGameInstance::Get_ShadowLight_InverseTransform(D3DTS eTransformMatrix)
+{
+	return m_pShadow->Get_InverseTransform(eTransformMatrix);
+}
+HRESULT CGameInstance::Add_ShadowLight(ID3D11DeviceContext* pContext, const CShadow::SHADOW_DESC& ShadowDesc)
+{
+	return m_pShadow->Add_ShadowLight(pContext, ShadowDesc);
+}
 
+#pragma endregion
 void CGameInstance::Release_Engine()
 {
+	Safe_Release(m_pShadow);
+
 	Safe_Release(m_pTarget_Manager);
 	Safe_Release(m_pTimerTask_Manager);
 

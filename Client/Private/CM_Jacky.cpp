@@ -28,6 +28,7 @@
 #include "CLayer.h"
 
 #include "CLevel.h"
+#include "CModel.h"
 
 #ifdef _DEBUG
 #include "CImGui_Manager.h"
@@ -302,7 +303,32 @@ HRESULT CM_Jacky::Ready_EventLisnters()
 
         });
 
+    m_pGameInstance->RegisterListners("BossWalk_Sound", [this](const GameEvent event)
+        {
+            m_pGameInstance->PlaySoundW(L"Monster/BossWalk.wav", CHANNELID::SOUND_MONSTER_HIT, 0.2f);
 
+        });
+
+    GameEvent Event;
+    EventPayload payload;
+    Event.Payload = payload;
+
+    
+    CAnimation* pAnim = m_pBody->Get_Model()->Find_Animation(L"lifting_move");
+    if (pAnim)
+    {
+        Event.Name = "BossWalk_Sound";
+        pAnim->AddNotify(25, Event);
+
+    }
+
+    pAnim = m_pBody->Get_Model()->Find_Animation(L"move");
+    if (pAnim)
+    {
+        Event.Name = "BossWalk_Sound";
+        pAnim->AddNotify(21, Event);
+
+    }
     return S_OK;
 }
 
@@ -319,13 +345,17 @@ void CM_Jacky::Enter_State(int newState)
             {
                 //대기 후 1초뒤 양옆으로이동
                 m_ActionControl.m_bMove = true;
+        
             }, this);
     }
     break;
 
     case ENUM_TO_UINT(CMonster::MONSTER_BASE_STATE::WALK):
     {
+        /*GameEvent Event;
+        Event.Name = "Walk_Sound";
 
+        m_pGameInstance->Emit(Event);*/
 
     }
     break;
@@ -360,6 +390,8 @@ void CM_Jacky::Enter_State(int newState)
         m_pChaseTarget->Get_Body()->Set_DissolveTexture(L"dissolve_02");
         m_pChaseTarget->Get_Body()->Set_PassName("Dissolve");
         m_pChaseTarget->Set_Dead();
+
+        m_pGameInstance->PlaySoundW(L"Monster/BossDead.wav", CHANNELID::SOUND_MONSTER_DEATH, g_EffectVolume);
 
         m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 1.f);
 

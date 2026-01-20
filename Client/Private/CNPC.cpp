@@ -17,6 +17,7 @@
 #include "CTexture.h"
 #include "CInput_Manager.h"
 #include "MathUtils.h"
+#include "CLevel.h"
 
 
 USING(Client)
@@ -471,6 +472,11 @@ void CNPC::Ready_Events()
     //_float3(0.f, 3.f, -2.f)
     ExitPayload.Ptrs["Player"] = m_pPlayer;
 
+    int CurrentLevelID = m_pGameInstance->Get_CurrentLevelID();
+    if (CurrentLevelID == ENUM_TO_UINT(LEVEL_ID::LOADING))
+        CurrentLevelID = m_pGameInstance->Get_CurrentLevel()->Get_NextLevelID();
+    
+    ExitPayload.Ptrs["Room"] = m_pGameInstance->Find_GameObject(CurrentLevelID, L"Enviroment_Layer", L"Room");
     Exit_Interaction_Event.Payload = ExitPayload;
 }
 

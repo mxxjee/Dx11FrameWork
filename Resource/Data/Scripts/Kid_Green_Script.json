@@ -97,7 +97,7 @@
             {
               "Speaker": "승민",
               "Sound": "NPC/GreenKid1.wav",
-              "Text": "우와, 형! 진짜 숲속에서 병준이를 구한 거예요?\n저도 나중에 형처럼 크고 용감한 방범대원이 될래요!",
+              "Text": "우와,진짜 숲속에서 병준이를 구한 거예요?\n저도 나중에 형처럼 크고 용감한 방범대원이 될래요!",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             }

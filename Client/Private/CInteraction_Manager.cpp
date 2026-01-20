@@ -182,6 +182,11 @@ bool CInteraction_Manager::Check_InteractiveType(InteractionType eType)
 	return m_pCurrentTarget->Get_Interaction_Priority() == (int)eType;
 }
 
+void CInteraction_Manager::Add_Interaction(CIInteractable* pObj)
+{
+	m_InteractableObjects.push_back(pObj);
+}
+
 void CInteraction_Manager::Change_Scene(_uint iLevelID)
 {
 	Clear();

@@ -314,6 +314,8 @@ private:
 
 private:
     class CLight* m_pPlayerLight = nullptr;
+    bool        m_bReady = false;
+
 };
 
 NS_END                                                                                                                                                                                                                                                                                                                      

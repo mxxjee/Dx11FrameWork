@@ -6,6 +6,7 @@ HLSL 안에선 CONST화 되어 값 변경이 불가함 (읽기전용)*/
 #include "Shader_Light.hlsli"
 #include "Engine_Shader_Defines.hlsli"
 
+matrix g_LightViewMatrix, g_LightProjMatrix;
 
 Texture2D   g_Texture;
 Texture2D   g_DiffuseTexture;
@@ -13,7 +14,8 @@ Texture2D   g_ShadeTexture;
 Texture2D   g_NormalTexture;
 Texture2D   g_DepthTexture;
 Texture2D   g_SpecularTexture;
-
+Texture2D   g_ShadowTexture;
+ 
 matrix g_ViewMatrix;
 matrix g_ProjMatrix;
 
@@ -208,8 +210,51 @@ PS_OUT_BACKBUFFER PS_MAIN_COMBINED(PS_IN In)
     color.a = 1.f;
 
     Out.vColor = color;
+    return Out;
+    ///////////////////////////////////
+    vector vDepthDesc = g_DepthTexture.Sample(DefaultSampler, In.vTexcoord);
+    float fViewZ = vDepthDesc.y*1000.f ;
+    
+    vector vWorldPos;
+    
+    /* 투영공간상의 좌표를 구한다. */
+    /* 로컬위치 * 월드 * 뷰 * 투영 / V.z */ 
+    vWorldPos.x = In.vTexcoord.x * 2.f - 1.f;
+    vWorldPos.y = In.vTexcoord.y * -2.f + 1.f;
+    vWorldPos.z = vDepthDesc.x;
+    vWorldPos.w = 1.f;
+    
+    /* 투영행렬까지 곱한 상태를 만들어준다. */ 
+    /* 로컬위치 * 월드 * 뷰 * 투영 / V.z  * V.z */ 
+    vWorldPos *= fViewZ;
+    
+    /* 로컬위치 * 월드 * 뷰 * 투영 * 투영-1 */
+    vWorldPos = mul(vWorldPos, g_ProjMatrixInv);
+    
+     /* 로컬위치 * 월드 * 뷰 * 뷰-1 */
+    vWorldPos = mul(vWorldPos, g_ViewMatrixInv);
+
+    vWorldPos = mul(vWorldPos, g_LightViewMatrix);
+    vWorldPos = mul(vWorldPos, g_LightProjMatrix);
+    
+    float fDepth = vWorldPos.w;
+    
+    /* 광원기준으로 그려낸 장면상에서, 현재 픽셀이 그려졌어야할 위치에 이미 기록되어있던 깊이를 꺼내고오 싶어!!!!! */
+    /* 렌더타겟에서 꺼내와야하니까!! 뭐가필요하냐? 텍스쿠드가 필요하지!! */ 
+    float2 vTexcoord;
+    /* -1, 1 -> 0, 0 */
+    /* 1, -1 -> 1, 1 */    
+    vTexcoord.x = vWorldPos.x / vWorldPos.w * 0.5f + 0.5f;
+    vTexcoord.y = vWorldPos.y / vWorldPos.w * -0.5f + 0.5f;
+    
+    vector vLightDepth = g_ShadowTexture.Sample(DefaultSampler, vTexcoord);
+    
+    float fOldZ = vLightDepth.y * 1000.f;
+    if (fDepth - 0.1f > fOldZ)
+        Out.vColor = Out.vColor * 0.5f;
     
     return Out;
+
     
 }
 

@@ -1111,6 +1111,44 @@ HRESULT UICreator::Create_ItemGet_UI(wstring LayerTag)
 
     }
 
+    //아이템 Get BG
+    CUI::tagUIDesc        IconBGDesc = {};
+
+    IconBGDesc.ObjTag = L"ItemGet_Icon_BG";
+    IconBGDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+
+    IconBGDesc.TextureKey = L"ItemGet_BG";
+
+    IconBGDesc.iIdx = 0;
+
+    IconBGDesc.fSizeX = 150.f;
+    IconBGDesc.fSizeY = 150.f;
+    IconBGDesc.fX = g_iWinSizeX >> 1;
+    IconBGDesc.fY = g_iWinSizeY >> 1;
+    IconBGDesc.Depth = 0.49f;
+
+    TransDesc = {};
+    TransDesc.fRotationPerSec = 10.f;
+    TransDesc.fSpeedPerSec = 5.f;
+    IconBGDesc.TransformDesc = &TransDesc;
+
+    //AlphaAnim등록
+     UIDesc = {};
+    IconBGDesc.UICompDesc = &UIDesc;
+
+    pObj = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"Panel"), &IconBGDesc);
+    if (pObj)
+    {
+        CGameObject* pInstance = dynamic_cast<CGameObject*>(pObj);
+        if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), LayerTag, pInstance)))
+            return E_FAIL;
+
+
+        ItemGetIcon.push_back(pInstance);
+
+    }
+
+
     m_pGameInstance->Register_UIGroup(ItemGetIcon);
     m_pGameInstance->SetActiveGroup(ItemGetIcon.Key, false);
 
@@ -1130,10 +1168,12 @@ HRESULT UICreator::Create_ItemGet_UI(wstring LayerTag)
             if (pGroup)
             {
                 CGameObject* pObj = pGroup->Find(L"ItemGet_Icon");
+                CGameObject* pObjBG = pGroup->Find(L"ItemGet_Icon_BG");
                 if (pObj)
                 {
                     CUI* pUI = dynamic_cast<CUI*>(pObj);
-                   
+                    CUI* pUIBG= dynamic_cast<CUI*>(pObjBG);
+
                     //위치설정(플레이어 기준 오프셋)
                     CPlayer* pPlayer=CGameManager::GetInstance()->Get_MainPlayer();
                    
@@ -1146,6 +1186,11 @@ HRESULT UICreator::Create_ItemGet_UI(wstring LayerTag)
                     pUI->Get_Transform()->Set_State(STATE::POSITION,
                         MathUtils::ScreenToWorld_UI(OffSet+ ShowPos, g_iWinSizeX, g_iWinSizeY));
 
+                    OffSet = XMVectorSetZ(OffSet, XMVectorGetZ(OffSet) + 0.1f);
+
+                    pUIBG->Get_Transform()->Set_State(STATE::POSITION,
+                        MathUtils::ScreenToWorld_UI(OffSet + ShowPos, g_iWinSizeX, g_iWinSizeY));
+
                     pUI->Set_Texture(ItemEvent->TexKey);
                     
                  
@@ -1157,9 +1202,20 @@ HRESULT UICreator::Create_ItemGet_UI(wstring LayerTag)
                             pUI->Get_UIComp()->PlayAnim(UIAnimType::SCALE, _float4(0.1f, 0.1f, 0.1f, 0.f), _float4(120*1.5f, 120.f*1.5f, 1.f, 0.f),10.f, false, false, false);
 
                         });
+
+                    pUIBG->Set_ActiveAnim(0, [pUIBG]()
+                        {
+                            pUIBG->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 10.f, false, false, false);
+
+                            //스케일애니메이션 재생안됨 확인
+                            pUIBG->Get_UIComp()->PlayAnim(UIAnimType::SCALE, _float4(0.1f, 0.1f, 0.1f, 0.f), _float4(150 * 1.5f, 150.f * 1.5f, 1.f, 0.f), 10.f, false, false, false);
+
+                        });
                     if (!pUI->Is_Active())
+                    {
                         pUI->OnActivated(true);
-                      
+                        pUIBG->OnActivated(true);
+                    }
 
                 }
             }
@@ -1171,11 +1227,19 @@ HRESULT UICreator::Create_ItemGet_UI(wstring LayerTag)
             if (pGroup)
             {
                 CGameObject* pObj = pGroup->Find(L"ItemGet_Icon");
+                CGameObject* pObjBG = pGroup->Find(L"ItemGet_Icon_BG");
+
                 if (pObj)
                 {
                     CUI* pUI = dynamic_cast<CUI*>(pObj);
+                    CUI* pUIBG = dynamic_cast<CUI*>(pObjBG);
+
+
                     pUI->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 10.f, false, true, false);
                     pUI->Get_UIComp()->PlayAnim(UIAnimType::SCALE, _float4(120.f * 0.7f, 120.f * 0.7f, 1.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 10.f, false, true, false);
+
+                    pUIBG->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 10.f, false, true, false);
+                    pUIBG->Get_UIComp()->PlayAnim(UIAnimType::SCALE, _float4(120.f * 0.7f, 120.f * 0.7f, 1.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 10.f, false, true, false);
 
                 }
             }

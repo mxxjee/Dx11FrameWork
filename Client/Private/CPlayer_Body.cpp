@@ -247,6 +247,15 @@ HRESULT CPlayer_Body::Ready_Animation_Notify()
 	}
 
 
+	pAnim = m_pModel->Find_Animation(L"run");
+	if (pAnim)
+	{
+		Event.Name = "Walk_Sound";
+		pAnim->AddNotify(7, Event);
+		pAnim->AddNotify(19, Event);
+	}
+
+
 	pAnim = m_pModel->Find_Animation(L"shield_hold_f");
 	if (pAnim)
 	{
@@ -392,7 +401,15 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 		{
 			int iRandom = rand() % 2;
 
-			CGameInstance::GetInstance()->PlaySoundW(L"LinkVoice/Link_ChargingEnd" + to_wstring(iRandom)+L".wav", CHANNELID::SOUND_PLAYER_SFX1, g_VoiceVolume);
+			CGameInstance::GetInstance()->PlaySoundW(L"LinkVoice/Link_ChargingEnd" + to_wstring(iRandom) + L".wav", CHANNELID::SOUND_PLAYER_SFX1, g_VoiceVolume);
+
+		});
+
+	m_pGameInstance->RegisterListners("Walk_Sound", [](const GameEvent& event)
+		{
+			int iRandom = rand() % 2;
+
+			CGameInstance::GetInstance()->PlaySoundW(L"Effects/FootStep" + to_wstring(iRandom)+L".wav", CHANNELID::SOUND_PLAYER_SFX3, 0.2f);
 
 		});
 

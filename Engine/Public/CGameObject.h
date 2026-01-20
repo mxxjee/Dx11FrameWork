@@ -38,7 +38,8 @@ public:
 
 
     virtual HRESULT Render();
-    
+    virtual HRESULT Render_Shadow();
+
 public:
     HRESULT     Ready_Components(void* pArg);
     HRESULT     Ready_Resource(void* pArg);

@@ -95,7 +95,15 @@ void CNPC_Kid_Blue::Update_Late(_float fTimeDelta)
     {
         Set_Active(false);
         m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide", nullptr);
-            }
+    
+
+        CModel* pModel = m_pAnimBody->Get_Model();
+
+        for (auto& Mesh : pModel->Get_Meshs())
+        {
+            Mesh.second->Set_PassName("Default");
+        }
+    }
 
 
 }
@@ -181,5 +189,9 @@ CNPC_Kid_Blue* CNPC_Kid_Blue::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D1
 
 void CNPC_Kid_Blue::Free()
 {
+    CModel* pModel = m_pBody->Get_Model();
+    CheckNull(pModel);
+
+
     __super::Free();
 }

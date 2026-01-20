@@ -23,6 +23,8 @@
 
 #include "CInput_Manager.h"
 #include "CParticle.h"
+#include "CShadow.h"
+
 
 
 
@@ -136,6 +138,9 @@ HRESULT CLevel_Spawn::Ready_Lights()
     if (FAILED(m_pGameInstance->Add_Light(m_iLevelID, PointLightDesc)))
         return E_FAIL;*/
 
+
+
+
     return S_OK;
 }
 
@@ -143,7 +148,7 @@ HRESULT CLevel_Spawn::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 {
     //룸읽기
     CRoom::MODELOBJECT_DESC     RoomDesc;
-    RoomDesc.ObjTag = L"MarinHouse_Room";
+    RoomDesc.ObjTag = L"Room";
 
     CStaticBody::BODY_DESC  BodyDesc;
     BodyDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::NONALPHA);
@@ -395,6 +400,10 @@ void CLevel_Spawn::OnEnter()
         CMainCamera* ppMainCamera = dynamic_cast<CMainCamera*>(pMainCamera);
         CheckNull(ppMainCamera);
         ppMainCamera->Set_Target(m_pPlayer, true);
+
+        //CGameObject* pBaseRoom = m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::SPAWN), L"Enviroment_Layer", L"Room");
+        //if (pBaseRoom)
+        //    ppMainCamera->Set_Target(pBaseRoom);
     }
 
     //플레이어 위치

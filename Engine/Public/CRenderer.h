@@ -43,12 +43,18 @@ private:
 public:
     static  CRenderer* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
 
+public:
+    HRESULT         Ready_DepthStencilView();
+    HRESULT         SetUp_ViewportDesc(_uint iWidth, _uint iHeight);
+
+    _uint           Get_ViewportWidth() {return m_iViewportWidth;}
+    _uint           Get_ViewportHeight() { return m_iViewportHeight; }
 
 public:
     void        Bind_And_Render_Lights();
     void        Bind_Rect_Matricies();
     void        Render_Combined();
-
+    ComPtr<ID3D11DepthStencilView>      Get_DSV() { return m_pDSV; }
     virtual void    Free() override;
 
 #ifdef  _DEBUG
@@ -68,6 +74,8 @@ private:
     class CShader* m_pShader = { nullptr };
 
 private:
+    ComPtr<ID3D11DepthStencilView>  m_pDSV = { nullptr };
+private:
     class CGameInstance* m_pGameInstance = { nullptr };
 
 
@@ -80,6 +88,9 @@ public:
 
 private:
     ENGINE_DESC m_EngineDesc;
+
+    _uint					m_iViewportWidth = { }, m_iViewportHeight = {};
+
 };
 
 NS_END

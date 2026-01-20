@@ -85,7 +85,7 @@ void CNPC_Tarin::Exit_Interaction()
     CheckFalse(m_pTriggerBox->Is_Active());
     m_bTalking = false;
     m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide", nullptr);
-
+    m_bIsTalking = false;
     m_pPlayer->Get_ActionControl()->m_bTalk = false;
     m_pAnimBody->Reserve_Animation(L"wait", true);
 

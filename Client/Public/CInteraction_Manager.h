@@ -33,6 +33,7 @@ public:
 
     bool        Check_InteractiveType(InteractionType eType);
 
+    void        Add_Interaction(CIInteractable* pObj);
     void        Change_Scene(_uint iLevelID);
 
     HRESULT         Initialize();

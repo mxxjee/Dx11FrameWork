@@ -20,7 +20,7 @@ public:
     HRESULT Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag);
     
             //MRT를 찾아서 바인딩
-    HRESULT Begin_MRT(const _wstring& strMRTTag);
+    HRESULT Begin_MRT(const _wstring& strMRTTag, ID3D11DepthStencilView* pDSV);
     
             //다시 복원
     HRESULT End_MRT();

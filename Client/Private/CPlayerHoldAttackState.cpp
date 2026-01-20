@@ -133,6 +133,7 @@ void CPlayerHoldAttackState::ChangePhase(CPlayer* pPlayer)
             pPlayer->Reserve_Animation_To_Body(L"slash_hold_ed", false);
             m_bChange = false;
             pPlayer->Set_CanMove(false);
+            m_pGameInstance->PlaySoundW(L"Effects/SlashWind.wav", CHANNELID::SOUND_PLAYER_SFX3, g_EffectVolume);
 
 
         }
@@ -175,8 +176,7 @@ void CPlayerHoldAttackState::OnChargeCompleteEnter(CPlayer* pPlayer)
 {
     //ÀÌÆåÆ®¼ÒÈ¯
     pPlayer->AnimNotify_End(PLAYER_ANIMNOTIFY_TYPE::SLASH_HOLD_ST_END);
-    CGameInstance::GetInstance()->PlaySoundW(L"Effects/Charging_End.wav", CHANNELID::SOSUND_PLAYER_SFX2, g_EffectVolume);
-
+   
 }
 
 void CPlayerHoldAttackState::Hold_Movement(CPlayer* pPlayer)

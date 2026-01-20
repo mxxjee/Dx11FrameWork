@@ -46,6 +46,7 @@
               "Speaker": "마법 할머니",
               "Text": "이 가루는... 보이지 않는 걸\n조금 솔직하게 만들어 주지. ",
               "strActionCommand": "",
+              "Sound": "NPC/Witch2.wav",
               "actionTiming": "ON_FINISH"
             },
             {
@@ -79,6 +80,7 @@
               "Speaker": "마법 할머니",
               "Text": "후후... 보이지 않는 길을 찾아내느라 수고했다, 애송아.\n내가 준 가루가 제법 도움이 된 모양이구나.",
               "strActionCommand": "",
+              "Sound": "NPC/Witch1.wav",
               "actionTiming": "ON_FINISH"
             },
             {

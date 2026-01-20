@@ -30,7 +30,7 @@
             },
             {
               "Speaker": "숲의 요정",
-              "Text": "하지만 이 숲에 오래 머물면 다시 위험해질거에요..",
+              "Text": "하지만 이 숲에 오래 머물면,\n다시 위험해질거에요..",
               "strActionCommand": "",
               "actionTiming": "ON_FINISH"
             },

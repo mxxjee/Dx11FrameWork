@@ -97,6 +97,13 @@ void CMainCamera::PreRenderGroup(_uint iRenderGroup)
 {
 	switch ((RENDERGROUP)iRenderGroup)
 	{
+	case RENDERGROUP::SHADOW:
+		if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_Shadow"),m_pGameInstance->Get_DSV().Get())))
+			return;
+
+		m_pGameInstance->SetUp_ViewportDesc(g_iMaxWidth, g_iMaxHeight);
+		break;
+
 	case RENDERGROUP::NONALPHA:
 		if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_GameObject"))))
 			return;
@@ -120,6 +127,16 @@ void CMainCamera::PostRenderGroup(_uint iRenderGroup)
 {
 	switch ((RENDERGROUP)iRenderGroup)
 	{
+	case RENDERGROUP::SHADOW:
+	{
+		if (FAILED(m_pGameInstance->End_MRT()))
+			return;
+
+		m_pGameInstance->SetUp_ViewportDesc(m_pGameInstance->Get_ViewportWidth(), 
+										m_pGameInstance->Get_ViewportHeight());
+	}
+	break;
+
 	case RENDERGROUP::NONALPHA:
 	{
 		if (FAILED(m_pGameInstance->End_MRT()))

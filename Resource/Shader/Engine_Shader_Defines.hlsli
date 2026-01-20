@@ -23,7 +23,18 @@ sampler MirrorSampler = sampler_state
 
 };
 
-
+SamplerState ShadowSampler
+{
+    Filter = MIN_MAG_MIP_POINT; // 혹은 MIN_MAG_MIP_LINEAR (부드럽게)
+    
+    // 범위 밖은 BorderColor를 사용해라!
+    AddressU = Border;
+    AddressV = Border;
+    AddressW = Border;
+    
+    // 범위 밖은 무조건 1.0 (가장 먼 거리) -> "그림자 아님"으로 판정됨
+    BorderColor = float4(1.0f, 1.0f, 1.0f, 1.0f);
+};
 ///////RS//////
 RasterizerState RS_Default
 {

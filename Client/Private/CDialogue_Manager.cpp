@@ -12,6 +12,8 @@
 #include "CNPC.h"
 #include "CNPC_KidRed.h"
 #include "CGameManager.h"
+#include "CInteraction_Manager.h"
+#include "CIInteractable.h"
 
 
 
@@ -509,7 +511,11 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
                 {
                     CNPC* pKid_Red_NPC = dynamic_cast<CNPC*>(m_pGameInstance->Find_GameObject(ENUM_TO_UINT(LEVEL_ID::STATIC), L"NPC_Layer", L"NPC_Kid_Red"));
                     if (pKid_Red_NPC)
+                    {
                         pKid_Red_NPC->Set_TriggerBoxEnable(true);
+                       /* CInteraction_Manager::GetInstance()->Add_Interaction(dynamic_cast<CIInteractable*>(pKid_Red_NPC));*/
+
+                    }
                     GameEvent Event;
                     Event.Name = "Ending_Camera";
                     Event.Payload.Ptrs["Player"] = CGameManager::GetInstance()->Get_MainPlayer();
@@ -528,6 +534,7 @@ void CDialogue_Manager::ExecuteActionCommand(const std::string& strCommand, cons
                     CGameManager::GetInstance()->Set_EndingStep(EndingStep::ENDINGMESSAGE);
                     CGameManager::GetInstance()->Set_UseCutScene(false);
 
+                    m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide", nullptr);
 
 
 

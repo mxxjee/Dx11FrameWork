@@ -68,6 +68,11 @@ HRESULT CGameObject::Render()
     return S_OK;
 }
 
+HRESULT CGameObject::Render_Shadow()
+{
+    return S_OK;
+}
+
 HRESULT CGameObject::Ready_Components(void* pArg)
 {
     GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);

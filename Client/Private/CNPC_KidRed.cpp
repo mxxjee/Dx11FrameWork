@@ -150,7 +150,7 @@ void CNPC_KidRed::Wait_TownArrival(_float fTimeDelta)
 
     m_pGameInstance->Invoke(2.f, 0.f, false, false, [this]()
         {
-            m_pTriggerBox->Set_Active(false);
+            Set_TriggerBoxEnable(true);
             m_pGameManager->Set_EndingStep(EndingStep::EPILOGUE);
             m_pDialogue_Manager->StartDialogue("NPC_Kid_Red");
             CInteraction_Manager::GetInstance()->Set_CurrentTarget(this);
@@ -196,6 +196,8 @@ void CNPC_KidRed::Exit_Interaction()
     m_bTalking = false;
     m_pGameInstance->BroadCastEvent(L"OnDialogueUIHide", nullptr);
 
+    //if (m_pGameManager->Get_EndingStep() == ENDINGMESSAGE)
+    //    __super::Exit_Interaction();
 
 }
 

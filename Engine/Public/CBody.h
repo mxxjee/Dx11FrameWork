@@ -39,7 +39,7 @@ public:
     virtual void        Update_Render(_float fTimeDelta);
 
     virtual HRESULT Render();
-
+    virtual HRESULT Render_Shadow();
 public:
     void Set_VisibleMesh(const wstring& MeshName, bool bVisible);
     

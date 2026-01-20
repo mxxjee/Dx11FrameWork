@@ -115,7 +115,7 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
     __super::Update_Priority(fTimeDelta);
 
     //엔딩씬 테스트
-    if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::E))
+   /* if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::E))
     {
         m_pGameInstance->StopSoundFade(CHANNELID::SOUND_BGM, 1.f);
         pFadeScreen->Set_FadeInEndFunc([this]()
@@ -137,7 +137,7 @@ void CLevel_Town::Update_Priority(_float fTimeDelta)
         pFadeScreen->PlayFadeIn();
     
       
-    }
+    }*/
 
     /*
     if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::R))

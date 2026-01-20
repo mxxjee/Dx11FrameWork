@@ -66,6 +66,8 @@ void CBody::Update_Late(_float fTimeDelta)
 void CBody::Update_Render(_float fTimeDelta)
 {
     m_pGameInstance->Add_RenderObject(m_eRenderGroup, this);
+    m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::SHADOW), this);
+
 }
 
 HRESULT CBody::Render()
@@ -108,6 +110,12 @@ HRESULT CBody::Render()
     }
 
 
+    return S_OK;
+}
+
+HRESULT CBody::Render_Shadow()
+{
+    
     return S_OK;
 }
 

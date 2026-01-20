@@ -36,8 +36,21 @@ void CPlayerStateGetItem::Enter(CPlayer* pPlayer)
         m_pGameInstance->RegisterListners("PlayerOnItemGet", [this](const GameEvent& event)
             {
                 CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
+
+           /*     int CurrentLevelID = m_pGameInstance->Get_CurrentLevelID();
+                if (CurrentLevelID == ENUM_TO_UINT(LEVEL_ID::LOADING))
+                    CurrentLevelID = m_pGameInstance->Get_CurrentLevel()->Get_NextLevelID();
+
+                CGameObject*    pRoom= m_pGameInstance->Find_GameObject(CurrentLevelID, L"Enviroment_Layer", L"Room");
+                CCamera_Base* pCameraBase = dynamic_cast<CCamera_Base*>(m_pGameInstance->Get_MainCamera());
+                CheckNull(pCameraBase);*/
+
+
+           
                 if (pPlayer)
                 {
+                    //pCameraBase->Set_Target(pPlayer);
+
                     if (!m_bShowUI)
                     {
                         CInventory_Manager::ItemGetEvent* pEvent = CInventory_Manager::GetInstance()->Get_ItemGetEvent();
