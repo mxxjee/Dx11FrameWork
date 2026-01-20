@@ -26,9 +26,18 @@ private:
 	_float				m_fTimeDelta;
 
 public:
+	_float				GetFPS() const { return m_fFPS; }
+
+public:
 	static CTimer* Create();
 private:
 	virtual void	Free();
+
+
+private:
+	float m_fFPSTime = 0.f;
+	int   m_iFrameCount = 0;
+	float m_fFPS = 0.f;
 
 };
 

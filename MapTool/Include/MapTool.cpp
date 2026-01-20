@@ -14,10 +14,13 @@
 
 // 전역 변수:
 HINSTANCE g_hInst;                                // 현재 인스턴스입니다.
+
+bool    bEnableTerrainPicking = true;
 HWND    g_hWnd;
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 static UINT                     g_ResizeWidth = 0, g_ResizeHeight = 0;
+bool		m_bDrawDebug = true;
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -27,8 +30,12 @@ INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
-{
+                     _In_ int       nCmdShow){
+#ifdef _DEBUG
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
+
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -96,7 +103,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             /*60프레임마다 증가하는 타이머*/
             pGameInstance->Compute_TimeDelta(L"Timer_60");
 
+            pMainTool->Update_Priority(pGameInstance->Get_TimeDelta(L"Timer_60"));
             pMainTool->Update(pGameInstance->Get_TimeDelta(L"Timer_60"));
+            pMainTool->Update_Late(pGameInstance->Get_TimeDelta(L"Timer_60"));
+            pMainTool->Update_Render(pGameInstance->Get_TimeDelta(L"Timer_60"));
+
             pMainTool->Render();
 
             fTimeAcc = 0.f;
@@ -141,7 +152,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_MAPTOOL));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_MAPTOOL);
+    wcex.lpszMenuName   = nullptr;
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
@@ -165,7 +176,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    RECT rc = { 0,0,g_iWinSizeX,g_iWinSizeY };
    AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, TRUE);
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPED|WS_CAPTION| WS_SYSMENU,
        CW_USEDEFAULT, 0, rc.right - rc.left, rc.bottom - rc.top, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)

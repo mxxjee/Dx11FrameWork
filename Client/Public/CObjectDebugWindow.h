@@ -1,0 +1,43 @@
+#pragma once
+#include "CImgui_Window.h"
+
+namespace Engine
+{
+    class CGameObject;
+    class CModelObject;
+    class CAnimModelObject;
+
+}
+
+NS_BEGIN(Client)
+
+class CObjectDebugWindow :
+    public CImgui_Window
+{
+protected:
+    CObjectDebugWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+    virtual ~CObjectDebugWindow() = default;
+
+
+public:
+    // CImgui_Base을(를) 통해 상속됨
+    virtual HRESULT Initialize(void* pArg) override;
+    virtual void Update() override;
+    virtual void Render() override;
+
+public:
+    void            Set_SelectObject(class CGameObject* pTarget);
+    virtual         void    Reset() {pSelectObject = nullptr;}        //리셋하고싶은 값 리셋하기
+
+public:
+    static CObjectDebugWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
+    virtual void Free();
+
+private:
+    CGameObject* pSelectObject = { nullptr };
+    CModelObject* pSelectModelObj = nullptr;
+    CAnimModelObject* pSelectAnimModelObj = nullptr;
+
+};
+
+NS_END

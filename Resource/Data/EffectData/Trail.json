@@ -1,0 +1,56 @@
+{
+    "Color": [
+        1.0,
+        0.6003459692001343,
+        0.029411792755126953,
+        0.686274528503418
+    ],
+    "DataName": "Trail",
+    "LifeTime": 5.0,
+    "Loop": false,
+    "OffSet": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+    ],
+    "Rotation": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "Scale": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+    ],
+    "Speed": 3.0,
+    "TargetScale": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "Type": "Mesh",
+    "bUseMoveAnim": false,
+    "bUseRotationAnim": false,
+    "bUseScaleAnim": false,
+    "fIntensity": 1.0,
+    "fMoveSpeed": 0.0,
+    "fRotationSpeed": 0.0,
+    "fScaleSpeed": 1.0,
+    "vMoveDir": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+    ],
+    "vRotationAxis": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+    ]
+}

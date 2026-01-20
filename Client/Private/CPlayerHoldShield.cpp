@@ -1,0 +1,275 @@
+#include "CPlayerHoldShield.h"
+#include "CPlayer.h"
+
+USING(Client)
+
+CPlayerHoldShield::CPlayerHoldShield()
+{
+}
+
+CPlayerHoldShield::~CPlayerHoldShield()
+{
+}
+
+void CPlayerHoldShield::Enter(CPlayer* pPlayer)
+{
+    pPlayerInput = pPlayer->Get_Input();
+    pPlayer->Reserve_Animation_To_Body(L"shield_lp", true,true);
+
+    e_NextAnim = NextAnim::NONE;
+    m_ePhase = Phase::Loop;
+
+
+    m_bChangePhase = false; 
+    m_bChangeState = false;
+    m_bExitState = false;
+    pPlayer->Reset_ActionControl();
+
+    CGameInstance::GetInstance()->PlaySoundW(L"Effects/Shield.wav", CHANNELID::SOSUND_PLAYER_SFX2, g_EffectVolume);
+
+}
+
+bool CPlayerHoldShield::Update(CPlayer* pPlayer, _float fTimeDelta)
+{
+    Hold_Movement(pPlayer);
+
+    if (m_bChangePhase)
+        Change_Phase(pPlayer);
+
+    else if (m_bChangeState)
+        Change_Other_State(pPlayer);
+
+   
+    return true;
+}
+
+void CPlayerHoldShield::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
+{
+  
+
+    bool m_bHoldT = pPlayer->Get_Hold(CPlayer::HoldKey::HOLD_T);
+    bool m_bHoldB = pPlayer->Get_Hold(CPlayer::HoldKey::HOLD_B);
+
+    //T키 홀딩중일떄..
+    if (m_bHoldT)
+    {
+        //if문 추가(B키 같이눌림 들어왓을떄)
+     /*   if (m_bHoldB)
+        {
+            m_bChangeState = true;
+            e_NextAnim = NextAnim::SLASH_SHIELD;
+            return;
+        }*/
+
+        if (pPlayerInput->m_bisAttack)
+        {
+            m_bChangeState = true;
+            e_NextAnim = NextAnim::ATTACK;
+
+            return;
+        }
+
+        //쉴드 단일동작들..
+        switch (m_ePhase)
+        {
+        case Client::CPlayerHoldShield::Phase::Start:
+            if (pPlayer->Is_AnimEnd())
+                m_bChangePhase = true;
+            break;
+
+        case Client::CPlayerHoldShield::Phase::Hit:
+            if (pPlayer->Is_AnimEnd())
+                m_bChangePhase = true;
+
+            break;
+
+        case Client::CPlayerHoldShield::Phase::Loop:
+            if (pPlayerInput->m_bisShieldRelease)
+            {
+                if (pPlayerInput->m_bisMove)
+                    m_bChangeState = true;
+
+                else
+                    m_bChangePhase = true;
+                
+            }
+
+
+            break;
+
+        case Client::CPlayerHoldShield::Phase::End:
+            break;
+
+        default:
+            break;
+        }
+
+           
+    }
+
+
+    //T 홀딩중아닐떄..
+    else
+    {
+
+        //반드시 ed로 가게 해서 끝처리
+        if (!pPlayerInput->m_bisShield)
+        {
+            switch (m_ePhase)
+            {
+            case Client::CPlayerHoldShield::Phase::Start:
+                if (pPlayer->Is_AnimEnd())
+                    m_bChangePhase = true;
+
+                break;
+
+            case Client::CPlayerHoldShield::Phase::Loop:
+            case Client::CPlayerHoldShield::Phase::Hit:
+            {
+                if (pPlayerInput->m_bisShieldRelease)
+                {
+                    if (pPlayerInput->m_bisMove)
+                    {
+                        m_bChangeState = true;
+                        e_NextAnim = NextAnim::RUN;
+
+                    }
+
+                    else
+                        m_bChangePhase = true;
+
+                }
+
+
+            }
+                break;
+
+            case Client::CPlayerHoldShield::Phase::End:
+                if (pPlayer->Is_AnimEnd())
+                    m_bChangePhase = true;
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+
+
+
+}
+
+void CPlayerHoldShield::Hit_Shield(CPlayer* pPlayer)
+{
+    pPlayer->Reserve_Animation_To_Body(L"shieldhit", false,true);
+    m_ePhase = Phase::Hit;
+
+
+
+}
+
+void CPlayerHoldShield::Change_Other_State(CPlayer* pPlayer)
+{
+    switch (e_NextAnim)
+    {
+  
+    case Client::CPlayerHoldShield::NextAnim::RUN:
+    {
+        pPlayer->Set_ShieldEnable(false);
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::RUN));
+
+    }
+        break;
+
+    case Client::CPlayerHoldShield::NextAnim::SLASH_SHIELD:
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::SLASH_SHIELD));
+        break;
+
+    case Client::CPlayerHoldShield::NextAnim::ATTACK:
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::ATTACK));
+        break;
+
+
+    default:
+        break;
+    }
+
+
+ 
+    m_bChangeState = false;
+}
+
+void CPlayerHoldShield::Change_Phase(CPlayer* pPlayer)
+{
+	//if(m_bChangePhase)
+
+
+	switch (m_ePhase)
+	{
+	case Phase::Start:  //start->Loop로바껴라
+    case Phase::Hit:
+	{
+		m_ePhase = Phase::Loop;
+		pPlayer->Reserve_Animation_To_Body(L"shield_lp", false,true);
+	}
+	break;
+
+
+	case Phase::Loop:       //Loop->end로바껴라
+	{
+		m_ePhase = Phase::End;
+        pPlayer->Set_ShieldEnable(false);
+		pPlayer->Reserve_Animation_To_Body(L"shield_ed", false);
+	}
+	break;
+
+	case Phase::End:           //End탈출해라.
+    { 
+        pPlayer->Set_ShieldEnable(false);
+        pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
+    }
+		break;
+	}
+
+    m_bChangePhase = false;
+}
+
+void CPlayerHoldShield::Hold_Movement(CPlayer* pPlayer)
+{
+    //방향에 따른 애니메이션 적용
+
+
+    switch (m_ePhase)
+    {
+
+    case Client::CPlayerHoldShield::Phase::Loop:
+    {
+        if (pPlayerInput->m_bisMove)
+            pPlayer->Reserve_Animation_To_Body(L"shield_hold_f", true);
+
+        else
+            pPlayer->Reserve_Animation_To_Body(L"shield_lp", true);
+
+    }
+
+
+    break;
+
+    default:
+        break;
+
+    }
+}
+
+void CPlayerHoldShield::Exit(CPlayer* pPlayer)
+{
+    
+    m_bChangeState = false;
+}
+
+
+
+CPlayerHoldShield* CPlayerHoldShield::Create()
+{
+    return new CPlayerHoldShield;
+}

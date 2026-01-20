@@ -1,0 +1,65 @@
+#pragma once
+
+namespace Engine
+{
+    class CGameInstance;
+    class CMapObject;
+    class CMapObject_Manager;
+    class CImgui_InputFloat;
+    class IMapEditable;
+    class CGameObject;
+
+}
+
+#include "CImgui_Window.h"
+
+NS_BEGIN(MapTool)
+class CObjectInspectorWindow :
+
+    public CImgui_Window
+{
+protected:
+    CObjectInspectorWindow(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
+    virtual ~CObjectInspectorWindow() = default;
+
+public:
+    // CImgui_Base을(를) 통해 상속됨
+    virtual HRESULT Initialize(void* pArg) override;
+    virtual void Update() override;
+    virtual void Render() override;
+
+private:
+    HRESULT     Create_Widgets();
+
+public:
+    virtual void    Reset() { pSelectObject = nullptr; }       //리셋하고싶은 값 리셋하기
+
+public:
+    static CObjectInspectorWindow* Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, void* pArg);
+    virtual void Free();
+
+
+private:
+    void            Update_SelectObject();
+
+private:
+    CGameInstance* pGameInstance = { nullptr };
+    CGameObject* pSelectObject = { nullptr };
+
+private:
+    _float3 vScale = { 1.f,1.f,1.f, };
+    _float3 vPosition;
+    _float3 vRotation;
+
+    CImgui_InputFloat*      ScaleInput[3] = { nullptr };
+    CImgui_InputFloat*      PositionInput[3] = { nullptr };
+    CImgui_InputFloat*      RotationInput[3] = { nullptr };
+
+
+    CImgui_InputFloat*      SpeedButton = { nullptr };
+private:
+    CMapObject_Manager* m_pMapObject_Manager = { nullptr };
+    _float              m_fMoveSpeed = 0.f;
+    bool            m_bRotationDirty = false;
+};
+NS_END

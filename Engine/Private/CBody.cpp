@@ -1,0 +1,267 @@
+#include "CBody.h"
+#include "CModel.h"
+#include "CMeshComponent.h"
+#include "CShader.h"
+#include "CGameInstance.h"
+#include "CAnimation.h"
+#include "CTexture.h"
+
+
+
+
+
+
+CBody::CBody(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
+    :CPartObject(pDevice,pContext)
+{
+}
+
+CBody::CBody(const CBody& rhs)
+    :CPartObject(rhs)
+{
+}
+
+HRESULT CBody::Initialize_Prototype()
+{
+    if (FAILED(__super::Initialize_Prototype()))
+        return E_FAIL;
+
+    return S_OK;
+}
+
+HRESULT CBody::Initialize_Copytype(void* pArg)
+{
+    BODY_DESC* pDesc = static_cast<BODY_DESC*>(pArg);
+
+
+    
+    if (FAILED(__super::Initialize_Copytype(pArg)))
+        return E_FAIL;
+
+    if (FAILED(Ready_Components(pArg)))
+        return E_FAIL;
+
+    if (FAILED(Ready_Resource(pArg)))
+        return E_FAIL;
+
+
+    return S_OK;
+}
+
+void CBody::Update_Priority(_float fTimeDelta)
+{
+    __super::SetUp_CombinedWorldMatrix(XMLoadFloat4x4(m_pParentMatrix));
+}
+
+void CBody::Update(_float fTimeDelta)
+{
+    __super::Update(fTimeDelta);
+}
+
+void CBody::Update_Late(_float fTimeDelta)
+{
+    __super::Update_Late(fTimeDelta);
+}
+
+void CBody::Update_Render(_float fTimeDelta)
+{
+    m_pGameInstance->Add_RenderObject(m_eRenderGroup, this);
+    m_pGameInstance->Add_RenderObject(ENUM_TO_UINT(RENDERGROUP::SHADOW), this);
+
+}
+
+HRESULT CBody::Render()
+{
+    if (FAILED(Bind_ShaderResources()))
+        return E_FAIL;
+
+
+    for (auto& Mesh : m_pModel->Get_Meshs())
+    {
+        /*모든 메쉬를 순회하면서 바인드한다.
+           각 메쉬들의 위치와 소유한 메테리얼의 이미지 바인딩.
+           이후 메쉬를 그리는 작업*/
+
+        if (Mesh.second)
+        {
+            m_bHasNormal = Mesh.second->Has_aiTexture(aiTextureType::aiTextureType_NORMALS) ? 1 : 0;
+
+            Mesh.second->Bind_ShaderResource(m_pShader, "g_DiffuseTexture", aiTextureType::aiTextureType_DIFFUSE);
+            
+
+            if (m_bHasNormal)
+                Mesh.second->Bind_ShaderResource(m_pShader, "g_NormalTexture", aiTextureType::aiTextureType_NORMALS);
+
+
+            Mesh.second->Bind_ShaderResource(m_pShader, "g_SpecularTexture", aiTextureType::aiTextureType_SPECULAR);
+            Mesh.second->Bind_ShaderResource(m_pShader, "g_AmbientTexture", aiTextureType::aiTextureType_AMBIENT);
+
+            if (FAILED(m_pShader->Begin(Mesh.second->Get_PassName())))
+                return E_FAIL;
+
+            if (FAILED(m_pModel->Render(Mesh.second)))
+                return E_FAIL;
+
+
+        }
+
+
+
+    }
+
+
+    return S_OK;
+}
+
+HRESULT CBody::Render_Shadow()
+{
+    
+    return S_OK;
+}
+
+void CBody::Set_VisibleMesh(const wstring& MeshName, bool bVisible)
+{
+    if (m_pModel)
+        m_pModel->Set_VisibleMesh(MeshName, bVisible);
+}
+
+
+_float3 CBody::Get_RootDelta()
+{
+    _float3         Result = _float3();
+
+    if (m_pModel)
+        Result = m_pModel->Get_RootDelta();
+
+    return Result;
+}
+
+const _float4x4* CBody::Get_SocketMatrix(const char* pBoneName)
+{
+    return m_pModel->Get_BoneMatrix(pBoneName);
+}
+
+
+HRESULT CBody::Ready_Components(void* pArg)
+{
+    CheckNullResult(pArg, E_FAIL);
+    BODY_DESC* pBodyDesc = static_cast<BODY_DESC*>(pArg);
+    if (pBodyDesc)
+    {
+        CModel::MODEL_DSC pModelDesc;
+        pModelDesc.pOwner = this;
+        m_pModel = m_pGameInstance->Clone_Model(pBodyDesc->modelName, &pModelDesc);
+
+        if (!m_pModel)
+            return E_FAIL;
+    }
+
+    return S_OK;
+}
+
+HRESULT CBody::Ready_Resource(void* pArg)
+{
+    CBody::BODY_DESC* pBodyDesc = static_cast<CBody::BODY_DESC*>(pArg);
+    m_eRenderGroup = pBodyDesc->eRenderGroup;
+
+    if (m_pModel)
+    {
+        m_pShader = m_pModel->Get_Shader();
+        Safe_AddRef(m_pShader);
+
+    }
+
+    return S_OK;
+}
+
+HRESULT CBody::Bind_ShaderResources()
+{
+    /*Combined Matrix를 직접던진다.*/
+    if (FAILED(m_pShader->Bind_Matrix("g_WorldMatrix", m_CombinedWorldMatrix)))
+        return E_FAIL;
+
+    if (FAILED(m_pShader->Bind_RawValue("g_bUseNormal", &m_bHasNormal,sizeof(int))))
+        return E_FAIL;
+
+    if (m_DissolveDesc.m_bEnableDissolve)
+    {
+        if (m_DissolveDesc.m_pDissolveTexture)
+            if (FAILED(m_DissolveDesc.m_pDissolveTexture->Bind_ShaderResource(m_pShader, "g_AlphaTexture", 0)))
+                return E_FAIL;
+
+
+        if (FAILED(m_pShader->Bind_Float("g_AlphClipValue", m_DissolveDesc.m_fClipDissolve)))
+            return E_FAIL;
+
+    }
+
+    return S_OK;
+}
+
+CBody* CBody::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
+{
+    CBody* pInstance = new CBody(_pDevice, _pDeviceContext);
+
+    if (FAILED(pInstance->Initialize_Prototype()))
+    {
+        MSG_BOX("Failed to Created : CBody");
+        Safe_Release(pInstance);
+    }
+    return pInstance;
+}
+
+CGameObject* CBody::Clone(void* pArg)
+{
+    CBody* pInstance = new CBody(*this);
+
+    if (FAILED(pInstance->Initialize_Copytype(pArg)))
+    {
+        MSG_BOX("Failed to Cloned : CBody");
+        Safe_Release(pInstance);
+    }
+
+    return pInstance;
+}
+
+void CBody::Free()
+{
+    __super::Free();
+
+
+    Safe_Release(m_pModel);
+    Safe_Release(m_pShader);
+    Safe_Release(m_DissolveDesc.m_pDissolveTexture);
+
+}
+
+void CBody::Set_PassName(string Name)
+{
+    for (auto& Mesh : m_pModel->Get_Meshs())
+    {
+        /*모든 메쉬를 순회하면서 바인드한다.
+           각 메쉬들의 위치와 소유한 메테리얼의 이미지 바인딩.
+           이후 메쉬를 그리는 작업*/
+
+        if (Mesh.second)
+        {
+            Mesh.second->Set_PassName(Name);
+
+        }
+
+
+
+    }
+}
+
+void CBody::Set_DissolveTexture(wstring TextureName)
+{
+    CTexture* FindTexutre = m_pGameInstance->Find_Texture(TextureName);
+    if (FindTexutre)
+    {
+        m_DissolveDesc.m_pDissolveTexture = FindTexutre;
+        Safe_AddRef(FindTexutre);
+    }
+}
+
+
+

@@ -1,0 +1,129 @@
+{
+  "NPCScripts": [
+    {
+      "ModelID": "NPC_Mom",
+      "Chapters": [
+        {
+          "ChapterID": "Q1002_START",
+          "iQuestOffered": 1002,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "Q1002_ACTIVE_PERM",
+          "Steps": [
+            {
+              "Speaker": "마마샤",
+              "Text": "어서와요, 링크! 당신을 찾고 있었어요.",
+              "strActionCommand": "",
+              "Sound": "NPC/Mamash0.wav",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "마마샤",
+              "Text": "아...혹시 제 아이를 보지 못했나요?",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "마마샤",
+              "Text": "아침까진 집 근처에 있었는데...\n숲 쪽으로 간 것 같아요.",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "마마샤",
+              "Text": "숲 안쪽엔 큰 돌들이 길을 막고있어서..\n전 도저히 들어갈 수가 없었어요.",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "마마샤",
+              "Text": "이건 남편이 쓰던 물건이에요.\n당신이라면 쓸 수 있을거에요.",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "마마샤",
+              "Text": "<파워 팔찌>에요.\n이걸로 돌을 들어 아이를 구해주세요.",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "마마샤",
+              "Text": "부탁이에요...\n숲에서 아이를 찾아주세요.",
+              "strActionCommand": "Get_Power",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1002_ACTIVE_PERM",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "Steps": [
+            {
+              "Speaker": "마마샤",
+              "Text": "숲이에요...\n숲에서 분명 무슨 일이 생겼을 거예요.",
+              "strActionCommand": "",
+              "Sound": "NPC/Mamash2.wav",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "마마샤",
+              "Text": "반드시 찾아주세요....",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1002_COMPLETABLE_READY",
+          "iQuestOffered": 1002,
+          "iQuestRequiredToUnlock": 1002,
+          "strNextPermanentChapterID": "Q1002_DONE",
+          "Steps": [
+            {
+              "Speaker": "마마샤",
+              "Text": "정말.. 정말 고마워요.\n이 은혜는 잊지 않을게요.",
+              "Sound": "NPC/Mamasha1.wav",
+              "strActionCommand": "Mom_Finish",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1002_DONE",
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "마마샤",
+              "Text": "당신은 최고의 마을 방범대에요!",
+              "Sound": "NPC/Mamasha1.wav",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Ending",
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "마마샤",
+              "Text": "링크,\n덕분에 우리 가족이 다시 웃을 수 있게 되었어요.",
+              "strActionCommand": "",
+              "Sound": "NPC/Mamasha1.wav",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "마마샤",
+              "Text": "당신은 우리 마을의 영원한 영웅이자\n최고의 방범대원이에요.",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

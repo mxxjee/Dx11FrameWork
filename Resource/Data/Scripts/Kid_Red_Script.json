@@ -1,0 +1,129 @@
+{
+  "NPCScripts": [
+    {
+      "ModelID": "NPC_Kid_Red",
+      "Chapters": [
+        {
+          "ChapterID": "Ending_START",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "Ending_Middle",
+          "Steps": [
+            {
+              "Speaker": "건희",
+              "Text": "우씨... 여긴 어떻게 찾았어?\n나만의 비밀기지란 말이야!",
+              "Sound": "NPC/KidRed0.wav",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "건희",
+              "Text": "도와달라 한 적 없어!\n내 친구도 쫓아내고 엉망으로 만들었잖아!",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "링크",
+              "Text": "오해하게 해서 미안해. 널 지키려던 거였어.",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "건희",
+              "Text": "이런 게 무슨 방범대야!\n내 친구랑 비밀기지 다 돌려내!",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "링크",
+              "Text": "미안하지만 가야 해.\n밖으로 나가면 사람들을 만날 수 있어.",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "건희",
+              "Text": "흥! 앞으로 말 걸지 마. 나 먼저 갈 거야!",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "링크",
+              "Text": "잠깐, 건희야! 혼자 가면 위험해!\n(어서 쫓아가자.)",
+              "strActionCommand": "End_RedKid",
+              "actionTiming": "ON_FINISH"
+            }
+
+          ]
+        },
+        {
+          "ChapterID": "Ending_Middle",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "건희",
+              "Text": "엄마! 저 사람이 내 친구들을\n다 쫓아내고 기지도 망쳤어!",
+              "strActionCommand": "KidRed_Angry",
+              "Sound": "NPC/KidRed1.wav",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "마마샤",
+              "Text": "건희 너! 위험한 곳에 가지 말랬지?\n구해준 분께 무슨 말버릇이니!",
+              "Sound": "NPC/Mamash0.wav",
+              "strActionCommand": "Mom_Angry",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "건희",
+              "Text": "히잉... 그치만...\n내가 얼마나 아끼던 기지였는데...",
+              "Sound": "NPC/KidRed2.wav",
+              "strActionCommand": "KidRed_Sad",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "마마샤",
+              "Text": "당장 그 입 다물고 사과드려!\n안 그러면 오늘 저녁은 국물도 없을 줄 알아!",
+              "strActionCommand": "Mom_Angry",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "건희",
+              "Text": "...잘못했어요. 구해주셔서 감사합니다.\n(치, 그래도 아는 척은 안 할 거야...)",
+              "strActionCommand": "KidRed_Apologize",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "엄마",
+              "Text": "용사님, 정말 죄송합니다.\n마을을 지켜주셔서 감사합니다.",
+              "strActionCommand": "Mom_Happy",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "링크",
+              "Text": "아이가 무사해서 다행입니다.\n다음부턴 주의 깊게 봐주세요.",
+              "strActionCommand": "Link_Talk",
+              "actionTiming": "ON_START"
+            }
+
+          ]
+        },
+        {
+          "ChapterID": "Ending",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "건희",
+              "Text": "치... 구해준 건 고맙지만,기지 망가뜨린 건 아직 안 잊었다고!\n나중에 다시 만들면 구경이나 오든가.",
+              "strActionCommand": "KidRed_Angry",
+              "actionTiming": "ON_START"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

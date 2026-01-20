@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -78,7 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\Bin\</OutDir>
+    <OutDir>../Bin/</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -118,15 +118,17 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;ENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);IMGUI_API=__declspec(dllexport)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;ENGINE_EXPORTS;_WINDOWS;_USRDLL;_CLIENT;%(PreprocessorDefinitions);IMGUI_API=__declspec(dllexport)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;Effects11d.lib;DirectXTKd.lib;assimp-vc142-mtd.lib;dxguid.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(WindowsSdkDir)\lib\$(WindowsTargetPlatformVersion)\um\x64;../ThirdPartyLib/;../../EngineSDK/lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -137,7 +139,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;ENGINE_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions);IMGUI_API=__declspec(dllexport)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\Include;../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -145,57 +148,355 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>d3d11.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;Effects11.lib;DirectXTK.lib;assimp-vc142-mt.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../ThirdPartyLib/;../../EngineSDK/lib/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Public\CAnimation.h" />
+    <ClInclude Include="..\Public\CAnimBody.h" />
+    <ClInclude Include="..\Public\CAnimModelObject.h" />
+    <ClInclude Include="..\Public\CAnimNotify.h" />
     <ClInclude Include="..\Public\CBase.h" />
+    <ClInclude Include="..\Public\CBody.h" />
+    <ClInclude Include="..\Public\CBone.h" />
+    <ClInclude Include="..\Public\CBounding.h" />
+    <ClInclude Include="..\Public\CBounding_AABB.h" />
+    <ClInclude Include="..\Public\CBounding_Mesh.h" />
+    <ClInclude Include="..\Public\CBounding_OBB.h" />
+    <ClInclude Include="..\Public\CBounding_Sphere.h" />
+    <ClInclude Include="..\Public\CBoxColliderComponent.h" />
+    <ClInclude Include="..\Public\CCameraComponent.h" />
+    <ClInclude Include="..\Public\CCamera_Base.h" />
+    <ClInclude Include="..\Public\CCamera_Manager.h" />
+    <ClInclude Include="..\Public\CCell.h" />
+    <ClInclude Include="..\Public\CChannel.h" />
+    <ClInclude Include="..\Public\CCollider_Base.h" />
+    <ClInclude Include="..\Public\CCollision_Manager.h" />
+    <ClInclude Include="..\Public\CContainerObject.h" />
+    <ClInclude Include="..\Public\CEventBus_Manager.h" />
+    <ClInclude Include="..\Public\CFolder.h" />
+    <ClInclude Include="..\Public\CFontComponent.h" />
+    <ClInclude Include="..\Public\CFont_Manager.h" />
+    <ClInclude Include="..\Public\CGravity.h" />
+    <ClInclude Include="..\Public\CHotKey_Manager.h" />
+    <ClInclude Include="..\Public\CImgui_Checkbox.h" />
+    <ClInclude Include="..\Public\CComponent.h" />
+    <ClInclude Include="..\Public\CConstantBuffer.h" />
+    <ClInclude Include="..\Public\CFreeCamera.h" />
     <ClInclude Include="..\Public\CGameInstance.h" />
     <ClInclude Include="..\Public\CGameObject.h" />
     <ClInclude Include="..\Public\CGraphic_Device.h" />
+    <ClInclude Include="..\Public\CImgui_Base.h" />
+    <ClInclude Include="..\Public\CImgui_Button.h" />
+    <ClInclude Include="..\Public\CImgui_InputFloat.h" />
+    <ClInclude Include="..\Public\CImgui_InputInt.h" />
+    <ClInclude Include="..\Public\CImgui_Slider.h" />
+    <ClInclude Include="..\Public\CImgui_Text.h" />
+    <ClInclude Include="..\Public\CImgui_Widget.h" />
+    <ClInclude Include="..\Public\CImgui_Window.h" />
+    <ClInclude Include="..\Public\CInputLayout.h" />
+    <ClInclude Include="..\Public\CInput_Manager.h" />
     <ClInclude Include="..\Public\CLayer.h" />
     <ClInclude Include="..\Public\CLevel.h" />
+    <ClInclude Include="..\Public\CLevelFactroy.h" />
     <ClInclude Include="..\Public\CLevel_Manager.h" />
     <ClInclude Include="..\Public\CImGui_Manager.h" />
+    <ClInclude Include="..\Public\CLight.h" />
+    <ClInclude Include="..\Public\CLight_Manager.h" />
+    <ClInclude Include="..\Public\CMapField.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapInteractObject.h" />
+    <ClInclude Include="..\Public\CMapLayer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapModel.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapObject.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapObject_Manager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapPosition.h" />
+    <ClInclude Include="..\Public\CMapQuad.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapRoom.h" />
+    <ClInclude Include="..\Public\CMapRoomTrigger.h" />
+    <ClInclude Include="..\Public\CMapTerrain.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapToolCell.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapTrigger.h" />
+    <ClInclude Include="..\Public\CMaterial.h" />
+    <ClInclude Include="..\Public\CMaterial_Manager.h" />
+    <ClInclude Include="..\Public\CMeshColliderComponent.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMeshComponent.h" />
+    <ClInclude Include="..\Public\CMinimapCamera.h" />
+    <ClInclude Include="..\Public\CMinimapQuad.h" />
+    <ClInclude Include="..\Public\CModel.h" />
+    <ClInclude Include="..\Public\CModelObject.h" />
+    <ClInclude Include="..\Public\CModel_Manager.h" />
+    <ClInclude Include="..\Public\CNavEditPreview.h" />
+    <ClInclude Include="..\Public\CNavMesh_Manager.h" />
+    <ClInclude Include="..\Public\CNavMeshEdit_Manager.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CNavigation.h" />
+    <ClInclude Include="..\Public\COBBColliderComponent.h" />
     <ClInclude Include="..\Public\CObject_Manager.h" />
+    <ClInclude Include="..\Public\CMainCamera.h" />
+    <ClInclude Include="..\Public\ColorUtils.h" />
+    <ClInclude Include="..\Public\ConstantStruct.h" />
+    <ClInclude Include="..\Public\COrthographicCameraComponent.h" />
+    <ClInclude Include="..\Public\CPartObject.h" />
+    <ClInclude Include="..\Public\CPerspectiveCameraComponent.h" />
+    <ClInclude Include="..\Public\CPipeLine.h" />
+    <ClInclude Include="..\Public\CPostProcessCamera.h" />
     <ClInclude Include="..\Public\CPrototype_Manager.h" />
+    <ClInclude Include="..\Public\CQuad.h" />
+    <ClInclude Include="..\Public\CRenderer.h" />
+    <ClInclude Include="..\Public\CRenderState_Manager.h" />
+    <ClInclude Include="..\Public\CRenderTarget.h" />
+    <ClInclude Include="..\Public\CScreenQuad.h" />
+    <ClInclude Include="..\Public\CScreenShot_Manager.h" />
+    <ClInclude Include="..\Public\CShader.h" />
+    <ClInclude Include="..\Public\CShader_Manager.h" />
+    <ClInclude Include="..\Public\CShadow.h" />
+    <ClInclude Include="..\Public\CSoundMgr.h" />
+    <ClInclude Include="..\Public\CSphereColliderComponent.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CStaticBody.h" />
+    <ClInclude Include="..\Public\CStaticModelObject.h" />
+    <ClInclude Include="..\Public\CTarget_Manager.h" />
+    <ClInclude Include="..\Public\CTerrain_Base.h" />
+    <ClInclude Include="..\Public\CTerrain_Manager.h" />
+    <ClInclude Include="..\Public\CTexture.h" />
+    <ClInclude Include="..\Public\CTexture_Manager.h" />
     <ClInclude Include="..\Public\CTimer.h" />
+    <ClInclude Include="..\Public\CTimerTask_Manager.h" />
     <ClInclude Include="..\Public\CTimer_Manager.h" />
+    <ClInclude Include="..\Public\CTransform.h" />
+    <ClInclude Include="..\Public\CUI.h" />
+    <ClInclude Include="..\Public\CUICamera.h" />
+    <ClInclude Include="..\Public\CUIComponent.h" />
+    <ClInclude Include="..\Public\CUI_Manager.h" />
+    <ClInclude Include="..\Public\CVIBuffer.h" />
+    <ClInclude Include="..\Public\CVIBuffer_CustomTerrain.h" />
+    <ClInclude Include="..\Public\CVIBuffer_Model.h" />
+    <ClInclude Include="..\Public\CVIBuffer_Particle.h" />
+    <ClInclude Include="..\Public\CVIBuffer_Particle_Point.h" />
+    <ClInclude Include="..\Public\CVIBuffer_Particle_Rect.h" />
+    <ClInclude Include="..\Public\CVIBuffer_Rect.h" />
+    <ClInclude Include="..\Public\CVIBuffer_Terrain.h" />
+    <ClInclude Include="..\Public\CVIBuffer_Triangle.h" />
+    <ClInclude Include="..\Public\DebugDraw.h" />
     <ClInclude Include="..\Public\Engine_Define.h" />
     <ClInclude Include="..\Public\Engine_Enum.h" />
     <ClInclude Include="..\Public\Engine_Function.h" />
+    <ClInclude Include="..\Public\Engine_LevelTypes.h" />
     <ClInclude Include="..\Public\Engine_Macro.h" />
     <ClInclude Include="..\Public\Engine_Struct.h" />
     <ClInclude Include="..\Public\Engine_Typedef.h" />
+    <ClInclude Include="..\Public\GraphicUtil.h" />
+    <ClInclude Include="..\Public\IMapEditable.h" />
     <ClInclude Include="..\Public\imconfig.h" />
     <ClInclude Include="..\Public\imgui.h" />
+    <ClInclude Include="..\Public\ImGuizmo.h" />
     <ClInclude Include="..\Public\imgui_impl_dx11.h" />
     <ClInclude Include="..\Public\imgui_impl_win32.h" />
     <ClInclude Include="..\Public\imgui_internal.h" />
+    <ClInclude Include="..\Public\imgui_spectrum.h" />
     <ClInclude Include="..\Public\imstb_rectpack.h" />
     <ClInclude Include="..\Public\imstb_textedit.h" />
     <ClInclude Include="..\Public\imstb_truetype.h" />
+    <ClInclude Include="..\Public\MaterialUtil.h" />
+    <ClInclude Include="..\Public\MathUtils.h" />
+    <ClInclude Include="..\Public\ModelData.h" />
+    <ClInclude Include="..\Public\Parsing_RoomInfo.h" />
+    <ClInclude Include="..\Public\Parsing_TriggerInfo.h" />
+    <ClInclude Include="..\Public\UIGroup.h" />
+    <ClInclude Include="..\Public\VertexData.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Private\CAnimation.cpp" />
+    <ClCompile Include="..\Private\CAnimBody.cpp" />
+    <ClCompile Include="..\Private\CAnimModelObject.cpp" />
+    <ClCompile Include="..\Private\CAnimNotify.cpp" />
     <ClCompile Include="..\Private\CBase.cpp" />
+    <ClCompile Include="..\Private\CBody.cpp" />
+    <ClCompile Include="..\Private\CBone.cpp" />
+    <ClCompile Include="..\Private\CBounding.cpp" />
+    <ClCompile Include="..\Private\CBounding_AABB.cpp" />
+    <ClCompile Include="..\Private\CBounding_Mesh.cpp" />
+    <ClCompile Include="..\Private\CBounding_OBB.cpp" />
+    <ClCompile Include="..\Private\CBounding_Sphere.cpp" />
+    <ClCompile Include="..\Private\CBoxColliderComponent.cpp" />
+    <ClCompile Include="..\Private\CCameraComponent.cpp" />
+    <ClCompile Include="..\Private\CCamera_Base.cpp" />
+    <ClCompile Include="..\Private\CCamera_Manager.cpp" />
+    <ClCompile Include="..\Private\CCell.cpp" />
+    <ClCompile Include="..\Private\CChannel.cpp" />
+    <ClCompile Include="..\Private\CCollider_Base.cpp" />
+    <ClCompile Include="..\Private\CCollision_Manager.cpp" />
+    <ClCompile Include="..\Private\CContainerObject.cpp" />
+    <ClCompile Include="..\Private\CEventBus_Manager.cpp" />
+    <ClCompile Include="..\Private\CFolder.cpp" />
+    <ClCompile Include="..\Private\CFontComponent.cpp" />
+    <ClCompile Include="..\Private\CFont_Manager.cpp" />
+    <ClCompile Include="..\Private\CGravity.cpp" />
+    <ClCompile Include="..\Private\CHotKey_Manager.cpp" />
+    <ClCompile Include="..\Private\CImgui_Checkbox.cpp" />
+    <ClCompile Include="..\Private\CComponent.cpp" />
+    <ClCompile Include="..\Private\CConstantBuffer.cpp" />
+    <ClCompile Include="..\Private\CFreeCamera.cpp" />
     <ClCompile Include="..\Private\CGameInstance.cpp" />
     <ClCompile Include="..\Private\CGameObject.cpp" />
     <ClCompile Include="..\Private\CGraphic_Device.cpp" />
+    <ClCompile Include="..\Private\CImgui_Base.cpp" />
+    <ClCompile Include="..\Private\CImgui_Button.cpp" />
+    <ClCompile Include="..\Private\CImgui_InputFloat.cpp" />
+    <ClCompile Include="..\Private\CImgui_InputInt.cpp" />
+    <ClCompile Include="..\Private\CImgui_Slider.cpp" />
+    <ClCompile Include="..\Private\CImgui_Text.cpp" />
+    <ClCompile Include="..\Private\CImgui_Widget.cpp" />
+    <ClCompile Include="..\Private\CImgui_Window.cpp" />
+    <ClCompile Include="..\Private\CInputLayout.cpp" />
+    <ClCompile Include="..\Private\CInput_Manager.cpp" />
     <ClCompile Include="..\Private\CLayer.cpp" />
     <ClCompile Include="..\Private\CLevel.cpp" />
+    <ClCompile Include="..\Private\CLevelFactroy.cpp" />
     <ClCompile Include="..\Private\CLevel_Manager.cpp" />
     <ClCompile Include="..\Private\CImGui_Manager.cpp" />
+    <ClCompile Include="..\Private\CLight.cpp" />
+    <ClCompile Include="..\Private\CLight_Manager.cpp" />
+    <ClCompile Include="..\Private\CMapField.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapInteractObject.cpp" />
+    <ClCompile Include="..\Private\CMapModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapObject.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapObject_Manager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapPosition.cpp" />
+    <ClCompile Include="..\Private\CMapQuad.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapRoom.cpp" />
+    <ClCompile Include="..\Private\CMapRoomTrigger.cpp" />
+    <ClCompile Include="..\Private\CMapTerrain.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapToolCell.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapTrigger.cpp" />
+    <ClCompile Include="..\Private\CMaterial.cpp" />
+    <ClCompile Include="..\Private\CMaterial_Manager.cpp" />
+    <ClCompile Include="..\Private\CMeshColliderComponent.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMeshComponent.cpp" />
+    <ClCompile Include="..\Private\CMinimapCamera.cpp" />
+    <ClCompile Include="..\Private\CMinimapQuad.cpp" />
+    <ClCompile Include="..\Private\CModel.cpp" />
+    <ClCompile Include="..\Private\CModelObject.cpp" />
+    <ClCompile Include="..\Private\CModel_Manager.cpp" />
+    <ClCompile Include="..\Private\CNavEditPreview.cpp" />
+    <ClCompile Include="..\Private\CNavMesh_Manager.cpp" />
+    <ClCompile Include="..\Private\CNavMeshEdit_Manager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CNavigation.cpp" />
+    <ClCompile Include="..\Private\COBBColliderComponent.cpp" />
     <ClCompile Include="..\Private\CObject_Manager.cpp" />
+    <ClCompile Include="..\Private\CMainCamera.cpp" />
+    <ClCompile Include="..\Private\COrthographicCameraComponent.cpp" />
+    <ClCompile Include="..\Private\CPartObject.cpp" />
+    <ClCompile Include="..\Private\CPerspectiveCameraComponent.cpp" />
+    <ClCompile Include="..\Private\CPipeLine.cpp" />
+    <ClCompile Include="..\Private\CPostProcessCamera.cpp" />
     <ClCompile Include="..\Private\CPrototype_Manager.cpp" />
+    <ClCompile Include="..\Private\CQuad.cpp" />
+    <ClCompile Include="..\Private\CRenderer.cpp" />
+    <ClCompile Include="..\Private\CRenderState_Manager.cpp" />
+    <ClCompile Include="..\Private\CRenderTarget.cpp" />
+    <ClCompile Include="..\Private\CScreenQuad.cpp" />
+    <ClCompile Include="..\Private\CScreenShot_Manager.cpp" />
+    <ClCompile Include="..\Private\CShader.cpp" />
+    <ClCompile Include="..\Private\CShader_Manager.cpp" />
+    <ClCompile Include="..\Private\CShadow.cpp" />
+    <ClCompile Include="..\Private\CSoundMgr.cpp" />
+    <ClCompile Include="..\Private\CSphereColliderComponent.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CStaticBody.cpp" />
+    <ClCompile Include="..\Private\CStaticModelObject.cpp" />
+    <ClCompile Include="..\Private\CTarget_Manager.cpp" />
+    <ClCompile Include="..\Private\CTerrain_Base.cpp" />
+    <ClCompile Include="..\Private\CTerrain_Manager.cpp" />
+    <ClCompile Include="..\Private\CTexture.cpp" />
+    <ClCompile Include="..\Private\CTexture_Manager.cpp" />
     <ClCompile Include="..\Private\CTimer.cpp" />
+    <ClCompile Include="..\Private\CTimerTask_Manager.cpp" />
     <ClCompile Include="..\Private\CTimer_Manager.cpp" />
+    <ClCompile Include="..\Private\CTransform.cpp" />
+    <ClCompile Include="..\Private\CUI.cpp" />
+    <ClCompile Include="..\Private\CUICamera.cpp" />
+    <ClCompile Include="..\Private\CUIComponent.cpp" />
+    <ClCompile Include="..\Private\CUI_Manager.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer_CustomTerrain.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer_Model.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer_Particle.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer_Particle_Point.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer_Particle_Rect.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer_Rect.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer_Terrain.cpp" />
+    <ClCompile Include="..\Private\CVIBuffer_Triangle.cpp" />
+    <ClCompile Include="..\Private\DebugDraw.cpp" />
     <ClCompile Include="..\Private\imgui.cpp" />
+    <ClCompile Include="..\Private\ImGuizmo.cpp" />
     <ClCompile Include="..\Private\imgui_demo.cpp" />
     <ClCompile Include="..\Private\imgui_draw.cpp" />
     <ClCompile Include="..\Private\imgui_impl_dx11.cpp" />
     <ClCompile Include="..\Private\imgui_impl_win32.cpp" />
     <ClCompile Include="..\Private\imgui_tables.cpp" />
     <ClCompile Include="..\Private\imgui_widgets.cpp" />
+    <ClCompile Include="..\Private\UIGroup.cpp" />
+    <ClCompile Include="..\Public\IMapEditable.cpp" />
+    <ClCompile Include="..\Public\VertexData.cpp" />
+    <ClCompile Include="CMapLayer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Resource\Shader\Engine_Shader_Defines.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\Resource\Shader\Shader_Deferred.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,0 +1,83 @@
+#include "CPlayerFallState.h"
+#include "CPlayer.h"
+#include "CCamera_Base.h"
+#include "CGameInstance.h"
+#include "GlobalGameEvent.h"
+
+
+
+USING(Client)
+CPlayerFallState::CPlayerFallState()
+{
+}
+
+CPlayerFallState::~CPlayerFallState()
+{
+}
+
+void CPlayerFallState::Enter(CPlayer* pPlayer)
+{
+
+	pPlayerInput = pPlayer->Get_Input();
+	pActionControl = pPlayer->Get_ActionControl();
+
+
+	pPlayer->Reserve_Animation_To_Body(L"fall", true);
+	pPlayer->Set_CanMove(false);
+
+
+	GameEvent Fix_CameraEvent = MakeEvent("Fix_Camera");
+	m_pGameInstance->Emit(Fix_CameraEvent);
+
+	m_fTime = 0.f;
+
+}
+
+bool CPlayerFallState::Update(CPlayer* pPlayer, _float fTimeDelta)
+{
+	m_fTime += fTimeDelta;
+
+	/// 5초동안 떨어져라..
+
+	if (m_fTime <= 2.f)
+	{
+		_vector vPos = pPlayer->Get_Transform()->Get_State(STATE::POSITION);
+		vPos = XMVectorSetY(vPos, XMVectorGetY(vPos) - (fTimeDelta * 10.f));
+
+		pPlayer->Get_Transform()->Set_State(STATE::POSITION, vPos);
+	}
+
+	else
+	{
+		//이후엔 이웃셀에 위치해라(이런거이벤트로모아놓으면 될듯)
+		pPlayer->Change_State(ENUM_TO_UINT(CPlayer::PLAYER_STATE::IDLE));
+	}
+
+	return true;
+	
+}
+
+void CPlayerFallState::Update_Late(CPlayer* pPlayer, _float fTimeDelta)
+{
+	
+
+}
+
+void CPlayerFallState::Exit(CPlayer* pPlayer)
+{
+	GameEvent	InitCameraEvent = MakeEvent("Init_Camera");
+	
+	EventPayload  Paylaod;
+	Paylaod.Ptrs["Player"] = pPlayer;
+	InitCameraEvent.Payload = Paylaod;
+	m_pGameInstance->Emit(InitCameraEvent);
+
+
+	pPlayer->Respawn();
+    pActionControl->m_bFall = false;
+}
+
+CPlayerFallState* CPlayerFallState::Create()
+{
+    return new CPlayerFallState;
+}

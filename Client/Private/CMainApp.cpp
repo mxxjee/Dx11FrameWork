@@ -1,15 +1,69 @@
 #include "CMainApp.h"
 #include "CGameInstance.h"
+#include "CShader.h"
+#include "VertexData.h"
+
+#include "CGameObject.h"
+#include "CUI.h"
+#include "CCamera_Base.h"
+
+#include "CGameManager.h"
+
+#include "CLevel_Logo.h"
+#include "CLevel_Town.h"
 #include "CLevel_Loading.h"
+#include "CLevel_UI.h"
+#include "CLevel_NPCRoom.h"
+#include "CLevel_Spawn.h"
+#include "CLevel_Dungeon.h"
+#include "CLevel_Boss.h"
+#include "CLevel_Ending.h"
+
+#include "CImGui_Manager.h"
+#include "CImgui_Button.h"
+#include "CInput_Manager.h"
+#include "CInteraction_Manager.h"
+#include "CItem_Manager.h"
+
+
+#include "CLevelDebugWindow.h"
+#include "CObjectDebugWindow.h"
+#include "CCameraDebugWindow.h"
+#include "CStateDebugWindow.h"
+#include "CLightInspectorWindow.h"
+#include "CLightDebugWindow.h"
+
+
+
+#include "CTransform.h"
+#include "CCameraComponent.h"
+#include "CRoom_Manager.h"
+#include "CVIBuffer_Rect.h"
+
+
+#include "CQuest_Manager.h"
+#include "CDialogue_Manager.h"
+
+#include "CFadeScreen.h"
+#include "CInventory_Manager.h"
+
+#include "CLoadingUI.h"
+#include "CEffectData_Manager.h"
+#include "CEffectPoolManager.h"
+
+
+
+
 
 
 
 USING(Client)
 
 CMainApp::CMainApp()
-	:pGameInstance(CGameInstance::GetInstance())
+	:pImGui_Manager(CImGui_Manager::GetInstance()),
+	m_pGameInstance(CGameInstance::GetInstance())
 {
-	Safe_AddRef(pGameInstance);
+	Safe_AddRef(m_pGameInstance);
 }
 
 HRESULT CMainApp::Initialize()
@@ -19,46 +73,508 @@ HRESULT CMainApp::Initialize()
 
 	ENGINE_DESC		desc;
 	desc.hWnd = g_hWnd;
+	desc.hInst = g_hInst;
 	desc.iWinSizeX = g_iWinSizeX;
 	desc.iWinSizeY = g_iWinSizeY;
 	desc.winMode = WINMODE::WIN;
+	desc.iNumLevels = ENUM_TO_UINT(LEVEL_ID::END);
+	desc.colGroupMax = ENUM_TO_UINT(COLLISION_GROUP::END);
+	desc.eEngineMode = EngineMode::CLIENT;
 
+	if(FAILED(m_pGameInstance->Initialize_Engine(desc,&m_pDevice,&m_pContext)))
+		return E_FAIL;
 
-	if(FAILED(pGameInstance->Initialize_Engine(desc,&m_pDevice,&m_pContext)))
+	if (FAILED(Initialize_Cilent()))
+		return E_FAIL;
+
+	if (FAILED(Ready_Fonts()))
 		return E_FAIL;
 
 
-	if (FAILED(Start_Level(LEVEL_ID::LOGO)))
+	Set_Collision_Rules();
+
+	CInput_Manager::GetInstance()->Init_Input(g_hInst, g_hWnd);
+
+	Register_Levels();
+
+
+	//Imgui 디버그창
+#ifdef _DEBUG
+	pImGui_Manager->Init(g_hWnd, m_pDevice.Get(), m_pContext.Get());
+
+	CreateLevelDebugWindow();
+	CreateObjectDebugWindow();
+	CreateCameraDebugWindow();
+	CreateStateDebugWindow();
+	CreateLightDebugWindow();
+
+#endif
+	pImGui_Manager->Set_MapToolMode(MapToolMode::END);
+
+	CShader* pInstance = CShader::Create(m_pDevice,
+		m_pContext, VTXPOSTEX::desc, L"../../Resource/Shader/Shader_VtxPosTex.hlsl",
+		"DefaultTechnique");
+	CGameInstance::GetInstance()->Register_Shader(L"Default", pInstance);
+
+	Create_FadeScreen();
+	Create_LoadingUI();
+
+
+	CShadow::SHADOW_DESC		ShadowDesc{};
+	ShadowDesc.vPosition = _float4(0.f, 30.f, -20.f, 1.f);
+	ShadowDesc.vAt = _float4(0.f, 0.f, 0.f, 1.f);
+	ShadowDesc.fFovy = XMConvertToRadians(45.0f);
+	ShadowDesc.fNearZ = 0.1f;
+	ShadowDesc.fFarZ = 1000.f;
+
+	if (FAILED(m_pGameInstance->Add_ShadowLight(m_pContext.Get(), ShadowDesc)))
 		return E_FAIL;
 
-	
+	if (FAILED(Start_Level(LEVEL_ID::LOGO,LEVELCHANGETYPE::REPLACETOP)))
+		return E_FAIL;
+
+
 	return S_OK;
+}
+
+HRESULT CMainApp::Initialize_Cilent()
+{
+	if (FAILED(CInteraction_Manager::GetInstance()->Initialize()))
+		return E_FAIL;
+
+	if (FAILED(CEffectPoolManager::GetInstance()->Initialize()))
+		return E_FAIL;
+
+	m_pGameInstance->Load_Textures(L"../../Resource/Particle/Textures/", L".dds");
+	if (FAILED(CEffectData_Manager::GetInstance()->Initialize()))
+		return E_FAIL;
+
+	if (FAILED(CDialogue_Manager::GetInstance()->Initialize()))
+		return E_FAIL;
+
+	if (FAILED(CItem_Manager::GetInstance()->Initialize()))
+		return E_FAIL;
+
+
+
+
+	//렌더그룹 관련 초기화
+	if(FAILED(m_pGameInstance->Initialize_Renderer(ENUM_TO_UINT(RENDERGROUP::END))))
+		return E_FAIL;
+	
+
+	//렌더타입에 맞는 정렬함수 등록
+	auto AlphaSort = [&](CGameObject* a, CGameObject* b)
+	{
+
+		CCamera_Base* pRenderCam = CGameInstance::GetInstance()->Get_RenderCamera();
+		
+		_float4x4 fViewMat = CGameInstance::GetInstance()->Get_ViewMatrix(ENUM_TO_UINT(pRenderCam->Get_CameraType()));
+		_matrix ViewMat = XMLoadFloat4x4(&fViewMat);
+
+
+		CTransform* aTrans = dynamic_cast<CTransform*>(a->Get_Component(COMPONENT_TYPE::TRANSFORM));
+		CTransform* bTrans = dynamic_cast<CTransform*>(b->Get_Component(COMPONENT_TYPE::TRANSFORM));
+
+		_vector aView = XMVector3TransformCoord(aTrans->Get_State(STATE::POSITION, TransformScope::WORLD), ViewMat);
+		_vector bView = XMVector3TransformCoord(bTrans->Get_State(STATE::POSITION, TransformScope::WORLD), ViewMat);
+
+		//내림차순정렬, 먼것부터 그려야함
+		return XMVectorGetZ(aView) > XMVectorGetZ(bView);
+	};
+
+	auto UISort = [&](CGameObject* a, CGameObject* b)
+		{
+			CUI* pUI_A = dynamic_cast<CUI*>(a);
+			CUI* pUI_B = dynamic_cast<CUI*>(b);
+
+			if (pUI_A && pUI_B)
+			{
+				return pUI_A->Get_Depth() > pUI_B->Get_Depth();
+			}
+
+			return false;
+		};
+
+	if(FAILED(m_pGameInstance->Add_SortFunc(ENUM_TO_UINT(RENDERGROUP::ALPHA), AlphaSort)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_SortFunc(ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP), AlphaSort)))
+		return E_FAIL;
+
+	if (FAILED(m_pGameInstance->Add_SortFunc(ENUM_TO_UINT(RENDERGROUP::UI), UISort)))
+		return E_FAIL;
+
+#ifdef _DEBUG
+	//단축키등록
+	m_pGameInstance->Register_HotKey(KeyCode::D, true, false, false, []()
+		{
+
+			CGameInstance::m_bDrawDebug = !CGameInstance::m_bDrawDebug;
+
+
+		});
+
+
+	m_pGameInstance->Register_HotKey(KeyCode::C, true, false, false, [this]()
+		{
+			CheckNull(CGameInstance::GetInstance()->Find_Camera(CAMERA_TYPE::TARGET));
+			CheckNull(CGameInstance::GetInstance()->Find_Camera(CAMERA_TYPE::FREE));
+
+
+			if (iTargetCameraIdx == 1)
+				iTargetCameraIdx = 0;
+			else
+				++iTargetCameraIdx;
+
+			iTargetCameraIdx = MathUtils::Clamp(iTargetCameraIdx, 0, 1);
+
+			switch (iTargetCameraIdx)
+			{
+			case 0:
+				CGameInstance::GetInstance()->Set_MainCamera(CAMERA_TYPE::TARGET);
+				break;
+
+			case 1:
+				CGameInstance::GetInstance()->Set_MainCamera(CAMERA_TYPE::FREE);
+
+				break;
+			}
+
+
+
+		});
+
+
+	/*테스트용*/
+	//m_pGameInstance->Register_HotKey(KeyCode::B, true, false, false, [this]()
+	//	{
+	//		CInventory_Manager::GetInstance()->Request_Add_To_Inven(ItemType::MAGIC_POWDER, 20);
+
+	//	});
+
+#endif // _DEBUG
+
+	//*UISCENE*//
+	m_pGameInstance->Register_HotKey(KeyCode::P, false , false, false, [this]()
+		{
+
+			bool b = CGameManager::GetInstance()->Get_IsOpenInventory();
+			if (b)
+			{
+				CGameInstance::GetInstance()->Pop_Level();
+				CInput_Manager::GetInstance()->Set_InputMode(InputMode::GAME);
+
+			}
+
+			else
+			{
+				//
+				CInput_Manager::GetInstance()->Set_InputMode(InputMode::UI);
+
+				LevelArgs args;
+				args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
+				args.changeType = LEVELCHANGETYPE::PUSH;
+				//args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+				args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
+
+
+				if (FAILED(m_pGameInstance->Level_Changer(
+					ENUM_TO_UINT(LEVEL_ID::UI),
+					args)))
+					return;
+				
+			}
+
+		});
+
+
+
+
+	return S_OK;
+
+}
+
+HRESULT CMainApp::Ready_Fonts()
+{
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Zelda_Default"), TEXT("../../Resource/Fonts/Zelda_Default.spritefont"))))
+		return E_FAIL;
+
+
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Dialogue_Default"), TEXT("../../Resource/Fonts/Dialogue_Default.spritefont"))))
+		return E_FAIL;
+
+
+	if (FAILED(m_pGameInstance->Add_Font(TEXT("Dialogue_DefaultBold"), TEXT("../../Resource/Fonts/Dialogue_DefaultBold.spritefont"))))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+void CMainApp::Set_Collision_Rules()
+{
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER_WEAPON), true);
+	
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::TRIGGER), true);
+
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER_WEAPON), ENUM_TO_UINT(COLLISION_GROUP::MONSTER_WEAPON), true);
+	
+
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), ENUM_TO_UINT(COLLISION_GROUP::PLAYER), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
+
+
+
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::TRIGGER), ENUM_TO_UINT(COLLISION_GROUP::PLAYER), true);
+	
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::TRIGGER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::MONSTER), ENUM_TO_UINT(COLLISION_GROUP::MONSTER), true);
+
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), ENUM_TO_UINT(COLLISION_GROUP::PARTICLE), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::INTERACTION), ENUM_TO_UINT(COLLISION_GROUP::WALL), true);
+	m_pGameInstance->Set_Enable_Collision(ENUM_TO_UINT(COLLISION_GROUP::PLAYER), ENUM_TO_UINT(COLLISION_GROUP::WALL), true);
+
+}
+
+void CMainApp::Update_Priority(_float fTimeDelta)
+{
+	CInput_Manager::GetInstance()->Update_Input();
+	m_pGameInstance->Update_Priority_Engine(fTimeDelta);
+
+#ifdef _DEBUG
+	pImGui_Manager->Update_Priority();
+#endif
 }
 
 void CMainApp::Update(_float fTimeDelta)
 {
 	/*내 게임의 반복적인 작업 수행*/
-	pGameInstance->Update_Engine(fTimeDelta);
+	
+	
+	m_pGameInstance->Update_Engine(fTimeDelta);
+	CInteraction_Manager::GetInstance()->Update(fTimeDelta);
+	CInventory_Manager::GetInstance()->Update(fTimeDelta);
+#ifdef _DEBUG
+	pImGui_Manager->Update();
+#endif
+
 }
+
+void CMainApp::Update_Late(float fTimeDelta)
+{
+
+	m_pGameInstance->LateUpdate_Engine(fTimeDelta);
+
+	CQuest_Manager::GetInstance()->Update(fTimeDelta);
+}
+
+void CMainApp::Update_Render(float fTimeDelta)
+{
+	m_pGameInstance->Update_Render(fTimeDelta);
+}
+
 
 void CMainApp::Render()
 {
 	/*내 게임의 반복적인 렌더.*/
-	pGameInstance->Draw_Begin(&ClearColor);
-	pGameInstance->Draw();
-	pGameInstance->Draw_End();
+	m_pGameInstance->Draw_Begin(&ClearColor);
+	m_pGameInstance->Draw();
+
+#ifdef _DEBUG
+	pImGui_Manager->Render(m_pContext.Get());
+	//pGameInstance->Draw_Text(TEXT("Font_Default"), TEXT("테스트"), _float2(0.f, 0.f));
+
+#endif
+
+	m_pGameInstance->Draw_End();
 
 }
 
-HRESULT CMainApp::Start_Level(LEVEL_ID iLevelID)
+void CMainApp::Register_Levels()
+{
+	CheckNull(m_pGameInstance);
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOGO), [this](LevelArgs& args)->CLevel*
+		{
+			args.m_bCached = false;
+			return CLevel_Logo::Create(m_pDevice, m_pContext,args);
+		});
+
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::TOWN), [this](LevelArgs& args)->CLevel*
+		{
+			return CLevel_Town::Create(m_pDevice, m_pContext, args);
+		});
+
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::UI), [this](LevelArgs& args)->CLevel*
+		{
+			return CLevel_UI::Create(m_pDevice, m_pContext, args);
+		});
+
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::SPAWN), [this](LevelArgs& args)->CLevel*
+		{
+			args.m_bCached = false;
+			return CLevel_Spawn::Create(m_pDevice, m_pContext, args);
+		});
+
+
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOADING), [this](LevelArgs& args)->CLevel*
+		{
+			args.m_bCached = false;
+			return CLevel_Loading::Create(m_pDevice, m_pContext, args);
+		});
+
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::ROOM), [this](LevelArgs& args)->CLevel*
+		{
+			return CLevel_NPCRoom::Create(m_pDevice, m_pContext, args);
+		});
+
+
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::DUNGEON), [this](LevelArgs& args)->CLevel*
+		{
+			return CLevel_Dungeon::Create(m_pDevice, m_pContext, args);
+		});
+
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::BOSS), [this](LevelArgs& args)->CLevel*
+		{
+			return CLevel_Boss::Create(m_pDevice, m_pContext, args);
+		});
+	 
+	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::ENDING), [this](LevelArgs& args)->CLevel*
+		{
+			args.m_bCached = false;
+			return CLevel_Ending::Create(m_pDevice, m_pContext, args);
+		});
+
+
+}
+
+
+HRESULT CMainApp::Start_Level(LEVEL_ID iLevelID, LEVELCHANGETYPE eChangeType)
 {
 	/*일단 로딩씬으로 이동하고, 로딩씬에게 아이디를 넘겨줘서 어떤걸 로딩할지 로더에게 요청.
 	그리고 로딩씬이 다음씬으로 이동하도록 한다.*/
-	if(FAILED(pGameInstance->Level_Changer(ENUM_TO_UINT(LEVEL_ID::LOADING), CLevel_Loading::Create(m_pDevice, m_pContext, iLevelID))))
+
+	LevelArgs args;
+	args.iNextLevelID = ENUM_TO_UINT(iLevelID);
+	args.changeType = LEVELCHANGETYPE::OVERLAY;
+	args.m_eFlag = LEVELFLAG::TRANSIENT;
+	args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+	args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::LOADING);
+
+	if(FAILED(m_pGameInstance->Level_Changer(ENUM_TO_UINT(LEVEL_ID::LOADING),args)))
 		return E_FAIL;
 
 
 	return S_OK;
+}
+
+void CMainApp::Create_FadeScreen()
+{
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"Transform"), CTransform::Create(m_pDevice, m_pContext))))
+		return;
+
+
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"UI"), CUIComponent::Create(m_pDevice, m_pContext))))
+		return;
+
+	if (FAILED(m_pGameInstance->Add_Prototype(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_COMPONENT_NAME(L"VIBuffer_Rect"), CVIBuffer_Rect::Create(m_pDevice, m_pContext))))
+		return;
+
+	if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Quad", CQuad::Create(m_pDevice, m_pContext))))
+		return;
+
+	if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Panel", CPanel::Create(m_pDevice, m_pContext))))
+		return;
+
+
+	if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"FadeScreen", CFadeScreen::Create(m_pDevice, m_pContext))))
+		return;
+
+
+#pragma region 페이드스크린
+	UIGroup FadeScrcreenGroup;
+	FadeScrcreenGroup.Key = L"FadeScreenGroup";
+
+	CUI::tagUIDesc FadeScreenDesc;
+	FadeScreenDesc.ObjTag = L"FadeScreen";
+	FadeScreenDesc.TextureKey = L"Black";
+	FadeScreenDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+	FadeScreenDesc.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::STATIC);
+
+	FadeScreenDesc.fSizeX = g_iWinSizeX;
+	FadeScreenDesc.fSizeY = g_iWinSizeY;
+
+	FadeScreenDesc.fX = g_iWinSizeX >> 1;
+	FadeScreenDesc.fY = g_iWinSizeY >> 1;
+
+	CTransform::TRANSFORM_DESC TransDesc;
+
+	FadeScreenDesc.TransformDesc = &TransDesc;
+	CUIComponent::UICOMP_DESC FadeUIComp;
+	FadeScreenDesc.UICompDesc = &FadeUIComp;
+	FadeScreenDesc.Depth = 0.1f;
+
+	CBase* pFadeScreenImg = m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(L"FadeScreen"), &FadeScreenDesc);
+	pFadeScreen = dynamic_cast<CFadeScreen*>(pFadeScreenImg);
+	if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC), L"UI_Layer", pFadeScreen)))
+		return;
+
+
+
+	pFadeScreen->Set_Active(false);
+	FadeScrcreenGroup.push_back(pFadeScreen);
+
+	m_pGameInstance->Register_UIGroup(FadeScrcreenGroup);
+	m_pGameInstance->RegisterEvent(L"PlayFadeIn", [](void* pData)
+		{
+			UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"FadeScreenGroup");
+			if (pGroup)
+			{
+				for (auto& i : pGroup->Objects)
+				{
+
+					i.second->Set_Active(true);
+					CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(i.second);
+					if (pFadeScreen)
+					{
+
+						pFadeScreen->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(0.f, 0.f, 0.f, 0.f), _float4(1.f, 0.f, 0.f, 0.f), 8.f, false, false);
+					}
+				}
+			}
+		});
+
+	m_pGameInstance->RegisterEvent(L"PlayFadeOut", [this](void* pData)
+		{
+			UIGroup* pGroup = CGameInstance::GetInstance()->Get_UIGroup(L"FadeScreenGroup");
+			if (pGroup)
+			{
+				for (auto& i : pGroup->Objects)
+				{
+					i.second->Set_Active(true);
+					CFadeScreen* pFadeScreen = dynamic_cast<CFadeScreen*>(i.second);
+					if (pFadeScreen)
+					{
+						pFadeScreen->Get_UIComp()->PlayAnim(UIAnimType::ALPHA, _float4(1.f, 0.f, 0.f, 0.f), _float4(0.f, 0.f, 0.f, 0.f), 8.f, false, true);
+
+					}
+				}
+			}
+		});
+
+#pragma endregion
+}
+
+void CMainApp::Create_LoadingUI()
+{
+	m_pGameInstance->Load_Textures(L"../../Resource/UI/Loading/", L".png");
+	m_pGameInstance->Load_Textures(L"../../Resource/UI/Logo/", L".dds");
+
+	if (FAILED(REGISTER_OBJ(ENUM_TO_UINT(LEVEL_ID::STATIC), L"Loading", CLoadingUI::Create(m_pDevice, m_pContext))))
+		return;
+
+
 }
 
 CMainApp* CMainApp::Create()
@@ -79,47 +595,221 @@ CMainApp* CMainApp::Create()
 
 void CMainApp::Free()
 {
-	//자신의 리소스정리
-
-	Safe_Release(pGameInstance);
 
 	//상속계층을 따르기 위해 부모  Free호출 
 	__super::Free();
 
-}
+#ifdef _DEBUG
+	Safe_Release(pImGui_Manager);
+#endif
+
+	CEffectPoolManager::GetInstance()->DestroyInstance();
+
+	CItem_Manager::GetInstance()->DestroyInstance();
+	CInventory_Manager::GetInstance()->DestroyInstance();
+	
+	CDialogue_Manager::GetInstance()->DestroyInstance();
+	CQuest_Manager::GetInstance()->DestroyInstance();
+	CRoom_Manager::GetInstance()->DestroyInstance();
+	CInput_Manager::GetInstance()->DestroyInstance();
+
+	CEffectData_Manager::GetInstance()->DestroyInstance();
+	
+
+	m_pGameInstance->Release_Engine();
 
 
 
+	//자신의 리소스정리
 
+	Safe_Release(m_pGameInstance);
+	CInteraction_Manager::GetInstance()->DestroyInstance();
 
-#include <iostream>
-#include <memory>
-using namespace std;
-
-struct Weapon {
-	string name;
-	Weapon(string n) : name(n) {
-		cout << "Weapon " << name << " created\n";
-	}
-	~Weapon() {
-		cout << "Weapon " << name << " destroyed\n";
-	}
-};
-
-int main() {
-	shared_ptr<Weapon> w1;
+	if (m_pContext)
 	{
-		auto w2 = make_shared<Weapon>("Excalibur");
-		cout << "use_count after make_shared = " << w2.use_count() << "\n";
-					// use_count after make_shared = 1
-
-		w1 = w2;  // w1과 w2가 같은 무기를 공유
-		cout << "use_count after assigning w1 = " << w2.use_count() << "\n";
-					// use_count after make_shared = 2
+		m_pContext->ClearState();
+		m_pContext->Flush();
 	}
-	cout << "use_count after w2 scope ends = " << w1.use_count() << "\n";
-						//use_count after w2 scope ends = 1
 
-	w1.reset();
-	cout << "use_count after reset = " << w1.use_count() << "\n";
+	CGameManager::GetInstance()->DestroyInstance();
 }
+
+#pragma region 예전 RenderState들
+//void CMainApp::CreateSamplerStates()
+//{
+//	m_RenderStates.resize(ENUM_TO_UINT(RENDERGROUP::END));
+//
+//	D3D11_SAMPLER_DESC desc;
+//	memset(&desc, 0, sizeof(desc));
+//	desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+//	desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+//	desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+//	desc.BorderColor[0] = 0.0f;
+//	desc.BorderColor[1] = 0.0f;
+//	desc.BorderColor[2] = 0.0f;
+//	desc.BorderColor[3] = 0.0f;
+//
+//
+//	desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
+//	desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+//	desc.MaxAnisotropy = 16;
+//	desc.MaxLOD = FLT_MAX;
+//	desc.MinLOD = FLT_MIN;
+//	desc.MipLODBias = 0.0f;
+//
+//	for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP); ++i)
+//		m_pDevice->CreateSamplerState(&desc, m_RenderStates[i]._samplerState.GetAddressOf());
+//
+//	for (int i = ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP); i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+//		m_pDevice->CreateSamplerState(&desc, m_RenderStates[i]._samplerState.GetAddressOf());
+//
+//}
+//
+//void CMainApp::CreateBlendStates()
+//{
+//	D3D11_BLEND_DESC desc;
+//	memset(&desc, 0, sizeof(desc));
+//	desc.AlphaToCoverageEnable = false;
+//	desc.IndependentBlendEnable = false;
+//
+//	desc.RenderTarget[0].BlendEnable = FALSE;
+//	desc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+//	desc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+//	desc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+//	desc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+//	desc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+//	desc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+//	desc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+//
+//	m_pDevice->CreateBlendState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._BlendState.GetAddressOf());
+//	m_pDevice->CreateBlendState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::NONALPHA)]._BlendState.GetAddressOf());
+//
+//	desc.RenderTarget[0].BlendEnable = TRUE;
+//
+//	for (int i = ENUM_TO_UINT(RENDERGROUP::ALPHA); i < ENUM_TO_UINT(RENDERGROUP::END); ++i)
+//		m_pDevice->CreateBlendState(&desc, m_RenderStates[i]._BlendState.GetAddressOf());
+//
+//
+//}
+//
+//void CMainApp::CreateRasterizerStates()
+//{
+//	D3D11_RASTERIZER_DESC desc;
+//	memset(&desc, 0, sizeof(desc));
+//
+//	desc.FillMode = D3D11_FILL_SOLID;//WIREFRAME of SOLID
+//	desc.CullMode = D3D11_CULL_NONE;//CULLMODE: 반시계 컬링
+//	desc.FrontCounterClockwise = false;
+//	desc.DepthClipEnable = true;
+//
+//	for (int i = 0; i < ENUM_TO_UINT(RENDERGROUP::UI); ++i)
+//		m_pDevice->CreateRasterizerState(&desc, m_RenderStates[i]._rasterizerState.GetAddressOf());
+//
+//	desc.DepthClipEnable = false;
+//	m_pDevice->CreateRasterizerState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::UI)]._rasterizerState.GetAddressOf());
+//}
+//
+//void CMainApp::CreateDepthStencilStates()
+//{
+//
+//	D3D11_DEPTH_STENCIL_DESC desc = CD3D11_DEPTH_STENCIL_DESC(D3D11_DEFAULT);
+//
+//	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY)]._DepthStencilState.GetAddressOf());
+//	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::NONALPHA)]._DepthStencilState.GetAddressOf());
+//	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::PRIORITY_MINIMAP)]._DepthStencilState.GetAddressOf());
+//	//깊이 테스트여부
+//	desc.DepthEnable = true;
+//
+//	//깊이 기록여부
+//	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+//	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::ALPHA)]._DepthStencilState.GetAddressOf());
+//
+//	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP)]._DepthStencilState.GetAddressOf());
+//
+//	desc.DepthEnable = false;
+//	desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+//	m_pDevice->CreateDepthStencilState(&desc, m_RenderStates[ENUM_TO_UINT(RENDERGROUP::UI)]._DepthStencilState.GetAddressOf());
+//
+//}
+
+#pragma endregion
+
+
+#ifdef _DEBUG
+void CMainApp::CreateLevelDebugWindow()
+{
+	CImgui_Window::IMGUIWINDOW_DESC Desc;
+	Desc.m_WindowTitle = "LevelDebugWindow";
+	Desc.m_WindowPos = ImVec2(100, 100);
+	//Desc.m_WindowSize = ImVec2(300, 500);
+	Desc.Tag = "LevelDebugWindow";
+
+
+	pImGui_Manager->RegisterWindow(CLevelDebugWindow::Create(m_pDevice, m_pContext, &Desc));
+}
+
+void CMainApp::CreateObjectDebugWindow()
+{
+	CImgui_Window::IMGUIWINDOW_DESC Desc;
+	Desc.m_WindowTitle = "ObjectDebugWindow";
+	Desc.m_WindowPos = ImVec2(g_iWinSizeX, 100);
+	//Desc.m_WindowSize = ImVec2(300, 500);
+	Desc.Tag = "ObjectDebugWindow";
+
+
+	pImGui_Manager->RegisterWindow(CObjectDebugWindow::Create(m_pDevice, m_pContext, &Desc));
+
+}
+
+void CMainApp::CreateCameraDebugWindow()
+{
+	CImgui_Window::IMGUIWINDOW_DESC Desc;
+	Desc.m_WindowTitle = "CameraDebugWindow";
+	Desc.m_WindowPos = ImVec2(g_iWinSizeX, 100);
+	//Desc.m_WindowSize = ImVec2(300, 500);
+	Desc.Tag = "CameraDebugWindow";
+
+	pImGui_Manager->RegisterWindow(CCameraDebugWindow::Create(m_pDevice, m_pContext, &Desc));
+
+}
+
+
+void CMainApp::CreateStateDebugWindow()
+{
+	CImgui_Window::IMGUIWINDOW_DESC Desc;
+	Desc.m_WindowTitle = "StateDebugWindow";
+	Desc.m_WindowPos = ImVec2(g_iWinSizeX, 100);
+	//Desc.m_WindowSize = ImVec2(300, 500);
+	Desc.Tag = "StateDebugWindow";
+
+
+	pImGui_Manager->RegisterWindow(CStateDebugWindow::Create(m_pDevice, m_pContext, &Desc));
+
+}
+
+void CMainApp::CreateLightDebugWindow()
+{
+	CImgui_Window::IMGUIWINDOW_DESC Desc;
+	Desc.m_WindowTitle = "LightInspectorWindow";
+	Desc.m_WindowPos = ImVec2(g_iWinSizeX, 100);
+	//Desc.m_WindowSize = ImVec2(300, 500);
+	Desc.Tag = "LightInspectorWindow";
+
+
+	pImGui_Manager->RegisterWindow(CLightInspectorWindow::Create(m_pDevice, m_pContext, &Desc));
+
+	//////////////
+	CImgui_Window::IMGUIWINDOW_DESC DebugDesc;
+	DebugDesc.m_WindowTitle = "LightDebugWindow";
+	DebugDesc.m_WindowPos = ImVec2(g_iWinSizeX, 100);
+	//Desc.m_WindowSize = ImVec2(300, 500);
+	DebugDesc.Tag = "LightDebugWindow";
+
+
+	pImGui_Manager->RegisterWindow(CLightDebugWindow::Create(m_pDevice, m_pContext, &DebugDesc));
+
+}
+
+
+#endif
+

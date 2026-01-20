@@ -1,0 +1,448 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "MI_TelLeaf_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_TelLeaf_01",
+            "Normal": "MI_TelLeaf_01_nml.png",
+            "OPACITY": "MI_TelLeaf_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_TelephoneBox02_Mebe_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_TelephoneBox02_Mebe_01",
+            "Normal": "MI_TelephoneBox02_Mebe_01_nml.png",
+            "OPACITY": "MI_TelephoneBox02_Mebe_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_TelephoneBox02_Mebe_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_TelephoneBox02_Mebe_01",
+            "Normal": "MI_TelephoneBox02_Mebe_01_nml.png",
+            "OPACITY": "MI_TelephoneBox02_Mebe_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_TelephoneBox02_Mebe_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_TelephoneBox02_Mebe_02",
+            "Normal": "",
+            "OPACITY": "MI_TelephoneBox02_Mebe_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Telephone_obj01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_Telephone_obj01",
+            "Normal": "MI_Telephone_obj01_nml.png",
+            "OPACITY": "MI_Telephone_obj01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Tel_book01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_Tel_book01",
+            "Normal": "MI_Tel_book01_nml.png",
+            "OPACITY": "MI_Tel_book01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Tel_book02_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_Tel_book02",
+            "Normal": "MI_Tel_book02_nml.png",
+            "OPACITY": "MI_Tel_book02_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Tel_book03_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_Tel_book03",
+            "Normal": "MI_Tel_book03_nml.png",
+            "OPACITY": "MI_Tel_book03_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Telephone_obj01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_Telephone_obj01",
+            "Normal": "MI_Telephone_obj01_nml.png",
+            "OPACITY": "MI_Telephone_obj01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Telephone_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_Telephone_01",
+            "Normal": "MI_Telephone_01_nml.png",
+            "OPACITY": "MI_Telephone_01_alb.png",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 10,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 798,
+            "MaterialName": "MI_TelLeaf_01",
+            "MeshIdx": 0,
+            "Name": "leaf__MI_TelLeaf_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 372
+        },
+        {
+            "IBPath": "Mesh_1.ib",
+            "IndexCount": 5316,
+            "MaterialName": "MI_TelephoneBox02_Mebe_01",
+            "MeshIdx": 1,
+            "Name": "model1__MI_TelephoneBox02_Mebe_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_1.vb",
+            "VertexCount": 1240
+        },
+        {
+            "IBPath": "Mesh_2.ib",
+            "IndexCount": 762,
+            "MaterialName": "MI_TelephoneBox02_Mebe_01",
+            "MeshIdx": 2,
+            "Name": "model_low2__MI_TelephoneBox02_Mebe_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_2.vb",
+            "VertexCount": 223
+        },
+        {
+            "IBPath": "Mesh_3.ib",
+            "IndexCount": 858,
+            "MaterialName": "MI_TelephoneBox02_Mebe_02",
+            "MeshIdx": 3,
+            "Name": "model_low2__MI_TelephoneBox02_Mebe_02",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_3.vb",
+            "VertexCount": 219
+        },
+        {
+            "IBPath": "Mesh_4.ib",
+            "IndexCount": 528,
+            "MaterialName": "MI_Telephone_obj01",
+            "MeshIdx": 4,
+            "Name": "paper_4__MI_Telephone_obj01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_4.vb",
+            "VertexCount": 185
+        },
+        {
+            "IBPath": "Mesh_5.ib",
+            "IndexCount": 2388,
+            "MaterialName": "MI_Tel_book01",
+            "MeshIdx": 5,
+            "Name": "room3__MI_Tel_book01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_5.vb",
+            "VertexCount": 874
+        },
+        {
+            "IBPath": "Mesh_6.ib",
+            "IndexCount": 1488,
+            "MaterialName": "MI_Tel_book02",
+            "MeshIdx": 6,
+            "Name": "room3__MI_Tel_book02",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_6.vb",
+            "VertexCount": 556
+        },
+        {
+            "IBPath": "Mesh_7.ib",
+            "IndexCount": 1116,
+            "MaterialName": "MI_Tel_book03",
+            "MeshIdx": 7,
+            "Name": "room3__MI_Tel_book03",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_7.vb",
+            "VertexCount": 417
+        },
+        {
+            "IBPath": "Mesh_8.ib",
+            "IndexCount": 243,
+            "MaterialName": "MI_Telephone_obj01",
+            "MeshIdx": 8,
+            "Name": "room3__MI_Telephone_obj01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_8.vb",
+            "VertexCount": 56
+        },
+        {
+            "IBPath": "Mesh_9.ib",
+            "IndexCount": 1800,
+            "MaterialName": "MI_Telephone_01",
+            "MeshIdx": 9,
+            "Name": "tel__MI_Telephone_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_9.vb",
+            "VertexCount": 455
+        }
+    ],
+    "ModelName": "telephoneBox"
+}

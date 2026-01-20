@@ -1,0 +1,52 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Rock_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_Rock_01",
+            "Normal": "MI_Rock_01_nml.png",
+            "OPACITY": "MI_Rock_01_alb.png",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 1,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 294,
+            "MaterialName": "MI_Rock_01",
+            "MeshIdx": 0,
+            "Name": "Rock__MI_Rock_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 67
+        }
+    ],
+    "ModelName": "Rock"
+}

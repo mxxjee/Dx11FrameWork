@@ -1,0 +1,1060 @@
+{
+    "AnimDatas": [
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 88,
+                    "BoneName": "Bfoot_L",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 88,
+                    "BinarySize": 88,
+                    "BoneName": "Bfoot_R",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 176,
+                    "BinarySize": 88,
+                    "BoneName": "Bleg_L_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 264,
+                    "BinarySize": 88,
+                    "BoneName": "Bleg_L_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 352,
+                    "BinarySize": 88,
+                    "BoneName": "Bleg_R_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 440,
+                    "BinarySize": 88,
+                    "BoneName": "Bleg_R_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 528,
+                    "BinarySize": 88,
+                    "BoneName": "Ffoot_L",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 616,
+                    "BinarySize": 88,
+                    "BoneName": "Ffoot_R",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 704,
+                    "BinarySize": 88,
+                    "BoneName": "Fleg_L_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 792,
+                    "BinarySize": 88,
+                    "BoneName": "Fleg_L_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 880,
+                    "BinarySize": 88,
+                    "BoneName": "Fleg_R_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 968,
+                    "BinarySize": 88,
+                    "BoneName": "Fleg_R_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1056,
+                    "BinarySize": 88,
+                    "BoneName": "Grass_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1144,
+                    "BinarySize": 88,
+                    "BoneName": "Mfoot_L",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1232,
+                    "BinarySize": 88,
+                    "BoneName": "Mfoot_R",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1320,
+                    "BinarySize": 88,
+                    "BoneName": "Mleg_L_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1408,
+                    "BinarySize": 88,
+                    "BoneName": "Mleg_L_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1496,
+                    "BinarySize": 88,
+                    "BoneName": "Mleg_R_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1584,
+                    "BinarySize": 88,
+                    "BoneName": "Mleg_R_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1672,
+                    "BinarySize": 88,
+                    "BoneName": "Rock_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1760,
+                    "BinarySize": 88,
+                    "BoneName": "SkullStone_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1848,
+                    "BinarySize": 88,
+                    "BoneName": "attach_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1936,
+                    "BinarySize": 88,
+                    "BoneName": "attach_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2024,
+                    "BinarySize": 88,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2112,
+                    "BinarySize": 88,
+                    "BoneName": "o_mesh_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2200,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2288,
+                    "BinarySize": 88,
+                    "BoneName": "spine",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2376,
+                    "BinarySize": 88,
+                    "BoneName": "waist",
+                    "NumKeyFrames": 2
+                }
+            ],
+            "Duration": 1.0,
+            "Name": "wait",
+            "NumChannels": 28,
+            "TickPerSecond": 25.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 704,
+                    "BoneName": "Bfoot_L",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 704,
+                    "BinarySize": 704,
+                    "BoneName": "Bfoot_R",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 1408,
+                    "BinarySize": 704,
+                    "BoneName": "Bleg_L_a",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 2112,
+                    "BinarySize": 704,
+                    "BoneName": "Bleg_L_b",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 2816,
+                    "BinarySize": 704,
+                    "BoneName": "Bleg_R_a",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 3520,
+                    "BinarySize": 704,
+                    "BoneName": "Bleg_R_b",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 4224,
+                    "BinarySize": 704,
+                    "BoneName": "Ffoot_L",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 4928,
+                    "BinarySize": 704,
+                    "BoneName": "Ffoot_R",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 5632,
+                    "BinarySize": 704,
+                    "BoneName": "Fleg_L_a",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 6336,
+                    "BinarySize": 704,
+                    "BoneName": "Fleg_L_b",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 7040,
+                    "BinarySize": 704,
+                    "BoneName": "Fleg_R_a",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 7744,
+                    "BinarySize": 704,
+                    "BoneName": "Fleg_R_b",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 8448,
+                    "BinarySize": 88,
+                    "BoneName": "Grass_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 8536,
+                    "BinarySize": 704,
+                    "BoneName": "Mfoot_L",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 9240,
+                    "BinarySize": 704,
+                    "BoneName": "Mfoot_R",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 9944,
+                    "BinarySize": 704,
+                    "BoneName": "Mleg_L_a",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 10648,
+                    "BinarySize": 704,
+                    "BoneName": "Mleg_L_b",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 11352,
+                    "BinarySize": 704,
+                    "BoneName": "Mleg_R_a",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 12056,
+                    "BinarySize": 704,
+                    "BoneName": "Mleg_R_b",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 12760,
+                    "BinarySize": 88,
+                    "BoneName": "Rock_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 12848,
+                    "BinarySize": 88,
+                    "BoneName": "SkullStone_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 12936,
+                    "BinarySize": 704,
+                    "BoneName": "attach_a",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 13640,
+                    "BinarySize": 88,
+                    "BoneName": "attach_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 13728,
+                    "BinarySize": 88,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 13816,
+                    "BinarySize": 88,
+                    "BoneName": "o_mesh_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 13904,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 13992,
+                    "BinarySize": 704,
+                    "BoneName": "spine",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 14696,
+                    "BinarySize": 704,
+                    "BoneName": "waist",
+                    "NumKeyFrames": 16
+                }
+            ],
+            "Duration": 15.0,
+            "Name": "walk",
+            "NumChannels": 28,
+            "TickPerSecond": 25.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 1540,
+                    "BoneName": "Bfoot_L",
+                    "NumKeyFrames": 35
+                },
+                {
+                    "BinaryOffset": 1540,
+                    "BinarySize": 1540,
+                    "BoneName": "Bfoot_R",
+                    "NumKeyFrames": 35
+                },
+                {
+                    "BinaryOffset": 3080,
+                    "BinarySize": 1540,
+                    "BoneName": "Bleg_L_a",
+                    "NumKeyFrames": 35
+                },
+                {
+                    "BinaryOffset": 4620,
+                    "BinarySize": 1276,
+                    "BoneName": "Bleg_L_b",
+                    "NumKeyFrames": 29
+                },
+                {
+                    "BinaryOffset": 5896,
+                    "BinarySize": 1540,
+                    "BoneName": "Bleg_R_a",
+                    "NumKeyFrames": 35
+                },
+                {
+                    "BinaryOffset": 7436,
+                    "BinarySize": 1320,
+                    "BoneName": "Bleg_R_b",
+                    "NumKeyFrames": 30
+                },
+                {
+                    "BinaryOffset": 8756,
+                    "BinarySize": 1540,
+                    "BoneName": "Ffoot_L",
+                    "NumKeyFrames": 35
+                },
+                {
+                    "BinaryOffset": 10296,
+                    "BinarySize": 1540,
+                    "BoneName": "Ffoot_R",
+                    "NumKeyFrames": 35
+                },
+                {
+                    "BinaryOffset": 11836,
+                    "BinarySize": 1540,
+                    "BoneName": "Fleg_L_a",
+                    "NumKeyFrames": 35
+                },
+                {
+                    "BinaryOffset": 13376,
+                    "BinarySize": 1320,
+                    "BoneName": "Fleg_L_b",
+                    "NumKeyFrames": 30
+                },
+                {
+                    "BinaryOffset": 14696,
+                    "BinarySize": 1540,
+                    "BoneName": "Fleg_R_a",
+                    "NumKeyFrames": 35
+                },
+                {
+                    "BinaryOffset": 16236,
+                    "BinarySize": 1276,
+                    "BoneName": "Fleg_R_b",
+                    "NumKeyFrames": 29
+                },
+                {
+                    "BinaryOffset": 17512,
+                    "BinarySize": 88,
+                    "BoneName": "Grass_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 17600,
+                    "BinarySize": 1540,
+                    "BoneName": "Mfoot_L",
+                    "NumKeyFrames": 35
+                },
+                {
+                    "BinaryOffset": 19140,
+                    "BinarySize": 1540,
+                    "BoneName": "Mfoot_R",
+                    "NumKeyFrames": 35
+                },
+                {
+                    "BinaryOffset": 20680,
+                    "BinarySize": 1540,
+                    "BoneName": "Mleg_L_a",
+                    "NumKeyFrames": 35
+                },
+                {
+                    "BinaryOffset": 22220,
+                    "BinarySize": 1276,
+                    "BoneName": "Mleg_L_b",
+                    "NumKeyFrames": 29
+                },
+                {
+                    "BinaryOffset": 23496,
+                    "BinarySize": 1540,
+                    "BoneName": "Mleg_R_a",
+                    "NumKeyFrames": 35
+                },
+                {
+                    "BinaryOffset": 25036,
+                    "BinarySize": 1276,
+                    "BoneName": "Mleg_R_b",
+                    "NumKeyFrames": 29
+                },
+                {
+                    "BinaryOffset": 26312,
+                    "BinarySize": 88,
+                    "BoneName": "Rock_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 26400,
+                    "BinarySize": 88,
+                    "BoneName": "SkullStone_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 26488,
+                    "BinarySize": 1540,
+                    "BoneName": "attach_a",
+                    "NumKeyFrames": 35
+                },
+                {
+                    "BinaryOffset": 28028,
+                    "BinarySize": 88,
+                    "BoneName": "attach_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 28116,
+                    "BinarySize": 88,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 28204,
+                    "BinarySize": 88,
+                    "BoneName": "o_mesh_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 28292,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 28380,
+                    "BinarySize": 1540,
+                    "BoneName": "spine",
+                    "NumKeyFrames": 35
+                },
+                {
+                    "BinaryOffset": 29920,
+                    "BinarySize": 1188,
+                    "BoneName": "waist",
+                    "NumKeyFrames": 27
+                }
+            ],
+            "Duration": 34.0,
+            "Name": "move_st",
+            "NumChannels": 28,
+            "TickPerSecond": 25.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 836,
+                    "BoneName": "Bfoot_L",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 836,
+                    "BinarySize": 836,
+                    "BoneName": "Bfoot_R",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 1672,
+                    "BinarySize": 836,
+                    "BoneName": "Bleg_L_a",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 2508,
+                    "BinarySize": 836,
+                    "BoneName": "Bleg_L_b",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 3344,
+                    "BinarySize": 836,
+                    "BoneName": "Bleg_R_a",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 4180,
+                    "BinarySize": 836,
+                    "BoneName": "Bleg_R_b",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 5016,
+                    "BinarySize": 836,
+                    "BoneName": "Ffoot_L",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 5852,
+                    "BinarySize": 836,
+                    "BoneName": "Ffoot_R",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 6688,
+                    "BinarySize": 836,
+                    "BoneName": "Fleg_L_a",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 7524,
+                    "BinarySize": 704,
+                    "BoneName": "Fleg_L_b",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 8228,
+                    "BinarySize": 836,
+                    "BoneName": "Fleg_R_a",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 9064,
+                    "BinarySize": 748,
+                    "BoneName": "Fleg_R_b",
+                    "NumKeyFrames": 17
+                },
+                {
+                    "BinaryOffset": 9812,
+                    "BinarySize": 88,
+                    "BoneName": "Grass_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 9900,
+                    "BinarySize": 836,
+                    "BoneName": "Mfoot_L",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 10736,
+                    "BinarySize": 836,
+                    "BoneName": "Mfoot_R",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 11572,
+                    "BinarySize": 836,
+                    "BoneName": "Mleg_L_a",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 12408,
+                    "BinarySize": 704,
+                    "BoneName": "Mleg_L_b",
+                    "NumKeyFrames": 16
+                },
+                {
+                    "BinaryOffset": 13112,
+                    "BinarySize": 836,
+                    "BoneName": "Mleg_R_a",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 13948,
+                    "BinarySize": 836,
+                    "BoneName": "Mleg_R_b",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 14784,
+                    "BinarySize": 88,
+                    "BoneName": "Rock_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 14872,
+                    "BinarySize": 88,
+                    "BoneName": "SkullStone_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 14960,
+                    "BinarySize": 836,
+                    "BoneName": "attach_a",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 15796,
+                    "BinarySize": 88,
+                    "BoneName": "attach_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 15884,
+                    "BinarySize": 88,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 15972,
+                    "BinarySize": 88,
+                    "BoneName": "o_mesh_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 16060,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 16148,
+                    "BinarySize": 836,
+                    "BoneName": "spine",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 16984,
+                    "BinarySize": 792,
+                    "BoneName": "waist",
+                    "NumKeyFrames": 18
+                }
+            ],
+            "Duration": 18.0,
+            "Name": "move_ed",
+            "NumChannels": 28,
+            "TickPerSecond": 25.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 1628,
+                    "BoneName": "Bfoot_L",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 1628,
+                    "BinarySize": 1628,
+                    "BoneName": "Bfoot_R",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 3256,
+                    "BinarySize": 1628,
+                    "BoneName": "Bleg_L_a",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 4884,
+                    "BinarySize": 1628,
+                    "BoneName": "Bleg_L_b",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 6512,
+                    "BinarySize": 1628,
+                    "BoneName": "Bleg_R_a",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 8140,
+                    "BinarySize": 1628,
+                    "BoneName": "Bleg_R_b",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 9768,
+                    "BinarySize": 1628,
+                    "BoneName": "Ffoot_L",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 11396,
+                    "BinarySize": 1628,
+                    "BoneName": "Ffoot_R",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 13024,
+                    "BinarySize": 1628,
+                    "BoneName": "Fleg_L_a",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 14652,
+                    "BinarySize": 1628,
+                    "BoneName": "Fleg_L_b",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 16280,
+                    "BinarySize": 1628,
+                    "BoneName": "Fleg_R_a",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 17908,
+                    "BinarySize": 1628,
+                    "BoneName": "Fleg_R_b",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 19536,
+                    "BinarySize": 88,
+                    "BoneName": "Grass_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 19624,
+                    "BinarySize": 1628,
+                    "BoneName": "Mfoot_L",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 21252,
+                    "BinarySize": 1628,
+                    "BoneName": "Mfoot_R",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 22880,
+                    "BinarySize": 1628,
+                    "BoneName": "Mleg_L_a",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 24508,
+                    "BinarySize": 1628,
+                    "BoneName": "Mleg_L_b",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 26136,
+                    "BinarySize": 1628,
+                    "BoneName": "Mleg_R_a",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 27764,
+                    "BinarySize": 1628,
+                    "BoneName": "Mleg_R_b",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 29392,
+                    "BinarySize": 88,
+                    "BoneName": "Rock_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 29480,
+                    "BinarySize": 88,
+                    "BoneName": "SkullStone_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 29568,
+                    "BinarySize": 1628,
+                    "BoneName": "attach_a",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 31196,
+                    "BinarySize": 88,
+                    "BoneName": "attach_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 31284,
+                    "BinarySize": 88,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 31372,
+                    "BinarySize": 88,
+                    "BoneName": "o_mesh_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 31460,
+                    "BinarySize": 1628,
+                    "BoneName": "root",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 33088,
+                    "BinarySize": 1628,
+                    "BoneName": "spine",
+                    "NumKeyFrames": 37
+                },
+                {
+                    "BinaryOffset": 34716,
+                    "BinarySize": 1628,
+                    "BoneName": "waist",
+                    "NumKeyFrames": 37
+                }
+            ],
+            "Duration": 36.0,
+            "Name": "damage",
+            "NumChannels": 28,
+            "TickPerSecond": 25.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 880,
+                    "BoneName": "Bfoot_L",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 880,
+                    "BinarySize": 880,
+                    "BoneName": "Bfoot_R",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 1760,
+                    "BinarySize": 880,
+                    "BoneName": "Bleg_L_a",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 2640,
+                    "BinarySize": 616,
+                    "BoneName": "Bleg_L_b",
+                    "NumKeyFrames": 14
+                },
+                {
+                    "BinaryOffset": 3256,
+                    "BinarySize": 880,
+                    "BoneName": "Bleg_R_a",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 4136,
+                    "BinarySize": 616,
+                    "BoneName": "Bleg_R_b",
+                    "NumKeyFrames": 14
+                },
+                {
+                    "BinaryOffset": 4752,
+                    "BinarySize": 880,
+                    "BoneName": "Ffoot_L",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 5632,
+                    "BinarySize": 880,
+                    "BoneName": "Ffoot_R",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 6512,
+                    "BinarySize": 880,
+                    "BoneName": "Fleg_L_a",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 7392,
+                    "BinarySize": 748,
+                    "BoneName": "Fleg_L_b",
+                    "NumKeyFrames": 17
+                },
+                {
+                    "BinaryOffset": 8140,
+                    "BinarySize": 880,
+                    "BoneName": "Fleg_R_a",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 9020,
+                    "BinarySize": 880,
+                    "BoneName": "Fleg_R_b",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 9900,
+                    "BinarySize": 88,
+                    "BoneName": "Grass_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 9988,
+                    "BinarySize": 880,
+                    "BoneName": "Mfoot_L",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 10868,
+                    "BinarySize": 880,
+                    "BoneName": "Mfoot_R",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 11748,
+                    "BinarySize": 880,
+                    "BoneName": "Mleg_L_a",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 12628,
+                    "BinarySize": 880,
+                    "BoneName": "Mleg_L_b",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 13508,
+                    "BinarySize": 880,
+                    "BoneName": "Mleg_R_a",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 14388,
+                    "BinarySize": 880,
+                    "BoneName": "Mleg_R_b",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 15268,
+                    "BinarySize": 88,
+                    "BoneName": "Rock_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 15356,
+                    "BinarySize": 88,
+                    "BoneName": "SkullStone_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 15444,
+                    "BinarySize": 880,
+                    "BoneName": "attach_a",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 16324,
+                    "BinarySize": 88,
+                    "BoneName": "attach_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 16412,
+                    "BinarySize": 836,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 17248,
+                    "BinarySize": 88,
+                    "BoneName": "o_mesh_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 17336,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 17424,
+                    "BinarySize": 880,
+                    "BoneName": "spine",
+                    "NumKeyFrames": 20
+                },
+                {
+                    "BinaryOffset": 18304,
+                    "BinarySize": 880,
+                    "BoneName": "waist",
+                    "NumKeyFrames": 20
+                }
+            ],
+            "Duration": 19.0,
+            "Name": "dead",
+            "NumChannels": 28,
+            "TickPerSecond": 25.0
+        }
+    ]
+}

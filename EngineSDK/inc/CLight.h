@@ -1,0 +1,40 @@
+#pragma once
+#include "CBase.h"
+
+NS_BEGIN(Engine)
+class ENGINE_DLL CLight :
+    public CBase
+{
+private:
+    CLight();
+    virtual ~CLight() = default;
+
+public:
+    const LIGHT_DESC* Get_LightDesc() const { return &m_LightDesc; }
+    bool            IsActive()              { return m_bActive; }
+    void            Set_LightDesc(const LIGHT_DESC& NewDesc) {m_LightDesc = NewDesc;}
+public:
+    HRESULT         Initialize(const LIGHT_DESC& LightDesc);
+    void            Render(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer);
+    
+public:
+    void        Set_Active(bool b) { m_bActive = b; }
+
+
+public:
+    void Render_DebugImgui();
+
+
+
+private:
+    LIGHT_DESC      m_LightDesc{};
+
+public:
+    static CLight* Create(const LIGHT_DESC& LightDesc);
+    virtual         void    Free() override;
+
+private:
+    bool            m_bActive = true;
+};
+NS_END
+

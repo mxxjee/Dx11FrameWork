@@ -1,5 +1,6 @@
 #include "CGraphic_Device.h"
 
+
 CGraphic_Device::CGraphic_Device()
 	: m_pDevice{ nullptr }
 	, m_pDeviceContext{ nullptr }
@@ -9,7 +10,8 @@ CGraphic_Device::CGraphic_Device()
 
 
 
-HRESULT CGraphic_Device::Initialize(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY, ID3D11Device** ppDevice, ID3D11DeviceContext** ppContext)
+HRESULT CGraphic_Device::Initialize(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY,
+	ComPtr<ID3D11Device>* pDevice, ComPtr<ID3D11DeviceContext>* pContext)
 {
 	_uint		iFlag = 0;
 
@@ -61,12 +63,8 @@ HRESULT CGraphic_Device::Initialize(HWND hWnd, WINMODE isWindowed, _uint iWinSiz
 
 	m_pDeviceContext->RSSetViewports(1, &ViewPortDesc);
 
-	*ppDevice = m_pDevice.Get();
-	*ppContext = m_pDeviceContext.Get();
-
-	//외부변수에 참조시켰으므로 AddRef()
-	Safe_AddRef(m_pDevice);
-	Safe_AddRef(m_pDeviceContext);
+	*pDevice = m_pDevice;
+	*pContext = m_pDeviceContext;
 
 	return S_OK;
 }
@@ -103,6 +101,17 @@ HRESULT CGraphic_Device::Present()
 	/* 전면 버퍼와 후면 버퍼를 교체하여 후면 버퍼를 전면으로 보여주는 역할을 한다. */
 	/* 후면 버퍼를 직접 화면에 보여줄게. */
 	return m_pSwapChain->Present(0, 0);
+}
+
+HRESULT CGraphic_Device::Get_Buffer(ComPtr<ID3D11Texture2D>* pBuffer,UINT iFlag)
+{
+	//매개변수로 받은 pBuffer를 채워줌
+	m_pSwapChain->GetBuffer(iFlag, __uuidof(ID3D11Texture2D), (void**)(pBuffer->GetAddressOf()));
+	
+	if (pBuffer->Get() == nullptr)
+		return E_FAIL;
+
+	return S_OK;
 }
 
 
@@ -155,7 +164,7 @@ HRESULT CGraphic_Device::Ready_SwapChain(HWND hWnd, WINMODE isWindowed, _uint iW
 	SwapChain.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
 	/* 백버퍼라는 텍스처(ID3D11Texture2D)를 생성했다. */
-	if (FAILED(pFactory->CreateSwapChain(m_pDevice.Get(), &SwapChain, &m_pSwapChain)))
+	if (FAILED(pFactory->CreateSwapChain(m_pDevice.Get(), &SwapChain, m_pSwapChain.GetAddressOf())))
 		return E_FAIL;
 
 	Safe_Release(pFactory);
@@ -232,11 +241,14 @@ HRESULT CGraphic_Device::Ready_DepthStencilView(_uint iWinCX, _uint iWinCY)
 	return S_OK;
 }
 
-CGraphic_Device* CGraphic_Device::Create(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY, _Out_ ID3D11Device** ppDevice, _Out_ ID3D11DeviceContext** ppDeviceContextOut)
+CGraphic_Device* CGraphic_Device::Create(HWND hWnd, WINMODE isWindowed, 
+	_uint iWinSizeX, _uint iWinSizeY, 
+	_Out_ ComPtr<ID3D11Device>* pDevice,
+	_Out_ ComPtr<ID3D11DeviceContext>* pDeviceContextOut)
 {
 	CGraphic_Device* pInstance = new CGraphic_Device();
 
-	if (FAILED(pInstance->Initialize(hWnd, isWindowed, iWinSizeX, iWinSizeY, ppDevice, ppDeviceContextOut)))
+	if (FAILED(pInstance->Initialize(hWnd, isWindowed, iWinSizeX, iWinSizeY, pDevice, pDeviceContextOut)))
 	{
 		MSG_BOX("Failed to Created : CGraphic_Device");
 		Safe_Release(pInstance);
@@ -247,11 +259,20 @@ CGraphic_Device* CGraphic_Device::Create(HWND hWnd, WINMODE isWindowed, _uint iW
 
 void CGraphic_Device::Free()
 {
-	/*Safe_Release(m_pSwapChain);
-	Safe_Release(m_pDepthStencilView);
-	Safe_Release(m_pBackBufferRTV);
-	Safe_Release(m_pDeviceContext);*/
 
+
+
+	// 2) Context 정리
+	m_pDeviceContext->ClearState();
+	m_pDeviceContext->Flush();
+
+	// 3) Context 해제 (!!!! 핵심)
+	m_pDeviceContext.Reset();
+
+	// 4) SwapChain / RTV / DSV 해제
+	m_pBackBufferRTV.Reset();
+	m_pDepthStencilView.Reset();
+	m_pSwapChain.Reset();
 
 #if defined(DEBUG) || defined(_DEBUG)
 	ID3D11Debug* d3dDebug;
@@ -271,6 +292,8 @@ void CGraphic_Device::Free()
 	if (d3dDebug != nullptr)            d3dDebug->Release();
 #endif
 
+	// 5) Device 해제
+	m_pDevice.Reset();
 
-	Safe_Release(m_pDevice);
+
 }

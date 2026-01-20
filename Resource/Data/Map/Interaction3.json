@@ -1,0 +1,512 @@
+[
+    {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Extent": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Lawn",
+        "ModelName": "Lawn",
+        "Transform": {
+            "Position": [
+                34.09324264526367,
+                10.500000953674316,
+                25.782346725463867
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Extent": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Lawn",
+        "ModelName": "Lawn",
+        "Transform": {
+            "Position": [
+                34.02800750732422,
+                10.5,
+                27.256282806396484
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Extent": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Lawn",
+        "ModelName": "Lawn",
+        "Transform": {
+            "Position": [
+                34.13119125366211,
+                10.5,
+                28.835960388183594
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Extent": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Lawn",
+        "ModelName": "Lawn",
+        "Transform": {
+            "Position": [
+                34.15363311767578,
+                10.5,
+                30.459766387939453
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Extent": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Lawn",
+        "ModelName": "Lawn",
+        "Transform": {
+            "Position": [
+                32.63642501831055,
+                10.539999961853027,
+                30.59905433654785
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Extent": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Lawn",
+        "ModelName": "Lawn",
+        "Transform": {
+            "Position": [
+                31.063859939575195,
+                10.5,
+                30.501752853393555
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Extent": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Lawn",
+        "ModelName": "Lawn",
+        "Transform": {
+            "Position": [
+                29.437349319458008,
+                10.5,
+                30.560510635375977
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Extent": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Lawn",
+        "ModelName": "Lawn",
+        "Transform": {
+            "Position": [
+                27.665367126464844,
+                10.5,
+                30.48691749572754
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Extent": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Lawn",
+        "ModelName": "Lawn",
+        "Transform": {
+            "Position": [
+                32.45758819580078,
+                10.500000953674316,
+                25.76348876953125
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Extent": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Lawn",
+        "ModelName": "Lawn",
+        "Transform": {
+            "Position": [
+                27.591909408569336,
+                10.5,
+                28.612024307250977
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Extent": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Lawn",
+        "ModelName": "Lawn",
+        "Transform": {
+            "Position": [
+                27.57855796813965,
+                10.5,
+                26.913002014160156
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Extent": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Lawn",
+        "ModelName": "Lawn",
+        "Transform": {
+            "Position": [
+                27.74049186706543,
+                10.5,
+                25.536575317382813
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Extent": [
+                0.5,
+                0.5,
+                0.5
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Lawn",
+        "ModelName": "Lawn",
+        "Transform": {
+            "Position": [
+                29.310392379760742,
+                10.500000953674316,
+                25.615680694580078
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.5,
+                0.0
+            ],
+            "Extent": [
+                0.6,
+                0.6,
+                0.6
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Rock",
+        "ModelName": "Rock",
+        "Transform": {
+            "Position": [
+                21.9783173,
+                10.5,
+                28.0775661
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+     {
+        "Collider": {
+            "Center": [
+                0.0,
+                0.5,
+                0.0
+            ],
+            "Extent": [
+                0.6,
+                0.6,
+                0.6
+            ],
+            "Type": "AABB"
+        },
+        "InteractionType": "Mushroom",
+        "ModelName": "Mushroom",
+        "Transform": {
+            "Position": [
+                15.9783173,
+                13,
+                61.0775661
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    }
+]

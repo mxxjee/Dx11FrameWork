@@ -1,0 +1,135 @@
+{
+    "Bones": [
+        {
+            "BoneName": "root",
+            "OffsetMatrix": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "ParentIndex": -1,
+            "Transformation": [
+                -0.009999999776482582,
+                0.0,
+                -8.742277457507441e-10,
+                0.0,
+                0.0,
+                0.009999999776482582,
+                -0.0,
+                0.0,
+                8.742277457507441e-10,
+                -0.0,
+                -0.009999999776482582,
+                -0.0,
+                0.0,
+                0.0,
+                -0.0,
+                1.0
+            ]
+        },
+        {
+            "BoneName": "itemA_L",
+            "OffsetMatrix": [
+                0.7071067094802856,
+                -0.70710688829422,
+                8.432149201098582e-09,
+                -0.17897067964076996,
+                0.70710688829422,
+                0.7071067094802856,
+                1.1520232590100932e-07,
+                0.17897062003612518,
+                -8.74227694680485e-08,
+                -7.549789415861596e-08,
+                1.0,
+                -2.2999405148666028e-15,
+                0.0,
+                0.0,
+                -0.0,
+                1.0
+            ],
+            "ParentIndex": 0,
+            "Transformation": [
+                0.7071067094802856,
+                0.7071068286895752,
+                -0.0,
+                1.962615870638229e-17,
+                -0.7071068286895752,
+                0.7071067094802856,
+                -0.0,
+                -0.25310268998146057,
+                -0.0,
+                -0.0,
+                1.0,
+                -0.0,
+                0.0,
+                0.0,
+                -0.0,
+                1.0
+            ]
+        }
+    ],
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "MI_bow_alb.png",
+            "METALNESS": "",
+            "MaterialName": "Bow_MI_bow",
+            "Normal": "",
+            "OPACITY": "MI_bow_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_bow_alb.png",
+            "METALNESS": "",
+            "MaterialName": "Bow_MI_bow",
+            "Normal": "",
+            "OPACITY": "MI_bow_alb.png",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 2,
+    "Meshes": [
+        {
+            "BoneIdx": [
+                -1
+            ],
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 3408,
+            "MaterialName": "Bow_MI_bow",
+            "MeshIdx": 0,
+            "Name": "bow_low__MI_bow",
+            "NumBones": 0,
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 628
+        },
+        {
+            "BoneIdx": [
+                0
+            ],
+            "IBPath": "Mesh_1.ib",
+            "IndexCount": 288,
+            "MaterialName": "Bow_MI_bow",
+            "MeshIdx": 1,
+            "Name": "chord_low__MI_bow",
+            "NumBones": 1,
+            "VBPath": "Mesh_1.vb",
+            "VertexCount": 63
+        }
+    ],
+    "ModelName": "Bow",
+    "NumAnimations": 0
+}

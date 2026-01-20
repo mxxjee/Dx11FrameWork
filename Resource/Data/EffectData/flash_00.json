@@ -1,0 +1,56 @@
+{
+    "Color": [
+        0.0,
+        0.2560553550720215,
+        0.36274510622024536,
+        1.0
+    ],
+    "DataName": "flash_00",
+    "LifeTime": 0.30000001192092896,
+    "Loop": false,
+    "OffSet": [
+        0.0,
+        0.5,
+        -0.20000000298023224,
+        1.0
+    ],
+    "Rotation": [
+        90.0,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "Scale": [
+        0.009999999776482582,
+        0.009999999776482582,
+        0.009999999776482582,
+        1.0
+    ],
+    "Speed": 3.0,
+    "TargetScale": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+    ],
+    "Type": "Mesh",
+    "bUseMoveAnim": false,
+    "bUseRotationAnim": false,
+    "bUseScaleAnim": true,
+    "fIntensity": 1.0,
+    "fMoveSpeed": 0.0,
+    "fRotationSpeed": 0.0,
+    "fScaleSpeed": 50.0,
+    "vMoveDir": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+    ],
+    "vRotationAxis": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+    ]
+}

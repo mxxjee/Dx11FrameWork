@@ -1,36 +1,113 @@
 #pragma once
 #include "CBase.h"
+#include "CTransform.h"
 
 NS_BEGIN(Engine)
-class CGameObject :
+class CCollider_Base;
+
+class ENGINE_DLL CGameObject :
     public CBase
 {
+public:
+    typedef struct tagGameObjectDesc 
+    {
+        _wstring ObjTag;
+        class CGameObject* pTarget = nullptr;
+        void* TransformDesc = nullptr;
+        _uint m_iLevelID = 3;
+
+        tagGameObjectDesc() {}
+        virtual ~tagGameObjectDesc(){}
+    }GAMEOBJECT_DESC;
+
 protected:
     CGameObject(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     CGameObject(const CGameObject& rhs);
-    ~CGameObject() = default;
+    virtual ~CGameObject() = default;
+
+
 
 public:
-    virtual HRESULT     Initialize_Prototype();/*원형 객체 만들때의 Initialize*/
-    virtual HRESULT     Initialize_Copytype(void* pArg);  /*사본객체 만들때의 Initialize*/
-
+    virtual HRESULT     Initialize_Prototype(); /*원형 객체가 생성될때 부르는 Initialize*/
+    virtual HRESULT     Initialize_Copytype(void *pArg); /*사본 객체가 생성될때 부르는 Initialize*/
+    
     virtual void        Update_Priority(_float fTimeDelta);
     virtual void        Update(_float fTimeDelta);
-    virtual void       Update_Late(_float fTimeDelta);
+    virtual void        Update_Late(_float fTimeDelta);
+    virtual void        Update_Render(_float fTimeDelta);
 
 
-    void        Render();
+    virtual HRESULT Render();
+    virtual HRESULT Render_Shadow();
 
+public:
+    HRESULT     Ready_Components(void* pArg);
+    HRESULT     Ready_Resource(void* pArg);
+
+public:
+    HRESULT     Add_Component(COMPONENT_TYPE eType, CComponent* pComp, CComponent** pOut);
+
+public:
+    virtual void    Set_Active(bool _b) { m_bActive = _b; }
+    void    Set_Target(CGameObject* pObj) { m_pTarget = pObj; }
+    void    Set_Tag(const _wstring& Tag) {tag = Tag;}
 
 protected:
     ComPtr<ID3D11Device>            m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext>     m_pDeviceContext = { nullptr };
 
 public:
-    virtual     CGameObject* Clone(void* pArg)=0;         //pArg : 추가적인 데이터
-    virtual     void        Free() override;
+    const _wstring& Get_Tag() { return tag; }
+    CComponent* Get_Component(COMPONENT_TYPE eType);
+    CTransform* Get_Transform() const { return m_pTransformCom; }
+
+    bool            Is_Active() { return m_bActive; }
+                //컬링 판단
+    virtual bool            Is_Visible() { return true; }
+public:
+    CGameObject*    Get_Target() { return m_pTarget; }
+   
+#ifdef _DEBUG
+public:
+    virtual void            Render_Transform_Imgui();
+#endif
 
 
+public:
+    virtual     void    OnCollisionEnter(_uint iGroup, CCollider_Base* pOther) {};
+    virtual     void    OnCollisionStay(_uint iGroup, CCollider_Base* pOther) {};
+    virtual     void    OnCollisionExit(_uint iGroup, CCollider_Base* pOther){};
+    virtual     void    PushOut(_float3 vOutPush);
+
+#ifdef _DEBUG
+public:
+    virtual void        Render_DebugImgui();
+
+#endif // _DEBUG
+
+
+public:
+    void        Set_SceneID(_uint iSceneID) { m_iSceneID = iSceneID; }
+protected:
+    ComPtr<ID3D11Device> m_pDevice = { nullptr };
+    ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };
+    class CGameInstance* m_pGameInstance = { nullptr };
+    CTransform* m_pTransformCom = { nullptr };
+
+
+protected:
+    _wstring                tag = L"";
+    map<COMPONENT_TYPE, class CComponent*>      m_Components;
+    bool                                        m_bActive=true;
+    CGameObject*                                m_pTarget = { nullptr };
+
+public:
+    virtual CGameObject* Clone(void* pArg)=0;
+    virtual void    Free() override;
+
+protected:
+    _uint       m_iSceneID = 0;     //자신이 생성된 씬아이디
 
 };
 NS_END
+

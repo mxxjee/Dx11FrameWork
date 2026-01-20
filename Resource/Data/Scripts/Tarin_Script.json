@@ -1,0 +1,207 @@
+{
+  "NPCScripts": [
+    {
+      "ModelID": "NPC_Tarin",
+      "Chapters": [
+        {
+          "ChapterID": "Tarin_START",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "Q1001_ACTIVE_PERM",
+          "Steps": [
+            {
+              "Speaker": "타린",
+              "Text": "어, 링크! 일어났구나!\n난 타린 이라고 한다. 몸은 어때?",
+              "strActionCommand": "",
+              "Sound": "NPC/Tarin1.wav",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "타린",
+              "Text": "응?! 내가 이름을 아는게\n신기하냐...?",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "타린",
+              "Text": "방패 뒤에 새겨진 이름을 봤지.\n자, 이 방패 받아라!",
+              "strActionCommand": "Get_Shield",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1001_ACTIVE_PERM",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "타린",
+              "Text": "어서 밖으로 나가보거라!",
+              "strActionCommand": "",
+              "Sound": "NPC/Tarin1.wav",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1001_COMPLETABLE_READY",
+          "iQuestOffered": 1001,
+          "iQuestRequiredToUnlock": 1001,
+          "Steps": [
+            {
+              "Speaker": "타린",
+              "Sound": "NPC/Tarin0.wav",
+              "Text": "바깥 구경은 좀 많이하고있는건가!",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "타린",
+              "Text": "마녀의 집에 대해서 들어봤는가..?\n재료를 갖다주면 신비로운걸로 교환해준다던데...",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1001_DONE",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "타린",
+              "Text": "바깥 구경은 좀 많이하고있는건가!",
+              "strActionCommand": "",
+              "Sound": "NPC/Tarin0.wav",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "타린",
+              "Text": "마녀의 집에 대해서 들어봤는가..?\n재료를 갖다주면 신비로운걸로 교환해준다던데...",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q2001_Start",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "Q2001_ACTIVE_PERM",
+          "Steps": [
+            {
+              "Speaker": "타린",
+              "Text": "헉..헉..\n큰일이야.. 정말 큰일이야..!",
+              "strActionCommand": "Tarin_Help",
+              "Sound": "NPC/Tarin2.wav",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "타린",
+              "Text": "리차드집 근처에서..\n아이 하나가 사라졌어!",
+              "strActionCommand": "",
+              "actionTiming": ""
+            },
+            {
+              "Speaker": "타린",
+              "Text": "링크, 네가 있어서 다행이야.\n나 혼자선 어찌할 수가 없었어.",
+              "strActionCommand": "",
+              "actionTiming": ""
+            },
+            {
+              "Speaker": "타린",
+              "Text": "네가 집 안을 좀 살펴봐 줘.\n아이를 찾을 수 있는 건 너뿐이야.",
+              "strActionCommand": "",
+              "actionTiming": ""
+            },
+            {
+              "Speaker": "타린",
+              "Text": "지금 말로 설명할 시간이 없어.\n리차드네 집으로 바로 가야 해!",
+              "strActionCommand": "On_TarinEvent_End",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q2001_ACTIVE_PERM",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "Wait",
+          "Steps": [
+            {
+              "Speaker": "타린",
+              "Text": "여기야... 리차드네 집.\n밖에서 보기엔 그냥 평범해 보이지?",
+              "Sound": "NPC/Tarin0.wav",
+              "strActionCommand": "",
+              "actionTiming": ""
+            },
+            {
+              "Speaker": "타린",
+              "Text": "집 안을 제대로 본 사람은 아직 없어.\n다들 당황해서 말이지.",
+              "strActionCommand": "",
+              "actionTiming": ""
+            },
+            {
+              "Speaker": "타린",
+              "Text": "링크, 네가 안을 한 번 살펴봐 줘.\n무슨 단서라도 있을지 몰라.",
+              "strActionCommand": "",
+              "actionTiming": ""
+            }
+          ]
+        },
+
+        {
+          "ChapterID": "Wait",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "Wait",
+          "Steps": [
+            {
+              "Speaker": "타린",
+              "Text": "어서 들어가봐!",
+              "strActionCommand": "",
+              "actionTiming": ""
+            }
+          ]
+        },
+        {
+          "ChapterID": "Wait",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock":0 ,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "타린",
+              "Text": "어서 들어가봐!",
+              "strActionCommand": "",
+              "actionTiming": ""
+            }
+          ]
+        },
+        {
+          "ChapterID": "Ending",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "Ending",
+          "Steps": [
+            {
+              "Speaker": "타린",
+              "Text": "허허, 역시 내 눈은 틀리지 않았구만!\n방패에 새겨진 그 이름에 부끄럽지 않은 활약이었어.",
+              "strActionCommand": "",
+              "actionTiming": ""
+            },
+            {
+              "Speaker": "타린",
+              "Text": "자, 이제 맛있는 거라도 좀 먹으러 가자고!",
+              "strActionCommand": "",
+              "actionTiming": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

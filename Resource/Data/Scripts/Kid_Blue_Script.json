@@ -1,0 +1,64 @@
+{
+  "NPCScripts": [
+    {
+      "ModelID": "NPC_Kid_Blue",
+      "Chapters": [
+        {
+          "ChapterID": "Q1002_ACTIVE_PERM",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "병준",
+              "Text": "으으..무서워요..",
+              "strActionCommand": "",
+              "Sound": "NPC/KidBlue0.wav",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "병준",
+              "Text": "숲 안에서 이상한 소리가 나서 가봤더니...\n길을 잃어버렸어요..",
+              "Sound": "NPC/KidBlue2.wav",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "병준",
+              "Text": "집에..엄마한테 가고싶어...",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "링크",
+              "Text": "이제 가자.\n 엄마가 찾고 계셔!",
+              "strActionCommand": "",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "병준",
+              "Text": "도와줘서 고마워요!",
+              "strActionCommand": "End_BlueKid",
+              "actionTiming": "ON_START"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Ending",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "병준",
+              "Text": "저를 구해주러 숲속까지 와줘서 정말 고마웠어요.\n이제 숲 근처에는 절대 안 갈 거예요!",
+              "strActionCommand": "",
+              "Sound": "NPC/KidBlue1.wav",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

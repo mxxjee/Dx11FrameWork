@@ -1,6 +1,6 @@
 #include "CPrototype_Manager.h"
 #include "CGameObject.h"
-#include "CLayer.h"
+#include "CComponent.h"
 
 
 CPrototype_Manager::CPrototype_Manager()
@@ -11,49 +11,56 @@ CPrototype_Manager::CPrototype_Manager()
 HRESULT CPrototype_Manager::Initialize(_uint iNumLevels)
 {
     m_iNumLevels = iNumLevels;
-    m_Prototypes.reserve(iNumLevels);
+    m_Prototypes.resize(iNumLevels);
 
     return S_OK;
 }
 
-HRESULT CPrototype_Manager::Add_Prototype(_uint m_iNumLevel, const _wstring& strPrototypeTag, CBase* _base)
+HRESULT CPrototype_Manager::Add_Prototype(_uint iLevelIndex, const _wstring& strProtoTag, CBase* pPrototype)
 {
-    //1. 원본검색
-    if (m_iNumLevel >= m_iNumLevels || nullptr != Find_Prototype(m_iNumLevel, strPrototypeTag))
-    {
-        //이미존재하거나, 숫자가 그 이상일경우
+    if (iLevelIndex >= m_iNumLevels ||
+        nullptr != Find_Prototype(iLevelIndex, strProtoTag))
         return E_FAIL;
-    }
 
-
-    else
-        m_Prototypes[m_iNumLevel].emplace(strPrototypeTag, _base);
+    m_Prototypes[iLevelIndex].emplace(strProtoTag, pPrototype);
 
     return S_OK;
 }
 
-CBase* CPrototype_Manager::Clone_Prototype(PROTOTYPE eType, _uint iNumLevel, const _wstring& strPrototypeTag, void* pArg)
+CBase* CPrototype_Manager::Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelIndex, const _wstring& strPrototag, void* pArg)
 {
-    //1.원본찾기
-    CBase* pInstance = Find_Prototype(iNumLevel, strPrototypeTag);
-    if (pInstance)
-    {
-        return (eType == PROTOTYPE::GAMEOBJECT) ? dynamic_cast<CGameObject*>(pInstance)->Clone(pArg) : /*dynamic_cast<CComponent*>(pInstance)->Clone()*/(nullptr);
-    }
+    CBase* pPrototype = Find_Prototype(iLevelIndex, strPrototag);
+    CheckNullResult(pPrototype, nullptr);
+
+    if (ePrototypeID==PROTOTYPE::GAMEOBJECT)
+        return dynamic_cast<CGameObject*>(pPrototype)->Clone(pArg);
 
     else
-        return nullptr;
+        return dynamic_cast<CComponent*>(pPrototype)->Clone(pArg);
 }
 
-CBase* CPrototype_Manager::Find_Prototype(_uint m_iNumLevel, const _wstring tag)
+void CPrototype_Manager::Clear(_uint iLevel)
 {
-    auto iter = m_Prototypes[m_iNumLevel].find(tag);
-    if(iter==m_Prototypes[m_iNumLevel].end())
-        return nullptr;
+    CheckTrue(iLevel >= m_iNumLevels || iLevel==0 ||m_Prototypes[iLevel].empty());
+    for (auto& pair : m_Prototypes[iLevel])
+    {
+        Safe_Release(pair.second);
 
+    }
+
+    m_Prototypes[iLevel].clear();
+}
+
+CBase* CPrototype_Manager::Find_Prototype(_uint iLevelIndex, const _wstring& strProtoTag)
+{
+    auto iter = m_Prototypes[iLevelIndex].find(strProtoTag);
+
+    //만약 컨테이너내에 존재하지않는다면
+    if(iter==m_Prototypes[iLevelIndex].end())
+        return nullptr;
 
     return iter->second;
-
+  
 }
 
 
@@ -63,19 +70,23 @@ CPrototype_Manager* CPrototype_Manager::Create(_uint iNumLevels)
 
     if (FAILED(pInstance->Initialize(iNumLevels)))
     {
-        MSG_BOX("Failed to Created : CPrototype_Manager");
+        MSG_BOX("Failed to Create : CPrototype_Manager");
         Safe_Release(pInstance);
     }
+
     return pInstance;
 }
 
 void CPrototype_Manager::Free()
 {
+    __super::Free();
+
     for (size_t i = 0; i < m_iNumLevels; ++i)
     {
         for (auto& pair : m_Prototypes[i])
         {
             Safe_Release(pair.second);
+
         }
 
         m_Prototypes[i].clear();

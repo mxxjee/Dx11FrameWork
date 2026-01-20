@@ -1,0 +1,58 @@
+{
+  "NavData": "../../Resource/Data/Map/Room/telephoneBox_room_Nav.dat",
+  "MapPositions": [
+    {
+      "Pos": [
+        12.608985900878906,
+        0.0,
+        6.551767349243164
+      ],
+      "Target": "Interaction_Point"
+    },
+    {
+      "Pos": [
+        12.545333862304688,
+        2.384185791015625e-07,
+        2.8603925704956055
+      ],
+      "Target": "Player_SpawnPoint"
+    }
+  ],
+  "Position": [
+    12.600000381469727,
+    0.0,
+    5.850034236907959
+  ],
+  "LightData": "../../Resource/Data/Map/Lights/LightData_DefaultNPCRoom.json",
+  "RoomName": "telephoneBox",
+  "RoomTriggers": [
+    {
+      "Collider_Center": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Collider_Extents": [
+        1.5,
+        1.5,
+        1.0
+      ],
+      "NextRoomID": "Level_Town",
+      "Pos": [
+        12.500465393066406,
+        0.0,
+        0.7690747380256653
+      ],
+      "Rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "Scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ]
+}

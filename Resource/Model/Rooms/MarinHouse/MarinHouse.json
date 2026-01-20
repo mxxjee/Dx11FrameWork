@@ -1,0 +1,624 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Chair_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_Chair_01",
+            "Normal": "MI_Chair_01_nml.png",
+            "OPACITY": "MI_Chair_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_LargeTable_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_LargeTable_01",
+            "Normal": "MI_LargeTable_01_nml.png",
+            "OPACITY": "MI_LargeTable_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Workbench_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_Workbench_01",
+            "Normal": "MI_Workbench_01_nml.png",
+            "OPACITY": "MI_Workbench_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_MarinTarinHouse_05_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_MarinTarinHouse_05",
+            "Normal": "MI_MarinTarinHouse_05_nml.png",
+            "OPACITY": "MI_MarinTarinHouse_05_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Chest_02_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_Chest_02",
+            "Normal": "MI_Chest_02_nml.png",
+            "OPACITY": "MI_Chest_02_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_MarinTarinHouse_07_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_MarinTarinHouse_07",
+            "Normal": "MI_MarinTarinHouse_07_nml.png",
+            "OPACITY": "MI_MarinTarinHouse_07_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_MarinTarinHouse_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_MarinTarinHouse_01",
+            "Normal": "MI_MarinTarinHouse_01_nml.png",
+            "OPACITY": "MI_MarinTarinHouse_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Chest_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_Chest_01",
+            "Normal": "MI_Chest_01_nml.png",
+            "OPACITY": "MI_Chest_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_MarinTarinHouse_09_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_MarinTarinHouse_09",
+            "Normal": "MI_MarinTarinHouse_09_nml.png",
+            "OPACITY": "MI_MarinTarinHouse_09_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_MarinTarinHouse_10_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_MarinTarinHouse_10",
+            "Normal": "MI_MarinTarinHouse_10_nml.png",
+            "OPACITY": "MI_MarinTarinHouse_10_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_MarinTarinHouse_08_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_MarinTarinHouse_08",
+            "Normal": "MI_MarinTarinHouse_08_nml.png",
+            "OPACITY": "MI_MarinTarinHouse_08_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_MarinTarinHouse_03_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_MarinTarinHouse_03",
+            "Normal": "MI_MarinTarinHouse_03_nml.png",
+            "OPACITY": "MI_MarinTarinHouse_03_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_MarinTarinHouse_02_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_MarinTarinHouse_02",
+            "Normal": "MI_MarinTarinHouse_02_nml.png",
+            "OPACITY": "MI_MarinTarinHouse_02_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_MarinTarinHouse_04_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_MarinTarinHouse_04",
+            "Normal": "MI_MarinTarinHouse_04_nml.png",
+            "OPACITY": "MI_MarinTarinHouse_04_alb.png",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 14,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 528,
+            "MaterialName": "MI_Chair_01",
+            "MeshIdx": 0,
+            "Name": "Chair_1__MI_Chair_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 170
+        },
+        {
+            "IBPath": "Mesh_1.ib",
+            "IndexCount": 1989,
+            "MaterialName": "MI_LargeTable_01",
+            "MeshIdx": 1,
+            "Name": "LargeTable__MI_LargeTable_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_1.vb",
+            "VertexCount": 549
+        },
+        {
+            "IBPath": "Mesh_2.ib",
+            "IndexCount": 2364,
+            "MaterialName": "MI_Workbench_01",
+            "MeshIdx": 2,
+            "Name": "Workbench_a_01_0__MI_Workbench_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_2.vb",
+            "VertexCount": 792
+        },
+        {
+            "IBPath": "Mesh_3.ib",
+            "IndexCount": 120,
+            "MaterialName": "MI_MarinTarinHouse_05",
+            "MeshIdx": 3,
+            "Name": "carpet__MI_MarinTarinHouse_05",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_3.vb",
+            "VertexCount": 33
+        },
+        {
+            "IBPath": "Mesh_4.ib",
+            "IndexCount": 1110,
+            "MaterialName": "MI_Chest_02",
+            "MeshIdx": 4,
+            "Name": "hana_a__MI_Chest_02",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_4.vb",
+            "VertexCount": 318
+        },
+        {
+            "IBPath": "Mesh_5.ib",
+            "IndexCount": 4296,
+            "MaterialName": "MI_MarinTarinHouse_07",
+            "MeshIdx": 5,
+            "Name": "hana_b3_2__MI_MarinTarinHouse_07",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_5.vb",
+            "VertexCount": 1202
+        },
+        {
+            "IBPath": "Mesh_6.ib",
+            "IndexCount": 2232,
+            "MaterialName": "MI_MarinTarinHouse_01",
+            "MeshIdx": 6,
+            "Name": "hasira3__MI_MarinTarinHouse_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_6.vb",
+            "VertexCount": 582
+        },
+        {
+            "IBPath": "Mesh_7.ib",
+            "IndexCount": 1404,
+            "MaterialName": "MI_Chest_01",
+            "MeshIdx": 7,
+            "Name": "hati_low__MI_Chest_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_7.vb",
+            "VertexCount": 343
+        },
+        {
+            "IBPath": "Mesh_8.ib",
+            "IndexCount": 2676,
+            "MaterialName": "MI_MarinTarinHouse_09",
+            "MeshIdx": 8,
+            "Name": "kazari_a__MI_MarinTarinHouse_09",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_8.vb",
+            "VertexCount": 700
+        },
+        {
+            "IBPath": "Mesh_9.ib",
+            "IndexCount": 8550,
+            "MaterialName": "MI_MarinTarinHouse_10",
+            "MeshIdx": 9,
+            "Name": "kazari_b__MI_MarinTarinHouse_10",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_9.vb",
+            "VertexCount": 2022
+        },
+        {
+            "IBPath": "Mesh_10.ib",
+            "IndexCount": 2538,
+            "MaterialName": "MI_MarinTarinHouse_08",
+            "MeshIdx": 10,
+            "Name": "ki__MI_MarinTarinHouse_08",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_10.vb",
+            "VertexCount": 543
+        },
+        {
+            "IBPath": "Mesh_11.ib",
+            "IndexCount": 162,
+            "MaterialName": "MI_MarinTarinHouse_03",
+            "MeshIdx": 11,
+            "Name": "mado_b__MI_MarinTarinHouse_03",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_11.vb",
+            "VertexCount": 66
+        },
+        {
+            "IBPath": "Mesh_12.ib",
+            "IndexCount": 390,
+            "MaterialName": "MI_MarinTarinHouse_02",
+            "MeshIdx": 12,
+            "Name": "yuka_01__MI_MarinTarinHouse_02",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_12.vb",
+            "VertexCount": 86
+        },
+        {
+            "IBPath": "Mesh_13.ib",
+            "IndexCount": 198,
+            "MaterialName": "MI_MarinTarinHouse_04",
+            "MeshIdx": 13,
+            "Name": "yuka_01__MI_MarinTarinHouse_04",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_13.vb",
+            "VertexCount": 72
+        }
+    ],
+    "ModelName": "MarinHouse"
+}

@@ -1,0 +1,10 @@
+{
+  "NPC_ModelNames": [
+    "Fairy"
+  ],
+  "Expressions_eye": [ 0, 2, 0, 0],
+  "Expressions_Mouth": [0, 2, 3, 0 ],
+  "Expressions_Mouth_Open": [ 1, 2, 3, 1 ]
+
+
+}

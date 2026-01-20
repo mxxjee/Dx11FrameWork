@@ -1,0 +1,228 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "fiona_sword.png",
+            "METALNESS": "",
+            "MaterialName": "fiona_sword",
+            "Normal": "",
+            "OPACITY": "",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "cake_D.png",
+            "METALNESS": "",
+            "MaterialName": "cake_D",
+            "Normal": "",
+            "OPACITY": "",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "fiona_D.png",
+            "METALNESS": "",
+            "MaterialName": "fiona_D",
+            "Normal": "",
+            "OPACITY": "",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "cake_D.png",
+            "METALNESS": "",
+            "MaterialName": "cake_D",
+            "Normal": "",
+            "OPACITY": "",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "CharacterShadow_2.png",
+            "METALNESS": "",
+            "MaterialName": "CharacterShadow",
+            "Normal": "",
+            "OPACITY": "",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 5,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 156,
+            "MaterialName": "fiona_sword",
+            "MeshIdx": 0,
+            "Name": "SWORD",
+            "Transform": [
+                [
+                    1.173904538154602,
+                    0.00014298767200671136,
+                    0.18217770755290985,
+                    0.0900813639163971
+                ],
+                [
+                    -0.0865994244813919,
+                    0.19266991317272186,
+                    0.288669615983963,
+                    -0.013422698713839054
+                ],
+                [
+                    -0.23677203059196472,
+                    -0.06976015120744705,
+                    0.7976474165916443,
+                    -0.0002628326474223286
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 86
+        },
+        {
+            "IBPath": "Mesh_1.ib",
+            "IndexCount": 4302,
+            "MaterialName": "cake_D",
+            "MeshIdx": 1,
+            "Name": "Cake_Mesh",
+            "Transform": [
+                [
+                    0.8587561249732971,
+                    0.0,
+                    -0.0,
+                    0.0005972862127237022
+                ],
+                [
+                    0.0,
+                    0.11481368541717529,
+                    -0.8510465025901794,
+                    0.9637696743011475
+                ],
+                [
+                    -0.0,
+                    0.8510463833808899,
+                    0.11481370031833649,
+                    0.17018598318099976
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_1.vb",
+            "VertexCount": 963
+        },
+        {
+            "IBPath": "Mesh_2.ib",
+            "IndexCount": 5454,
+            "MaterialName": "fiona_D",
+            "MeshIdx": 2,
+            "Name": "Fiona_Mesh",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    -4.371138828673793e-08,
+                    -1.0,
+                    0.7417476773262024
+                ],
+                [
+                    -0.0,
+                    1.0,
+                    -4.371138828673793e-08,
+                    0.026484806090593338
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_2.vb",
+            "VertexCount": 1357
+        },
+        {
+            "IBPath": "Mesh_3.ib",
+            "IndexCount": 2814,
+            "MaterialName": "cake_D",
+            "MeshIdx": 3,
+            "Name": "morningstar",
+            "Transform": [
+                [
+                    0.9020459055900574,
+                    0.0,
+                    -0.0,
+                    0.42711779475212097
+                ],
+                [
+                    0.0,
+                    -3.894748346056076e-08,
+                    -0.9586926698684692,
+                    0.6257839798927307
+                ],
+                [
+                    -0.0,
+                    0.891014575958252,
+                    -4.190578906104747e-08,
+                    -0.8648055791854858
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_3.vb",
+            "VertexCount": 666
+        },
+        {
+            "IBPath": "Mesh_4.ib",
+            "IndexCount": 600,
+            "MaterialName": "CharacterShadow",
+            "MeshIdx": 4,
+            "Name": "PlayerShadow",
+            "Transform": [
+                [
+                    0.08918580412864685,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    0.08918580412864685,
+                    -0.0,
+                    0.01013999991118908
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    0.08918580412864685,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_4.vb",
+            "VertexCount": 121
+        }
+    ],
+    "ModelName": "Fiona"
+}

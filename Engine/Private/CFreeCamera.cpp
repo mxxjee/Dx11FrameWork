@@ -1,0 +1,211 @@
+#include "CFreeCamera.h"
+#include "CPerspectiveCameraComponent.h"
+#include "CGameInstance.h"
+#include "CInput_Manager.h"
+#include "CShader.h"
+
+
+
+CFreeCamera::CFreeCamera(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
+    :CCamera_Base(pDevice,pContext)
+{
+}
+
+CFreeCamera::CFreeCamera(const CFreeCamera& rhs)
+    : CCamera_Base(rhs)
+{
+}
+
+HRESULT CFreeCamera::Initialize_Prototype()
+{
+    if (FAILED(__super::Initialize_Prototype()))
+        return E_FAIL;
+
+    m_bPerspective = true;
+
+    return S_OK;
+}
+
+HRESULT CFreeCamera::Initialize_Copytype(void* pArg)
+{
+    if (FAILED(__super::Initialize_Copytype(pArg)))
+        return E_FAIL;
+
+    m_ScreenHeight = m_pGameInstance->Get_EngineDesc().iWinSizeY;
+    m_ScreenWidth = m_pGameInstance->Get_EngineDesc().iWinSizeX;
+
+
+    GAMEOBJECT_DESC* pDesc = static_cast<GAMEOBJECT_DESC*>(pArg);
+    CTransform::TRANSFORM_DESC* pTransformDesc = static_cast<CTransform::TRANSFORM_DESC*>(pDesc->TransformDesc);
+    m_fInitSpeed=pTransformDesc->fSpeedPerSec;
+
+
+    XMStoreFloat4x4(&RHProj, XMMatrixPerspectiveFovRH(XMConvertToRadians(m_fFovy), (m_fWidth / m_fHeight), m_fNearZ, m_fFarZ));
+
+       return S_OK;
+}
+
+void CFreeCamera::Update_Priority(_float fTimeDelta)
+{
+    __super::Update_Priority(fTimeDelta);
+
+}
+
+void CFreeCamera::Update(_float fTimeDelta)
+{
+    __super::Update(fTimeDelta);
+
+    Mouse_Move();
+   // Mouse_Fix();
+
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::LShift))
+        m_pTransformCom->Set_Speed(m_fInitSpeed + 5.f);
+
+    else if (CInput_Manager::GetInstance()->IsKeyReleased(KeyCode::LShift))
+        m_pTransformCom->Set_Speed(m_fInitSpeed);
+
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::D))
+        m_pTransformCom->Move(DIRECTION::RIGHT, fTimeDelta);
+
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::A))
+        m_pTransformCom->Move(DIRECTION::LEFT, fTimeDelta);
+
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::W))
+        m_pTransformCom->Move(DIRECTION::FORWARD, fTimeDelta);
+
+    if (CInput_Manager::GetInstance()->IsKeyHeld(KeyCode::S))
+        m_pTransformCom->Move(DIRECTION::BACKWARD, fTimeDelta);
+
+    Update_PipeLine();
+    Update_RH();
+}
+
+void CFreeCamera::Update_Late(_float fTimeDelta)
+{
+    __super::Update_Late(fTimeDelta);
+
+}
+
+void CFreeCamera::Update_Render(_float fTimeDelta)
+{
+}
+
+HRESULT CFreeCamera::Render()
+{
+    return S_OK;
+}
+
+
+void CFreeCamera::Mouse_Move()
+{
+    long MouseMove = {};
+
+    //오른쪽 클릭하고있을때만 활성화
+    CheckFalse(CInput_Manager::GetInstance()->IsMouseButtonHeld(1))
+
+    if (MouseMove= CInput_Manager::GetInstance()->GetMouseDelta().x)
+    {
+        int A = MouseMove;
+        m_pTransformCom->AddRotation(_float3(0.f, (MouseMove / 10.f), 0.f));
+        
+    }
+
+    if (MouseMove= CInput_Manager::GetInstance()->GetMouseDelta().y)
+    {
+        int A = MouseMove;
+        m_pTransformCom->AddRotation(_float3((MouseMove / 10.f), 0.f, 0.f));
+        
+    }
+}
+
+void CFreeCamera::Mouse_Fix()
+{
+    POINT	ptMouse{ m_ScreenWidth>>1, m_ScreenHeight >> 1 };
+    ClientToScreen(m_pGameInstance->Get_EngineDesc().hWnd, &ptMouse);
+    SetCursorPos(ptMouse.x, ptMouse.y);
+
+}
+
+void CFreeCamera::Update_RH()
+{
+    /*IMgui에서 사용하기위한 RH*/
+    _vector vPos = m_pTransformCom->Get_State(STATE::POSITION, TransformScope::WORLD);
+    _vector vAt = vPos + XMVector3Normalize(m_pTransformCom->Get_State(STATE::LOOK));
+
+        
+    XMStoreFloat4x4(&RHView, XMMatrixLookAtRH(vPos, vAt, XMVectorSet(0.f, 1.f, 0.f, 0.f)));
+}
+
+CFreeCamera* CFreeCamera::Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext)
+{
+    CFreeCamera* pInstance = new CFreeCamera(_pDevice, _pDeviceContext);
+    if (FAILED(pInstance->Initialize_Prototype()))
+    {
+        MSG_BOX("Failed to Create :CFreeCamera ");
+        Safe_Release(pInstance);
+
+    }
+    return pInstance;
+}
+
+CGameObject* CFreeCamera::Clone(void* pArg)
+{
+    CFreeCamera* pInstance = new CFreeCamera(*this);
+    if (FAILED(pInstance->Initialize_Copytype(pArg)))
+    {
+        MSG_BOX("Failed to Cloned :CFreeCamera ");
+        Safe_Release(pInstance);
+
+    }
+    return pInstance;
+}
+
+void CFreeCamera::Free()
+{
+    __super::Free();
+
+}
+
+void CFreeCamera::PreRenderGroup(_uint iRenderGroup)
+{
+   /* switch ((RENDERGROUP)iRenderGroup)
+    {
+    case RENDERGROUP::NONALPHA:
+        if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_GameObject"))))
+            return;
+
+        break;
+
+    case RENDERGROUP::LIGHT:
+        if (FAILED(m_pGameInstance->Begin_MRT(TEXT("MRT_LightAcc"))))
+            return;
+
+        m_pGameInstance->Bind_And_Render_Lights();
+
+        break;
+
+    case RENDERGROUP::COMBINED:
+        m_pGameInstance->Render_Combined();
+        break;
+    default:
+        break;
+    }*/
+}
+
+void CFreeCamera::PostRenderGroup(_uint iRenderGroup)
+{
+   /* switch ((RENDERGROUP)iRenderGroup)
+    {
+    case RENDERGROUP::NONALPHA:
+    case RENDERGROUP::LIGHT:
+        if (FAILED(m_pGameInstance->End_MRT()))
+            return;
+        break;
+
+
+    default:
+        break;
+    }*/
+}
+
+

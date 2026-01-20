@@ -1,0 +1,93 @@
+{
+    "ALPHAMASK": "Default",
+    "Color": [
+        0.30392158031463623,
+        1.0,
+        0.6519606113433838,
+        1.0
+    ],
+    "DIFFUSE": "glare_00",
+    "DataName": "Explosion_Particle",
+    "LifeTime": 1.0,
+    "Loop": false,
+    "NOISE": "Default",
+    "OffSet": [
+        0.0,
+        0.0,
+        0.6000000238418579,
+        1.0
+    ],
+    "Rotation": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "Scale": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "Speed": 3.0,
+    "Type": "Particle",
+    "bIsSpriteAnim": false,
+    "bLinearSpawn": false,
+    "bUseGravity": true,
+    "bUseRandomDir": false,
+    "fGravity": -2.0,
+    "fIntensity": 5.0,
+    "fSpawnDuration": 1.0,
+    "fSpread": [
+        3.0,
+        1.0,
+        3.0
+    ],
+    "iNumInstance": 50,
+    "vCenter": [
+        0.0,
+        0.0,
+        0.0
+    ],
+    "vColor_End": [
+        1.0,
+        1.0,
+        1.0,
+        0.0
+    ],
+    "vLifeTimeRange": [
+        5.0,
+        5.0
+    ],
+    "vMoveDir": [
+        0.0,
+        5.0,
+        0.0
+    ],
+    "vRange": [
+        0.0,
+        0.0,
+        0.0
+    ],
+    "vRotationSpeedRange": [
+        -1.0,
+        1.0
+    ],
+    "vSizeRange_End": [
+        0.10000000149011612,
+        0.10000000149011612
+    ],
+    "vSizeRange_Start": [
+        0.20000000298023224,
+        0.20000000298023224
+    ],
+    "vSpeedRange": [
+        3.0,
+        3.0
+    ],
+    "vSpriteCount": [
+        1.0,
+        1.0
+    ],
+    "vSpriteSpeed": 1.0
+}

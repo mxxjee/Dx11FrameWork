@@ -9,6 +9,11 @@
 iNextLevel에 맞는 로딩을 수행
 */
 
+namespace Engine
+{
+    class CGameInstance;
+}
+
 NS_BEGIN(Client)
 class CLoader final:
     public CBase
@@ -25,16 +30,36 @@ public:
     void            Output();
 
 private:
-    HRESULT        Loading_GamePlay();
+    HRESULT        Loading_Town();
     HRESULT        Loading_Logo();
+    HRESULT        Loading_UI();//원래 UI는 로딩이없지만, 테스트용
+    HRESULT        Loading_Room();
+    HRESULT        Loading_Spawn();
+    HRESULT        Loading_Dungeon();
+    HRESULT        Loading_Boss();
+    HRESULT        Loading_Ending();
+
+    /// load resource //
+    HRESULT         Register_Shaders();
+    HRESULT         Register_Textures();
+    HRESULT         Register_Models();
+    HRESULT         Register_Components();
+    HRESULT         Register_GameObjects();
+    HRESULT         Register_Particles();
+
+    HRESULT         Load_TownMapData();
+
 
 public:
     _bool       IsFinished() const { return m_isFinished; }
-
-
+    _float      Get_Loading_MinTime() { return m_fMinTime;}
+    int      Get_CurrentLoadCount() { return m_iCurcount; }
+    int     Get_TotalLoadCount() { return m_iTotalCount; }
 private:
     ComPtr<ID3D11Device>    m_pDevice = { nullptr };
     ComPtr<ID3D11DeviceContext>    m_pDeviceContext = { nullptr };
+    CGameInstance* m_pGameInstance = { nullptr };
+
     LEVEL_ID                        m_iNextLevelID = { LEVEL_ID::END };
 
 
@@ -49,6 +74,19 @@ private:
 public:
     static CLoader* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext, LEVEL_ID iNextLevelID);
     virtual void Free();
+
+
+private:
+    float       m_fProgress = 0.f;
+
+    int       m_iTotalCount = 100;
+    int       m_iCurcount = 0;
+    
+    
+            //각 로딩마다 다르게설정
+    float       m_fMinTime = 3.f;
+    
+
 
 };
 

@@ -36,6 +36,18 @@ void CTimer::Update_Timer()
 	m_fTimeDelta = (m_FrameTime.QuadPart - m_LastTime.QuadPart) / (_float)m_CpuTick.QuadPart;
 
 	m_LastTime = m_FrameTime;
+
+	// -------- FPS 계산 --------
+	m_iFrameCount++;
+	m_fFPSTime += m_fTimeDelta;
+
+	if (m_fFPSTime >= 1.0f) // 1초마다 FPS 측정
+	{
+		m_fFPS = (float)m_iFrameCount / m_fFPSTime;
+		m_iFrameCount = 0;
+		m_fFPSTime = 0.f;
+	}
+
 }
 
 CTimer* CTimer::Create()

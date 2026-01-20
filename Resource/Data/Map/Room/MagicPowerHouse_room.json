@@ -1,0 +1,61 @@
+{
+  "NPC_ModelNames": [
+    "Witch"
+  ],
+  "MapPositions": [
+    {
+      "Pos": [
+        12.635936737060547,
+        0.0,
+        4.411994934082031
+      ],
+      "Target": "Player_SpawnPoint"
+    },
+    {
+      "Pos": [
+        12.572551727294922,
+        1.0000001192092896,
+        7.644
+      ],
+      "Target": "NPC_Witch_SpawnPoint"
+    }
+  ],
+  "Position": [
+    12.600000381469727,
+    0.0,
+    6.599999904632568
+  ],
+  "LightData": "../../Resource/Data/Map/Lights/LightData_Witch.json",
+  "NavData": "../../Resource/Data/Map/Room/MagicPowerHouse_room_Nav.dat",
+  "RoomName": "MagicPowerHouse",
+  "RoomTriggers": [
+    {
+      "Collider_Center": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Collider_Extents": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "NextRoomID": "Level_Town",
+      "Pos": [
+        12.630000114440918,
+        2.384185791015625e-07,
+        0.9823637008666992
+      ],
+      "Rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "Scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ]
+}

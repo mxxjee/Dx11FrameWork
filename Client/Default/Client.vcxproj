@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -116,14 +116,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../../EngineSDK/Inc/;../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.lib;assimp-vc142-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../EngineSDK/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -136,35 +137,331 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>../../EngineSDK/Inc/;../Public/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Engine.lib;ntdll.lib;assimp-vc142-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../EngineSDK/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Public\CLevel_GamePlay.h" />
+    <ClInclude Include="..\Private\CMMoriblinSwordIdleState.h" />
+    <ClInclude Include="..\Public\CAction_Condition.h" />
+    <ClInclude Include="..\Public\CBackGround.h" />
+    <ClInclude Include="..\Public\CButton.h" />
+    <ClInclude Include="..\Public\CCameraDebugWindow.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CClosedDoor.h" />
+    <ClInclude Include="..\Public\CDialogue_Manager.h" />
+    <ClInclude Include="..\Public\CDungeonBlock.h" />
+    <ClInclude Include="..\Public\CEffect.h" />
+    <ClInclude Include="..\Public\CEffectData_Manager.h" />
+    <ClInclude Include="..\Public\CEffectPoolManager.h" />
+    <ClInclude Include="..\Public\CEventTrigger.h" />
+    <ClInclude Include="..\Public\CExplosion.h" />
+    <ClInclude Include="..\Public\CFadeScreen.h" />
+    <ClInclude Include="..\Public\CFloor.h" />
+    <ClInclude Include="..\Public\CFontUI.h" />
+    <ClInclude Include="..\Public\CGameManager.h" />
+    <ClInclude Include="..\Public\CIInteractable.h" />
+    <ClInclude Include="..\Public\CInteractionObject.h" />
+    <ClInclude Include="..\Public\CInteraction_BigRock.h" />
+    <ClInclude Include="..\Public\CInteraction_JackyBall.h" />
+    <ClInclude Include="..\Public\CInteraction_Lawn.h" />
+    <ClInclude Include="..\Public\CInteraction_Manager.h" />
+    <ClInclude Include="..\Public\CInteraction_Mushroom.h" />
+    <ClInclude Include="..\Public\CInteraction_Rock.h" />
+    <ClInclude Include="..\Public\Cinteraction_Statue.h" />
+    <ClInclude Include="..\Public\CInteraction_TriggerBox.h" />
+    <ClInclude Include="..\Public\CInventorySlot.h" />
+    <ClInclude Include="..\Public\CInventory_Manager.h" />
+    <ClInclude Include="..\Public\CItem_Manager.h" />
+    <ClInclude Include="..\Public\CLevel_Boss.h" />
+    <ClInclude Include="..\Public\CLevel_Dungeon.h" />
+    <ClInclude Include="..\Public\CLevel_Ending.h" />
+    <ClInclude Include="..\Public\CLightDebugWindow.h" />
+    <ClInclude Include="..\Public\CLightInspectorWindow.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLoadingUI.h" />
+    <ClInclude Include="..\Public\CMagicPowder.h" />
+    <ClInclude Include="..\Public\CMeshEffect.h" />
+    <ClInclude Include="..\Public\CMeshEffect_HitSpark.h" />
+    <ClInclude Include="..\Public\CMeshEffect_RollCut.h" />
+    <ClInclude Include="..\Public\CMJackyEscapeState.h" />
+    <ClInclude Include="..\Public\CMJackyIdleState.h" />
+    <ClInclude Include="..\Public\CMJackyLiftState.h" />
+    <ClInclude Include="..\Public\CMJackyRunState.h" />
+    <ClInclude Include="..\Public\CMJackyThrowState.h" />
+    <ClInclude Include="..\Public\CM_Gidbos.h" />
+    <ClInclude Include="..\Public\CM_Jacky.h" />
+    <ClInclude Include="..\Public\CNPC_KidRed.h" />
+    <ClInclude Include="..\Public\CNPC_Kid_Blue.h" />
+    <ClInclude Include="..\Public\CLevelDebugWindow.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLevel_NPCRoom.h" />
+    <ClInclude Include="..\Public\CLevel_Spawn.h" />
+    <ClInclude Include="..\Public\CLevel_Town.h" />
     <ClInclude Include="..\Public\CLevel_Loading.h" />
     <ClInclude Include="..\Public\CLevel_Logo.h" />
+    <ClInclude Include="..\Public\CLevel_UI.h" />
     <ClInclude Include="..\Public\Client_Defines.h" />
     <ClInclude Include="..\Public\CLoader.h" />
+    <ClInclude Include="..\Public\CLocation_Condition.h" />
     <ClInclude Include="..\Public\CMainApp.h" />
+    <ClInclude Include="..\Public\CMapLoader.h" />
+    <ClInclude Include="..\Public\CMGreenZolHideState.h" />
+    <ClInclude Include="..\Public\CMGreenZolIntroState.h" />
+    <ClInclude Include="..\Public\CMGreenZolJumpAttackState.h" />
+    <ClInclude Include="..\Public\CMMoriblinAttackState.h" />
+    <ClInclude Include="..\Public\CMMoriblinSwordDetectState.h" />
+    <ClInclude Include="..\Public\CMMoriblinSwordGuardState.h" />
+    <ClInclude Include="..\Public\CMMoriblin_Weapon.h" />
+    <ClInclude Include="..\Public\CMonster.h" />
+    <ClInclude Include="..\Public\CMonsterAttackState.h" />
+    <ClInclude Include="..\Public\CMonsterDamageState.h" />
+    <ClInclude Include="..\Public\CMonsterDeadState.h" />
+    <ClInclude Include="..\Public\CMonsterIdleState.h" />
+    <ClInclude Include="..\Public\CMonsterIntroState.h" />
+    <ClInclude Include="..\Public\CMonsterRunState.h" />
+    <ClInclude Include="..\Public\CMonsterState.h" />
+    <ClInclude Include="..\Public\CMonsterWalkState.h" />
+    <ClInclude Include="..\Public\CMonster_Body.h" />
+    <ClInclude Include="..\Public\CM_GreenZol.h" />
+    <ClInclude Include="..\Public\CM_MoriblinSword.h" />
+    <ClInclude Include="..\Public\CNPC.h" />
+    <ClInclude Include="..\Public\CNPC_Body.h" />
+    <ClInclude Include="..\Public\CNPC_Fairy.h" />
+    <ClInclude Include="..\Public\CNPC_Richard.h" />
+    <ClInclude Include="..\Public\CNPC_Tarin.h" />
+    <ClInclude Include="..\Public\CNPC_Witch.h" />
+    <ClInclude Include="..\Public\CObjectDebugWindow.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CPanel.h" />
+    <ClInclude Include="..\Public\CParticle.h" />
+    <ClInclude Include="..\Public\CPlayer.h" />
+    <ClInclude Include="..\Public\CPlayerAttackState.h" />
+    <ClInclude Include="..\Public\CPlayerCarryState.h" />
+    <ClInclude Include="..\Public\CPlayerDamageState.h" />
+    <ClInclude Include="..\Public\CPlayerFallState.h" />
+    <ClInclude Include="..\Public\CPlayerHoldAttackState.h" />
+    <ClInclude Include="..\Public\CPlayerHoldShield.h" />
+    <ClInclude Include="..\Public\CPlayerIdleState.h" />
+    <ClInclude Include="..\Public\CPlayerJumpState.h" />
+    <ClInclude Include="..\Public\CPlayerLadderState.h" />
+    <ClInclude Include="..\Public\CPlayerPratFallState.h" />
+    <ClInclude Include="..\Public\CPlayerPushState.h" />
+    <ClInclude Include="..\Public\CPlayerRunState.h" />
+    <ClInclude Include="..\Public\CPlayerSlashShieldState.h" />
+    <ClInclude Include="..\Public\CPlayerState.h" />
+    <ClInclude Include="..\Public\CPlayerStateGetItem.h" />
+    <ClInclude Include="..\Public\CPlayerPowderState.h" />
+    <ClInclude Include="..\Public\CPlayerTalkState.h" />
+    <ClInclude Include="..\Public\CPlayerUpStairState.h" />
+    <ClInclude Include="..\Public\CPlayer_AnimNotifyTypes.h" />
+    <ClInclude Include="..\Public\CPlayer_Body.h" />
+    <ClInclude Include="..\Public\CPlayer_Shield.h" />
+    <ClInclude Include="..\Public\CPlayer_Sword.h" />
+    <ClInclude Include="..\Public\CQuadEffect.h" />
+    <ClInclude Include="..\Public\CQuestCondition.h" />
+    <ClInclude Include="..\Public\CQuest_Manager.h" />
+    <ClInclude Include="..\Public\CRangeCollider.h" />
+    <ClInclude Include="..\Public\CRoom.h" />
+    <ClInclude Include="..\Public\CRoomTrigger.h" />
+    <ClInclude Include="..\Public\CRoom_Manager.h" />
+    <ClInclude Include="..\Public\CSlot.h" />
+    <ClInclude Include="..\Public\CSnow.h" />
+    <ClInclude Include="..\Public\CStateDebugWindow.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CTerrain.h" />
+    <ClInclude Include="..\Public\CTrailEffect.h" />
+    <ClInclude Include="..\Public\CTreasureChest.h" />
+    <ClInclude Include="..\Public\CTrigger_Box.h" />
+    <ClInclude Include="..\Public\CUICreator.h" />
+    <ClInclude Include="..\Public\CUI_Credit.h" />
+    <ClInclude Include="..\Public\CUI_Cursor.h" />
+    <ClInclude Include="..\Public\CUI_Interactable.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\Public\CUI_ItemInfo.h" />
+    <ClInclude Include="..\Public\CUI_Window_Inventory.h" />
+    <ClInclude Include="..\Public\CVariable_Condition.h" />
+    <ClInclude Include="..\Public\CWall.h" />
+    <ClInclude Include="..\Public\CWeapon.h" />
+    <ClInclude Include="..\Public\CWeatherCock.h" />
+    <ClInclude Include="..\Public\EffectData.h" />
+    <ClInclude Include="..\Public\GlobalGameEvent.h" />
+    <ClInclude Include="..\Public\ItemCollect_Condition.h" />
+    <ClInclude Include="..\Public\MonsterStates.h" />
+    <ClInclude Include="..\Public\PlayerStates.h" />
+    <ClInclude Include="..\Public\CSocket_Model.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="CScreenFilter.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Private\CLevel_GamePlay.cpp" />
+    <ClCompile Include="..\Private\CAction_Condition.cpp" />
+    <ClCompile Include="..\Private\CBackGround.cpp" />
+    <ClCompile Include="..\Private\CButton.cpp" />
+    <ClCompile Include="..\Private\CCameraDebugWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CClosedDoor.cpp" />
+    <ClCompile Include="..\Private\CDialogue_Manager.cpp" />
+    <ClCompile Include="..\Private\CDungeonBlock.cpp" />
+    <ClCompile Include="..\Private\CEffect.cpp" />
+    <ClCompile Include="..\Private\CEffectData_Manager.cpp" />
+    <ClCompile Include="..\Private\CEffectPoolManager.cpp" />
+    <ClCompile Include="..\Private\CEventTrigger.cpp" />
+    <ClCompile Include="..\Private\CExplosion.cpp" />
+    <ClCompile Include="..\Private\CFadeScreen.cpp" />
+    <ClCompile Include="..\Private\CFloor.cpp" />
+    <ClCompile Include="..\Private\CFontUI.cpp" />
+    <ClCompile Include="..\Private\CGameManager.cpp" />
+    <ClCompile Include="..\Private\CIInteractable.cpp" />
+    <ClCompile Include="..\Private\CInteractionObject.cpp" />
+    <ClCompile Include="..\Private\CInteraction_BigRock.cpp" />
+    <ClCompile Include="..\Private\CInteraction_JackyBall.cpp" />
+    <ClCompile Include="..\Private\CInteraction_Lawn.cpp" />
+    <ClCompile Include="..\Private\CInteraction_Manager.cpp" />
+    <ClCompile Include="..\Private\CInteraction_Mushroom.cpp" />
+    <ClCompile Include="..\Private\CInteraction_Rock.cpp" />
+    <ClCompile Include="..\Private\Cinteraction_Statue.cpp" />
+    <ClCompile Include="..\Private\CInteraction_TriggerBox.cpp" />
+    <ClCompile Include="..\Private\CInventorySlot.cpp" />
+    <ClCompile Include="..\Private\CInventory_Manager.cpp" />
+    <ClCompile Include="..\Private\CItem_Manager.cpp" />
+    <ClCompile Include="..\Private\CLevel_Boss.cpp" />
+    <ClCompile Include="..\Private\CLevel_Dungeon.cpp" />
+    <ClCompile Include="..\Private\CLevel_Ending.cpp" />
+    <ClCompile Include="..\Private\CLightDebugWindow.cpp" />
+    <ClCompile Include="..\Private\CLightInspectorWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLoadingUI.cpp" />
+    <ClCompile Include="..\Private\CMagicPowder.cpp" />
+    <ClCompile Include="..\Private\CMeshEffect.cpp" />
+    <ClCompile Include="..\Private\CMeshEffect_HitSpark.cpp" />
+    <ClCompile Include="..\Private\CMeshEffect_RollCut.cpp" />
+    <ClCompile Include="..\Private\CMJackyEscapeState.cpp" />
+    <ClCompile Include="..\Private\CMJackyIdleState.cpp" />
+    <ClCompile Include="..\Private\CMJackyLiftState.cpp" />
+    <ClCompile Include="..\Private\CMJackyRunState.cpp" />
+    <ClCompile Include="..\Private\CMJackyThrowState.cpp" />
+    <ClCompile Include="..\Private\CM_Gidbos.cpp" />
+    <ClCompile Include="..\Private\CM_Jacky.cpp" />
+    <ClCompile Include="..\Private\CNPC_KidRed.cpp" />
+    <ClCompile Include="..\Private\CNPC_Kid_Blue.cpp" />
+    <ClCompile Include="..\Private\CLevelDebugWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_NPCRoom.cpp" />
+    <ClCompile Include="..\Private\CLevel_Spawn.cpp" />
+    <ClCompile Include="..\Private\CLevel_Town.cpp" />
     <ClCompile Include="..\Private\CLevel_Loading.cpp" />
     <ClCompile Include="..\Private\CLevel_Logo.cpp" />
+    <ClCompile Include="..\Private\CLevel_UI.cpp" />
     <ClCompile Include="..\Private\CLoader.cpp" />
+    <ClCompile Include="..\Private\CLocation_Condition.cpp" />
     <ClCompile Include="..\Private\CMainApp.cpp" />
+    <ClCompile Include="..\Private\CMapLoader.cpp" />
+    <ClCompile Include="..\Private\CMGreenZolHideState.cpp" />
+    <ClCompile Include="..\Private\CMGreenZolIntroState.cpp" />
+    <ClCompile Include="..\Private\CMGreenZolJumpAttackState.cpp" />
+    <ClCompile Include="..\Private\CMMoriblinAttackState.cpp" />
+    <ClCompile Include="..\Private\CMMoriblinSwordDetectState.cpp" />
+    <ClCompile Include="..\Private\CMMoriblinSwordGuardState.cpp" />
+    <ClCompile Include="..\Private\CMMoriblinSwordIdleState.cpp" />
+    <ClCompile Include="..\Private\CMMoriblin_Weapon.cpp" />
+    <ClCompile Include="..\Private\CMonster.cpp" />
+    <ClCompile Include="..\Private\CMonsterAttackState.cpp" />
+    <ClCompile Include="..\Private\CMonsterDamageState.cpp" />
+    <ClCompile Include="..\Private\CMonsterDeadState.cpp" />
+    <ClCompile Include="..\Private\CMonsterIdleState.cpp" />
+    <ClCompile Include="..\Private\CMonsterIntroState.cpp" />
+    <ClCompile Include="..\Private\CMonsterRunState.cpp" />
+    <ClCompile Include="..\Private\CMonsterState.cpp" />
+    <ClCompile Include="..\Private\CMonsterWalkState.cpp" />
+    <ClCompile Include="..\Private\CMonster_Body.cpp" />
+    <ClCompile Include="..\Private\CM_GreenZol.cpp" />
+    <ClCompile Include="..\Private\CM_MoriblinSword.cpp" />
+    <ClCompile Include="..\Private\CNPC.cpp" />
+    <ClCompile Include="..\Private\CNPC_Body.cpp" />
+    <ClCompile Include="..\Private\CNPC_Fairy.cpp" />
+    <ClCompile Include="..\Private\CNPC_Richard.cpp" />
+    <ClCompile Include="..\Private\CNPC_Tarin.cpp" />
+    <ClCompile Include="..\Private\CNPC_Witch.cpp" />
+    <ClCompile Include="..\Private\CObjectDebugWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CPanel.cpp" />
+    <ClCompile Include="..\Private\CParticle.cpp" />
+    <ClCompile Include="..\Private\CPlayer.cpp" />
+    <ClCompile Include="..\Private\CPlayerAttackState.cpp" />
+    <ClCompile Include="..\Private\CPlayerCarryState.cpp" />
+    <ClCompile Include="..\Private\CPlayerDamageState.cpp" />
+    <ClCompile Include="..\Private\CPlayerFallState.cpp" />
+    <ClCompile Include="..\Private\CPlayerHoldAttackState.cpp" />
+    <ClCompile Include="..\Private\CPlayerHoldShield.cpp" />
+    <ClCompile Include="..\Private\CPlayerIdleState.cpp" />
+    <ClCompile Include="..\Private\CPlayerJumpState.cpp" />
+    <ClCompile Include="..\Private\CPlayerLadderState.cpp" />
+    <ClCompile Include="..\Private\CPlayerPratFallState.cpp" />
+    <ClCompile Include="..\Private\CPlayerPushState.cpp" />
+    <ClCompile Include="..\Private\CPlayerRunState.cpp" />
+    <ClCompile Include="..\Private\CPlayerSlashShieldState.cpp" />
+    <ClCompile Include="..\Private\CPlayerState.cpp" />
+    <ClCompile Include="..\Private\CPlayerStateGetItem.cpp" />
+    <ClCompile Include="..\Private\CPlayerPowderState.cpp" />
+    <ClCompile Include="..\Private\CPlayerTalkState.cpp" />
+    <ClCompile Include="..\Private\CPlayerUpStairState.cpp" />
+    <ClCompile Include="..\Private\CPlayer_Body.cpp" />
+    <ClCompile Include="..\Private\CPlayer_Shield.cpp" />
+    <ClCompile Include="..\Private\CPlayer_Sword.cpp" />
+    <ClCompile Include="..\Private\CQuadEffect.cpp" />
+    <ClCompile Include="..\Private\CQuestCondition.cpp" />
+    <ClCompile Include="..\Private\CQuest_Manager.cpp" />
+    <ClCompile Include="..\Private\CRangeCollider.cpp" />
+    <ClCompile Include="..\Private\CRoom.cpp" />
+    <ClCompile Include="..\Private\CRoomTrigger.cpp" />
+    <ClCompile Include="..\Private\CRoom_Manager.cpp" />
+    <ClCompile Include="..\Private\CSlot.cpp" />
+    <ClCompile Include="..\Private\CSnow.cpp" />
+    <ClCompile Include="..\Private\CStateDebugWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTerrain.cpp" />
+    <ClCompile Include="..\Private\CTrailEffect.cpp" />
+    <ClCompile Include="..\Private\CTreasureChest.cpp" />
+    <ClCompile Include="..\Private\CTrigger_Box.cpp" />
+    <ClCompile Include="..\Private\CUI_Credit.cpp" />
+    <ClCompile Include="..\Private\CUI_Cursor.cpp" />
+    <ClCompile Include="..\Private\CUI_Interactable.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\Private\CUI_ItemInfo.cpp" />
+    <ClCompile Include="..\Private\CUI_Window_Inventory.cpp" />
+    <ClCompile Include="..\Private\CVariable_Condition.cpp" />
+    <ClCompile Include="..\Private\CWall.cpp" />
+    <ClCompile Include="..\Private\CWeapon.cpp" />
+    <ClCompile Include="..\Private\CWeatherCock.cpp" />
+    <ClCompile Include="..\Private\ItemCollect_Condition.cpp" />
+    <ClCompile Include="..\Public\CUICreator.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="CScreenFilter.cpp" />
+    <ClCompile Include="CSocket_Model.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc" />
@@ -172,6 +469,93 @@
   <ItemGroup>
     <Image Include="Client.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\Resource\Shader\Shader_MeshEffect.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\Shader_MapTool.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\Shader_VtxAnimMesh.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\Shader_VtxMesh.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\Shader_VtxNorTex.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\Shader_VtxPos.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\Shader_VtxPosCor.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\Shader_VtxPosTex.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\Shader_VtxPos_Particle.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="..\..\Resource\Shader\Shader_VtxPosTex_Particle.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">VS_MAIN</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Effect</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Resource\Shader\Default.hlsli" />
+    <None Include="..\..\Resource\Shader\GlobalBuffer.hlsli" />
+    <None Include="..\..\Resource\Shader\Shader_Light.hlsli" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,0 +1,705 @@
+#include "CImgui_DataManager.h"
+#include "MapTool_Defines.h"
+#include "CInput_Manager.h"
+#include "CMapObject_Manager.h"
+#include "CMapQuad.h"
+#include "Client_Defines.h"
+#include "CGameInstance.h"
+
+#include "CTerrain_Manager.h"
+#include "CGrid_Manager.h"
+#include "CMapModel.h"
+#include "CModel.h"
+
+#include "CGameObject.h"
+
+#include "CMapTerrain.h"
+#include "CMapInteractObject.h"
+#include "CMapLayer.h"
+#include "CMeshColliderComponent.h"
+
+#include "CMapRoom.h"
+#include "CMapRoomTrigger.h"
+#include "CMapPosition.h"
+
+#include "CBounding_AABB.h"
+#include "CBoxColliderComponent.h"
+
+
+
+USING(Engine)
+
+IMPLEMENT_SINGLETON(CImgui_DataManager)
+
+CImgui_DataManager::CImgui_DataManager()
+	:m_pInputManager(CInput_Manager::GetInstance()),
+	m_pMapObject_Manager(CMapObject_Manager::GetInstance()),
+	m_pGameInstance(CGameInstance::GetInstance()),
+	m_pGrid_Manager(CGrid_Manager::GetInstance())
+{
+
+	Safe_AddRef(m_pGameInstance);
+	Safe_AddRef(m_pInputManager);
+	Safe_AddRef(m_pGrid_Manager);
+}
+
+CImgui_DataManager::~CImgui_DataManager()
+{
+}
+
+HRESULT CImgui_DataManager::Initialize(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pContext)
+{
+	m_pDevice = _pDevice;
+	m_pContext = _pContext;
+
+	/*세이브를 위한 경로설정과 불러오기를 위한 파일탐색*/
+	m_SaveFilePath.m_SavePathBase = "../../Resource/Data/Map/";
+	Update_SaveFiles();
+
+
+	int iTerrainSize = m_SaveFilePath.m_TerrainSaveFiles.size();
+	int iNavSize = m_SaveFilePath.m_NavSaveFiles.size();
+	int iInteractionSize = m_SaveFilePath.m_InteractionFiles.size();
+
+
+	//이제 저장 누르면 이 경로로 저장될거야!
+	m_SaveFilePath.m_CurrentTerrainSaveFilePath = m_SaveFilePath.m_SavePathBase + "Terrain" + to_string(iTerrainSize) + ".json";
+	
+	
+	m_SaveFilePath.m_CurrentNavSaveFilePath = m_SaveFilePath.m_SavePathBase + "Nav" + to_string(iNavSize) + ".dat";
+
+
+	m_SaveFilePath.m_CurrentInteractionFilePath = m_SaveFilePath.m_SavePathBase + "Interaction" + to_string(iInteractionSize) + ".json";
+
+
+
+	return S_OK;
+}
+
+vector<wstring> CImgui_DataManager::GetImageFiles(const wstring& folderPath)
+{
+	vector<wstring> result;
+
+	for (auto& entry : fs::recursive_directory_iterator(folderPath))
+	{
+		//올바르지 않은 파일이라면 continue
+		if (!fs::is_regular_file(entry))
+			continue;
+		                                                                                                                        
+
+		auto path = entry.path();
+		auto ext = path.extension().wstring();
+
+		if (ext == L".png" || ext == L".jpg" || ext == L".dds")
+			result.push_back(path.wstring());
+
+	}
+	return result;
+
+}
+
+void CImgui_DataManager::Active_PlacementMode(PlaceObjectInfo Info)
+{
+
+	/// //마우스 placement 활성화시키기 -> Update에서 체크
+	Data.m_bPlacementMode = true;
+
+	m_PlaceObjInfo = Info;
+
+	//생성
+	if (FAILED(Create_MapObject()))
+		return;
+
+
+}
+
+void CImgui_DataManager::Update_MouseInput()
+{
+	CheckFalse(Data.m_bPlacementMode);
+	CheckNull(m_pPlaceObject);
+
+	//그냥 클릭->뗐으면,
+
+	if (!m_bDrag&& m_pInputManager->IsMouseButtonReleased(0))
+	{
+		//0,0,0에 위치시키기
+		m_pPlaceObject->Get_Transform()->Set_State(STATE::POSITION, _float4(0.f, 0.f, 0.f, 1.f));
+
+
+		Data.m_bPlacementMode = false;
+		m_pPlaceObject = nullptr;
+	}
+
+
+	//드래그중이라면
+	if (m_pInputManager->IsMouseDragging())
+	{
+		//위치따라가기
+		_float3 vTargetPos;
+		
+		if (m_PlaceObjInfo.ObjType != MapObjType::TERRAIN)
+		{
+		
+			if (CTerrain_Base* pBase = m_pGameInstance->Check_Picking())
+			{
+				vTargetPos = m_pGameInstance->Get_PickingWorldPos();
+				//OutputDebugString(L"TerrainPicking\n");
+			}
+
+			else if (m_pGrid_Manager->IsCollisionWithGrid())
+			{
+				vTargetPos = m_pGrid_Manager->Get_GridPickingWorldPos();
+				//OutputDebugString(L"GridPicking\n");
+			}
+
+			else
+			{
+				vTargetPos = m_pGrid_Manager->Get_MouseWorldPos();
+				//OutputDebugString(L"WorldPicking\n");
+			}
+		}
+
+		else
+		{
+			if (m_pGrid_Manager->IsCollisionWithGrid())
+			{
+				vTargetPos = m_pGrid_Manager->Get_GridPickingWorldPos();
+			}
+
+			else
+			{
+				vTargetPos = m_pGrid_Manager->Get_MouseWorldPos();
+				//OutputDebugString(L"WorldPicking\n");
+			}
+		}
+		
+			
+
+		if (m_pPlaceObject)
+		{
+			CMapTerrain* pMapTerrain = dynamic_cast<CMapTerrain*>(m_pPlaceObject);
+			if (pMapTerrain)
+			{
+				pMapTerrain->Set_CanPicking(true);
+			}
+			//위치지정
+
+			if (m_pInputManager->IsKeyHeld(KeyCode::LShift))
+			{
+				IMapEditable* pEditable = dynamic_cast<IMapEditable*>(m_pPlaceObject);
+				m_pPlaceObject->Get_Transform()->Set_State(STATE::POSITION, _float4(vTargetPos.x, 0.f, vTargetPos.z, 1.f));
+			}
+			
+			else
+				m_pPlaceObject->Get_Transform()->Set_State(STATE::POSITION, _float4(vTargetPos.x, vTargetPos.y, vTargetPos.z, 1.f));
+
+		}
+		
+		m_bDrag = true;
+	}
+		
+
+	if (m_bDrag && m_pInputManager->IsMouseButtonReleased(0))
+	{
+		
+		Data.m_bPlacementMode = false;
+		m_pPlaceObject = nullptr;
+		m_bDrag = false;
+
+	}
+
+
+}
+
+
+
+HRESULT CImgui_DataManager::Create_MapObject()
+{
+	switch (m_PlaceObjInfo.ObjType)
+	{
+	case MapObjType::TERRAIN:
+		return Create_MapTerrain();
+		break;
+
+	case MapObjType::INTERACTION:
+		return Create_MapInteraction();
+		break;
+
+	case MapObjType::TRIGGER:
+		return Create_Trigger();
+
+	case MapObjType::POSITION:
+		return Create_Position();
+	default:
+		return Create_Model();
+		break;
+	}
+}
+
+HRESULT CImgui_DataManager::Create_MapTerrain()
+{
+	CMapTerrain::MAPTERRAIN_DESC Desc;
+	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+	Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
+	Desc.modelName = m_PlaceObjInfo.TexKey;
+	Desc.ObjType = m_PlaceObjInfo.ObjType;
+
+	CModel::MODEL_DSC modelDesc;
+	Desc.modelDesc = &modelDesc;
+
+	wstring LayerTag = L"Terrain_Layer";
+	wstring ProtoTag = L"MapTerrain";
+
+	Engine::CGameObject* pCloneObj = dynamic_cast<Engine::CGameObject*>(m_pGameInstance->Clone_Prototype(PROTOTYPE::GAMEOBJECT, ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), &Desc));
+	if (pCloneObj)
+	{
+		CTerrain_Base* pTerrain = dynamic_cast<CTerrain_Base*>(pCloneObj);
+		if (pTerrain)
+		{
+			m_pGameInstance->Register_Terrain(Desc.ObjTag, pTerrain);
+			m_pPlaceObject = pCloneObj;
+
+			CMapTerrain* pMapTerrain = dynamic_cast<CMapTerrain*>(pTerrain);
+			if (pMapTerrain)
+				pMapTerrain->Set_CanPicking(false);		//설치하기전까진 픽킹안됨
+			return S_OK;
+		}
+	}
+
+	return E_FAIL;
+}
+
+HRESULT CImgui_DataManager::Create_MapInteraction()
+{
+	wstring LayerTag = L"Interaction_Layer";
+	wstring ProtoTag = L"MapInteraction";
+
+	CMapInteractObject::MapInteraction_DESC Desc;
+	CModel::MODEL_DSC modelDesc;
+	Desc.modelDesc = &modelDesc;
+
+	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+	Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
+	Desc.modelName = m_PlaceObjInfo.TexKey;
+	Desc.ObjType = m_PlaceObjInfo.ObjType;
+	Desc.eInteractionType = m_PlaceObjInfo.idx;
+
+
+	
+
+	CMeshColliderComponent::COLLIDER_DESC desc;
+	CBounding_Mesh::BOUNDING_MESH_DESC meshBound=m_pMapObject_Manager->Generate_Collider_By_InteractionType(Desc.eInteractionType);
+
+	Desc.ColliderComponent = &desc;
+	desc.m_BoundingDesc = &meshBound;
+
+	if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc)))
+		return E_FAIL;
+
+
+	m_pPlaceObject = m_pMapObject_Manager->Find_MapObject(LayerTag, Desc.ObjTag);
+
+
+	return S_OK;
+}
+
+HRESULT CImgui_DataManager::Create_Model()
+{
+	CMapModel::MAPMODEL_DESC Desc;
+	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+	Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
+	Desc.modelName = m_PlaceObjInfo.TexKey;
+	Desc.ObjType = m_PlaceObjInfo.ObjType;
+
+	CModel::MODEL_DSC modelDesc;
+	Desc.modelDesc = &modelDesc;
+
+	CMeshColliderComponent::COLLIDER_DESC desc;
+	CBounding_Mesh::BOUNDING_MESH_DESC MeshDesc;
+	MeshDesc.Extents = {11.f,11.f,11.f };
+	desc.m_BoundingDesc = &MeshDesc;
+	Desc.ColliderComponent = &desc;
+
+
+	////드래그생성이라면,위치가 따로존재함
+	//if (bDrag)
+	//{
+	//	_float3 PickingPos = m_pGrid_Manager->Get_GridPickingWorldPos();
+	//	CTransform::TRANSFORM_DESC	 TransDesc;
+	//	TransDesc.vLocalPosition = _float4(PickingPos.x, PickingPos.y, PickingPos.z, 1.f);
+	//	Desc.TransformDesc = &TransDesc;
+
+	//}
+
+	//타입에 맞게 레이어에 넣어주기.
+	wstring LayerTag = L"";
+	wstring ProtoTag = L"";			//L"MapOBstalce" , "MapTile", "MapPosition", "MapTrigger"
+
+	switch (m_PlaceObjInfo.ObjType)
+	{
+	case MapObjType::OBSTACLE:
+		LayerTag = L"Obstacle_Layer";
+		ProtoTag = L"Model";
+
+		break;
+	case MapObjType::TILE:
+		LayerTag = L"Tile_Layer";
+
+		break;
+
+
+
+
+	case MapObjType::ROOM:
+		LayerTag = L"Room_Layer";
+		ProtoTag = L"MapRoom";
+		
+
+	default:
+		break;
+	}
+
+
+	if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc)))
+		return E_FAIL;
+
+	
+
+	m_pPlaceObject = m_pMapObject_Manager->Find_MapObject(LayerTag, Desc.ObjTag);
+
+
+	return S_OK;
+}
+
+HRESULT CImgui_DataManager::Create_Trigger()
+{
+	CMapRoomTrigger::RoomTriggerDesc Desc;
+	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+	Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
+	Desc.ObjType = m_PlaceObjInfo.ObjType;
+
+
+
+	//타입에 맞게 레이어에 넣어주기.
+	wstring LayerTag = L"";
+	wstring ProtoTag = L"";			//L"MapOBstalce" , "MapTile", "MapPosition", "MapTrigger"
+
+	switch (m_PlaceObjInfo.ObjType)
+	{
+
+	case MapObjType::TRIGGER:
+		LayerTag = L"Trigger_Layer";
+		ProtoTag = m_PlaceObjInfo.TexKey;
+		break;
+
+	default:
+		break;
+	}
+
+
+	if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc)))
+		return E_FAIL;
+
+
+
+	m_pPlaceObject = m_pMapObject_Manager->Find_MapObject(LayerTag, Desc.ObjTag);
+
+
+	return S_OK;
+}
+
+HRESULT CImgui_DataManager::Create_Position()
+{
+	CMapPosition::MapPositionDesc Desc;
+	Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+	Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(m_PlaceObjInfo.ObjType, m_PlaceObjInfo.TexKey);
+	Desc.ObjType = m_PlaceObjInfo.ObjType;
+
+	
+	//타입에 맞게 레이어에 넣어주기.
+	wstring LayerTag = L"Position_Layer";
+	wstring ProtoTag = L"MapPosition";		//L"MapOBstalce" , "MapTile", "MapPosition", "MapTrigger"
+
+
+
+	if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc)))
+		return E_FAIL;
+
+
+
+	m_pPlaceObject = m_pMapObject_Manager->Find_MapObject(LayerTag, Desc.ObjTag);
+
+
+	return S_OK;
+}
+
+MapObjType CImgui_DataManager::Get_ObjType_From_Path(const wstring& path)
+{
+	if (path.find(L"Obstacle"))
+		return MapObjType::OBSTACLE;
+
+
+	if (path.find(L"Tile"))
+		return MapObjType::TILE;
+
+	return MapObjType();
+}
+
+HRESULT CImgui_DataManager::Update_SaveFiles()
+{
+	m_SaveFilePath.m_TerrainSaveFiles.clear();
+	m_SaveFilePath.m_NavSaveFiles.clear();
+	m_SaveFilePath.m_InteractionFiles.clear();
+	m_SaveFilePath.m_RoomFiles.clear();
+
+
+	m_SaveFilePath.m_SaveTerrainFileNames.clear();
+	m_SaveFilePath.m_SaveNavFileNames.clear();
+	m_SaveFilePath.m_SaveInteractionFileNames.clear();
+	m_SaveFilePath.m_SaveRoomFileNames.clear();
+
+
+	m_SaveFilePath.m_TerrainSaveFileNamesStr.clear();
+	m_SaveFilePath.m_NavSaveFileNamesStr.clear();
+	m_SaveFilePath.m_InteractionSaveFileNamesStr.clear();
+	m_SaveFilePath.m_RoomSaveFileNamesStr.clear();
+
+
+
+	for (const auto& entry : fs::recursive_directory_iterator(m_SaveFilePath.m_SavePathBase))
+	{
+		if (entry.path().extension() == ".json")
+		{
+			string path = entry.path().string();
+			std::string fullPath = entry.path().string();
+			std::string fileName = entry.path().stem().string() + ".json"; // 이름만 추출
+
+
+			if (path.find("Interaction") != string::npos)
+			{
+				m_SaveFilePath.m_InteractionFiles.push_back(fullPath);    // 경로 저장
+				m_SaveFilePath.m_SaveInteractionFileNames.push_back(fileName);
+
+			}
+
+			else if (path.find("_room") != string::npos)
+			{
+				m_SaveFilePath.m_RoomFiles.push_back(fullPath);    // 경로 저장
+				m_SaveFilePath.m_SaveRoomFileNames.push_back(fileName);
+
+			}
+
+			else
+			{
+				m_SaveFilePath.m_TerrainSaveFiles.push_back(fullPath);    // 경로 저장
+				m_SaveFilePath.m_SaveTerrainFileNames.push_back(fileName);
+
+			}
+
+
+			
+		}
+
+		else if (entry.path().extension() == ".dat")
+		{
+			string path = entry.path().string();
+			std::string fullPath = entry.path().string();
+			std::string fileName = entry.path().stem().string() + ".dat"; // 이름만 추출
+
+
+			if (path.find("Nav") != string::npos)
+			{
+				
+				m_SaveFilePath.m_NavSaveFiles.push_back(fullPath);    // 경로 저장
+				m_SaveFilePath.m_SaveNavFileNames.push_back(fileName);
+
+			}
+
+			
+		}
+
+	}
+
+
+	m_SaveFilePath.m_TerrainSaveFileNamesStr.reserve(m_SaveFilePath.m_TerrainSaveFiles.size());
+	for (auto& name : m_SaveFilePath.m_SaveTerrainFileNames)
+		m_SaveFilePath.m_TerrainSaveFileNamesStr.push_back(name.c_str());
+
+	m_SaveFilePath.m_NavSaveFileNamesStr.reserve(m_SaveFilePath.m_NavSaveFiles.size());
+	for (auto& name : m_SaveFilePath.m_SaveNavFileNames)
+		m_SaveFilePath.m_NavSaveFileNamesStr.push_back(name.c_str());
+
+
+	m_SaveFilePath.m_InteractionSaveFileNamesStr.reserve(m_SaveFilePath.m_InteractionFiles.size());
+	for (auto& name : m_SaveFilePath.m_SaveInteractionFileNames)
+		m_SaveFilePath.m_InteractionSaveFileNamesStr.push_back(name.c_str());
+	
+
+	m_SaveFilePath.m_InteractionSaveFileNamesStr.reserve(m_SaveFilePath.m_RoomFiles.size());
+	for (auto& name : m_SaveFilePath.m_SaveRoomFileNames)
+		m_SaveFilePath.m_RoomSaveFileNamesStr.push_back(name.c_str());
+
+	return S_OK;
+}
+
+HRESULT CImgui_DataManager::Load_InteractionData(const string& filePath)
+{
+	vector<DefaultInteractionData> Datas;
+	if (FAILED(m_pMapObject_Manager->Load_InteractionData(filePath, Datas)))
+		return E_FAIL;
+
+	if (FAILED(Create_InteractionObj_By_Data(Datas)))
+		return E_FAIL;
+
+
+	
+	return S_OK;
+}
+
+HRESULT CImgui_DataManager::Load_Roomdata(const string& filePath)
+{
+	RoomInfo roomInfo;
+
+	if (FAILED(m_pMapObject_Manager->Load_RoomData(filePath, roomInfo)))
+		return E_FAIL;
+
+	  //생성
+    CMapRoom::MAPMODEL_DESC RoomDesc;
+    CModel::MODEL_DSC  modelDesc;
+    RoomDesc.modelDesc = &modelDesc;
+    RoomDesc.modelName = StringToWString((roomInfo.RoomName));
+    RoomDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+    RoomDesc.ObjType = MapObjType::ROOM;
+    RoomDesc.ObjTag =m_pMapObject_Manager->Generate_UniqueTag(MapObjType::ROOM, RoomDesc.modelName);
+
+	CTransform::TRANSFORM_DESC TransDesc;
+	TransDesc.vLocalPosition = _float4(roomInfo.vPos.x,
+		roomInfo.vPos.y,
+		roomInfo.vPos.z,
+		1.f);
+
+	RoomDesc.TransformDesc = &TransDesc;
+
+	wstring ProtoTag = L"MapRoom";
+	wstring LayerTag = L"Room_Layer";
+
+    if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &RoomDesc)))
+        return E_FAIL;
+
+
+	/////////pos생성
+	for (auto& pos : roomInfo.m_Positions)
+	{
+		CMapPosition::MapPositionDesc Desc;
+		Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+		Desc.ObjType = MapObjType::POSITION;
+		Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(MapObjType::POSITION,L"MapPosition");
+
+		CTransform::TRANSFORM_DESC transDesc;
+		transDesc.vLocalPosition = _float4(pos.vPos.x, pos.vPos.y, pos.vPos.z, 1.f);
+
+		Desc.TransformDesc = &transDesc;
+
+
+
+		//타입에 맞게 레이어에 넣어주기.
+		wstring LayerTag = L"Position_Layer";
+		wstring ProtoTag = L"MapPosition";		//L"MapOBstalce" , "MapTile", "MapPosition", "MapTrigger"
+
+
+
+		if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc)))
+			return E_FAIL;
+	}
+
+
+	//trigger생성
+	for (auto& Trigger : roomInfo.m_RoomTriggers)
+	{
+		CMapRoomTrigger::RoomTriggerDesc Desc;
+		Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+		Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(MapObjType::TRIGGER, L"RoomTrigger");
+		Desc.ObjType = m_PlaceObjInfo.ObjType;
+		Desc.nextroomID = Trigger.m_NextRoomID;
+
+		CTransform::TRANSFORM_DESC transDesc;
+		transDesc.vLocalPosition = _float4(Trigger.vPos.x, Trigger.vPos.y, Trigger.vPos.z, 1.f);
+		transDesc.vLocalScale = _float4(Trigger.vScale.x, Trigger.vScale.y, Trigger.vScale.z, 1.f);
+		transDesc.vLocalRotation = _float4(Trigger.vRotation.x, Trigger.vRotation.y, Trigger.vRotation.z, 1.f);
+		Desc.TransformDesc = &transDesc;
+
+		CBoxColliderComponent::COLLIDER_DESC colDesc;
+		CBounding_AABB::BOUNDING_AABB_DESC AABBDesc;
+		AABBDesc.Extents = Trigger.vExtents;
+		AABBDesc.vCenter = Trigger.vCenter;
+
+		colDesc.m_BoundingDesc = &AABBDesc;
+		Desc.ColliderComponent = &colDesc;
+
+
+		//타입에 맞게 레이어에 넣어주기.
+		wstring LayerTag = L"Trigger_Layer";
+		wstring ProtoTag = L"RoomTrigger";			//L"MapOBstalce" , "MapTile", "MapPosition", "MapTrigger"
+
+
+
+		if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(LEVEL_ID::STATIC), PROTO_OBJ_NAME(ProtoTag), LayerTag, &Desc)))
+			return E_FAIL;
+
+	}
+	
+
+	return S_OK;
+}
+
+HRESULT CImgui_DataManager::Create_InteractionObj_By_Data(vector<DefaultInteractionData>& Datas)
+{
+	CheckTrueResult(Datas.empty(),E_FAIL);
+
+	for (auto& info : (Datas))
+	{
+		CMapInteractObject::MapInteraction_DESC Desc;
+		CModel::MODEL_DSC modelDesc;
+		Desc.modelDesc = &modelDesc;
+
+		Desc.eRenderGroup =ENUM_TO_UINT(RENDERGROUP::PRIORITY);
+		Desc.modelName = StringToWString(info.ModelName);
+		Desc.eInteractionType = info.InteractionType;
+		Desc.ObjType = MapObjType::INTERACTION;
+		Desc.ObjTag = m_pMapObject_Manager->Generate_UniqueTag(MapObjType::INTERACTION, Desc.modelName);
+
+		CTransform::TRANSFORM_DESC TransDesc;
+		TransDesc.vLocalPosition = _float4(info.vPos.x, info.vPos.y, info.vPos.z, 1.f);
+		TransDesc.vLocalRotation = _float4(info.vRotation.x, info.vRotation.y, info.vRotation.z, 0.f);
+		TransDesc.vLocalScale = _float4(info.vScale.x, info.vScale.y, info.vScale.z, 1.f);
+
+		CMeshColliderComponent::COLLIDER_DESC ColDesc;
+		CBounding_Mesh::BOUNDING_MESH_DESC meshBound;
+		meshBound.Extents = info.ColliderExtent;
+		meshBound.vCenter = info.ColliderCenter;
+
+		ColDesc.m_BoundingDesc = &meshBound;
+
+		Desc.ColliderComponent = &ColDesc;
+		Desc.TransformDesc = &TransDesc;
+
+		if (FAILED(m_pMapObject_Manager->Add_MapObject_To_MapLayer(ENUM_TO_UINT(0), PROTO_OBJ_NAME(L"MapInteraction"), L"Interaction_Layer", &Desc)))
+			return E_FAIL;
+
+	}
+
+	return S_OK;
+}
+
+void CImgui_DataManager::Free()
+{
+	__super::Free();
+
+	Safe_Release(m_pMapObject_Manager);
+	Safe_Release(m_pInputManager);
+	Safe_Release(m_pGrid_Manager);
+
+	Safe_Release(m_pGameInstance);
+
+
+}

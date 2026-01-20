@@ -1,0 +1,56 @@
+{
+    "Color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "DataName": "ChargeStartEffect",
+    "LifeTime": 0.0,
+    "Loop": false,
+    "OffSet": [
+        0.0,
+        0.30000001192092896,
+        -0.800000011920929,
+        1.0
+    ],
+    "Rotation": [
+        90.0,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "Scale": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "Speed": 3.0,
+    "TargetScale": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "Type": "Mesh",
+    "bUseMoveAnim": true,
+    "bUseRotationAnim": false,
+    "bUseScaleAnim": false,
+    "fIntensity": 1.0,
+    "fMoveSpeed": 3.0,
+    "fRotationSpeed": 0.20000000298023224,
+    "fScaleSpeed": 1.0,
+    "vMoveDir": [
+        0.0,
+        0.5,
+        0.0,
+        0.0
+    ],
+    "vRotationAxis": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+    ]
+}

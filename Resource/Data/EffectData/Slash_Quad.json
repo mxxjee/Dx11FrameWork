@@ -1,0 +1,56 @@
+{
+    "Color": [
+        1.0,
+        0.8529412150382996,
+        0.0,
+        1.0
+    ],
+    "DataName": "Slash_Quad",
+    "LifeTime": 0.5,
+    "Loop": false,
+    "OffSet": [
+        0.0,
+        0.4000000059604645,
+        1.0,
+        1.0
+    ],
+    "Rotation": [
+        90.0,
+        0.0,
+        0.0,
+        1.0
+    ],
+    "Scale": [
+        4.5,
+        4.0,
+        1.0,
+        1.0
+    ],
+    "Speed": 5.0,
+    "TargetScale": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+    ],
+    "Type": "Mesh",
+    "bUseMoveAnim": false,
+    "bUseRotationAnim": false,
+    "bUseScaleAnim": false,
+    "fIntensity": 1.0,
+    "fMoveSpeed": 0.0,
+    "fRotationSpeed": 0.0,
+    "fScaleSpeed": 1.0,
+    "vMoveDir": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+    ],
+    "vRotationAxis": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+    ]
+}

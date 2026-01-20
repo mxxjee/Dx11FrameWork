@@ -1,0 +1,127 @@
+#include "CBounding_OBB.h"
+#include "CBounding_AABB.h"
+#include "CBounding_Sphere.h"
+
+#include "DebugDraw.h"
+#include "CTransform.h"
+
+
+CBounding_OBB::CBounding_OBB(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
+    :CBounding(pDevice,pContext)
+{
+}
+
+HRESULT CBounding_OBB::Initialize(const BOUNDING_DESC* pInitialDesc)
+{
+    const BOUNDING_OBB_DESC* pDesc = static_cast<const BOUNDING_OBB_DESC*> (pInitialDesc);
+
+
+    _float4 Rotation;
+
+    XMStoreFloat4(&Rotation,
+        XMQuaternionRotationRollPitchYaw(XMConvertToRadians(pDesc->vEularAngles.x),
+            XMConvertToRadians(pDesc->vEularAngles.y),
+            XMConvertToRadians(pDesc->vEularAngles.z)));
+
+
+
+    m_pOriginalDesc = new BoundingOrientedBox(pDesc->vCenter, pDesc->Extents,Rotation);
+    m_pDesc = new BoundingOrientedBox(*m_pOriginalDesc);
+
+    return S_OK;
+}
+
+HRESULT CBounding_OBB::Update(XMMATRIX WorldMatrix)
+{
+
+    //월드행렬을 따라가되, 내가 설정한 콜라이더자체의 offset과 scale을 포함한다.
+    XMMATRIX NewWorld = XMMatrixScaling(m_vSize.x, m_vSize.y, m_vSize.z) * XMMatrixTranslation(m_vOffSet.x, m_vOffSet.y, m_vOffSet.z);
+
+    XMMATRIX Final = NewWorld * WorldMatrix;
+
+    m_pOriginalDesc->Transform(*m_pDesc, Final);
+
+
+
+    return S_OK;
+}
+
+bool CBounding_OBB::Intersects_Ray(_vector origin, _vector rayDir, _float& Dist)
+{
+    return m_pDesc->Intersects(origin,rayDir,Dist);
+}
+
+_float3 CBounding_OBB::Get_MaxBound(_vector vCenter)
+{
+    _float3 fCenter;
+    XMStoreFloat3(&fCenter, vCenter);
+
+
+    return _float3(m_pDesc->Center.x + m_pDesc->Extents.x,
+        m_pDesc->Center.y + m_pDesc->Extents.y,
+        m_pDesc->Center.z + m_pDesc->Extents.z);
+}
+_float3 CBounding_OBB::Get_MinBound(_vector vCenter)
+{
+    _float3 fCenter;
+    XMStoreFloat3(&fCenter, vCenter);
+
+
+    return _float3(m_pDesc->Center.x - m_pDesc->Extents.x,
+        m_pDesc->Center.y - m_pDesc->Extents.y,
+        m_pDesc->Center.z - m_pDesc->Extents.z);
+}
+
+#ifdef _DEBUG
+
+HRESULT CBounding_OBB::Render(PrimitiveBatch<VertexPositionColor>* pBatch, _bool isColl)
+{
+
+    DX::Draw(pBatch, *m_pDesc, isColl == true ? XMVectorSet(1.f, 0.f, 0.f, 1.f) : XMVectorSet(0.f, 1.f, 0.f, 1.f));
+
+    return S_OK;
+}
+#endif // DEBUG
+
+
+CBounding_OBB* CBounding_OBB::Create(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext, const BOUNDING_DESC* pInitialDesc)
+{
+    CBounding_OBB* pInstance = new CBounding_OBB(pDevice, pContext);
+
+    if (FAILED(pInstance->Initialize(pInitialDesc)))
+    {
+        MSG_BOX("Failed to Created : CBounding_OBB");
+        Safe_Release(pInstance);
+    }
+    return pInstance;
+}
+
+void CBounding_OBB::Free()
+{
+
+    __super::Free();
+
+    Safe_Delete(m_pOriginalDesc);
+    Safe_Delete(m_pDesc);
+}
+
+bool CBounding_OBB::Intersect(COLLIDER_TYPE eType, CBounding* pOther)
+{
+    switch (eType)
+    {
+    case COLLIDER_TYPE::AABB:
+        return m_pDesc->Intersects(*static_cast<CBounding_AABB*>(pOther)->Get_Desc());
+        break;
+
+    case COLLIDER_TYPE::OBB:
+        return m_pDesc->Intersects(*static_cast<CBounding_OBB*>(pOther)->Get_Desc());
+        break;
+
+    case COLLIDER_TYPE::SPHERE:
+        return m_pDesc->Intersects(*static_cast<CBounding_Sphere*>(pOther)->Get_Desc());
+        break;
+    }
+
+    return false;
+
+}

@@ -1,0 +1,127 @@
+#pragma once
+#include "Engine_Define.h"
+
+NS_BEGIN(Engine)
+
+typedef struct ENGINE_DLL VertexPosData
+{
+	_float3 vPosition = { 0,0,0 };
+
+
+	static vector<D3D11_INPUT_ELEMENT_DESC> desc;
+
+}VTXPOS;
+
+
+typedef struct ENGINE_DLL VertexColorData
+{
+	_float3 vPosition = { 0,0,0 };
+	_float4 vColor = { 0,0,0,0 };
+
+
+	static vector<D3D11_INPUT_ELEMENT_DESC> desc;
+
+}VTXPOSCOR;
+
+
+struct ENGINE_DLL VertexTextureData
+{
+	_float3 position = { 0,0,0 };
+	_float2 uv = { 0,0 };
+
+
+	static vector<D3D11_INPUT_ELEMENT_DESC> desc;
+
+};
+
+//////////////////Vertex Struct////////////////////////
+
+typedef struct ENGINE_DLL  tagVertexPositionTexcoord
+{
+	XMFLOAT3		vPosition;
+	XMFLOAT2		vTexcoord;
+
+	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
+
+}VTXPOSTEX;
+
+
+typedef struct ENGINE_DLL  tagVertexPositionNormalTexcoord
+{
+	XMFLOAT3		vPosition;
+	XMFLOAT3		vNormal;
+	XMFLOAT2		vTexcoord;
+
+	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
+
+}VTXNORTEX;
+
+typedef struct ENGINE_DLL  tagVertexMesh
+{
+	XMFLOAT3		vPosition;
+	XMFLOAT3		vNormal;
+	XMFLOAT3		Tangent;
+	XMFLOAT3		BiNormal;
+	XMFLOAT2		vTexcoord;
+
+	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
+
+}VTXMESH;
+
+typedef struct ENGINE_DLL  tagVertexAnimationMesh
+{
+	XMFLOAT3		vPosition;
+	XMFLOAT3		vNormal;
+	XMFLOAT3		Tangent;
+	XMFLOAT3		BiNormal;
+	XMFLOAT2		vTexcoord;
+
+	XMUINT4			vBlendIndex;		//이 정점이 영향을 받고있는 뼈에 대한 인덱스 , 최대 4개까지 지정가능
+	XMFLOAT4		vBlendWeight;		//그 뼈에 대한 가중치(얼마나 영향을받고있는지, BlendIndex와 1:1대응)
+
+	static const unsigned int		iNumElements = { 7 };
+	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
+
+}VTXANIMMESH;
+
+typedef struct ENGINE_DLL  tagEditMesh
+{
+	XMFLOAT3		vPosition;
+	XMFLOAT2		vTexcoord;
+
+	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
+
+}EDITMESH;
+
+
+////////////For Instancing///////////
+typedef struct tagVertexInstance
+{
+	XMFLOAT4		vRight;
+	XMFLOAT4		vUp;
+	XMFLOAT4		vLook;
+	XMFLOAT4		vTranslation;
+	XMFLOAT2		vLifeTime;			//셰이더에서 이를 사용하기위해서 구조체의 멤버로 씀
+
+	XMFLOAT4 vColor;   // [Fade Out] 색상
+	XMFLOAT4 vUV_Info; // [Sprite] xy:Offset, zw:Scale
+
+
+}VTXPARTICLE;
+
+//인스턴싱 기법을 사용하는 정점들은 vertex구조체 + instance구조체를 한번에 던진다.
+//고로 Input_element_desc도 함꼐정의
+typedef  struct ENGINE_DLL tagVertexPosTexParticle
+{
+	static const unsigned int iNumElements = { 7 };
+	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
+}VTXPOSTEX_PARTICLE;
+
+
+typedef struct ENGINE_DLL tagVertexPosParticle
+{
+	static const unsigned int		iNumElements = { 6 };
+	static vector<D3D11_INPUT_ELEMENT_DESC>    desc;
+}VTXPOS_PARTICLE;
+
+NS_END

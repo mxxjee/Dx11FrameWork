@@ -1,0 +1,29 @@
+﻿{
+  "Quests": [
+    {
+      "iQuestID": 1001,
+      "strTitle": "돌 들기",
+      "strDescription": "마을 광장으로 가는 길에 돌을 들어보세요.",
+
+      "Conditions": [
+        {
+          "Type": "ACTION",
+          "State": "CARRY"
+        }
+      ]
+    },
+    {
+      "iQuestID": 1001,
+      "strTitle": "돌 들기",
+      "strDescription": "마을 광장으로 가는 길에 돌을 들어보세요.",
+
+      "Conditions": [
+        {
+          "Type": "ACTION",
+          "State": "CARRY"
+        }
+      ]
+    }
+
+  ]
+}

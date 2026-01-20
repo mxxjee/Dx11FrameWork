@@ -46,7 +46,7 @@ namespace Engine
 		{
 			iRefCnt = Instance->Release();
 			if (iRefCnt == 0)
-				Instance = nullptr;
+ 				Instance = nullptr;
 
 		
 		}
@@ -55,6 +55,42 @@ namespace Engine
 
 	}
 
+	inline std::string WStringToUTF8(const std::wstring& wstr)
+	{
+		if (wstr.empty()) return {};
+		int size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), (int)wstr.size(), NULL, 0, NULL, NULL);
+		std::string result(size_needed, 0);
+		WideCharToMultiByte(CP_UTF8, 0, wstr.c_str(), (int)wstr.size(), &result[0], size_needed, NULL, NULL);
+		return result;
+	}
 
+	//inline std::wstring StringToWString(const string& str)
+	//{
+	//	return wstring(str.begin(), str.end());
+
+	//}
+
+	inline std::wstring StringToWString(const std::string& utf8)
+	{
+		if (utf8.empty())
+			return L"";
+
+		int size = MultiByteToWideChar(
+			CP_UTF8, 0,
+			utf8.c_str(),
+			(int)utf8.size(),
+			nullptr, 0);
+
+		std::wstring wstr(size, 0);
+
+		MultiByteToWideChar(
+			CP_UTF8, 0,
+			utf8.c_str(),
+			(int)utf8.size(),
+			&wstr[0],
+			size);
+
+		return wstr;
+	}
 }
 #endif // Engine_Function_h__

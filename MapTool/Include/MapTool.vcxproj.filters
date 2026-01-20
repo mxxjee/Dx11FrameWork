@@ -10,6 +10,72 @@
     <Filter Include="00.MainTool">
       <UniqueIdentifier>{e83a2253-7255-4573-a1e5-835a6cdd9c98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.ImguiObjects">
+      <UniqueIdentifier>{f26dd169-3120-4a47-8cab-a31018a4fb46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Level">
+      <UniqueIdentifier>{fbd4b7e5-8172-4e92-bdc9-35cbf46fb2c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Level\EditLevel">
+      <UniqueIdentifier>{4be5bed8-2310-4251-a985-e301fbeabdf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Level\Loading">
+      <UniqueIdentifier>{95572090-35f3-4328-a519-b10199abc4b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Level\Loading\Loader">
+      <UniqueIdentifier>{10f6cc78-1b65-4c22-a2a3-2e1593888df5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.ImguiObjects\TerrainDebugWindow">
+      <UniqueIdentifier>{9b10a5a2-8203-4737-8222-bebe4c1b433e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.GameObject">
+      <UniqueIdentifier>{275b3066-83a3-4135-a688-a144a40847c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.GameObject\TerrainHighlight">
+      <UniqueIdentifier>{b41a40e6-6670-4760-a1b7-fb43ebc5e870}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.ImguiObjects\LayerDebugWindow">
+      <UniqueIdentifier>{a7ec52c1-2a2a-4bda-8e8e-8d2743f3db8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.ImguiObjects\ObjectInspectorWindow">
+      <UniqueIdentifier>{e16cc3e9-0cdb-4449-9702-468e0d17b609}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.ImguiObjects\AssetBrowser">
+      <UniqueIdentifier>{daf4e05b-5cd7-4075-abd3-2f361b5122f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.ImguiObjects\AssetBrowser\AssetListWindow">
+      <UniqueIdentifier>{e773a8b4-2d75-4ee3-8293-ccd18c455f5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.ImguiObjects\AssetBrowser\AssetCategoryWindow">
+      <UniqueIdentifier>{9228ab5e-d375-4d65-a0f3-c9606c0a7c76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Manager">
+      <UniqueIdentifier>{af0f80bf-704b-416b-a33f-4ed84f742cbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Manager\Imgui_DataManager">
+      <UniqueIdentifier>{f63b10cf-ee97-47cd-b51f-4e44e237aba9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05.Manager\GridManager">
+      <UniqueIdentifier>{1ff9ffff-f260-49a1-bb6b-5d68e659192b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.GameObject\MapGrid">
+      <UniqueIdentifier>{7119959e-9abc-49ca-b63a-8d3980b12a76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.ImguiObjects\SaveWindow">
+      <UniqueIdentifier>{aaa21816-454d-4925-b3a9-a9cbf79bc56b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.ImguiObjects\ImguiMenuBar">
+      <UniqueIdentifier>{0bb1a0c3-4c44-4786-9535-5cedf4291266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.ImguiObjects\MenuBar">
+      <UniqueIdentifier>{e030c689-5a14-45e8-8415-7d39e0524f1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.ImguiObjects\NavMeshDebugWindow">
+      <UniqueIdentifier>{a7eba30b-6bce-4d23-9fc8-aad54d165b66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.ImguiObjects\TerrainBuildWindow">
+      <UniqueIdentifier>{8f074fbe-d777-4e4e-aa1f-299bab4d830a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Public\CMainTool.h">
@@ -30,6 +96,57 @@
     <ClInclude Include="..\Public\MapTool_Defines.h">
       <Filter>99.Defines</Filter>
     </ClInclude>
+    <ClInclude Include="..\Public\CLevel_Editor.h">
+      <Filter>03.Level\EditLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLoader.h">
+      <Filter>03.Level\Loading\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLevel_Loading.h">
+      <Filter>03.Level\Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGridDebugWindow.h">
+      <Filter>02.ImguiObjects\TerrainDebugWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMapGrid.h">
+      <Filter>04.GameObject\MapGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CTerrain_Highlight.h">
+      <Filter>04.GameObject\TerrainHighlight</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CLayerDebugWindow.h">
+      <Filter>02.ImguiObjects\LayerDebugWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CObjectInspectorWindow.h">
+      <Filter>02.ImguiObjects\ObjectInspectorWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CAssetCategoryWindow.h">
+      <Filter>02.ImguiObjects\AssetBrowser\AssetCategoryWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CAssetListWindow.h">
+      <Filter>02.ImguiObjects\AssetBrowser\AssetListWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CGrid_Manager.h">
+      <Filter>05.Manager\GridManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CSaveWindow.h">
+      <Filter>02.ImguiObjects\SaveWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CMenuBarWindow.h">
+      <Filter>02.ImguiObjects\MenuBar</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\MapTool_Struct.h">
+      <Filter>99.Defines</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CImgui_DataManager.h">
+      <Filter>05.Manager\Imgui_DataManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CNavMeshDebugWindow.h">
+      <Filter>02.ImguiObjects\NavMeshDebugWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Public\CTerrainBuildWindow.h">
+      <Filter>02.ImguiObjects\TerrainBuildWindow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Private\CMainTool.cpp">
@@ -37,6 +154,54 @@
     </ClCompile>
     <ClCompile Include="MapTool.cpp">
       <Filter>98.Default</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_Editor.cpp">
+      <Filter>03.Level\EditLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLoader.cpp">
+      <Filter>03.Level\Loading\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLevel_Loading.cpp">
+      <Filter>03.Level\Loading</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGridDebugWindow.cpp">
+      <Filter>02.ImguiObjects\TerrainDebugWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMapGrid.cpp">
+      <Filter>04.GameObject\MapGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTerrain_Highlight.cpp">
+      <Filter>04.GameObject\TerrainHighlight</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CLayerDebugWindow.cpp">
+      <Filter>02.ImguiObjects\LayerDebugWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CObjectInspectorWindow.cpp">
+      <Filter>02.ImguiObjects\ObjectInspectorWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAssetCategoryWindow.cpp">
+      <Filter>02.ImguiObjects\AssetBrowser\AssetCategoryWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CAssetListWindow.cpp">
+      <Filter>02.ImguiObjects\AssetBrowser\AssetListWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CGrid_Manager.cpp">
+      <Filter>05.Manager\GridManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CSaveWindow.cpp">
+      <Filter>02.ImguiObjects\SaveWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CMenuBarWindow.cpp">
+      <Filter>02.ImguiObjects\MenuBar</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CImgui_DataManager.cpp">
+      <Filter>05.Manager\Imgui_DataManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CNavMeshDebugWindow.cpp">
+      <Filter>02.ImguiObjects\NavMeshDebugWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Private\CTerrainBuildWindow.cpp">
+      <Filter>02.ImguiObjects\TerrainBuildWindow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

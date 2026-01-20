@@ -1,0 +1,103 @@
+{
+  "NPCScripts": [
+    {
+      "ModelID": "NPC_Fairy",
+      "Chapters": [
+        {
+          "ChapterID": "Q1003_START",
+          "iQuestOffered": 1003,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "숲의 요정",
+              "Text": "어머.. 인간이 여길 찾아오다니.",
+              "Sound": "NPC/Fairy0.wav",
+              "strActionCommand": "Meet_Fairy",
+              "actionTiming": "ON_START"
+            },
+            {
+              "Speaker": "숲의 요정",
+              "Text": "당신.. 길을 잃은 모양이군요?",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "숲의 요정",
+              "Text": "괜찮아요.\n여기서 몸과 마음을 치유하고 가세요..",
+              "strActionCommand": "On_PlayerHeal",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "숲의 요정",
+              "Text": "하지만 이 숲에 오래 머물면,\n다시 위험해질거에요..",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "숲의 요정",
+              "Text": "신비로운 곳으로 데려가줄 순 있는데..",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "숲의 요정",
+              "Text": "<숲 깊은 곳에 자라는 버섯>을 가져와야 해요..!",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "숲의 요정",
+              "Text": "가져다 주시면, 신비로운 곳으로 데려가드릴게요!",
+              "strActionCommand": "Meet_Fairy_End",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1003_ACTIVE_PERM",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "숲의 요정",
+              "Text": "아직 준비가 안된 것 같아요..",
+              "strActionCommand": "",
+              "Sound": "NPC/Fairy0.wav",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "숲의 요정",
+              "Text": "습하고 어두운 곳.. 그곳이 힌트에요..",
+              "strActionCommand": "",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        },
+        {
+          "ChapterID": "Q1003_COMPLETABLE_READY",
+          "iQuestOffered": 0,
+          "iQuestRequiredToUnlock": 0,
+          "strNextPermanentChapterID": "",
+          "Steps": [
+            {
+              "Speaker": "숲의 요정",
+              "Text": "이제 모든 준비가 된 것 같군요..!",
+              "strActionCommand": "",
+              "Sound": "NPC/Fairy1.wav",
+              "actionTiming": "ON_FINISH"
+            },
+            {
+              "Speaker": "숲의 요정",
+              "Text": "눈을 감고 천천히 심호흡을 하세요..",
+              "strActionCommand": "Fairy_End",
+              "actionTiming": "ON_FINISH"
+            }
+          ]
+        }
+
+      ]
+    }
+  ]
+}

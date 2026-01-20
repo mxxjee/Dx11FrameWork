@@ -1,0 +1,974 @@
+[
+    {
+        "ChunkInfo": {
+            "Index": [
+                0.0,
+                8.0
+            ]
+        },
+        "ModelName": "Field_5I",
+        "TileID": 9,
+        "Transform": {
+            "Position": [
+                120.0,
+                0.0,
+                100.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                0.0,
+                10.0
+            ]
+        },
+        "ModelName": "Field_5K",
+        "TileID": 11,
+        "Transform": {
+            "Position": [
+                150.0,
+                0.0,
+                100.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                3.0,
+                4.0
+            ]
+        },
+        "ModelName": "Field_8E",
+        "TileID": 16,
+        "Transform": {
+            "Position": [
+                60.0,
+                0.0,
+                64.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                10.0,
+                9.0
+            ]
+        },
+        "ModelName": "Field_15J",
+        "TileID": 36,
+        "Transform": {
+            "Position": [
+                135.0,
+                0.0,
+                -20.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                3.0,
+                0.0
+            ]
+        },
+        "ModelName": "Field_8A",
+        "TileID": 52,
+        "Transform": {
+            "Position": [
+                0.0,
+                0.0,
+                64.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                3.0,
+                1.0
+            ]
+        },
+        "ModelName": "Field_8B",
+        "TileID": 53,
+        "Transform": {
+            "Position": [
+                15.0,
+                0.0,
+                64.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                3.0,
+                2.0
+            ]
+        },
+        "ModelName": "Field_8C",
+        "TileID": 54,
+        "Transform": {
+            "Position": [
+                30.0,
+                0.0,
+                64.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                3.0,
+                3.0
+            ]
+        },
+        "ModelName": "Field_8D",
+        "TileID": 55,
+        "Transform": {
+            "Position": [
+                45.52489471435547,
+                0.0,
+                64.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                3.0,
+                13.0
+            ]
+        },
+        "ModelName": "Field_8N",
+        "TileID": 64,
+        "Transform": {
+            "Position": [
+                195.0,
+                0.0,
+                64.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                4.0,
+                0.0
+            ]
+        },
+        "ModelName": "Field_9A",
+        "TileID": 66,
+        "Transform": {
+            "Position": [
+                0.0,
+                0.0,
+                52.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                4.0,
+                1.0
+            ]
+        },
+        "ModelName": "Field_9B",
+        "TileID": 67,
+        "Transform": {
+            "Position": [
+                15.0,
+                0.0,
+                52.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                4.0,
+                2.0
+            ]
+        },
+        "ModelName": "Field_9C",
+        "TileID": 68,
+        "Transform": {
+            "Position": [
+                30.0,
+                0.0,
+                52.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                4.0,
+                3.0
+            ]
+        },
+        "ModelName": "Field_9D",
+        "TileID": 69,
+        "Transform": {
+            "Position": [
+                45.0,
+                0.0,
+                52.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                4.0,
+                4.0
+            ]
+        },
+        "ModelName": "Field_9E",
+        "TileID": 70,
+        "Transform": {
+            "Position": [
+                60.0,
+                0.0,
+                52.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                4.0,
+                13.0
+            ]
+        },
+        "ModelName": "Field_9N",
+        "TileID": 79,
+        "Transform": {
+            "Position": [
+                195.0,
+                0.0,
+                52.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                5.0,
+                0.0
+            ]
+        },
+        "ModelName": "Field_10A",
+        "TileID": 82,
+        "Transform": {
+            "Position": [
+                0.0,
+                0.0,
+                40.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                5.0,
+                1.0
+            ]
+        },
+        "ModelName": "Field_10B",
+        "TileID": 83,
+        "Transform": {
+            "Position": [
+                15.0,
+                0.0,
+                40.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                5.0,
+                2.0
+            ]
+        },
+        "ModelName": "Field_10C",
+        "TileID": 84,
+        "Transform": {
+            "Position": [
+                30.0,
+                0.0,
+                40.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                5.0,
+                3.0
+            ]
+        },
+        "ModelName": "Field_10D",
+        "TileID": 85,
+        "Transform": {
+            "Position": [
+                45.0,
+                0.0,
+                40.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                5.0,
+                4.0
+            ]
+        },
+        "ModelName": "Field_10E",
+        "TileID": 86,
+        "Transform": {
+            "Position": [
+                60.0,
+                0.0,
+                40.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                6.0,
+                0.0
+            ]
+        },
+        "ModelName": "Field_11A",
+        "TileID": 98,
+        "Transform": {
+            "Position": [
+                0.0,
+                0.0,
+                28.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                6.0,
+                1.0
+            ]
+        },
+        "ModelName": "Field_11B",
+        "TileID": 99,
+        "Transform": {
+            "Position": [
+                15.0,
+                0.0,
+                28.431800842285156
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                6.0,
+                2.0
+            ]
+        },
+        "ModelName": "Field_11C",
+        "TileID": 100,
+        "Transform": {
+            "Position": [
+                30.0,
+                0.0,
+                28.215322494506836
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                6.0,
+                3.0
+            ]
+        },
+        "ModelName": "Field_11D",
+        "TileID": 101,
+        "Transform": {
+            "Position": [
+                45.0,
+                0.0,
+                28.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                6.0,
+                4.0
+            ]
+        },
+        "ModelName": "Field_11E",
+        "TileID": 102,
+        "Transform": {
+            "Position": [
+                60.0,
+                0.0,
+                28.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                9.0,
+                9.0
+            ]
+        },
+        "ModelName": "Field_14J",
+        "TileID": 157,
+        "Transform": {
+            "Position": [
+                135.0,
+                0.0,
+                -8.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                9.0,
+                10.0
+            ]
+        },
+        "ModelName": "Field_14K",
+        "TileID": 158,
+        "Transform": {
+            "Position": [
+                150.0,
+                0.0,
+                -8.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                9.0,
+                11.0
+            ]
+        },
+        "ModelName": "Field_14L",
+        "TileID": 159,
+        "Transform": {
+            "Position": [
+                165.0,
+                0.0,
+                -8.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                10.0,
+                7.0
+            ]
+        },
+        "ModelName": "Field_15H",
+        "TileID": 171,
+        "Transform": {
+            "Position": [
+                105.0,
+                0.0,
+                -20.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                10.0,
+                8.0
+            ]
+        },
+        "ModelName": "Field_15I",
+        "TileID": 172,
+        "Transform": {
+            "Position": [
+                120.0,
+                0.0,
+                -20.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                10.0,
+                10.0
+            ]
+        },
+        "ModelName": "Field_15K",
+        "TileID": 173,
+        "Transform": {
+            "Position": [
+                150.0,
+                0.0,
+                -20.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                11.0,
+                6.0
+            ]
+        },
+        "ModelName": "Field_16G",
+        "TileID": 183,
+        "Transform": {
+            "Position": [
+                90.0,
+                0.0,
+                -32.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                11.0,
+                7.0
+            ]
+        },
+        "ModelName": "Field_16H",
+        "TileID": 184,
+        "Transform": {
+            "Position": [
+                105.0,
+                0.0,
+                -32.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                11.0,
+                8.0
+            ]
+        },
+        "ModelName": "Field_16I",
+        "TileID": 185,
+        "Transform": {
+            "Position": [
+                120.0,
+                0.0,
+                -32.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                11.0,
+                9.0
+            ]
+        },
+        "ModelName": "Field_16J",
+        "TileID": 186,
+        "Transform": {
+            "Position": [
+                135.0,
+                0.0,
+                -32.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    },
+    {
+        "ChunkInfo": {
+            "Index": [
+                11.0,
+                10.0
+            ]
+        },
+        "ModelName": "Field_16K",
+        "TileID": 187,
+        "Transform": {
+            "Position": [
+                150.0,
+                0.0,
+                -32.0
+            ],
+            "Rotation": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "Scale": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        }
+    }
+]

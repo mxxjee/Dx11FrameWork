@@ -3,13 +3,20 @@
 
 #define			ENUM_TO_UINT(ENUM)			static_cast<unsigned int>(ENUM)
 
+#define D3DCOLOR_ARGB(a,r,g,b) \
+    ((D3DCOLOR)((((a)&0xff)<<24)|(((b)&0xff)<<16)|(((g)&0xff)<<8)|((r)&0xff)))
+
+
 #ifndef			MSG_BOX
 #define			MSG_BOX(_message)			MessageBox(nullptr, TEXT(_message), L"System Message", MB_OK)
+#define			LMSG_BOX(_message)			MessageBox(nullptr, (_message), L"System Message", MB_OK)
 #endif
 
 #define			NS_BEGIN(NAMESPACE)			namespace NAMESPACE {
 #define			NS_END						}
 
+
+#define CHECK(p) assert(SUCCEEDED(p))
 #define			USING(NAMESPACE)			using namespace NAMESPACE;
 
 
@@ -20,6 +27,37 @@
 #define CheckFalseResult(x, y) { if(x == false) return y;}
 #define CheckNullResult(x, y) { if(x == nullptr) return y;}
 
+#define CAST_INT(x)	static_cast<int>(x)
+
+
+#define PROTO_OBJ_NAME(name) L"Proto_GameObject_" + _wstring(name)
+#define PROTO_COMPONENT_NAME(name) L"Proto_Component_" + _wstring(name)
+#define REGISTER_OBJ(x,name,p)  m_pGameInstance->Add_Prototype(x, PROTO_OBJ_NAME(name), p)
+
+
+#define WORLD_UP XMVectorSet(0.f,1.f,0.f,0.f)
+#define WORLD_RIGHT XMVectorSet(1.f,0.f,0.f,0.f)
+#define WORLD_LOOK XMVectorSet(0.f,0.f,1.f,0.f)
+
+#define GRAVITY -980.f
+
+#define ChunkWidth 15.f
+#define ChunkHeight 30.f
+#define ChunkDepth 12.f
+
+
+
+#define ENABLE_BITMASK_OPERATORS(x)                     \
+inline x operator|(x a, x b) {                          \
+    return static_cast<x>(static_cast<int>(a) | static_cast<int>(b)); } \
+inline x& operator|=(x& a, x b) {                       \
+    a = a | b; return a; }                              \
+inline x operator&(x a, x b) {                          \
+    return static_cast<x>(static_cast<int>(a) & static_cast<int>(b)); } \
+inline x& operator&=(x& a, x b) {                       \
+    a = a & b; return a; }                              \
+inline x operator~(x a) {                               \
+    return static_cast<x>(~static_cast<int>(a)); }
 
 
 #ifdef	ENGINE_EXPORTS

@@ -1,0 +1,800 @@
+﻿{
+    "Materials":  [
+                      {
+                          "Ambient":  "MI_Boulder_01_occ.png",
+                          "Diffuse":  "MI_Boulder_01_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_Boulder_01",
+                          "Normal":  "MI_Boulder_01_nml.png",
+                          "OPACITY":  "MI_Boulder_01_alb.png",
+                          "Specular":  "MI_Boulder_01_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_LivelyFlowersFl21_03_01_occ.png",
+                          "Diffuse":  "MI_LivelyFlowersFl21_03_01_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_LivelyFlowersFl21_03_01",
+                          "Normal":  "MI_LivelyFlowersFl21_03_01_nml.png",
+                          "OPACITY":  "MI_LivelyFlowersFl21_03_01_alb.png",
+                          "Specular":  "MI_LivelyFlowersFl21_03_01_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_SandySoilRock_01_occ.png",
+                          "Diffuse":  "MI_SandySoilRock_01_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_SandySoilRock_01",
+                          "Normal":  "MI_SandySoilRock_01_nml.png",
+                          "OPACITY":  "MI_SandySoilRock_01_alb.png",
+                          "Specular":  "MI_SandySoilRock_01_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_f_g_grass_a_01__1_occ.png",
+                          "Diffuse":  "MI_f_g_grass_a_01__1_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_f_g_grass_a_01__1",
+                          "Normal":  "MI_f_g_grass_a_01__1_nml.png",
+                          "OPACITY":  "MI_f_g_grass_a_01__1_alb.png",
+                          "Specular":  "MI_f_g_grass_a_01__1_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_f_grass_a_01_occ.png",
+                          "Diffuse":  "MI_f_grass_a_01_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_f_grass_a_01",
+                          "Normal":  "MI_f_grass_a_01_nml.png",
+                          "OPACITY":  "MI_f_grass_a_01_alb.png",
+                          "Specular":  "MI_f_grass_a_01_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_f_grass_a_03_occ.png",
+                          "Diffuse":  "MI_f_grass_a_03_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_f_grass_a_03",
+                          "Normal":  "MI_f_grass_a_03_nml.png",
+                          "OPACITY":  "MI_f_grass_a_03_alb.png",
+                          "Specular":  "MI_f_grass_a_03_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_f_grass_a_04_occ.png",
+                          "Diffuse":  "MI_f_grass_a_04_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_f_grass_a_04",
+                          "Normal":  "MI_f_grass_a_04_nml.png",
+                          "OPACITY":  "MI_f_grass_a_04_alb.png",
+                          "Specular":  "MI_f_grass_a_04_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_f_grass_b_01_occ.png",
+                          "Diffuse":  "MI_f_grass_b_01_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_f_grass_b_01",
+                          "Normal":  "MI_f_grass_b_01_nml.png",
+                          "OPACITY":  "MI_f_grass_b_01_alb.png",
+                          "Specular":  "MI_f_grass_b_01_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_f_grass_b_01a_occ.png",
+                          "Diffuse":  "MI_f_grass_b_01a_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_f_grass_b_01a",
+                          "Normal":  "MI_f_grass_b_01a_nml.png",
+                          "OPACITY":  "MI_f_grass_b_01a_alb.png",
+                          "Specular":  "MI_f_grass_b_01a_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_f_sand_a_01_occ.png",
+                          "Diffuse":  "MI_f_sand_a_01_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_f_sand_a_01",
+                          "Normal":  "MI_f_sand_a_01_nml.png",
+                          "OPACITY":  "MI_f_sand_a_01_alb.png",
+                          "Specular":  "MI_f_sand_a_01_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_f_wall_a_01_occ.png",
+                          "Diffuse":  "MI_f_wall_a_01_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_f_wall_a_01",
+                          "Normal":  "MI_f_wall_a_01_nml.png",
+                          "OPACITY":  "MI_f_wall_a_01_alb.png",
+                          "Specular":  "MI_f_wall_a_01_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_f_wall_a_01_occ.png",
+                          "Diffuse":  "MI_f_wall_a_01_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_f_wall_a_01_ex",
+                          "Normal":  "MI_f_wall_a_01_nml.png",
+                          "OPACITY":  "MI_f_wall_a_01_alb.png",
+                          "Specular":  "MI_f_wall_a_01_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_f_wall_a_01_occ.png",
+                          "Diffuse":  "MI_f_wall_a_01_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_f_wall_a_01_w",
+                          "Normal":  "MI_f_wall_a_01_nml.png",
+                          "OPACITY":  "MI_f_wall_a_01_alb.png",
+                          "Specular":  "MI_f_wall_a_01_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_f_wall_a_01a_occ.png",
+                          "Diffuse":  "MI_f_wall_a_01a_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_f_wall_a_01a",
+                          "Normal":  "MI_f_wall_a_01a_nml.png",
+                          "OPACITY":  "MI_f_wall_a_01a_alb.png",
+                          "Specular":  "MI_f_wall_a_01a_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_f_wall_a_01a_occ.png",
+                          "Diffuse":  "MI_f_wall_a_01a_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_f_wall_a_01a_ex",
+                          "Normal":  "MI_f_wall_a_01a_nml.png",
+                          "OPACITY":  "MI_f_wall_a_01a_alb.png",
+                          "Specular":  "MI_f_wall_a_01a_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_f_wall_a_01a_occ.png",
+                          "Diffuse":  "MI_f_wall_a_01a_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_f_wall_a_01a_w",
+                          "Normal":  "MI_f_wall_a_01a_nml.png",
+                          "OPACITY":  "MI_f_wall_a_01a_alb.png",
+                          "Specular":  "MI_f_wall_a_01a_smt.png"
+                      },
+                      {
+                          "Ambient":  "MI_f_wall_a_01b_occ.png",
+                          "Diffuse":  "MI_f_wall_a_01b_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_f_wall_a_01b",
+                          "Normal":  "MI_f_wall_a_01b_nml.png",
+                          "OPACITY":  "MI_f_wall_a_01b_alb.png",
+                          "Specular":  "MI_f_wall_a_01b_smt.png"
+                      },
+                      {
+                          "Ambient":  "",
+                          "Diffuse":  "MI_f_water_a_01_alb.png",
+                          "METALNESS":  "",
+                          "MaterialName":  "MI_f_water_a_01",
+                          "Normal":  "MI_f_water_a_01_nml.png",
+                          "OPACITY":  "MI_f_water_a_01_alb.png",
+                          "Specular":  ""
+                      }
+                  ],
+    "MeshNums":  18,
+    "Meshes":  [
+                   {
+                       "IBPath":  "Mesh_0.ib",
+                       "IndexCount":  3408,
+                       "MaterialName":  "MI_Boulder_01",
+                       "MeshIdx":  0,
+                       "Name":  "Field_13I1__MI_Boulder_01",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_0.vb",
+                       "VertexCount":  784
+                   },
+                   {
+                       "IBPath":  "Mesh_1.ib",
+                       "IndexCount":  3348,
+                       "MaterialName":  "MI_LivelyFlowersFl21_03_01",
+                       "MeshIdx":  1,
+                       "Name":  "Field_13I1__MI_LivelyFlowersFl21_03_01",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_1.vb",
+                       "VertexCount":  968
+                   },
+                   {
+                       "IBPath":  "Mesh_2.ib",
+                       "IndexCount":  4440,
+                       "MaterialName":  "MI_SandySoilRock_01",
+                       "MeshIdx":  2,
+                       "Name":  "Field_13I1__MI_SandySoilRock_01",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_2.vb",
+                       "VertexCount":  1412
+                   },
+                   {
+                       "IBPath":  "Mesh_3.ib",
+                       "IndexCount":  312,
+                       "MaterialName":  "MI_f_g_grass_a_01__1",
+                       "MeshIdx":  3,
+                       "Name":  "Field_13I1__MI_f_g_grass_a_01__1",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_3.vb",
+                       "VertexCount":  300
+                   },
+                   {
+                       "IBPath":  "Mesh_4.ib",
+                       "IndexCount":  192,
+                       "MaterialName":  "MI_f_grass_a_01",
+                       "MeshIdx":  4,
+                       "Name":  "Field_13I1__MI_f_grass_a_01",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_4.vb",
+                       "VertexCount":  134
+                   },
+                   {
+                       "IBPath":  "Mesh_5.ib",
+                       "IndexCount":  546,
+                       "MaterialName":  "MI_f_grass_a_03",
+                       "MeshIdx":  5,
+                       "Name":  "Field_13I1__MI_f_grass_a_03",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_5.vb",
+                       "VertexCount":  281
+                   },
+                   {
+                       "IBPath":  "Mesh_6.ib",
+                       "IndexCount":  12,
+                       "MaterialName":  "MI_f_grass_a_04",
+                       "MeshIdx":  6,
+                       "Name":  "Field_13I1__MI_f_grass_a_04",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_6.vb",
+                       "VertexCount":  12
+                   },
+                   {
+                       "IBPath":  "Mesh_7.ib",
+                       "IndexCount":  138,
+                       "MaterialName":  "MI_f_grass_b_01",
+                       "MeshIdx":  7,
+                       "Name":  "Field_13I1__MI_f_grass_b_01",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_7.vb",
+                       "VertexCount":  92
+                   },
+                   {
+                       "IBPath":  "Mesh_8.ib",
+                       "IndexCount":  36,
+                       "MaterialName":  "MI_f_grass_b_01a",
+                       "MeshIdx":  8,
+                       "Name":  "Field_13I1__MI_f_grass_b_01a",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_8.vb",
+                       "VertexCount":  24
+                   },
+                   {
+                       "IBPath":  "Mesh_9.ib",
+                       "IndexCount":  18,
+                       "MaterialName":  "MI_f_sand_a_01",
+                       "MeshIdx":  9,
+                       "Name":  "Field_13I1__MI_f_sand_a_01",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_9.vb",
+                       "VertexCount":  12
+                   },
+                   {
+                       "IBPath":  "Mesh_10.ib",
+                       "IndexCount":  1830,
+                       "MaterialName":  "MI_f_wall_a_01",
+                       "MeshIdx":  10,
+                       "Name":  "Field_13I1__MI_f_wall_a_01",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_10.vb",
+                       "VertexCount":  576
+                   },
+                   {
+                       "IBPath":  "Mesh_11.ib",
+                       "IndexCount":  162,
+                       "MaterialName":  "MI_f_wall_a_01_ex",
+                       "MeshIdx":  11,
+                       "Name":  "Field_13I1__MI_f_wall_a_01_ex",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_11.vb",
+                       "VertexCount":  61
+                   },
+                   {
+                       "IBPath":  "Mesh_12.ib",
+                       "IndexCount":  222,
+                       "MaterialName":  "MI_f_wall_a_01_w",
+                       "MeshIdx":  12,
+                       "Name":  "Field_13I1__MI_f_wall_a_01_w",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_12.vb",
+                       "VertexCount":  78
+                   },
+                   {
+                       "IBPath":  "Mesh_13.ib",
+                       "IndexCount":  324,
+                       "MaterialName":  "MI_f_wall_a_01a",
+                       "MeshIdx":  13,
+                       "Name":  "Field_13I1__MI_f_wall_a_01a",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_13.vb",
+                       "VertexCount":  96
+                   },
+                   {
+                       "IBPath":  "Mesh_14.ib",
+                       "IndexCount":  186,
+                       "MaterialName":  "MI_f_wall_a_01a_ex",
+                       "MeshIdx":  14,
+                       "Name":  "Field_13I1__MI_f_wall_a_01a_ex",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_14.vb",
+                       "VertexCount":  66
+                   },
+                   {
+                       "IBPath":  "Mesh_15.ib",
+                       "IndexCount":  414,
+                       "MaterialName":  "MI_f_wall_a_01a_w",
+                       "MeshIdx":  15,
+                       "Name":  "Field_13I1__MI_f_wall_a_01a_w",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_15.vb",
+                       "VertexCount":  115
+                   },
+                   {
+                       "IBPath":  "Mesh_16.ib",
+                       "IndexCount":  132,
+                       "MaterialName":  "MI_f_wall_a_01b",
+                       "MeshIdx":  16,
+                       "Name":  "Field_13I1__MI_f_wall_a_01b",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_16.vb",
+                       "VertexCount":  90
+                   },
+                   {
+                       "IBPath":  "Mesh_17.ib",
+                       "IndexCount":  36,
+                       "MaterialName":  "MI_f_water_a_01",
+                       "MeshIdx":  17,
+                       "Name":  "Field_13I1__MI_f_water_a_01",
+                       "Transform":  [
+                                         [
+                                             1.0,
+                                             0.0,
+                                             0.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.6292068494294654E-07,
+                                             1.0,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             -1.0,
+                                             -1.6292068494294654E-07,
+                                             0.0
+                                         ],
+                                         [
+                                             0.0,
+                                             0.0,
+                                             0.0,
+                                             1.0
+                                         ]
+                                     ],
+                       "VBPath":  "Mesh_17.vb",
+                       "VertexCount":  13
+                   }
+               ],
+    "ModelName":  "Field_13I"
+}

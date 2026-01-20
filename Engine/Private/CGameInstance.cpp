@@ -1,31 +1,89 @@
 #include "CGameInstance.h"
 
+////////////////////Managers/////////////////////
 #include "CTimer_Manager.h"
 #include "CGraphic_Device.h"
 #include "CLevel_Manager.h"
-#include "CObject_Manager.h"
+#include "CLevelFactroy.h"
 #include "CPrototype_Manager.h"
+#include "CObject_Manager.h"
+#include "CRenderer.h"
+#include "CCamera_Manager.h"
+#include "CInput_Manager.h"
+#include "CShader_Manager.h"
+#include "CScreenShot_Manager.h"
+#include "CRenderState_Manager.h"
+#include "CTexture_Manager.h"
+#include "CUI_Manager.h"
+#include "CNavMesh_Manager.h"
+#include "CEventBus_Manager.h"
+#include "CTerrain_Manager.h"
+#include "CMapObject_Manager.h"
+#include "CLight_Manager.h"
+#include "CMaterial_Manager.h"
+#include "CModel_Manager.h"
+#include "CHotKey_Manager.h"
+#include "CCollision_Manager.h"
+#include "CFont_Manager.h"
+#include "CTimerTask_Manager.h"
+#include "CTarget_Manager.h"
+#include "CSoundMgr.h"
+
+
+////////////////Add-Ons////////////////
+#include "CShader.h"
+#include "CPipeLine.h"
+#include "CTerrain_Base.h"
+#include "CMapObject.h"
+#include "CLayer.h"
+#include "CCollider_Base.h"
+
+
 
 
 IMPLEMENT_SINGLETON(CGameInstance)
+
+#ifdef _DEBUG
+bool		CGameInstance::m_bDrawDebug = true;
+#endif // _DEBUG
+
 
 CGameInstance::CGameInstance()
 {
 	 
 }
-HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext)
+HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<ID3D11Device>* pDevice, ComPtr<ID3D11DeviceContext>*pContext)
 {
+	m_EngineDesc = EngineDesc;
+
+
 	/* 그래픽 디바이스 초기화 */
-	m_pGraphicDev = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.winMode, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, ppDevice, ppContext);
+	m_pGraphicDev = CGraphic_Device::Create(EngineDesc.hWnd, EngineDesc.winMode, EngineDesc.iWinSizeX, EngineDesc.iWinSizeY, pDevice, pContext);
 	CheckNullResult(m_pGraphicDev, E_FAIL);
+
+	D3D11_VIEWPORT          ViewportDesc{};
+	_uint           iNumViewports = { 1 };
+	(*pContext)->RSGetViewports(&iNumViewports, &ViewportDesc);
+	m_ViewPorts.push_back(ViewportDesc);
 
 	/*레벨 매니저 초기화*/
 	m_pLevelManager = CLevel_Manager::Create();
 	CheckNullResult(m_pLevelManager, E_FAIL);
 
+	/*레벨 팩토리 초기화*/
+	m_pLevelFactory = CLevelFactroy::Create();
+	CheckNullResult(m_pLevelFactory, E_FAIL);
 
-	/* 인풋 디바이스 초기화 */
+
+	/*EventBus매니저*/
+	m_pEventBusManager = CEventBus_Manager::Create();
+	CheckNullResult(m_pEventBusManager, E_FAIL);
+
 	/* 사운드  디바이스 초기화 */
+	m_pSound_Manager = CSoundMgr::Get_Instance();
+	CheckNullResult(m_pSound_Manager, E_FAIL);
+	m_pSound_Manager->Init();
+
 	/* 타이머 매니져 초기화 */
 	m_pTimerManager = CTimer_Manager::Create();
 	CheckNullResult(m_pTimerManager, E_FAIL);
@@ -36,16 +94,156 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, _Inout_ 
 
 
 
+	/*프로토타입매니져 초기화*/
+	m_pProtoManager = CPrototype_Manager::Create(EngineDesc.iNumLevels);
+	CheckNullResult(m_pProtoManager, E_FAIL);
 
-	
+	/*오브젝트매니져 초기화*/
+	m_pObjectManager = CObject_Manager::Create(*pDevice, *pContext, EngineDesc.iNumLevels);
+	CheckNullResult(m_pObjectManager, E_FAIL);
+
+
+	/*렌더러 초기화*/
+	m_pRenderer = CRenderer::Create(*pDevice, *pContext);
+	CheckNullResult(m_pRenderer, E_FAIL);
+
+	/*카메라 매니져 초기화*/
+	m_pCameraManager = CCamera_Manager::Create(*pDevice,*pContext);
+	CheckNullResult(m_pCameraManager, E_FAIL);
+
+
+	/*텍스쳐 매니저 초기화*/
+	m_pTextureManager = CTexture_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pTimerManager, E_FAIL);
+
+	/*스크린샷매니저 초기화*/
+	m_pScreenshotManager = CScreenShot_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pScreenshotManager, E_FAIL);
+
+	/*렌더스테이트 매니져 초기화*/
+	m_pRenderStateManager = CRenderState_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pRenderStateManager, E_FAIL);
+
+	/*파이프라인*/
+	m_pPipeLine = CPipeLine::Create(*pDevice, *pContext);
+	CheckNullResult(m_pPipeLine, E_FAIL);
+
+	/*쉐이더 매니져 초기화*/
+	m_pShaderManager = CShader_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pShaderManager, E_FAIL);
+
+	/*UI매니저*/
+	m_pUIManager = CUI_Manager::Create();
+	CheckNullResult(m_pUIManager, E_FAIL);
+
+	/*Terrain매니저*/
+	m_pTerrainManager = CTerrain_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pTerrainManager, E_FAIL);
+
+
+	/*라이트 매니저*/
+	m_pLightManager = CLight_Manager::Create(EngineDesc.iNumLevels);
+	CheckNullResult(m_pLightManager, E_FAIL);
+
+	/*모델매니저*/
+	m_pModelManager = CModel_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pModelManager, E_FAIL);
+
+
+	/*매태리얼 매니저*/
+	m_pMaterialManager = CMaterial_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pMaterialManager,E_FAIL);
+
+	/*Hotkey  매니저*/
+	m_pHotKeyManager = CHotKey_Manager::Create();
+	CheckNullResult(m_pHotKeyManager, E_FAIL);
+
+	/*NavMesh매니저*/
+	m_pNavMeshManager = CNavMesh_Manager::Create(*pDevice,*pContext);
+	CheckNullResult(m_pNavMeshManager, E_FAIL);
+
+	/*collision 매니저*/
+	m_pCollisionManager = CCollision_Manager::Create(EngineDesc.colGroupMax);
+	CheckNullResult(m_pCollisionManager, E_FAIL);
+
+	/*Font매니저*/
+	m_pFont_Manager = CFont_Manager::Create(*pDevice, *pContext);
+	CheckNullResult(m_pFont_Manager, E_FAIL);
+
+	m_pTimerTask_Manager = CTimerTask_Manager::Create();
+	CheckNullResult(m_pTimerTask_Manager, E_FAIL);
+
+	/*렌더타겟매니저*/
+	m_pTarget_Manager = CTarget_Manager::Create(*pDevice,*pContext);
+	if (FAILED(m_pTarget_Manager->Initialize()))
+		return E_FAIL;
+
+
+	m_pShadow = CShadow::Create();
+	if (nullptr == m_pShadow)
+		return E_FAIL;
+
+
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+
 
 	return S_OK;
 }
 
+void CGameInstance::Update_Priority_Engine(_float fTimedelta)
+{
+	/*지연삭제 / Scenechange 용*/
+
+
+	m_pTerrainManager->Update_Priority(fTimedelta);
+	m_pLevelManager->Update_Priority(fTimedelta);
+}
+
 void CGameInstance::Update_Engine(_float fTimedelta)
 {
+	/*m_pObjectManager->Update_Priority(fTimedelta);
+	m_pObjectManager->Update(fTimedelta);
+	m_pObjectManager->Update_Late(fTimedelta);*/
+
+
+	m_pTerrainManager->Update(fTimedelta);
 	m_pLevelManager->Update(fTimedelta);
+	m_pHotKeyManager->Update();
+	Update_Cameras(fTimedelta);
+	
+	//카메라의 이동이모두 끝난 후 계산
+	m_pPipeLine->Update();
+
+
 }
+
+void CGameInstance::LateUpdate_Engine(float fTimedelta)
+{
+
+
+	
+
+	m_pTerrainManager->Update_Late(fTimedelta);
+	m_pLevelManager->Update_Late(fTimedelta);
+
+	LateUpdate_Cameras(fTimedelta);
+
+	if(m_EngineDesc.eEngineMode==EngineMode::CLIENT)
+		m_pCollisionManager->Update_CollisionGroup(fTimedelta);
+
+	m_pSound_Manager->Update(fTimedelta);
+	m_pTimerTask_Manager->Update(fTimedelta);
+	m_pEventBusManager->DisPatch(fTimedelta);
+}
+
+void CGameInstance::Update_Render(float fTimedelta)
+{
+
+	
+	m_pTerrainManager->Update_Render(fTimedelta);
+	m_pLevelManager->Update_Render(fTimedelta);
+}
+
 
 HRESULT CGameInstance::Draw_Begin(const _float4* pClearColor)
 {
@@ -62,8 +260,14 @@ HRESULT CGameInstance::Draw_Begin(const _float4* pClearColor)
 
 HRESULT CGameInstance::Draw()
 {
-	//Renderer->Draw();
+	//m_pRenderer->Draw();
+
+	m_pCameraManager->Render_Cameras();
+
+
 	m_pLevelManager->Render();
+
+
 	return S_OK;
 }
 
@@ -79,14 +283,74 @@ HRESULT CGameInstance::Draw_End()
 void CGameInstance::Clear(_uint iLevelID)
 {
 
+	m_pProtoManager->Clear(iLevelID);
+	m_pObjectManager->Clear(iLevelID);
+
+
 }
 
-HRESULT CGameInstance::Level_Changer(_uint iSceneID, CLevel* pNewLevel)
+_float CGameInstance::Random(_float fMin, _float fMax)
+{
+	//0~1값 나옴.
+	_float fRandomNormal = static_cast<float>(rand()) / RAND_MAX;
+
+	return (fMax - fMin) * fRandomNormal + fMin;
+}
+
+#pragma region LevelManager
+HRESULT CGameInstance::Level_Changer(_uint iSceneID, LevelArgs& args)
 {
 	CheckNullResult(m_pLevelManager,E_FAIL);
-	return m_pLevelManager->Level_Changer(iSceneID,pNewLevel);
+	return m_pLevelManager->Level_Changer(iSceneID, args);
 }
 
+void CGameInstance::Pop_Level()
+{
+	CheckNull(m_pLevelManager);
+	return m_pLevelManager->Pop_Level();
+
+}
+
+CLevel* CGameInstance::Get_CurrentLevel()
+{
+	CheckNullResult(m_pLevelManager,nullptr);
+	return m_pLevelManager->Get_CurrentLevel();
+}
+const vector<CLevel*>* CGameInstance::Get_LevelStack()
+{
+	CheckNullResult(m_pLevelManager, nullptr);
+	return m_pLevelManager->Get_LevelStack();
+}
+_uint CGameInstance::Get_CurrentLevelID()
+{
+	return m_pLevelManager->Get_CurrentLevelID();
+}
+bool CGameInstance::Get_IsLoading()
+{
+	return m_pLevelManager->Get_IsLoading();
+
+}
+void CGameInstance::Set_IsLoading(bool b)
+{
+	return m_pLevelManager->Set_IsLoading(b);
+}
+#pragma endregion
+
+#pragma region LevelFactory
+void CGameInstance::Register_Level(_uint iSceneID, LevelCreator Creator)
+{
+	CheckNull(m_pLevelFactory);
+	m_pLevelFactory->Register(iSceneID, Creator);
+}
+
+CLevel* CGameInstance::Create_Level(_uint iSceneID, LevelArgs _Arg)
+{
+	CheckNullResult(m_pLevelFactory,nullptr);
+	return m_pLevelFactory->Create(iSceneID, _Arg);
+}
+#pragma endregion
+
+#pragma region TimerManager
 _float CGameInstance::Get_TimeDelta(const _tchar* pTimerTag)
 {
 	CheckNullResult(m_pTimerManager, 0.f);
@@ -99,33 +363,937 @@ void CGameInstance::Compute_TimeDelta(const _tchar* pTimerTag)
 	return m_pTimerManager->Compute_TimeDelta(pTimerTag);
 
 }
-
-HRESULT CGameInstance::Add_Prototype(_uint m_iNumLevel, const _wstring& strPrototypeTag, CBase* _base)
+_float CGameInstance::Get_FPS(const _tchar* pTimerTag)
 {
-	CheckNullResult(m_pProtoManager,E_FAIL);
-	return m_pProtoManager->Add_Prototype(m_iNumLevel,strPrototypeTag,_base);
+	return m_pTimerManager->Get_FPS(pTimerTag);
 }
-
-CBase* CGameInstance::Clone_Prototype(PROTOTYPE eType, _uint iNumLevel, const _wstring& strPrototypeTag, void* pArg)
-{
-	CheckNullResult(m_pProtoManager, nullptr);
-	return m_pProtoManager->Clone_Prototype(eType, iNumLevel, strPrototypeTag);
-}
-
 
 HRESULT CGameInstance::Add_Timer(const _tchar* pTimerTag)
 {
-	CheckNullResult(m_pTimerManager,E_FAIL);
+	CheckNullResult(m_pTimerManager, E_FAIL);
 	return m_pTimerManager->Add_Timer(pTimerTag);
+}
+
+#pragma endregion
+
+#pragma region ProtoManager
+HRESULT CGameInstance::Add_Prototype(_uint iLevelIndex, const _wstring& strProtoTag, CBase* pPrototype)
+{
+	CheckNullResult(m_pProtoManager, E_FAIL);
+	return m_pProtoManager->Add_Prototype(iLevelIndex,strProtoTag,pPrototype);
+}
+
+CBase* CGameInstance::Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelIndex, const _wstring& strPrototag, void* pArg)
+{
+	CheckNullResult(m_pProtoManager, nullptr);
+	return m_pProtoManager->Clone_Prototype(ePrototypeID, iLevelIndex, strPrototag,pArg);
+}
+#pragma endregion
+
+#pragma region ObjectManager
+const unordered_map<_wstring, CLayer*>& CGameInstance::Get_Layers(_uint iLevel)
+{
+	return m_pObjectManager->Get_Layers(iLevel);
+}
+
+HRESULT CGameInstance::Add_GameObject_To_Layer(_uint iProtoLevelIndex, const _wstring& strPrototypeTag, _uint iLayerLevelIndex, const _wstring& strLayerTag, void* pArg)
+{
+	CheckNullResult(m_pObjectManager, E_FAIL);
+	return m_pObjectManager->Add_GameObject_To_Layer(iProtoLevelIndex,strPrototypeTag,iLayerLevelIndex,strLayerTag,pArg);
+}
+
+HRESULT CGameInstance::Make_New_Layer(_uint iLayerLevelIndex, const _wstring& strLayerTag)
+{
+
+	return m_pObjectManager->Make_New_Layer(iLayerLevelIndex,strLayerTag);
+}
+
+void CGameInstance::Update_Priority_Static(_float fTimeDelta)
+{
+	CheckNull(m_pObjectManager);
+	return m_pObjectManager->Update_Priority_Static(fTimeDelta);
+
+}
+
+void CGameInstance::Update_Static(_float fTimeDelta)
+{
+
+	CheckNull(m_pObjectManager);
+	return m_pObjectManager->Update_Static(fTimeDelta);
+}
+
+void CGameInstance::Update_Late_Static(_float fTimeDelta)
+{
+	CheckNull(m_pObjectManager);
+	return m_pObjectManager->Update_Late_Static(fTimeDelta);
+}
+
+void CGameInstance::Update_Render_Static(_float fTimeDelta)
+{
+	CheckNull(m_pObjectManager);
+	return m_pObjectManager->Update_Render_Static(fTimeDelta);
+}
+
+CGameObject* CGameInstance::Find_GameObject(_uint iLevelIndex, const _wstring& LayerTag, const _wstring& Tag)
+{
+	return m_pObjectManager->Find_GameObject(iLevelIndex,LayerTag,Tag);
+}
+
+HRESULT CGameInstance::Add_GameObject_To_Layer(_uint iLayerLevelIndex, const _wstring& strLayerTag, CGameObject* pObject)
+{
+	CheckNullResult(m_pObjectManager, E_FAIL);
+	return m_pObjectManager->Add_GameObject_To_Layer(iLayerLevelIndex, strLayerTag, pObject);
+}
+
+CLayer* CGameInstance::Find_Layer(_uint iLevelIndex, const _wstring& LayerTag)
+{
+	CheckNullResult(m_pObjectManager, nullptr);
+	return m_pObjectManager->Find_Layer(iLevelIndex, LayerTag);
+}
+
+#pragma endregion
+
+#pragma region Renderer
+HRESULT CGameInstance::Add_RenderObject(_uint eID, CGameObject* pRenderObject)
+{
+	CheckNullResult(m_pRenderer, E_FAIL);
+	return m_pRenderer->Add_RenderObject(eID, pRenderObject);
+}
+HRESULT CGameInstance::Add_SortFunc(_uint eID, function<bool(CGameObject*, CGameObject*)> _Fun)
+{
+	CheckNullResult(m_pRenderer, E_FAIL);
+	return m_pRenderer->Add_SortFunc(eID,_Fun);
+}
+void CGameInstance::Render_Group(_uint eType)
+{
+	return m_pRenderer->Render_Group(eType);
+}
+HRESULT CGameInstance::Initialize_Renderer(_uint RenderGroupCount)
+{
+	CheckNullResult(m_pRenderer, E_FAIL);
+	return m_pRenderer->Initialize(RenderGroupCount);
+}
+void CGameInstance::Clear_RenderGroups()
+{
+	return m_pRenderer->Clear_RenderGroups();
+}
+int CGameInstance::Get_RenderGroupCount()
+{
+	return m_pRenderer->Get_RenderGroupCount();
+}
+
+ComPtr<ID3D11DepthStencilView> CGameInstance::Get_DSV()
+{
+	return m_pRenderer->Get_DSV();
+}
+
+HRESULT CGameInstance::SetUp_ViewportDesc(_uint iWidth, _uint iHeight)
+{
+	return m_pRenderer->SetUp_ViewportDesc(iWidth,iHeight);
+}
+
+
+void CGameInstance::Bind_And_Render_Lights()
+{
+	return m_pRenderer->Bind_And_Render_Lights();
+}
+
+void CGameInstance::Bind_Rect_Matricies()
+{
+	return m_pRenderer->Bind_Rect_Matricies();
+}
+
+void CGameInstance::Render_Combined()
+{
+	return m_pRenderer->Render_Combined();
+}
+
+_uint CGameInstance::Get_ViewportWidth()
+{
+	return m_pRenderer->Get_ViewportWidth();
+}
+
+_uint CGameInstance::Get_ViewportHeight()
+{
+	return m_pRenderer->Get_ViewportHeight();
+}
+
+
+#ifdef _DEBUG
+void CGameInstance::Render_Debug()
+{
+	return m_pRenderer->Render_Debug();
+}
+
+
+HRESULT CGameInstance::Add_DebugComponent(CComponent* pComponent)
+{
+	return m_pRenderer->Add_DebugComponent((pComponent));
+}
+#endif
+HRESULT CGameInstance::Get_Buffer(ComPtr<ID3D11Texture2D>* pBuffer, UINT iFlag)
+{
+	return m_pGraphicDev->Get_Buffer(pBuffer,iFlag);
+}
+ComPtr<ID3D11RenderTargetView> CGameInstance::Get_BackBuffer_RTV()
+{
+	return m_pGraphicDev->Get_BackBuffer_RTV();
+}
+ComPtr<ID3D11DepthStencilView> CGameInstance::Get_BackBuffer_DSV()
+{
+	return m_pGraphicDev->Get_BackBuffer_DSV();
+}
+#pragma endregion
+
+
+#pragma region CameraManager
+void CGameInstance::RegisterCamera(CAMERA_TYPE eType, CGameObject* pObj)
+{
+	CheckNull(m_pCameraManager);
+	m_pCameraManager->RegisterCamera(eType, pObj);
+}
+void CGameInstance::UnRegisterCamera(CAMERA_TYPE eType)
+{
+	CheckNull(m_pCameraManager);
+	m_pCameraManager->UnRegisterCamera(eType);
+}
+
+void CGameInstance::Set_MainCamera(CAMERA_TYPE eType)
+{
+	CheckNull(m_pCameraManager);
+	return m_pCameraManager->Set_MainCamera(eType);
+
+}
+
+
+void CGameInstance::Update_Cameras(_float fTimeDelta)
+{
+	CheckNull(m_pCameraManager);
+	m_pCameraManager->Update_Cameras(fTimeDelta);
+}
+
+void CGameInstance::LateUpdate_Cameras(_float fTimeDelta)
+{
+	CheckNull(m_pCameraManager);
+	m_pCameraManager->LateUpdate_Cameras(fTimeDelta);
+}
+
+CCamera_Base* CGameInstance::Find_Camera(CAMERA_TYPE eType)
+{
+	CheckNullResult(m_pCameraManager, nullptr);
+	return m_pCameraManager->Find_Camera(eType);
+}
+
+CCamera_Base* CGameInstance::Get_MainCamera()
+{
+	CheckNullResult(m_pCameraManager, nullptr);
+	return m_pCameraManager->Get_MainCamera();
+}
+
+CShader* CGameInstance::Get_RenderShader()
+{
+	return m_pCameraManager->Get_RenderShader();
+}
+
+const string& CGameInstance::Get_RenderPassName()
+{
+	return m_pCameraManager->Get_RenderPassName();
+}
+
+CCamera_Base* CGameInstance::Get_RenderCamera()
+{
+	return m_pCameraManager->Get_RenderCamera();
+}
+
+
+
+#pragma endregion
+
+#pragma region ShaderManager
+HRESULT CGameInstance::Register_Shader(const _wstring& Tag, CShader* pInstance)
+{
+	CheckNullResult(m_pShaderManager, E_FAIL);
+	return m_pShaderManager->Register_Shader(Tag, pInstance);
+}
+
+CShader* CGameInstance::Find_Shader(const _wstring& Tag)
+{
+	CheckNullResult(m_pShaderManager, nullptr);
+	return m_pShaderManager->Find_Shader(Tag);
+}
+
+
+
+HRESULT CGameInstance::Bind_GlobalLightData()
+{
+	CheckNullResult(m_pShaderManager, E_FAIL);
+	return m_pShaderManager->Bind_GlobalLightData();
+}
+
+
+
+HRESULT CGameInstance::Bind_SamplerState(_uint iRenderGroup)
+{
+	CheckNullResult(m_pShaderManager, E_FAIL);
+	return m_pShaderManager->Bind_SamplerState(iRenderGroup);
+}
+
+void CGameInstance::CopyData_Buffer(string Key, const void* pData, _uint iSize)
+{
+	CheckNull(m_pShaderManager);
+	return m_pShaderManager->CopyData_Buffer(Key, pData, iSize);
+}
+
+#pragma endregion
+
+#pragma region ScreenShotManager
+void CGameInstance::ScreenShot(const _wstring& Key)
+{
+	CheckNull(m_pScreenshotManager);
+	return m_pScreenshotManager->ScreenShot(Key);
+}
+ 
+CTexture* CGameInstance::Find_ScreenTexture(const _wstring& Key)
+{
+	CheckNullResult(m_pScreenshotManager,nullptr);
+	return m_pScreenshotManager->Find_ScreenTexture(Key);
+}
+
+HRESULT CGameInstance::SaveTextureToFile(const _wstring& Key, const _wstring& filePath)
+{
+	CheckNullResult(m_pScreenshotManager,E_FAIL);
+	return m_pScreenshotManager->SaveTextureToFile(Key, filePath);
+}
+
+#pragma endregion
+
+HRESULT CGameInstance::Register_RenderStates(_uint iRenderGroup, const RenderStates& States)
+{
+	CheckNullResult(m_pRenderStateManager, E_FAIL);
+	return m_pRenderStateManager->Register_RenderStates(iRenderGroup, States);
+}
+
+const RenderStates& CGameInstance::Get_RenderStates(_uint iRenderGroup)
+{
+	return m_pRenderStateManager->Get_RenderStates(iRenderGroup);
+}
+
+HRESULT CGameInstance::Bind_SamplerState(CShader* pShader, _uint iRenderGroup)
+{
+	CheckNullResult(m_pRenderStateManager, E_FAIL);
+	return m_pRenderStateManager->Bind_SamplerState(pShader, iRenderGroup);
+}
+
+HRESULT CGameInstance::Register_Texture(const _wstring& Tag, CTexture* pInstance)
+{
+	CheckNullResult(m_pTextureManager, E_FAIL);
+	return m_pTextureManager->Register_Texture(Tag,pInstance);
+}
+
+CTexture* CGameInstance::Find_Texture(const _wstring& Tag)
+{
+	CheckNullResult(m_pTextureManager, nullptr);
+	return m_pTextureManager->Find_Texture(Tag);
+}
+
+HRESULT CGameInstance::Load_Textures(const _wstring& FolderPath, const _wstring& Extension)
+{
+
+	CheckNullResult(m_pTextureManager, E_FAIL);
+	return m_pTextureManager->Load_Textures(FolderPath, Extension);
+}
+
+#pragma region Pipeline
+void CGameInstance::Set_Transform(_uint CameraType, D3DTS eTransformMatrix, _fmatrix TransformMatrix)
+{
+	CheckNull(m_pPipeLine);
+	return m_pPipeLine->Set_Transform(CameraType, eTransformMatrix, TransformMatrix);
+
+}
+
+void CGameInstance::Set_CamPosition(_uint CameraType, const _float4& Position)
+{
+	return m_pPipeLine->Set_CamPosition(CameraType, Position);
+
+}
+
+HRESULT CGameInstance::Bind_PipeLineMatrix(CShader* pShader, const _char* pConstant, _uint iCameraType, D3DTS eTransformMatrix)
+{
+	CheckNullResult(m_pPipeLine,E_FAIL);
+	return m_pPipeLine->Bind_PipeLineMatrix(pShader, pConstant, iCameraType, eTransformMatrix);
+
+}
+
+HRESULT CGameInstance::Bind_PipeLineMatrixAll(CShader* pShader, const _char* pConstant, _uint iCameraType)
+{
+	return m_pPipeLine->Bind_PipeLineMatrixAll(pShader,pConstant,iCameraType);
+}
+
+HRESULT CGameInstance::Bind_PipeLineInverseMatrix(CShader* pShader, const _char* pConstant, _uint iCameraType, D3DTS eTransformMatrix)
+{
+	CheckNullResult(m_pPipeLine, E_FAIL);
+	return m_pPipeLine->Bind_PipeLineInverseMatrix(pShader, pConstant, iCameraType, eTransformMatrix);
+}
+
+const _float4x4* CGameInstance::Get_InverseTransform(_uint iCameraType, D3DTS eTransformMatrix)
+{
+	return m_pPipeLine->Get_InverseTransform(iCameraType, eTransformMatrix);
+}
+
+HRESULT CGameInstance::Update_CamBuffer(_uint CameraType)
+{
+	CheckNullResult(m_pPipeLine, E_FAIL);
+	return m_pPipeLine->Update_CamBuffer(CameraType);
+}
+_matrix CGameInstance::Get_ViewProjMatrix(_uint CameraType)
+{
+	return m_pPipeLine->Get_ViewProjMatrix(CameraType);
+}
+const _float4x4& CGameInstance::Get_ViewMatrix(_uint CameraType)
+{
+	return m_pPipeLine->Get_ViewMatrix(CameraType);
+}
+const _float4x4& CGameInstance::Get_ProjMatrix(_uint CameraType)
+{
+	return m_pPipeLine->Get_ProjMatrix(CameraType);
+}
+const _float4& CGameInstance::Get_CamPosition(_uint CameraType)
+{
+	return m_pPipeLine->Get_CamPosition(CameraType);
+}
+
+#pragma endregion
+
+#pragma region UI_Manager
+HRESULT CGameInstance::Register_UIGroup(const UIGroup& Group, const _wstring& Key)
+{
+	CheckNullResult(m_pUIManager, E_FAIL);
+	return m_pUIManager->Register_UIGroup(Group, Key);
+}
+HRESULT CGameInstance::AddUIToGroup(const _wstring& Key, CGameObject* pGameObject)
+{
+	CheckNullResult(m_pUIManager, E_FAIL);
+	return m_pUIManager->AddUIToGroup(Key, pGameObject);
+}
+HRESULT CGameInstance::RegisterEvent(const _wstring& Key, function<void(void*)> _function)
+{
+	CheckNullResult(m_pUIManager, E_FAIL);
+	return m_pUIManager->RegisterEvent(Key, _function);
+}
+HRESULT CGameInstance::UnRegisterEvent(const _wstring& Key)
+{
+	return m_pUIManager->UnRegisterEvent(Key);
+}
+HRESULT CGameInstance::BroadCastEvent(const _wstring& Key, void* pData)
+{
+	CheckNullResult(m_pUIManager, E_FAIL);
+	return m_pUIManager->BroadCastEvent(Key, pData);
+}
+HRESULT CGameInstance::SetActiveGroup(const _wstring& Key, bool bActive)
+{
+	CheckNullResult(m_pUIManager, E_FAIL);
+	return m_pUIManager->SetActiveGroup(Key, bActive);
+}
+UIGroup* CGameInstance::Get_UIGroup(const _wstring Key)
+{
+	CheckNullResult(m_pUIManager, nullptr);
+	return m_pUIManager->Get_UIGroup(Key);
+}
+function<void(void*)> CGameInstance::Get_EventFunction(const _wstring& Key)
+{
+	CheckNullResult(m_pUIManager, nullptr);
+	return m_pUIManager->Get_EventFunction(Key);
+}
+
+#pragma endregion
+
+#pragma region Terrain_Manager
+HRESULT CGameInstance::Register_Terrain(const _wstring& Key, CTerrain_Base* pTerrain)
+{
+	CheckNullResult(m_pTerrainManager, E_FAIL);
+	return m_pTerrainManager->Register_Terrain(Key,pTerrain);
+}
+HRESULT CGameInstance::UnRegister_Terrain(const _wstring& Key)
+{
+	CheckNullResult(m_pTerrainManager, E_FAIL);
+	return m_pTerrainManager->UnRegister_Terrain(Key);
+}
+CTerrain_Base* CGameInstance::Find_Terrain(const _wstring& Key)
+{
+	CheckNullResult(m_pTerrainManager, nullptr);
+	return m_pTerrainManager->Find_Terrain(Key);
+}
+
+Triangle* CGameInstance::PickTerrain(const _wstring& Key)
+{
+	return m_pTerrainManager->PickTerrain(Key);
+}
+
+void CGameInstance::Set_EnableUpdate(bool b)
+{
+	return m_pTerrainManager->Set_EnableUpdate(b);
+}
+
+void CGameInstance::Set_EnalbeUpdateRender(bool b)
+{
+	return m_pTerrainManager->Set_EnalbeUpdateRender(b);
+}
+
+void CGameInstance::Set_EnableUpdateMinimap(bool b)
+{
+	return m_pTerrainManager->Set_EnableUpdateMinimap(b);
+}
+
+void CGameInstance::Set_Active_Group(int StartTileID, int EndTileID, bool _bActive)
+{
+	return m_pTerrainManager->Set_Active_Group(StartTileID, EndTileID, _bActive);
+}
+
+_float3 CGameInstance::Get_PickingWorldPos()
+{
+	return m_pTerrainManager->Get_PickingWorldPos();
+}
+
+CTerrain_Base* CGameInstance::Get_PickTerrain()
+{
+	return m_pTerrainManager->Get_PickTerrain();
+}
+
+CTerrain_Base* CGameInstance::Check_Picking()
+{
+	return m_pTerrainManager->Check_Picking();
+}
+
+HRESULT CGameInstance::Save_All_Terrains(const string& path, int iNum)
+{
+	return m_pTerrainManager->Save_All_Terrains(path, iNum);
+}
+
+HRESULT CGameInstance::Load_Terrains_MapTool(const string& LoadPath)
+{
+	return m_pTerrainManager->Load_Terrains_MapTool(LoadPath);
+}
+
+const vector<tagLoadTerrainData>& CGameInstance::Load_Terrains_Runtime(const string& LoadPath)
+{
+	return m_pTerrainManager->Load_Terrains_Runtime(LoadPath);
+}
+
+float CGameInstance::Get_PickDist()
+{
+	return m_pTerrainManager->Get_PickDist();
+}
+
+const UMap<_wstring, CTerrain_Base*>& CGameInstance::Get_TerrainMap()
+{
+	return m_pTerrainManager->Get_TerrainMap();
+}
+
+void CGameInstance::RequestDestroy(CTerrain_Base* pObj)
+{
+	return m_pTerrainManager->RequestDestroy(pObj);
+}
+
+
+
+
+
+#pragma endregion
+
+
+#pragma region Light_Manager
+HRESULT CGameInstance::Add_Light(_uint iLevelID,const LIGHT_DESC& LightDesc)
+{
+	CheckNullResult(m_pLightManager, E_FAIL);
+	return m_pLightManager->Add_Light(iLevelID,LightDesc);
+}
+const LIGHT_DESC* CGameInstance::Get_LightDesc(_uint iLevelID,_uint iIndex)
+{
+	CheckNullResult(m_pLightManager, nullptr);
+	return m_pLightManager->Get_LightDesc(iLevelID,iIndex);
+}
+HRESULT CGameInstance::Bind_Lights(CShader* pShader)
+{
+	CheckNullResult(m_pLightManager, E_FAIL);
+
+	return m_pLightManager->Bind_Lights(pShader);
+}
+CLight* CGameInstance::Get_Light(_uint iLevelID, _uint iIndex)
+{
+	CheckNullResult(m_pLightManager, nullptr);
+
+	return m_pLightManager->Get_Light(iLevelID,iIndex);
+}
+
+CLight* CGameInstance::Get_DirectionLight(_uint iLevelID)
+{
+	return m_pLightManager->Get_DirectionLight(iLevelID);
+}
+
+CLight* CGameInstance::Get_Light(_uint iLevelID, wstring LightName)
+{
+	return m_pLightManager->Get_Light(iLevelID, LightName);
+}
+
+HRESULT CGameInstance::Bind_Directional_Light(class CShader* pShader, class CVIBuffer_Rect* pVIBuffer, const LIGHT_DESC* pLightDesc)
+{
+	return m_pLightManager->Bind_Directional_Light(pShader, pVIBuffer,pLightDesc);
+}
+
+void CGameInstance::Render_LightManager(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	return m_pLightManager->Render(pShader, pVIBuffer);
+}
+
+list<class CLight*> CGameInstance::Get_Lights(_uint iLevelID)
+{
+	return m_pLightManager->Get_Lights(iLevelID);
+}
+
+HRESULT CGameInstance::Save_LightData()
+{
+	return m_pLightManager->Save_Data();
+}
+
+HRESULT CGameInstance::Load_LightData(_uint iLevelID, string FilePath)
+{
+	return m_pLightManager->Load_Data(iLevelID,FilePath);
+}
+
+
+#pragma region Model_Manager
+HRESULT CGameInstance::Register_Model(const _wstring& Tag, CModel* pInstance)
+{
+	CheckNullResult(m_pModelManager,E_FAIL);
+	return m_pModelManager->Register_Model(Tag,pInstance);
+}
+CModel* CGameInstance::Find_Model(const _wstring& ProtoModelName)
+{
+	CheckNullResult(m_pModelManager, nullptr);
+	return m_pModelManager->Find_Model(ProtoModelName);
+}
+CModel* CGameInstance::Clone_Model(const _wstring& ProtoModelName, void* pArg)
+{
+	CheckNullResult(m_pModelManager, nullptr);
+	return m_pModelManager->Clone_Model(ProtoModelName, pArg);
+}
+
+_uint CGameInstance::Get_ModelCount()
+{
+	return m_pModelManager->Get_ModelCount();
+}
+
+HRESULT CGameInstance::Load_Model(const string& FilePath, _matrix PreMatrix)
+{
+	return m_pModelManager->Load_Model(FilePath,PreMatrix);
+}
+
+const UMap<_wstring, class CModel*>& CGameInstance::Get_MapModel()
+{
+	return m_pModelManager->Get_MapModel();
+}
+
+HRESULT CGameInstance::Load_All_Models(const string& FilePath, _matrix PreMatrix)
+{
+	CheckNullResult(m_pModelManager, E_FAIL);
+	return m_pModelManager->Load_All_Models(FilePath, PreMatrix);
+}
+
+#pragma endregion
+HRESULT CGameInstance::Register_Material(const _wstring& Tag, CMaterial* pInstance)
+{
+	CheckNullResult(m_pMaterialManager,E_FAIL);
+	return m_pMaterialManager->Register_Material(Tag,pInstance);
+}
+CMaterial* CGameInstance::Find_Material(const _wstring& Tag)
+{
+	CheckNullResult(m_pMaterialManager, nullptr);
+	return m_pMaterialManager->Find_Material(Tag);
+}
+HRESULT CGameInstance::Register_HotKey(KeyCode eKode, bool bCtrl, bool bShift, bool bAlt, function<void()> Func)
+{
+	return m_pHotKeyManager->Register_HotKey(eKode, bCtrl,bShift,bAlt,Func);
+}
+
+#pragma region NavMesh
+HRESULT CGameInstance::Load_NavMesh(_uint iLevelIdx, const string& Filepath)
+{
+	CheckNullResult(m_pNavMeshManager, E_FAIL);
+	return m_pNavMeshManager->Load_NavMesh(iLevelIdx,Filepath);
+}
+vector<class CCell*>* CGameInstance::Find_Cells(_uint iLevelIdx)
+{
+	CheckNullResult(m_pNavMeshManager, nullptr);
+	return m_pNavMeshManager->Find_Cells(iLevelIdx);
+}
+void CGameInstance::Set_MainCells(_uint LevelID)
+{
+	return m_pNavMeshManager->Set_MainCells(LevelID);
+}
+vector<class CCell*>* CGameInstance::Get_MainCells()
+{
+	return m_pNavMeshManager->Get_MainCells();
+}
+void CGameInstance::Set_DrawDebug(bool b)
+{
+	return m_pNavMeshManager->Set_DrawDebug(b);
+}
+void CGameInstance::Reset_NaveMesh(_uint iLevelIdx)
+{
+	return m_pNavMeshManager->Reset_NaveMesh(iLevelIdx);
+}
+_vector CGameInstance::Get_CellPos_By_MainCells(_uint iIdx)
+{
+	return m_pNavMeshManager->Get_CellPos_By_MainCells(iIdx);
+}
+#ifdef _DEBUG
+void CGameInstance::Set_NavMeshShader(CShader* pShader)
+{
+	return m_pNavMeshManager->Set_Shader(pShader);
+}
+
+HRESULT CGameInstance::Render_NavMeshManager()
+{
+	return m_pNavMeshManager->Render();
+}
+#endif
+
+_float4x4* CGameInstance::Get_ParentMatrix()
+{
+	return m_pNavMeshManager->Get_ParentMatrix();
+}
+#pragma endregion
+
+void CGameInstance::Emit(const GameEvent& Event)
+{
+	CheckNull(m_pEventBusManager);
+	return m_pEventBusManager->Emit(Event);
+
+}
+_uint CGameInstance::RegisterListners(const string& CBName, EventCallBack Callback)
+{
+	CheckNullResult(m_pEventBusManager,0);
+	return m_pEventBusManager->RegisterListners(CBName,Callback);
+
+}
+
+void CGameInstance::UnRegisterListenrs(const string& CBName, _uint iHandle)
+{
+	return m_pEventBusManager->UnRegisterListenrs(CBName, iHandle);
+}
+
+HRESULT CGameInstance::Register_Collider(CCollider_Base* pCollider, _uint iSceneID)
+{
+	CheckNullResult(m_pCollisionManager, E_FAIL);
+	return m_pCollisionManager->Register_Collider(pCollider, iSceneID);
+}
+
+HRESULT CGameInstance::UnRegister_Collider(CCollider_Base* pCollider, _uint iSceneID)
+{
+	CheckNullResult(m_pCollisionManager, E_FAIL);
+	return m_pCollisionManager->UnRegister_Collider(pCollider, iSceneID);
+}
+
+void CGameInstance::Clear_SceneColliders(_uint iSceneID)
+{
+	return m_pCollisionManager->Clear_SceneColliders(iSceneID);
+}
+
+void CGameInstance::Set_Enable_Collision(_uint iSrcGroup, _uint iDstGroup, bool bEnable)
+{
+	CheckNull(m_pCollisionManager);
+	return m_pCollisionManager->Set_Enable_Collision(iSrcGroup, iDstGroup, bEnable);
+}
+
+#pragma region Font_Manager
+HRESULT CGameInstance::Add_Font(const _wstring& strFontTag, const _tchar* pFontFilePath)
+{
+	return m_pFont_Manager->Add_Font(strFontTag, pFontFilePath);
+}
+
+SpriteFont* CGameInstance::Find_Font(const _wstring& strFontTag)
+{
+	return m_pFont_Manager->Find_Font(strFontTag);
+}
+
+SpriteBatch* CGameInstance::Get_Batch()
+{
+	return m_pFont_Manager->Get_Batch();
+}
+
+
+HRESULT CGameInstance::Invoke(float _fTime, float _finterval, bool _bRepeat, bool _bCancelled, std::function<void()> cb, CGameObject* pOwner)
+{
+	CheckNullResult(m_pTimerTask_Manager, E_FAIL);
+	return m_pTimerTask_Manager->Invoke(_fTime,_finterval,_bRepeat,_bCancelled,cb,pOwner);
+}
+
+HRESULT CGameInstance::Repeat(float _fTime, float _finterval, bool _bRepeat, bool _bCancelled, std::function<void()> cb, CGameObject* pOwner)
+{
+	CheckNullResult(m_pTimerTask_Manager, E_FAIL);
+	return m_pTimerTask_Manager->Repeat(_fTime, _finterval, _bRepeat, _bCancelled, cb, pOwner);
+}
+
+HRESULT CGameInstance::CancelTaskOf(CGameObject* pOwner)
+{
+	CheckNullResult(m_pTimerTask_Manager, E_FAIL);
+	return m_pTimerTask_Manager->CancelTaskOf(pOwner);
+}
+
+HRESULT CGameInstance::Add_RenderTarget(const _wstring& strTargetTag, _uint iWidth, _uint iHeight, DXGI_FORMAT ePixelFormat, const _float4& vClearColor)
+{
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+	return m_pTarget_Manager->Add_RenderTarget(strTargetTag,iWidth, iHeight, ePixelFormat,vClearColor);
+}
+
+HRESULT CGameInstance::Add_MRT(const _wstring& strMRTTag, const _wstring& strTargetTag)
+{
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+	return m_pTarget_Manager->Add_MRT(strMRTTag, strTargetTag);
+
+}
+
+HRESULT CGameInstance::Begin_MRT(const _wstring& strMRTTag, ID3D11DepthStencilView* pDSV)
+{
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+	return m_pTarget_Manager->Begin_MRT(strMRTTag, pDSV);
+}
+
+HRESULT CGameInstance::End_MRT()
+{
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+	return m_pTarget_Manager->End_MRT();
+}
+
+HRESULT CGameInstance::Bind_RT_ShaderResource(const _wstring& strTargetTag, CShader* pShader, const _char* pConstantName)
+{
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+	return m_pTarget_Manager->Bind_RT_ShaderResource(strTargetTag, pShader, pConstantName);
+}
+
+HRESULT CGameInstance::Unbind_RT_ShaderResource(const _wstring& strTargetTag, CShader* pShader, const _char* pConstantName)
+{
+	return m_pTarget_Manager->Unbind_RT_ShaderResource(strTargetTag,pShader,pConstantName);
+}
+
+#ifdef _DEBUG
+HRESULT CGameInstance::Ready_RT_Debug(const _wstring& strTargetTag, _float fX, _float fY, _float fSizeX, _float fSizeY)
+{
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+	return m_pTarget_Manager->Ready_Debug(strTargetTag, fX, fY, fSizeX,fSizeY);
+
+}
+
+HRESULT CGameInstance::Debug_RT_Render(const _wstring& strMRTTag, CShader* pShader, CVIBuffer_Rect* pVIBuffer)
+{
+	CheckNullResult(m_pTarget_Manager, E_FAIL);
+	return m_pTarget_Manager->Render(strMRTTag, pShader, pVIBuffer);
+
+}
+#endif
+
+#pragma region Sound_Manager
+void CGameInstance::StopSoundFade(CHANNELID eID, float fDuration)
+{
+	if (m_pSound_Manager)
+		m_pSound_Manager->StopSoundFade(eID, fDuration);
+
+}
+void CGameInstance::PlaySound(const wstring& pSoundKey, CHANNELID eID, float fVolume, bool bLoop)
+{
+	if (m_pSound_Manager)
+		m_pSound_Manager->PlaySound(pSoundKey, eID, fVolume, bLoop);
+	
+}
+void CGameInstance::PlayBGM(const std::wstring& soundKey, float fVolume)
+{
+	if (m_pSound_Manager)
+		m_pSound_Manager->PlayBGM(soundKey, fVolume);
+}
+void CGameInstance::StopSound(CHANNELID eID)
+{
+	if (m_pSound_Manager)
+		m_pSound_Manager->StopSound(eID);
+}
+void CGameInstance::StopAll()
+{
+	if (m_pSound_Manager)
+		m_pSound_Manager->StopAll();
+}
+void CGameInstance::SetChannelVolume(CHANNELID eID, float fVolume)
+{
+	if (m_pSound_Manager)
+		m_pSound_Manager->SetChannelVolume(eID,fVolume);
+}
+
+#pragma endregion
+
+#pragma region Shadow
+const _float4x4* CGameInstance::Get_ShadowLight_Transform(D3DTS eTransformMatrix)
+{
+	return m_pShadow->Get_Transform(eTransformMatrix);
+}
+const _float4x4* CGameInstance::Get_ShadowLight_InverseTransform(D3DTS eTransformMatrix)
+{
+	return m_pShadow->Get_InverseTransform(eTransformMatrix);
+}
+HRESULT CGameInstance::Add_ShadowLight(ID3D11DeviceContext* pContext, const CShadow::SHADOW_DESC& ShadowDesc)
+{
+	return m_pShadow->Add_ShadowLight(pContext, ShadowDesc);
+}
+
+#pragma endregion
+void CGameInstance::Release_Engine()
+{
+	Safe_Release(m_pShadow);
+
+	Safe_Release(m_pTarget_Manager);
+	Safe_Release(m_pTimerTask_Manager);
+
+	Safe_Release(m_pFont_Manager);
+	Safe_Release(m_pLevelManager);
+	Safe_Release(m_pTimerManager);
+
+
+	Safe_Release(m_pLevelFactory);
+	Safe_Release(m_pCollisionManager);
+
+	Safe_Release(m_pRenderer);
+	Safe_Release(m_pProtoManager);
+
+	Safe_Release(m_pObjectManager);
+	Safe_Release(m_pCameraManager);
+
+	Safe_Release(m_pShaderManager);
+	Safe_Release(m_pMaterialManager);
+	Safe_Release(m_pModelManager);
+	Safe_Release(m_pTextureManager);
+	Safe_Release(m_pLightManager);
+
+	Safe_Release(m_pScreenshotManager);
+	Safe_Release(m_pRenderStateManager);
+	Safe_Release(m_pPipeLine);
+	Safe_Release(m_pUIManager);
+	Safe_Release(m_pTerrainManager);
+	
+
+	Safe_Release(m_pHotKeyManager);
+	Safe_Release(m_pNavMeshManager);
+	Safe_Release(m_pEventBusManager);
+	
+	CSoundMgr::Get_Instance()->Destroy_Instance();
+
+
+
+	Safe_Release(m_pGraphicDev);
+
+	DestroyInstance();
 }
 
 void CGameInstance::Free()
 {
 	__super::Free();
 
-	Safe_Release(m_pLevelManager);
-	Safe_Release(m_pTimerManager);
-	Safe_Release(m_pGraphicDev);
-	
+
 
 }

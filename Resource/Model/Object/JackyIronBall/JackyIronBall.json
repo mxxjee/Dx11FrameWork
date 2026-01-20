@@ -1,0 +1,52 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "MI_ball_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_ball",
+            "Normal": "MI_ball_nml.png",
+            "OPACITY": "MI_ball_alb.png",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 1,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 2280,
+            "MaterialName": "MI_ball",
+            "MeshIdx": 0,
+            "Name": "ironball_low__MI_ball",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 439
+        }
+    ],
+    "ModelName": "JackyIronBall"
+}

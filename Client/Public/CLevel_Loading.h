@@ -3,7 +3,11 @@
 #include "CLevel.h"
 #include "Client_Defines.h"
 
+
+
 NS_BEGIN(Client)
+class CFadeScreen;
+class CLoadingUI;
 class CLevel_Loading final :
     public CLevel
 {
@@ -13,22 +17,53 @@ private:
 
 
 public:
-    HRESULT     Initialize(LEVEL_ID iLevelID);                       //씬 세팅.
-    virtual HRESULT     Update(const _float fTimeDelta) override;        //씬의 업데이트
+    HRESULT     Initialize(LEVEL_ID iLevelID,LEVELCHANGETYPE eChangeType,LevelArgs& args);                       //씬 세팅.
+
+    virtual void            Update_Priority(_float fTimeDelta);
+    virtual void            Update(const _float fTimeDelta) override;        //씬의 업데이트
+    virtual void            Update_Late(_float fTimeDelta);
+
+    
+    
     virtual void        Render() override;         //씬의 렌더.
-    virtual void        Clear() override;        //자원 정리 함수
 
 private:
     HRESULT     Ready_UI_Layer();
 
 public:
-    static  CLevel_Loading* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext,LEVEL_ID iLevelID);
+    virtual void        OnEnter() override;           //씬 진입시 매번호출
+    virtual void        OnResume(_uint iPreLevel) override;              //pause되었다가 active되었을때 호출
+    virtual void        OnPause(_uint iNextLevel) override;               //pause되었을때 호출
+    virtual void        OnExit() override;
+public:
+    static  CLevel_Loading* Create(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext,LevelArgs& args);
     virtual     void        Free();
 
+private:
+    void     Ready_Prototypes();
+    void        Create_UICamera();
 
 private:
     class CLoader* m_pLoader = { nullptr };
     LEVEL_ID			m_eNextLevelID = { LEVEL_ID::END };
+    LEVELCHANGETYPE     m_eChangeType = { LEVELCHANGETYPE::END };
+
+
+    CFadeScreen* pFadeScreen = nullptr;
+
+    _float      m_fTime = 0.f;
+    _float      m_fNextTime = 1.5f;
+
+    _float      m_fAccLoadingTime = 0.f;
+    _float       m_fLoadingRatio = 0.f;
+
+
+    _float m_fTimeRatio = 0.f;
+    _float m_fRealRatio = 0.f;
+    _float m_fTargetRatio = 0.f;
+    _float m_fProgress = 0.f;
+
+    vector<CLoadingUI*>        m_pLoadingUI;
 
 };
 NS_END

@@ -45,6 +45,15 @@ CTimer_Manager* CTimer_Manager::Create()
 	return new CTimer_Manager;
 }
 
+_float CTimer_Manager::Get_FPS(const _tchar* pTimerTag)
+{
+	CTimer* TargetTimer = Find_Timer(pTimerTag);
+	if (TargetTimer)
+		return TargetTimer->GetFPS();
+
+	return _float();
+}
+
 CTimer* CTimer_Manager::Find_Timer(const _tchar* pTimerTag)
 {
 	auto		iter = m_mapTimer.find(pTimerTag);

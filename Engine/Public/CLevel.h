@@ -1,34 +1,66 @@
 #pragma once
 #include "CBase.h"
+#include "Engine_LevelTypes.h"
 
 NS_BEGIN(Engine)
+
 
 class ENGINE_DLL CLevel :
     public CBase
 {
 
 protected:
-    explicit CLevel(ComPtr<ID3D11Device> _pDevice, ComPtr<ID3D11DeviceContext> _pDeviceContext);
+    explicit CLevel(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext);
     virtual ~CLevel()=default;
 
 
 public:
-    virtual HRESULT     Initialize();                       //씬 세팅.
-    virtual HRESULT     Update(const _float fTimeDelta);        //씬의 업데이트
+    virtual HRESULT     Initialize(LevelArgs& args);                       //씬 세팅.
+   
+    virtual void            Update_Priority(_float fTimeDelta);
+    virtual void            Update(const _float fTimeDelta);
+    virtual void            Update_Late(_float fTimeDelta);
+    virtual void            Update_Render(_float fTimeDelta);
+    
     virtual void        Render();         //씬의 렌더.
-    virtual void        Clear();        //자원 정리 함수
+   
+public:
+    virtual void        OnEnter();           //씬 처음 진입시 호출
+    virtual void        OnResume(_uint iPreLevel);              //pause되었다가 active되었을때 호출
+    virtual void        OnPause(_uint iNextLevel) {};               //pause되었을때 호출, 다음 씬의 아이디를 받을수있음
+    virtual void        OnExit() {};        //자원 정리 함수
 
 public:
     virtual     void        Free();
+    
+public:
+    virtual void                    Play_LevelBGM() {};
+    bool                    Is_Cached() { return m_eLevelArgs.m_bCached; }
+    void                    Set_State(LEVELSTATE eState) { m_eLevelArgs.m_eState = eState; }
+    const LEVELSTATE& Get_State()   const {return m_eLevelArgs.m_eState;}
+
+    void                    Set_Flag(LEVELFLAG eFlag) { m_eLevelArgs.m_eFlag = eFlag; }
+    const   LEVELFLAG&      Get_Flag() const { return m_eLevelArgs.m_eFlag; }
+
+    _uint                   Get_LevelID() const { return m_eLevelArgs.m_iLevelID; }
+    _uint                   Get_NextLevelID() const { return m_eLevelArgs.iNextLevelID; }
+
+public:
+    void        Set_Chapter(wstring _Chapter) { m_Chapter = _Chapter; }
+    void        Reset_Chapter() { m_Chapter = L"Default"; }
+protected:
+    class CGameInstance*            m_pGameInstance = { nullptr };
+    ComPtr<ID3D11Device>            m_pDevice;
+    ComPtr<ID3D11DeviceContext>     m_pContext;
+
+
+
+private:
+    LevelArgs           m_eLevelArgs;
 
 protected:
-    class CGameInstance*          m_pGameInstance = { nullptr };
-    ComPtr<ID3D11Device>    m_pDevice = { nullptr };
-    ComPtr<ID3D11DeviceContext>    m_pDeviceContext = { nullptr };
-
-
-
-
+    _uint               m_iLevelID = 0;
+        wstring             m_Chapter = L"Default";     //씬이 넓으므로 trigger에 의해서 챕터변경(카메라 트리거에사용)
 };
 NS_END
 

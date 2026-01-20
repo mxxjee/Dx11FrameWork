@@ -1,0 +1,96 @@
+{
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Lawn_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_Lawn_01",
+            "Normal": "MI_Lawn_01_nml.png",
+            "OPACITY": "MI_Lawn_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Lawn_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "MI_Lawn_01",
+            "Normal": "MI_Lawn_01_nml.png",
+            "OPACITY": "MI_Lawn_01_alb.png",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 2,
+    "Meshes": [
+        {
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 1029,
+            "MaterialName": "MI_Lawn_01",
+            "MeshIdx": 0,
+            "Name": "base__MI_Lawn_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 387
+        },
+        {
+            "IBPath": "Mesh_1.ib",
+            "IndexCount": 132,
+            "MaterialName": "MI_Lawn_01",
+            "MeshIdx": 1,
+            "Name": "cut__MI_Lawn_01",
+            "Transform": [
+                [
+                    1.0,
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    0.0,
+                    1.0,
+                    -0.0,
+                    0.0
+                ],
+                [
+                    -0.0,
+                    -0.0,
+                    1.0,
+                    -0.0
+                ],
+                [
+                    0.0,
+                    0.0,
+                    -0.0,
+                    1.0
+                ]
+            ],
+            "VBPath": "Mesh_1.vb",
+            "VertexCount": 88
+        }
+    ],
+    "ModelName": "Lawn"
+}

@@ -1,0 +1,255 @@
+#include "CSoundMgr.h"
+
+CSoundMgr* CSoundMgr::m_pInstance = nullptr;
+
+CSoundMgr::CSoundMgr()
+    : m_pSystem(nullptr)
+{
+    for (int i = 0; i < MAXCHANNEL; ++i)
+        m_pChannelArr[i] = nullptr;
+}
+
+CSoundMgr::~CSoundMgr()
+{
+    Release();
+}
+
+void CSoundMgr::Init()
+{
+    FMOD_System_Create(&m_pSystem, FMOD_VERSION);
+    FMOD_System_Init(m_pSystem, 32, FMOD_INIT_NORMAL, NULL);
+    LoadSoundFile("../../Resource/Sound/", L"");
+}
+
+void CSoundMgr::Release()
+{
+    for (auto& kv : m_mapSound)
+    {
+        FMOD_Sound_Release(kv.second);
+    }
+    m_mapSound.clear();
+
+    FMOD_System_Close(m_pSystem);
+    FMOD_System_Release(m_pSystem);
+    m_pSystem = nullptr;
+}
+
+void CSoundMgr::Update(_float fTimeDelta)
+{
+    auto iter = m_FadeList.begin();
+    while (iter != m_FadeList.end())
+    {
+        iter->fTime += fTimeDelta;
+        
+        float fRatio = iter->fTime / iter->fDuration;
+        if (fRatio > 1)
+        {
+            FMOD_Channel_Stop(m_pChannelArr[iter->eID]);
+            iter = m_FadeList.erase(iter);
+        }
+
+        else
+        {
+            float fNewVol = iter->fStartVol * (1.f - fRatio);
+            FMOD_Channel_SetVolume(m_pChannelArr[iter->eID], fNewVol);
+            ++iter;
+        }
+    }
+}
+
+void CSoundMgr::StopSoundFade(CHANNELID eID, float fDuration)
+{
+    /*현재 재생중인지 체크*/
+    FMOD_BOOL       isPlaying = FALSE;
+    FMOD_Channel_IsPlaying(m_pChannelArr[eID], &isPlaying);
+
+    if (!isPlaying)
+        return;
+
+    if (eID == CHANNELID::SOUND_BGM)
+        m_CurrentBGM = L"";
+
+    //이미 페이드아웃중일경우 return
+    auto iter = m_FadeList.begin();
+    while (iter != m_FadeList.end())
+    {
+        if (iter->eID == eID)
+            return;
+
+        else
+            ++iter;
+
+    }
+
+    //현재 볼륨부터 서서히줄여나기기시작
+    float fCurrentVol = 0.f;
+    FMOD_Channel_GetVolume(m_pChannelArr[eID], &fCurrentVol);
+    FMOD_Channel_SetMode(m_pChannelArr[eID], FMOD_LOOP_OFF);
+
+    //페이드리스트 만들어서 등록
+    tFadeInfo info;
+    info.eID = eID;
+    info.fTime = 0.f;
+    info.fDuration = fDuration;
+    info.fStartVol = fCurrentVol;
+
+    m_FadeList.push_back(info);
+
+}
+
+void CSoundMgr::PlaySound(const std::wstring& soundKey, CHANNELID eID, float fVolume, bool bLoop)
+{
+    auto iter = m_mapSound.find(soundKey);
+    if (iter == m_mapSound.end())
+        return;
+
+    FMOD_BOOL isPlaying = FALSE;
+    FMOD_Channel_IsPlaying(m_pChannelArr[eID], &isPlaying);
+
+    FMOD_Channel_Stop(m_pChannelArr[eID]);
+
+    if (!isPlaying)
+    {
+        FMOD_System_PlaySound(
+            m_pSystem,
+            iter->second,
+            0,
+            FALSE,
+            &m_pChannelArr[eID]
+        );
+    }
+    else
+    {
+        FMOD_Channel_Stop(m_pChannelArr[eID]);
+        FMOD_System_PlaySound(
+            m_pSystem,
+            iter->second,
+            0,
+            FALSE,
+            &m_pChannelArr[eID]
+        );
+    }
+    
+    FMOD_Channel_SetVolume(m_pChannelArr[eID], fVolume);
+    FMOD_System_Update(m_pSystem);
+    if(bLoop)
+        FMOD_Channel_SetMode(m_pChannelArr[eID], FMOD_LOOP_NORMAL);
+}
+
+void CSoundMgr::PlayBGM(const std::wstring& soundKey, float fVolume)
+{
+    auto iter = m_mapSound.find(soundKey);
+    if (iter == m_mapSound.end())
+        return;
+
+    FMOD_BOOL isPlaying = FALSE;
+    if (m_pChannelArr[SOUND_BGM] != nullptr)
+        FMOD_Channel_IsPlaying(m_pChannelArr[SOUND_BGM], &isPlaying);
+    
+
+    if (isPlaying && soundKey == m_CurrentBGM)
+        return;
+
+
+    //페이드아웃 목록에 BGMㅇ있따면 제거
+    auto fadeIter = m_FadeList.begin();
+    while (fadeIter != m_FadeList.end())
+    {
+        if (fadeIter->eID == CHANNELID::SOUND_BGM)
+        {
+            fadeIter = m_FadeList.erase(fadeIter);
+        }
+        else
+            ++fadeIter;
+
+    }
+
+    FMOD_Channel_Stop(m_pChannelArr[SOUND_BGM]);
+    m_CurrentBGM = soundKey;
+
+    FMOD_System_PlaySound(
+        m_pSystem,
+        iter->second,
+        0,
+        FALSE,
+        &m_pChannelArr[SOUND_BGM]
+    );
+    FMOD_Channel_SetMode(m_pChannelArr[SOUND_BGM], FMOD_LOOP_NORMAL);
+    FMOD_Channel_SetVolume(m_pChannelArr[SOUND_BGM], fVolume);
+    FMOD_System_Update(m_pSystem);
+
+  
+}
+
+void CSoundMgr::StopSound(CHANNELID eID)
+{
+    FMOD_Channel_Stop(m_pChannelArr[eID]);
+}
+
+void CSoundMgr::StopAll()
+{
+    for (int i = 0; i < MAXCHANNEL; ++i)
+        FMOD_Channel_Stop(m_pChannelArr[i]);
+}
+
+void CSoundMgr::SetChannelVolume(CHANNELID eID, float fVolume)
+{
+    FMOD_Channel_SetVolume(m_pChannelArr[eID], fVolume);
+    FMOD_System_Update(m_pSystem);
+}
+
+
+
+void CSoundMgr::LoadSoundFile(const std::string& path, const std::wstring& prefix)
+{
+    _finddata_t fd;
+    std::string fullPath = path + "*.*";
+    intptr_t handle = _findfirst(fullPath.c_str(), &fd);
+    if (handle == -1)
+        return;
+
+    do
+    {
+        if (strcmp(fd.name, ".") == 0 || strcmp(fd.name, "..") == 0)
+            continue;
+
+        std::string relativePath = path + fd.name;
+
+        if (fd.attrib & _A_SUBDIR)
+        {
+            // 폴더라면 재귀적으로 들어가기
+            std::string subPath = path + fd.name + "/";
+            std::wstring subPrefix = prefix + std::wstring(fd.name, fd.name + strlen(fd.name)) + L"/";
+            LoadSoundFile(subPath, subPrefix);
+        }
+        else
+        {
+            // 파일이면 사운드 로드
+            std::wstring wname;
+            int wlen = MultiByteToWideChar(CP_ACP, 0, fd.name, -1, NULL, 0);
+            wname.resize(wlen - 1);
+            MultiByteToWideChar(CP_ACP, 0, fd.name, -1, &wname[0], wlen - 1);
+
+            // 전체 파일 경로 (ANSI)
+            char szFullPath[256];
+            sprintf_s(szFullPath, "%s%s", path.c_str(), fd.name);
+
+            FMOD_SOUND* pSound = nullptr;
+            FMOD_RESULT res = FMOD_System_CreateSound(
+                m_pSystem,
+                szFullPath,
+                FMOD_DEFAULT,
+                0,
+                &pSound
+            );
+
+            if (res == FMOD_OK)
+            {
+                m_mapSound.emplace(prefix + wname, pSound);
+            }
+        }
+
+    } while (_findnext(handle, &fd) == 0);
+
+    _findclose(handle);
+}

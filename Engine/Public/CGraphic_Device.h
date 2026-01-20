@@ -24,7 +24,7 @@ public:
 	/* 그래픽 디바이스의 초기화. */
 	/* 장치객체를 생성한다. */
 	HRESULT Initialize(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY,
-		_Inout_ ID3D11Device** ppDevice, _Inout_ ID3D11DeviceContext** ppContext);
+		ComPtr<ID3D11Device>* pDevice, ComPtr<ID3D11DeviceContext>* pContext);
 
 	/* 백버퍼를 지운다. */
 	HRESULT Clear_BackBuffer_View(const _float4* pClearColor);
@@ -39,6 +39,11 @@ public:
 	/* 후면 버퍼를 전면버퍼로 교체한다.(백버퍼를 화면에 직접 보여준다.) */
 	HRESULT Present();
 
+	/*백버퍼를 가져온다.*/
+	HRESULT		Get_Buffer(ComPtr<ID3D11Texture2D>* pBuffer,UINT iFlag=0);
+
+	ComPtr<ID3D11RenderTargetView>	    Get_BackBuffer_RTV() { return m_pBackBufferRTV; }
+	ComPtr<ID3D11DepthStencilView>	    Get_BackBuffer_DSV() { return m_pDepthStencilView; }
 private:
 	// IDirect3DDevice9* == LPDIRECT3DDEVICE9 == ID3D11Device + ID3D11DeviceContext 	
 
@@ -89,7 +94,9 @@ private:
 	HRESULT Ready_DepthStencilView(_uint iWinCX, _uint iWinCY);
 
 public:
-	static CGraphic_Device* Create(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY, _Out_ ID3D11Device** ppDevice, _Out_ ID3D11DeviceContext** ppDeviceContextOut);
+	static CGraphic_Device* Create(HWND hWnd, WINMODE isWindowed, _uint iWinSizeX, _uint iWinSizeY,
+		_Out_ ComPtr<ID3D11Device>* pDevice, 
+		_Out_ ComPtr<ID3D11DeviceContext>* pDeviceContextOut);
 	virtual void Free() override;
 };
 

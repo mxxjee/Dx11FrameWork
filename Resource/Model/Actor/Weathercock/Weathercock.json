@@ -1,0 +1,203 @@
+{
+    "Bones": [
+        {
+            "BoneName": "bird",
+            "OffsetMatrix": [
+                1.0,
+                0.0,
+                -0.0,
+                0.0,
+                0.0,
+                1.0,
+                7.549789415861596e-08,
+                -0.8598626852035522,
+                -0.0,
+                -7.549789415861596e-08,
+                1.0,
+                -7.105427357601002e-15,
+                0.0,
+                0.0,
+                -0.0,
+                1.0
+            ],
+            "ParentIndex": -1,
+            "Transformation": [
+                0.9348256587982178,
+                0.0,
+                -0.35510700941085815,
+                0.0,
+                0.0,
+                1.0,
+                -0.0,
+                0.8598626852035522,
+                0.35510700941085815,
+                -0.0,
+                0.9348256587982178,
+                -0.0,
+                0.0,
+                0.0,
+                -0.0,
+                1.0
+            ]
+        },
+        {
+            "BoneName": "foundation",
+            "OffsetMatrix": [
+                1.0,
+                0.0,
+                -0.0,
+                8.953933502198197e-06,
+                0.0,
+                1.0,
+                7.549789415861596e-08,
+                1.734723475976807e-18,
+                -0.0,
+                -7.549789415861596e-08,
+                1.0,
+                -0.0002303393994225189,
+                0.0,
+                0.0,
+                -0.0,
+                1.0
+            ],
+            "ParentIndex": -1,
+            "Transformation": [
+                1.0,
+                0.0,
+                -0.0,
+                0.0,
+                0.0,
+                1.0,
+                -0.0,
+                0.0,
+                -0.0,
+                -0.0,
+                1.0,
+                -0.0,
+                0.0,
+                0.0,
+                -0.0,
+                1.0
+            ]
+        },
+        {
+            "BoneName": "propeller",
+            "OffsetMatrix": [
+                1.0,
+                0.0,
+                -0.0,
+                -0.5493507981300354,
+                0.0,
+                1.0,
+                7.549789415861596e-08,
+                -2.0465199947357178,
+                -0.0,
+                -7.549789415861596e-08,
+                1.0,
+                -0.001381434965878725,
+                0.0,
+                0.0,
+                -0.0,
+                1.0
+            ],
+            "ParentIndex": -1,
+            "Transformation": [
+                0.9348252415657043,
+                -0.34956276416778564,
+                -0.06251082569360733,
+                0.5128870010375977,
+                0.0,
+                0.17603324353694916,
+                -0.9843842387199402,
+                2.0465199947357178,
+                0.3551080524921417,
+                0.9202272295951843,
+                0.16456031799316406,
+                0.19650909304618835,
+                0.0,
+                0.0,
+                -0.0,
+                1.0
+            ]
+        }
+    ],
+    "Materials": [
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Weathercock_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "Weathercock_MI_Weathercock_01",
+            "Normal": "MI_Weathercock_01_nml.png",
+            "OPACITY": "MI_Weathercock_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Weathercock_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "Weathercock_MI_Weathercock_01",
+            "Normal": "MI_Weathercock_01_nml.png",
+            "OPACITY": "MI_Weathercock_01_alb.png",
+            "Specular": ""
+        },
+        {
+            "Ambient": "",
+            "Diffuse": "MI_Weathercock_01_alb.png",
+            "METALNESS": "",
+            "MaterialName": "Weathercock_MI_Weathercock_01",
+            "Normal": "MI_Weathercock_01_nml.png",
+            "OPACITY": "MI_Weathercock_01_alb.png",
+            "Specular": ""
+        }
+    ],
+    "MeshNums": 3,
+    "Meshes": [
+        {
+            "BoneIdx": [
+                0,
+                1,
+                2
+            ],
+            "IBPath": "Mesh_0.ib",
+            "IndexCount": 3036,
+            "MaterialName": "Weathercock_MI_Weathercock_01",
+            "MeshIdx": 0,
+            "Name": "bird__MI_Weathercock_01",
+            "NumBones": 3,
+            "VBPath": "Mesh_0.vb",
+            "VertexCount": 823
+        },
+        {
+            "BoneIdx": [
+                0,
+                1,
+                2
+            ],
+            "IBPath": "Mesh_1.ib",
+            "IndexCount": 1200,
+            "MaterialName": "Weathercock_MI_Weathercock_01",
+            "MeshIdx": 1,
+            "Name": "foundation__MI_Weathercock_01",
+            "NumBones": 3,
+            "VBPath": "Mesh_1.vb",
+            "VertexCount": 389
+        },
+        {
+            "BoneIdx": [
+                0,
+                1,
+                2
+            ],
+            "IBPath": "Mesh_2.ib",
+            "IndexCount": 1392,
+            "MaterialName": "Weathercock_MI_Weathercock_01",
+            "MeshIdx": 2,
+            "Name": "propeller__MI_Weathercock_01",
+            "NumBones": 3,
+            "VBPath": "Mesh_2.vb",
+            "VertexCount": 380
+        }
+    ],
+    "ModelName": "Weathercock",
+    "NumAnimations": 1
+}

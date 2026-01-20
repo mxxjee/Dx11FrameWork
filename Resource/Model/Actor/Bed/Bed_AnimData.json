@@ -1,0 +1,1260 @@
+{
+    "AnimDatas": [
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 88,
+                    "BoneName": "bed_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 88,
+                    "BinarySize": 88,
+                    "BoneName": "mattress",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 176,
+                    "BinarySize": 88,
+                    "BoneName": "mattress_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 264,
+                    "BinarySize": 88,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 352,
+                    "BinarySize": 88,
+                    "BoneName": "o_mesh_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 440,
+                    "BinarySize": 88,
+                    "BoneName": "pillow",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 528,
+                    "BinarySize": 88,
+                    "BoneName": "pillow_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 616,
+                    "BinarySize": 3124,
+                    "BoneName": "quilt_L_a",
+                    "NumKeyFrames": 71
+                },
+                {
+                    "BinaryOffset": 3740,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_a_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 3828,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_a_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 3916,
+                    "BinarySize": 3696,
+                    "BoneName": "quilt_L_b",
+                    "NumKeyFrames": 84
+                },
+                {
+                    "BinaryOffset": 7612,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_b_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 7700,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_b_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 7788,
+                    "BinarySize": 3432,
+                    "BoneName": "quilt_L_c",
+                    "NumKeyFrames": 78
+                },
+                {
+                    "BinaryOffset": 11220,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_c_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 11308,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_c_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 11396,
+                    "BinarySize": 1760,
+                    "BoneName": "quilt_L_d",
+                    "NumKeyFrames": 40
+                },
+                {
+                    "BinaryOffset": 13156,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 13244,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 13332,
+                    "BinarySize": 3696,
+                    "BoneName": "quilt_ML_a",
+                    "NumKeyFrames": 84
+                },
+                {
+                    "BinaryOffset": 17028,
+                    "BinarySize": 3784,
+                    "BoneName": "quilt_ML_b",
+                    "NumKeyFrames": 86
+                },
+                {
+                    "BinaryOffset": 20812,
+                    "BinarySize": 3740,
+                    "BoneName": "quilt_ML_c",
+                    "NumKeyFrames": 85
+                },
+                {
+                    "BinaryOffset": 24552,
+                    "BinarySize": 3784,
+                    "BoneName": "quilt_ML_d",
+                    "NumKeyFrames": 86
+                },
+                {
+                    "BinaryOffset": 28336,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_ML_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 28424,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_ML_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 28512,
+                    "BinarySize": 3388,
+                    "BoneName": "quilt_MR_a",
+                    "NumKeyFrames": 77
+                },
+                {
+                    "BinaryOffset": 31900,
+                    "BinarySize": 3784,
+                    "BoneName": "quilt_MR_b",
+                    "NumKeyFrames": 86
+                },
+                {
+                    "BinaryOffset": 35684,
+                    "BinarySize": 3784,
+                    "BoneName": "quilt_MR_c",
+                    "NumKeyFrames": 86
+                },
+                {
+                    "BinaryOffset": 39468,
+                    "BinarySize": 3696,
+                    "BoneName": "quilt_MR_d",
+                    "NumKeyFrames": 84
+                },
+                {
+                    "BinaryOffset": 43164,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_MR_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 43252,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_MR_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 43340,
+                    "BinarySize": 3608,
+                    "BoneName": "quilt_M_a",
+                    "NumKeyFrames": 82
+                },
+                {
+                    "BinaryOffset": 46948,
+                    "BinarySize": 3784,
+                    "BoneName": "quilt_M_b",
+                    "NumKeyFrames": 86
+                },
+                {
+                    "BinaryOffset": 50732,
+                    "BinarySize": 3784,
+                    "BoneName": "quilt_M_c",
+                    "NumKeyFrames": 86
+                },
+                {
+                    "BinaryOffset": 54516,
+                    "BinarySize": 3784,
+                    "BoneName": "quilt_M_d",
+                    "NumKeyFrames": 86
+                },
+                {
+                    "BinaryOffset": 58300,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_M_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 58388,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_M_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 58476,
+                    "BinarySize": 3212,
+                    "BoneName": "quilt_R_a",
+                    "NumKeyFrames": 73
+                },
+                {
+                    "BinaryOffset": 61688,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_a_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 61776,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_a_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 61864,
+                    "BinarySize": 3652,
+                    "BoneName": "quilt_R_b",
+                    "NumKeyFrames": 83
+                },
+                {
+                    "BinaryOffset": 65516,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_b_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 65604,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_b_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 65692,
+                    "BinarySize": 3608,
+                    "BoneName": "quilt_R_c",
+                    "NumKeyFrames": 82
+                },
+                {
+                    "BinaryOffset": 69300,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_c_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 69388,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_c_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 69476,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_d",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 69564,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 69652,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 69740,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 69828,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                }
+            ],
+            "Duration": 85.0,
+            "Name": "ftn_ev_outbed",
+            "NumChannels": 51,
+            "TickPerSecond": 25.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 88,
+                    "BoneName": "bed_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 88,
+                    "BinarySize": 88,
+                    "BoneName": "mattress",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 176,
+                    "BinarySize": 88,
+                    "BoneName": "mattress_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 264,
+                    "BinarySize": 88,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 352,
+                    "BinarySize": 88,
+                    "BoneName": "o_mesh_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 440,
+                    "BinarySize": 88,
+                    "BoneName": "pillow",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 528,
+                    "BinarySize": 88,
+                    "BoneName": "pillow_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 616,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 704,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_a_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 792,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_a_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 880,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 968,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_b_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1056,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_b_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1144,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_c",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1232,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_c_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1320,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_c_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1408,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_d",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1496,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1584,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1672,
+                    "BinarySize": 3256,
+                    "BoneName": "quilt_ML_a",
+                    "NumKeyFrames": 74
+                },
+                {
+                    "BinaryOffset": 4928,
+                    "BinarySize": 6424,
+                    "BoneName": "quilt_ML_b",
+                    "NumKeyFrames": 146
+                },
+                {
+                    "BinaryOffset": 11352,
+                    "BinarySize": 5896,
+                    "BoneName": "quilt_ML_c",
+                    "NumKeyFrames": 134
+                },
+                {
+                    "BinaryOffset": 17248,
+                    "BinarySize": 6512,
+                    "BoneName": "quilt_ML_d",
+                    "NumKeyFrames": 148
+                },
+                {
+                    "BinaryOffset": 23760,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_ML_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 23848,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_ML_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 23936,
+                    "BinarySize": 3828,
+                    "BoneName": "quilt_MR_a",
+                    "NumKeyFrames": 87
+                },
+                {
+                    "BinaryOffset": 27764,
+                    "BinarySize": 6380,
+                    "BoneName": "quilt_MR_b",
+                    "NumKeyFrames": 145
+                },
+                {
+                    "BinaryOffset": 34144,
+                    "BinarySize": 2816,
+                    "BoneName": "quilt_MR_c",
+                    "NumKeyFrames": 64
+                },
+                {
+                    "BinaryOffset": 36960,
+                    "BinarySize": 6556,
+                    "BoneName": "quilt_MR_d",
+                    "NumKeyFrames": 149
+                },
+                {
+                    "BinaryOffset": 43516,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_MR_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 43604,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_MR_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 43692,
+                    "BinarySize": 5500,
+                    "BoneName": "quilt_M_a",
+                    "NumKeyFrames": 125
+                },
+                {
+                    "BinaryOffset": 49192,
+                    "BinarySize": 6644,
+                    "BoneName": "quilt_M_b",
+                    "NumKeyFrames": 151
+                },
+                {
+                    "BinaryOffset": 55836,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_M_c",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 55924,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_M_d",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 56012,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_M_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 56100,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_M_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 56188,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 56276,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_a_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 56364,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_a_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 56452,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 56540,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_b_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 56628,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_b_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 56716,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_c",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 56804,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_c_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 56892,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_c_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 56980,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_d",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 57068,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 57156,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 57244,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 57332,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                }
+            ],
+            "Duration": 150.0,
+            "Name": "ftn_ev_sleep_lp",
+            "NumChannels": 51,
+            "TickPerSecond": 25.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 88,
+                    "BoneName": "bed_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 88,
+                    "BinarySize": 88,
+                    "BoneName": "mattress",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 176,
+                    "BinarySize": 88,
+                    "BoneName": "mattress_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 264,
+                    "BinarySize": 88,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 352,
+                    "BinarySize": 88,
+                    "BoneName": "o_mesh_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 440,
+                    "BinarySize": 88,
+                    "BoneName": "pillow",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 528,
+                    "BinarySize": 88,
+                    "BoneName": "pillow_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 616,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 704,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_a_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 792,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_a_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 880,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 968,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_b_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1056,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_b_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1144,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_c",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1232,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_c_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1320,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_c_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1408,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_d",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1496,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1584,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1672,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_ML_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1760,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_ML_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1848,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_ML_c",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1936,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_ML_d",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2024,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_ML_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2112,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_ML_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2200,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_MR_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2288,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_MR_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2376,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_MR_c",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2464,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_MR_d",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2552,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_MR_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2640,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_MR_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2728,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_M_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2816,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_M_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2904,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_M_c",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2992,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_M_d",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 3080,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_M_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 3168,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_M_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 3256,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 3344,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_a_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 3432,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_a_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 3520,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 3608,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_b_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 3696,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_b_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 3784,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_c",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 3872,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_c_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 3960,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_c_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 4048,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_d",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 4136,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 4224,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 4312,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 4400,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                }
+            ],
+            "Duration": 30.0,
+            "Name": "ftn_ev_wakeup_lp",
+            "NumChannels": 51,
+            "TickPerSecond": 25.0
+        },
+        {
+            "Channels": [
+                {
+                    "BinaryOffset": 0,
+                    "BinarySize": 88,
+                    "BoneName": "bed_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 88,
+                    "BinarySize": 88,
+                    "BoneName": "mattress",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 176,
+                    "BinarySize": 88,
+                    "BoneName": "mattress_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 264,
+                    "BinarySize": 88,
+                    "BoneName": "n_hara",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 352,
+                    "BinarySize": 88,
+                    "BoneName": "o_mesh_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 440,
+                    "BinarySize": 88,
+                    "BoneName": "pillow",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 528,
+                    "BinarySize": 88,
+                    "BoneName": "pillow_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 616,
+                    "BinarySize": 924,
+                    "BoneName": "quilt_L_a",
+                    "NumKeyFrames": 21
+                },
+                {
+                    "BinaryOffset": 1540,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_a_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1628,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_a_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 1716,
+                    "BinarySize": 1056,
+                    "BoneName": "quilt_L_b",
+                    "NumKeyFrames": 24
+                },
+                {
+                    "BinaryOffset": 2772,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_b_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2860,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_b_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 2948,
+                    "BinarySize": 924,
+                    "BoneName": "quilt_L_c",
+                    "NumKeyFrames": 21
+                },
+                {
+                    "BinaryOffset": 3872,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_c_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 3960,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_c_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 4048,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_d",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 4136,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 4224,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_L_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 4312,
+                    "BinarySize": 924,
+                    "BoneName": "quilt_ML_a",
+                    "NumKeyFrames": 21
+                },
+                {
+                    "BinaryOffset": 5236,
+                    "BinarySize": 1232,
+                    "BoneName": "quilt_ML_b",
+                    "NumKeyFrames": 28
+                },
+                {
+                    "BinaryOffset": 6468,
+                    "BinarySize": 1188,
+                    "BoneName": "quilt_ML_c",
+                    "NumKeyFrames": 27
+                },
+                {
+                    "BinaryOffset": 7656,
+                    "BinarySize": 1364,
+                    "BoneName": "quilt_ML_d",
+                    "NumKeyFrames": 31
+                },
+                {
+                    "BinaryOffset": 9020,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_ML_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 9108,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_ML_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 9196,
+                    "BinarySize": 924,
+                    "BoneName": "quilt_MR_a",
+                    "NumKeyFrames": 21
+                },
+                {
+                    "BinaryOffset": 10120,
+                    "BinarySize": 1408,
+                    "BoneName": "quilt_MR_b",
+                    "NumKeyFrames": 32
+                },
+                {
+                    "BinaryOffset": 11528,
+                    "BinarySize": 1452,
+                    "BoneName": "quilt_MR_c",
+                    "NumKeyFrames": 33
+                },
+                {
+                    "BinaryOffset": 12980,
+                    "BinarySize": 968,
+                    "BoneName": "quilt_MR_d",
+                    "NumKeyFrames": 22
+                },
+                {
+                    "BinaryOffset": 13948,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_MR_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 14036,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_MR_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 14124,
+                    "BinarySize": 836,
+                    "BoneName": "quilt_M_a",
+                    "NumKeyFrames": 19
+                },
+                {
+                    "BinaryOffset": 14960,
+                    "BinarySize": 1408,
+                    "BoneName": "quilt_M_b",
+                    "NumKeyFrames": 32
+                },
+                {
+                    "BinaryOffset": 16368,
+                    "BinarySize": 1144,
+                    "BoneName": "quilt_M_c",
+                    "NumKeyFrames": 26
+                },
+                {
+                    "BinaryOffset": 17512,
+                    "BinarySize": 1364,
+                    "BoneName": "quilt_M_d",
+                    "NumKeyFrames": 31
+                },
+                {
+                    "BinaryOffset": 18876,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_M_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 18964,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_M_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 19052,
+                    "BinarySize": 1012,
+                    "BoneName": "quilt_R_a",
+                    "NumKeyFrames": 23
+                },
+                {
+                    "BinaryOffset": 20064,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_a_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 20152,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_a_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 20240,
+                    "BinarySize": 968,
+                    "BoneName": "quilt_R_b",
+                    "NumKeyFrames": 22
+                },
+                {
+                    "BinaryOffset": 21208,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_b_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 21296,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_b_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 21384,
+                    "BinarySize": 924,
+                    "BoneName": "quilt_R_c",
+                    "NumKeyFrames": 21
+                },
+                {
+                    "BinaryOffset": 22308,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_c_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 22396,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_c_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 22484,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_d",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 22572,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_d_a",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 22660,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_R_d_b",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 22748,
+                    "BinarySize": 88,
+                    "BoneName": "quilt_low",
+                    "NumKeyFrames": 2
+                },
+                {
+                    "BinaryOffset": 22836,
+                    "BinarySize": 88,
+                    "BoneName": "root",
+                    "NumKeyFrames": 2
+                }
+            ],
+            "Duration": 40.0,
+            "Name": "ftn_ev_wakeup_st",
+            "NumChannels": 51,
+            "TickPerSecond": 25.0
+        }
+    ]
+}

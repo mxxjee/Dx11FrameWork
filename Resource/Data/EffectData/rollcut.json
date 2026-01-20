@@ -1,0 +1,56 @@
+{
+    "Color": [
+        1.0,
+        0.4745098054409027,
+        0.003921568859368563,
+        0.5568627715110779
+    ],
+    "DataName": "rollcut",
+    "LifeTime": 0.20000000298023224,
+    "Loop": false,
+    "OffSet": [
+        0.0,
+        1.0,
+        0.0,
+        1.0
+    ],
+    "Rotation": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "Scale": [
+        1.2000000476837158,
+        1.0,
+        1.2000000476837158,
+        1.0
+    ],
+    "Speed": 5.0,
+    "TargetScale": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+    ],
+    "Type": "Mesh",
+    "bUseMoveAnim": false,
+    "bUseRotationAnim": false,
+    "bUseScaleAnim": false,
+    "fIntensity": 1.0,
+    "fMoveSpeed": 0.0,
+    "fRotationSpeed": 0.0,
+    "fScaleSpeed": 1.0,
+    "vMoveDir": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+    ],
+    "vRotationAxis": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+    ]
+}

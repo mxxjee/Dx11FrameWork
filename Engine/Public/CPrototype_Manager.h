@@ -1,9 +1,10 @@
 #pragma once
 #include "CBase.h"
 
-NS_BEGIN(Engine)
+//컴포넌트 혹은 오브젝트의 원형들을 레벨별로 구분해서 보관
 
-class CPrototype_Manager :
+NS_BEGIN(Engine)
+class CPrototype_Manager final :
     public CBase
 {
 
@@ -12,20 +13,26 @@ private:
     virtual ~CPrototype_Manager() = default;
 
 public:
-    HRESULT         Initialize(_uint  iNumLevels);
-    HRESULT         Add_Prototype(_uint m_iNumLevel, const _wstring& strPrototypeTag, CBase* _base);
-    CBase*          Clone_Prototype(PROTOTYPE eType,_uint iNumLevel, const _wstring& strPrototypeTag, void* pArg = nullptr);
+    HRESULT        Initialize(_uint iNumLevels);
+    HRESULT        Add_Prototype(_uint iLevelIndex, const _wstring& strProtoTag, CBase* pPrototype);
+    CBase*          Clone_Prototype(PROTOTYPE ePrototypeID, _uint iLevelIndex, const _wstring& strPrototag, void* pArg);      
+    void            Clear(_uint iLevel);
 
 private:
-    CBase* Find_Prototype(_uint m_iNumLevel, const _wstring tag);
+    vector<unordered_map<_wstring, CBase*>> m_Prototypes;
+    _uint           m_iNumLevels = {};
+
 
 public:
     static CPrototype_Manager*      Create(_uint iNumLevels);
     virtual void        Free();
 private:
-    _uint            m_iNumLevels = {};
-    vector<unordered_map<_wstring, CBase*>> m_Prototypes;
+    CBase* Find_Prototype(_uint iLevelIndex, const _wstring& strProtoTag);
 
+public:
+    static CPrototype_Manager* Create(_uint iNumLevels);
+    virtual void Free() override;
 };
 
 NS_END
+

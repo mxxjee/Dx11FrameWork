@@ -1,0 +1,61 @@
+{
+  "NPC_ModelNames": [
+    "RichardAnim"
+  ],
+  "NavData": "../../Resource/Data/Map/Room/RichardHouse_room_Nav2.dat",
+  "MapPositions": [
+    {
+      "Pos": [
+        12.566605567932129,
+        -2.384185791015625e-07,
+        3.50042724609375
+      ],
+      "Target": "Player_SpawnPoint"
+    },
+    {
+      "Pos": [
+        15.2,
+        0.0,
+        7.578
+      ],
+      "Target": "Statue_SpawnPoint"
+    }
+  ],
+  "Position": [
+    12.6,
+    0.0,
+    5.8
+  ],
+  "LightData": "../../Resource/Data/Map/Lights/LightData_Richard.json",
+  "RoomName": "RichardHouse",
+  "RoomTriggers": [
+    {
+      "Collider_Center": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "Collider_Extents": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "NextRoomID": "Level_Dungeon",
+      "Pos": [
+        14.766273498535156,
+        -0.30000001192092896,
+        7.600333213806152
+      ],
+      "Rotation": [
+        -0.0,
+        0.0,
+        -0.0
+      ],
+      "Scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  ]
+}

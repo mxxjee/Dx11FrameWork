@@ -13,23 +13,28 @@
 // 전역 변수:
 HINSTANCE g_hInst;                                // 현재 인스턴스입니다.
 HWND    g_hWnd;
+
+float	g_TotalVolume=1.f;
+float	g_BGMVolume=g_TotalVolume-0.8f;
+float	g_VoiceVolume=g_TotalVolume-0.1f;
+float	g_EffectVolume=g_TotalVolume-0.3f;
+float	g_UIVolume = g_TotalVolume - 0.6f;
+float	g_AmbienceVolume = g_TotalVolume-0.8f;
+
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
+static UINT                     g_ResizeWidth = 0, g_ResizeHeight = 0;
+ 
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
-
-int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
-                     _In_opt_ HINSTANCE hPrevInstance,
-                     _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
-{
-//#ifdef _DEBUG
-//    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-//#endif
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,                     _In_ LPWSTR    lpCmdLine,                      _In_ int       nCmdShow) {
+#ifdef _DEBUG
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
 
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
@@ -102,9 +107,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             /*60프레임마다 증가하는 타이머*/
             pGameInstance->Compute_TimeDelta(L"Timer_60");
 
-            pMainApp->Update(pGameInstance->Get_TimeDelta(L"Timer_60"));
+            float TimeDelta = pGameInstance->Get_TimeDelta(L"Timer_60");
+
+            pMainApp->Update_Priority(TimeDelta);
+            pMainApp->Update(TimeDelta);
+            pMainApp->Update_Late(TimeDelta);
+            pMainApp->Update_Render(TimeDelta);
+            
             pMainApp->Render();
             
+
             fTimeAcc = 0.f;
         }
 
@@ -195,43 +207,33 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+
+    if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+        return true;
+
     switch (message)
     {
-    case WM_COMMAND:
-        {
-            int wmId = LOWORD(wParam);
-            // 메뉴 선택을 구문 분석합니다:
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(g_hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
-        }
-        break;
-    case WM_PAINT:
-        {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-            EndPaint(hWnd, &ps);
-        }
+    case WM_SIZE:
+        if (wParam == SIZE_MINIMIZED)
+            return 0;
+        g_ResizeWidth = (UINT)LOWORD(lParam); // Queue resize
+        g_ResizeHeight = (UINT)HIWORD(lParam);
+        return 0;
+    case WM_SYSCOMMAND:
+        if ((wParam & 0xfff0) == SC_KEYMENU) // Disable ALT application menu
+            return 0;
         break;
     case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
-    default:
-        return DefWindowProc(hWnd, message, wParam, lParam);
-    }
-    return 0;
+        ::PostQuitMessage(0);
+        return 0;
+    }                       
+    return ::DefWindowProcW(hWnd, message, wParam, lParam);
 }
+
 
 // 정보 대화 상자의 메시지 처리기입니다.
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)

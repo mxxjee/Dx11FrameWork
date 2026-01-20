@@ -1,0 +1,56 @@
+{
+    "Color": [
+        0.970588207244873,
+        1.0,
+        0.0,
+        1.0
+    ],
+    "DataName": "CharingComplete",
+    "LifeTime": 0.5,
+    "Loop": false,
+    "OffSet": [
+        0.0,
+        0.5,
+        0.0,
+        1.0
+    ],
+    "Rotation": [
+        90.0,
+        0.0,
+        0.0,
+        0.0
+    ],
+    "Scale": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "Speed": 3.0,
+    "TargetScale": [
+        5.0,
+        5.0,
+        5.0,
+        1.0
+    ],
+    "Type": "Mesh",
+    "bUseMoveAnim": false,
+    "bUseRotationAnim": false,
+    "bUseScaleAnim": true,
+    "fIntensity": 1.0,
+    "fMoveSpeed": 0.0,
+    "fRotationSpeed": 0.0,
+    "fScaleSpeed": 20.0,
+    "vMoveDir": [
+        0.0,
+        1.0,
+        0.0,
+        0.0
+    ],
+    "vRotationAxis": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+    ]
+}
