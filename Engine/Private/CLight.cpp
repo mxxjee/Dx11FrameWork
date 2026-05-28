@@ -18,7 +18,7 @@ void CLight::Render(CShader* pShader, CVIBuffer_Rect* pVIBuffer)
 
 void CLight::Render_DebugImgui()
 {
-
+    /*옵션 선택 정보(DIRECTION / POINT LIGHT)*/
     const char* items[] = { "DIRECTION", "POINT" };
     int current_item = (int)m_LightDesc.eType;
 
@@ -29,7 +29,7 @@ void CLight::Render_DebugImgui()
        
     }
 
-    //이름
+    /*이름 출력*/
     char szBuff[128] = "";
     if (ImGui::InputText("Name", szBuff, 128))
     {
@@ -37,12 +37,13 @@ void CLight::Render_DebugImgui()
 
     }
 
-    //디퓨즈값
+    /*조명의 Diffuse값*/
     ImGui::ColorEdit4("Diffuse", (float*)&m_LightDesc.vDiffuse, ImGuiColorEditFlags_Float);
     ImGui::ColorEdit4("Ambient", (float*)&m_LightDesc.vAmbient, ImGuiColorEditFlags_Float);
     ImGui::ColorEdit4("Specular", (float*)&m_LightDesc.vSpecular, ImGuiColorEditFlags_Float);
 
 
+    /*조명 타입에 따른 출력값*/
     if (m_LightDesc.eType == LIGHT::POINT)
     {
         // 위치

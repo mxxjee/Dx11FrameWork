@@ -60,12 +60,26 @@ void CObjectDebugWindow::Render()
 
 void CObjectDebugWindow::Set_SelectObject(CGameObject* pTarget)
 {
+    /*ModelObject로 캐스팅 성공 시 - 일반 오브젝트 ( 정적 오브젝트)*/
+    /*AnimModelObject로 캐스팅 성공 시 - 애님 오브젝트*/
     if (pTarget != pSelectObject)
     {
         pSelectObject = pTarget;
 
         pSelectModelObj = dynamic_cast<CModelObject*>(pSelectObject);
+        if (pSelectModelObj)
+        {
+            pSelectAnimModelObj = nullptr;
+            return;
+        }
+
+
         pSelectAnimModelObj = dynamic_cast<CAnimModelObject*>(pSelectModelObj);
+        if (pSelectAnimModelObj)
+        {
+            pSelectObject = nullptr;
+            return;
+        }
     }
 }
 

@@ -251,11 +251,6 @@ public:
 	function<void(void*)> Get_EventFunction(const _wstring & Key);
 #pragma endregion
 
-#pragma region PrototypeManager
-public:
-    HRESULT         Add_Prototype(_uint m_iNumLevel, const _wstring & strPrototypeTag, CBase * _base);
-    CBase* Clone_Prototype(PROTOTYPE eType, _uint iNumLevel, const _wstring & strPrototypeTag, void* pArg = nullptr);
-
 #pragma region Terrain_Manager
 	HRESULT						Register_Terrain(const _wstring& Key, class CTerrain_Base* pTerrain);
 	HRESULT						UnRegister_Terrain(const _wstring& Key);

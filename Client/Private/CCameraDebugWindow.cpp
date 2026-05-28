@@ -87,6 +87,7 @@ void CCameraDebugWindow::Render()
 
 HRESULT CCameraDebugWindow::Create_Widgets()
 {
+    /*원근 투영 카메라 버튼*/
     CImgui_Button::IMGUIBUTTON_DESC PersDesc;
     PersDesc.Label = "PerspectiveCam";
     PersDesc.Tag = "PerspectiveCam";
@@ -99,7 +100,7 @@ HRESULT CCameraDebugWindow::Create_Widgets()
     if (FAILED(Add_Widgets<CImgui_Button>(&PersDesc, reinterpret_cast<CImgui_Widget**>(&m_pPerspectiveCamButton))))
         return E_FAIL;
 
-
+    /*직교 투영 카메라 버튼*/
     CImgui_Button::IMGUIBUTTON_DESC OrthoDesc;
     OrthoDesc.Label = "OrthoGraphicCam";
     OrthoDesc.Tag = "OrthoGraphicCam";
@@ -133,15 +134,13 @@ HRESULT CCameraDebugWindow::Create_Widgets()
     SliderDesc.m_RelativePos = ImVec2(0.f, 240.f);
     SliderDesc.vMin = 0.2f;
     SliderDesc.vMax = 1000.f;
-
     if (FAILED(Add_Widgets<CImgui_Slider>(&SliderDesc, reinterpret_cast<CImgui_Widget**>(&m_Sliders[1]))))
         return E_FAIL;
 
     //[Fov 슬라이더]
     SliderDesc.m_LabelName = "Fov Clip Plane";
     SliderDesc.m_RelativePos = ImVec2(0.f, 270.f);
-
-    if (FAILED(Add_Widgets<CImgui_Slider>(&SliderDesc, reinterpret_cast<CImgui_Widget**>(&m_Sliders[2]))))
+    if(FAILED(Add_Widgets<CImgui_Slider>(&SliderDesc, reinterpret_cast<CImgui_Widget**>(&m_Sliders[2]))))
         return E_FAIL;
 
     //RotationSlider

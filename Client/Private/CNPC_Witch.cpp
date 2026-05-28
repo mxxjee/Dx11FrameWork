@@ -230,6 +230,7 @@ void CNPC_Witch::Ready_Events()
         });
 
 
+    /*마녀 이벤트 - Particle 생성 이펙트(연기)*/
     m_pGameInstance->RegisterListners("Witch_Effect", [this](const GameEvent evt)
         {
 
