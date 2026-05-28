@@ -67,15 +67,14 @@ void CNavMeshEdit_Manager::Free()
 
 HRESULT CNavMeshEdit_Manager::Save_NavigationData(const string& filePath,_uint iNum)
 {
+	/*파일 입출력을 통해서 네비게이션 데이터를 저장하는 함수*/
 	_ulong dwByte = {};
-
 	string NewFilePath = "";
-
 	if (iNum == 0)
 		NewFilePath = filePath;
-
 	else
 		NewFilePath = filePath + to_string(iNum);
+
 
 	HANDLE		hFile = CreateFile(StringToWString(NewFilePath).c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
 	if (INVALID_HANDLE_VALUE == hFile)
@@ -83,6 +82,8 @@ HRESULT CNavMeshEdit_Manager::Save_NavigationData(const string& filePath,_uint i
 
 	CheckTrueResult(m_pMapToolCells.empty(), E_FAIL);
 
+
+	/*Cell들의 정보를 저장한다.*/
 	for (auto& cell : m_pMapToolCells)
 	{
 		DefaultCellInfo info = cell->Get_CellInfo();

@@ -59,7 +59,7 @@ void CFontComponent::Set_Text(wstring _Text)
     m_Origin = _float2(XMVectorGetX(m_vSize) * 0.5f, 0.f);
 
 
-    //첫글자부터 하나씩
+    /*Typing 효과 - 한글자씩 시간마다 출력*/
     if (m_bTypingEffect)
     {
         m_iTargetIdx = 0;
@@ -208,6 +208,7 @@ HRESULT CFontComponent::Create_BS_AlphaBlend()
 
 void CFontComponent::PlayTyping()
 {
+    /*Typing 효과 - 한글자씩 시간마다 출력*/
     CheckFalse(m_pOwner->Is_Active());
     CheckFalse(m_bTypingEffect);
 
@@ -222,9 +223,6 @@ void CFontComponent::PlayTyping()
     }
 
 	m_TypingStr += m_pText[m_iTargetIdx];
-
-        
-
     ++m_iTargetIdx;
 
    
