@@ -2,7 +2,7 @@
 #define Engine_Enum_h__
 
 namespace Engine
-{
+{ 
 	enum class WINMODE { FULL, WIN };
 
 	//»ç¿îµå
