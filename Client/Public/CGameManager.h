@@ -2,7 +2,7 @@
 #include "CBase.h"
 #include "Client_Defines.h"
 
-namespace Engine
+namespace Engine 
 {
     class CGameObject;
     class CLayer;
