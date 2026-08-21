@@ -93,7 +93,7 @@ void CLevel_NPCRoom::Play_LevelBGM()
 
 }
 
-void CLevel_NPCRoom::OnEnter()
+void CLevel_NPCRoom::OnEnter() 
 {
     CRoom_Manager::GetInstance()->Switch_Room(CRoom_Manager::GetInstance()->Get_RequestRoom());
     CInteraction_Manager::GetInstance()->Change_Scene(ENUM_TO_UINT(LEVEL_ID::ROOM));
