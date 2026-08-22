@@ -589,7 +589,7 @@ HRESULT CLoader::Register_Models()
     _matrix matrix =XMMatrixScaling(0.035f, 0.035f, 0.035f);
     matrix = XMMatrixMultiply(matrix, XMMatrixRotationY(XMConvertToRadians(180.f)));
 
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/LinkAnim", matrix);
+    m_pGameInstance->Load_All_Models("../../Resource/Model/Actor/LinkAnim", matrix);
   
     _matrix NPCmatrix = XMMatrixRotationY(XMConvertToRadians(180.f));
     
