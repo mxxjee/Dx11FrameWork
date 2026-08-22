@@ -23,14 +23,14 @@ USING(Client)
 
 HRESULT CDialogue_Manager::Initialize()
 {
-    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Mom_Script.json");
-    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Marin_Script.json");
-    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Tarin_Script.json");
-    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Kid_Green_Script.json");
-    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Kid_Blue_Script.json");
-    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Fairy_Script.json");
-    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Witch_Script.json");
-    LoadScriptDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Scripts/Kid_Red_Script.json");
+    LoadScriptDatabase("../../Resource/Data/Scripts/Mom_Script.json");
+    LoadScriptDatabase("../../Resource/Data/Scripts/Marin_Script.json");
+    LoadScriptDatabase("../../Resource/Data/Scripts/Tarin_Script.json");
+    LoadScriptDatabase("../../Resource/Data/Scripts/Kid_Green_Script.json");
+    LoadScriptDatabase("../../Resource/Data/Scripts/Kid_Blue_Script.json");
+    LoadScriptDatabase("../../Resource/Data/Scripts/Fairy_Script.json");
+    LoadScriptDatabase("../../Resource/Data/Scripts/Witch_Script.json");
+    LoadScriptDatabase("../../Resource/Data/Scripts/Kid_Red_Script.json");
 
 
     

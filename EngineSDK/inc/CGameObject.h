@@ -54,7 +54,7 @@ public:
 
 protected:
     ComPtr<ID3D11Device>            m_pDevice = { nullptr };
-    ComPtr<ID3D11DeviceContext>     m_pDeviceContext = { nullptr };
+    ComPtr<ID3D11DeviceContext>     m_pContext = { nullptr };
 
 public:
     const _wstring& Get_Tag() { return tag; }
@@ -89,8 +89,6 @@ public:
 public:
     void        Set_SceneID(_uint iSceneID) { m_iSceneID = iSceneID; }
 protected:
-    ComPtr<ID3D11Device> m_pDevice = { nullptr };
-    ComPtr<ID3D11DeviceContext> m_pContext = { nullptr };
     class CGameInstance* m_pGameInstance = { nullptr };
     CTransform* m_pTransformCom = { nullptr };
 

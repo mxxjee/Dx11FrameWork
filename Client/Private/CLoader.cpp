@@ -605,41 +605,41 @@ HRESULT CLoader::Register_Models()
     _matrix RoomMatrix = XMMatrixScaling(1.1f, 1.1f, 1.1f);
 
 
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy/ZolGreenAnim", GreenZolMatrix);
+    m_pGameInstance->Load_All_Models("../../Resource/Model/Actor/Enemy/ZolGreenAnim", GreenZolMatrix);
     
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy/MoriblinSword", MoriblinSwordMatrix);
+    m_pGameInstance->Load_All_Models("../../Resource/Model/Actor/Enemy/MoriblinSword", MoriblinSwordMatrix);
 
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy/Gidbos", MoriblinSwordMatrix);
+    m_pGameInstance->Load_All_Models("../../Resource/Model/Actor/Enemy/Gidbos", MoriblinSwordMatrix);
 
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Enemy/Jacky", MoriblinSwordMatrix);
+    m_pGameInstance->Load_All_Models("../../Resource/Model/Actor/Enemy/Jacky", MoriblinSwordMatrix);
  
     _matrix DadMatrix = XMMatrixScaling(1.2f, 1.2f, 1.2f);
     DadMatrix = XMMatrixMultiply(DadMatrix, NPCmatrix);
 
-    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Dad/Dad.json", DadMatrix);
-    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Mom/Mom.json", DadMatrix);
-    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/RichardAnim/RichardAnim.json", NPCmatrix);
+    m_pGameInstance->Load_Model("../../Resource/Model/Actor/NPC/Dad/Dad.json", DadMatrix);
+    m_pGameInstance->Load_Model("../../Resource/Model/Actor/NPC/Mom/Mom.json", DadMatrix);
+    m_pGameInstance->Load_Model("../../Resource/Model/Actor/NPC/RichardAnim/RichardAnim.json", NPCmatrix);
    
-    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Fairy/Fairy.json", NPCmatrix);
-    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Kid_Green/Kid_Green.json", XMMatrixIdentity());
-    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Tarin/Tarin.json", XMMatrixIdentity());
-    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Witch/Witch.json", NPCmatrix);
-    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Marin/Marin.json", XMMatrixIdentity());
-    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Kid_Blue/Kid_Blue.json", NPCmatrix);
-    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/NPC/Kid_Red/Kid_Red.json", NPCmatrix);
+    m_pGameInstance->Load_Model("../../Resource/Model/Actor/NPC/Fairy/Fairy.json", NPCmatrix);
+    m_pGameInstance->Load_Model("../../Resource/Model/Actor/NPC/Kid_Green/Kid_Green.json", XMMatrixIdentity());
+    m_pGameInstance->Load_Model("../../Resource/Model/Actor/NPC/Tarin/Tarin.json", XMMatrixIdentity());
+    m_pGameInstance->Load_Model("../../Resource/Model/Actor/NPC/Witch/Witch.json", NPCmatrix);
+    m_pGameInstance->Load_Model("../../Resource/Model/Actor/NPC/Marin/Marin.json", XMMatrixIdentity());
+    m_pGameInstance->Load_Model("../../Resource/Model/Actor/NPC/Kid_Blue/Kid_Blue.json", NPCmatrix);
+    m_pGameInstance->Load_Model("../../Resource/Model/Actor/NPC/Kid_Red/Kid_Red.json", NPCmatrix);
 
 
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Obstacle/", PreMatrix);
+    m_pGameInstance->Load_All_Models("../../Resource/Model/Obstacle/", PreMatrix);
 
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Object/", XMMatrixIdentity());
+    m_pGameInstance->Load_All_Models("../../Resource/Model/Object/", XMMatrixIdentity());
 
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Rooms/", XMMatrixIdentity());
+    m_pGameInstance->Load_All_Models("../../Resource/Model/Rooms/", XMMatrixIdentity());
 
-    m_pGameInstance->Load_Model("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Actor/Weathercock/Weathercock.json", XMMatrixIdentity());
+    m_pGameInstance->Load_Model("../../Resource/Model/Actor/Weathercock/Weathercock.json", XMMatrixIdentity());
     
     
     //MeshEffectf
-    m_pGameInstance->Load_All_Models("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Model/Effect/", MoriblinSwordMatrix);
+    m_pGameInstance->Load_All_Models("../../Resource/Model/Effect/", MoriblinSwordMatrix);
 
     return S_OK;
 }

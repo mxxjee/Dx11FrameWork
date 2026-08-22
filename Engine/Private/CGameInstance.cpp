@@ -89,7 +89,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	CheckNullResult(m_pTimerManager, E_FAIL);
 
 	/*프로토타입 매니져 초기화*/
-	m_pProtoManager = CPrototype_Manager::Create(EngineDesc.iLevels);
+	m_pProtoManager = CPrototype_Manager::Create(EngineDesc.iNumLevels);
 	CheckNullResult(m_pProtoManager,E_FAIL);
 
 

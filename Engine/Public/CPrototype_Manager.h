@@ -23,9 +23,6 @@ private:
     _uint           m_iNumLevels = {};
 
 
-public:
-    static CPrototype_Manager*      Create(_uint iNumLevels);
-    virtual void        Free();
 private:
     CBase* Find_Prototype(_uint iLevelIndex, const _wstring& strProtoTag);
 
