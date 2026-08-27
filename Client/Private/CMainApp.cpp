@@ -256,40 +256,42 @@ HRESULT CMainApp::Initialize_Cilent()
 #endif // _DEBUG
 
 	//*UISCENE*//
-	m_pGameInstance->Register_HotKey(KeyCode::P, false , false, false, [this]()
-		{
+	//m_pGameInstance->Register_HotKey(KeyCode::P, false , false, false, [this]()
+	//	{
+	//		if (m_pGameInstance->Get_CurrentLevelID() == ENUM_TO_UINT(LEVEL_ID::LOADING)) return;
 
-			bool b = CGameManager::GetInstance()->Get_IsOpenInventory();
-			if (b)
-			{
-				CGameInstance::GetInstance()->Pop_Level();
-				CInput_Manager::GetInstance()->Set_InputMode(InputMode::GAME);
+	//		bool b = CGameManager::GetInstance()->Get_IsOpenInventory();
+	//		if (b)
+	//		{
+	//			CGameInstance::GetInstance()->Pop_Level();
+	//			CInput_Manager::GetInstance()->Set_InputMode(InputMode::GAME);
 
-			}
+	//		}
 
-			else
-			{
-				//
-				CInput_Manager::GetInstance()->Set_InputMode(InputMode::UI);
+	//		else
+	//		{
+	//			//
+	//			CInput_Manager::GetInstance()->Set_InputMode(InputMode::UI);
 
-				LevelArgs args;
-				args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
-				args.changeType = LEVELCHANGETYPE::PUSH;
-				//args.loadingChangeType = LEVELCHANGETYPE::PUSH;
-				args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
-
-
-				if (FAILED(m_pGameInstance->Level_Changer(
-					ENUM_TO_UINT(LEVEL_ID::UI),
-					args)))
-					return;
-				
-			}
-
-		});
+	//			LevelArgs args;
+	//			args.iNextLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
+	//			args.changeType = LEVELCHANGETYPE::PUSH;
+	//			//args.loadingChangeType = LEVELCHANGETYPE::PUSH;
+	//			args.m_iLevelID = ENUM_TO_UINT(LEVEL_ID::UI);
 
 
+	//			if (FAILED(m_pGameInstance->Level_Changer(
+	//				ENUM_TO_UINT(LEVEL_ID::UI),
+	//				args)))
+	//				return;
+	//			
+	//		}
 
+	//	});
+
+
+
+	CGameInstance::m_bDrawDebug = false;
 
 	return S_OK;
 

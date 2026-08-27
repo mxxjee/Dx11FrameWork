@@ -143,18 +143,7 @@ void CInteraction_Rock::Exit_InteractRange()
 
 void CInteraction_Rock::Enter_Interaction()
 {
-    InvenSlot* pSlot = m_pInventory_Manager->Get_XSlot();
-    if (pSlot == nullptr || pSlot->ItemType != ItemType::POWER_BRACELET)
-    {
-        wstring wstr = L"아직 들기엔 무거운거같은데..";
-        m_pGameInstance->BroadCastEvent(L"UpdateEmptySlotText", &wstr);
-        m_pGameInstance->BroadCastEvent(L"OnEmptySlotUIShow", nullptr);
-        
-        m_bCanCarry = false;
-        return;
-    }
-
-
+    
     CheckTrue(m_pPlayer->Get_ActionControl()->m_bCarry);
     m_bCall_Exit_Interaction = false;
 

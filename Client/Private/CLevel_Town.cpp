@@ -72,14 +72,20 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_Enviroment(L"Enviroment_Layer")))
         return E_FAIL;
 
+    // Logo에서 Spawn을 건너뛰고 Town으로 바로 진입하므로,
+    // Player가 시작 컷신(PRATFALL / 이동 불가) 상태로 생성되지 않게 한다.
+    m_pGameManager->Set_UseCutScene(false);
+
     if (FAILED(Ready_Layer_Player(L"Player_Layer")))
         return E_FAIL;
 
     if (FAILED(Ready_Layer_NPC(L"NPC_Layer")))
         return E_FAIL;
 
+#if !defined(_DEBUG)
     if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
-        return E_FAIL;  
+        return E_FAIL;
+#endif
 
     if (FAILED(Ready_Layer_UI(L"UI_Layer")))
         return E_FAIL;
@@ -99,6 +105,9 @@ HRESULT CLevel_Town::Initialize(LevelArgs& args)
 
     UIGroup* pGroup = m_pGameInstance->Get_UIGroup(L"FadeScreenGroup");
     pFadeScreen = dynamic_cast<CFadeScreen*>(pGroup->Find(L"FadeScreen"));
+
+    if (FAILED(CQuest_Manager::GetInstance()->Initialize()))
+        return E_FAIL;
 
 
 
@@ -181,7 +190,7 @@ void CLevel_Town::Update(const _float fTimeDelta)
 
     }
      
-    if(CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::M))
+    /*if(CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::M))
     {
         CGameObject* pObj = m_pGameInstance->Find_GameObject(m_iLevelID,
             L"UI_Layer", L"MinimapQuad");
@@ -199,7 +208,7 @@ void CLevel_Town::Update(const _float fTimeDelta)
                 m_pGameInstance->Set_EnableUpdateMinimap(true);
             }
         }
-    }
+    }*/
 
 
     return;
@@ -327,61 +336,62 @@ HRESULT CLevel_Town::Ready_Layer_Enviroment(const _wstring& strLayerTag)
 
 HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
 {
-   
-    //if(FAILED(UICreator::Create_HeartGroup(strLayerTag)))
-    //    return E_FAIL;
+    if (FAILED(UICreator::Create_HeartGroup(strLayerTag)))
+        return E_FAIL;
 
-    ///////Interaction 관련 PopUp UI
-    //if (FAILED(UICreator::Create_Interaction_UI(strLayerTag)))
-    //    return E_FAIL;
-    ///////Interaction 관련 PopUp UI
-    //if (FAILED(UICreator::Create_Interaction_TalkUI(strLayerTag)))
-    //    return E_FAIL;
+    if (FAILED(UICreator::Create_Interaction_UI(strLayerTag)))
+        return E_FAIL;
+
+    if (FAILED(UICreator::Create_Interaction_TalkUI(strLayerTag)))
+        return E_FAIL;
+
+    if (FAILED(UICreator::Create_NPC_Dialogue_UI(strLayerTag)))
+        return E_FAIL;
 
 #pragma region MinimapQuad
-    ///////////////////Minimapquad생성
-    CUI::tagUIDesc        MinimapDesc = {};
-    MinimapDesc.ObjTag = L"MinimapQuad";
-    MinimapDesc.passName = "Blur";
-    MinimapDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
-    MinimapDesc.fSizeX = 150;
-    MinimapDesc.fSizeY = 150;
-    MinimapDesc.fX = g_iWinSizeX - 100;
-    MinimapDesc.fY = 100;
-    MinimapDesc.m_iLevelID = m_iLevelID;
+    /////////////////////Minimapquad생성
+    //CUI::tagUIDesc        MinimapDesc = {};
+    //MinimapDesc.ObjTag = L"MinimapQuad";
+    //MinimapDesc.passName = "Blur";
+    //MinimapDesc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::UI);
+    //MinimapDesc.fSizeX = 150;
+    //MinimapDesc.fSizeY = 150;
+    //MinimapDesc.fX = g_iWinSizeX - 100;
+    //MinimapDesc.fY = 100;
+    //MinimapDesc.m_iLevelID = m_iLevelID;
 
-    CTransform::TRANSFORM_DESC MinimapTransDesc = {};
-    MinimapDesc.TransformDesc = &MinimapTransDesc;
+    //CTransform::TRANSFORM_DESC MinimapTransDesc = {};
+    //MinimapDesc.TransformDesc = &MinimapTransDesc;
 
-    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-        PROTO_OBJ_NAME(L"MinimapQuad"),
-        ENUM_TO_UINT(LEVEL_ID::TOWN),
-        strLayerTag, &MinimapDesc)))
-        return E_FAIL;
-
-
-    /*플레이어 마커 생성*/
-    CQuad::QUAD_DESC        Desc = {};
-
-    Desc.ObjTag = L"Player_Marker";
-    Desc.TextureKey = L"Player_Marker";
-    Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP);
-    Desc.m_iLevelID = m_iLevelID;
+    //if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+    //    PROTO_OBJ_NAME(L"MinimapQuad"),
+    //    ENUM_TO_UINT(LEVEL_ID::TOWN),
+    //    strLayerTag, &MinimapDesc)))
+    //    return E_FAIL;
 
 
-    CTransform::TRANSFORM_DESC TransDesc = {};
-    TransDesc.fRotationPerSec = 10.f;
-    TransDesc.fSpeedPerSec = 5.f;
-    TransDesc.vLocalPosition = { 0.f,0.f,0.f,1.f };
-    TransDesc.vLocalScale = { 5.f,5.f,1.f,1.f };
+    ///*플레이어 마커 생성*/
+    //CQuad::QUAD_DESC        Desc = {};
 
-    Desc.TransformDesc = &TransDesc;
+    //Desc.ObjTag = L"Player_Marker";
+    //Desc.TextureKey = L"Player_Marker";
+    //Desc.eRenderGroup = ENUM_TO_UINT(RENDERGROUP::WORLD_UI_MINIMAP);
+    //Desc.m_iLevelID = m_iLevelID;
 
-    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
-        PROTO_OBJ_NAME(L"Quad"),
-        ENUM_TO_UINT(LEVEL_ID::TOWN),
-        strLayerTag, &Desc)))
-        return E_FAIL;
+
+    //CTransform::TRANSFORM_DESC TransDesc = {};
+    //TransDesc.fRotationPerSec = 10.f;
+    //TransDesc.fSpeedPerSec = 5.f;
+    //TransDesc.vLocalPosition = { 0.f,0.f,0.f,1.f };
+    //TransDesc.vLocalScale = { 5.f,5.f,1.f,1.f };
+
+    //Desc.TransformDesc = &TransDesc;
+
+    //if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+    //    PROTO_OBJ_NAME(L"Quad"),
+    //    ENUM_TO_UINT(LEVEL_ID::TOWN),
+    //    strLayerTag, &Desc)))
+    //    return E_FAIL;
 #pragma endregion
 
     return S_OK;
@@ -390,8 +400,7 @@ HRESULT CLevel_Town::Ready_Layer_UI(const _wstring& strLayerTag)
 
 HRESULT CLevel_Town::Ready_Layer_Player(const _wstring& strLayerTag)
 {
-
-    /*if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
+    if (FAILED(m_pGameInstance->Add_GameObject_To_Layer(ENUM_TO_UINT(LEVEL_ID::STATIC),
         PROTO_OBJ_NAME(L"Player"),
         ENUM_TO_UINT(LEVEL_ID::STATIC),
         strLayerTag, nullptr)))
@@ -403,7 +412,7 @@ HRESULT CLevel_Town::Ready_Layer_Player(const _wstring& strLayerTag)
         m_pGameManager->Set_MainPlayer(pObj);
         CInteraction_Manager::GetInstance()->Set_MainPlayer(pObj);
 
-    }*/
+    }
     return S_OK;
 
 }
