@@ -7,8 +7,8 @@ class CIInteractable
 public:
 	virtual bool           IsInteratable()=0;      //상호작용가능한지 조건 ( 보통 거리?)
 
-	// TriggerBox collision callbacks use these common entry points so that
-	// interactable implementations do not depend directly on the manager.
+	// 상호작용 구현이 상호작용 관리자에 직접 의존하지 않도록
+	// TriggerBox 충돌 콜백은 이 공통 진입점을 사용한다.
 	void            OnInteractionRangeEnter();
 	void            OnInteractionRangeExit();
 

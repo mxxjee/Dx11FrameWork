@@ -153,7 +153,7 @@ bool CInteraction_JackyBall::IsInteratable()
 
 void CInteraction_JackyBall::Update_MonsterGrab()
 {
-    // Preserve every condition that guarded the old IsInteratable side effect.
+    // 기존 IsInteratable의 부수 효과를 제한하던 모든 조건을 그대로 유지한다.
     CheckFalse(m_bActive);
     CheckFalse(CanInteractive);
     CheckTrue(m_bInteraction);

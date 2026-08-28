@@ -3,7 +3,7 @@
 
 USING(Client)
 
-// Common Candidate and lifetime policy shared by every interactable owner.
+// 모든 상호작용 객체가 공유하는 후보 등록 및 생명주기 정책이다.
 void CIInteractable::OnInteractionRangeEnter()
 {
 	RequestAddCandidate();

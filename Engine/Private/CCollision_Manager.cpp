@@ -3,14 +3,6 @@
 #include "CGameObject.h"
 #include "CGameInstance.h"
 
-#if defined(_DEBUG)
-#include <algorithm>
-#include <chrono>
-#include <fstream>
-#include <iomanip>
-#include <sstream>
-#endif
-
 
 CCollision_Manager::CCollision_Manager()
 {
@@ -121,11 +113,6 @@ void CCollision_Manager::Update_CollisionGroup(_float fTimeDelta)
 {
     CheckTrue(m_pGameInstance->Get_IsLoading());
 
-#if defined(_DEBUG)
-    using BaselineClock = std::chrono::steady_clock;
-    const BaselineClock::time_point BaselineBegin = BaselineClock::now();
-#endif
-
     //Static,현재레벨,static vs 현재레벨
     _uint iCurrentDynamicID = m_pGameInstance->Get_CurrentLevelID();
 
@@ -186,16 +173,6 @@ void CCollision_Manager::Update_CollisionGroup(_float fTimeDelta)
 
     ResolveEventsOnGroups(*DynamicGroupsPtr);
 
-#if defined(_DEBUG)
-    const double dElapsedMicroseconds = std::chrono::duration<double, std::micro>(BaselineClock::now() - BaselineBegin).count();
-    ++m_iBaselineMeasuredFrames;
-    m_dBaselineTotalMicroseconds += dElapsedMicroseconds;
-    m_dBaselineMaxMicroseconds = (std::max)(m_dBaselineMaxMicroseconds, dElapsedMicroseconds);
-
-    if (m_iBaselineMeasuredFrames % 600ull == 0ull)
-        Dump_BaselineStats();
-#endif
-    
 }
 
 
@@ -289,10 +266,6 @@ CCollision_Manager* CCollision_Manager::Create(_uint MaxGroup)
 
 void CCollision_Manager::Free()
 {
-#if defined(_DEBUG)
-    Dump_BaselineStats();
-#endif
-
     for (std::map<_uint, SceneColliderGroupList>::iterator mapIt = m_mapSceneColliders.begin();
         mapIt != m_mapSceneColliders.end(); ++mapIt)
     {
@@ -308,35 +281,3 @@ void CCollision_Manager::Free()
     }
     m_mapSceneColliders.clear();
 }
-
-#if defined(_DEBUG)
-void CCollision_Manager::Reset_BaselineStats()
-{
-    m_iBaselineMeasuredFrames = 0;
-    m_dBaselineTotalMicroseconds = 0.0;
-    m_dBaselineMaxMicroseconds = 0.0;
-}
-
-void CCollision_Manager::Dump_BaselineStats() const
-{
-    if (m_iBaselineMeasuredFrames == 0)
-        return;
-
-    const double dFrames = static_cast<double>(m_iBaselineMeasuredFrames);
-
-    std::ostringstream Stream;
-    Stream << std::fixed << std::setprecision(3)
-        << "[CollisionBaseline]"
-        << " frames=" << m_iBaselineMeasuredFrames
-        << " updateAvgUs=" << (m_dBaselineTotalMicroseconds / dFrames)
-        << " updateMaxUs=" << m_dBaselineMaxMicroseconds
-        << '\n';
-
-    const std::string Line = Stream.str();
-    OutputDebugStringA(Line.c_str());
-
-    std::ofstream LogFile("Interaction_Baseline.log", std::ios::app);
-    if (LogFile)
-        LogFile << Line;
-}
-#endif

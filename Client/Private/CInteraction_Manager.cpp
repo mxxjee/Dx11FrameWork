@@ -7,15 +7,7 @@
 #include "CGameInstance.h"
 #include "CLayer.h"
 #include "CGameManager.h"
-#include "CTransform.h"
 #include <algorithm>
-
-#if defined(_DEBUG)
-#include <chrono>
-#include <fstream>
-#include <iomanip>
-#include <sstream>
-#endif
 
 USING(Client)
 IMPLEMENT_SINGLETON(CInteraction_Manager)
@@ -64,9 +56,8 @@ void CInteraction_Manager::RequestCandidateState(CIInteractable* pObj, bool bAdd
 	m_PendingCandidateRequests.push_back({ pObj, bAdd });
 }
 
-unsigned long long CInteraction_Manager::ApplyPendingCandidates()
+void CInteraction_Manager::ApplyPendingCandidates()
 {
-	unsigned long long iRangeExits = 0;
 	std::vector<CANDIDATE_REQUEST> Requests;
 	Requests.swap(m_PendingCandidateRequests);
 
@@ -89,12 +80,9 @@ unsigned long long CInteraction_Manager::ApplyPendingCandidates()
 			{
 				pObject->Exit_InteractRange();
 				pObject->m_bPrevRange = false;
-				++iRangeExits;
 			}
 		}
 	}
-
-	return iRangeExits;
 }
 
 void CInteraction_Manager::PurgeInteractable(CIInteractable* pObj)
@@ -126,194 +114,45 @@ void CInteraction_Manager::PurgeInteractable(CIInteractable* pObj)
 		m_pCurrentTarget = nullptr;
 	if (m_pPreTarget == pObj)
 		m_pPreTarget = nullptr;
-
-#if defined(_DEBUG)
-	if (m_pBaselineInteractionStartTarget == pObj)
-		m_pBaselineInteractionStartTarget = nullptr;
-#endif
 }
 
 void CInteraction_Manager::Update(_float fTimeDelta)
 {
-#if defined(_DEBUG)
-	using BaselineClock = std::chrono::steady_clock;
-	BaselineClock::time_point UpdateBegin = BaselineClock::now();
-	const unsigned long long iRegisteredObjects = static_cast<unsigned long long>(m_InteractableObjects.size());
-	unsigned long long iInRangeObjects = 0;
-	unsigned long long iIsInteractableCalls = 0;
-	unsigned long long iPriorityComparisons = 0;
-	unsigned long long iRangeEnters = 0;
-	unsigned long long iRangeExits = 0;
-	double dFirstLoopMicroseconds = 0.0;
-	double dSecondLoopMicroseconds = 0.0;
-	CIInteractable* pTargetAtFrameStart = m_pCurrentTarget;
-
-	const auto CommitFrame = [&]()
-		{
-			const double dUpdateMicroseconds = std::chrono::duration<double, std::micro>(BaselineClock::now() - UpdateBegin).count();
-			Commit_BaselineFrame(
-				iRegisteredObjects,
-				iInRangeObjects,
-				iIsInteractableCalls,
-				iPriorityComparisons,
-				iRangeEnters,
-				iRangeExits,
-				dFirstLoopMicroseconds,
-				dSecondLoopMicroseconds,
-				dUpdateMicroseconds,
-				pTargetAtFrameStart);
-		};
-#endif
-
-	const unsigned long long iPendingRangeExits = ApplyPendingCandidates();
-#if defined(_DEBUG)
-	iInRangeObjects = static_cast<unsigned long long>(m_Candidates.size());
-	iRangeExits += iPendingRangeExits;
-#else
-	(void)iPendingRangeExits;
-#endif
+	ApplyPendingCandidates();
 
 	if (!m_pMainPlayer)
-	{
-#if defined(_DEBUG)
-		++m_BaselineStats.iEarlyOutNoPlayer;
-		CommitFrame();
-#endif
 		return;
-	}
-
-#if defined(_DEBUG)
-	const auto LogCheckpoint = [](const char* pAction, _uint iLevel, const _float4& vPosition)
-		{
-			std::ostringstream Stream;
-			Stream << std::fixed << std::setprecision(3)
-				<< "[InteractionBaselineCheckpoint] action=" << pAction
-				<< " level=" << iLevel
-				<< " x=" << vPosition.x
-				<< " y=" << vPosition.y
-				<< " z=" << vPosition.z
-				<< " w=" << vPosition.w
-				<< '\n';
-
-			const std::string Line = Stream.str();
-			OutputDebugStringA(Line.c_str());
-			std::ofstream LogFile("Interaction_Baseline.log", std::ios::app);
-			if (LogFile)
-				LogFile << Line;
-		};
-
-	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::F7))
-	{
-		Dump_BaselineStats();
-		UpdateBegin = BaselineClock::now();
-	}
-
-	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::F8))
-	{
-		{
-			const std::string Line = "[InteractionBaselineControl] action=reset\n";
-			OutputDebugStringA(Line.c_str());
-			std::ofstream LogFile("Interaction_Baseline.log", std::ios::app);
-			if (LogFile)
-				LogFile << Line;
-		}
-
-		// Exclude the reset control path and its file I/O from the first measured frame.
-		Reset_BaselineStats();
-		UpdateBegin = BaselineClock::now();
-	}
-
-	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::F9))
-	{
-		_float4 vPosition{};
-		XMStoreFloat4(&vPosition, m_pMainPlayer->Get_Transform()->Get_State(STATE::POSITION));
-
-		std::ofstream CheckpointFile("Interaction_Baseline_Checkpoint.txt", std::ios::trunc);
-		if (CheckpointFile)
-		{
-			CheckpointFile << m_iBaselineActiveLevel << ' '
-				<< std::setprecision(9)
-				<< vPosition.x << ' ' << vPosition.y << ' ' << vPosition.z << ' ' << vPosition.w << '\n';
-		}
-
-		LogCheckpoint("save", m_iBaselineActiveLevel, vPosition);
-	}
-
-	if (CInput_Manager::GetInstance()->IsKeyPressed(KeyCode::F10))
-	{
-		_uint iCheckpointLevel = 0;
-		_float4 vPosition{};
-		std::ifstream CheckpointFile("Interaction_Baseline_Checkpoint.txt");
-
-		if (CheckpointFile &&
-			CheckpointFile >> iCheckpointLevel >> vPosition.x >> vPosition.y >> vPosition.z >> vPosition.w)
-		{
-			if (iCheckpointLevel == m_iBaselineActiveLevel)
-			{
-				m_pMainPlayer->Get_Transform()->Set_State(STATE::POSITION, vPosition);
-				LogCheckpoint("load", iCheckpointLevel, vPosition);
-			}
-			else
-				LogCheckpoint("skip-level-mismatch", iCheckpointLevel, vPosition);
-		}
-	}
-#endif
 
 	if (m_InteractableObjects.empty())
-	{
-#if defined(_DEBUG)
-		++m_BaselineStats.iEarlyOutEmptyRegistry;
-		CommitFrame();
-#endif
 		return;
-	}
 	
 	if (CGameManager::GetInstance()->Get_EndingStep() == EndingStep::EPILOGUE)
-	{
-#if defined(_DEBUG)
-		++m_BaselineStats.iEarlyOutEpilogue;
-		CommitFrame();
-#endif
 		return;
-	}
 
-	// Interaction owns CurrentTarget until its lifecycle explicitly ends, even if
-	// the Player has already left the TriggerBox and the Candidate was removed.
+	// 플레이어가 TriggerBox를 벗어나 후보에서 제거되더라도,
+	// 상호작용 생명주기가 명시적으로 끝날 때까지 현재 대상을 유지한다.
 	if (m_pCurrentTarget && m_pCurrentTarget->m_bPrevInteracting)
 	{
 		m_pCurrentTarget->Stay_Interaction(fTimeDelta);
-#if defined(_DEBUG)
-		CommitFrame();
-#endif
 		return;
 	}
 
 	CIInteractable* pBest = nullptr;
 	CIInteractable* pPreviousTarget = m_pCurrentTarget;
 
-#if defined(_DEBUG)
-	const BaselineClock::time_point FirstLoopBegin = BaselineClock::now();
-#endif
-
-	// Only Player-overlap Candidates participate in per-frame target selection.
-	// Strict '>' preserves stable first-entered ordering for equal priorities.
+	// 플레이어와 겹친 후보만 프레임별 대상 탐색에 참여한다.
+	// 엄격한 '>' 비교를 사용해 우선순위가 같으면 먼저 진입한 순서를 유지한다.
 	for (CIInteractable* pInteratable : m_Candidates)
 	{
 		if (!pInteratable)
 			continue;
 
-#if defined(_DEBUG)
-		++iIsInteractableCalls;
-#endif
 		bool inRange = pInteratable->IsInteratable();
 
-		// Preserve the existing range lifecycle callbacks inside the broad-phase Candidate set.
+		// 광역 충돌 후보 내부에서도 기존 범위 생명주기 콜백을 유지한다.
 		if (!pInteratable->m_bPrevRange && inRange)
 		{
 			pInteratable->Enter_InteractRange();
-#if defined(_DEBUG)
-			++iRangeEnters;
-#endif
 		}
 
 		else if (pInteratable->m_bPrevRange && inRange)
@@ -322,48 +161,28 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 		else if (pInteratable->m_bPrevRange && !inRange)
 		{
 			pInteratable->Exit_InteractRange();
-#if defined(_DEBUG)
-			++iRangeExits;
-#endif
 		}
 
 		pInteratable->m_bPrevRange = inRange;
 
 		if (inRange)
 		{
-#if defined(_DEBUG)
-			if (pBest)
-				++iPriorityComparisons;
-#endif
 			if (!pBest || pInteratable->Get_Interaction_Priority() > pBest->Get_Interaction_Priority())
 				pBest = pInteratable;
 		}
 	}
 
-#if defined(_DEBUG)
-	dFirstLoopMicroseconds = std::chrono::duration<double, std::micro>(BaselineClock::now() - FirstLoopBegin).count();
-#endif
-
 	m_pCurrentTarget = pBest;
 	if (pPreviousTarget != m_pCurrentTarget)
 		m_pPreTarget = pPreviousTarget;
 
-#if defined(_DEBUG)
-	const BaselineClock::time_point SecondLoopBegin = BaselineClock::now();
-#endif
-
-	// The lock above makes a second Registry traversal unnecessary. Keep only the
-	// previous target cleanup as a defensive lifecycle guard.
+	// 위의 대상 고정으로 전체 등록 목록을 두 번째 순회할 필요가 없다.
+	// 생명주기 방어를 위해 이전 대상 정리만 유지한다.
 	if (pPreviousTarget && pPreviousTarget != m_pCurrentTarget && pPreviousTarget->m_bPrevInteracting)
 	{
 		pPreviousTarget->Exit_Interaction();
 		pPreviousTarget->m_bPrevInteracting = false;
 	}
-
-#if defined(_DEBUG)
-	dSecondLoopMicroseconds = std::chrono::duration<double, std::micro>(BaselineClock::now() - SecondLoopBegin).count();
-	CommitFrame();
-#endif
 }
 
 bool CInteraction_Manager::OnInteractKeyPresed()
@@ -382,10 +201,6 @@ bool CInteraction_Manager::OnInteractKeyPresed()
 			{
 				m_pCurrentTarget->Enter_Interaction();
 				m_pCurrentTarget->m_bPrevInteracting = true;
-#if defined(_DEBUG)
-				++m_BaselineStats.iInteractionStarts;
-				m_pBaselineInteractionStartTarget = m_pCurrentTarget;
-#endif
 				return true;
 			}
 
@@ -396,24 +211,12 @@ bool CInteraction_Manager::OnInteractKeyPresed()
 					m_pCurrentTarget->Exit_Interaction();
 					m_pCurrentTarget->m_bPrevInteracting = false;
 					m_pCurrentTarget->m_bPrevRange = false;
-#if defined(_DEBUG)
-					++m_BaselineStats.iInteractionEnds;
-#endif
 					return true;
 				}
 
 			}
 		}
-
-
-#if defined(_DEBUG)
-		const bool bWasInteracting = m_pCurrentTarget->m_bPrevInteracting;
-#endif
 		m_pCurrentTarget->Pressed_InteractionKey();
-#if defined(_DEBUG)
-		if (bWasInteracting && !m_pCurrentTarget->m_bPrevInteracting)
-			++m_BaselineStats.iInteractionEnds;
-#endif
 
 	}
 	
@@ -423,12 +226,12 @@ bool CInteraction_Manager::OnInteractKeyPresed()
 
 void CInteraction_Manager::Clear()
 {
-	// Scene/lifetime cleanup may traverse the Registry; per-frame target selection may not.
+	// 씬 또는 객체 생명주기 정리에서는 전체 등록 목록을 순회할 수 있지만, 프레임별 대상 탐색에는 사용하지 않는다.
 	for (auto& pObj : m_InteractableObjects)
 	{
 		if (pObj)
 		{
-			// Invoke the matching exit callback for active interaction/range state.
+			// 활성화된 상호작용 및 범위 상태에 대응하는 종료 콜백을 호출한다.
 			if (pObj->m_bPrevInteracting)
 			{
 				pObj->Exit_Interaction();
@@ -463,12 +266,6 @@ void CInteraction_Manager::Add_Interaction(CIInteractable* pObj)
 
 void CInteraction_Manager::Change_Scene(_uint iLevelID)
 {
-#if defined(_DEBUG)
-	using BaselineClock = std::chrono::steady_clock;
-	const BaselineClock::time_point ChangeSceneBegin = BaselineClock::now();
-	m_iBaselineActiveLevel = iLevelID;
-#endif
-
 	Clear();
 
 	CLayer* pInteractionLayer = m_pGameInstance->Find_Layer(iLevelID, L"Interaction_Layer");
@@ -493,12 +290,6 @@ void CInteraction_Manager::Change_Scene(_uint iLevelID)
 				CInteraction_Manager::GetInstance()->RegisterInteractable(pInteractable);
 		}
 	}
-	
-#if defined(_DEBUG)
-	const double dChangeSceneMicroseconds = std::chrono::duration<double, std::micro>(BaselineClock::now() - ChangeSceneBegin).count();
-	Record_ChangeSceneBaseline(dChangeSceneMicroseconds);
-#endif
-
 }
 
 HRESULT CInteraction_Manager::Initialize()
@@ -543,19 +334,11 @@ void CInteraction_Manager::Set_CurrentTarget(CIInteractable* pObj)
 	m_pCurrentTarget = pObj; 
 	m_pCurrentTarget->Enter_Interaction();
 	m_pCurrentTarget->m_bPrevInteracting = true;
-#if defined(_DEBUG)
-	++m_BaselineStats.iInteractionStarts;
-	m_pBaselineInteractionStartTarget = m_pCurrentTarget;
-#endif
 	
 }
 
 void CInteraction_Manager::Free()
 {
-#if defined(_DEBUG)
-	Dump_BaselineStats();
-#endif
-
 	m_pCurrentTarget = nullptr;
 	m_pPreTarget = nullptr;
 	m_InteractableObjects.clear();
@@ -567,123 +350,6 @@ void CInteraction_Manager::Free()
 
 	__super::Free();
 }
-
-#if defined(_DEBUG)
-void CInteraction_Manager::Reset_BaselineStats()
-{
-	m_BaselineStats = {};
-	m_BaselineStats.iMinInRangeObjects = ~0ull;
-	m_pBaselineInteractionStartTarget = nullptr;
-}
-
-void CInteraction_Manager::Record_CarryNotifyTarget(CIInteractable* pTarget)
-{
-	++m_BaselineStats.iCarryNotifyCalls;
-
-	if (pTarget != m_pBaselineInteractionStartTarget)
-		++m_BaselineStats.iCarryNotifyTargetMismatches;
-
-	m_pBaselineInteractionStartTarget = nullptr;
-}
-
-void CInteraction_Manager::Commit_BaselineFrame(
-	unsigned long long iRegisteredObjects,
-	unsigned long long iInRangeObjects,
-	unsigned long long iIsInteractableCalls,
-	unsigned long long iPriorityComparisons,
-	unsigned long long iRangeEnters,
-	unsigned long long iRangeExits,
-	double dFirstLoopMicroseconds,
-	double dSecondLoopMicroseconds,
-	double dUpdateMicroseconds,
-	CIInteractable* pTargetAtFrameStart)
-{
-	++m_BaselineStats.iMeasuredFrames;
-	m_BaselineStats.iLatestRegisteredObjects = iRegisteredObjects;
-	m_BaselineStats.iMaxRegisteredObjects = (std::max)(m_BaselineStats.iMaxRegisteredObjects, iRegisteredObjects);
-	m_BaselineStats.iTotalRegisteredObjects += iRegisteredObjects;
-	m_BaselineStats.iLatestInRangeObjects = iInRangeObjects;
-	m_BaselineStats.iMinInRangeObjects = (std::min)(m_BaselineStats.iMinInRangeObjects, iInRangeObjects);
-	m_BaselineStats.iMaxInRangeObjects = (std::max)(m_BaselineStats.iMaxInRangeObjects, iInRangeObjects);
-	m_BaselineStats.iTotalInRangeObjects += iInRangeObjects;
-	m_BaselineStats.iIsInteractableCalls += iIsInteractableCalls;
-	m_BaselineStats.iPriorityComparisons += iPriorityComparisons;
-	m_BaselineStats.iRangeEnters += iRangeEnters;
-	m_BaselineStats.iRangeExits += iRangeExits;
-
-	if (pTargetAtFrameStart != m_pCurrentTarget)
-		++m_BaselineStats.iCurrentTargetChanges;
-
-	m_BaselineStats.dFirstLoopTotalMicroseconds += dFirstLoopMicroseconds;
-	m_BaselineStats.dFirstLoopMaxMicroseconds = (std::max)(m_BaselineStats.dFirstLoopMaxMicroseconds, dFirstLoopMicroseconds);
-	m_BaselineStats.dSecondLoopTotalMicroseconds += dSecondLoopMicroseconds;
-	m_BaselineStats.dSecondLoopMaxMicroseconds = (std::max)(m_BaselineStats.dSecondLoopMaxMicroseconds, dSecondLoopMicroseconds);
-	m_BaselineStats.dUpdateTotalMicroseconds += dUpdateMicroseconds;
-	m_BaselineStats.dUpdateMaxMicroseconds = (std::max)(m_BaselineStats.dUpdateMaxMicroseconds, dUpdateMicroseconds);
-
-	if (m_BaselineStats.iMeasuredFrames % 600ull == 0ull)
-		Dump_BaselineStats();
-}
-
-void CInteraction_Manager::Record_ChangeSceneBaseline(double dMicroseconds)
-{
-	++m_BaselineStats.iChangeSceneCalls;
-	m_BaselineStats.dChangeSceneTotalMicroseconds += dMicroseconds;
-	m_BaselineStats.dChangeSceneMaxMicroseconds = (std::max)(m_BaselineStats.dChangeSceneMaxMicroseconds, dMicroseconds);
-}
-
-void CInteraction_Manager::Dump_BaselineStats() const
-{
-	if (m_BaselineStats.iMeasuredFrames == 0)
-		return;
-
-	const double dFrames = static_cast<double>(m_BaselineStats.iMeasuredFrames);
-	const double dChangeSceneCalls = static_cast<double>(m_BaselineStats.iChangeSceneCalls);
-	const unsigned long long iMinInRange =
-		m_BaselineStats.iMinInRangeObjects == ~0ull ? 0ull : m_BaselineStats.iMinInRangeObjects;
-
-	std::ostringstream Stream;
-	Stream << std::fixed << std::setprecision(3)
-		<< "[InteractionBaseline]"
-		<< " frames=" << m_BaselineStats.iMeasuredFrames
-		<< " latestN=" << m_BaselineStats.iLatestRegisteredObjects
-		<< " maxN=" << m_BaselineStats.iMaxRegisteredObjects
-		<< " avgN=" << (static_cast<double>(m_BaselineStats.iTotalRegisteredObjects) / dFrames)
-		<< " latestK=" << m_BaselineStats.iLatestInRangeObjects
-		<< " minK=" << iMinInRange
-		<< " maxK=" << m_BaselineStats.iMaxInRangeObjects
-		<< " avgK=" << (static_cast<double>(m_BaselineStats.iTotalInRangeObjects) / dFrames)
-		<< " isCallsPerFrame=" << (static_cast<double>(m_BaselineStats.iIsInteractableCalls) / dFrames)
-		<< " priorityPerFrame=" << (static_cast<double>(m_BaselineStats.iPriorityComparisons) / dFrames)
-		<< " firstAvgUs=" << (m_BaselineStats.dFirstLoopTotalMicroseconds / dFrames)
-		<< " firstMaxUs=" << m_BaselineStats.dFirstLoopMaxMicroseconds
-		<< " secondAvgUs=" << (m_BaselineStats.dSecondLoopTotalMicroseconds / dFrames)
-		<< " secondMaxUs=" << m_BaselineStats.dSecondLoopMaxMicroseconds
-		<< " updateAvgUs=" << (m_BaselineStats.dUpdateTotalMicroseconds / dFrames)
-		<< " updateMaxUs=" << m_BaselineStats.dUpdateMaxMicroseconds
-		<< " rangeEnter=" << m_BaselineStats.iRangeEnters
-		<< " rangeExit=" << m_BaselineStats.iRangeExits
-		<< " targetChanges=" << m_BaselineStats.iCurrentTargetChanges
-		<< " interactionStart=" << m_BaselineStats.iInteractionStarts
-		<< " interactionEnd=" << m_BaselineStats.iInteractionEnds
-		<< " carryNotify=" << m_BaselineStats.iCarryNotifyCalls
-		<< " carryTargetMismatch=" << m_BaselineStats.iCarryNotifyTargetMismatches
-		<< " changeSceneAvgUs=" << (dChangeSceneCalls > 0.0 ? m_BaselineStats.dChangeSceneTotalMicroseconds / dChangeSceneCalls : 0.0)
-		<< " changeSceneMaxUs=" << m_BaselineStats.dChangeSceneMaxMicroseconds
-		<< " earlyNoPlayer=" << m_BaselineStats.iEarlyOutNoPlayer
-		<< " earlyEmpty=" << m_BaselineStats.iEarlyOutEmptyRegistry
-		<< " earlyEpilogue=" << m_BaselineStats.iEarlyOutEpilogue
-		<< " earlyCarry=" << m_BaselineStats.iEarlyOutCarry
-		<< '\n';
-
-	const std::string Line = Stream.str();
-	OutputDebugStringA(Line.c_str());
-
-	std::ofstream LogFile("Interaction_Baseline.log", std::ios::app);
-	if (LogFile)
-		LogFile << Line;
-}
-#endif
 
 
 

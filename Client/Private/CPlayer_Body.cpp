@@ -486,9 +486,6 @@ HRESULT CPlayer_Body::Ready_Animation_Listner()
 			CPlayer* pPlayer = static_cast<CPlayer*>(event.Payload.Ptrs.at("Player"));
 
 			CIInteractable* pObj =CInteraction_Manager::GetInstance()->Get_CurrentTarget();
-#if defined(_DEBUG)
-			CInteraction_Manager::GetInstance()->Record_CarryNotifyTarget(pObj);
-#endif
 			if (pPlayer)
 				pPlayer->Set_CarryAndThrowState(dynamic_cast<CInteractionObject*>(pObj));
 

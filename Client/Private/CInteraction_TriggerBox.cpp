@@ -212,7 +212,7 @@ void CInteraction_TriggerBox::OnCollisionEnter(_uint iGroup, CCollider_Base* pOt
 
 void CInteraction_TriggerBox::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)
 {
-	// Keep overlap state valid even when a collider is re-enabled while already overlapping.
+	// 이미 겹친 상태에서 충돌체가 다시 활성화되더라도 겹침 상태를 유효하게 유지한다.
 	OnCollisionEnter(iGroup, pOther);
 }
 
@@ -268,8 +268,8 @@ CGameObject* CInteraction_TriggerBox::Clone(void* pArg)
 
 void CInteraction_TriggerBox::Free()
 {
-	// The owning CIInteractable purges Manager state before its parts are freed.
-	// Do not enqueue a new Remove request from this destruction path.
+	// 소유 CIInteractable이 부품 해제 전에 관리자 상태를 먼저 정리한다.
+	// 소멸 경로에서는 새로운 제거 요청을 추가하지 않는다.
 	m_PlayerOverlaps.clear();
 	m_MonsterOverlaps.clear();
 
