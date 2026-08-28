@@ -33,6 +33,8 @@ public:
 
 public:
     void        Dead_Behavior(_float fTimeDelta);
+private:
+    void        Update_MonsterGrab();
 public:
             //누가잡았는지 세팅하는 함수
     void        Set_Owner(CGameObject* pOwner) { m_pOwner = pOwner; }

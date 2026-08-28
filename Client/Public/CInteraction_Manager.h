@@ -63,6 +63,9 @@ public:
                 // Called when an interaction object is created or destroyed.
     void        RegisterInteractable(CIInteractable* pObj);
     void        UnRegisterInteractable(const CIInteractable* pObj);
+    void        RequestAddCandidate(CIInteractable* pObj);
+    void        RequestRemoveCandidate(CIInteractable* pObj);
+    void        PurgeInteractable(CIInteractable* pObj);
 
     void        Update(_float fTimeDelta);
     bool        OnInteractKeyPresed();      // Handles the interaction key.
@@ -94,6 +97,14 @@ public:
                                                    
 private:
     CIInteractable*              Find_Object(const CIInteractable* pObj);
+    void                        RequestCandidateState(CIInteractable* pObj, bool bAdd);
+    unsigned long long          ApplyPendingCandidates();
+
+    struct CANDIDATE_REQUEST
+    {
+        CIInteractable* pObject = nullptr;
+        bool            bAdd = false;
+    };
 
 private:
     
@@ -101,6 +112,8 @@ private:
     CIInteractable*             m_pPreTarget = nullptr;
 
     list<CIInteractable*>        m_InteractableObjects;  // All registered interactables in the active scene.
+    std::vector<CIInteractable*> m_Candidates;           // Stable Player-overlap order used for per-frame target selection.
+    std::vector<CANDIDATE_REQUEST> m_PendingCandidateRequests;
 
 public:
     void        Set_MainPlayer(CGameObject* pObj);

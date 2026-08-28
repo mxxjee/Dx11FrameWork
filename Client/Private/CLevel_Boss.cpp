@@ -53,10 +53,9 @@ HRESULT CLevel_Boss::Initialize(LevelArgs& args)
     if (FAILED(Ready_Layer_Enviroment(L"Enviroment_Layer")))
         return E_FAIL;
 
-#if !defined(_DEBUG)
     if (FAILED(Ready_Layer_Monster(L"Monster_Layer")))
         return E_FAIL;
-#endif
+
 
     if (FAILED(Ready_Layer_Interaction(L"Interaction_Layer")))
         return E_FAIL;

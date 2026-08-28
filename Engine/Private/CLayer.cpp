@@ -5,6 +5,7 @@
 
 CLayer::CLayer()
 {
+    
 }
 
 HRESULT CLayer::Add_GameObject(CGameObject* pGameObject)

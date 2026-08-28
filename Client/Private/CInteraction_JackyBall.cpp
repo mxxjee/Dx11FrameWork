@@ -96,6 +96,9 @@ void CInteraction_JackyBall::Update(_float fTimeDelta)
         }
            
     }
+
+    Update_MonsterGrab();
+
     if (m_bInteraction && m_pSocketMatrix)
     {
         _matrix SocketMatrix = XMLoadFloat4x4(m_pSocketMatrix);
@@ -144,51 +147,31 @@ bool CInteraction_JackyBall::IsInteratable()
     CheckNullResult(m_pTriggerBox, false);
     CheckTrueResult(m_pOwner != nullptr,false);
 
-    bool bResult=m_pTriggerBox->Is_Collision();
-    
-    if (bResult)
-    {
-        CGameObject* pOther = m_pTriggerBox->Get_Other();
+    return m_pTriggerBox->Is_PlayerCollision() &&
+        m_pTriggerBox->Get_PlayerOther() == m_pPlayer;
+}
 
-        //충돌한 사람이있으면
-        if (pOther)
-        {
-             //플레이어와 충돌했으면..
-            if (pOther == m_pPlayer)
-            {
-                return true;
-            }
-            else
+void CInteraction_JackyBall::Update_MonsterGrab()
+{
+    // Preserve every condition that guarded the old IsInteratable side effect.
+    CheckFalse(m_bActive);
+    CheckFalse(CanInteractive);
+    CheckTrue(m_bInteraction);
+    CheckNull(m_pTriggerBox);
+    CheckTrue(m_pOwner != nullptr);
+    CheckFalse(m_pTriggerBox->Is_MonsterCollision());
 
-            {
-                //아닌데, 몬스터랑충돌했으면
-                CM_Jacky* pMonster = dynamic_cast<CM_Jacky*>(pOther);
-                if (pMonster)
-                {
-                    //몬스터잡기함수수행
-                    pMonster->Grab(this);
-                    return false;
-                }
+    CM_Jacky* pMonster = dynamic_cast<CM_Jacky*>(m_pTriggerBox->Get_MonsterOther());
+    CheckNull(pMonster);
 
-                else
-                    return false;
-            }
-
-        }
-
-        else
-            return false;
-    }
-  
-    return false;
-    
+    pMonster->Grab(this);
 }
 
 void CInteraction_JackyBall::Enter_InteractRange()
 {
     
     CheckTrue(m_bInteraction);
-    CheckFalse( m_pTriggerBox->Get_Other()==m_pPlayer);
+    CheckFalse(m_pTriggerBox->Get_PlayerOther() == m_pPlayer);
 
 
     _vector ShowPos = MathUtils::WorldToScreen(m_pTransformCom->Get_State(STATE::POSITION),

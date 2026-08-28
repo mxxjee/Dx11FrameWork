@@ -8,9 +8,9 @@
 #include "CLayer.h"
 #include "CGameManager.h"
 #include "CTransform.h"
+#include <algorithm>
 
 #if defined(_DEBUG)
-#include <algorithm>
 #include <chrono>
 #include <fstream>
 #include <iomanip>
@@ -21,6 +21,8 @@ USING(Client)
 IMPLEMENT_SINGLETON(CInteraction_Manager)
 void CInteraction_Manager::RegisterInteractable(CIInteractable* pObj)
 {
+	CheckNull(pObj);
+
 	CIInteractable* pTarget = Find_Object(pObj);
 
 	if (!pTarget)
@@ -33,16 +35,102 @@ void CInteraction_Manager::RegisterInteractable(CIInteractable* pObj)
 
 void CInteraction_Manager::UnRegisterInteractable(const CIInteractable* pObj)
 {
-	CIInteractable* Interactables = Find_Object(pObj);
-	if (Interactables)
+	PurgeInteractable(const_cast<CIInteractable*>(pObj));
+}
+
+void CInteraction_Manager::RequestAddCandidate(CIInteractable* pObj)
+{
+	RequestCandidateState(pObj, true);
+}
+
+void CInteraction_Manager::RequestRemoveCandidate(CIInteractable* pObj)
+{
+	RequestCandidateState(pObj, false);
+}
+
+void CInteraction_Manager::RequestCandidateState(CIInteractable* pObj, bool bAdd)
+{
+	CheckNull(pObj);
+
+	for (CANDIDATE_REQUEST& Request : m_PendingCandidateRequests)
 	{
-		list<CIInteractable*>::iterator pFindObj = find(m_InteractableObjects.begin(), m_InteractableObjects.end(), pObj);
-		if (pFindObj != m_InteractableObjects.end())
-			m_InteractableObjects.erase(pFindObj);
+		if (Request.pObject == pObj)
+		{
+			Request.bAdd = bAdd;
+			return;
+		}
 	}
 
-	else
-		return;
+	m_PendingCandidateRequests.push_back({ pObj, bAdd });
+}
+
+unsigned long long CInteraction_Manager::ApplyPendingCandidates()
+{
+	unsigned long long iRangeExits = 0;
+	std::vector<CANDIDATE_REQUEST> Requests;
+	Requests.swap(m_PendingCandidateRequests);
+
+	for (const CANDIDATE_REQUEST& Request : Requests)
+	{
+		CIInteractable* pObject = Request.pObject;
+		if (!pObject)
+			continue;
+
+		auto CandidateIter = std::find(m_Candidates.begin(), m_Candidates.end(), pObject);
+		if (Request.bAdd)
+		{
+			if (Find_Object(pObject) && CandidateIter == m_Candidates.end())
+				m_Candidates.push_back(pObject);
+		}
+		else if (CandidateIter != m_Candidates.end())
+		{
+			m_Candidates.erase(CandidateIter);
+			if (pObject->m_bPrevRange)
+			{
+				pObject->Exit_InteractRange();
+				pObject->m_bPrevRange = false;
+				++iRangeExits;
+			}
+		}
+	}
+
+	return iRangeExits;
+}
+
+void CInteraction_Manager::PurgeInteractable(CIInteractable* pObj)
+{
+	CheckNull(pObj);
+
+	if (pObj->m_bPrevInteracting)
+	{
+		pObj->Exit_Interaction();
+		pObj->m_bPrevInteracting = false;
+	}
+
+	if (pObj->m_bPrevRange)
+	{
+		pObj->Exit_InteractRange();
+		pObj->m_bPrevRange = false;
+	}
+
+	m_InteractableObjects.remove(pObj);
+	m_Candidates.erase(std::remove(m_Candidates.begin(), m_Candidates.end(), pObj), m_Candidates.end());
+	m_PendingCandidateRequests.erase(
+		std::remove_if(
+			m_PendingCandidateRequests.begin(),
+			m_PendingCandidateRequests.end(),
+			[pObj](const CANDIDATE_REQUEST& Request) { return Request.pObject == pObj; }),
+		m_PendingCandidateRequests.end());
+
+	if (m_pCurrentTarget == pObj)
+		m_pCurrentTarget = nullptr;
+	if (m_pPreTarget == pObj)
+		m_pPreTarget = nullptr;
+
+#if defined(_DEBUG)
+	if (m_pBaselineInteractionStartTarget == pObj)
+		m_pBaselineInteractionStartTarget = nullptr;
+#endif
 }
 
 void CInteraction_Manager::Update(_float fTimeDelta)
@@ -75,6 +163,14 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 				dUpdateMicroseconds,
 				pTargetAtFrameStart);
 		};
+#endif
+
+	const unsigned long long iPendingRangeExits = ApplyPendingCandidates();
+#if defined(_DEBUG)
+	iInRangeObjects = static_cast<unsigned long long>(m_Candidates.size());
+	iRangeExits += iPendingRangeExits;
+#else
+	(void)iPendingRangeExits;
 #endif
 
 	if (!m_pMainPlayer)
@@ -172,9 +268,6 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 		return;
 	}
 	
-	// Find the best interactable target for the current frame.
-	CIInteractable* pBest = nullptr;
-
 	if (CGameManager::GetInstance()->Get_EndingStep() == EndingStep::EPILOGUE)
 	{
 #if defined(_DEBUG)
@@ -184,23 +277,28 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 		return;
 	}
 
+	// Interaction owns CurrentTarget until its lifecycle explicitly ends, even if
+	// the Player has already left the TriggerBox and the Candidate was removed.
+	if (m_pCurrentTarget && m_pCurrentTarget->m_bPrevInteracting)
+	{
+		m_pCurrentTarget->Stay_Interaction(fTimeDelta);
+#if defined(_DEBUG)
+		CommitFrame();
+#endif
+		return;
+	}
+
+	CIInteractable* pBest = nullptr;
+	CIInteractable* pPreviousTarget = m_pCurrentTarget;
+
 #if defined(_DEBUG)
 	const BaselineClock::time_point FirstLoopBegin = BaselineClock::now();
 #endif
 
-	// Traverse every registered interactable and preserve the existing priority policy.
-	for (auto pInteratable : m_InteractableObjects)
+	// Only Player-overlap Candidates participate in per-frame target selection.
+	// Strict '>' preserves stable first-entered ordering for equal priorities.
+	for (CIInteractable* pInteratable : m_Candidates)
 	{
-		if (m_pMainPlayer->Get_ActionControl()->m_bCarry)
-		{
-#if defined(_DEBUG)
-			++m_BaselineStats.iEarlyOutCarry;
-			dFirstLoopMicroseconds = std::chrono::duration<double, std::micro>(BaselineClock::now() - FirstLoopBegin).count();
-			CommitFrame();
-#endif
-			return;
-		}
-
 		if (!pInteratable)
 			continue;
 
@@ -209,12 +307,7 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 #endif
 		bool inRange = pInteratable->IsInteratable();
 
-#if defined(_DEBUG)
-		if (inRange)
-			++iInRangeObjects;
-#endif
-
-		// Preserve the existing range lifecycle callbacks.
+		// Preserve the existing range lifecycle callbacks inside the broad-phase Candidate set.
 		if (!pInteratable->m_bPrevRange && inRange)
 		{
 			pInteratable->Enter_InteractRange();
@@ -243,10 +336,7 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 				++iPriorityComparisons;
 #endif
 			if (!pBest || pInteratable->Get_Interaction_Priority() > pBest->Get_Interaction_Priority())
-			{
-				m_pPreTarget = m_pCurrentTarget;
 				pBest = pInteratable;
-			}
 		}
 	}
 
@@ -255,21 +345,19 @@ void CInteraction_Manager::Update(_float fTimeDelta)
 #endif
 
 	m_pCurrentTarget = pBest;
-
-	if (m_pCurrentTarget && m_pCurrentTarget->m_bPrevInteracting)
-		m_pCurrentTarget->Stay_Interaction(fTimeDelta);
+	if (pPreviousTarget != m_pCurrentTarget)
+		m_pPreTarget = pPreviousTarget;
 
 #if defined(_DEBUG)
 	const BaselineClock::time_point SecondLoopBegin = BaselineClock::now();
 #endif
 
-	for (auto obj : m_InteractableObjects)
+	// The lock above makes a second Registry traversal unnecessary. Keep only the
+	// previous target cleanup as a defensive lifecycle guard.
+	if (pPreviousTarget && pPreviousTarget != m_pCurrentTarget && pPreviousTarget->m_bPrevInteracting)
 	{
-		if (obj->m_bPrevInteracting && obj != m_pCurrentTarget)
-		{
-			obj->Exit_Interaction();
-			obj->m_bPrevInteracting = false;
-		}
+		pPreviousTarget->Exit_Interaction();
+		pPreviousTarget->m_bPrevInteracting = false;
 	}
 
 #if defined(_DEBUG)
@@ -306,6 +394,7 @@ bool CInteraction_Manager::OnInteractKeyPresed()
 				if (m_pCurrentTarget->Get_Interaction_Priority() != ENUM_TO_UINT(InteractionType::NPC))
 				{
 					m_pCurrentTarget->Exit_Interaction();
+					m_pCurrentTarget->m_bPrevInteracting = false;
 					m_pCurrentTarget->m_bPrevRange = false;
 #if defined(_DEBUG)
 					++m_BaselineStats.iInteractionEnds;
@@ -334,17 +423,7 @@ bool CInteraction_Manager::OnInteractKeyPresed()
 
 void CInteraction_Manager::Clear()
 {
-
-	// Clean up the active target before changing scenes.
-	if (m_pCurrentTarget)
-	{
-		m_pCurrentTarget->Exit_Interaction();
-		m_pCurrentTarget->m_bPrevInteracting = false;
-		m_pCurrentTarget->m_bPrevRange = false;
-		m_pCurrentTarget = nullptr;
-	}
-
-	// Apply the same cleanup to every registered interactable.
+	// Scene/lifetime cleanup may traverse the Registry; per-frame target selection may not.
 	for (auto& pObj : m_InteractableObjects)
 	{
 		if (pObj)
@@ -364,8 +443,10 @@ void CInteraction_Manager::Clear()
 		}
 	}
 	m_InteractableObjects.clear();
-
-
+	m_Candidates.clear();
+	m_PendingCandidateRequests.clear();
+	m_pCurrentTarget = nullptr;
+	m_pPreTarget = nullptr;
 }
 
 bool CInteraction_Manager::Check_InteractiveType(InteractionType eType)
@@ -377,7 +458,7 @@ bool CInteraction_Manager::Check_InteractiveType(InteractionType eType)
 
 void CInteraction_Manager::Add_Interaction(CIInteractable* pObj)
 {
-	m_InteractableObjects.push_back(pObj);
+	RegisterInteractable(pObj);
 }
 
 void CInteraction_Manager::Change_Scene(_uint iLevelID)
@@ -424,6 +505,8 @@ HRESULT CInteraction_Manager::Initialize()
 {
 	m_pGameInstance = CGameInstance::GetInstance();
 	Safe_AddRef(m_pGameInstance);
+	m_Candidates.reserve(8);
+	m_PendingCandidateRequests.reserve(8);
 
 	return S_OK;
 }
@@ -474,7 +557,10 @@ void CInteraction_Manager::Free()
 #endif
 
 	m_pCurrentTarget = nullptr;
+	m_pPreTarget = nullptr;
 	m_InteractableObjects.clear();
+	m_Candidates.clear();
+	m_PendingCandidateRequests.clear();
 
 	Safe_Release(m_pMainPlayer);
 	Safe_Release(m_pGameInstance);

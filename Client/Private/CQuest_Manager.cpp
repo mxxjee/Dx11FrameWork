@@ -20,7 +20,7 @@ HRESULT CQuest_Manager::Initialize()
 
 
 
-	LoadQuestDatabase("C:/Users/kmj69/Documents/GitHub/DX11Framework/Resource/Data/Quests/Quests.json");
+	LoadQuestDatabase("../../Resource/Data/Quests/Quests.json");
 
 	//size_t Mom_HashKey = hash<string>()("NPC_Mom");
 	//m_mapNPCChapterProgress[Mom_HashKey].BaseChapterID = "Q1001_START";		//대화시작챕터:START

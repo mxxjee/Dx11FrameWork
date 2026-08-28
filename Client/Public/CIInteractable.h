@@ -7,6 +7,11 @@ class CIInteractable
 public:
 	virtual bool           IsInteratable()=0;      //상호작용가능한지 조건 ( 보통 거리?)
 
+	// TriggerBox collision callbacks use these common entry points so that
+	// interactable implementations do not depend directly on the manager.
+	void            OnInteractionRangeEnter();
+	void            OnInteractionRangeExit();
+
 	virtual void    Enter_InteractRange()=0;
 	virtual void    Stay_InteractRange(_float fTimeDelta) =0;       //상호작용가능한 범위에잇을떄 계속호출
 	virtual void    Exit_InteractRange()=0;      //ㅓ범위나갔을때 호출
@@ -26,6 +31,10 @@ public:
 	bool		m_bPrevInteracting = false;	//이전프레임의 상호작용상태(Exit/Enter판단위해서)
 
 protected:
+	void            RequestAddCandidate();
+	void            RequestRemoveCandidate();
+	void            ReleaseInteractionRegistration();
+
 	string			m_SceneName = "";
 	Interact_Behavior_Type			m_BehaviorType=NONE;
 	_float							m_fTargetDistance;

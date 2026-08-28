@@ -48,6 +48,12 @@ public:
     static CCollision_Manager* Create(_uint MaxGroup);
     virtual void    Free();
 
+#if defined(_DEBUG)
+public:
+    void            Reset_BaselineStats();
+    void            Dump_BaselineStats() const;
+#endif
+
 private:
     map<_uint, SceneColliderGroupList>   m_mapSceneColliders;
 
@@ -57,6 +63,11 @@ private:
     vector<vector<bool>>       m_CollisionTable;
     CGameInstance* m_pGameInstance;
 
+#if defined(_DEBUG)
+    unsigned long long  m_iBaselineMeasuredFrames = 0;
+    double              m_dBaselineTotalMicroseconds = 0.0;
+    double              m_dBaselineMaxMicroseconds = 0.0;
+#endif
 
 };
 NS_END

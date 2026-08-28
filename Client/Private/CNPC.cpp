@@ -178,12 +178,6 @@ void CNPC::Set_Active(bool _b)
     __super::Set_Active(_b);
 
     m_pTriggerBox->Set_Active(_b);
-
-    if (!_b)
-    {
-        CInteraction_Manager::GetInstance()->UnRegisterInteractable(this);
-  
-    }
 }
 
 bool CNPC::IsInteratable()
@@ -511,6 +505,7 @@ CGameObject* CNPC::Clone(void* pArg)
 
 void CNPC::Free()
 {
+    ReleaseInteractionRegistration();
     Safe_Release(m_pNavigationCom);
     Safe_Release(m_pCollider);
     Safe_Release(m_pDialogue_Manager);

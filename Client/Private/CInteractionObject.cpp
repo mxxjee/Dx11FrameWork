@@ -184,6 +184,7 @@ CGameObject* CInteractionObject::Clone(void* pArg)
 
 void CInteractionObject::Free()
 {
+    ReleaseInteractionRegistration();
     __super::Free();
 
     Safe_Release(m_pCollider);

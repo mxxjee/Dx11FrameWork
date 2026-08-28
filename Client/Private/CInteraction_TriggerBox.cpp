@@ -1,9 +1,12 @@
 #include "CInteraction_TriggerBox.h"
 #include "Client_Defines.h"
+#include "CIInteractable.h"
+#include "CContainerObject.h"
 #include "CCollider_Base.h"
 #include "CGameInstance.h"
 #include "CBounding_AABB.h"
 #include "CBoxColliderComponent.h"
+#include <algorithm>
 
 USING(Client)
 CInteraction_TriggerBox::CInteraction_TriggerBox(ComPtr<ID3D11Device> pDevice, ComPtr<ID3D11DeviceContext> pContext)
@@ -116,15 +119,56 @@ HRESULT CInteraction_TriggerBox::Ready_Component(void* pArg)
 
 void CInteraction_TriggerBox::Set_Active(bool _b)
 {
+	if (!_b)
+		Clear_Overlaps();
+
 	m_bActive = _b;
 	for (auto& pCol : m_pCollider)
 		pCol->Set_Active(_b);
+}
 
-	if (_b == false)
+CGameObject* CInteraction_TriggerBox::Get_PlayerOther() const
+{
+	if (m_PlayerOverlaps.empty() || !m_PlayerOverlaps.back())
+		return nullptr;
+
+	return m_PlayerOverlaps.back()->Get_Owner();
+}
+
+CGameObject* CInteraction_TriggerBox::Get_MonsterOther() const
+{
+	if (m_MonsterOverlaps.empty() || !m_MonsterOverlaps.back())
+		return nullptr;
+
+	return m_MonsterOverlaps.back()->Get_Owner();
+}
+
+void CInteraction_TriggerBox::Add_Overlap(std::vector<CCollider_Base*>& Overlaps, CCollider_Base* pOther)
+{
+	CheckNull(pOther);
+
+	if (std::find(Overlaps.begin(), Overlaps.end(), pOther) == Overlaps.end())
+		Overlaps.push_back(pOther);
+}
+
+void CInteraction_TriggerBox::Remove_Overlap(std::vector<CCollider_Base*>& Overlaps, CCollider_Base* pOther)
+{
+	auto Iter = std::find(Overlaps.begin(), Overlaps.end(), pOther);
+	if (Iter != Overlaps.end())
+		Overlaps.erase(Iter);
+}
+
+void CInteraction_TriggerBox::Clear_Overlaps()
+{
+	if (!m_PlayerOverlaps.empty())
 	{
-		m_bCollision = false;
-
+		CIInteractable* pInteractable = dynamic_cast<CIInteractable*>(m_pOwner);
+		if (pInteractable)
+			pInteractable->OnInteractionRangeExit();
 	}
+
+	m_PlayerOverlaps.clear();
+	m_MonsterOverlaps.clear();
 }
 
 void CInteraction_TriggerBox::Set_Size(_float3 vSize)
@@ -143,20 +187,24 @@ void CInteraction_TriggerBox::Set_Size(_float3 vSize)
 
 void CInteraction_TriggerBox::OnCollisionEnter(_uint iGroup, CCollider_Base* pOther)
 {
-	CGameObject* pOwner = pOther->Get_Owner();
-	CheckNull(pOwner);
-
-
 	switch (COLLISION_GROUP(iGroup))
 	{
 	case Client::COLLISION_GROUP::PLAYER:
-		m_pOther = pOwner;
-		m_bCollision = true;
+	{
+		const bool bWasEmpty = m_PlayerOverlaps.empty();
+		Add_Overlap(m_PlayerOverlaps, pOther);
+
+		if (bWasEmpty && !m_PlayerOverlaps.empty())
+		{
+			CIInteractable* pInteractable = dynamic_cast<CIInteractable*>(m_pOwner);
+			if (pInteractable)
+				pInteractable->OnInteractionRangeEnter();
+		}
 		break;
+	}
 
 	case Client::COLLISION_GROUP::MONSTER:
-		m_pOther = pOwner;
-		m_bCollision = true;
+		Add_Overlap(m_MonsterOverlaps, pOther);
 		break;
 
 	}
@@ -164,25 +212,30 @@ void CInteraction_TriggerBox::OnCollisionEnter(_uint iGroup, CCollider_Base* pOt
 
 void CInteraction_TriggerBox::OnCollisionStay(_uint iGroup, CCollider_Base* pOther)
 {
+	// Keep overlap state valid even when a collider is re-enabled while already overlapping.
+	OnCollisionEnter(iGroup, pOther);
 }
 
 void CInteraction_TriggerBox::OnCollisionExit(_uint iGroup, CCollider_Base* pOther)
 {
 
-	CGameObject* pOwner = pOther->Get_Owner();
-	CheckNull(pOwner);
-
-
 	switch (COLLISION_GROUP(iGroup))
 	{
 	case Client::COLLISION_GROUP::PLAYER:
-		m_pOther = nullptr;
-		m_bCollision = false;
+	{
+		const bool bWasOverlapping = !m_PlayerOverlaps.empty();
+		Remove_Overlap(m_PlayerOverlaps, pOther);
+		if (bWasOverlapping && m_PlayerOverlaps.empty())
+		{
+			CIInteractable* pInteractable = dynamic_cast<CIInteractable*>(m_pOwner);
+			if (pInteractable)
+				pInteractable->OnInteractionRangeExit();
+		}
 	break;
+	}
 
 	case Client::COLLISION_GROUP::MONSTER:
-		m_pOther = nullptr;
-		m_bCollision = false;
+		Remove_Overlap(m_MonsterOverlaps, pOther);
 		break;
 
 	}
@@ -215,6 +268,11 @@ CGameObject* CInteraction_TriggerBox::Clone(void* pArg)
 
 void CInteraction_TriggerBox::Free()
 {
+	// The owning CIInteractable purges Manager state before its parts are freed.
+	// Do not enqueue a new Remove request from this destruction path.
+	m_PlayerOverlaps.clear();
+	m_MonsterOverlaps.clear();
+
 	for (auto& i : m_pCollider)
 	{
 		m_pGameInstance->UnRegister_Collider(i, m_iSceneID);

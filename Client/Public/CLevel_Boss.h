@@ -64,7 +64,7 @@ private:
     CGameManager* m_pGameManager = nullptr;
 
     GameEvent       m_EnterFirstEvent;
-    CInteraction_JackyBall* pJackyBall;
+    CInteraction_JackyBall* pJackyBall=nullptr;
 
     vector<CWall*>       m_pWalls;
 

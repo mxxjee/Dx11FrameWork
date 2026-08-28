@@ -6,6 +6,7 @@ namespace Engine
 }
 
 NS_BEGIN(Client)
+class CIInteractable;
 class CInteraction_TriggerBox :
     public CPartObject
 {
@@ -43,7 +44,9 @@ private:
 
 public:
     virtual void    Set_Active(bool _b);
-    bool            Is_Collision() { return m_bCollision; }
+    bool            Is_Collision() { return Is_PlayerCollision(); }
+    bool            Is_PlayerCollision() const { return !m_PlayerOverlaps.empty(); }
+    bool            Is_MonsterCollision() const { return !m_MonsterOverlaps.empty(); }
     void            Set_Size(_float3 vSize);
     virtual     void    PushOut(_float3 vOutPush) {};
 
@@ -64,11 +67,17 @@ public:
     virtual void Free() override;
 
 public:
-    CGameObject*    Get_Other() { return m_pOther; }
+    CGameObject*    Get_Other() { return Get_PlayerOther(); }
+    CGameObject*    Get_PlayerOther() const;
+    CGameObject*    Get_MonsterOther() const;
 
 private:
-    bool            m_bCollision = false;
-    CGameObject*    m_pOther = nullptr;
+    void            Add_Overlap(std::vector<CCollider_Base*>& Overlaps, CCollider_Base* pOther);
+    void            Remove_Overlap(std::vector<CCollider_Base*>& Overlaps, CCollider_Base* pOther);
+    void            Clear_Overlaps();
+
+    std::vector<CCollider_Base*> m_PlayerOverlaps;
+    std::vector<CCollider_Base*> m_MonsterOverlaps;
 
 
 };
