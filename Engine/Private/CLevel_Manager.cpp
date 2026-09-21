@@ -107,6 +107,11 @@ void CLevel_Manager::Render()
 			level->Render();
 	}
 
+	//어짜피 위 레벨이 히든이면 그 밑에는 그리지않음
+	//가장 맨 위의 히든 레벨을 찾아서 그 전 레벨까지만 업데이트/렌더하도록 변경
+	//level-change 함수안에서 모든 처리 이후 가장 맨 위의 히든레벨의 인덱스를 찾아 그 전 인덱스까지 순회하도록 수정
+	//반복적인 분기 체크를 막는다
+
 }
 
 CLevel* CLevel_Manager::Get_PrevLevel()
