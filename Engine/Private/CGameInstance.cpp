@@ -163,7 +163,7 @@ HRESULT CGameInstance::Initialize_Engine(const ENGINE_DESC& EngineDesc, ComPtr<I
 	CheckNullResult(m_pNavMeshManager, E_FAIL);
 
 	/*collision 매니저*/
-	m_pCollisionManager = CCollision_Manager::Create(EngineDesc.colGroupMax);
+	m_pCollisionManager = CCollision_Manager::Create(EngineDesc.iNumLevels,EngineDesc.colGroupMax);
 	CheckNullResult(m_pCollisionManager, E_FAIL);
 
 	/*Font매니저*/

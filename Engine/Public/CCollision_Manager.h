@@ -17,7 +17,7 @@ private:
 
 
 public:
-    HRESULT     Initialize(_uint MaxGroup);
+    HRESULT     Initialize(_uint MaxLevels,_uint MaxGroup);
 
                 //씬에 맞는 콜라이더 등록
     HRESULT     Register_Collider(CCollider_Base* pCollider,_uint iSceneID);
@@ -45,11 +45,11 @@ private:
     void            BeginEventOnGroups(const SceneColliderGroupList& Groups);
     void            ResolveEventsOnGroups(const SceneColliderGroupList& Groups);
 public:
-    static CCollision_Manager* Create(_uint MaxGroup);
+    static CCollision_Manager* Create(_uint MaxLevels,_uint MaxGroup);
     virtual void    Free();
 
 private:
-    map<_uint, SceneColliderGroupList>   m_mapSceneColliders;
+    vector<SceneColliderGroupList>   m_SceneColliders;      //idx = scene ID
 
     _uint       m_CollisionGroupMax = 0;
     

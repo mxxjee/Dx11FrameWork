@@ -393,7 +393,7 @@ void CMainApp::Render()
 }
 
 void CMainApp::Register_Levels()
-{
+{ 
 	CheckNull(m_pGameInstance);
 	m_pGameInstance->Register_Level(ENUM_TO_UINT(LEVEL_ID::LOGO), [this](LevelArgs& args)->CLevel*
 		{

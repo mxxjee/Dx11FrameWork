@@ -8,11 +8,13 @@ CCollision_Manager::CCollision_Manager()
 {
 }
 
-HRESULT CCollision_Manager::Initialize(_uint MaxGroup)
+HRESULT CCollision_Manager::Initialize(_uint MaxLevels,_uint MaxGroup)
 {
     m_CollisionGroupMax = MaxGroup;
 
     m_pGameInstance = CGameInstance::GetInstance();
+
+    m_SceneColliders.resize(MaxLevels);
 
     m_CollisionTable.resize(MaxGroup);
     for (_uint i = 0; i < MaxGroup; ++i)
@@ -26,7 +28,7 @@ HRESULT CCollision_Manager::Initialize(_uint MaxGroup)
 HRESULT CCollision_Manager::Register_Collider(CCollider_Base* pCollider, _uint iSceneID)
 {
     //씬에맞는 풀 가져오기(없으면 자동생성)
-    SceneColliderGroupList& sceneGroups = m_mapSceneColliders[iSceneID];
+    SceneColliderGroupList& sceneGroups = m_SceneColliders[iSceneID];
     
     //새로만들어진거면  resize
     if (sceneGroups.empty())
@@ -51,11 +53,10 @@ HRESULT CCollision_Manager::Register_Collider(CCollider_Base* pCollider, _uint i
 
 HRESULT CCollision_Manager::UnRegister_Collider(CCollider_Base* pCollider, _uint iSceneID)
 {
-    auto it = m_mapSceneColliders.find(iSceneID);
-    if (it == m_mapSceneColliders.end())
-        return E_FAIL;
 
-    SceneColliderGroupList& sceneGroups = it->second;
+    if (m_SceneColliders[iSceneID].empty()) return E_FAIL;
+
+    SceneColliderGroupList& sceneGroups = m_SceneColliders[iSceneID];
     _uint colGroup = pCollider->Get_ColGroup();
 
     if (colGroup >= m_CollisionGroupMax || sceneGroups.empty())
@@ -83,11 +84,11 @@ HRESULT CCollision_Manager::UnRegister_Collider(CCollider_Base* pCollider, _uint
 
 void CCollision_Manager::Clear_SceneColliders(_uint iSceneID)
 {
-    auto iter = m_mapSceneColliders.find(iSceneID);
-    if (iter == m_mapSceneColliders.end())
-        return;
+   // auto iter = m_mapSceneColliders.find(iSceneID);
+    //if (iter == m_mapSceneColliders.end())
+        //return;
 
-    SceneColliderGroupList& sceneGroup = iter->second;
+    SceneColliderGroupList& sceneGroup = m_SceneColliders[iSceneID];//iter->second;
     for (auto GroupIt = sceneGroup.begin(); GroupIt != sceneGroup.end(); ++GroupIt)
     {
         ColliderGroupList& group = (*GroupIt);
@@ -98,8 +99,9 @@ void CCollision_Manager::Clear_SceneColliders(_uint iSceneID)
 
         group.clear();
     }
-
-    m_mapSceneColliders.erase(iter);
+    
+    sceneGroup.clear();
+    //m_mapSceneColliders.erase(iter);
 }
 
 void CCollision_Manager::Set_Enable_Collision(_uint iSrcGroup, _uint iDstGroup, bool bEnable)
@@ -118,12 +120,12 @@ void CCollision_Manager::Update_CollisionGroup(_float fTimeDelta)
 
 
     // Static 그룹 참조 (ID 0)
-    std::map<_uint, SceneColliderGroupList>::iterator itStatic = m_mapSceneColliders.find(0);
-    const SceneColliderGroupList* StaticGroupsPtr = (itStatic != m_mapSceneColliders.end()) ? &itStatic->second : nullptr;
+    SceneColliderGroupList& itStatic = m_SceneColliders[0];//m_mapSceneColliders.find(0);
+    const SceneColliderGroupList* StaticGroupsPtr = (!itStatic.empty()) ? &itStatic : nullptr;
 
     // Dynamic 그룹 참조 (Current ID)
-    std::map<_uint, SceneColliderGroupList>::iterator itDynamic = m_mapSceneColliders.find(iCurrentDynamicID);
-    const SceneColliderGroupList* DynamicGroupsPtr = (itDynamic != m_mapSceneColliders.end()) ? &itDynamic->second : nullptr;
+    SceneColliderGroupList& itDynamic = m_SceneColliders[iCurrentDynamicID];//m_mapSceneColliders.find(iCurrentDynamicID);
+    const SceneColliderGroupList* DynamicGroupsPtr = (!itDynamic.empty()) ? &itDynamic : nullptr;
 
     if (!DynamicGroupsPtr) 
         return; // 활성화된 동적 씬이 없으면 검사할 필요 없음
@@ -252,10 +254,10 @@ void CCollision_Manager::ResolveEventsOnGroups(const SceneColliderGroupList& Gro
     }
 }
 
-CCollision_Manager* CCollision_Manager::Create(_uint MaxGroup)
+CCollision_Manager* CCollision_Manager::Create(_uint MaxLevels,_uint MaxGroup)
 {
     CCollision_Manager* pInstance = new CCollision_Manager();
-    if (FAILED(pInstance->Initialize(MaxGroup)))
+    if (FAILED(pInstance->Initialize(MaxLevels,MaxGroup)))
     {
         MSG_BOX("FAiled to Create:Collision_Manager");
         Safe_Release(pInstance);
@@ -266,10 +268,10 @@ CCollision_Manager* CCollision_Manager::Create(_uint MaxGroup)
 
 void CCollision_Manager::Free()
 {
-    for (std::map<_uint, SceneColliderGroupList>::iterator mapIt = m_mapSceneColliders.begin();
-        mapIt != m_mapSceneColliders.end(); ++mapIt)
+    for (auto iter = m_SceneColliders.begin();
+        iter != m_SceneColliders.end(); ++iter)
     {
-        SceneColliderGroupList& sceneGroups = mapIt->second;
+        SceneColliderGroupList& sceneGroups = *iter;
         for (SceneColliderGroupList::iterator groupIt = sceneGroups.begin(); groupIt != sceneGroups.end(); ++groupIt)
         {
             ColliderGroupList& group = *groupIt;
@@ -279,5 +281,6 @@ void CCollision_Manager::Free()
             }
         }
     }
-    m_mapSceneColliders.clear();
+
+    m_SceneColliders.clear();
 }
